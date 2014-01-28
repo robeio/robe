@@ -204,7 +204,9 @@ function checkByNodeIds(nodes, targetNodes) {
   for (var i = 0; i < nodes.length; i++) {
     nodeUid = nodes[i].uid;
     nodeOid = nodes[i].id;
-    tree.findByUid(nodeUid).find(":checkbox").prop("checked", $.inArray(nodes[i].id, targetNodes) != -1);
+	var isChecked = $.inArray(nodes[i].id, targetNodes) != -1;
+    tree.findByUid(nodeUid).find(":checkbox").prop("checked",isChecked);
+	nodes[i].set("checked",isChecked);
     if (nodes[i].hasChildren) {
       checkByNodeIds(nodes[i].children.data(), targetNodes);
     }
