@@ -10,13 +10,13 @@ import java.util.HashSet;
 import java.util.Set;
 
 @Entity
-@Table(name = "ROLE")
+@Table
 public class Role extends BaseEntity {
 
-	@Column(name = "CODE", length = 20)
+	@Column(length = 20)
 	private String code;
 
-	@Column(name = "NAME", length = 50)
+	@Column(length = 50)
 	private String name;
 
 	@JsonIgnore

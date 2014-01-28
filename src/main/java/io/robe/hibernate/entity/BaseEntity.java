@@ -22,16 +22,13 @@ public abstract class BaseEntity implements Serializable {
 	@Temporal(TemporalType.TIMESTAMP)
 	private Date lastUpdated;
 
-	private Date deleted;
-
 
 	public BaseEntity() {
 	}
 
-	public BaseEntity(String oid, Date lastUpdated, Date deleted) {
+	public BaseEntity(String oid, Date lastUpdated) {
 		this.oid = oid;
 		this.lastUpdated = lastUpdated;
-		this.deleted = deleted;
 	}
 
 	public String getOid() {
@@ -50,11 +47,4 @@ public abstract class BaseEntity implements Serializable {
 		this.lastUpdated = lastUpdated;
 	}
 
-	public Date getDeleted() {
-		return deleted;
-	}
-
-	public void setDeleted(Date deleted) {
-		this.deleted = deleted;
-	}
 }
