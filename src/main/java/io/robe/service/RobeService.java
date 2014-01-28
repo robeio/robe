@@ -1,5 +1,6 @@
 package io.robe.service;
 
+import com.google.inject.Inject;
 import com.hubspot.dropwizard.guice.GuiceBundle;
 import com.sun.jersey.api.core.ResourceConfig;
 import com.yammer.dropwizard.Service;
@@ -8,12 +9,11 @@ import com.yammer.dropwizard.config.Bootstrap;
 import com.yammer.dropwizard.config.Environment;
 import com.yammer.dropwizard.hibernate.UnitOfWork;
 import io.robe.audit.AuditedMethodDispatchProvider;
-import io.robe.auth.*;
+import io.robe.auth.AuthTokenResponseFilter;
 import io.robe.exception.RobeExceptionMapper;
 import io.robe.hibernate.HibernateBundle;
-import org.reflections.Reflections;
+import io.robe.hibernate.dao.ServiceDao;
 
-import javax.ws.rs.Path;
 import javax.ws.rs.ext.ExceptionMapper;
 import java.util.ArrayList;
 import java.util.List;
@@ -42,14 +42,16 @@ public class RobeService extends Service<RobeServiceConfiguration> {
 		);
 	}
 
+	@Inject
+	ServiceDao serviceDao;
+
+
 	@UnitOfWork
 	@Override
 	public void run(RobeServiceConfiguration configuration, Environment environment) throws Exception {
 		addExceptionMappers(environment);
 		environment.getJerseyResourceConfig().getContainerResponseFilters().add(new AuthTokenResponseFilter());
-
 		environment.addProvider(AuditedMethodDispatchProvider.AuditedMethodDispatchAdapter.class);
-
 	}
 
 	private void addExceptionMappers(Environment environment) {

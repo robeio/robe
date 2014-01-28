@@ -7,24 +7,29 @@ import java.util.List;
 import java.util.Set;
 
 @Entity
-@Table(name = "MENU")
+@Table
 public class Menu extends BaseEntity {
 
 
-	@Column(name = "CODE", length = 50, nullable = false)
+	@Column(length = 50, nullable = false)
 	private String code;
 
-	@Column(name = "NAME", length = 50, nullable = false)
+	@Column(length = 50, nullable = false)
 	private String name;
 
 	@OneToMany(mappedBy = "parentOid", fetch = FetchType.LAZY)
 	private List<Menu> items = new LinkedList<Menu>();
 
-	@Column(name = "PARENT_OID")
+	@Column
+	private int itemOrder;
+
+
+	@Column
 	private String parentOid;
 
-	@OneToMany(mappedBy = "menu")
-	private Set<Permission> permission = new HashSet<Permission>();
+	@Transient
+	private boolean expanded = true;
+
 
 
 	public String getCode() {
@@ -59,11 +64,19 @@ public class Menu extends BaseEntity {
 		this.parentOid = parentOid;
 	}
 
-	public Set<Permission> getPermission() {
-		return permission;
+	public boolean isExpanded() {
+		return expanded;
 	}
 
-	public void setPermission(Set<Permission> permission) {
-		this.permission = permission;
+	public void setExpanded(boolean expanded) {
+		this.expanded = expanded;
+	}
+
+	public int getItemOrder() {
+		return itemOrder;
+	}
+
+	public void setItemOrder(int itemOrder) {
+		this.itemOrder = itemOrder;
 	}
 }

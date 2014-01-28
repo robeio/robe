@@ -3,12 +3,14 @@ package io.robe.service;
 import javax.inject.Named;
 
 import com.google.inject.AbstractModule;
+import com.google.inject.Inject;
 import com.google.inject.Provider;
 import com.google.inject.Provides;
 import com.yammer.dropwizard.auth.Authenticator;
 import io.robe.auth.AuthTokenAuthenticator;
 import io.robe.auth.Credentials;
 import io.robe.hibernate.HibernateBundle;
+import io.robe.hibernate.dao.UserDao;
 import org.hibernate.SessionFactory;
 
 public class ConfigurationModule extends AbstractModule {
@@ -31,9 +33,10 @@ public class ConfigurationModule extends AbstractModule {
 		bind(Authenticator.class).toProvider(new Provider<Authenticator<String, Credentials> >() {
 			@Override
 			public Authenticator<String, Credentials>  get() {
-				return new AuthTokenAuthenticator();
+				return new AuthTokenAuthenticator(new UserDao(hibernate.getSessionFactory()));
 			}
 		});
+
 	}
 	
 

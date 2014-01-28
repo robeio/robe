@@ -3,45 +3,30 @@ package io.robe.hibernate.entity;
 import javax.persistence.*;
 
 @Entity
-@Table(name = "PERMISSION")
+@Table
 public class Permission extends BaseEntity {
 
-	@Column(name="P_READ")
-	private boolean read;
-	@Column(name="P_WRITE")
-	private boolean write;
-	@Column(name="P_DELETE")
-	private boolean delete;
-    @ManyToOne
-    @JoinColumn(name="MENU_ID", referencedColumnName = "OID")
-    private Menu menu;
-    @ManyToOne
-    @JoinColumn(name="ROLE_ID",referencedColumnName = "OID")
-    private Role role;
-
-	public boolean isRead() {
-		return read;
+	public enum Type {
+		SERVICE,
+		MENU;
 	}
 
-    public void setRead(boolean read) {
-        this.read = read;
-    }
-    public boolean isWrite() {
-        return write;
-    }
+	@Enumerated(EnumType.STRING)
+	@Column(name="pType")
+	private Type type;
 
-    public void setWrite(boolean write) {
-        this.write = write;
-    }
-    public boolean isDelete() {
-        return delete;
-    }
+    @Column(name="restrictedItemOid",length = 32)
+    private String restrictedItemOid;
 
-    public void setDelete(boolean delete) {
-        this.delete = delete;
-    }
+	@Column(name="pLevel")
+	private short pLevel;
+
     @ManyToOne
-    @JoinColumn(name="ROLE_ID",nullable = false,referencedColumnName = "OID")
+    @JoinColumn(name="roleOid",referencedColumnName = "oid")
+    private Role role;
+
+    @ManyToOne
+    @JoinColumn(name="roleOid",nullable = false,referencedColumnName = "oid")
     public Role getRole() {
         return role;
     }
@@ -49,13 +34,28 @@ public class Permission extends BaseEntity {
     public void setRole(Role role) {
         this.role = role;
     }
-    @ManyToOne
-    @JoinColumn(name="MENU_ID",nullable = false,referencedColumnName = "OID")
-    public Menu getMenu() {
-        return menu;
-    }
 
-    public void setMenu(Menu menu) {
-        this.menu = menu;
-    }
+	public Type getType() {
+		return type;
+	}
+
+	public void setType(Type type) {
+		this.type = type;
+	}
+
+	public String getRestrictedItemOid() {
+		return restrictedItemOid;
+	}
+
+	public void setRestrictedItemOid(String restrictedItemOid) {
+		this.restrictedItemOid = restrictedItemOid;
+	}
+
+	public short getpLevel() {
+		return pLevel;
+	}
+
+	public void setpLevel(short pLevel) {
+		this.pLevel = pLevel;
+	}
 }

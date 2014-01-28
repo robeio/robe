@@ -6,23 +6,23 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import javax.persistence.*;
 
 @Entity
-@Table(name = "USER")
+@Table
 public class User extends BaseEntity {
 
-	@Column(name = "EMAIL", unique = true, length = 50)
+	@Column(unique = true, length = 50)
 	private String email;
-	@Column(name = "NAME", length = 50, nullable = false)
+	@Column( length = 50, nullable = false)
 	private String name;
-	@Column(name = "SURNAME", length = 50, nullable = false)
+	@Column( length = 50, nullable = false)
 	private String surname;
-	@Column(name = "PASSWORD", length = 64, nullable = false)
+	@Column( length = 64, nullable = false)
 	private String password;
-	@Column(name = "STATUS", nullable = false)
+	@Column( nullable = false)
 	private boolean active;
 
 	@JsonIgnore
 	@ManyToOne(fetch = FetchType.EAGER)
-	@JoinColumn(name = "ROLE_OID")
+	@JoinColumn(name = "roleOid")
 	private Role role;
 
 	public String getEmail() {
