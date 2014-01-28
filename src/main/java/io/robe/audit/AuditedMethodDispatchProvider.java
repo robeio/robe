@@ -9,6 +9,10 @@ import com.sun.jersey.spi.dispatch.RequestDispatcher;
 import javax.ws.rs.ext.Provider;
 import java.util.logging.Logger;
 
+
+/**
+ * Dispatcher method for {@link Audited} annotation
+ */
 public class AuditedMethodDispatchProvider implements ResourceMethodDispatchProvider {
 	private final ResourceMethodDispatchProvider provider;
 	private final Logger LOGGER = Logger.getLogger(AuditedMethodDispatchProvider.class.getName());
@@ -18,6 +22,12 @@ public class AuditedMethodDispatchProvider implements ResourceMethodDispatchProv
 		this.provider = Preconditions.checkNotNull(provider);
 	}
 
+	/**
+	 * {@inheritDoc}
+	 *
+	 * @param abstractResourceMethod
+	 * @return
+	 */
 	@Override
 	public RequestDispatcher create(AbstractResourceMethod abstractResourceMethod) {
 		final RequestDispatcher dispatcher = provider.create(abstractResourceMethod);
@@ -29,12 +39,20 @@ public class AuditedMethodDispatchProvider implements ResourceMethodDispatchProv
 	}
 
 
+	/**
+	 * {@inheritDoc}
+	 */
 	@Provider
 	public static class AuditedMethodDispatchAdapter implements ResourceMethodDispatchAdapter {
+		/**
+		 * {@inheritDoc}
+		 */
 		@Override
 		public ResourceMethodDispatchProvider adapt(ResourceMethodDispatchProvider provider) {
 			return new AuditedMethodDispatchProvider(provider);
 		}
 
 	}
+
+
 }
