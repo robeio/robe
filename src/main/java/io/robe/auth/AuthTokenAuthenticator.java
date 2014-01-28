@@ -43,7 +43,7 @@ public class AuthTokenAuthenticator implements Authenticator<String, Credentials
 			if (!user.isPresent())
 				return Optional.absent();
 
-			if (user.get().getEmail().equals(cryptoToken.getUserAccountName())) {
+			if (user.get().isActive() && user.get().getEmail().equals(cryptoToken.getUserAccountName())) {
 				HashSet<String> permissions = new HashSet<String>();
 				for(Permission permission:user.get().getRole().getPermissions()){
 					if(permission.getType().equals(Permission.Type.SERVICE)){
