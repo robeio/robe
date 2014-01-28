@@ -35,10 +35,10 @@ public class AuthTokenAuthenticator implements Authenticator<String, Credentials
 	public Optional<Credentials> authenticate(String token) throws AuthenticationException {
 
 		try {
-			CryptoToken cryptoToken = new CryptoToken(token);
-			if (cryptoToken == null) {
+			if (token == null) {
 				return Optional.absent();
 			}
+			CryptoToken cryptoToken = new CryptoToken(token);
 			Optional<User> user = userDao.findByEmail(cryptoToken.getUserAccountName());
 			if (!user.isPresent())
 				return Optional.absent();
@@ -62,8 +62,7 @@ public class AuthTokenAuthenticator implements Authenticator<String, Credentials
 	}
 
 	public static CryptoToken createToken(Credentials credentials) throws ValidationException {
-		CryptoToken cryptoToken = null;
-		cryptoToken = new CryptoToken();
+		CryptoToken cryptoToken = new CryptoToken();
 		cryptoToken.setUserAccountName(credentials.getUsername());
 		cryptoToken.setExpiration(600);
 		return cryptoToken;
