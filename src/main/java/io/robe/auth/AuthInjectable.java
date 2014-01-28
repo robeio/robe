@@ -36,10 +36,6 @@ public class AuthInjectable<T> extends AbstractHttpContextInjectable {
 		if (token == null || token.length() == 0) {
 			throw new WebApplicationException(Response.Status.UNAUTHORIZED);
 		}
-
-//			if((System.currentTimeMillis()-client.getLastRequest()) >= SESSION_TIMEOUT)   //TODO: validate Token taken from client
-//				throw new WebApplicationException(Response.Status.UNAUTHORIZED);
-
 		//Validate old token for auth token
 		try {
 
@@ -47,6 +43,9 @@ public class AuthInjectable<T> extends AbstractHttpContextInjectable {
 			if (sentence != null) {
 				Optional<Credentials> result = authenticator.authenticate(sentence);
 				if (result.isPresent()) {
+					if(!isAuthorized(result.get(), "/" + c.getRequest().getPath() + ":" + c.getRequest().getMethod()))
+						throw new WebApplicationException(Response.Status.UNAUTHORIZED);
+
 					return result.get();
 
 				}
@@ -64,5 +63,9 @@ public class AuthInjectable<T> extends AbstractHttpContextInjectable {
 			throw new WebApplicationException(Response.Status.UNAUTHORIZED);
 		}
 		return null;
+	}
+
+	private boolean isAuthorized(Credentials credentials, String service) {
+		return credentials.getPermissions().contains(service);
 	}
 }
