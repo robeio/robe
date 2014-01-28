@@ -14,12 +14,16 @@ import org.owasp.esapi.errors.ValidationException;
 public class AuthTokenAuthenticator implements Authenticator<String, Credentials> {
 
 
-	@Inject
+
 	UserDao userDao;
+
+	@Inject
+	public AuthTokenAuthenticator(UserDao userDao) {
+		this.userDao = userDao;
+	}
 
 	@Override
 	@UnitOfWork
-
 	public Optional<Credentials> authenticate(String token) throws AuthenticationException {
 
 		try {

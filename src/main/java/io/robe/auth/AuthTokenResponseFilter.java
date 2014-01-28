@@ -26,7 +26,7 @@ public class AuthTokenResponseFilter implements ContainerResponseFilter {
 		} else {
 			cookie = extractCookie(request.getHeaderValue("Cookie"));
 		}
-		if (cookie != null || !cookie.equals("auth-token")) {
+		if (cookie != null && cookie.startsWith("auth-token")) {
 			String token = cookie.substring(11);
 			if (token == null || token.equals("")) {
 				return response;
@@ -34,7 +34,6 @@ public class AuthTokenResponseFilter implements ContainerResponseFilter {
 			try {
 				CryptoToken cryptoToken = new CryptoToken(token);
 				if (cryptoToken.isExpired()) {
-					System.err.print("Oooo--------");
 					token = cryptoToken.getToken();
 				}
 			} catch (Exception e) {
