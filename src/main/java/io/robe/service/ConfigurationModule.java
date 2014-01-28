@@ -1,15 +1,14 @@
 package io.robe.service;
 
-import javax.inject.Named;
-
+import com.google.common.cache.CacheBuilderSpec;
 import com.google.inject.AbstractModule;
-import com.google.inject.Inject;
 import com.google.inject.Provider;
-import com.google.inject.Provides;
 import com.yammer.dropwizard.auth.Authenticator;
+import com.yammer.dropwizard.auth.CachingAuthenticator;
 import io.robe.auth.AuthTokenAuthenticator;
 import io.robe.auth.Credentials;
 import io.robe.hibernate.HibernateBundle;
+import io.robe.hibernate.dao.ServiceDao;
 import io.robe.hibernate.dao.UserDao;
 import org.hibernate.SessionFactory;
 
@@ -33,7 +32,8 @@ public class ConfigurationModule extends AbstractModule {
 		bind(Authenticator.class).toProvider(new Provider<Authenticator<String, Credentials> >() {
 			@Override
 			public Authenticator<String, Credentials>  get() {
-				return new AuthTokenAuthenticator(new UserDao(hibernate.getSessionFactory()));
+				AuthTokenAuthenticator authTokenAuthenticator = new AuthTokenAuthenticator(new UserDao(hibernate.getSessionFactory()), new ServiceDao(hibernate.getSessionFactory()));
+				return CachingAuthenticator.wrap(authTokenAuthenticator, CacheBuilderSpec.parse("maximumSize=10000, expireAfterAccess=1m"));
 			}
 		});
 
