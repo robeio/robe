@@ -32,6 +32,8 @@ $.ajaxSetup({
   }
 });
 $(document).ready(function() {
+
+	loadConfig();
 	$("#progressBar").kendoProgressBar({
 		min: 0,
 		max: 1,
@@ -142,6 +144,17 @@ function showDialog(message,title) {
   $('#dialog').data("kendoWindow").open();
 }
 
+function loadConfig(){
+	$.ajax({
+		dataType: "json",
+		url: "../config.json",
+		success: function(response){
+		   backendURL = response.backendURL;
+		}
+	});
+}
+var backendURL = "";
+
 function getBackendURL()   {
-	return "../robe/"
+	return backendURL;
 }
