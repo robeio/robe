@@ -50,16 +50,10 @@ public class MenuResource {
 		Optional<User> user = userDao.findByEmail(credentials.getUsername());
 		Set<Permission> permissions = user.get().getRole().getPermissions();
 		HashSet<String> menuOids = new HashSet<String>();
-		List<Menu> items = menuDao.findAll(Menu.class);
-		if(user.get().getRole().getCode().equals("admin")){
-			for (Menu menu : items) {
-				menuOids.add(menu.getOid());
-			}
-		}else{
-			for (Permission permission : permissions) {
-				if(permission.getType().equals(Permission.Type.MENU)) {
-					menuOids.add(permission.getRestrictedItemOid());
-				}
+		List<Menu> items = menuDao.findHierarchicalMenu();
+		for (Permission permission : permissions) {
+			if (permission.getType().equals(Permission.Type.MENU)) {
+				menuOids.add(permission.getRestrictedItemOid());
 			}
 		}
 		List<MenuItem> permittedItems = new LinkedList<MenuItem>();
