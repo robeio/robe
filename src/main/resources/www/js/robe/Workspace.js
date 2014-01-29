@@ -2,7 +2,7 @@ $.ajaxSetup({
   dataType: "json",
   statusCode: {
     401: function() {
-      $('#dialogMessage').load("../../html/Login.html", function() {
+      $('#dialogMessage').load("../html/Login.html", function() {
         showDialog(null,"Giriş");
         eval("initializeLogin();");
       });
@@ -58,7 +58,7 @@ $(document).ready(function() {
     visible: false
   });
 
-  $('#dialogMessage').load("../../html/Login.html", function() {
+  $('#dialogMessage').load("../html/Login.html", function() {
           showDialog(null,"Giriş");
           eval("initializeLogin();");
   });
@@ -112,7 +112,7 @@ function openMenuItem(menuitem) {
   if (menuitem.indexOf("k-") == 0)
     return;
 
-  $('#container').load("../../html/" + menuitem + ".html", function() {
+  $('#container').load("../html/" + menuitem + ".html", function() {
     try {
       eval("initialize" + menuitem + "();");
 
@@ -150,11 +150,16 @@ function loadConfig(){
 		url: "../config.json",
 		success: function(response){
 		   backendURL = response.backendURL;
+		   adminURL = response.adminURL;
 		}
 	});
 }
 var backendURL = "";
+var adminURL = "";
 
 function getBackendURL()   {
 	return backendURL;
+}
+function getAdminURL()   {
+	return adminURL;
 }

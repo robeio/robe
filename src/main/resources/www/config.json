@@ -1,3 +1,4 @@
 {
-	"backendURL":"../robe/"
+	"backendURL":"../../robe/" ,
+	"adminURL":"./admin/"
 }
