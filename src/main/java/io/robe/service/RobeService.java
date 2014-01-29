@@ -32,7 +32,7 @@ public class RobeService extends Service<RobeServiceConfiguration> {
 		HibernateBundle hibernate = new HibernateBundle();
 
 		bootstrap.addBundle(hibernate);
-		bootstrap.addBundle(new AssetsBundle("/www/", "/", "index.html"));
+		bootstrap.addBundle(new AssetsBundle("/www/", "/admin/", "index.html"));
 		bootstrap.addBundle(GuiceBundle.newBuilder()
 				.addModule(new ConfigurationModule(hibernate))
 				.enableAutoConfig("io")
