@@ -37,26 +37,11 @@
             <version>0.6.2</version>
         </dependency>
 
-        <!--Reflecitons operations-->
-
-        <dependency>
-            <groupId>org.json</groupId>
-            <artifactId>json</artifactId>
-            <version>20131018</version>
-        </dependency>
-
         <!--Database drivers-->
         <dependency>
             <groupId>mysql</groupId>
             <artifactId>mysql-connector-java</artifactId>
             <version>5.1.26</version>
-        </dependency>
-        <dependency>
-            <groupId>com.oracle</groupId>
-            <artifactId>oracle6</artifactId>
-            <version>11.2.0.4</version>
-            <scope>system</scope>
-            <systemPath>${pom.basedir}/lib/ojdbc6.jar</systemPath>
         </dependency>
 
         <!-- Additional Jersey Support-->
