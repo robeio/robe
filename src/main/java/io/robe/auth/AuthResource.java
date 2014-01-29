@@ -18,6 +18,11 @@ import javax.ws.rs.core.UriInfo;
 import java.util.ArrayList;
 import java.util.List;
 
+
+/**
+ * Authentication Resource to provide standard Authentication services like login,change password....
+ */
+//TODO: Replace this resorce with ESAPI
 @Path("authentication")
 @Produces(MediaType.APPLICATION_JSON)
 @Consumes(MediaType.APPLICATION_JSON)

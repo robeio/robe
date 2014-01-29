@@ -1,6 +1,5 @@
 package io.robe.service;
 
-import com.google.inject.Inject;
 import com.hubspot.dropwizard.guice.GuiceBundle;
 import com.sun.jersey.api.core.ResourceConfig;
 import com.yammer.dropwizard.Service;
@@ -12,7 +11,6 @@ import io.robe.audit.AuditedMethodDispatchProvider;
 import io.robe.auth.AuthTokenResponseFilter;
 import io.robe.exception.RobeExceptionMapper;
 import io.robe.hibernate.HibernateBundle;
-import io.robe.hibernate.dao.ServiceDao;
 
 import javax.ws.rs.ext.ExceptionMapper;
 import java.util.ArrayList;
@@ -41,9 +39,6 @@ public class RobeService extends Service<RobeServiceConfiguration> {
 				.build()
 		);
 	}
-
-	@Inject
-	ServiceDao serviceDao;
 
 
 	@UnitOfWork
