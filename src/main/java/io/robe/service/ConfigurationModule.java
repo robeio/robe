@@ -31,7 +31,7 @@ public class ConfigurationModule extends AbstractModule {
 
 		bind(Authenticator.class).toProvider(new Provider<Authenticator<String, Credentials> >() {
 			@Override
-			public Authenticator<String, Credentials>  get() {
+			public Authenticator get() {
 				AuthTokenAuthenticator authTokenAuthenticator = new AuthTokenAuthenticator(new UserDao(hibernate.getSessionFactory()), new ServiceDao(hibernate.getSessionFactory()));
 				return CachingAuthenticator.wrap(authTokenAuthenticator, CacheBuilderSpec.parse("maximumSize=10000, expireAfterAccess=1m"));
 			}

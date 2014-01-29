@@ -8,51 +8,61 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 
+/**
+ * The response filter for creating or refreshing AuthTokens. Refreshing controlled by created token.
+ */
 public class AuthTokenResponseFilter implements ContainerResponseFilter {
 	private static final Logger LOGGER = LoggerFactory.getLogger(AuthTokenResponseFilter.class);
 
 	@Override
 	public ContainerResponse filter(ContainerRequest request, ContainerResponse response) {
-		String cookie = null;
+		String authToken = null;
+
+		/*
+		 If it is the first login create a token with the Credentials from response entity.
+		 and get token form there.
+		 Else get token from cookie
+		  */
 		if (request.getPath().equals("authentication/login")) {
 			try {
 				if(response.getEntity() instanceof  Credentials){
 					CryptoToken cryptoToken = AuthTokenAuthenticator.createToken(((Credentials) response.getEntity()));
-					cookie = "auth-token=" + cryptoToken.getToken();
+					authToken = cryptoToken.getToken();
 				}
 			} catch (Exception e) {
-				e.printStackTrace();
+				LOGGER.error("CryptoToken creation failed", e);
 			}
 		} else {
-			cookie = extractCookie(request.getHeaderValue("Cookie"));
+			authToken = extractAuthTokenFromCookieList(request.getHeaderValue("Cookie"));
 		}
-		if (cookie != null && cookie.startsWith("auth-token")) {
-			String token = cookie.substring(11);
-			if (token == null || token.equals("")) {
+
+		if (authToken != null) {
+
+			if (authToken.length() == 0) {
 				return response;
 			}
 			try {
-				CryptoToken cryptoToken = new CryptoToken(token);
+				CryptoToken cryptoToken = new CryptoToken(authToken);
 				if (cryptoToken.isExpired()) {
-					token = cryptoToken.getToken();
+					authToken = cryptoToken.getToken();
 				}
 			} catch (Exception e) {
-				e.printStackTrace();
+				LOGGER.error("CryptoToken re-creation failed", e);
 			}
 
-			response.getHttpHeaders().putSingle("Set-Cookie", "auth-token=" + token + ";path=/;domain=" + request.getBaseUri().getHost() + ";");
+			response.getHttpHeaders().putSingle("Set-Cookie", "auth-token=" + authToken + ";path=/;domain=" + request.getBaseUri().getHost() + ";");
 		}
 		return response;
 
 	}
 
-	public String extractCookie(String allcookies) {
-		if (allcookies == null || allcookies.length() == 0)
+	private String extractAuthTokenFromCookieList(String cookieList) {
+		if (cookieList == null || cookieList.length() == 0)
 			return null;
-		String[] cookies = allcookies.split(";");
+		String[] cookies = cookieList.split(";");
 		for (String cookie : cookies) {
 			if (cookie.startsWith("auth-token"))
-				return cookie;
+				return cookie.substring(11);
 		}
 		return null;
 	}
