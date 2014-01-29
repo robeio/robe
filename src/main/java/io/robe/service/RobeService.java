@@ -3,7 +3,6 @@ package io.robe.service;
 import com.hubspot.dropwizard.guice.GuiceBundle;
 import com.sun.jersey.api.core.ResourceConfig;
 import com.yammer.dropwizard.Service;
-import com.yammer.dropwizard.assets.AssetsBundle;
 import com.yammer.dropwizard.config.Bootstrap;
 import com.yammer.dropwizard.config.Environment;
 import com.yammer.dropwizard.hibernate.UnitOfWork;
@@ -32,7 +31,7 @@ public class RobeService extends Service<RobeServiceConfiguration> {
 		HibernateBundle hibernate = new HibernateBundle();
 
 		bootstrap.addBundle(hibernate);
-		bootstrap.addBundle(new AssetsBundle("/www/", "/admin/", "index.html"));
+		bootstrap.addBundle(new AssetsBundle("/www/", "/admin", "index.html", "admin"));
 		bootstrap.addBundle(GuiceBundle.newBuilder()
 				.addModule(new ConfigurationModule(hibernate))
 				.enableAutoConfig("io")

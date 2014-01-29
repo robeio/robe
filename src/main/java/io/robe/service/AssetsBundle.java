@@ -100,7 +100,7 @@ public class AssetsBundle implements Bundle {
 
 	@Override
 	public void run(Environment environment) {
-		environment.addServlet(createServlet(), uriPath + '*');
+		environment.addServlet(createServlet(), uriPath + '*').setName(assetsName);
 	}
 
 	private AssetServlet createServlet() {
