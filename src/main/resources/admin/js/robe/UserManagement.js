@@ -74,7 +74,7 @@ function initializeUserManagement() {
         }, {
             command: [{name:"edit",text:""},{name: "destroy",text:""}],
             title: "&nbsp;",
-            width: "100px"
+            width: "130px"
         }],
         editable: "popup"
     });
