@@ -40,9 +40,18 @@ function initializeUserManagement() {
 
     $("#gridUsers").kendoGrid({
         dataSource: dataSource,
-
-        // height: 430,
-        toolbar: [{name:"create",text:"Ekle"}],
+        groupable: {
+            messages: {
+              empty: "Gruplandırma için kolonu buraya sürükleyin"
+            }
+        },
+        sortable: true,
+        filterable: true,
+        resizable: true,
+        pageable: {
+            refresh: true
+        },
+        toolbar: [{name:"create",text:"Yeni Kullanıcı"}],
         columns: [{
             field: "name",
             title: "Ad"
@@ -74,7 +83,7 @@ function initializeUserManagement() {
         }, {
             command: [{name:"edit",text:""},{name: "destroy",text:""}],
             title: "&nbsp;",
-            width: "100px"
+            width: "130px"
         }],
         editable: "popup"
     });

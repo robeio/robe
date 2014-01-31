@@ -43,13 +43,13 @@ body{
 }
 .k-grid-edit
 {
-   width:28px !important;
-   min-width:28px !important;
+   width:50px !important;
+   min-width:50px !important;
 }
 .k-grid-delete
 {
-   width:28px !important;
-   min-width:28px !important;
+   width:50px !important;
+   min-width:50px !important;
 }
 
 tr[role="row"]:hover
