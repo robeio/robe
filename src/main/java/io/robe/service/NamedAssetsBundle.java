@@ -2,6 +2,7 @@ package io.robe.service;
 
 import com.yammer.dropwizard.Bundle;
 import com.yammer.dropwizard.assets.AssetServlet;
+import com.yammer.dropwizard.assets.AssetsBundle;
 import com.yammer.dropwizard.config.Bootstrap;
 import com.yammer.dropwizard.config.Environment;
 
@@ -9,8 +10,10 @@ import static com.google.common.base.Preconditions.checkArgument;
 
 /**
  * A bundle for serving static asset files from the classpath.
+ * Extended from {@link com.yammer.dropwizard.assets.AssetsBundle} and only
+ * difference is a name parameter as extra.
  */
-public class AssetsBundle implements Bundle {
+public class NamedAssetsBundle extends AssetsBundle implements Bundle {
 	private static final String DEFAULT_ASSETS_NAME = "assets";
 	private static final String DEFAULT_INDEX_FILE = "index.htm";
 	private static final String DEFAULT_PATH = "/assets";
@@ -22,44 +25,44 @@ public class AssetsBundle implements Bundle {
 
 
 	/**
-	 * Creates a new AssetsBundle which serves up static assets from
+	 * Creates a new NamedAssetsBundle which serves up static assets from
 	 * {@code src/main/resources/assets/*} as {@code /assets/*}.
 	 *
-	 * @see AssetsBundle#AssetsBundle(String, String, String)
+	 * @see NamedAssetsBundle#NamedAssetsBundle(String, String, String)
 	 */
-	public AssetsBundle() {
+	public NamedAssetsBundle() {
 		this(DEFAULT_PATH, DEFAULT_PATH, DEFAULT_INDEX_FILE, DEFAULT_ASSETS_NAME);
 	}
 
 	/**
-	 * Creates a new AssetsBundle which will configure the application to serve the static files
+	 * Creates a new NamedAssetsBundle which will configure the application to serve the static files
 	 * located in {@code src/main/resources/${path}} as {@code /${path}}. For example, given a
 	 * {@code path} of {@code "/assets"}, {@code src/main/resources/assets/example.js} would be
 	 * served up from {@code /assets/example.js}.
 	 *
 	 * @param path the classpath and URI root of the static asset files
-	 * @see AssetsBundle#AssetsBundle(String, String, String)
+	 * @see NamedAssetsBundle#NamedAssetsBundle(String, String, String)
 	 */
-	public AssetsBundle(String path) {
+	public NamedAssetsBundle(String path) {
 		this(path, path, DEFAULT_INDEX_FILE, DEFAULT_ASSETS_NAME);
 	}
 
 	/**
-	 * Creates a new AssetsBundle which will configure the application to serve the static files
+	 * Creates a new NamedAssetsBundle which will configure the application to serve the static files
 	 * located in {@code src/main/resources/${resourcePath}} as {@code /${uriPath}}. For example, given a
 	 * {@code resourcePath} of {@code "/assets"} and a uriPath of {@code "/js"},
 	 * {@code src/main/resources/assets/example.js} would be served up from {@code /js/example.js}.
 	 *
 	 * @param resourcePath the resource path (in the classpath) of the static asset files
 	 * @param uriPath      the uri path for the static asset files
-	 * @see AssetsBundle#AssetsBundle(String, String, String)
+	 * @see NamedAssetsBundle#NamedAssetsBundle(String, String, String)
 	 */
-	public AssetsBundle(String resourcePath, String uriPath) {
+	public NamedAssetsBundle(String resourcePath, String uriPath) {
 		this(resourcePath, uriPath, DEFAULT_INDEX_FILE, DEFAULT_ASSETS_NAME);
 	}
 
 	/**
-	 * Creates a new AssetsBundle which will configure the application to serve the static files
+	 * Creates a new NamedAssetsBundle which will configure the application to serve the static files
 	 * located in {@code src/main/resources/${resourcePath}} as {@code /${uriPath}}. If no file name is
 	 * in ${uriPath}, ${indexFile} is appended before serving. For example, given a
 	 * {@code resourcePath} of {@code "/assets"} and a uriPath of {@code "/js"},
@@ -69,12 +72,12 @@ public class AssetsBundle implements Bundle {
 	 * @param uriPath      the uri path for the static asset files
 	 * @param indexFile    the name of the index file to use
 	 */
-	public AssetsBundle(String resourcePath, String uriPath, String indexFile) {
+	public NamedAssetsBundle(String resourcePath, String uriPath, String indexFile) {
 		this(resourcePath, uriPath, indexFile, DEFAULT_ASSETS_NAME);
 	}
 
 	/**
-	 * Creates a new AssetsBundle which will configure the application to serve the static files
+	 * Creates a new NamedAssetsBundle which will configure the application to serve the static files
 	 * located in {@code src/main/resources/${resourcePath}} as {@code /${uriPath}}. If no file name is
 	 * in ${uriPath}, ${indexFile} is appended before serving. For example, given a
 	 * {@code resourcePath} of {@code "/assets"} and a uriPath of {@code "/js"},
@@ -84,7 +87,7 @@ public class AssetsBundle implements Bundle {
 	 * @param uriPath      the uri path for the static asset files
 	 * @param indexFile    the name of the index file to use
 	 */
-	public AssetsBundle(String resourcePath, String uriPath, String indexFile, String assetsName) {
+	public NamedAssetsBundle(String resourcePath, String uriPath, String indexFile, String assetsName) {
 		checkArgument(resourcePath.startsWith("/"), "%s is not an absolute path", resourcePath);
 		checkArgument(!"/".equals(resourcePath), "%s is the classpath root", resourcePath);
 		this.resourcePath = resourcePath.endsWith("/") ? resourcePath : (resourcePath + '/');

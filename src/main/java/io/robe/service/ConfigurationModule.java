@@ -12,9 +12,12 @@ import io.robe.hibernate.dao.ServiceDao;
 import io.robe.hibernate.dao.UserDao;
 import org.hibernate.SessionFactory;
 
+/**
+ * Default Guice bindings are done at this class.
+ */
 public class ConfigurationModule extends AbstractModule {
 
-	HibernateBundle hibernate ;
+	HibernateBundle hibernate;
 
 	public ConfigurationModule(HibernateBundle hibernate) {
 		this.hibernate = hibernate;
@@ -24,12 +27,12 @@ public class ConfigurationModule extends AbstractModule {
 	protected void configure() {
 		bind(SessionFactory.class).toProvider(new Provider<SessionFactory>() {
 			@Override
-			public  SessionFactory get() {
+			public SessionFactory get() {
 				return hibernate.getSessionFactory();
 			}
 		});
 
-		bind(Authenticator.class).toProvider(new Provider<Authenticator<String, Credentials> >() {
+		bind(Authenticator.class).toProvider(new Provider<Authenticator<String, Credentials>>() {
 			@Override
 			public Authenticator get() {
 				AuthTokenAuthenticator authTokenAuthenticator = new AuthTokenAuthenticator(new UserDao(hibernate.getSessionFactory()), new ServiceDao(hibernate.getSessionFactory()));
@@ -38,6 +41,6 @@ public class ConfigurationModule extends AbstractModule {
 		});
 
 	}
-	
+
 
 }
