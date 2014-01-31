@@ -64,15 +64,25 @@ function initializeMenuManagement() {
 
     $("#gridMenus").kendoGrid({
         dataSource: gridDataSource,
-        pageable: true,
-        // height: 430,
+        groupable: {
+            messages: {
+              empty: "Gruplandırma için kolonu buraya sürükleyin"
+            }
+        },
+        sortable: true,
+        resizable: true,
+        pageable: {
+            refresh: true
+        },
         toolbar: [{name:"create",text:"Ekle"}],
         columns: [{
             field: "name",
-            title: "Ad"
+            title: "Ad",
+            width: "75px"
         }, {
             field: "code",
             title: "Kod",
+            width: "110px"
         }, {
             command: [{
                 name: "edit",
@@ -82,16 +92,16 @@ function initializeMenuManagement() {
                 text: ""
             }],
             title: "&nbsp;",
-            width: "100px"
+            width: "90px"
         }],
         group: {
             field: "parentOid",
             aggregates: [{
                 field: "oid",
                 aggregate: "count"
-            }, ]
+            }]
         },
-        editable: "popup"
+        editable: "popup",
     });
     var treeModel = {
         model: {
