@@ -3,25 +3,25 @@ function initializeRoleManagement() {
         transport: {
             read: {
                 type: "GET",
-                url: getBackendURL()+"role/all",
+                url: getBackendURL() + "role/all",
                 dataType: "json",
                 contentType: "application/json"
             },
             update: {
                 type: "POST",
-                url: getBackendURL()+"role",
+                url: getBackendURL() + "role",
                 dataType: "json",
                 contentType: "application/json"
             },
             destroy: {
                 type: "DELETE",
-                url: getBackendURL()+"role",
+                url: getBackendURL() + "role",
                 dataType: "json",
                 contentType: "application/json"
             },
             create: {
                 type: "PUT",
-                url: getBackendURL()+"role",
+                url: getBackendURL() + "role",
                 dataType: "json",
                 contentType: "application/json"
             },
@@ -45,7 +45,10 @@ function initializeRoleManagement() {
         pageable: {
             refresh: true
         },
-        toolbar: [{name:"create",text:"Yeni Rol"}],
+        toolbar: [{
+            name: "create",
+            text: "Yeni Rol"
+        }],
         columns: [{
             field: "name",
             title: "Ad"
@@ -53,11 +56,26 @@ function initializeRoleManagement() {
             field: "code",
             title: "Kod"
         }, {
-            command: [{name:"edit",text:""},{name: "destroy",text:""}],
+            command: [{
+                name: "edit",
+                text: {
+                    edit: "",
+                    update: "Güncelle",
+                    cancel: "İptal"
+                }
+            }, {
+                name: "destroy",
+                text: ""
+            }],
             title: "<b>İşlemler</b>",
             width: "130px"
         }],
-        editable: "popup"
+        editable: {
+            mode: "popup",
+            window: {
+                title: "Kayıt"
+            }
+        }
     });
 
 }
