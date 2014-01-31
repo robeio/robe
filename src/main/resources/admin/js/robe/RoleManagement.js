@@ -40,9 +40,18 @@ function initializeRoleManagement() {
 
     $("#gridRoles").kendoGrid({
         dataSource: dataSource,
-        pageable: true,
-        // height: 430,
-        toolbar: [{name:"create",text:"Ekle"}],
+        groupable: {
+            messages: {
+              empty: "Gruplandırma için kolonu buraya sürükleyin"
+            }
+        },
+        sortable: true,
+        filterable: true,
+        resizable: true,
+        pageable: {
+            refresh: true
+        },
+        toolbar: [{name:"create",text:"Yeni Rol"}],
         columns: [{
             field: "name",
             title: "Ad"
@@ -51,8 +60,8 @@ function initializeRoleManagement() {
             title: "Kod"
         }, {
             command: [{name:"edit",text:""},{name: "destroy",text:""}],
-            title: "&nbsp;",
-            width: "100px"
+            title: "<b>İşlemler</b>",
+            width: "130px"
         }],
         editable: "popup"
     });
