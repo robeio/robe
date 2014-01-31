@@ -93,12 +93,12 @@ function initializeUserManagement() {
             title: "&nbsp;",
             width: "130px"
         }],
-        editable  : {
-		  mode : "popup",
-		  window : {
-			  title: "Kayıt"
-		  }
-	  }
+        editable: {
+            mode: "popup",
+            window: {
+                title: "Kayıt"
+            }
+        }
     });
 
     function userRoleDropDownEditor(container, options) {
