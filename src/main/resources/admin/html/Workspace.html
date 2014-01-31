@@ -1,11 +1,8 @@
 <!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml">
+<html>
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
     <title lang="tr">robe.io</title>
-    <link href="../js/kendoui/styles/kendo.common.min.css" rel="stylesheet">
-    <link href="../js/kendoui/styles/kendo.rtl.min.css" rel="stylesheet">
-    <link href="../js/kendoui/styles/kendo.default.min.css" rel="stylesheet">
     <link href="//fonts.googleapis.com/css?family=Ubuntu:300italic,300,400italic,400,500italic,500,700italic,700"
           rel="stylesheet" type="text/css">
     <link rel="stylesheet" type="text/css" href="../css/robe.css"/>
@@ -14,8 +11,9 @@
     <script type="text/javascript" charset="utf-8" src="../js/kendoui/js/jquery.min.js"></script>
     <script type="text/javascript" charset="utf-8" src="../js/kendoui/js/kendo.web.min.js"></script>
     <script type="text/javascript" charset="utf-8" src='../js/kendoui/js/cultures/kendo.culture.tr-TR.min.js'></script>
-    <link rel="stylesheet" type="text/css" href="../js/kendoui/styles/kendo.bootstrap.min.css"/>
-    <link rel="stylesheet" type="text/css" href="../js/kendoui/styles/kendo.common-bootstrap.min.css"/>
+    <link href="http://cdn.kendostatic.com/2013.3.1324/styles/kendo.common-bootstrap.min.css" rel="stylesheet"/>
+    <link href="http://cdn.kendostatic.com/2013.3.1324/styles/kendo.bootstrap.min.css" rel="stylesheet"/>
+    <link rel="stylesheet" type="text/css" href="../js/bootstrap/css/bootstrap.min.css"/>
 
     <!--3rd Party lib.-->
     <script type="text/javascript" charset="utf-8" src="../js/zebra_cookie.js"></script>
@@ -49,11 +47,13 @@
     <span style="margin-top:1px;margin-left:30px;color:white; font-size:60px; vertical-align:top">Robe</span>
     <a class="k-button" id="logout">Çıkış </a>
 </div>
-<div id="menu" class="menu k-block k-shadow"></div>
 
-<div id='containerOut' class="container ">
-    <div id='container' class="k-block k-shadow">
-        <span style="font-size:x-large;">Hoşgeldiniz...
+<div id="menu" class="menu panel panel-default col-md-2"></div>
+
+<div id='containerOut' class="container pull-left col-md-10">
+    <div id='container' class=" k-shadow">
+        <div class="jumbotron alert alert-info">
+             <span style="font-size:x-large;">Hoşgeldiniz...
             <p style="font-size:small;"> Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec suscipit in odio
                 interdum convallis. Praesent semper, tellus vel elementum bibendum, velit tortor consectetur nisl, at
                 hendrerit nisi nibh eget neque. Vivamus dui turpis, aliquet eget justo vitae, ultrices consectetur arcu.
@@ -93,6 +93,8 @@
 
             </p>
         </span>
+
+        </div>
 
     </div>
 </div>
