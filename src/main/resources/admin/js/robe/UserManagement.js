@@ -40,13 +40,7 @@ function initializeUserManagement() {
 
     $("#gridUsers").kendoGrid({
         dataSource: dataSource,
-        groupable: {
-            messages: {
-              empty: "Gruplandırma için kolonu buraya sürükleyin"
-            }
-        },
         sortable: true,
-        filterable: true,
         resizable: true,
         pageable: {
             refresh: true
@@ -55,6 +49,7 @@ function initializeUserManagement() {
         columns: [{
             field: "name",
             title: "Ad"
+
         }, {
             field: "surname",
             title: "Soyad"
