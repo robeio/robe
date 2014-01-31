@@ -6,7 +6,6 @@ import com.yammer.dropwizard.Service;
 import com.yammer.dropwizard.config.Bootstrap;
 import com.yammer.dropwizard.config.Environment;
 import com.yammer.dropwizard.hibernate.UnitOfWork;
-import io.robe.audit.AuditedMethodDispatchProvider;
 import io.robe.auth.AuthTokenResponseFilter;
 import io.robe.exception.RobeExceptionMapper;
 import io.robe.hibernate.HibernateBundle;
@@ -17,6 +16,11 @@ import java.util.List;
 import java.util.Set;
 
 
+/**
+ * Default service class of Robe.
+ * If you extend this class on your applications service class and call super methods at
+ * overridden methods you will still benefit of robe souse.
+ */
 public class RobeService extends Service<RobeServiceConfiguration> {
 
 
@@ -25,13 +29,29 @@ public class RobeService extends Service<RobeServiceConfiguration> {
 
 	}
 
-
+	/**
+	 * Adds
+	 * Hibernate bundle for DB connection
+	 * Asset bundle for admin screens and
+	 * Class scanners for
+	 * <ul>
+	 * <li>Entities</li>
+	 * <li>HealthChecks</li>
+	 * <li>Providers</li>
+	 * <li>InjectableProviders</li>
+	 * <li>Resources</li>
+	 * <li>Tasks</li>
+	 * <li>Managed objects</li>
+	 * </ul>
+	 *
+	 * @param bootstrap
+	 */
 	@Override
 	public void initialize(Bootstrap<RobeServiceConfiguration> bootstrap) {
 		HibernateBundle hibernate = new HibernateBundle();
 
 		bootstrap.addBundle(hibernate);
-		bootstrap.addBundle(new AssetsBundle("/admin/", "/admin", "index.html", "admin"));
+		bootstrap.addBundle(new NamedAssetsBundle("/admin/", "/admin", "index.html", "admin"));
 		bootstrap.addBundle(GuiceBundle.newBuilder()
 				.addModule(new ConfigurationModule(hibernate))
 				.enableAutoConfig("io")
@@ -40,12 +60,18 @@ public class RobeService extends Service<RobeServiceConfiguration> {
 	}
 
 
+	/**
+	 * {@inheritDoc}
+	 * In addition adds exception mapper.
+	 * @param configuration
+	 * @param environment
+	 * @throws Exception
+	 */
 	@UnitOfWork
 	@Override
 	public void run(RobeServiceConfiguration configuration, Environment environment) throws Exception {
 		addExceptionMappers(environment);
 		environment.getJerseyResourceConfig().getContainerResponseFilters().add(new AuthTokenResponseFilter());
-		environment.addProvider(AuditedMethodDispatchProvider.AuditedMethodDispatchAdapter.class);
 	}
 
 	private void addExceptionMappers(Environment environment) {

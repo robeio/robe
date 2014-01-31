@@ -1,9 +1,7 @@
 package io.robe.hibernate;
 
 import com.fasterxml.jackson.datatype.hibernate4.Hibernate4Module;
-import com.google.common.base.Preconditions;
 import com.google.common.collect.ImmutableList;
-import com.google.inject.internal.util.$Preconditions;
 import com.yammer.dropwizard.ConfiguredBundle;
 import com.yammer.dropwizard.config.Bootstrap;
 import com.yammer.dropwizard.config.Environment;
@@ -23,6 +21,10 @@ import java.util.List;
 import java.util.Set;
 
 
+/**
+ * Hibernate bundle with Entity classpath scanner.
+ * Takes scannable paths from configuration yml from entityPackage element as array separated by ','
+ */
 public class HibernateBundle implements ConfiguredBundle<RobeServiceConfiguration>, ConfigurationStrategy<RobeServiceConfiguration> {
 	private SessionFactory sessionFactory;
 
@@ -39,6 +41,13 @@ public class HibernateBundle implements ConfiguredBundle<RobeServiceConfiguratio
 		bootstrap.getObjectMapperFactory().registerModule(new Hibernate4Module());
 	}
 
+	/**
+	 * Reads the configuration and builds the session factory, with entities.
+	 *
+	 * @param configuration configuration to read
+	 * @param environment   environment to add
+	 * @throws Exception
+	 */
 	@Override
 	public final void run(RobeServiceConfiguration configuration, Environment environment) throws Exception {
 		final DatabaseConfiguration dbConfig = getDatabaseConfiguration(configuration);
@@ -56,6 +65,10 @@ public class HibernateBundle implements ConfiguredBundle<RobeServiceConfiguratio
 		return  ImmutableList.<Class<?>>builder().add(BaseEntity.class).addAll(classes).build();
 	}
 
+	/**
+	 *
+	 * @return current session factory
+	 */
 	public SessionFactory getSessionFactory() {
 		return sessionFactory;
 	}
