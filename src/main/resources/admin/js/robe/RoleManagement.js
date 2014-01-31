@@ -46,7 +46,6 @@ function initializeRoleManagement() {
             }
         },
         sortable: true,
-        filterable: true,
         resizable: true,
         pageable: {
             refresh: true
