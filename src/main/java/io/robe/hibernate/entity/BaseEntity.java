@@ -6,6 +6,10 @@ import javax.persistence.*;
 import java.io.Serializable;
 import java.util.Date;
 
+/**
+ * An abstract Entity implementation. All entities have to extend this class.
+ * Standard fields (oid,lastupdated) will be added to your entity.
+ */
 @MappedSuperclass
 public abstract class BaseEntity implements Serializable {
 
