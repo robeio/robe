@@ -3,25 +3,25 @@ function initializeMenuManagement() {
         transport: {
             read: {
                 type: "GET",
-                url: getBackendURL()+"menu/all",
+                url: getBackendURL() + "menu/all",
                 dataType: "json",
                 contentType: "application/json"
             },
             update: {
                 type: "POST",
-                url: getBackendURL()+"menu",
+                url: getBackendURL() + "menu",
                 dataType: "json",
                 contentType: "application/json"
             },
             destroy: {
                 type: "DELETE",
-                url: getBackendURL()+"menu",
+                url: getBackendURL() + "menu",
                 dataType: "json",
                 contentType: "application/json"
             },
             create: {
                 type: "PUT",
-                url: getBackendURL()+"menu",
+                url: getBackendURL() + "menu",
                 dataType: "json",
                 contentType: "application/json"
             },
@@ -66,7 +66,7 @@ function initializeMenuManagement() {
         dataSource: gridDataSource,
         groupable: {
             messages: {
-              empty: "Gruplandırma için kolonu buraya sürükleyin"
+                empty: "Gruplandırma için kolonu buraya sürükleyin"
             }
         },
         sortable: true,
@@ -74,7 +74,10 @@ function initializeMenuManagement() {
         pageable: {
             refresh: true
         },
-        toolbar: [{name:"create",text:"Ekle"}],
+        toolbar: [{
+            name: "create",
+            text: "Ekle"
+        }],
         columns: [{
             field: "name",
             title: "Ad",
@@ -86,7 +89,11 @@ function initializeMenuManagement() {
         }, {
             command: [{
                 name: "edit",
-                text: ""
+                text: {
+                    edit: "",
+                    update: "Güncelle",
+                    cancel: "İptal"
+                }
             }, {
                 name: "destroy",
                 text: ""
@@ -101,7 +108,12 @@ function initializeMenuManagement() {
                 aggregate: "count"
             }]
         },
-        editable: "popup",
+        editable: {
+            mode: "popup",
+            window: {
+                title: "Kayıt"
+            }
+        }
     });
     var treeModel = {
         model: {
@@ -138,7 +150,7 @@ function initializeMenuManagement() {
         transport: {
             read: {
                 type: "GET",
-                url: getBackendURL()+"menu/roots",
+                url: getBackendURL() + "menu/roots",
                 dataType: "json",
                 contentType: "application/json"
             },
@@ -181,7 +193,7 @@ function onTreeMenuDrop(e) {
 
     $.ajax({
         type: "POST",
-        url: getBackendURL()+"menu/movenode/" + sourceOid + "/" + destinationOid,
+        url: getBackendURL() + "menu/movenode/" + sourceOid + "/" + destinationOid,
         dataType: "json",
         contentType: "application/json; charset=utf-8",
         success: function() {
