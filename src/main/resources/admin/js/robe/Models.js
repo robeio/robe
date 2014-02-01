@@ -84,11 +84,13 @@ var MenuModel = kendo.data.Model.define({
         },
         name: {
             editable: true,
-            nullable: false
+            nullable: false ,
+            validation: getValidations("name","Ad",true,false,2,50,"[A-Z]+")
         },
         code: {
             editable: true,
-            nullable: false
+            nullable: false,
+            validation: getValidations("code","Kod",true,false,2,50,"[A-Z]+")
         }
     }
 });
