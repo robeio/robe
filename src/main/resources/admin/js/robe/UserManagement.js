@@ -42,13 +42,15 @@ function initializeUserManagement() {
                     edit: "",
                     update: "Güncelle",
                     cancel: "İptal"
-                }
+                },
+                className:"grid-command-iconfix"
             }, {
                 name: "destroy",
-                text: ""
+                text: "" ,
+                className:"grid-command-iconfix"
             }],
             title: "&nbsp;",
-            width: "130px"
+            width: "80px"
         }],
         editable: {
             mode: "popup",
