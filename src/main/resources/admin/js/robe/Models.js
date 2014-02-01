@@ -11,25 +11,23 @@ var UserModel = kendo.data.Model.define({
             nullable: false,
             type: "string"
         },
-        deleted: {
-            editable: false,
-            nullable: true,
-            type: "string"
-        },
         name: {
             editable: true,
             nullable: false,
-            type: "string"
-        },
+            type: "string",
+			validation: getValidations("name","Ad",true,false,2,15)
+		},
         surname: {
             editable: true,
             nullable: false,
-            type: "string"
+            type: "string",
+            validation: getValidations("surname","Soyad",true,false,2,15)
         },
         email: {
             editable: true,
             nullable: false,
-            type: "string"
+            type: "string",
+            validation: getValidations("email","Eposta",true,true)
         },
         active: {
             type: "boolean"
@@ -44,14 +42,6 @@ var UserModel = kendo.data.Model.define({
             nullable: false,
             hidden: true,
             type: "string"
-        },
-        firmOid: {
-            editable: true,
-            nullable: false,
-            type: "string"
-        },
-        firm: {
-
         }
 
     }
@@ -68,17 +58,15 @@ var RoleModel = kendo.data.Model.define({
             editable: true,
             nullable: false
         },
-        deleted: {
-            editable: false,
-            nullable: true
-        },
         name: {
             editable: true,
-            nullable: false
+            nullable: false,
+            validation: getValidations("name","Ad",true,false,2,50,"[A-Z]+")
         },
         code: {
             editable: true,
-            nullable: false
+            nullable: false,
+            validation: getValidations("code","Kod",true,false,2,20,"[A-Z]+")
         }
     }
 });
@@ -94,10 +82,6 @@ var MenuModel = kendo.data.Model.define({
             editable: true,
             nullable: false
         },
-        deleted: {
-            editable: false,
-            nullable: true
-        },
         name: {
             editable: true,
             nullable: false
@@ -111,33 +95,29 @@ var MenuModel = kendo.data.Model.define({
 
 var MenuTreeModel = {
     model: {
-      id: "oid",
-      fields: {
-        oid: {
-          editable: false,
-          nullable: false
+        id: "oid",
+        fields: {
+            oid: {
+                editable: false,
+                nullable: false
+            },
+            lastUpdated: {
+                editable: true,
+                nullable: false
+            },
+            name: {
+                editable: true,
+                nullable: false
+            },
+            code: {
+                editable: true,
+                nullable: false
+            },
+            children: {}
         },
-        lastUpdated: {
-          editable: true,
-          nullable: false
-        },
-        deleted: {
-          editable: false,
-          nullable: true
-        },
-        name: {
-          editable: true,
-          nullable: false
-        },
-        code: {
-          editable: true,
-          nullable: false
-        },
-        children: {}
-      },
-      hasChildren: function(item) {
-        return item.items != null;
-      }
+        hasChildren: function(item) {
+            return item.items != null;
+        }
     }
 };
 
