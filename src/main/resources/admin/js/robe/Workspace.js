@@ -158,7 +158,7 @@ function loadConfig() {
     }
   });
 }
-var backendURL = "";
+var backendURL = "../../robe/";
 var adminURL = "";
 
 function getBackendURL() {

@@ -1,69 +1,7 @@
 function initializeMenuManagement() {
-    var gridDataSource = new kendo.data.DataSource({
-        transport: {
-            read: {
-                type: "GET",
-                url: getBackendURL() + "menu/all",
-                dataType: "json",
-                contentType: "application/json"
-            },
-            update: {
-                type: "POST",
-                url: getBackendURL() + "menu",
-                dataType: "json",
-                contentType: "application/json"
-            },
-            destroy: {
-                type: "DELETE",
-                url: getBackendURL() + "menu",
-                dataType: "json",
-                contentType: "application/json"
-            },
-            create: {
-                type: "PUT",
-                url: getBackendURL() + "menu",
-                dataType: "json",
-                contentType: "application/json"
-            },
-            parameterMap: function(options, operation) {
-                if (operation !== "read") {
-                    return kendo.stringify(options);
-                }
-            }
-        },
-        batch: false,
-        pageSize: 20,
-        schema: {
-            model: {
-                id: "oid",
-                fields: {
-                    oid: {
-                        editable: false,
-                        nullable: false
-                    },
-                    lastUpdated: {
-                        editable: true,
-                        nullable: false
-                    },
-                    deleted: {
-                        editable: false,
-                        nullable: true
-                    },
-                    name: {
-                        editable: true,
-                        nullable: false
-                    },
-                    code: {
-                        editable: true,
-                        nullable: false
-                    }
-                }
-            }
-        }
-    });
 
     $("#gridMenus").kendoGrid({
-        dataSource: gridDataSource,
+        dataSource: MenuDataSource,
         groupable: {
             messages: {
                 empty: "Gruplandırma için kolonu buraya sürükleyin"
@@ -115,54 +53,11 @@ function initializeMenuManagement() {
             }
         }
     });
-    var treeModel = {
-        model: {
-            id: "oid",
-            fields: {
-                oid: {
-                    editable: false,
-                    nullable: false
-                },
-                lastUpdated: {
-                    editable: true,
-                    nullable: false
-                },
-                deleted: {
-                    editable: false,
-                    nullable: true
-                },
-                name: {
-                    editable: true,
-                    nullable: false
-                },
-                code: {
-                    editable: true,
-                    nullable: false
-                },
-                children: {}
-            },
-            hasChildren: function(item) {
-                return item.items != null;
-            }
-        }
-    }
-    var treeDataSource = new kendo.data.HierarchicalDataSource({
-        transport: {
-            read: {
-                type: "GET",
-                url: getBackendURL() + "menu/roots",
-                dataType: "json",
-                contentType: "application/json"
-            },
-
-        },
-        schema: treeModel
-    });
-
+    
 
     $("#treeMenus").kendoTreeView({
         dragAndDrop: true,
-        dataSource: treeDataSource,
+        dataSource: MenuHierarchicalDataSource,
         dataTextField: "name",
         drop: onTreeMenuDrop,
         drag: onTreeMenuDrag
