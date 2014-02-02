@@ -3,10 +3,6 @@ function initializeUserManagement() {
     $("#gridUsers").kendoGrid({
         dataSource: UserDataSource,
         sortable: true,
-        resizable: true,
-        pageable: {
-            refresh: true
-        },
         toolbar: [{
             name: "create",
             text: "Yeni Kullanıcı"
