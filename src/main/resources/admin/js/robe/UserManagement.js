@@ -70,7 +70,7 @@ function initializeUserManagement() {
             });
     }
 
-    $("#userManagementHelp").kendoButton({
+    $("#btnUserManagementHelp").kendoButton({
         click: onShowHelp
     });
 
