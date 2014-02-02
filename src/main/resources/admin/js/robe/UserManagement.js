@@ -70,4 +70,20 @@ function initializeUserManagement() {
             });
     }
 
+    $("#userManagementHelp").kendoButton({
+        click: onShowHelp
+    });
+
+    function onShowHelp () {
+        wnd = $("#userManagementHelpWindow").kendoWindow({
+            title: "Yardım",
+            modal: true,
+            visible: false,
+            resizable: false,
+            width: 500
+            }).data("kendoWindow");
+
+            wnd.center().open();
+
+    };
 }
