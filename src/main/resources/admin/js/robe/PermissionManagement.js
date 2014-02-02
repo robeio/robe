@@ -6,13 +6,16 @@ function initializePermissionManagement() {
     columns: [{
       template: "<input type='checkbox' class='checkbox' />",
       field: "selected",
-      title: "&nbsp;"
-    }, {
-      field: "path",
-      title: "Servis"
+      title: "&nbsp;",
+      width: 5
     }, {
       field: "method",
-      title: "Method"
+      title: "Method",
+      width: 10
+    }, {
+      field: "path",
+      title: "Servis",
+      width: 50
     }],
   });
 
