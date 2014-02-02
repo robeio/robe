@@ -38,4 +38,20 @@ function initializeRoleManagement() {
         }
     });
 
+    $("#btnRoleManagementHelp").kendoButton({
+        click: onShowHelp
+    });
+
+    function onShowHelp () {
+        wnd = $("#roleManagementHelpWindow").kendoWindow({
+            title: "Yardım",
+            modal: true,
+            visible: false,
+            resizable: false,
+            width: 500
+            }).data("kendoWindow");
+
+            wnd.center().open();
+
+    };
 }
