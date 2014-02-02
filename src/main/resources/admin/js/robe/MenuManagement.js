@@ -14,7 +14,7 @@ function initializeMenuManagement() {
         },
         toolbar: [{
             name: "create",
-            text: "Ekle"
+            text: "Yeni Menü"
         }],
         columns: [{
             field: "name",
@@ -65,6 +65,24 @@ function initializeMenuManagement() {
         drag: onTreeMenuDrag
 
     });
+
+
+    $("#btnMenuManagementHelp").kendoButton({
+        click: onShowHelp
+    });
+
+    function onShowHelp () {
+        wnd = $("#menuManagementHelpWindow").kendoWindow({
+            title: "Yardım",
+            modal: true,
+            visible: false,
+            resizable: false,
+            width: 500
+            }).data("kendoWindow");
+
+            wnd.center().open();
+
+    };
 
 }
 
