@@ -3,10 +3,6 @@ function initializeRoleManagement() {
     $("#gridRoles").kendoGrid({
         dataSource: RoleDataSource,
         sortable: true,
-        resizable: true,
-        pageable: {
-            refresh: true
-        },
         toolbar: [{
             name: "create",
             text: "Yeni Rol"
