@@ -63,7 +63,7 @@ public class AuthInjectable<T extends Credentials> extends AbstractHttpContextIn
 				throw new WebApplicationException(Response.Status.UNAUTHORIZED);
 
 			if (!isAuthorized(result.get(), ((WebApplicationContext) c).getMatchedTemplates(), c.getRequest().getMethod()))
-				throw new WebApplicationException(Response.Status.UNAUTHORIZED);
+				throw new WebApplicationException(Response.Status.FORBIDDEN);
 
 			return result.get();
 		} catch (IllegalArgumentException e) {

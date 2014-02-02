@@ -28,7 +28,7 @@ function getValidations (field,label, isRequired, isEmail, minlength, maxlength,
 			};
 		if (regexp)
 			validations["regexp"] =  function(input){
-				if((input.is("[data-bind='value:"+field+"']") && !(new RegExp("A-Z").test(input.val())))){
+				if((input.is("[data-bind='value:"+field+"']") && !(new RegExp(regexp).test(input.val())))){
 					input.attr("data-regexp-msg", label + " alanı " + regexp + " formatına uymalı.");
 					return false;
 				}

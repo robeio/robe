@@ -111,7 +111,9 @@ public class UserResource {
 	@DELETE
 	@UnitOfWork
 	public UserDTO delete(@Auth Credentials credentials, UserDTO user) {
-		userDao.delete(user);
+		User entity = userDao.findById(user.getOid());
+
+		userDao.delete(entity);
 		return user;
 	}
 

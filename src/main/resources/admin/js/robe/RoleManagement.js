@@ -20,13 +20,15 @@ function initializeRoleManagement() {
                     edit: "",
                     update: "Güncelle",
                     cancel: "İptal"
-                }
+                },
+                className:"grid-command-iconfix"
             }, {
                 name: "destroy",
-                text: ""
+                text: "",
+                className:"grid-command-iconfix"
             }],
-            title: "<b>İşlemler</b>",
-            width: "130px"
+            title: "&nbsp;",
+            width: "80px"
         }],
         editable: {
             mode: "popup",
