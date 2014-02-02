@@ -19,7 +19,7 @@ function initializeMenuManagement() {
         columns: [{
             field: "name",
             title: "Ad",
-            width: "75px"
+            width: "110px"
         }, {
             field: "code",
             title: "Kod",
@@ -31,13 +31,15 @@ function initializeMenuManagement() {
                     edit: "",
                     update: "Güncelle",
                     cancel: "İptal"
-                }
+                },
+                className:"grid-command-iconfix"
             }, {
                 name: "destroy",
-                text: ""
+                text: "",
+                className:"grid-command-iconfix"
             }],
             title: "&nbsp;",
-            width: "90px"
+            width: "80px"
         }],
         group: {
             field: "parentOid",
