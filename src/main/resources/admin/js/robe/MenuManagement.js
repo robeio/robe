@@ -2,11 +2,6 @@ function initializeMenuManagement() {
 
     $("#gridMenus").kendoGrid({
         dataSource: MenuDataSource,
-        groupable: {
-            messages: {
-                empty: "Gruplandırma için kolonu buraya sürükleyin"
-            }
-        },
         sortable: true,
         resizable: true,
         pageable: {
