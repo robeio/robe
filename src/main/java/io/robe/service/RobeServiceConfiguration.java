@@ -26,4 +26,5 @@ public class RobeServiceConfiguration extends Configuration{
 	public DatabaseConfiguration getDatabaseConfiguration() {
 		return database;
 	}
+
 }

@@ -26,7 +26,6 @@ public class RobeService extends Service<RobeServiceConfiguration> {
 
 	public static void main(String[] args) throws Exception {
 		new RobeService().run(args);
-
 	}
 
 	/**
@@ -57,7 +56,8 @@ public class RobeService extends Service<RobeServiceConfiguration> {
 				.enableAutoConfig("io")
 				.build()
 		);
-	}
+        bootstrap.addCommand(new InitializeCommand(this,hibernate));
+    }
 
 
 	/**
