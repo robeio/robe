@@ -3,9 +3,9 @@ function initializeLogin() {
 	var token = $.cookie.read("auth-token");
 	$("#username").val("admin@robe.io");
 	$("#password").val("123123");
-	//if (token != null) {
-	//	login(token);
-	//}
+	if (token != null) {
+		login(token);
+	}
 
 	$('#loginError').hide();
 	$('#login-button').kendoButton({
