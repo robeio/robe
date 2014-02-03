@@ -23,6 +23,8 @@ public class UserDTO extends io.robe.hibernate.entity.User {
 	 * @param entity Entity to convert DTO
 	 */
 	public UserDTO(User entity) {
+		setOid(entity.getOid());
+		setLastUpdated(entity.getLastUpdated());
 		setEmail(entity.getEmail());
 		setName(entity.getName());
 		setSurname(entity.getSurname());
