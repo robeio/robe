@@ -5,9 +5,6 @@ import com.yammer.dropwizard.cli.EnvironmentCommand;
 import com.yammer.dropwizard.config.Environment;
 import com.yammer.dropwizard.hibernate.UnitOfWork;
 import io.robe.hibernate.HibernateBundle;
-import io.robe.hibernate.dao.RoleDao;
-import io.robe.hibernate.dao.ServiceDao;
-import io.robe.hibernate.dao.UserDao;
 import io.robe.hibernate.entity.Permission;
 import io.robe.hibernate.entity.Role;
 import io.robe.hibernate.entity.User;
@@ -27,9 +24,7 @@ import java.util.Set;
 public class InitializeCommand<T extends RobeServiceConfiguration> extends EnvironmentCommand<T> {
 
 	private HibernateBundle hibernateBundle;
-	ServiceDao serviceDao;
-	UserDao userDao;
-	RoleDao roleDao;
+
 
 	public InitializeCommand(Service<T> service, HibernateBundle hibernateBundle) {
 		super(service, "initialize", "Runs Hibernate and initialize required columns");
@@ -59,7 +54,7 @@ public class InitializeCommand<T extends RobeServiceConfiguration> extends Envir
 			role = new Role();
 			role.setCode("admin");
 			role.setName("Admin");
-			roleDao.create(role);
+			session.persist(role);
 		}
 
 		Reflections reflections = new Reflections("io", this.getClass().getClassLoader());
@@ -109,7 +104,7 @@ public class InitializeCommand<T extends RobeServiceConfiguration> extends Envir
 			user.setName("admin");
 			user.setSurname("admin");
 			user.setPassword("96cae35ce8a9b0244178bf28e4966c2ce1b8385723a96a6b838858cdd6ca0a1e");
-			user.setRole(roleDao.findByName("Admin").get());
+			user.setRole(role);
 			session.persist(user);
 		}
 
