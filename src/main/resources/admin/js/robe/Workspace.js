@@ -49,8 +49,7 @@ $(document).ready(function() {
     click: function() {
       $.cookie.destroy("MedyAuthToken");
       location.reload();
-    },
-    imageUrl: "../icon/disconnect.png"
+    }
   });
 
   $('#dialog').kendoWindow({
