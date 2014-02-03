@@ -100,3 +100,49 @@ tr[role="row"]:hover
 	margin-right: 0px !important;
 }
 
+#horizontalTabStrips {
+    background-color: rgb(245, 245, 245);
+    margin: 10px 10px 10px 10px;
+}
+
+#gridServices {
+    width: 400px;
+}
+
+#logout {
+    margin: 25px 10px 0px 0px;
+}
+
+#liveFeedPanel {
+    margin: 0px 10px 0px 0px;
+}
+
+#bannerLogo {
+    margin-left:10px; width:50px;
+}
+
+#bannerTitle {
+    font-size:40px;
+    margin-left: 10px;
+    margin-top: 20px;
+}
+
+#cmbUserPermissionManagement {
+    margin: 10px 10px 10px 10px;
+    width: 220px;
+}
+
+#treeMenuPermissionManagement {
+    margin: 10px 10px 10px 10px;
+    width: 220px;
+}
+
+#servicesPermissionManagement {
+    margin: 10px 10px 10px 10px;
+    width: 430px;
+}
+
+#processPermissionManagement {
+    margin: 10px 10px 10px 10px;
+    width: 150px;
+}
