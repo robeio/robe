@@ -19,7 +19,6 @@ import io.robe.hibernate.entity.User;
 import javax.validation.Valid;
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
-import javax.ws.rs.core.Response;
 import java.util.*;
 
 @Path("menu")
@@ -32,7 +31,7 @@ public class MenuResource {
 	@Inject
 	RoleDao roleDao;
 	@Inject
-	MenuDao  menuDao;
+	MenuDao menuDao;
 	@Inject
 	PermissionDao permissionDao;
 
@@ -110,13 +109,11 @@ public class MenuResource {
 
 	@PUT
 	@UnitOfWork
-	public Response create(@Auth Credentials credentials, @Valid Menu menu) {
+	public Menu create(@Auth Credentials credentials, @Valid Menu menu) {
 		Optional<Menu> checkMenu = menuDao.findByCode(menu.getCode());
 		if (checkMenu.isPresent())
 			throw new InvalidEntityException("Code", Arrays.asList(menu.getCode() + " already used by another menu. Please use different code."));
-
-		menuDao.create(menu);
-		return Response.ok().build();
+		return menuDao.create(menu);
 	}
 
 	@POST
