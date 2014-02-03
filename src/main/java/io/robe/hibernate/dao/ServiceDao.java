@@ -2,6 +2,7 @@ package io.robe.hibernate.dao;
 
 import com.google.common.base.Optional;
 import com.google.inject.Inject;
+import com.yammer.dropwizard.hibernate.UnitOfWork;
 import io.robe.hibernate.entity.Service;
 import io.robe.hibernate.entity.User;
 import org.hibernate.Criteria;
