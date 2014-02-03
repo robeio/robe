@@ -2,11 +2,16 @@ function initializePermissionManagement() {
 
     $("#horizontalTabStrips").kendoSplitter({
         //TODO Attributes
+        panes: [
+            { collapsible: false, size: "20%", resizable: false },
+            { collapsible: false, size: "20%", resizable: false  },
+            { collapsible: false, size: "60%", scrollable: true}
+        ]
     });
 
   $("#gridServices").kendoGrid({
     dataSource: ServiceDataSource,
-    width: 230,
+    width: 75,
     columns: [{
       template: "<input type='checkbox' class='checkbox' />",
       field: "selected",
@@ -15,7 +20,7 @@ function initializePermissionManagement() {
     }, {
       field: "method",
       title: "Method",
-      width: 10
+      width: 15
     }, {
       field: "path",
       title: "Servis",
@@ -50,7 +55,24 @@ function initializePermissionManagement() {
     click: onSave
   });
 
+
+    $("#btnMenuManagementHelp").kendoButton({
+      click: onShowHelp
+    });
 }
+
+function onShowHelp () {
+    wnd = $("#permissionManagementHelpWindow").kendoWindow({
+        title: "Yardım",
+        modal: true,
+        visible: false,
+        resizable: false,
+        width: 500
+    }).data("kendoWindow");
+
+    wnd.center().open();
+
+};
 
 function onCmbRolesChange() {
   var roleOid = $("#cmbRoles").val();
