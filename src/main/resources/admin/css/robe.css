@@ -127,22 +127,6 @@ tr[role="row"]:hover
     margin-top: 20px;
 }
 
-#cmbUserPermissionManagement {
+#cmbRoles {
     margin: 10px 10px 10px 10px;
-    width: 220px;
-}
-
-#treeMenuPermissionManagement {
-    margin: 10px 10px 10px 10px;
-    width: 220px;
-}
-
-#servicesPermissionManagement {
-    margin: 10px 10px 10px 10px;
-    width: 430px;
-}
-
-#processPermissionManagement {
-    margin: 10px 10px 10px 10px;
-    width: 150px;
 }
