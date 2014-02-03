@@ -3,18 +3,31 @@
 
 <div class="row" id="horizontalTabStrips">
     <div class="col-md-2">
-        <select id="cmbRoles" style="margin: 10px 10px 10px px;"></select>
+        <select id="cmbRoles"></select>
     </div>
     <div class="col-md-3">
-        <span>Menü</span>
-
         <div id="treeMenus"></div>
     </div>
-    <div class="col-md-7">
-        <span>Servisler</span>
-
+    <div class="col-md-3">
         <div id="gridServices"></div>
     </div>
 </div></br>
 
-<button class="pull-right" id="btnSavePermission"><b class="fa fa-floppy-o"></b> Kaydet</button></br></br>
+<!-- HELP WINDOW START-->
+<div id="permissionManagementHelpWindow" hidden="true">
+    <p>Yeni izin eklemek için, tablonun "Yeni İzin" butonuna tıkladıktan sonra form verilerin doldurup,
+        "Güncelle" butonuna tıklamalısınız.</p>
+
+    <p>Düzenlemek ya da silmek istediğiniz izni, satırdaki "Düzenle" ve "Sil" butonlarını kullanarak
+        güncelleyebilirsiniz.</p>
+
+</div>
+<!-- HELP WINDOW END-->
+
+<div>
+    <!-- HELP BUTTON START-->
+    <button id="btnMenuManagementHelp" class="pull-right"><b class="fa fa-h-square"></b> Yardım ?</button>
+    <!-- HELP BUTTON END-->
+    <button class="pull-right" id="btnSavePermission"><b class="fa fa-floppy-o"></b> Kaydet</button>
+    </br></br>
+</div>
