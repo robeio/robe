@@ -12,7 +12,6 @@ import io.robe.hibernate.dao.UserDao;
 import io.robe.hibernate.entity.Role;
 import io.robe.hibernate.entity.User;
 import net.sourceforge.argparse4j.inf.Namespace;
-import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.reflections.Reflections;
 import org.slf4j.Logger;
