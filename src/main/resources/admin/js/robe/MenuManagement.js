@@ -1,151 +1,88 @@
 function initializeMenuManagement() {
-    var gridDataSource = new kendo.data.DataSource({
-        transport: {
-            read: {
-                type: "GET",
-                url: getBackendURL()+"menu/all",
-                dataType: "json",
-                contentType: "application/json"
-            },
-            update: {
-                type: "POST",
-                url: getBackendURL()+"menu",
-                dataType: "json",
-                contentType: "application/json"
-            },
-            destroy: {
-                type: "DELETE",
-                url: getBackendURL()+"menu",
-                dataType: "json",
-                contentType: "application/json"
-            },
-            create: {
-                type: "PUT",
-                url: getBackendURL()+"menu",
-                dataType: "json",
-                contentType: "application/json"
-            },
-            parameterMap: function(options, operation) {
-                if (operation !== "read") {
-                    return kendo.stringify(options);
-                }
-            }
-        },
-        batch: false,
-        pageSize: 20,
-        schema: {
-            model: {
-                id: "oid",
-                fields: {
-                    oid: {
-                        editable: false,
-                        nullable: false
-                    },
-                    lastUpdated: {
-                        editable: true,
-                        nullable: false
-                    },
-                    deleted: {
-                        editable: false,
-                        nullable: true
-                    },
-                    name: {
-                        editable: true,
-                        nullable: false
-                    },
-                    code: {
-                        editable: true,
-                        nullable: false
-                    }
-                }
-            }
-        }
-    });
 
     $("#gridMenus").kendoGrid({
-        dataSource: gridDataSource,
-        pageable: true,
-        // height: 430,
-        toolbar: [{name:"create",text:"Ekle"}],
+        dataSource: MenuDataSource,
+        groupable: {
+            messages: {
+                empty: "Gruplandırma için kolonu buraya sürükleyin"
+            }
+        },
+        sortable: true,
+        resizable: true,
+        pageable: {
+            refresh: true
+        },
+        toolbar: [{
+            name: "create",
+            text: "Yeni Menü"
+        }],
         columns: [{
             field: "name",
-            title: "Ad"
+            title: "Ad",
+            width: "110px"
         }, {
             field: "code",
             title: "Kod",
+            width: "110px"
         }, {
             command: [{
                 name: "edit",
-                text: ""
+                text: {
+                    edit: "",
+                    update: "Güncelle",
+                    cancel: "İptal"
+                },
+                className:"grid-command-iconfix"
             }, {
                 name: "destroy",
-                text: ""
+                text: "",
+                className:"grid-command-iconfix"
             }],
             title: "&nbsp;",
-            width: "100px"
+            width: "80px"
         }],
         group: {
             field: "parentOid",
             aggregates: [{
                 field: "oid",
                 aggregate: "count"
-            }, ]
+            }]
         },
-        editable: "popup"
-    });
-    var treeModel = {
-        model: {
-            id: "oid",
-            fields: {
-                oid: {
-                    editable: false,
-                    nullable: false
-                },
-                lastUpdated: {
-                    editable: true,
-                    nullable: false
-                },
-                deleted: {
-                    editable: false,
-                    nullable: true
-                },
-                name: {
-                    editable: true,
-                    nullable: false
-                },
-                code: {
-                    editable: true,
-                    nullable: false
-                },
-                children: {}
-            },
-            hasChildren: function(item) {
-                return item.items != null;
+        editable: {
+            mode: "popup",
+            window: {
+                title: "Kayıt"
             }
         }
-    }
-    var treeDataSource = new kendo.data.HierarchicalDataSource({
-        transport: {
-            read: {
-                type: "GET",
-                url: getBackendURL()+"menu/roots",
-                dataType: "json",
-                contentType: "application/json"
-            },
-
-        },
-        schema: treeModel
     });
-
+    
 
     $("#treeMenus").kendoTreeView({
         dragAndDrop: true,
-        dataSource: treeDataSource,
+        dataSource: MenuHierarchicalDataSource,
         dataTextField: "name",
         drop: onTreeMenuDrop,
         drag: onTreeMenuDrag
 
     });
+
+
+    $("#btnMenuManagementHelp").kendoButton({
+        click: onShowHelp
+    });
+
+    function onShowHelp () {
+        wnd = $("#menuManagementHelpWindow").kendoWindow({
+            title: "Yardım",
+            modal: true,
+            visible: false,
+            resizable: false,
+            width: 500
+            }).data("kendoWindow");
+
+            wnd.center().open();
+
+    };
 
 }
 
@@ -171,7 +108,7 @@ function onTreeMenuDrop(e) {
 
     $.ajax({
         type: "POST",
-        url: getBackendURL()+"menu/movenode/" + sourceOid + "/" + destinationOid,
+        url: getBackendURL() + "menu/movenode/" + sourceOid + "/" + destinationOid,
         dataType: "json",
         contentType: "application/json; charset=utf-8",
         success: function() {

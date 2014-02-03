@@ -1,48 +1,12 @@
 function initializeRoleManagement() {
-    var dataSource = new kendo.data.DataSource({
-        transport: {
-            read: {
-                type: "GET",
-                url: getBackendURL()+"role/all",
-                dataType: "json",
-                contentType: "application/json"
-            },
-            update: {
-                type: "POST",
-                url: getBackendURL()+"role",
-                dataType: "json",
-                contentType: "application/json"
-            },
-            destroy: {
-                type: "DELETE",
-                url: getBackendURL()+"role",
-                dataType: "json",
-                contentType: "application/json"
-            },
-            create: {
-                type: "PUT",
-                url: getBackendURL()+"role",
-                dataType: "json",
-                contentType: "application/json"
-            },
-            parameterMap: function(options, operation) {
-                if (operation !== "read") {
-                    return kendo.stringify(options);
-                }
-            }
-        },
-        batch: false,
-        pageSize: 20,
-        schema: {
-            model: Role
-        }
-    });
 
     $("#gridRoles").kendoGrid({
-        dataSource: dataSource,
-        pageable: true,
-        // height: 430,
-        toolbar: [{name:"create",text:"Ekle"}],
+        dataSource: RoleDataSource,
+        sortable: true,
+        toolbar: [{
+            name: "create",
+            text: "Yeni Rol"
+        }],
         columns: [{
             field: "name",
             title: "Ad"
@@ -50,11 +14,44 @@ function initializeRoleManagement() {
             field: "code",
             title: "Kod"
         }, {
-            command: [{name:"edit",text:""},{name: "destroy",text:""}],
+            command: [{
+                name: "edit",
+                text: {
+                    edit: "",
+                    update: "Güncelle",
+                    cancel: "İptal"
+                },
+                className:"grid-command-iconfix"
+            }, {
+                name: "destroy",
+                text: "",
+                className:"grid-command-iconfix"
+            }],
             title: "&nbsp;",
-            width: "100px"
+            width: "80px"
         }],
-        editable: "popup"
+        editable: {
+            mode: "popup",
+            window: {
+                title: "Kayıt"
+            }
+        }
     });
 
+    $("#btnRoleManagementHelp").kendoButton({
+        click: onShowHelp
+    });
+
+    function onShowHelp () {
+        wnd = $("#roleManagementHelpWindow").kendoWindow({
+            title: "Yardım",
+            modal: true,
+            visible: false,
+            resizable: false,
+            width: 500
+            }).data("kendoWindow");
+
+            wnd.center().open();
+
+    };
 }

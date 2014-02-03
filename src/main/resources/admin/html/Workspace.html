@@ -1,36 +1,53 @@
 <!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml">
+<html>
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
     <title lang="tr">robe.io</title>
+
+    <!--KENDO CSS START-->
     <link href="../js/kendoui/styles/kendo.common.min.css" rel="stylesheet">
     <link href="../js/kendoui/styles/kendo.rtl.min.css" rel="stylesheet">
     <link href="../js/kendoui/styles/kendo.default.min.css" rel="stylesheet">
+    <!--KENDO JS END-->
+
     <link href="//fonts.googleapis.com/css?family=Ubuntu:300italic,300,400italic,400,500italic,500,700italic,700"
           rel="stylesheet" type="text/css">
     <link rel="stylesheet" type="text/css" href="../css/robe.css"/>
 
-    <!--Kendo-->
+    <!--BOOTSTRAP START-->
+    <link href="../js/bootstrap/bootstrap.orange.css" rel="stylesheet">
+    <!--BOOTSTRAP END-->
+
+    <!--KENDO JS START-->
     <script type="text/javascript" charset="utf-8" src="../js/kendoui/js/jquery.min.js"></script>
     <script type="text/javascript" charset="utf-8" src="../js/kendoui/js/kendo.web.min.js"></script>
     <script type="text/javascript" charset="utf-8" src='../js/kendoui/js/cultures/kendo.culture.tr-TR.min.js'></script>
-    <link rel="stylesheet" type="text/css" href="../js/kendoui/styles/kendo.bootstrap.min.css"/>
-    <link rel="stylesheet" type="text/css" href="../js/kendoui/styles/kendo.common-bootstrap.min.css"/>
+    <!--KENDO JS END-->
 
-    <!--3rd Party lib.-->
+    <!--3rd PARTY JS LIBS. START-->
     <script type="text/javascript" charset="utf-8" src="../js/zebra_cookie.js"></script>
     <script type="text/javascript" charset="utf-8" src="../js/cryptojs/core-min.js"></script>
     <script type="text/javascript" charset="utf-8" src="../js/cryptojs/enc-base64-min.js"></script>
     <script type="text/javascript" charset="utf-8" src="../js/cryptojs/sha256.js"></script>
 
-    <!--Robe lib-->
+    <script type="text/javascript" charset="utf-8" src="../js/amcharts/amcharts.js"></script>
+    <script type="text/javascript" charset="utf-8" src="../js/amcharts/pie.js"></script>
+    <!--3rd PARTY JS LIBS. END-->
+
+    <!--ROBE LIB START-->
     <script type="text/javascript" charset="utf-8" src='../js/robe/Workspace.js'></script>
+    <script type="text/javascript" charset="utf-8" src='../js/robe/Validations.js'></script>
     <script type="text/javascript" charset="utf-8" src='../js/robe/Models.js'></script>
+    <script type="text/javascript" charset="utf-8" src='../js/robe/DataSources.js'></script>
+    <script type="text/javascript" charset="utf-8" src='../js/robe/HierarchicalDataSources.js'></script>
     <script type="text/javascript" charset="utf-8" src='../js/robe/Login.js'></script>
     <script type="text/javascript" charset="utf-8" src='../js/robe/UserManagement.js'></script>
     <script type="text/javascript" charset="utf-8" src='../js/robe/RoleManagement.js'></script>
     <script type="text/javascript" charset="utf-8" src='../js/robe/MenuManagement.js'></script>
     <script type="text/javascript" charset="utf-8" src='../js/robe/PermissionManagement.js'></script>
+    <script type="text/javascript" charset="utf-8" src='../js/robe/Dashboard.js'></script>
+    <!--ROBE LIB START-->
+
 </head>
 <body>
 <div id="progressBar"></div>
@@ -40,57 +57,58 @@
     <div id="dialogMessage" class="dialogMessage"></div>
 </div>
 
-<div class="languageButtonsContainer">
-    <img class="footer" src="../robe.png" style="margin-left:10px; width:64px;"/>
-    <span style="margin-top:1px;margin-left:30px;color:white; font-size:60px; vertical-align:top">Robe</span>
-    <a class="k-button" id="logout">Çıkış </a>
-</div>
-<div id="menu" class="menu k-block k-shadow"></div>
+<!-- NAV START-->
+<nav class="navbar navbar-default navbar-static-top" role="navigation">
+    <!-- Brand and toggle get grouped for better mobile display -->
+    <div class="navbar-header">
+        <a class="navbar-brand">
+            <img class="footer" src="../robe.png" style="margin-left:10px; width:50px;"/>
+            <span style="font-size:40px; margin-left: 10px; margin-top: 20px;">robe.io</span>
 
-<div id='containerOut' class="container ">
-    <div id='container' class="k-block k-shadow">
-        <span style="font-size:x-large;">Hoşgeldiniz...
-            <p style="font-size:small;"> Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec suscipit in odio
-                interdum convallis. Praesent semper, tellus vel elementum bibendum, velit tortor consectetur nisl, at
-                hendrerit nisi nibh eget neque. Vivamus dui turpis, aliquet eget justo vitae, ultrices consectetur arcu.
-                Interdum et malesuada fames ac ante ipsum primis in faucibus. Suspendisse molestie, risus eget cursus
-                sodales, arcu eros laoreet ligula, nec sagittis purus libero sit amet mauris. Maecenas blandit ligula
-                velit, ac pulvinar ligula lobortis semper. Ut tincidunt elit vitae dolor dapibus gravida. Etiam ante
-                magna, blandit ut condimentum eu, aliquet in est. Proin ac mauris et nulla tempor dignissim at nec
-                augue. Donec facilisis, purus vel consectetur ullamcorper, quam orci volutpat ipsum, ac rhoncus orci
-                erat adipiscing dui. In nisi nulla, dignissim eget quam sit amet, porttitor eleifend nisl. Ut eget magna
-                risus. Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-
-                Suspendisse non euismod velit, eget laoreet ligula. Praesent eleifend lectus sem, sit amet auctor nisl
-                pulvinar vitae. Nullam et libero mi. Aliquam ullamcorper aliquet mi sit amet semper. Duis odio nisi,
-                porttitor ut augue varius, volutpat commodo augue. Etiam dapibus magna sit amet est bibendum, vel
-                imperdiet lacus volutpat. Donec ultrices gravida dapibus. Integer mauris arcu, ultrices eget ultricies
-                nec, tempor eget massa. In sit amet tortor at eros tempor blandit. Suspendisse aliquet, leo nec
-                tristique sodales, ipsum nisi pretium lectus, quis ultrices ante magna nec nunc.
-
-                Sed dignissim rutrum enim, in gravida urna posuere eu. Donec odio odio, convallis aliquam nunc eu,
-                vestibulum bibendum lectus. Morbi nisl lorem, eleifend eget est a, rhoncus sollicitudin mi. Pellentesque
-                velit velit, commodo rhoncus hendrerit ac, iaculis varius leo. Vestibulum egestas bibendum lectus, vitae
-                convallis nibh mollis ut. Morbi orci nulla, sodales non elementum vel, imperdiet sit amet ante.
-                Suspendisse ut dolor sollicitudin, hendrerit neque sed, ullamcorper nunc. Morbi eget magna et justo
-                luctus rhoncus. Etiam felis purus, vestibulum congue ornare in, auctor a lacus. Nunc tempus diam non
-                urna semper accumsan.
-
-                Praesent et nunc leo. Donec augue leo, interdum eget tortor tincidunt, rutrum iaculis ligula. Integer
-                rhoncus et mi vitae lobortis. Aenean quam erat, porttitor eget facilisis nec, aliquet id arcu. Class
-                aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos. Ut venenatis enim
-                eget lobortis bibendum. Interdum et malesuada fames ac ante ipsum primis in faucibus. Sed ac tincidunt
-                turpis.
-
-                Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vestibulum blandit gravida ligula, et aliquet
-                neque ultricies ac. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed sed ante et urna
-                tincidunt tempor. Phasellus augue nulla, laoreet ut augue et, ultricies congue ipsum. Duis ac ipsum
-                adipiscing, interdum nunc sed, semper mauris. Ut dignissim varius magna nec vestibulum.
-
-            </p>
-        </span>
-
+        </a>
     </div>
+    <a class="pull-right" id="logout" style="margin: 20px 10px 0px 0px;">Çıkış </a>
+</nav>
+<!-- NAV END-->
+
+<!-- CONTENT START-->
+<div class="row clearfix">
+    <!-- MENU START -->
+    <div class="col-md-2 column">
+        <div class="sidebar-nav">
+            <div id="menu" class="panel panel-default" style="margin: 0px 0px 0px 10px;">
+            </div>
+        </div>
+    </div>
+    <!-- MENU END-->
+
+    <!-- CONTAINER START -->
+    <div class="col-md-8 column">
+        <div id='container' class="well well-sm">
+            <div class="jumbotron">
+                <h1>robe.io</h1>
+
+                <p>Welcome to the robe.io</p>
+
+                <p><a class="btn btn-primary btn-lg" role="button">Learn more about robe.io</a></p>
+            </div>
+        </div>
+    </div>
+    <!-- CONTAINER END -->
+
+    <!-- LIVE FEED START -->
+    <div class="col-md-2 column">
+        <div class="panel panel-default" style="margin: 0px 10px 0px 0px;">
+            <div class="panel-heading">
+                <h3 class="panel-title">Live Feeds</h3>
+            </div>
+            <div class="panel-body">
+
+            </div>
+        </div>
+    </div>
+    <!-- LIVE FEED END -->
 </div>
+<!-- CONTENT END-->
 </body>
 </html>

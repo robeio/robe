@@ -1,134 +1,89 @@
 function initializeUserManagement() {
-    var dataSource = new kendo.data.DataSource({
-        transport: {
-            read: {
-                type: "GET",
-                url: getBackendURL()+"user/all",
-                dataType: "json",
-                contentType: "application/json"
-            },
-            update: {
-                type: "POST",
-                url: getBackendURL()+"user",
-                dataType: "json",
-                contentType: "application/json"
-            },
-            destroy: {
-                type: "DELETE",
-                url: getBackendURL()+"user",
-                dataType: "json",
-                contentType: "application/json"
-            },
-            create: {
-                type: "PUT",
-                url: getBackendURL()+"user",
-                dataType: "json",
-                contentType: "application/json"
-            },
-            parameterMap: function(options, operation) {
-                if (operation !== "read") {
-                    return kendo.stringify(options);
-                }
-            }
-        },
-        batch: false,
-        pageSize: 20,
-        schema: {
-            model: User
-        }
-    });
 
     $("#gridUsers").kendoGrid({
-        dataSource: dataSource,
-
-        // height: 430,
-        toolbar: [{name:"create",text:"Ekle"}],
+        dataSource: UserDataSource,
+        sortable: true,
+        toolbar: [{
+            name: "create",
+            text: "Yeni Kullanıcı"
+        }],
         columns: [{
             field: "name",
             title: "Ad"
+
         }, {
             field: "surname",
             title: "Soyad"
         }, {
             field: "email",
             title: "E-posta"
-        },{
+        }, {
             field: "password",
             title: "Şifre",
-            hidden:true
+            hidden: true
 
-        },{
-			  field: "roleOid",
-			  title: "Rol",
-              editor: userRoleDropDownEditor,
-              hidden:true
-		},{
-			  field: "firmOid",
-			  title: "Firma",
-			  editor: userFirmDropDownEditor,
-			  hidden:true
-		}, {
+        }, {
+            field: "roleOid",
+            title: "Rol",
+            editor: userRoleDropDownEditor,
+            hidden: true
+        },  {
             field: "active",
             title: "Aktif mi?",
             template: "#= (active)? 'Evet':'Hayır'#"
         }, {
-            command: [{name:"edit",text:""},{name: "destroy",text:""}],
+            command: [{
+                name: "edit",
+                text: {
+                    edit: "",
+                    update: "Güncelle",
+                    cancel: "İptal"
+                },
+                className:"grid-command-iconfix"
+            }, {
+                name: "destroy",
+                text: "" ,
+                className:"grid-command-iconfix"
+            }],
             title: "&nbsp;",
-            width: "100px"
+            width: "80px"
         }],
-        editable: "popup"
+        editable: {
+            mode: "popup",
+            window: {
+                title: "Kayıt"
+            }
+        }
     });
 
     function userRoleDropDownEditor(container, options) {
-    	var cmbDataSource = new kendo.data.DataSource({
-		   transport: {
-			   read: {
-				   type: "GET",
-				   url: getBackendURL()+"role/all",
-				   dataType: "json",
-				   contentType: "application/json"
-			   }
-		   },
-		   schema: {
-			   model: Role
-		   }
-	   });
-		$('<input required  data-text-field="name" data-value-field="oid"  data-bind="value:' + options.field + '"/>')
-			.appendTo(container)
-			.kendoDropDownList({
-				autoBind: false,
-				dataTextField: "name",
+        $('<input required  data-text-field="name" data-value-field="oid"  data-bind="value:' + options.field + '"/>')
+            .appendTo(container)
+            .kendoDropDownList({
+                autoBind: false,
+                dataTextField: "name",
                 dataValueField: "oid",
-				text:"Seçiniz...",
-				dataSource: cmbDataSource ,
-				placeholder: "Seçiniz...",
-				index:-1
-		});
+                text: "Seçiniz...",
+                dataSource: RoleDataSource,
+                placeholder: "Seçiniz...",
+                index: -1
+            });
     }
-    function userFirmDropDownEditor(container, options) {
-        	var cmbDataSource = new kendo.data.DataSource({
-    		   transport: {
-    			   read: {
-    				   type: "GET",
-    				   url: getBackendURL()+"firm/all",
-    				   dataType: "json",
-    				   contentType: "application/json"
-    			   }
-    		   },
-    		   schema: {
-    			   model: Firm
-    		   }
-    	   });
-    		$('<input required data-bind="value:' + options.field + '"/>')
-    			.appendTo(container)
-    			.kendoDropDownList({
-    				autoBind: false,
-    				dataTextField: "organizationIdentifier",
-                    dataValueField: "oid",
-    				dataSource: cmbDataSource  ,
-    				index:-1 ,
-    				text: "Seçiniz..."
-    		});
-        }
 
+    $("#btnUserManagementHelp").kendoButton({
+        click: onShowHelp
+    });
+
+    function onShowHelp () {
+        wnd = $("#userManagementHelpWindow").kendoWindow({
+            title: "Yardım",
+            modal: true,
+            visible: false,
+            resizable: false,
+            width: 500
+            }).data("kendoWindow");
+
+            wnd.center().open();
+
+    };
 }
