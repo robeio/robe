@@ -23,7 +23,6 @@ import java.util.HashSet;
 public class AuthTokenAuthenticator implements Authenticator<String, Credentials> {
 
 
-
 	ServiceDao serviceDao;
 	UserDao userDao;
 
@@ -34,13 +33,14 @@ public class AuthTokenAuthenticator implements Authenticator<String, Credentials
 	 * @param serviceDao Service DAO for permission list
 	 */
 	@Inject
-	public AuthTokenAuthenticator(UserDao userDao,ServiceDao serviceDao) {
+	public AuthTokenAuthenticator(UserDao userDao, ServiceDao serviceDao) {
 		this.userDao = userDao;
 		this.serviceDao = serviceDao;
 	}
 
 	/**
 	 * Creates {@link com.google.common.base.Optional} {@link io.robe.auth.Credentials} instance from provided auth-token
+	 *
 	 * @param token Auth-Token to decode.
 	 * @return Optional instance of a {@link io.robe.auth.Credentials} which created from token
 	 * @throws AuthenticationException
@@ -62,13 +62,14 @@ public class AuthTokenAuthenticator implements Authenticator<String, Credentials
 			// If access granted collect users Service Permissions for authorization controls
 			if (user.get().isActive() && user.get().getEmail().equals(cryptoToken.getUserAccountName())) {
 				HashSet<String> permissions = new HashSet<String>();
-				for(Permission permission:user.get().getRole().getPermissions()){
-					if(permission.getType().equals(Permission.Type.SERVICE)){
+				for (Permission permission : user.get().getRole().getPermissions()) {
+					if (permission.getType().equals(Permission.Type.SERVICE)) {
 						Service service = serviceDao.findById(permission.getRestrictedItemOid());
-						permissions.add(service.getPath() + ":"+service.getMethod());
+						if (service != null)
+							permissions.add(service.getPath() + ":" + service.getMethod());
 					}
 				}
-				Credentials credentials = new Credentials(user.get().getEmail(), user.get().getPassword(),Collections.unmodifiableSet(permissions));
+				Credentials credentials = new Credentials(user.get().getEmail(), user.get().getPassword(), Collections.unmodifiableSet(permissions));
 				return Optional.fromNullable(credentials);
 			}
 		} catch (EncryptionException e) {
