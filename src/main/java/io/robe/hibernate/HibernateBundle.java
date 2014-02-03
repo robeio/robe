@@ -73,6 +73,7 @@ public class HibernateBundle implements ConfiguredBundle<RobeServiceConfiguratio
 		return sessionFactory;
 	}
 
+
 	@Override
 	public DatabaseConfiguration getDatabaseConfiguration(RobeServiceConfiguration configuration) {
 		return configuration.getDatabaseConfiguration();
