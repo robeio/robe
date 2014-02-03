@@ -43,13 +43,13 @@ body{
 }
 .k-grid-edit
 {
-   width:28px !important;
-   min-width:28px !important;
+   width:30px !important;
+   min-width:30px !important;
 }
 .k-grid-delete
 {
-   width:28px !important;
-   min-width:28px !important;
+   width:30px !important;
+   min-width:30px !important;
 }
 
 tr[role="row"]:hover
@@ -66,8 +66,8 @@ tr[role="row"]:hover
 	color:#333;
 }
 .k-button-icontext .k-image {
-	margin-right: .2rem;
-	margin-left: -0.2rem;
+	//margin-right: .2rem;
+	//margin-left: -0.2rem;
 	vertical-align: middle;
 }
 
@@ -93,4 +93,10 @@ tr[role="row"]:hover
    display: none;
 }
 
+.grid-command-iconfix{
+	padding-right: 3px !important;
+	overflow:visible;
+	margin-left: 0px !important;
+	margin-right: 0px !important;
+}
 

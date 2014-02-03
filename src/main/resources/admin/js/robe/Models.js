@@ -1,4 +1,4 @@
-var User = kendo.data.Model.define({
+var UserModel = kendo.data.Model.define({
     id: "oid",
     fields: {
         oid: {
@@ -11,25 +11,23 @@ var User = kendo.data.Model.define({
             nullable: false,
             type: "string"
         },
-        deleted: {
-            editable: false,
-            nullable: true,
-            type: "string"
-        },
         name: {
             editable: true,
             nullable: false,
-            type: "string"
-        },
+            type: "string",
+			validation: getValidations("name","Ad",true,false,2,15)
+		},
         surname: {
             editable: true,
             nullable: false,
-            type: "string"
+            type: "string",
+            validation: getValidations("surname","Soyad",true,false,2,15)
         },
         email: {
             editable: true,
             nullable: false,
-            type: "string"
+            type: "string",
+            validation: getValidations("email","Eposta",true,true)
         },
         active: {
             type: "boolean"
@@ -38,215 +36,112 @@ var User = kendo.data.Model.define({
             editable: true,
             nullable: false,
         },
-        role: {
-        },
+        role: {},
         password: {
             editable: true,
             nullable: false,
             hidden: true,
             type: "string"
+        }
+
+    }
+});
+
+var RoleModel = kendo.data.Model.define({
+    id: "oid",
+    fields: {
+        oid: {
+            editable: false,
+            nullable: false
         },
-        firmOid: {
+        lastUpdated: {
+            editable: true,
+            nullable: false
+        },
+        name: {
             editable: true,
             nullable: false,
-            type: "string"
-        },
-        firm:{
-
-        }
-
-    }
-});
-
-var Accountant = kendo.data.Model.define({
-
-    id: "oid",
-    fields: {
-        oid: {
-            editable: false,
-            nullable: false
-        },
-        lastUpdated: {
-            editable: true,
-            nullable: false
-        },
-        deleted: {
-            editable: false,
-            nullable: true
-        },
-        title: {
-            "editable": true
-        },
-        name: {
-            "editable": true
-        },
-        surname: {
-            "editable": true
-        },
-        phoneDescription: {
-            "editable": true
-        },
-        phone: {
-            "editable": true
-        },
-        fax: {
-            "editable": true
-        },
-        email: {
-            "editable": true
-        },
-        agreementType: {
-            "editable": true
-        },
-        agreementNo: {
-            "editable": true
-        },
-        agreementDate: {
-            "editable": true
-        },
-        country: {
-            "editable": true
-        },
-        city: {
-            "editable": true
-        },
-        street: {
-            "editable": true
-        },
-        address: {
-            "editable": true
-        },
-        buildingNumber: {
-            "editable": true
-        },
-        doorNumber: {
-            "editable": true
-        },
-        postalCode: {
-            "editable": true
-        }
-    }
-
-});
-
-var Role = kendo.data.Model.define({
-    id: "oid",
-    fields: {
-        oid: {
-            editable: false,
-            nullable: false
-        },
-        lastUpdated: {
-            editable: true,
-            nullable: false
-        },
-        deleted: {
-            editable: false,
-            nullable: true
-        },
-        name: {
-            editable: true,
-            nullable: false
+            validation: getValidations("name","Ad",true,false,2,50,"[A-Z]+")
         },
         code: {
             editable: true,
-            nullable: false
+            nullable: false,
+            validation: getValidations("code","Kod",true,false,2,20,"[A-Z]+")
         }
     }
 });
 
-var Firm = kendo.data.Model.define({
+var MenuModel = kendo.data.Model.define({
     id: "oid",
     fields: {
-        "oid": {
+        oid: {
             editable: false,
             nullable: false
         },
-        "lastUpdated": {
+        lastUpdated: {
             editable: true,
             nullable: false
         },
-        "deleted": {
-            editable: false,
-            nullable: true
+        name: {
+            editable: true,
+            nullable: false ,
+            validation: getValidations("name","Ad",true,false,2,50,"[A-Z]+")
         },
-        "taxIdentifier": {
-            "editable": true
-        },
-        "phone": {
-            "editable": true
-        },
-        "phoneDescription": {
-            "editable": true
-        },
-        "fax": {
-            "editable": true
-        },
-        "email": {
-            "editable": true
-        },
-        "organizationDescription": {
-            "editable": true
-        },
-        "organizationIdentifier": {
-            "editable": true
-        },
-        "buildingNumber": {
-            "editable": true
-        },
-        "street": {
-            "editable": true
-        },
-        "addressDetail": {
-            "editable": true
-        },
-        "city": {
-            "editable": true
-        },
-        "country": {
-            "editable": true
-        },
-        "website": {
-            "editable": true
-        },
-        "businessDescription": {
-            "editable": true
-        },
-        "fiscalYearStart": {
-            "editable": true,
-            type: "date"
-        },
-        "fiscalYearEnd": {
-            "editable": true,
-            type: "date"
-        },
-        "postalCode": {
-            "editable": true
-        },
-        "active": {
-            type: "boolean"
+        code: {
+            editable: true,
+            nullable: false,
+            validation: getValidations("code","Kod",true,false,2,50,"[A-Z]+")
         }
     }
 });
 
-var Service = kendo.data.Model.define({
-   id: "oid",
-   fields: {
-	   oid: {
-		   editable: false,
-		   nullable: false
-	   },
-	   lastUpdated: {
-		   editable: true,
-		   nullable: false
-	   },
-	   path: {
-		   editable: true,
-		   nullable: true
-	   },
-	   method: {
-		   editable: true,
-		   nullable: false
-	   }
-   }
+var MenuTreeModel = {
+    model: {
+        id: "oid",
+        fields: {
+            oid: {
+                editable: false,
+                nullable: false
+            },
+            lastUpdated: {
+                editable: true,
+                nullable: false
+            },
+            name: {
+                editable: true,
+                nullable: false
+            },
+            code: {
+                editable: true,
+                nullable: false
+            },
+            children: {}
+        },
+        hasChildren: function(item) {
+            return item.items != null;
+        }
+    }
+};
+
+
+var ServiceModel = kendo.data.Model.define({
+    id: "oid",
+    fields: {
+        oid: {
+            editable: false,
+            nullable: false
+        },
+        lastUpdated: {
+            editable: true,
+            nullable: false
+        },
+        path: {
+            editable: true,
+            nullable: true
+        },
+        method: {
+            editable: true,
+            nullable: false
+        }
+    }
 });
