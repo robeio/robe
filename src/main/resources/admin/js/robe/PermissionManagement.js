@@ -1,5 +1,9 @@
 function initializePermissionManagement() {
-  
+
+    $("#horizontalTabStrips").kendoSplitter({
+        //TODO Attributes
+    });
+
   $("#gridServices").kendoGrid({
     dataSource: ServiceDataSource,
     width: 230,
@@ -47,7 +51,6 @@ function initializePermissionManagement() {
   });
 
 }
-
 
 function onCmbRolesChange() {
   var roleOid = $("#cmbRoles").val();
