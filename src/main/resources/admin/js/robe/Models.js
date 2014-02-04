@@ -61,12 +61,12 @@ var RoleModel = kendo.data.Model.define({
         name: {
             editable: true,
             nullable: false,
-            validation: getValidations("name","Ad",true,false,2,50,"[A-Z]+")
+            validation: getValidations("name","Ad",true,false,2,50,"[A-Za-z]+")
         },
         code: {
             editable: true,
             nullable: false,
-            validation: getValidations("code","Kod",true,false,2,20,"[A-Z]+")
+            validation: getValidations("code","Kod",true,false,2,20,"[A-Za-z]+")
         }
     }
 });

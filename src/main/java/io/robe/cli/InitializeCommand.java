@@ -5,6 +5,7 @@ import com.yammer.dropwizard.cli.EnvironmentCommand;
 import com.yammer.dropwizard.config.Environment;
 import com.yammer.dropwizard.hibernate.UnitOfWork;
 import io.robe.hibernate.HibernateBundle;
+import io.robe.hibernate.entity.Menu;
 import io.robe.hibernate.entity.Permission;
 import io.robe.hibernate.entity.Role;
 import io.robe.hibernate.entity.User;
@@ -83,13 +84,7 @@ public class InitializeCommand<T extends RobeServiceConfiguration> extends Envir
 						entity.setPath(path);
 						entity.setMethod(io.robe.hibernate.entity.Service.Method.valueOf(httpMethod));
 						session.persist(entity);
-
-						Permission permission = new Permission();
-						permission.setpLevel((short) 7);
-						permission.setType(Permission.Type.SERVICE);
-						permission.setRestrictedItemOid(entity.getOid());
-						permission.setRole(role);
-						session.persist(permission);
+						session.persist(createPermission(false, entity.getOid(), role));
 					}
 
 				}
@@ -108,9 +103,72 @@ public class InitializeCommand<T extends RobeServiceConfiguration> extends Envir
 			session.persist(user);
 		}
 
+		Menu root = new Menu();
+		root.setCode("root");
+		root.setItemOrder(1);
+		root.setName("Menü");
+		session.persist(root);
+		session.persist(createPermission(true, root.getOid(), role));
+		Menu manager = new Menu();
+		manager.setCode("Manager");
+		manager.setItemOrder(1);
+		manager.setName("Yönetici");
+		manager.setParentOid(root.getOid());
+		session.persist(manager);
+		session.persist(createPermission(true, manager.getOid(), role));
+
+		Menu usermanagement = new Menu();
+		usermanagement.setCode("UserManagement");
+		usermanagement.setItemOrder(1);
+		usermanagement.setName("Kullanıcı Yönetimi");
+		usermanagement.setParentOid(manager.getOid());
+		session.persist(usermanagement);
+		session.persist(createPermission(true, usermanagement.getOid(), role));
+
+		Menu rolemanagement = new Menu();
+		rolemanagement.setCode("RoleManagement");
+		rolemanagement.setItemOrder(1);
+		rolemanagement.setName("Rol Yönetimi");
+		rolemanagement.setParentOid(manager.getOid());
+		session.persist(rolemanagement);
+		session.persist(createPermission(true, rolemanagement.getOid(), role));
+
+		Menu menumanagement = new Menu();
+		menumanagement.setCode("MenuManagement");
+		menumanagement.setItemOrder(1);
+		menumanagement.setName("Menü Yönetimi");
+		menumanagement.setParentOid(manager.getOid());
+		session.persist(menumanagement);
+		session.persist(createPermission(true, menumanagement.getOid(), role));
+
+		Menu permissionManagement = new Menu();
+		permissionManagement.setCode("PermissionManagement");
+		permissionManagement.setItemOrder(1);
+		permissionManagement.setName("İzin Atama");
+		permissionManagement.setParentOid(manager.getOid());
+		session.persist(permissionManagement);
+		session.persist(createPermission(true, permissionManagement.getOid(), role));
+
+		Menu dash = new Menu();
+		dash.setCode("Dashboard");
+		dash.setItemOrder(0);
+		dash.setName("Dash");
+		dash.setParentOid(manager.getOid());
+		session.persist(dash);
+		session.persist(createPermission(true, dash.getOid(), role));
+
 		session.flush();
 		session.close();
 
+	}
+
+	private Permission createPermission(boolean b, String oid, Role role) {
+		Permission permission = new Permission();
+		permission.setpLevel((short) 7);
+		permission.setType(b ? Permission.Type.MENU : Permission.Type.SERVICE);
+		permission.setRestrictedItemOid(oid);
+		permission.setRole(role);
+		return permission;
 	}
 
 	private boolean isItService(Method method) {
