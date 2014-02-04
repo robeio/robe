@@ -1,5 +1,6 @@
 function initializeMenuManagement() {
 
+
     $("#gridMenus").kendoGrid({
         dataSource: MenuDataSource,
         sortable: true,

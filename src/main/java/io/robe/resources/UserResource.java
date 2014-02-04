@@ -4,7 +4,6 @@ import com.google.common.base.Optional;
 import com.google.inject.Inject;
 import com.yammer.dropwizard.auth.Auth;
 import com.yammer.dropwizard.hibernate.UnitOfWork;
-import com.yammer.dropwizard.validation.InvalidEntityException;
 import io.robe.auth.Credentials;
 import io.robe.dto.UserDTO;
 import io.robe.exception.RobeRuntimeException;
@@ -17,12 +16,8 @@ import io.robe.utils.HashingUtils;
 import javax.validation.Valid;
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
-import java.lang.reflect.InvocationTargetException;
-import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;
-
-import static org.apache.commons.beanutils.BeanUtils.copyProperties;
 
 @Path("user")
 @Consumes(MediaType.APPLICATION_JSON)
@@ -62,13 +57,11 @@ public class UserResource {
 		if (checkUser.isPresent())
 			throw new RobeRuntimeException("E-mail", user.getEmail() + " already used by another user. Please use different e-mail.");
 		User entity = new User();
-		try {
-			copyProperties(entity, user);
-		} catch (IllegalAccessException e) {
-			throw new RobeRuntimeException(e);
-		} catch (InvocationTargetException e) {
-			throw new RobeRuntimeException(e);
-		}
+		entity.setEmail(user.getEmail());
+		entity.setName(user.getName());
+		entity.setSurname(user.getSurname());
+		entity.setPassword(user.getPassword());
+		entity.setActive(user.isActive());
 		Role role = roleDao.findById(user.getRoleOid());
 		if (role == null) {
 			throw new RobeRuntimeException("Role", user.getEmail() + " cannot be null.");
@@ -86,18 +79,18 @@ public class UserResource {
 		// Get and check user
 		User entity = userDao.findById(user.getOid());
 		if (entity == null)
-			throw new InvalidEntityException("User", Arrays.asList(user.getOid() + " not exists."));
+			throw new RobeRuntimeException("User", user.getOid() + " not exists.");
 		//Get role and firm and check for null
 		Role role = roleDao.findById(user.getRoleOid());
 		if (role == null) {
-			throw new InvalidEntityException("Role", Arrays.asList(user.getEmail() + " cannot be null."));
+			throw new RobeRuntimeException("Role", user.getEmail() + " cannot be null.");
 		}
-		// Copy all properties to entity. Set Role and firm. Update.
-		try {
-			copyProperties(entity, user);
-		} catch (Exception e) {
-			throw new RobeRuntimeException(e);
-		}
+		entity.setOid(user.getOid());
+		entity.setEmail(user.getEmail());
+		entity.setName(user.getName());
+		entity.setSurname(user.getSurname());
+		entity.setPassword(user.getPassword());
+		entity.setActive(user.isActive());
 		entity.setRole(role);
 		entity.setPassword(HashingUtils.hashSHA2(user.getPassword()));
 
