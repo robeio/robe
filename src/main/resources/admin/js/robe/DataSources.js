@@ -108,6 +108,9 @@ var MenuDataSource =  new kendo.data.DataSource({
 			 }
 		 }
 	 },
+	 change: function(e) {
+     	MenuHierarchicalDataSource.read();
+     },
 	 batch: false,
 	 pageSize: 20,
 	 schema: {
