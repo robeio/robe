@@ -180,6 +180,11 @@ function checkRows(checkedServiceOids) {
         .addClass("k-state-selected")
         .find(".checkbox")
         .attr("checked", "checked");
+    }else{
+    	gridTbody.find("tr[data-uid='" + view[i].uid + "']")
+                .removeClass("k-state-selected")
+                .find(".checkbox")
+                .removeAttr("checked");
     }
   }
 }

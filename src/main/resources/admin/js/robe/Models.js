@@ -3,31 +3,31 @@ var UserModel = kendo.data.Model.define({
     fields: {
         oid: {
             editable: false,
-            nullable: false,
+            nullable: true,
             type: "string"
         },
         lastUpdated: {
             editable: true,
-            nullable: false,
+            nullable: true,
             type: "string"
         },
         name: {
             editable: true,
             nullable: false,
             type: "string",
-			validation: getValidations("name","Ad",true,false,2,15)
+			validation: getValidations("name","Ad",true,false,2,50,"[A-Za-z]+")
 		},
         surname: {
             editable: true,
             nullable: false,
             type: "string",
-            validation: getValidations("surname","Soyad",true,false,2,15)
+            validation: getValidations("surname","Soyad",true,false,2,50,"[A-Za-z]+")
         },
         email: {
             editable: true,
             nullable: false,
             type: "string",
-            validation: getValidations("email","Eposta",true,true)
+            validation: getValidations("email","Eposta",true,true,5,50)
         },
         active: {
             type: "boolean"
@@ -52,11 +52,11 @@ var RoleModel = kendo.data.Model.define({
     fields: {
         oid: {
             editable: false,
-            nullable: false
+            nullable: true
         },
         lastUpdated: {
-            editable: true,
-            nullable: false
+            editable: false,
+            nullable: true
         },
         name: {
             editable: true,
@@ -76,21 +76,21 @@ var MenuModel = kendo.data.Model.define({
     fields: {
         oid: {
             editable: false,
-            nullable: false
+            nullable: true
         },
         lastUpdated: {
             editable: true,
-            nullable: false
+            nullable: true
         },
         name: {
             editable: true,
             nullable: false ,
-            validation: getValidations("name","Ad",true,false,2,50,"[A-Z]+")
+            validation: getValidations("name","Ad",true,false,2,50,"[A-Za-z]+")
         },
         code: {
             editable: true,
             nullable: false,
-            validation: getValidations("code","Kod",true,false,2,50,"[A-Z]+")
+            validation: getValidations("code","Kod",true,false,2,50,"[A-Za-z]+")
         }
     }
 });
@@ -101,11 +101,11 @@ var MenuTreeModel = {
         fields: {
             oid: {
                 editable: false,
-                nullable: false
+                nullable: true
             },
             lastUpdated: {
-                editable: true,
-                nullable: false
+                editable: false,
+                nullable: true
             },
             name: {
                 editable: true,
@@ -129,19 +129,21 @@ var ServiceModel = kendo.data.Model.define({
     fields: {
         oid: {
             editable: false,
-            nullable: false
+            nullable: true
         },
         lastUpdated: {
-            editable: true,
-            nullable: false
+            editable: false,
+            nullable: true
         },
         path: {
             editable: true,
-            nullable: true
+            nullable: true,
+            validation: getValidations("code","Kod",true,false,1,100)
         },
         method: {
             editable: true,
-            nullable: false
+            nullable: false,
+            validation: getValidations("code","Kod",true,false,1,10,"[A-Z]+")
         }
     }
 });
