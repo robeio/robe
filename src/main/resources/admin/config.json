@@ -1,4 +1,4 @@
 {
 	"backendURL":"../../robe/" ,
-	"adminURL":"./admin/"
+	"adminURL":"./admin-ui/"
 }
