@@ -91,7 +91,7 @@ var Charts = {
 
 				minorTickInterval: 'auto',
 				minorTickWidth: 1,
-				minorTickLength: 10,
+				minorTickLength: 5,
 				minorTickPosition: 'inside',
 				minorTickColor: '#666',
 
@@ -101,7 +101,7 @@ var Charts = {
 				tickLength: 10,
 				tickColor: '#666',
 				labels: {
-					step: 1,
+					step: 2,
 					rotation: 'auto'
 				},
 				title: {

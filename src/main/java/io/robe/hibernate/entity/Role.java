@@ -11,7 +11,7 @@ import java.util.Set;
 
 @Entity
 @Table
-public class Role extends BaseEntity {
+public class Role extends BaseEntity<Role> {
 
 	@Column(length = 20)
 	private String code;
