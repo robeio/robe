@@ -6,7 +6,6 @@ import com.yammer.dropwizard.auth.Auth;
 import com.yammer.dropwizard.hibernate.UnitOfWork;
 import com.yammer.dropwizard.validation.InvalidEntityException;
 import io.robe.auth.Credentials;
-import io.robe.exception.RobeRuntimeException;
 import io.robe.hibernate.dao.RoleDao;
 import io.robe.hibernate.entity.Role;
 
@@ -52,11 +51,9 @@ public class RoleResource {
 	@POST
 	@UnitOfWork
 	public Role update(@Auth Credentials credentials, Role role) {
-		try {
-			role = roleDao.update(role);
-		} catch (Exception e) {
-			throw new RobeRuntimeException(e);
-		}
+		System.err.println("Gelen:" + role.getLastUpdated());
+		role = roleDao.update(role);
+		System.err.println("Dbdeki:" + roleDao.findById(role.getOid()).getLastUpdated());
 		return role;
 
 	}
@@ -65,6 +62,7 @@ public class RoleResource {
 	@DELETE
 	@UnitOfWork
 	public Role delete(@Auth Credentials credentials, Role role) {
+		role = roleDao.findById(role.getOid());
 		roleDao.delete(role);
 		return role;
 	}
