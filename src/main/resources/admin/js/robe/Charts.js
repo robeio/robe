@@ -14,7 +14,7 @@ var Charts = {
 				y: 50
 			},
 			tooltip: {
-				pointFormat: '{series.name}: <b>{point.percentage:.1f}%</b>'
+				pointFormat: '{series.name}: <b>{point.percentage:.1f}%</b> ({point.y})Bytes'
 			},
 			plotOptions: {
 				pie: {
@@ -101,29 +101,29 @@ var Charts = {
 				tickLength: 10,
 				tickColor: '#666',
 				labels: {
-					step: 2,
+					step: 1,
 					rotation: 'auto'
 				},
 				title: {
-					text: 'Kullanılan Thread'
+					text: 'Active Thread'
 				},
 				plotBands: [{
 					from: 0,
-					to: 120,
+					to: (data[1]*0.7).toFixed(0),
 					color: '#55BF3B' // green
 				}, {
-					from: 120,
-					to: 160,
+					from: (data[1]*0.7).toFixed(0),
+					to: (data[1]*0.85).toFixed(0),
 					color: '#DDDF0D' // yellow
 				}, {
-					from: 160,
-					to: 200,
+					from: (data[1]*0.85).toFixed(0),
+					to: data[1],
 					color: '#DF5353' // red
 				}]
 			},
 
 			series: [{
-				name: 'Bağlantı',
+				name: 'Active',
 				data: [data[0]]
 			}]
 
