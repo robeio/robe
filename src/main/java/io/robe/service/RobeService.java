@@ -51,14 +51,15 @@ public class RobeService extends Service<RobeServiceConfiguration> {
 		HibernateBundle hibernate = new HibernateBundle();
 
 		bootstrap.addBundle(hibernate);
-		bootstrap.addBundle(new NamedAssetsBundle("/admin/", "/admin", "index.html", "admin"));
+		bootstrap.addBundle(new NamedAssetsBundle("/admin/", "/admin-ui", "index.html", "admin"));
 		bootstrap.addBundle(GuiceBundle.newBuilder()
 				.addModule(new ConfigurationModule(hibernate))
 				.enableAutoConfig("io")
 				.build()
 		);
         bootstrap.addCommand(new InitializeCommand(this,hibernate));
-    }
+
+	}
 
 
 	/**
@@ -73,6 +74,7 @@ public class RobeService extends Service<RobeServiceConfiguration> {
 	public void run(RobeServiceConfiguration configuration, Environment environment) throws Exception {
 		addExceptionMappers(environment);
 		environment.getJerseyResourceConfig().getContainerResponseFilters().add(new AuthTokenResponseFilter());
+
 	}
 
 	private void addExceptionMappers(Environment environment) {
