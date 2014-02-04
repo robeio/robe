@@ -130,3 +130,77 @@ var ServiceDataSource = new kendo.data.DataSource({
       model: ServiceModel
     }
 });
+
+/*  DATASOURCE AJAX REQUEST CONTROL */
+MenuDataSource.bind("error", dataSourceError);
+MenuDataSource.bind("requestEnd", dataSourceRequestEnd);
+MenuDataSource.fetch();
+
+UserDataSource.bind("error", dataSourceError);
+UserDataSource.bind("requestEnd", dataSourceRequestEnd);
+UserDataSource.fetch();
+
+RoleDataSource.bind("error", dataSourceError);
+RoleDataSource.bind("requestEnd", dataSourceRequestEnd);
+RoleDataSource.fetch();
+
+ServiceDataSource.bind("error", dataSourceError);
+ServiceDataSource.bind("requestEnd", dataSourceRequestEnd);
+ServiceDataSource.fetch();
+
+function dataSourceError(e) {
+        var response = e.response;
+          var type = e.type;
+          if(type === "update") {
+            $.pnotify({
+                title: "Güncelleme Hatası",
+                text: "Güncelleme sırasında bir hata oluştu.",
+                type: 'error'
+            });
+          }
+          else if(type === "destroy") {
+            $.pnotify({
+                title: "Silme Hatası",
+                text: "Silme sırasında bir hata oluştu.",
+                type: 'error'
+            });
+          }
+          else if(type === "read") {
+            $.pnotify({
+                title: "Okuma Hatası",
+                text: "Veriler getirilirken bir hata oluştu.",
+                type: 'info'
+            });
+          }
+          else if(type === "create") {
+            $.pnotify({
+                title: "Oluşturma Hatası",
+                text: "Oluşturulma sırasında bir hata oluştu.",
+                type: 'error'
+            });
+            }
+}
+
+function dataSourceRequestEnd (e) {
+          var response = e.response;
+          var type = e.type;
+          if(type === "update") {
+            $.pnotify({
+                title: "Güncellendi",
+                type: 'success'
+            });
+          }
+          else if(type === "destroy") {
+            $.pnotify({
+                title: "Silindi",
+                type: 'info'
+            });
+          }
+          else if(type === "create") {
+            $.pnotify({
+                title: "Eklendi",
+                type: 'success'
+            });
+            }
+}
+/*  DATASOURCE AJAX REQUEST CONTROL */
