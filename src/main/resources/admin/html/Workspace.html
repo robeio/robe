@@ -30,6 +30,11 @@
     <script type="text/javascript" charset="utf-8" src='../js/kendoui/js/cultures/kendo.culture.tr-TR.min.js'></script>
     <!--KENDO JS END-->
 
+    <!--PINES NOTIFY JS START-->
+    <link href="../js/pinesnotify/jquery.pnotify.default.css" rel="stylesheet">
+    <script type="text/javascript" charset="utf-8" src='../js/pinesnotify/jquery.pnotify.min.js'></script>
+    <!--PINES NOTIFY JS END-->
+
     <!--3rd PARTY JS LIBS. START-->
     <script type="text/javascript" charset="utf-8" src="../js/zebra_cookie.js"></script>
     <script type="text/javascript" charset="utf-8" src="../js/cryptojs/core-min.js"></script>
@@ -62,7 +67,6 @@
 
 </head>
 <body>
-<div id="progressBar"></div>
 
 <div id="dialog" title="Mesaj" class="dialog">
 
@@ -75,13 +79,14 @@
     <div class="navbar-header">
         <a class="navbar-brand">
             <img class="footer" src="../robe.png" id="bannerLogo"/>
-            <span id="bannerTitle" >robe.io</span>
-
+            <span id="bannerTitle">robe.io</span>
         </a>
     </div>
+    <div id="progressBar"></div>
     <a class="pull-right" id="logout"><b class="fa fa-sign-out fa-lg"></b>Çıkış </a>
 </nav>
 <!-- NAV END-->
+
 
 <!-- CONTENT START-->
 <div class="row clearfix">
