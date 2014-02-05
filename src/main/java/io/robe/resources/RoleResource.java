@@ -8,6 +8,7 @@ import io.robe.auth.Credentials;
 import io.robe.exception.RobeRuntimeException;
 import io.robe.hibernate.dao.RoleDao;
 import io.robe.hibernate.entity.Role;
+import org.hibernate.Hibernate;
 
 import javax.validation.Valid;
 import javax.ws.rs.*;
@@ -27,6 +28,7 @@ public class RoleResource {
 	@GET
 	@UnitOfWork
 	public List<Role> getRoles(@Auth Credentials credentials) {
+
 		return roleDao.findAll(Role.class);
 	}
 
@@ -34,7 +36,9 @@ public class RoleResource {
 	@UnitOfWork
 	@Path("{userId}")
 	public Role get(@Auth Credentials credentials, @PathParam("userId") String id) {
-		return roleDao.findById(id);
+		Role role = roleDao.findById(id);
+		Hibernate.initialize(role.getRoles());
+		return role;
 	}
 
 	@PUT
@@ -50,8 +54,12 @@ public class RoleResource {
 	@POST
 	@UnitOfWork
 	public Role update(@Auth Credentials credentials, Role role) {
-		role = roleDao.update(role);
-		return role;
+		roleDao.detach(role);
+		Role entity = roleDao.findById(role.getOid());
+		entity.setName(role.getName());
+		entity.setCode(role.getCode());
+		entity = roleDao.update(entity);
+		return entity;
 
 	}
 
