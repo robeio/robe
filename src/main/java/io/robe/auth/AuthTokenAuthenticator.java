@@ -8,6 +8,7 @@ import com.yammer.dropwizard.hibernate.UnitOfWork;
 import io.robe.hibernate.dao.ServiceDao;
 import io.robe.hibernate.dao.UserDao;
 import io.robe.hibernate.entity.Permission;
+import io.robe.hibernate.entity.Role;
 import io.robe.hibernate.entity.Service;
 import io.robe.hibernate.entity.User;
 import org.owasp.esapi.crypto.CryptoToken;
@@ -16,6 +17,7 @@ import org.owasp.esapi.errors.ValidationException;
 
 import java.util.Collections;
 import java.util.HashSet;
+import java.util.Set;
 
 /**
  * Authenticator implemented for auth-token
@@ -62,7 +64,11 @@ public class AuthTokenAuthenticator implements Authenticator<String, Credentials
 			// If access granted collect users Service Permissions for authorization controls
 			if (user.get().isActive() && user.get().getEmail().equals(cryptoToken.getUserAccountName())) {
 				HashSet<String> permissions = new HashSet<String>();
-				for (Permission permission : user.get().getRole().getPermissions()) {
+				Set<Permission> rolePermissions = new HashSet<Permission>();
+				//add sub role permissions
+				getAllRolePermissions(user.get().getRole(), rolePermissions);
+
+				for (Permission permission : rolePermissions) {
 					if (permission.getType().equals(Permission.Type.SERVICE)) {
 						Service service = serviceDao.findById(permission.getRestrictedItemOid());
 						if (service != null)
@@ -91,6 +97,13 @@ public class AuthTokenAuthenticator implements Authenticator<String, Credentials
 		cryptoToken.setUserAccountName(credentials.getUsername());
 		cryptoToken.setExpiration(600);
 		return cryptoToken;
+	}
+
+	private void getAllRolePermissions(Role parent, Set<Permission> rolePermissions) {
+		rolePermissions.addAll(parent.getPermissions());
+		for (Role role : parent.getRoles()) {
+			getAllRolePermissions(role, rolePermissions);
+		}
 	}
 }
 

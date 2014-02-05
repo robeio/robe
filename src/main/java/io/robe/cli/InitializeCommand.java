@@ -19,6 +19,7 @@ import org.slf4j.LoggerFactory;
 
 import javax.ws.rs.*;
 import java.lang.reflect.Method;
+import java.util.HashSet;
 import java.util.Set;
 
 
@@ -56,6 +57,19 @@ public class InitializeCommand<T extends RobeServiceConfiguration> extends Envir
 			role.setCode("admin");
 			role.setName("Admin");
 			session.persist(role);
+
+			Role user = new Role();
+			user.setCode("user");
+			user.setName("User");
+			session.persist(user);
+
+			Role all = new Role();
+			all.setCode("all");
+			all.setName("All");
+			all.setRoles(new HashSet<Role>());
+			all.getRoles().add(user);
+			all.getRoles().add(role);
+			session.persist(all);
 		}
 
 		Reflections reflections = new Reflections("io", this.getClass().getClassLoader());

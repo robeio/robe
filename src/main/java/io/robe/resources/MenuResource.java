@@ -14,6 +14,7 @@ import io.robe.hibernate.dao.RoleDao;
 import io.robe.hibernate.dao.UserDao;
 import io.robe.hibernate.entity.Menu;
 import io.robe.hibernate.entity.Permission;
+import io.robe.hibernate.entity.Role;
 import io.robe.hibernate.entity.User;
 
 import javax.validation.Valid;
@@ -42,12 +43,20 @@ public class MenuResource {
 		return menuDao.findAll(Menu.class);
 	}
 
+	private void getAllRolePermissions(Role parent, Set<Permission> rolePermissions) {
+		rolePermissions.addAll(parent.getPermissions());
+		for (Role role : parent.getRoles()) {
+			getAllRolePermissions(role, rolePermissions);
+		}
+	}
+
 	@Path("user")
 	@GET
 	@UnitOfWork
 	public List<MenuItem> getUserHierarchicalMenu(@Auth Credentials credentials) {
 		Optional<User> user = userDao.findByEmail(credentials.getUsername());
-		Set<Permission> permissions = user.get().getRole().getPermissions();
+		Set<Permission> permissions = new HashSet<Permission>();
+		getAllRolePermissions(user.get().getRole(), permissions);
 		HashSet<String> menuOids = new HashSet<String>();
 		List<Menu> items = menuDao.findHierarchicalMenu();
 		for (Permission permission : permissions) {
@@ -64,11 +73,15 @@ public class MenuResource {
 
 	private void createMenuWithPermissions(HashSet<String> permissions, List<Menu> items, List<MenuItem> permittedItems) {
 		for (Menu item : items) {
+			MenuItem permittedItem = new MenuItem(item.getName(), item.getCode());
 			if (permissions.contains(item.getOid())) {
-				MenuItem permittedItem = new MenuItem(item.getName(), item.getCode());
 				permittedItems.add(permittedItem);
-				createMenuWithPermissions(permissions, item.getItems(), permittedItem.getItems());
 			}
+			createMenuWithPermissions(permissions, item.getItems(), permittedItem.getItems());
+			//If any sub menu permitted add parent menu also.
+			if (permittedItem.getItems().size() > 0)
+				permittedItems.add(permittedItem);
+
 		}
 	}
 

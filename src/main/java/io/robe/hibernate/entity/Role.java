@@ -2,10 +2,7 @@ package io.robe.hibernate.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.OneToMany;
-import javax.persistence.Table;
+import javax.persistence.*;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -23,9 +20,16 @@ public class Role extends BaseEntity<Role> {
 	@OneToMany(mappedBy = "role")
 	private Set<Permission> permissions = new HashSet<Permission>();
 
+	@ManyToMany(targetEntity = Role.class)
+	@JoinTable(name = "Role_Group", joinColumns = @JoinColumn(name = "groupOid", referencedColumnName = "oid")
+			, inverseJoinColumns = @JoinColumn(name = "roleOid", referencedColumnName = "oid"))
+	private Set<Role> roles;
+
 	@JsonIgnore
-	@OneToMany(mappedBy = "role")
-	private Set<User> users = new HashSet<User>();
+	@ManyToMany(targetEntity = Role.class)
+	@JoinTable(name = "Role_Group", joinColumns = @JoinColumn(name = "roleOid", referencedColumnName = "oid")
+			, inverseJoinColumns = @JoinColumn(name = "groupOid", referencedColumnName = "oid"))
+	private Set<Role> groups;
 
 	public String getName() {
 		return name;
@@ -52,13 +56,24 @@ public class Role extends BaseEntity<Role> {
 		this.permissions = permissions;
 	}
 
-	public Set<User> getUsers() {
-		return users;
+
+	public Set<Role> getRoles() {
+		return roles;
 	}
 
-	public void setUsers(Set<User> users) {
-		this.users = users;
+	public void setRoles(HashSet<Role> roles) {
+		this.roles = roles;
 	}
 
+	public Set<Role> getGroups() {
+		return groups;
+	}
 
+	public void setGroups(Set<Role> groups) {
+		this.groups = groups;
+	}
+
+	public void setRoles(Set<Role> roles) {
+		this.roles = roles;
+	}
 }
