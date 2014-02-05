@@ -130,3 +130,11 @@ tr[role="row"]:hover
 #cmbRoles {
     margin: 10px 10px 10px 10px;
 }
+
+#btnSavePermission {
+    margin-right: 10px;
+}
+
+#btnMenuManagementHelp {
+    margin-right: 10px;
+}
