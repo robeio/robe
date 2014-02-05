@@ -158,7 +158,7 @@ function dataSourceError(e) {
             $.pnotify({
                 title: "Güncelleme Hatası",
                 text: "Güncelleme sırasında bir hata oluştu.",
-                type: 'error'
+                type: 'error',
             });
           }
           else if(type === "destroy") {
@@ -205,5 +205,6 @@ function dataSourceRequestEnd (e) {
                 type: 'success'
             });
             }
+
 }
 /*  DATASOURCE AJAX REQUEST CONTROL */
