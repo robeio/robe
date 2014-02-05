@@ -1,17 +1,35 @@
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 
+<div class="row clearfix">
+    <div class="col-md-12 column">
 
-<div class="row" id="horizontalTabStrips">
-    <div class="col-md-2">
-        <select id="cmbRoles"></select>
+        <div>
+            <!-- HELP BUTTON START-->
+            <button id="btnMenuManagementHelp" class="pull-right"><b class="fa fa-h-square"></b></button>
+            <!-- HELP BUTTON END-->
+            <button class="pull-right" id="btnSavePermission"><b class="fa fa-floppy-o"></b> Kaydet</button>
+            </br></br>
+        </div>
     </div>
-    <div class="col-md-3">
-        <div id="treeMenus"></div>
+</div>
+<div class="row clearfix">
+    <div class="col-md-12 column">
+
+        <div class="row" id="horizontalTabStrips">
+            <div class="col-md-2">
+                <select id="cmbRoles"></select>
+            </div>
+            <div class="col-md-3">
+                <div id="treeMenus"></div>
+            </div>
+            <div class="col-md-3">
+                <div id="gridServices"></div>
+            </div>
+        </div>
+        </br>
     </div>
-    <div class="col-md-3">
-        <div id="gridServices"></div>
-    </div>
-</div></br>
+</div>
+
 
 <!-- HELP WINDOW START-->
 <div id="permissionManagementHelpWindow" hidden="true">
@@ -23,11 +41,3 @@
 
 </div>
 <!-- HELP WINDOW END-->
-
-<div>
-    <!-- HELP BUTTON START-->
-    <button id="btnMenuManagementHelp" class="pull-right"><b class="fa fa-h-square"></b> Yardım ?</button>
-    <!-- HELP BUTTON END-->
-    <button class="pull-right" id="btnSavePermission"><b class="fa fa-floppy-o"></b> Kaydet</button>
-    </br></br>
-</div>
