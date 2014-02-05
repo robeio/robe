@@ -79,7 +79,7 @@ public class MenuResource {
 			}
 			createMenuWithPermissions(permissions, item.getItems(), permittedItem.getItems());
 			//If any sub menu permitted add parent menu also.
-			if (permittedItem.getItems().size() > 0)
+			if (permittedItem.getItems().size() > 0 && !permittedItems.contains(permittedItem))
 				permittedItems.add(permittedItem);
 
 		}
