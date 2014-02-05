@@ -54,7 +54,10 @@ body{
 
 tr[role="row"]:hover
 {
-  //font-weight:bold;
+  cursor:pointer;
+}
+.move
+{
   cursor:pointer;
 }
 
@@ -131,6 +134,22 @@ tr[role="row"]:hover
     margin: 10px 10px 10px 10px;
 }
 
+.tags
+{
+    margin: 10px;
+    padding: 10px;
+    color: #333333;
+ }
+.tagitemcls
+{
+    width: 24px;
+    margin-right: 10px;
+    margin-top: -45px;
+    padding-top: 6px;
+    padding-bottom: 8px;
+    padding-left: 2px;
+    float:right;
+}
 #btnSavePermission {
     margin-right: 10px;
 }

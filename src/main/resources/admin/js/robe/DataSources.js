@@ -76,6 +76,19 @@ var RoleDataSource = new kendo.data.DataSource({
     }
 });
 
+var GroupedRoleDataSource = new kendo.data.DataSource({
+    data:[],
+    schema: {
+        model: RoleModel
+    }
+});
+var UnGroupedRoleDataSource = new kendo.data.DataSource({
+    data:[],
+    schema: {
+        model: RoleModel
+    }
+});
+
 var MenuDataSource =  new kendo.data.DataSource({
 	 transport: {
 		 read: {
