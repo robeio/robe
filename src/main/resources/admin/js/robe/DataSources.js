@@ -139,7 +139,6 @@ var ServiceDataSource = new kendo.data.DataSource({
             dataType: "json",
             contentType: "application/json"
         }
-
     },
     batch: false,
     schema: {
@@ -169,28 +168,24 @@ function dataSourceError(e) {
     var type = e.type;
     if (type === "update") {
         $.pnotify({
-            title: "Güncelleme Hatası",
             text: "Güncelleme sırasında bir hata oluştu.",
             type: 'error'
         });
     }
     else if (type === "destroy") {
         $.pnotify({
-            title: "Silme Hatası",
             text: "Silme sırasında bir hata oluştu.",
             type: 'error'
         });
     }
     else if (type === "read") {
         $.pnotify({
-            title: "Okuma Hatası",
             text: "Veriler getirilirken bir hata oluştu.",
             type: 'info'
         });
     }
     else if (type === "create") {
         $.pnotify({
-            title: "Oluşturma Hatası",
             text: "Oluşturulma sırasında bir hata oluştu.",
             type: 'error'
         });
@@ -202,19 +197,19 @@ function dataSourceRequestEnd(e) {
     var type = e.type;
     if (type === "update") {
         $.pnotify({
-            title: "Güncellendi",
+            text: "Güncellendi",
             type: 'success'
         });
     }
     else if (type === "destroy") {
         $.pnotify({
-            title: "Silindi",
+            text: "Silindi",
             type: 'info'
         });
     }
     else if (type === "create") {
         $.pnotify({
-            title: "Eklendi",
+            text: "Eklendi",
             type: 'success'
         });
     }
