@@ -1,1308 +1,1306 @@
-
-
 intellisense.annotate(kendo, {
-    Class: function() {
+    Class: function () {
         /// <signature>
         /// <summary>Constructor of kendo.Class</summary>
         /// </signature>
     }
 });
 
-kendo.Class = (function() {
-var original = kendo.Class;
-var wrapper = function() {
-var instance = new original();
-intellisense.annotate(instance, {
+kendo.Class = (function () {
+    var original = kendo.Class;
+    var wrapper = function () {
+        var instance = new original();
+        intellisense.annotate(instance, {
 
-    bind: function(event, callback) {
-        /// <signature>
-        /// <summary>
-        /// Binds to a widget event.
-        /// </summary>
-        /// <param name="event" type="String">The event name</param>
-        /// <param name="callback" type="Function">The callback to be executed when the event is triggered.</param>
-        /// </signature>
-    },
+            bind: function (event, callback) {
+                /// <signature>
+                /// <summary>
+                /// Binds to a widget event.
+                /// </summary>
+                /// <param name="event" type="String">The event name</param>
+                /// <param name="callback" type="Function">The callback to be executed when the event is triggered.</param>
+                /// </signature>
+            },
 
-    unbind: function(event, callback) {
-        /// <signature>
-        /// <summary>
-        /// Unbinds a callback from a widget event.
-        /// </summary>
-        /// <param name="event" type="String">The event name</param>
-        /// <param name="callback" type="Function">The callback to be removed.</param>
-        /// </signature>
-    }
+            unbind: function (event, callback) {
+                /// <signature>
+                /// <summary>
+                /// Unbinds a callback from a widget event.
+                /// </summary>
+                /// <param name="event" type="String">The event name</param>
+                /// <param name="callback" type="Function">The callback to be removed.</param>
+                /// </signature>
+            }
 
-});
+        });
 
-return instance;
+        return instance;
 
-};
+    };
 
-intellisense.redirectDefinition(wrapper, original);
+    intellisense.redirectDefinition(wrapper, original);
 
-return wrapper;
+    return wrapper;
 
 })();
 
 
 intellisense.annotate(kendo, {
-    Color: function() {
+    Color: function () {
         /// <signature>
         /// <summary>Constructor of kendo.Color</summary>
         /// </signature>
     }
 });
 
-kendo.Color = (function() {
-var original = kendo.Color;
-var wrapper = function() {
-var instance = new original();
-intellisense.annotate(instance, {
-    diff: function() {
-        /// <signature>
-        /// <summary>
-        /// Computes the relative luminance between two colors.
-        /// </summary>
-        /// <returns type="Number">The relative luminance.</returns>
-        /// </signature>
-    },
-    equals: function() {
-        /// <signature>
-        /// <summary>
-        /// Compares two color objects for equality.
-        /// </summary>
-        /// <returns type="Boolean">returns true if the two colors are the same. Otherwise, false</returns>
-        /// </signature>
-    },
+kendo.Color = (function () {
+    var original = kendo.Color;
+    var wrapper = function () {
+        var instance = new original();
+        intellisense.annotate(instance, {
+            diff: function () {
+                /// <signature>
+                /// <summary>
+                /// Computes the relative luminance between two colors.
+                /// </summary>
+                /// <returns type="Number">The relative luminance.</returns>
+                /// </signature>
+            },
+            equals: function () {
+                /// <signature>
+                /// <summary>
+                /// Compares two color objects for equality.
+                /// </summary>
+                /// <returns type="Boolean">returns true if the two colors are the same. Otherwise, false</returns>
+                /// </signature>
+            },
 
-    bind: function(event, callback) {
-        /// <signature>
-        /// <summary>
-        /// Binds to a widget event.
-        /// </summary>
-        /// <param name="event" type="String">The event name</param>
-        /// <param name="callback" type="Function">The callback to be executed when the event is triggered.</param>
-        /// </signature>
-    },
+            bind: function (event, callback) {
+                /// <signature>
+                /// <summary>
+                /// Binds to a widget event.
+                /// </summary>
+                /// <param name="event" type="String">The event name</param>
+                /// <param name="callback" type="Function">The callback to be executed when the event is triggered.</param>
+                /// </signature>
+            },
 
-    unbind: function(event, callback) {
-        /// <signature>
-        /// <summary>
-        /// Unbinds a callback from a widget event.
-        /// </summary>
-        /// <param name="event" type="String">The event name</param>
-        /// <param name="callback" type="Function">The callback to be removed.</param>
-        /// </signature>
-    }
+            unbind: function (event, callback) {
+                /// <signature>
+                /// <summary>
+                /// Unbinds a callback from a widget event.
+                /// </summary>
+                /// <param name="event" type="String">The event name</param>
+                /// <param name="callback" type="Function">The callback to be removed.</param>
+                /// </signature>
+            }
 
-});
+        });
 
-return instance;
+        return instance;
 
-};
+    };
 
-intellisense.redirectDefinition(wrapper, original);
+    intellisense.redirectDefinition(wrapper, original);
 
-return wrapper;
+    return wrapper;
 
 })();
 
 
 intellisense.annotate(kendo, {
-    Layout: function() {
+    Layout: function () {
         /// <signature>
         /// <summary>Constructor of kendo.Layout</summary>
         /// </signature>
     }
 });
 
-kendo.Layout = (function() {
-var original = kendo.Layout;
-var wrapper = function() {
-var instance = new original();
-intellisense.annotate(instance, {
-    showIn: function(container,view) {
-        /// <signature>
-        /// <summary>
-        /// Renders the View element in the element specified by the selector
-        /// </summary>
-        /// <param name="container" type="String" >The selector of the container in which the view element will be appended.</param>
-        /// <param name="view" type="kendo.View" >The view instance that will be rendered.</param>
-        /// </signature>
-    },
+kendo.Layout = (function () {
+    var original = kendo.Layout;
+    var wrapper = function () {
+        var instance = new original();
+        intellisense.annotate(instance, {
+            showIn: function (container, view) {
+                /// <signature>
+                /// <summary>
+                /// Renders the View element in the element specified by the selector
+                /// </summary>
+                /// <param name="container" type="String" >The selector of the container in which the io element will be appended.</param>
+                /// <param name="io" type="kendo.View" >The io instance that will be rendered.</param>
+                /// </signature>
+            },
 
-    bind: function(event, callback) {
-        /// <signature>
-        /// <summary>
-        /// Binds to a widget event.
-        /// </summary>
-        /// <param name="event" type="String">The event name</param>
-        /// <param name="callback" type="Function">The callback to be executed when the event is triggered.</param>
-        /// </signature>
-    },
+            bind: function (event, callback) {
+                /// <signature>
+                /// <summary>
+                /// Binds to a widget event.
+                /// </summary>
+                /// <param name="event" type="String">The event name</param>
+                /// <param name="callback" type="Function">The callback to be executed when the event is triggered.</param>
+                /// </signature>
+            },
 
-    unbind: function(event, callback) {
-        /// <signature>
-        /// <summary>
-        /// Unbinds a callback from a widget event.
-        /// </summary>
-        /// <param name="event" type="String">The event name</param>
-        /// <param name="callback" type="Function">The callback to be removed.</param>
-        /// </signature>
-    }
+            unbind: function (event, callback) {
+                /// <signature>
+                /// <summary>
+                /// Unbinds a callback from a widget event.
+                /// </summary>
+                /// <param name="event" type="String">The event name</param>
+                /// <param name="callback" type="Function">The callback to be removed.</param>
+                /// </signature>
+            }
 
-});
+        });
 
-return instance;
+        return instance;
 
-};
+    };
 
-intellisense.redirectDefinition(wrapper, original);
+    intellisense.redirectDefinition(wrapper, original);
 
-return wrapper;
+    return wrapper;
 
 })();
 
 
 intellisense.annotate(kendo, {
-    Observable: function() {
+    Observable: function () {
         /// <signature>
         /// <summary>Constructor of kendo.Observable</summary>
         /// </signature>
     }
 });
 
-kendo.Observable = (function() {
-var original = kendo.Observable;
-var wrapper = function() {
-var instance = new original();
-intellisense.annotate(instance, {
-    bind: function(eventName,handler) {
-        /// <signature>
-        /// <summary>
-        /// Attaches a handler to an event.
-        /// </summary>
-        /// <param name="eventName" type="String" >The name of the event.</param>
-        /// <param name="handler" type="Function" >A function to execute each time the event is triggered. That function should have a single parameter which will contain any event specific data.</param>
-        /// </signature>
-    },
-    one: function(eventName,handler) {
-        /// <signature>
-        /// <summary>
-        /// Attaches a handler to an event. The handler is executed only once.
-        /// </summary>
-        /// <param name="eventName" type="String" >The name of the event.</param>
-        /// <param name="handler" type="Function" >A function to execute each time the event is triggered. That function should have a single parameter which will contain any event specific data.</param>
-        /// </signature>
-    },
-    trigger: function(eventName,eventData) {
-        /// <signature>
-        /// <summary>
-        /// Executes all handlers attached to the given event.
-        /// </summary>
-        /// <param name="eventName" type="String" >The name of the event to trigger.</param>
-        /// <param name="eventData" type="Object" >Optional event data which will be passed as an argument to the event handlers.</param>
-        /// </signature>
-    },
-    unbind: function(eventName,handler) {
-        /// <signature>
-        /// <summary>
-        /// Remove a previously attached event handler.
-        /// </summary>
-        /// <param name="eventName" type="String" >The name of the event. If not specified all handlers of all events will be removed.</param>
-        /// <param name="handler" type="Function" >The handler which should no longer be executed. If not specified all handlers listening to that event will be removed.</param>
-        /// </signature>
-    }
+kendo.Observable = (function () {
+    var original = kendo.Observable;
+    var wrapper = function () {
+        var instance = new original();
+        intellisense.annotate(instance, {
+            bind: function (eventName, handler) {
+                /// <signature>
+                /// <summary>
+                /// Attaches a handler to an event.
+                /// </summary>
+                /// <param name="eventName" type="String" >The name of the event.</param>
+                /// <param name="handler" type="Function" >A function to execute each time the event is triggered. That function should have a single parameter which will contain any event specific data.</param>
+                /// </signature>
+            },
+            one: function (eventName, handler) {
+                /// <signature>
+                /// <summary>
+                /// Attaches a handler to an event. The handler is executed only once.
+                /// </summary>
+                /// <param name="eventName" type="String" >The name of the event.</param>
+                /// <param name="handler" type="Function" >A function to execute each time the event is triggered. That function should have a single parameter which will contain any event specific data.</param>
+                /// </signature>
+            },
+            trigger: function (eventName, eventData) {
+                /// <signature>
+                /// <summary>
+                /// Executes all handlers attached to the given event.
+                /// </summary>
+                /// <param name="eventName" type="String" >The name of the event to trigger.</param>
+                /// <param name="eventData" type="Object" >Optional event data which will be passed as an argument to the event handlers.</param>
+                /// </signature>
+            },
+            unbind: function (eventName, handler) {
+                /// <signature>
+                /// <summary>
+                /// Remove a previously attached event handler.
+                /// </summary>
+                /// <param name="eventName" type="String" >The name of the event. If not specified all handlers of all events will be removed.</param>
+                /// <param name="handler" type="Function" >The handler which should no longer be executed. If not specified all handlers listening to that event will be removed.</param>
+                /// </signature>
+            }
 
 
 
-});
+        });
 
-return instance;
+        return instance;
 
-};
+    };
 
-intellisense.redirectDefinition(wrapper, original);
+    intellisense.redirectDefinition(wrapper, original);
 
-return wrapper;
+    return wrapper;
 
 })();
 
 
 intellisense.annotate(kendo, {
-    Router: function() {
+    Router: function () {
         /// <signature>
         /// <summary>Constructor of kendo.Router</summary>
         /// </signature>
     }
 });
 
-kendo.Router = (function() {
-var original = kendo.Router;
-var wrapper = function() {
-var instance = new original();
-intellisense.annotate(instance, {
-    start: function() {
-        /// <signature>
-        /// <summary>
-        /// Activates the router binding to the URL fragment part changes.
-        /// </summary>
-        /// </signature>
-    },
-    route: function(route,callback) {
-        /// <signature>
-        /// <summary>
-        /// Specifies a callback for the given route. The route definition can contain bound parameters, optional segments, and route globbing.
+kendo.Router = (function () {
+    var original = kendo.Router;
+    var wrapper = function () {
+        var instance = new original();
+        intellisense.annotate(instance, {
+            start: function () {
+                /// <signature>
+                /// <summary>
+                /// Activates the router binding to the URL fragment part changes.
+                /// </summary>
+                /// </signature>
+            },
+            route: function (route, callback) {
+                /// <signature>
+                /// <summary>
+                /// Specifies a callback for the given route. The route definition can contain bound parameters, optional segments, and route globbing.
 /// The parsed parts of the URL are passed as parameters to the route callback. Query string parameters are parsed and passed as last argument of the callback function.
-        /// </summary>
-        /// <param name="route" type="String" >The route definition.</param>
-        /// <param name="callback" type="Function" >The callback to be executed when the route is matched.</param>
-        /// </signature>
-    },
-    navigate: function(route,silent) {
-        /// <signature>
-        /// <summary>
-        /// Navigates to the given route.
-        /// </summary>
-        /// <param name="route" type="String" >The route to navigate to.</param>
-        /// <param name="silent" type="Boolean" >If set to true, the router callbacks will not be called.</param>
-        /// </signature>
-    },
-    destroy: function() {
-        /// <signature>
-        /// <summary>
-        /// Unbinds the router instance listeners from the URL fragment part changes.
-        /// </summary>
-        /// </signature>
-    },
+                /// </summary>
+                /// <param name="route" type="String" >The route definition.</param>
+                /// <param name="callback" type="Function" >The callback to be executed when the route is matched.</param>
+                /// </signature>
+            },
+            navigate: function (route, silent) {
+                /// <signature>
+                /// <summary>
+                /// Navigates to the given route.
+                /// </summary>
+                /// <param name="route" type="String" >The route to navigate to.</param>
+                /// <param name="silent" type="Boolean" >If set to true, the router callbacks will not be called.</param>
+                /// </signature>
+            },
+            destroy: function () {
+                /// <signature>
+                /// <summary>
+                /// Unbinds the router instance listeners from the URL fragment part changes.
+                /// </summary>
+                /// </signature>
+            },
 
-    bind: function(event, callback) {
-        /// <signature>
-        /// <summary>
-        /// Binds to a widget event.
-        /// </summary>
-        /// <param name="event" type="String">The event name</param>
-        /// <param name="callback" type="Function">The callback to be executed when the event is triggered.</param>
-        /// </signature>
-    },
+            bind: function (event, callback) {
+                /// <signature>
+                /// <summary>
+                /// Binds to a widget event.
+                /// </summary>
+                /// <param name="event" type="String">The event name</param>
+                /// <param name="callback" type="Function">The callback to be executed when the event is triggered.</param>
+                /// </signature>
+            },
 
-    unbind: function(event, callback) {
-        /// <signature>
-        /// <summary>
-        /// Unbinds a callback from a widget event.
-        /// </summary>
-        /// <param name="event" type="String">The event name</param>
-        /// <param name="callback" type="Function">The callback to be removed.</param>
-        /// </signature>
-    }
+            unbind: function (event, callback) {
+                /// <signature>
+                /// <summary>
+                /// Unbinds a callback from a widget event.
+                /// </summary>
+                /// <param name="event" type="String">The event name</param>
+                /// <param name="callback" type="Function">The callback to be removed.</param>
+                /// </signature>
+            }
 
-});
+        });
 
-return instance;
+        return instance;
 
-};
+    };
 
-intellisense.redirectDefinition(wrapper, original);
+    intellisense.redirectDefinition(wrapper, original);
 
-return wrapper;
+    return wrapper;
 
 })();
 
 
 intellisense.annotate(kendo, {
-    View: function() {
+    View: function () {
         /// <signature>
         /// <summary>Constructor of kendo.View</summary>
         /// </signature>
     }
 });
 
-kendo.View = (function() {
-var original = kendo.View;
-var wrapper = function() {
-var instance = new original();
-intellisense.annotate(instance, {
-    destroy: function() {
-        /// <signature>
-        /// <summary>
-        /// Removes the View element from the DOM. Detaches all event handlers and removes jQuery.data attributes to avoid memory leaks. Calls destroy method of any child Kendo widgets.
-        /// </summary>
-        /// </signature>
-    },
-    render: function(container) {
-        /// <signature>
-        /// <summary>
-        /// Renders the view contents. Accepts a jQuery selector (or jQuery object) to which the contents will be appended.
+kendo.View = (function () {
+    var original = kendo.View;
+    var wrapper = function () {
+        var instance = new original();
+        intellisense.annotate(instance, {
+            destroy: function () {
+                /// <signature>
+                /// <summary>
+                /// Removes the View element from the DOM. Detaches all event handlers and removes jQuery.data attributes to avoid memory leaks. Calls destroy method of any child Kendo widgets.
+                /// </summary>
+                /// </signature>
+            },
+            render: function (container) {
+                /// <signature>
+                /// <summary>
+                /// Renders the io contents. Accepts a jQuery selector (or jQuery object) to which the contents will be appended.
 /// Alternatively, the render method can be called without parameters in order to retrieve the View element for manual insertion/further manipulation.
-        /// </summary>
-        /// <param name="container" type="jQuery" >(optional) the element in which the view element will be appended.</param>
-        /// <returns type="jQuery">the view element.</returns>
-        /// </signature>
-    },
+                /// </summary>
+                /// <param name="container" type="jQuery" >(optional) the element in which the io element will be appended.</param>
+                /// <returns type="jQuery">the io element.</returns>
+                /// </signature>
+            },
 
-    bind: function(event, callback) {
-        /// <signature>
-        /// <summary>
-        /// Binds to a widget event.
-        /// </summary>
-        /// <param name="event" type="String">The event name</param>
-        /// <param name="callback" type="Function">The callback to be executed when the event is triggered.</param>
-        /// </signature>
-    },
+            bind: function (event, callback) {
+                /// <signature>
+                /// <summary>
+                /// Binds to a widget event.
+                /// </summary>
+                /// <param name="event" type="String">The event name</param>
+                /// <param name="callback" type="Function">The callback to be executed when the event is triggered.</param>
+                /// </signature>
+            },
 
-    unbind: function(event, callback) {
-        /// <signature>
-        /// <summary>
-        /// Unbinds a callback from a widget event.
-        /// </summary>
-        /// <param name="event" type="String">The event name</param>
-        /// <param name="callback" type="Function">The callback to be removed.</param>
-        /// </signature>
-    }
+            unbind: function (event, callback) {
+                /// <signature>
+                /// <summary>
+                /// Unbinds a callback from a widget event.
+                /// </summary>
+                /// <param name="event" type="String">The event name</param>
+                /// <param name="callback" type="Function">The callback to be removed.</param>
+                /// </signature>
+            }
 
-});
+        });
 
-return instance;
+        return instance;
 
-};
+    };
 
-intellisense.redirectDefinition(wrapper, original);
+    intellisense.redirectDefinition(wrapper, original);
 
-return wrapper;
+    return wrapper;
 
 })();
 
 
 intellisense.annotate(kendo.data, {
-    Binder: function() {
+    Binder: function () {
         /// <signature>
         /// <summary>Constructor of kendo.data.Binder</summary>
         /// </signature>
     }
 });
 
-kendo.data.Binder = (function() {
-var original = kendo.data.Binder;
-var wrapper = function() {
-var instance = new original();
-intellisense.annotate(instance, {
-    refresh: function() {
-        /// <signature>
-        /// <summary>
-        /// Invoked by the Kendo UI MVVM framework when the bound view model value is changed. The binder should update the UI (HTML element or Kendo UI widget) to reflect the view model change.
-        /// </summary>
-        /// </signature>
-    },
+kendo.data.Binder = (function () {
+    var original = kendo.data.Binder;
+    var wrapper = function () {
+        var instance = new original();
+        intellisense.annotate(instance, {
+            refresh: function () {
+                /// <signature>
+                /// <summary>
+                /// Invoked by the Kendo UI MVVM framework when the bound io model value is changed. The binder should update the UI (HTML element or Kendo UI widget) to reflect the io model change.
+                /// </summary>
+                /// </signature>
+            },
 
-    bind: function(event, callback) {
-        /// <signature>
-        /// <summary>
-        /// Binds to a widget event.
-        /// </summary>
-        /// <param name="event" type="String">The event name</param>
-        /// <param name="callback" type="Function">The callback to be executed when the event is triggered.</param>
-        /// </signature>
-    },
+            bind: function (event, callback) {
+                /// <signature>
+                /// <summary>
+                /// Binds to a widget event.
+                /// </summary>
+                /// <param name="event" type="String">The event name</param>
+                /// <param name="callback" type="Function">The callback to be executed when the event is triggered.</param>
+                /// </signature>
+            },
 
-    unbind: function(event, callback) {
-        /// <signature>
-        /// <summary>
-        /// Unbinds a callback from a widget event.
-        /// </summary>
-        /// <param name="event" type="String">The event name</param>
-        /// <param name="callback" type="Function">The callback to be removed.</param>
-        /// </signature>
-    }
+            unbind: function (event, callback) {
+                /// <signature>
+                /// <summary>
+                /// Unbinds a callback from a widget event.
+                /// </summary>
+                /// <param name="event" type="String">The event name</param>
+                /// <param name="callback" type="Function">The callback to be removed.</param>
+                /// </signature>
+            }
 
-});
+        });
 
-return instance;
+        return instance;
 
-};
+    };
 
-intellisense.redirectDefinition(wrapper, original);
+    intellisense.redirectDefinition(wrapper, original);
 
-return wrapper;
+    return wrapper;
 
 })();
 
 
 intellisense.annotate(kendo.data, {
-    DataSource: function() {
+    DataSource: function () {
         /// <signature>
         /// <summary>Constructor of kendo.data.DataSource</summary>
         /// </signature>
     }
 });
 
-kendo.data.DataSource = (function() {
-var original = kendo.data.DataSource;
-var wrapper = function() {
-var instance = new original();
-intellisense.annotate(instance, {
-    add: function(model) {
-        /// <signature>
-        /// <summary>
-        /// Appends a data item to the data source.
-        /// </summary>
-        /// <param name="model" type="Object" >Either a kendo.data.Model instance or JavaScript object containing the data item field values.</param>
-        /// <returns type="kendo.data.Model">the data item which is inserted.</returns>
-        /// </signature>
-    },
-    aggregate: function(value) {
-        /// <signature>
-        /// <summary>
-        /// Gets or sets the aggregate configuration.
-        /// </summary>
-        /// <param name="value" type="Object" >The aggregate configuration. Accepts the same values as the aggregate option.</param>
-        /// <returns type="Array">the current aggregate configuration.</returns>
-        /// </signature>
-    },
-    aggregates: function() {
-        /// <signature>
-        /// <summary>
-        /// Returns the aggregate results.
-        /// </summary>
-        /// <returns type="Object">the aggregate results. There is a key for every aggregated field.</returns>
-        /// </signature>
-    },
-    at: function(index) {
-        /// <signature>
-        /// <summary>
-        /// Returns the data item at the specified index. The index is zero-based.
-        /// </summary>
-        /// <param name="index" type="Number" >The zero-based index of the data item.</param>
-        /// <returns type="kendo.data.ObservableObject">the data item at the specified index. Returns undefined if a data item is not found at the specified index.Returns a kendo.data.Model instance if the schema.model option is set.</returns>
-        /// </signature>
-    },
-    cancelChanges: function(model) {
-        /// <signature>
-        /// <summary>
-        /// Cancels any pending changes in the data source. Deleted data items are restored, new data items are removed and updated data items are restored to their initial state.
-        /// </summary>
-        /// <param name="model" type="kendo.data.Model" >The optional data item (model). If specified only the changes of this data item will be discarded. If omitted all changes will be discarded.</param>
-        /// </signature>
-    },
-    data: function(value) {
-        /// <signature>
-        /// <summary>
-        /// Gets or sets the data items of the data source.If the data source is bound to a remote service (via the transport option) the data method will return the service response.
+kendo.data.DataSource = (function () {
+    var original = kendo.data.DataSource;
+    var wrapper = function () {
+        var instance = new original();
+        intellisense.annotate(instance, {
+            add: function (model) {
+                /// <signature>
+                /// <summary>
+                /// Appends a data item to the data source.
+                /// </summary>
+                /// <param name="model" type="Object" >Either a kendo.data.Model instance or JavaScript object containing the data item field values.</param>
+                /// <returns type="kendo.data.Model">the data item which is inserted.</returns>
+                /// </signature>
+            },
+            aggregate: function (value) {
+                /// <signature>
+                /// <summary>
+                /// Gets or sets the aggregate configuration.
+                /// </summary>
+                /// <param name="value" type="Object" >The aggregate configuration. Accepts the same values as the aggregate option.</param>
+                /// <returns type="Array">the current aggregate configuration.</returns>
+                /// </signature>
+            },
+            aggregates: function () {
+                /// <signature>
+                /// <summary>
+                /// Returns the aggregate results.
+                /// </summary>
+                /// <returns type="Object">the aggregate results. There is a key for every aggregated field.</returns>
+                /// </signature>
+            },
+            at: function (index) {
+                /// <signature>
+                /// <summary>
+                /// Returns the data item at the specified index. The index is zero-based.
+                /// </summary>
+                /// <param name="index" type="Number" >The zero-based index of the data item.</param>
+                /// <returns type="kendo.data.ObservableObject">the data item at the specified index. Returns undefined if a data item is not found at the specified index.Returns a kendo.data.Model instance if the schema.model option is set.</returns>
+                /// </signature>
+            },
+            cancelChanges: function (model) {
+                /// <signature>
+                /// <summary>
+                /// Cancels any pending changes in the data source. Deleted data items are restored, new data items are removed and updated data items are restored to their initial state.
+                /// </summary>
+                /// <param name="model" type="kendo.data.Model" >The optional data item (model). If specified only the changes of this data item will be discarded. If omitted all changes will be discarded.</param>
+                /// </signature>
+            },
+            data: function (value) {
+                /// <signature>
+                /// <summary>
+                /// Gets or sets the data items of the data source.If the data source is bound to a remote service (via the transport option) the data method will return the service response.
 /// Every item from the response is wrapped in a kendo.data.ObservableObject or kendo.data.Model (if the schema.model option is set).If the data source is bound to a JavaScript array (via the data option) the data method will return the items of that array.
 /// Every item from the array is wrapped in a kendo.data.ObservableObject or kendo.data.Model (if the schema.model option is set).If the data source is grouped (via the group option or the group method) and the serverGrouping is set to true
 /// the data method will return the group items.
-        /// </summary>
-        /// <param name="value" type="Object" >The data items which will replace the current ones in the data source. If omitted the current data items will be returned.</param>
-        /// <returns type="kendo.data.ObservableArray">the data items of the data source. Returns empty array if the data source hasn't been populated with data items via the read, fetch or query methods.</returns>
-        /// </signature>
-    },
-    fetch: function(callback) {
-        /// <signature>
-        /// <summary>
-        /// Reads the data items from a remote service (if the transport option is set) or from a JavaScript array (if the data option is set).
-        /// </summary>
-        /// <param name="callback" type="Function" >The optional function which is executed when the remote request is finished.  The function context (available via the this keyword) will be set to the data source instance.</param>
-        /// </signature>
-    },
-    filter: function(value) {
-        /// <signature>
-        /// <summary>
-        /// Gets or sets the filter configuration.
-        /// </summary>
-        /// <param name="value" type="Object" >The filter configuration. Accepts the same values as the filter option.</param>
-        /// <returns type="Object">the current filter configuration.</returns>
-        /// </signature>
-    },
-    get: function(id) {
-        /// <signature>
-        /// <summary>
-        /// Gets the data item (model) with the specified id.
-        /// </summary>
-        /// <param name="id" type="Object" >The id of the model to look for.</param>
-        /// <returns type="kendo.data.Model">the model instance. Returns undefined if a model with the specified id is not found.</returns>
-        /// </signature>
-    },
-    getByUid: function(uid) {
-        /// <signature>
-        /// <summary>
-        /// Gets the data item (model) with the specified uid.
-        /// </summary>
-        /// <param name="uid" type="String" >The uid of the model to look for.</param>
-        /// <returns type="kendo.data.ObservableObject">the model instance. Returns undefined if a model with the specified uid is not found.</returns>
-        /// </signature>
-    },
-    group: function(value) {
-        /// <signature>
-        /// <summary>
-        /// Gets or sets the grouping configuration.
-        /// </summary>
-        /// <param name="value" type="Object" >The grouping configuration. Accepts the same values as the group option.</param>
-        /// <returns type="Array">the current grouping configuration.</returns>
-        /// </signature>
-    },
-    hasChanges: function() {
-        /// <signature>
-        /// <summary>
-        /// Cheks if the data itams have changed.
-        /// </summary>
-        /// <returns type="Boolean">returns true if the data items have changed. Otherwise, false.</returns>
-        /// </signature>
-    },
-    indexOf: function(dataItem) {
-        /// <signature>
-        /// <summary>
-        /// Gets the index of the specified data item.
-        /// </summary>
-        /// <param name="dataItem" type="kendo.data.ObservableObject" >The target data item.</param>
-        /// <returns type="Number">the index of the specified data item. Returns -1 if the data item is not found.</returns>
-        /// </signature>
-    },
-    insert: function(index,model) {
-        /// <signature>
-        /// <summary>
-        /// Inserts a data item in the data source at the specified index.
-        /// </summary>
-        /// <param name="index" type="Number" >The zero-based index at which the data item will be inserted.</param>
-        /// <param name="model" type="Object" >Either a kendo.data.Model instance or JavaScript object containing the field values.</param>
-        /// <returns type="kendo.data.Model">the data item which is inserted.</returns>
-        /// </signature>
-    },
-    page: function(page) {
-        /// <signature>
-        /// <summary>
-        /// Gets or sets the current page.
-        /// </summary>
-        /// <param name="page" type="Number" >The new page.</param>
-        /// <returns type="Number">the current page.</returns>
-        /// </signature>
-    },
-    pageSize: function(size) {
-        /// <signature>
-        /// <summary>
-        /// Gets or sets the current page size.
-        /// </summary>
-        /// <param name="size" type="Number" >The new page size.</param>
-        /// <returns type="Number">the current page size.</returns>
-        /// </signature>
-    },
-    query: function(options) {
-        /// <signature>
-        /// <summary>
-        /// Executes the specified query over the data items. Makes a HTTP request if bound to a remote service.
-        /// </summary>
-        /// <param name="options" type="" >The query options which should be applied.</param>
-        /// </signature>
-    },
-    read: function(data) {
-        /// <signature>
-        /// <summary>
-        /// Reads data items from a remote service (if the transport option is set) or from a JavaScript array (if the data option is set).
-        /// </summary>
-        /// <param name="data" type="Object" >Optional data to pass to the remote service.</param>
-        /// </signature>
-    },
-    remove: function(model) {
-        /// <signature>
-        /// <summary>
-        /// Removes the specified data item from the data source.
-        /// </summary>
-        /// <param name="model" type="kendo.data.Model" >The data item which should be removed.</param>
-        /// </signature>
-    },
-    sort: function(value) {
-        /// <signature>
-        /// <summary>
-        /// Gets or sets the sort order which will be applied over the data items.
-        /// </summary>
-        /// <param name="value" type="Object" >The sort configuration. Accepts the same values as the sort option.</param>
-        /// <returns type="Array">the current sort configuration.</returns>
-        /// </signature>
-    },
-    sync: function() {
-        /// <signature>
-        /// <summary>
-        /// Saves any data item changes.The sync method will request the remote service if:
-        /// </summary>
-        /// </signature>
-    },
-    total: function() {
-        /// <signature>
-        /// <summary>
-        /// Gets the total number of data items. Uses schema.total if the transport.read option is set.
-        /// </summary>
-        /// <returns type="Number">the total number of data items. Returns the length of the array returned by the data method if schema.total or transport.read are not set.Returns 0 if the data source hasn't been populated with data items via the read, fetch or query methods.</returns>
-        /// </signature>
-    },
-    totalPages: function() {
-        /// <signature>
-        /// <summary>
-        /// Gets the number of available pages.
-        /// </summary>
-        /// <returns type="Number">the available pages.</returns>
-        /// </signature>
-    },
-    view: function() {
-        /// <signature>
-        /// <summary>
-        /// Returns the data items which correspond to the current page, filter, sort and group configuration.To ensure that data is available this method should be used within the change event handler or the fetch method.
-        /// </summary>
-        /// <returns type="kendo.data.ObservableArray">the data items. Returns groups if the data items are grouped (via the group option or the group method).</returns>
-        /// </signature>
-    },
+                /// </summary>
+                /// <param name="value" type="Object" >The data items which will replace the current ones in the data source. If omitted the current data items will be returned.</param>
+                /// <returns type="kendo.data.ObservableArray">the data items of the data source. Returns empty array if the data source hasn't been populated with data items via the read, fetch or query methods.</returns>
+                /// </signature>
+            },
+            fetch: function (callback) {
+                /// <signature>
+                /// <summary>
+                /// Reads the data items from a remote service (if the transport option is set) or from a JavaScript array (if the data option is set).
+                /// </summary>
+                /// <param name="callback" type="Function" >The optional function which is executed when the remote request is finished.  The function context (available via the this keyword) will be set to the data source instance.</param>
+                /// </signature>
+            },
+            filter: function (value) {
+                /// <signature>
+                /// <summary>
+                /// Gets or sets the filter configuration.
+                /// </summary>
+                /// <param name="value" type="Object" >The filter configuration. Accepts the same values as the filter option.</param>
+                /// <returns type="Object">the current filter configuration.</returns>
+                /// </signature>
+            },
+            get: function (id) {
+                /// <signature>
+                /// <summary>
+                /// Gets the data item (model) with the specified id.
+                /// </summary>
+                /// <param name="id" type="Object" >The id of the model to look for.</param>
+                /// <returns type="kendo.data.Model">the model instance. Returns undefined if a model with the specified id is not found.</returns>
+                /// </signature>
+            },
+            getByUid: function (uid) {
+                /// <signature>
+                /// <summary>
+                /// Gets the data item (model) with the specified uid.
+                /// </summary>
+                /// <param name="uid" type="String" >The uid of the model to look for.</param>
+                /// <returns type="kendo.data.ObservableObject">the model instance. Returns undefined if a model with the specified uid is not found.</returns>
+                /// </signature>
+            },
+            group: function (value) {
+                /// <signature>
+                /// <summary>
+                /// Gets or sets the grouping configuration.
+                /// </summary>
+                /// <param name="value" type="Object" >The grouping configuration. Accepts the same values as the group option.</param>
+                /// <returns type="Array">the current grouping configuration.</returns>
+                /// </signature>
+            },
+            hasChanges: function () {
+                /// <signature>
+                /// <summary>
+                /// Cheks if the data itams have changed.
+                /// </summary>
+                /// <returns type="Boolean">returns true if the data items have changed. Otherwise, false.</returns>
+                /// </signature>
+            },
+            indexOf: function (dataItem) {
+                /// <signature>
+                /// <summary>
+                /// Gets the index of the specified data item.
+                /// </summary>
+                /// <param name="dataItem" type="kendo.data.ObservableObject" >The target data item.</param>
+                /// <returns type="Number">the index of the specified data item. Returns -1 if the data item is not found.</returns>
+                /// </signature>
+            },
+            insert: function (index, model) {
+                /// <signature>
+                /// <summary>
+                /// Inserts a data item in the data source at the specified index.
+                /// </summary>
+                /// <param name="index" type="Number" >The zero-based index at which the data item will be inserted.</param>
+                /// <param name="model" type="Object" >Either a kendo.data.Model instance or JavaScript object containing the field values.</param>
+                /// <returns type="kendo.data.Model">the data item which is inserted.</returns>
+                /// </signature>
+            },
+            page: function (page) {
+                /// <signature>
+                /// <summary>
+                /// Gets or sets the current page.
+                /// </summary>
+                /// <param name="page" type="Number" >The new page.</param>
+                /// <returns type="Number">the current page.</returns>
+                /// </signature>
+            },
+            pageSize: function (size) {
+                /// <signature>
+                /// <summary>
+                /// Gets or sets the current page size.
+                /// </summary>
+                /// <param name="size" type="Number" >The new page size.</param>
+                /// <returns type="Number">the current page size.</returns>
+                /// </signature>
+            },
+            query: function (options) {
+                /// <signature>
+                /// <summary>
+                /// Executes the specified query over the data items. Makes a HTTP request if bound to a remote service.
+                /// </summary>
+                /// <param name="options" type="" >The query options which should be applied.</param>
+                /// </signature>
+            },
+            read: function (data) {
+                /// <signature>
+                /// <summary>
+                /// Reads data items from a remote service (if the transport option is set) or from a JavaScript array (if the data option is set).
+                /// </summary>
+                /// <param name="data" type="Object" >Optional data to pass to the remote service.</param>
+                /// </signature>
+            },
+            remove: function (model) {
+                /// <signature>
+                /// <summary>
+                /// Removes the specified data item from the data source.
+                /// </summary>
+                /// <param name="model" type="kendo.data.Model" >The data item which should be removed.</param>
+                /// </signature>
+            },
+            sort: function (value) {
+                /// <signature>
+                /// <summary>
+                /// Gets or sets the sort order which will be applied over the data items.
+                /// </summary>
+                /// <param name="value" type="Object" >The sort configuration. Accepts the same values as the sort option.</param>
+                /// <returns type="Array">the current sort configuration.</returns>
+                /// </signature>
+            },
+            sync: function () {
+                /// <signature>
+                /// <summary>
+                /// Saves any data item changes.The sync method will request the remote service if:
+                /// </summary>
+                /// </signature>
+            },
+            total: function () {
+                /// <signature>
+                /// <summary>
+                /// Gets the total number of data items. Uses schema.total if the transport.read option is set.
+                /// </summary>
+                /// <returns type="Number">the total number of data items. Returns the length of the array returned by the data method if schema.total or transport.read are not set.Returns 0 if the data source hasn't been populated with data items via the read, fetch or query methods.</returns>
+                /// </signature>
+            },
+            totalPages: function () {
+                /// <signature>
+                /// <summary>
+                /// Gets the number of available pages.
+                /// </summary>
+                /// <returns type="Number">the available pages.</returns>
+                /// </signature>
+            },
+            view: function () {
+                /// <signature>
+                /// <summary>
+                /// Returns the data items which correspond to the current page, filter, sort and group configuration.To ensure that data is available this method should be used within the change event handler or the fetch method.
+                /// </summary>
+                /// <returns type="kendo.data.ObservableArray">the data items. Returns groups if the data items are grouped (via the group option or the group method).</returns>
+                /// </signature>
+            },
 
-    bind: function(event, callback) {
-        /// <signature>
-        /// <summary>
-        /// Binds to a widget event.
-        /// </summary>
-        /// <param name="event" type="String">The event name</param>
-        /// <param name="callback" type="Function">The callback to be executed when the event is triggered.</param>
-        /// </signature>
-    },
+            bind: function (event, callback) {
+                /// <signature>
+                /// <summary>
+                /// Binds to a widget event.
+                /// </summary>
+                /// <param name="event" type="String">The event name</param>
+                /// <param name="callback" type="Function">The callback to be executed when the event is triggered.</param>
+                /// </signature>
+            },
 
-    unbind: function(event, callback) {
-        /// <signature>
-        /// <summary>
-        /// Unbinds a callback from a widget event.
-        /// </summary>
-        /// <param name="event" type="String">The event name</param>
-        /// <param name="callback" type="Function">The callback to be removed.</param>
-        /// </signature>
-    }
+            unbind: function (event, callback) {
+                /// <signature>
+                /// <summary>
+                /// Unbinds a callback from a widget event.
+                /// </summary>
+                /// <param name="event" type="String">The event name</param>
+                /// <param name="callback" type="Function">The callback to be removed.</param>
+                /// </signature>
+            }
 
-});
+        });
 
-return instance;
+        return instance;
 
-};
+    };
 
-intellisense.redirectDefinition(wrapper, original);
+    intellisense.redirectDefinition(wrapper, original);
 
-return wrapper;
+    return wrapper;
 
 })();
 
 
 intellisense.annotate(kendo.data, {
-    HierarchicalDataSource: function() {
+    HierarchicalDataSource: function () {
         /// <signature>
         /// <summary>Constructor of kendo.data.HierarchicalDataSource</summary>
         /// </signature>
     }
 });
 
-kendo.data.HierarchicalDataSource = (function() {
-var original = kendo.data.HierarchicalDataSource;
-var wrapper = function() {
-var instance = new original();
-intellisense.annotate(instance, {
+kendo.data.HierarchicalDataSource = (function () {
+    var original = kendo.data.HierarchicalDataSource;
+    var wrapper = function () {
+        var instance = new original();
+        intellisense.annotate(instance, {
 
-    bind: function(event, callback) {
-        /// <signature>
-        /// <summary>
-        /// Binds to a widget event.
-        /// </summary>
-        /// <param name="event" type="String">The event name</param>
-        /// <param name="callback" type="Function">The callback to be executed when the event is triggered.</param>
-        /// </signature>
-    },
+            bind: function (event, callback) {
+                /// <signature>
+                /// <summary>
+                /// Binds to a widget event.
+                /// </summary>
+                /// <param name="event" type="String">The event name</param>
+                /// <param name="callback" type="Function">The callback to be executed when the event is triggered.</param>
+                /// </signature>
+            },
 
-    unbind: function(event, callback) {
-        /// <signature>
-        /// <summary>
-        /// Unbinds a callback from a widget event.
-        /// </summary>
-        /// <param name="event" type="String">The event name</param>
-        /// <param name="callback" type="Function">The callback to be removed.</param>
-        /// </signature>
-    }
+            unbind: function (event, callback) {
+                /// <signature>
+                /// <summary>
+                /// Unbinds a callback from a widget event.
+                /// </summary>
+                /// <param name="event" type="String">The event name</param>
+                /// <param name="callback" type="Function">The callback to be removed.</param>
+                /// </signature>
+            }
 
-});
+        });
 
-return instance;
+        return instance;
 
-};
+    };
 
-intellisense.redirectDefinition(wrapper, original);
+    intellisense.redirectDefinition(wrapper, original);
 
-return wrapper;
+    return wrapper;
 
 })();
 
 
 intellisense.annotate(kendo.data, {
-    Model: function() {
+    Model: function () {
         /// <signature>
         /// <summary>Constructor of kendo.data.Model</summary>
         /// </signature>
     }
 });
 
-kendo.data.Model = (function() {
-var original = kendo.data.Model;
-var wrapper = function() {
-var instance = new original();
-intellisense.annotate(instance, {
-    bind: function() {
-        /// <signature>
-        /// <summary>
-        /// Attaches a handler to an event. Examples and more info can be found in the bind section of the kendo.Observable API reference.
-        /// </summary>
-        /// </signature>
-    },
-    editable: function(field) {
-        /// <signature>
-        /// <summary>
-        /// Determines if the specified field is editable or not.
-        /// </summary>
-        /// <param name="field" type="String" >The field to check.</param>
-        /// <returns type="Boolean">true if the field is editable; false otherwise.</returns>
-        /// </signature>
-    },
-    get: function() {
-        /// <signature>
-        /// <summary>
-        /// Gets the value of the specified field. Inherited from kendo.data.ObservableObject. Examples and more info can be found in the get section of the
+kendo.data.Model = (function () {
+    var original = kendo.data.Model;
+    var wrapper = function () {
+        var instance = new original();
+        intellisense.annotate(instance, {
+            bind: function () {
+                /// <signature>
+                /// <summary>
+                /// Attaches a handler to an event. Examples and more info can be found in the bind section of the kendo.Observable API reference.
+                /// </summary>
+                /// </signature>
+            },
+            editable: function (field) {
+                /// <signature>
+                /// <summary>
+                /// Determines if the specified field is editable or not.
+                /// </summary>
+                /// <param name="field" type="String" >The field to check.</param>
+                /// <returns type="Boolean">true if the field is editable; false otherwise.</returns>
+                /// </signature>
+            },
+            get: function () {
+                /// <signature>
+                /// <summary>
+                /// Gets the value of the specified field. Inherited from kendo.data.ObservableObject. Examples and more info can be found in the get section of the
 /// ObservableObject API reference.
-        /// </summary>
-        /// </signature>
-    },
-    isNew: function() {
-        /// <signature>
-        /// <summary>
-        /// Checks if the Model is new or not. The id field is used to determine if a model instance is new or existing one.
+                /// </summary>
+                /// </signature>
+            },
+            isNew: function () {
+                /// <signature>
+                /// <summary>
+                /// Checks if the Model is new or not. The id field is used to determine if a model instance is new or existing one.
 /// If the value of the field specified is equal to the default value (specified through the fields configuration) the model is considered as new.
-        /// </summary>
-        /// <returns type="Boolean">true if the model is new; false otherwise.</returns>
-        /// </signature>
-    },
-    set: function() {
-        /// <signature>
-        /// <summary>
-        /// Sets the value of the specified field. Inherited from kendo.data.ObservableObject. Examples and more info can be found in the set section of the
+                /// </summary>
+                /// <returns type="Boolean">true if the model is new; false otherwise.</returns>
+                /// </signature>
+            },
+            set: function () {
+                /// <signature>
+                /// <summary>
+                /// Sets the value of the specified field. Inherited from kendo.data.ObservableObject. Examples and more info can be found in the set section of the
 /// ObservableObject API reference.
-        /// </summary>
-        /// </signature>
-    },
-    toJSON: function() {
-        /// <signature>
-        /// <summary>
-        /// Creates a plain JavaScript object which contains all fields of the Model. Inherited from kendo.data.ObservableObject. Examples and more info can be found in the toJSON section of the
+                /// </summary>
+                /// </signature>
+            },
+            toJSON: function () {
+                /// <signature>
+                /// <summary>
+                /// Creates a plain JavaScript object which contains all fields of the Model. Inherited from kendo.data.ObservableObject. Examples and more info can be found in the toJSON section of the
 /// ObservableObject API reference.
-        /// </summary>
-        /// </signature>
-    },
+                /// </summary>
+                /// </signature>
+            },
 
 
-    unbind: function(event, callback) {
-        /// <signature>
-        /// <summary>
-        /// Unbinds a callback from a widget event.
-        /// </summary>
-        /// <param name="event" type="String">The event name</param>
-        /// <param name="callback" type="Function">The callback to be removed.</param>
-        /// </signature>
-    }
+            unbind: function (event, callback) {
+                /// <signature>
+                /// <summary>
+                /// Unbinds a callback from a widget event.
+                /// </summary>
+                /// <param name="event" type="String">The event name</param>
+                /// <param name="callback" type="Function">The callback to be removed.</param>
+                /// </signature>
+            }
 
-});
+        });
 
-return instance;
+        return instance;
 
-};
+    };
 
-intellisense.redirectDefinition(wrapper, original);
+    intellisense.redirectDefinition(wrapper, original);
 
-return wrapper;
+    return wrapper;
 
 })();
 
 
 intellisense.annotate(kendo.data, {
-    Node: function() {
+    Node: function () {
         /// <signature>
         /// <summary>Constructor of kendo.data.Node</summary>
         /// </signature>
     }
 });
 
-kendo.data.Node = (function() {
-var original = kendo.data.Node;
-var wrapper = function() {
-var instance = new original();
-intellisense.annotate(instance, {
-    append: function(model) {
-        /// <signature>
-        /// <summary>
-        /// Appends a new item to the children data source, and initializes it if necessary.
-        /// </summary>
-        /// <param name="model" type="Object" >The data for the new item</param>
-        /// </signature>
-    },
-    level: function() {
-        /// <signature>
-        /// <summary>
-        /// Gets the current nesting level of the node within the data source.
-        /// </summary>
-        /// <returns type="Number">the zero based level of the node.</returns>
-        /// </signature>
-    },
-    load: function() {
-        /// <signature>
-        /// <summary>
-        /// Loads the child nodes in the child data source, supplying the id of the Node to the request.
-        /// </summary>
-        /// </signature>
-    },
-    loaded: function() {
-        /// <signature>
-        /// <summary>
-        /// Gets or sets the loaded flag of the Node. Setting the loaded flag to false allows reloading of child items.
-        /// </summary>
-        /// </signature>
-    },
-    parentNode: function() {
-        /// <signature>
-        /// <summary>
-        /// Gets the parent node.
-        /// </summary>
-        /// <returns type="kendo.data.Node">the parent of the node; null if the node is a root node or doesn't have a parent.</returns>
-        /// </signature>
-    },
+kendo.data.Node = (function () {
+    var original = kendo.data.Node;
+    var wrapper = function () {
+        var instance = new original();
+        intellisense.annotate(instance, {
+            append: function (model) {
+                /// <signature>
+                /// <summary>
+                /// Appends a new item to the children data source, and initializes it if necessary.
+                /// </summary>
+                /// <param name="model" type="Object" >The data for the new item</param>
+                /// </signature>
+            },
+            level: function () {
+                /// <signature>
+                /// <summary>
+                /// Gets the current nesting level of the node within the data source.
+                /// </summary>
+                /// <returns type="Number">the zero based level of the node.</returns>
+                /// </signature>
+            },
+            load: function () {
+                /// <signature>
+                /// <summary>
+                /// Loads the child nodes in the child data source, supplying the id of the Node to the request.
+                /// </summary>
+                /// </signature>
+            },
+            loaded: function () {
+                /// <signature>
+                /// <summary>
+                /// Gets or sets the loaded flag of the Node. Setting the loaded flag to false allows reloading of child items.
+                /// </summary>
+                /// </signature>
+            },
+            parentNode: function () {
+                /// <signature>
+                /// <summary>
+                /// Gets the parent node.
+                /// </summary>
+                /// <returns type="kendo.data.Node">the parent of the node; null if the node is a root node or doesn't have a parent.</returns>
+                /// </signature>
+            },
 
-    bind: function(event, callback) {
-        /// <signature>
-        /// <summary>
-        /// Binds to a widget event.
-        /// </summary>
-        /// <param name="event" type="String">The event name</param>
-        /// <param name="callback" type="Function">The callback to be executed when the event is triggered.</param>
-        /// </signature>
-    },
+            bind: function (event, callback) {
+                /// <signature>
+                /// <summary>
+                /// Binds to a widget event.
+                /// </summary>
+                /// <param name="event" type="String">The event name</param>
+                /// <param name="callback" type="Function">The callback to be executed when the event is triggered.</param>
+                /// </signature>
+            },
 
-    unbind: function(event, callback) {
-        /// <signature>
-        /// <summary>
-        /// Unbinds a callback from a widget event.
-        /// </summary>
-        /// <param name="event" type="String">The event name</param>
-        /// <param name="callback" type="Function">The callback to be removed.</param>
-        /// </signature>
-    }
+            unbind: function (event, callback) {
+                /// <signature>
+                /// <summary>
+                /// Unbinds a callback from a widget event.
+                /// </summary>
+                /// <param name="event" type="String">The event name</param>
+                /// <param name="callback" type="Function">The callback to be removed.</param>
+                /// </signature>
+            }
 
-});
+        });
 
-return instance;
+        return instance;
 
-};
+    };
 
-intellisense.redirectDefinition(wrapper, original);
+    intellisense.redirectDefinition(wrapper, original);
 
-return wrapper;
+    return wrapper;
 
 })();
 
 
 intellisense.annotate(kendo.data, {
-    ObservableArray: function() {
+    ObservableArray: function () {
         /// <signature>
         /// <summary>Constructor of kendo.data.ObservableArray</summary>
         /// </signature>
     }
 });
 
-kendo.data.ObservableArray = (function() {
-var original = kendo.data.ObservableArray;
-var wrapper = function() {
-var instance = new original();
-intellisense.annotate(instance, {
-    bind: function(eventName,handler) {
-        /// <signature>
-        /// <summary>
-        /// Attaches an event handler for the specified event.
-        /// </summary>
-        /// <param name="eventName" type="String" >The name of the event.</param>
-        /// <param name="handler" type="Function" >The function which will be invoked when the event is raised.</param>
-        /// </signature>
-    },
-    join: function(separator) {
-        /// <signature>
-        /// <summary>
-        /// Joins all items of an ObservableArray into a string. Equivalent of
+kendo.data.ObservableArray = (function () {
+    var original = kendo.data.ObservableArray;
+    var wrapper = function () {
+        var instance = new original();
+        intellisense.annotate(instance, {
+            bind: function (eventName, handler) {
+                /// <signature>
+                /// <summary>
+                /// Attaches an event handler for the specified event.
+                /// </summary>
+                /// <param name="eventName" type="String" >The name of the event.</param>
+                /// <param name="handler" type="Function" >The function which will be invoked when the event is raised.</param>
+                /// </signature>
+            },
+            join: function (separator) {
+                /// <signature>
+                /// <summary>
+                /// Joins all items of an ObservableArray into a string. Equivalent of
 /// Array.prototype.join.
-        /// </summary>
-        /// <param name="separator" type="String" >Specifies the string to separate each item of the array. If omitted the array items are separated with a comma (,)</param>
-        /// </signature>
-    },
-    parent: function() {
-        /// <signature>
-        /// <summary>
-        /// Gets the parent of the array if such parent exists.
-        /// </summary>
-        /// <returns type="kendo.data.ObservableObject">the parent of the array; undefined if the array is not nested and doesn't have a parent.</returns>
-        /// </signature>
-    },
-    pop: function() {
-        /// <signature>
-        /// <summary>
-        /// Removes the last item from an array and returns that item. Equivalent of Array.prototype.pop.
-        /// </summary>
-        /// <returns type="Object">the item which was removed.</returns>
-        /// </signature>
-    },
-    push: function() {
-        /// <signature>
-        /// <summary>
-        /// Appends the given items to the array and returns the new length of the array. Equivalent of Array.prototype.push.
+                /// </summary>
+                /// <param name="separator" type="String" >Specifies the string to separate each item of the array. If omitted the array items are separated with a comma (,)</param>
+                /// </signature>
+            },
+            parent: function () {
+                /// <signature>
+                /// <summary>
+                /// Gets the parent of the array if such parent exists.
+                /// </summary>
+                /// <returns type="kendo.data.ObservableObject">the parent of the array; undefined if the array is not nested and doesn't have a parent.</returns>
+                /// </signature>
+            },
+            pop: function () {
+                /// <signature>
+                /// <summary>
+                /// Removes the last item from an array and returns that item. Equivalent of Array.prototype.pop.
+                /// </summary>
+                /// <returns type="Object">the item which was removed.</returns>
+                /// </signature>
+            },
+            push: function () {
+                /// <signature>
+                /// <summary>
+                /// Appends the given items to the array and returns the new length of the array. Equivalent of Array.prototype.push.
 /// The new items are wrapped as ObservableObject if they are complex objects.
-        /// </summary>
-        /// <returns type="Number">the new length of the array.</returns>
-        /// </signature>
-    },
-    slice: function(begin,end) {
-        /// <signature>
-        /// <summary>
-        /// Returns a one-level deep copy of a portion of an array. Equivalent of
+                /// </summary>
+                /// <returns type="Number">the new length of the array.</returns>
+                /// </signature>
+            },
+            slice: function (begin, end) {
+                /// <signature>
+                /// <summary>
+                /// Returns a one-level deep copy of a portion of an array. Equivalent of
 /// Array.prototype.slice.
 /// The result of the slice method is not an instance of ObvservableArray. It is a regular JavaScript Array object.
-        /// </summary>
-        /// <param name="begin" type="Number" >Zero-based index at which to begin extraction.</param>
-        /// <param name="end" type="Number" >Zero-based index at which to end extraction. If end is omitted, slice extracts to the end of the sequence.</param>
-        /// </signature>
-    },
-    splice: function(index,howMany) {
-        /// <signature>
-        /// <summary>
-        /// Changes an ObservableArray, by adding new items while removing old items. Equivalent of
+                /// </summary>
+                /// <param name="begin" type="Number" >Zero-based index at which to begin extraction.</param>
+                /// <param name="end" type="Number" >Zero-based index at which to end extraction. If end is omitted, slice extracts to the end of the sequence.</param>
+                /// </signature>
+            },
+            splice: function (index, howMany) {
+                /// <signature>
+                /// <summary>
+                /// Changes an ObservableArray, by adding new items while removing old items. Equivalent of
 /// Array.prototype.splice
-        /// </summary>
-        /// <param name="index" type="Number" >Index at which to start changing the array. If negative, will begin that many elements from the end.</param>
-        /// <param name="howMany" type="Number" >An integer indicating the number of items to remove. If set to 0, no items are removed. In this case, you should specify at least one new item.</param>
-        /// <returns type="Array">containing the removed items. The result of the splice method is not an instance of ObvservableArray.</returns>
-        /// </signature>
-    },
-    shift: function() {
-        /// <signature>
-        /// <summary>
-        /// Removes the first item from an ObvservableArray and returns that item. Equivalent of Array.prototype.shift.
-        /// </summary>
-        /// <returns type="Object">the item which was removed.</returns>
-        /// </signature>
-    },
-    toJSON: function() {
-        /// <signature>
-        /// <summary>
-        /// Returns a JavaScript Array which represents the contents of the ObservableArray.
-        /// </summary>
-        /// </signature>
-    },
-    unshift: function() {
-        /// <signature>
-        /// <summary>
-        /// Adds one or more items to the beginning of an ObservableArray and returns the new length.  Equivalent of Array.prototype.unshift.
-        /// </summary>
-        /// <returns type="Number">the new length of the array.</returns>
-        /// </signature>
-    },
+                /// </summary>
+                /// <param name="index" type="Number" >Index at which to start changing the array. If negative, will begin that many elements from the end.</param>
+                /// <param name="howMany" type="Number" >An integer indicating the number of items to remove. If set to 0, no items are removed. In this case, you should specify at least one new item.</param>
+                /// <returns type="Array">containing the removed items. The result of the splice method is not an instance of ObvservableArray.</returns>
+                /// </signature>
+            },
+            shift: function () {
+                /// <signature>
+                /// <summary>
+                /// Removes the first item from an ObvservableArray and returns that item. Equivalent of Array.prototype.shift.
+                /// </summary>
+                /// <returns type="Object">the item which was removed.</returns>
+                /// </signature>
+            },
+            toJSON: function () {
+                /// <signature>
+                /// <summary>
+                /// Returns a JavaScript Array which represents the contents of the ObservableArray.
+                /// </summary>
+                /// </signature>
+            },
+            unshift: function () {
+                /// <signature>
+                /// <summary>
+                /// Adds one or more items to the beginning of an ObservableArray and returns the new length.  Equivalent of Array.prototype.unshift.
+                /// </summary>
+                /// <returns type="Number">the new length of the array.</returns>
+                /// </signature>
+            },
 
 
-    unbind: function(event, callback) {
-        /// <signature>
-        /// <summary>
-        /// Unbinds a callback from a widget event.
-        /// </summary>
-        /// <param name="event" type="String">The event name</param>
-        /// <param name="callback" type="Function">The callback to be removed.</param>
-        /// </signature>
-    }
+            unbind: function (event, callback) {
+                /// <signature>
+                /// <summary>
+                /// Unbinds a callback from a widget event.
+                /// </summary>
+                /// <param name="event" type="String">The event name</param>
+                /// <param name="callback" type="Function">The callback to be removed.</param>
+                /// </signature>
+            }
 
-});
+        });
 
-return instance;
+        return instance;
 
-};
+    };
 
-intellisense.redirectDefinition(wrapper, original);
+    intellisense.redirectDefinition(wrapper, original);
 
-return wrapper;
+    return wrapper;
 
 })();
 
 
 intellisense.annotate(kendo.data, {
-    ObservableObject: function() {
+    ObservableObject: function () {
         /// <signature>
         /// <summary>Constructor of kendo.data.ObservableObject</summary>
         /// </signature>
     }
 });
 
-kendo.data.ObservableObject = (function() {
-var original = kendo.data.ObservableObject;
-var wrapper = function() {
-var instance = new original();
-intellisense.annotate(instance, {
-    bind: function() {
-        /// <signature>
-        /// <summary>
-        /// Attaches a handler to an event. Examples and more info can be found in the bind section of the
+kendo.data.ObservableObject = (function () {
+    var original = kendo.data.ObservableObject;
+    var wrapper = function () {
+        var instance = new original();
+        intellisense.annotate(instance, {
+            bind: function () {
+                /// <signature>
+                /// <summary>
+                /// Attaches a handler to an event. Examples and more info can be found in the bind section of the
 /// kendo.Observable API reference.
-        /// </summary>
-        /// </signature>
-    },
-    get: function(name) {
-        /// <signature>
-        /// <summary>
-        /// Gets the value of the specified field.
-        /// </summary>
-        /// <param name="name" type="String" >The name of the field whose value is going to be returned.</param>
-        /// <returns type="Object">the value of the specified field.</returns>
-        /// </signature>
-    },
-    parent: function() {
-        /// <signature>
-        /// <summary>
-        /// Gets the parent of the object if such parent exists.
-        /// </summary>
-        /// <returns type="kendo.data.ObservableObject">the parent of the object; undefined if the object is not nested and doesn't have a parent.</returns>
-        /// </signature>
-    },
-    set: function(name,value) {
-        /// <signature>
-        /// <summary>
-        /// Sets the value of the specified field.
-        /// </summary>
-        /// <param name="name" type="String" >The name of the field whose value is going to be returned.</param>
-        /// <param name="value" type="Object" >The new value of the field.</param>
-        /// </signature>
-    },
-    toJSON: function() {
-        /// <signature>
-        /// <summary>
-        /// Creates a plain JavaScript object which contains all fields of the ObservableObject.
-        /// </summary>
-        /// <returns type="Object">which contains only the fields of the ObservableObject.</returns>
-        /// </signature>
-    },
+                /// </summary>
+                /// </signature>
+            },
+            get: function (name) {
+                /// <signature>
+                /// <summary>
+                /// Gets the value of the specified field.
+                /// </summary>
+                /// <param name="name" type="String" >The name of the field whose value is going to be returned.</param>
+                /// <returns type="Object">the value of the specified field.</returns>
+                /// </signature>
+            },
+            parent: function () {
+                /// <signature>
+                /// <summary>
+                /// Gets the parent of the object if such parent exists.
+                /// </summary>
+                /// <returns type="kendo.data.ObservableObject">the parent of the object; undefined if the object is not nested and doesn't have a parent.</returns>
+                /// </signature>
+            },
+            set: function (name, value) {
+                /// <signature>
+                /// <summary>
+                /// Sets the value of the specified field.
+                /// </summary>
+                /// <param name="name" type="String" >The name of the field whose value is going to be returned.</param>
+                /// <param name="value" type="Object" >The new value of the field.</param>
+                /// </signature>
+            },
+            toJSON: function () {
+                /// <signature>
+                /// <summary>
+                /// Creates a plain JavaScript object which contains all fields of the ObservableObject.
+                /// </summary>
+                /// <returns type="Object">which contains only the fields of the ObservableObject.</returns>
+                /// </signature>
+            },
 
 
-    unbind: function(event, callback) {
-        /// <signature>
-        /// <summary>
-        /// Unbinds a callback from a widget event.
-        /// </summary>
-        /// <param name="event" type="String">The event name</param>
-        /// <param name="callback" type="Function">The callback to be removed.</param>
-        /// </signature>
-    }
+            unbind: function (event, callback) {
+                /// <signature>
+                /// <summary>
+                /// Unbinds a callback from a widget event.
+                /// </summary>
+                /// <param name="event" type="String">The event name</param>
+                /// <param name="callback" type="Function">The callback to be removed.</param>
+                /// </signature>
+            }
 
-});
+        });
 
-return instance;
+        return instance;
 
-};
+    };
 
-intellisense.redirectDefinition(wrapper, original);
+    intellisense.redirectDefinition(wrapper, original);
 
-return wrapper;
+    return wrapper;
 
 })();
 
 
 intellisense.annotate(kendo.data, {
-    SchedulerDataSource: function() {
+    SchedulerDataSource: function () {
         /// <signature>
         /// <summary>Constructor of kendo.data.SchedulerDataSource</summary>
         /// </signature>
     }
 });
 
-kendo.data.SchedulerDataSource = (function() {
-var original = kendo.data.SchedulerDataSource;
-var wrapper = function() {
-var instance = new original();
-intellisense.annotate(instance, {
-    expand: function(start,end) {
-        /// <signature>
-        /// <summary>
-        /// Expands all recurring events in the data and returns a list of events for a specific period.
-        /// </summary>
-        /// <param name="start" type="Date" >The start date of the period.</param>
-        /// <param name="end" type="Date" >The end date of the period.</param>
-        /// <returns type="Array">the expanded list of scheduler events filtered by the specified start/end period.</returns>
-        /// </signature>
-    },
+kendo.data.SchedulerDataSource = (function () {
+    var original = kendo.data.SchedulerDataSource;
+    var wrapper = function () {
+        var instance = new original();
+        intellisense.annotate(instance, {
+            expand: function (start, end) {
+                /// <signature>
+                /// <summary>
+                /// Expands all recurring events in the data and returns a list of events for a specific period.
+                /// </summary>
+                /// <param name="start" type="Date" >The start date of the period.</param>
+                /// <param name="end" type="Date" >The end date of the period.</param>
+                /// <returns type="Array">the expanded list of scheduler events filtered by the specified start/end period.</returns>
+                /// </signature>
+            },
 
-    bind: function(event, callback) {
-        /// <signature>
-        /// <summary>
-        /// Binds to a widget event.
-        /// </summary>
-        /// <param name="event" type="String">The event name</param>
-        /// <param name="callback" type="Function">The callback to be executed when the event is triggered.</param>
-        /// </signature>
-    },
+            bind: function (event, callback) {
+                /// <signature>
+                /// <summary>
+                /// Binds to a widget event.
+                /// </summary>
+                /// <param name="event" type="String">The event name</param>
+                /// <param name="callback" type="Function">The callback to be executed when the event is triggered.</param>
+                /// </signature>
+            },
 
-    unbind: function(event, callback) {
-        /// <signature>
-        /// <summary>
-        /// Unbinds a callback from a widget event.
-        /// </summary>
-        /// <param name="event" type="String">The event name</param>
-        /// <param name="callback" type="Function">The callback to be removed.</param>
-        /// </signature>
-    }
+            unbind: function (event, callback) {
+                /// <signature>
+                /// <summary>
+                /// Unbinds a callback from a widget event.
+                /// </summary>
+                /// <param name="event" type="String">The event name</param>
+                /// <param name="callback" type="Function">The callback to be removed.</param>
+                /// </signature>
+            }
 
-});
+        });
 
-return instance;
+        return instance;
 
-};
+    };
 
-intellisense.redirectDefinition(wrapper, original);
+    intellisense.redirectDefinition(wrapper, original);
 
-return wrapper;
+    return wrapper;
 
 })();
 
 
 intellisense.annotate(kendo.data, {
-    SchedulerEvent: function() {
+    SchedulerEvent: function () {
         /// <signature>
         /// <summary>Constructor of kendo.data.SchedulerEvent</summary>
         /// </signature>
     }
 });
 
-kendo.data.SchedulerEvent = (function() {
-var original = kendo.data.SchedulerEvent;
-var wrapper = function() {
-var instance = new original();
-intellisense.annotate(instance, {
-    clone: function(options) {
-        /// <signature>
-        /// <summary>
-        /// Clones the scheduler event.
-        /// </summary>
-        /// <param name="options" type="Object" >Additional options passed to the SchedulerEvent constructor.</param>
-        /// <returns type="kendo.data.Scheduler">the cloned scheduler event.</returns>
-        /// </signature>
-    },
-    duration: function() {
-        /// <signature>
-        /// <summary>
-        /// Returns the scheduler event length in milliseconds.
-        /// </summary>
-        /// <returns type="Number">the length of the event.</returns>
-        /// </signature>
-    },
-    expand: function(start,end,timeZoneId) {
-        /// <signature>
-        /// <summary>
-        /// Expands the event for a specific period based on the recurrenceRule option.
-        /// </summary>
-        /// <param name="start" type="Date" >The start date of the occurrence period.</param>
-        /// <param name="end" type="Date" >The end date of the occurrence period.</param>
-        /// <param name="timeZoneId" type="String" >The time zone ID used to convert the recurrence rule dates.</param>
-        /// <returns type="Array">the list of the occurrences.</returns>
-        /// </signature>
-    },
+kendo.data.SchedulerEvent = (function () {
+    var original = kendo.data.SchedulerEvent;
+    var wrapper = function () {
+        var instance = new original();
+        intellisense.annotate(instance, {
+            clone: function (options) {
+                /// <signature>
+                /// <summary>
+                /// Clones the scheduler event.
+                /// </summary>
+                /// <param name="options" type="Object" >Additional options passed to the SchedulerEvent constructor.</param>
+                /// <returns type="kendo.data.Scheduler">the cloned scheduler event.</returns>
+                /// </signature>
+            },
+            duration: function () {
+                /// <signature>
+                /// <summary>
+                /// Returns the scheduler event length in milliseconds.
+                /// </summary>
+                /// <returns type="Number">the length of the event.</returns>
+                /// </signature>
+            },
+            expand: function (start, end, timeZoneId) {
+                /// <signature>
+                /// <summary>
+                /// Expands the event for a specific period based on the recurrenceRule option.
+                /// </summary>
+                /// <param name="start" type="Date" >The start date of the occurrence period.</param>
+                /// <param name="end" type="Date" >The end date of the occurrence period.</param>
+                /// <param name="timeZoneId" type="String" >The time zone ID used to convert the recurrence rule dates.</param>
+                /// <returns type="Array">the list of the occurrences.</returns>
+                /// </signature>
+            },
 
-    bind: function(event, callback) {
-        /// <signature>
-        /// <summary>
-        /// Binds to a widget event.
-        /// </summary>
-        /// <param name="event" type="String">The event name</param>
-        /// <param name="callback" type="Function">The callback to be executed when the event is triggered.</param>
-        /// </signature>
-    },
+            bind: function (event, callback) {
+                /// <signature>
+                /// <summary>
+                /// Binds to a widget event.
+                /// </summary>
+                /// <param name="event" type="String">The event name</param>
+                /// <param name="callback" type="Function">The callback to be executed when the event is triggered.</param>
+                /// </signature>
+            },
 
-    unbind: function(event, callback) {
-        /// <signature>
-        /// <summary>
-        /// Unbinds a callback from a widget event.
-        /// </summary>
-        /// <param name="event" type="String">The event name</param>
-        /// <param name="callback" type="Function">The callback to be removed.</param>
-        /// </signature>
-    }
+            unbind: function (event, callback) {
+                /// <signature>
+                /// <summary>
+                /// Unbinds a callback from a widget event.
+                /// </summary>
+                /// <param name="event" type="String">The event name</param>
+                /// <param name="callback" type="Function">The callback to be removed.</param>
+                /// </signature>
+            }
 
-});
+        });
 
-return instance;
+        return instance;
 
-};
+    };
 
-intellisense.redirectDefinition(wrapper, original);
+    intellisense.redirectDefinition(wrapper, original);
 
-return wrapper;
+    return wrapper;
 
 })();
 
 
 intellisense.annotate(kendo.mobile.ui, {
-    Widget: function() {
+    Widget: function () {
         /// <signature>
         /// <summary>Constructor of kendo.mobile.ui.Widget</summary>
         /// </signature>
     }
 });
 
-kendo.mobile.ui.Widget = (function() {
-var original = kendo.mobile.ui.Widget;
-var wrapper = function() {
-var instance = new original();
-intellisense.annotate(instance, {
-    view: function() {
-        /// <signature>
-        /// <summary>
-        /// Returns the kendo.mobile.ui.View which contains the widget. If the widget is contained in a splitview, modalview, or drawer, the respective widget instance is returned.
-        /// </summary>
-        /// </signature>
-    },
+kendo.mobile.ui.Widget = (function () {
+    var original = kendo.mobile.ui.Widget;
+    var wrapper = function () {
+        var instance = new original();
+        intellisense.annotate(instance, {
+            view: function () {
+                /// <signature>
+                /// <summary>
+                /// Returns the kendo.mobile.ui.View which contains the widget. If the widget is contained in a splitview, modalview, or drawer, the respective widget instance is returned.
+                /// </summary>
+                /// </signature>
+            },
 
-    bind: function(event, callback) {
-        /// <signature>
-        /// <summary>
-        /// Binds to a widget event.
-        /// </summary>
-        /// <param name="event" type="String">The event name</param>
-        /// <param name="callback" type="Function">The callback to be executed when the event is triggered.</param>
-        /// </signature>
-    },
+            bind: function (event, callback) {
+                /// <signature>
+                /// <summary>
+                /// Binds to a widget event.
+                /// </summary>
+                /// <param name="event" type="String">The event name</param>
+                /// <param name="callback" type="Function">The callback to be executed when the event is triggered.</param>
+                /// </signature>
+            },
 
-    unbind: function(event, callback) {
-        /// <signature>
-        /// <summary>
-        /// Unbinds a callback from a widget event.
-        /// </summary>
-        /// <param name="event" type="String">The event name</param>
-        /// <param name="callback" type="Function">The callback to be removed.</param>
-        /// </signature>
-    }
+            unbind: function (event, callback) {
+                /// <signature>
+                /// <summary>
+                /// Unbinds a callback from a widget event.
+                /// </summary>
+                /// <param name="event" type="String">The event name</param>
+                /// <param name="callback" type="Function">The callback to be removed.</param>
+                /// </signature>
+            }
 
-});
+        });
 
-return instance;
+        return instance;
 
-};
+    };
 
-intellisense.redirectDefinition(wrapper, original);
+    intellisense.redirectDefinition(wrapper, original);
 
-return wrapper;
+    return wrapper;
 
 })();
 
 
-jQuery.fn.kendoWidget = function() {
+jQuery.fn.kendoWidget = function () {
     this.data("kendoWidget", new kendo.mobile.ui.Widget());
 
     return this;
 };
 
 intellisense.annotate(jQuery.fn, {
-    getKendoWidget: function() {
+    getKendoWidget: function () {
         /// <signature>
         /// <summary>
         /// Returns a reference to the kendo.mobile.ui.Widget widget, instantiated on the selector.
@@ -1310,7 +1308,7 @@ intellisense.annotate(jQuery.fn, {
         /// <returns type="kendo.mobile.ui.Widget">The kendo.mobile.ui.Widget instance (if present).</returns>
         /// </signature>
     },
-    kendoWidget: function(options) {
+    kendoWidget: function (options) {
         /// <signature>
         /// <summary>
         /// Instantiates a kendo.mobile.ui.Widget widget based the DOM elements that match the selector.
@@ -1326,154 +1324,154 @@ intellisense.annotate(jQuery.fn, {
 
 
 intellisense.annotate(kendo.ui, {
-    AutoComplete: function() {
+    AutoComplete: function () {
         /// <signature>
         /// <summary>Constructor of kendo.ui.AutoComplete</summary>
         /// </signature>
     }
 });
 
-kendo.ui.AutoComplete = (function() {
-var original = kendo.ui.AutoComplete;
-var wrapper = function() {
-var instance = new original();
-intellisense.annotate(instance, {
-    close: function() {
-        /// <signature>
-        /// <summary>
-        /// Closes the widget suggestion popup.
-        /// </summary>
-        /// </signature>
-    },
-    dataItem: function(index) {
-        /// <signature>
-        /// <summary>
-        /// Returns the data item at the specified index.
-        /// </summary>
-        /// <param name="index" type="Number" >The zero-based index of of the data item.</param>
-        /// <returns type="Object">the data item at the specified index. Returns undefined if the index is not within bounds.</returns>
-        /// </signature>
-    },
-    destroy: function() {
-        /// <signature>
-        /// <summary>
-        /// Prepares the widget for safe removal from DOM. Detaches all event handlers and removes jQuery.data attributes to avoid memory leaks. Calls destroy method of any child Kendo widgets.
-        /// </summary>
-        /// </signature>
-    },
-    enable: function(enable) {
-        /// <signature>
-        /// <summary>
-        /// Enables or disables the widget.
-        /// </summary>
-        /// <param name="enable" type="Boolean" >If set to true the widget will be enabled. If set to false the widget will be disabled.</param>
-        /// </signature>
-    },
-    focus: function() {
-        /// <signature>
-        /// <summary>
-        /// Focuses the widget.
-        /// </summary>
-        /// </signature>
-    },
-    readonly: function(readonly) {
-        /// <signature>
-        /// <summary>
-        /// Toggles the readonly state of the widget. When the widget is readonly it doesn't allow user input.
-        /// </summary>
-        /// <param name="readonly" type="Boolean" >If set to true the widget will not allow user input. If set to false the widget will allow user input.</param>
-        /// </signature>
-    },
-    refresh: function() {
-        /// <signature>
-        /// <summary>
-        /// Refresh the suggestion popup by rendering all items again.
-        /// </summary>
-        /// </signature>
-    },
-    search: function(word) {
-        /// <signature>
-        /// <summary>
-        /// Searches the data source for the provided value and displays any matches as suggestions.
-        /// </summary>
-        /// <param name="word" type="String" >The value to search for. All matches are displayed in the suggestion popup.</param>
-        /// </signature>
-    },
-    select: function(item) {
-        /// <signature>
-        /// <summary>
-        /// Selects the item provided as an argument and updates the value of the widget.
-        /// </summary>
-        /// <param name="item" type="Object" >A string, DOM element or jQuery object which represents the item to be selected. A string is treated as a jQuery selector.</param>
-        /// </signature>
-    },
-    setDataSource: function(dataSource) {
-        /// <signature>
-        /// <summary>
-        /// Sets the data source of the widget.
-        /// </summary>
-        /// <param name="dataSource" type="kendo.data.DataSource" >The data source to which the widget should be bound.</param>
-        /// </signature>
-    },
-    suggest: function(value) {
-        /// <signature>
-        /// <summary>
-        /// Sets the value of the widget to the specified argument and visually selects the text.
-        /// </summary>
-        /// <param name="value" type="String" >The value to set.</param>
-        /// </signature>
-    },
-    value: function(value) {
-        /// <signature>
-        /// <summary>
-        /// Gets or sets the value of the widget.
-        /// </summary>
-        /// <param name="value" type="String" >The value to set.</param>
-        /// <returns type="String">the value of the widget.</returns>
-        /// </signature>
-    },
+kendo.ui.AutoComplete = (function () {
+    var original = kendo.ui.AutoComplete;
+    var wrapper = function () {
+        var instance = new original();
+        intellisense.annotate(instance, {
+            close: function () {
+                /// <signature>
+                /// <summary>
+                /// Closes the widget suggestion popup.
+                /// </summary>
+                /// </signature>
+            },
+            dataItem: function (index) {
+                /// <signature>
+                /// <summary>
+                /// Returns the data item at the specified index.
+                /// </summary>
+                /// <param name="index" type="Number" >The zero-based index of of the data item.</param>
+                /// <returns type="Object">the data item at the specified index. Returns undefined if the index is not within bounds.</returns>
+                /// </signature>
+            },
+            destroy: function () {
+                /// <signature>
+                /// <summary>
+                /// Prepares the widget for safe removal from DOM. Detaches all event handlers and removes jQuery.data attributes to avoid memory leaks. Calls destroy method of any child Kendo widgets.
+                /// </summary>
+                /// </signature>
+            },
+            enable: function (enable) {
+                /// <signature>
+                /// <summary>
+                /// Enables or disables the widget.
+                /// </summary>
+                /// <param name="enable" type="Boolean" >If set to true the widget will be enabled. If set to false the widget will be disabled.</param>
+                /// </signature>
+            },
+            focus: function () {
+                /// <signature>
+                /// <summary>
+                /// Focuses the widget.
+                /// </summary>
+                /// </signature>
+            },
+            readonly: function (readonly) {
+                /// <signature>
+                /// <summary>
+                /// Toggles the readonly state of the widget. When the widget is readonly it doesn't allow user input.
+                /// </summary>
+                /// <param name="readonly" type="Boolean" >If set to true the widget will not allow user input. If set to false the widget will allow user input.</param>
+                /// </signature>
+            },
+            refresh: function () {
+                /// <signature>
+                /// <summary>
+                /// Refresh the suggestion popup by rendering all items again.
+                /// </summary>
+                /// </signature>
+            },
+            search: function (word) {
+                /// <signature>
+                /// <summary>
+                /// Searches the data source for the provided value and displays any matches as suggestions.
+                /// </summary>
+                /// <param name="word" type="String" >The value to search for. All matches are displayed in the suggestion popup.</param>
+                /// </signature>
+            },
+            select: function (item) {
+                /// <signature>
+                /// <summary>
+                /// Selects the item provided as an argument and updates the value of the widget.
+                /// </summary>
+                /// <param name="item" type="Object" >A string, DOM element or jQuery object which represents the item to be selected. A string is treated as a jQuery selector.</param>
+                /// </signature>
+            },
+            setDataSource: function (dataSource) {
+                /// <signature>
+                /// <summary>
+                /// Sets the data source of the widget.
+                /// </summary>
+                /// <param name="dataSource" type="kendo.data.DataSource" >The data source to which the widget should be bound.</param>
+                /// </signature>
+            },
+            suggest: function (value) {
+                /// <signature>
+                /// <summary>
+                /// Sets the value of the widget to the specified argument and visually selects the text.
+                /// </summary>
+                /// <param name="value" type="String" >The value to set.</param>
+                /// </signature>
+            },
+            value: function (value) {
+                /// <signature>
+                /// <summary>
+                /// Gets or sets the value of the widget.
+                /// </summary>
+                /// <param name="value" type="String" >The value to set.</param>
+                /// <returns type="String">the value of the widget.</returns>
+                /// </signature>
+            },
 
-    bind: function(event, callback) {
-        /// <signature>
-        /// <summary>
-        /// Binds to a widget event.
-        /// </summary>
-        /// <param name="event" type="String">The event name</param>
-        /// <param name="callback" type="Function">The callback to be executed when the event is triggered.</param>
-        /// </signature>
-    },
+            bind: function (event, callback) {
+                /// <signature>
+                /// <summary>
+                /// Binds to a widget event.
+                /// </summary>
+                /// <param name="event" type="String">The event name</param>
+                /// <param name="callback" type="Function">The callback to be executed when the event is triggered.</param>
+                /// </signature>
+            },
 
-    unbind: function(event, callback) {
-        /// <signature>
-        /// <summary>
-        /// Unbinds a callback from a widget event.
-        /// </summary>
-        /// <param name="event" type="String">The event name</param>
-        /// <param name="callback" type="Function">The callback to be removed.</param>
-        /// </signature>
-    }
+            unbind: function (event, callback) {
+                /// <signature>
+                /// <summary>
+                /// Unbinds a callback from a widget event.
+                /// </summary>
+                /// <param name="event" type="String">The event name</param>
+                /// <param name="callback" type="Function">The callback to be removed.</param>
+                /// </signature>
+            }
 
-});
+        });
 
-return instance;
+        return instance;
 
-};
+    };
 
-intellisense.redirectDefinition(wrapper, original);
+    intellisense.redirectDefinition(wrapper, original);
 
-return wrapper;
+    return wrapper;
 
 })();
 
 
-jQuery.fn.kendoAutoComplete = function() {
+jQuery.fn.kendoAutoComplete = function () {
     this.data("kendoAutoComplete", new kendo.ui.AutoComplete());
 
     return this;
 };
 
 intellisense.annotate(jQuery.fn, {
-    getKendoAutoComplete: function() {
+    getKendoAutoComplete: function () {
         /// <signature>
         /// <summary>
         /// Returns a reference to the kendo.ui.AutoComplete widget, instantiated on the selector.
@@ -1481,7 +1479,7 @@ intellisense.annotate(jQuery.fn, {
         /// <returns type="kendo.ui.AutoComplete">The kendo.ui.AutoComplete instance (if present).</returns>
         /// </signature>
     },
-    kendoAutoComplete: function(options) {
+    kendoAutoComplete: function (options) {
         /// <signature>
         /// <summary>
         /// Instantiates a kendo.ui.AutoComplete widget based the DOM elements that match the selector.
@@ -1546,68 +1544,68 @@ intellisense.annotate(jQuery.fn, {
 });
 
 intellisense.annotate(kendo.ui, {
-    Button: function() {
+    Button: function () {
         /// <signature>
         /// <summary>Constructor of kendo.ui.Button</summary>
         /// </signature>
     }
 });
 
-kendo.ui.Button = (function() {
-var original = kendo.ui.Button;
-var wrapper = function() {
-var instance = new original();
-intellisense.annotate(instance, {
-    enable: function(toggle) {
-        /// <signature>
-        /// <summary>
-        /// Enables or disables the Button.
-        /// </summary>
-        /// <param name="toggle" type="Boolean" >Indicates whether the Button should be enabled or disabled. Truthy and falsy arguments are accepted. If no argument is supplied, the Button will assume true and will be enabled.</param>
-        /// </signature>
-    },
+kendo.ui.Button = (function () {
+    var original = kendo.ui.Button;
+    var wrapper = function () {
+        var instance = new original();
+        intellisense.annotate(instance, {
+            enable: function (toggle) {
+                /// <signature>
+                /// <summary>
+                /// Enables or disables the Button.
+                /// </summary>
+                /// <param name="toggle" type="Boolean" >Indicates whether the Button should be enabled or disabled. Truthy and falsy arguments are accepted. If no argument is supplied, the Button will assume true and will be enabled.</param>
+                /// </signature>
+            },
 
-    bind: function(event, callback) {
-        /// <signature>
-        /// <summary>
-        /// Binds to a widget event.
-        /// </summary>
-        /// <param name="event" type="String">The event name</param>
-        /// <param name="callback" type="Function">The callback to be executed when the event is triggered.</param>
-        /// </signature>
-    },
+            bind: function (event, callback) {
+                /// <signature>
+                /// <summary>
+                /// Binds to a widget event.
+                /// </summary>
+                /// <param name="event" type="String">The event name</param>
+                /// <param name="callback" type="Function">The callback to be executed when the event is triggered.</param>
+                /// </signature>
+            },
 
-    unbind: function(event, callback) {
-        /// <signature>
-        /// <summary>
-        /// Unbinds a callback from a widget event.
-        /// </summary>
-        /// <param name="event" type="String">The event name</param>
-        /// <param name="callback" type="Function">The callback to be removed.</param>
-        /// </signature>
-    }
+            unbind: function (event, callback) {
+                /// <signature>
+                /// <summary>
+                /// Unbinds a callback from a widget event.
+                /// </summary>
+                /// <param name="event" type="String">The event name</param>
+                /// <param name="callback" type="Function">The callback to be removed.</param>
+                /// </signature>
+            }
 
-});
+        });
 
-return instance;
+        return instance;
 
-};
+    };
 
-intellisense.redirectDefinition(wrapper, original);
+    intellisense.redirectDefinition(wrapper, original);
 
-return wrapper;
+    return wrapper;
 
 })();
 
 
-jQuery.fn.kendoButton = function() {
+jQuery.fn.kendoButton = function () {
     this.data("kendoButton", new kendo.ui.Button());
 
     return this;
 };
 
 intellisense.annotate(jQuery.fn, {
-    getKendoButton: function() {
+    getKendoButton: function () {
         /// <signature>
         /// <summary>
         /// Returns a reference to the kendo.ui.Button widget, instantiated on the selector.
@@ -1615,7 +1613,7 @@ intellisense.annotate(jQuery.fn, {
         /// <returns type="kendo.ui.Button">The kendo.ui.Button instance (if present).</returns>
         /// </signature>
     },
-    kendoButton: function(options) {
+    kendoButton: function (options) {
         /// <signature>
         /// <summary>
         /// Instantiates a kendo.ui.Button widget based the DOM elements that match the selector.
@@ -1645,148 +1643,148 @@ intellisense.annotate(jQuery.fn, {
 });
 
 intellisense.annotate(kendo.ui, {
-    Calendar: function() {
+    Calendar: function () {
         /// <signature>
         /// <summary>Constructor of kendo.ui.Calendar</summary>
         /// </signature>
     }
 });
 
-kendo.ui.Calendar = (function() {
-var original = kendo.ui.Calendar;
-var wrapper = function() {
-var instance = new original();
-intellisense.annotate(instance, {
-    current: function() {
-        /// <signature>
-        /// <summary>
-        /// Gets currently focused date.
-        /// </summary>
-        /// <returns type="Date">The current focused date shown in the calendar.</returns>
-        /// </signature>
-    },
-    destroy: function() {
-        /// <signature>
-        /// <summary>
-        /// Prepares the Calendar for safe removal from DOM. Detaches all event handlers and removes jQuery.data attributes to avoid memory leaks. Calls destroy method of any child Kendo widgets.
-        /// </summary>
-        /// </signature>
-    },
-    max: function(value) {
-        /// <signature>
-        /// <summary>
-        /// Gets/Sets the max value of the calendar.
-        /// </summary>
-        /// <param name="value" type="Object" >The max date to set.</param>
-        /// <returns type="Date">The max value of the calendar.</returns>
-        /// </signature>
-    },
-    min: function(value) {
-        /// <signature>
-        /// <summary>
-        /// Gets/Sets the min value of the calendar.
-        /// </summary>
-        /// <param name="value" type="Object" >The min date to set.</param>
-        /// <returns type="Date">The min value of the calendar.</returns>
-        /// </signature>
-    },
-    navigate: function(value,view) {
-        /// <signature>
-        /// <summary>
-        /// Navigates to view.
-        /// </summary>
-        /// <param name="value" type="Date" >Desired date.</param>
-        /// <param name="view" type="String" >Desired view.</param>
-        /// </signature>
-    },
-    navigateDown: function(value) {
-        /// <signature>
-        /// <summary>
-        /// Navigates to the lower view.
-        /// </summary>
-        /// <param name="value" type="Date" >Desired date.</param>
-        /// </signature>
-    },
-    navigateToFuture: function() {
-        /// <signature>
-        /// <summary>
-        /// Navigates to the future.
-        /// </summary>
-        /// </signature>
-    },
-    navigateToPast: function() {
-        /// <signature>
-        /// <summary>
-        /// Navigates to the past.
-        /// </summary>
-        /// </signature>
-    },
-    navigateUp: function() {
-        /// <signature>
-        /// <summary>
-        /// Navigates to the upper view.
-        /// </summary>
-        /// </signature>
-    },
-    value: function(value) {
-        /// <signature>
-        /// <summary>
-        /// Gets/Sets the value of the calendar.
-        /// </summary>
-        /// <param name="value" type="Object" >The date to set.</param>
-        /// <returns type="Date">The value of the calendar.</returns>
-        /// </signature>
-    },
-    view: function() {
-        /// <signature>
-        /// <summary>
-        /// Gets an instance of the current view used by the calendar.
-        /// </summary>
-        /// <returns type="Object">The instance of the current view used by the calendar.</returns>
-        /// </signature>
-    },
+kendo.ui.Calendar = (function () {
+    var original = kendo.ui.Calendar;
+    var wrapper = function () {
+        var instance = new original();
+        intellisense.annotate(instance, {
+            current: function () {
+                /// <signature>
+                /// <summary>
+                /// Gets currently focused date.
+                /// </summary>
+                /// <returns type="Date">The current focused date shown in the calendar.</returns>
+                /// </signature>
+            },
+            destroy: function () {
+                /// <signature>
+                /// <summary>
+                /// Prepares the Calendar for safe removal from DOM. Detaches all event handlers and removes jQuery.data attributes to avoid memory leaks. Calls destroy method of any child Kendo widgets.
+                /// </summary>
+                /// </signature>
+            },
+            max: function (value) {
+                /// <signature>
+                /// <summary>
+                /// Gets/Sets the max value of the calendar.
+                /// </summary>
+                /// <param name="value" type="Object" >The max date to set.</param>
+                /// <returns type="Date">The max value of the calendar.</returns>
+                /// </signature>
+            },
+            min: function (value) {
+                /// <signature>
+                /// <summary>
+                /// Gets/Sets the min value of the calendar.
+                /// </summary>
+                /// <param name="value" type="Object" >The min date to set.</param>
+                /// <returns type="Date">The min value of the calendar.</returns>
+                /// </signature>
+            },
+            navigate: function (value, view) {
+                /// <signature>
+                /// <summary>
+                /// Navigates to io.
+                /// </summary>
+                /// <param name="value" type="Date" >Desired date.</param>
+                /// <param name="io" type="String" >Desired io.</param>
+                /// </signature>
+            },
+            navigateDown: function (value) {
+                /// <signature>
+                /// <summary>
+                /// Navigates to the lower io.
+                /// </summary>
+                /// <param name="value" type="Date" >Desired date.</param>
+                /// </signature>
+            },
+            navigateToFuture: function () {
+                /// <signature>
+                /// <summary>
+                /// Navigates to the future.
+                /// </summary>
+                /// </signature>
+            },
+            navigateToPast: function () {
+                /// <signature>
+                /// <summary>
+                /// Navigates to the past.
+                /// </summary>
+                /// </signature>
+            },
+            navigateUp: function () {
+                /// <signature>
+                /// <summary>
+                /// Navigates to the upper io.
+                /// </summary>
+                /// </signature>
+            },
+            value: function (value) {
+                /// <signature>
+                /// <summary>
+                /// Gets/Sets the value of the calendar.
+                /// </summary>
+                /// <param name="value" type="Object" >The date to set.</param>
+                /// <returns type="Date">The value of the calendar.</returns>
+                /// </signature>
+            },
+            view: function () {
+                /// <signature>
+                /// <summary>
+                /// Gets an instance of the current io used by the calendar.
+                /// </summary>
+                /// <returns type="Object">The instance of the current io used by the calendar.</returns>
+                /// </signature>
+            },
 
-    bind: function(event, callback) {
-        /// <signature>
-        /// <summary>
-        /// Binds to a widget event.
-        /// </summary>
-        /// <param name="event" type="String">The event name</param>
-        /// <param name="callback" type="Function">The callback to be executed when the event is triggered.</param>
-        /// </signature>
-    },
+            bind: function (event, callback) {
+                /// <signature>
+                /// <summary>
+                /// Binds to a widget event.
+                /// </summary>
+                /// <param name="event" type="String">The event name</param>
+                /// <param name="callback" type="Function">The callback to be executed when the event is triggered.</param>
+                /// </signature>
+            },
 
-    unbind: function(event, callback) {
-        /// <signature>
-        /// <summary>
-        /// Unbinds a callback from a widget event.
-        /// </summary>
-        /// <param name="event" type="String">The event name</param>
-        /// <param name="callback" type="Function">The callback to be removed.</param>
-        /// </signature>
-    }
+            unbind: function (event, callback) {
+                /// <signature>
+                /// <summary>
+                /// Unbinds a callback from a widget event.
+                /// </summary>
+                /// <param name="event" type="String">The event name</param>
+                /// <param name="callback" type="Function">The callback to be removed.</param>
+                /// </signature>
+            }
 
-});
+        });
 
-return instance;
+        return instance;
 
-};
+    };
 
-intellisense.redirectDefinition(wrapper, original);
+    intellisense.redirectDefinition(wrapper, original);
 
-return wrapper;
+    return wrapper;
 
 })();
 
 
-jQuery.fn.kendoCalendar = function() {
+jQuery.fn.kendoCalendar = function () {
     this.data("kendoCalendar", new kendo.ui.Calendar());
 
     return this;
 };
 
 intellisense.annotate(jQuery.fn, {
-    getKendoCalendar: function() {
+    getKendoCalendar: function () {
         /// <signature>
         /// <summary>
         /// Returns a reference to the kendo.ui.Calendar widget, instantiated on the selector.
@@ -1794,7 +1792,7 @@ intellisense.annotate(jQuery.fn, {
         /// <returns type="kendo.ui.Calendar">The kendo.ui.Calendar instance (if present).</returns>
         /// </signature>
     },
-    kendoCalendar: function(options) {
+    kendoCalendar: function (options) {
         /// <signature>
         /// <summary>
         /// Instantiates a kendo.ui.Calendar widget based the DOM elements that match the selector.
@@ -1823,10 +1821,10 @@ intellisense.annotate(jQuery.fn, {
         /// &#10;Specifies the minimum date, which the calendar can show.
         /// &#10;
         /// &#10;month — Object 
-        /// &#10;Templates for the cells rendered in "month" view.
+        /// &#10;Templates for the cells rendered in "month" io.
         /// &#10;
         /// &#10;start — String (default: "month")
-        /// &#10;Specifies the start view.
+        /// &#10;Specifies the start io.
 /// &#10;The following settings are available for the start value:
         /// &#10;
         /// &#10;value — Date (default: null)
@@ -1841,86 +1839,86 @@ intellisense.annotate(jQuery.fn, {
 });
 
 intellisense.annotate(kendo.ui, {
-    ColorPalette: function() {
+    ColorPalette: function () {
         /// <signature>
         /// <summary>Constructor of kendo.ui.ColorPalette</summary>
         /// </signature>
     }
 });
 
-kendo.ui.ColorPalette = (function() {
-var original = kendo.ui.ColorPalette;
-var wrapper = function() {
-var instance = new original();
-intellisense.annotate(instance, {
-    value: function(color) {
-        /// <signature>
-        /// <summary>
-        /// Get or set the selected color. If no argument is given, this returns the currently selected color as a string in format #FFFFFF.If one argument is given, it selects the new color and updates the UI. The argument can be a string in hex, rgb or rgba format, or a kendo.Color object object.
-        /// </summary>
-        /// <param name="color" type="String" ></param>
-        /// <returns type="String">the string representation of the current color.</returns>
-        /// </signature>
-    },
-    color: function(color) {
-        /// <signature>
-        /// <summary>
-        /// Get or set the selected color. If no argument is given, this returns the currently selected color as a kendo.Color object.
-        /// </summary>
-        /// <param name="color" type="kendo.Color" >The color that should be set as the current value</param>
-        /// <returns type="kendo.Color">the current value</returns>
-        /// </signature>
-    },
-    enable: function(enable) {
-        /// <signature>
-        /// <summary>
-        /// Enables or disables the widget.
-        /// </summary>
-        /// <param name="enable" type="Boolean" >Whether the widget should be enabled (true) or disabled (false). If not specified, the method will enable the widget.</param>
-        /// </signature>
-    },
+kendo.ui.ColorPalette = (function () {
+    var original = kendo.ui.ColorPalette;
+    var wrapper = function () {
+        var instance = new original();
+        intellisense.annotate(instance, {
+            value: function (color) {
+                /// <signature>
+                /// <summary>
+                /// Get or set the selected color. If no argument is given, this returns the currently selected color as a string in format #FFFFFF.If one argument is given, it selects the new color and updates the UI. The argument can be a string in hex, rgb or rgba format, or a kendo.Color object object.
+                /// </summary>
+                /// <param name="color" type="String" ></param>
+                /// <returns type="String">the string representation of the current color.</returns>
+                /// </signature>
+            },
+            color: function (color) {
+                /// <signature>
+                /// <summary>
+                /// Get or set the selected color. If no argument is given, this returns the currently selected color as a kendo.Color object.
+                /// </summary>
+                /// <param name="color" type="kendo.Color" >The color that should be set as the current value</param>
+                /// <returns type="kendo.Color">the current value</returns>
+                /// </signature>
+            },
+            enable: function (enable) {
+                /// <signature>
+                /// <summary>
+                /// Enables or disables the widget.
+                /// </summary>
+                /// <param name="enable" type="Boolean" >Whether the widget should be enabled (true) or disabled (false). If not specified, the method will enable the widget.</param>
+                /// </signature>
+            },
 
-    bind: function(event, callback) {
-        /// <signature>
-        /// <summary>
-        /// Binds to a widget event.
-        /// </summary>
-        /// <param name="event" type="String">The event name</param>
-        /// <param name="callback" type="Function">The callback to be executed when the event is triggered.</param>
-        /// </signature>
-    },
+            bind: function (event, callback) {
+                /// <signature>
+                /// <summary>
+                /// Binds to a widget event.
+                /// </summary>
+                /// <param name="event" type="String">The event name</param>
+                /// <param name="callback" type="Function">The callback to be executed when the event is triggered.</param>
+                /// </signature>
+            },
 
-    unbind: function(event, callback) {
-        /// <signature>
-        /// <summary>
-        /// Unbinds a callback from a widget event.
-        /// </summary>
-        /// <param name="event" type="String">The event name</param>
-        /// <param name="callback" type="Function">The callback to be removed.</param>
-        /// </signature>
-    }
+            unbind: function (event, callback) {
+                /// <signature>
+                /// <summary>
+                /// Unbinds a callback from a widget event.
+                /// </summary>
+                /// <param name="event" type="String">The event name</param>
+                /// <param name="callback" type="Function">The callback to be removed.</param>
+                /// </signature>
+            }
 
-});
+        });
 
-return instance;
+        return instance;
 
-};
+    };
 
-intellisense.redirectDefinition(wrapper, original);
+    intellisense.redirectDefinition(wrapper, original);
 
-return wrapper;
+    return wrapper;
 
 })();
 
 
-jQuery.fn.kendoColorPalette = function() {
+jQuery.fn.kendoColorPalette = function () {
     this.data("kendoColorPalette", new kendo.ui.ColorPalette());
 
     return this;
 };
 
 intellisense.annotate(jQuery.fn, {
-    getKendoColorPalette: function() {
+    getKendoColorPalette: function () {
         /// <signature>
         /// <summary>
         /// Returns a reference to the kendo.ui.ColorPalette widget, instantiated on the selector.
@@ -1928,7 +1926,7 @@ intellisense.annotate(jQuery.fn, {
         /// <returns type="kendo.ui.ColorPalette">The kendo.ui.ColorPalette instance (if present).</returns>
         /// </signature>
     },
-    kendoColorPalette: function(options) {
+    kendoColorPalette: function (options) {
         /// <signature>
         /// <summary>
         /// Instantiates a kendo.ui.ColorPalette widget based the DOM elements that match the selector.
@@ -1959,111 +1957,111 @@ intellisense.annotate(jQuery.fn, {
 });
 
 intellisense.annotate(kendo.ui, {
-    ColorPicker: function() {
+    ColorPicker: function () {
         /// <signature>
         /// <summary>Constructor of kendo.ui.ColorPicker</summary>
         /// </signature>
     }
 });
 
-kendo.ui.ColorPicker = (function() {
-var original = kendo.ui.ColorPicker;
-var wrapper = function() {
-var instance = new original();
-intellisense.annotate(instance, {
-    close: function() {
-        /// <signature>
-        /// <summary>
-        /// Closes the popup.
-        /// </summary>
-        /// </signature>
-    },
-    open: function() {
-        /// <signature>
-        /// <summary>
-        /// Opens the popup element with the color selector.
-        /// </summary>
-        /// </signature>
-    },
-    toggle: function() {
-        /// <signature>
-        /// <summary>
-        /// Toggles the popup.
-        /// </summary>
-        /// </signature>
-    },
-    value: function(color) {
-        /// <signature>
-        /// <summary>
-        /// Get or set the selected color. If no argument is given, this returns the
+kendo.ui.ColorPicker = (function () {
+    var original = kendo.ui.ColorPicker;
+    var wrapper = function () {
+        var instance = new original();
+        intellisense.annotate(instance, {
+            close: function () {
+                /// <signature>
+                /// <summary>
+                /// Closes the popup.
+                /// </summary>
+                /// </signature>
+            },
+            open: function () {
+                /// <signature>
+                /// <summary>
+                /// Opens the popup element with the color selector.
+                /// </summary>
+                /// </signature>
+            },
+            toggle: function () {
+                /// <signature>
+                /// <summary>
+                /// Toggles the popup.
+                /// </summary>
+                /// </signature>
+            },
+            value: function (color) {
+                /// <signature>
+                /// <summary>
+                /// Get or set the selected color. If no argument is given, this returns the
 /// currently selected color as a string in format #FFFFFF when the opacity
 /// option is off, or rgba(255, 255, 255, 1) when opacity is requested.If one argument is given, it selects the new color and updates the UI.  The
 /// argument can be a string in hex, rgb or rgba format, or a Color object.
 /// This does not trigger the "change" event.
-        /// </summary>
-        /// <param name="color" type="String" ></param>
-        /// <returns type="String">the string representation of the current color.</returns>
-        /// </signature>
-    },
-    color: function(color) {
-        /// <signature>
-        /// <summary>
-        /// Get or set the selected color. If no argument is given, this returns the currently selected color as a kendo.Color object.
-        /// </summary>
-        /// <param name="color" type="kendo.Color" >The color that should be set as the current value</param>
-        /// <returns type="kendo.Color">the current value</returns>
-        /// </signature>
-    },
-    enable: function(enable) {
-        /// <signature>
-        /// <summary>
-        /// Enables or disables the widget.
-        /// </summary>
-        /// <param name="enable" type="Boolean" >Whether the widget should be enabled (true) or disabled (false). If not specified, the method will enable the widget.</param>
-        /// </signature>
-    },
+                /// </summary>
+                /// <param name="color" type="String" ></param>
+                /// <returns type="String">the string representation of the current color.</returns>
+                /// </signature>
+            },
+            color: function (color) {
+                /// <signature>
+                /// <summary>
+                /// Get or set the selected color. If no argument is given, this returns the currently selected color as a kendo.Color object.
+                /// </summary>
+                /// <param name="color" type="kendo.Color" >The color that should be set as the current value</param>
+                /// <returns type="kendo.Color">the current value</returns>
+                /// </signature>
+            },
+            enable: function (enable) {
+                /// <signature>
+                /// <summary>
+                /// Enables or disables the widget.
+                /// </summary>
+                /// <param name="enable" type="Boolean" >Whether the widget should be enabled (true) or disabled (false). If not specified, the method will enable the widget.</param>
+                /// </signature>
+            },
 
-    bind: function(event, callback) {
-        /// <signature>
-        /// <summary>
-        /// Binds to a widget event.
-        /// </summary>
-        /// <param name="event" type="String">The event name</param>
-        /// <param name="callback" type="Function">The callback to be executed when the event is triggered.</param>
-        /// </signature>
-    },
+            bind: function (event, callback) {
+                /// <signature>
+                /// <summary>
+                /// Binds to a widget event.
+                /// </summary>
+                /// <param name="event" type="String">The event name</param>
+                /// <param name="callback" type="Function">The callback to be executed when the event is triggered.</param>
+                /// </signature>
+            },
 
-    unbind: function(event, callback) {
-        /// <signature>
-        /// <summary>
-        /// Unbinds a callback from a widget event.
-        /// </summary>
-        /// <param name="event" type="String">The event name</param>
-        /// <param name="callback" type="Function">The callback to be removed.</param>
-        /// </signature>
-    }
+            unbind: function (event, callback) {
+                /// <signature>
+                /// <summary>
+                /// Unbinds a callback from a widget event.
+                /// </summary>
+                /// <param name="event" type="String">The event name</param>
+                /// <param name="callback" type="Function">The callback to be removed.</param>
+                /// </signature>
+            }
 
-});
+        });
 
-return instance;
+        return instance;
 
-};
+    };
 
-intellisense.redirectDefinition(wrapper, original);
+    intellisense.redirectDefinition(wrapper, original);
 
-return wrapper;
+    return wrapper;
 
 })();
 
 
-jQuery.fn.kendoColorPicker = function() {
+jQuery.fn.kendoColorPicker = function () {
     this.data("kendoColorPicker", new kendo.ui.ColorPicker());
 
     return this;
 };
 
 intellisense.annotate(jQuery.fn, {
-    getKendoColorPicker: function() {
+    getKendoColorPicker: function () {
         /// <signature>
         /// <summary>
         /// Returns a reference to the kendo.ui.ColorPicker widget, instantiated on the selector.
@@ -2071,7 +2069,7 @@ intellisense.annotate(jQuery.fn, {
         /// <returns type="kendo.ui.ColorPicker">The kendo.ui.ColorPicker instance (if present).</returns>
         /// </signature>
     },
-    kendoColorPicker: function(options) {
+    kendoColorPicker: function (options) {
         /// <signature>
         /// <summary>
         /// Instantiates a kendo.ui.ColorPicker widget based the DOM elements that match the selector.
@@ -2123,180 +2121,180 @@ intellisense.annotate(jQuery.fn, {
 });
 
 intellisense.annotate(kendo.ui, {
-    ComboBox: function() {
+    ComboBox: function () {
         /// <signature>
         /// <summary>Constructor of kendo.ui.ComboBox</summary>
         /// </signature>
     }
 });
 
-kendo.ui.ComboBox = (function() {
-var original = kendo.ui.ComboBox;
-var wrapper = function() {
-var instance = new original();
-intellisense.annotate(instance, {
-    close: function() {
-        /// <signature>
-        /// <summary>
-        /// Closes the widget popup.
-        /// </summary>
-        /// </signature>
-    },
-    dataItem: function(index) {
-        /// <signature>
-        /// <summary>
-        /// Returns the data item at the specified index. If the index is not specified, the selected index will be used.
-        /// </summary>
-        /// <param name="index" type="Number" >The zero-based index of the data record.</param>
-        /// <returns type="Object">The raw data record. Returns undefined if no data.</returns>
-        /// </signature>
-    },
-    destroy: function() {
-        /// <signature>
-        /// <summary>
-        /// Prepares the ComboBox for safe removal from DOM. Detaches all event handlers and removes jQuery.data attributes to avoid memory leaks. Calls destroy method of any child Kendo widgets.
-        /// </summary>
-        /// </signature>
-    },
-    enable: function(enable) {
-        /// <signature>
-        /// <summary>
-        /// Enables or disables the widget.
-        /// </summary>
-        /// <param name="enable" type="Boolean" >If set to true the widget will be enabled. If set to false the widget will be disabled.</param>
-        /// </signature>
-    },
-    readonly: function(readonly) {
-        /// <signature>
-        /// <summary>
-        /// Toggles the readonly state of the widget. When the widget is readonly it doesn't allow user input.
-        /// </summary>
-        /// <param name="readonly" type="Boolean" >If set to true the widget will not allow user input. If set to false the widget will allow user input.</param>
-        /// </signature>
-    },
-    focus: function() {
-        /// <signature>
-        /// <summary>
-        /// Focuses the widget.
-        /// </summary>
-        /// </signature>
-    },
-    open: function() {
-        /// <signature>
-        /// <summary>
-        /// Opens the popup.
-        /// </summary>
-        /// </signature>
-    },
-    refresh: function() {
-        /// <signature>
-        /// <summary>
-        /// Refresh the popup by rendering all items again.
-        /// </summary>
-        /// </signature>
-    },
-    search: function(word) {
-        /// <signature>
-        /// <summary>
-        /// Searches the data source for the provided value and displays any matches as suggestions.
-        /// </summary>
-        /// <param name="word" type="String" >The filter value.</param>
-        /// </signature>
-    },
-    select: function(li) {
-        /// <signature>
-        /// <summary>
-        /// Selects the item provided as an argument and updates the value and text of the widget.
-        /// </summary>
-        /// <param name="li" type="Object" >A string, DOM element or jQuery object which represents the item to be selected. A string is treated as a jQuery selector. A number representing the index of the item or function predicate which returns the correct data item.</param>
-        /// <returns type="Number">The index of the selected item, if called with no parameters. If a custom value is entered, the returned selected index is -1. If called with a parameter as a setter.</returns>
-        /// </signature>
-    },
-    setDataSource: function(dataSource) {
-        /// <signature>
-        /// <summary>
-        /// Sets the dataSource of an existing ComboBox and rebinds it.
-        /// </summary>
-        /// <param name="dataSource" type="kendo.data.DataSource" ></param>
-        /// </signature>
-    },
-    suggest: function(value) {
-        /// <signature>
-        /// <summary>
-        /// Sets the value of the widget to the specified argument and visually selects the text.
-        /// </summary>
-        /// <param name="value" type="String" >Characters to force a suggestion.</param>
-        /// </signature>
-    },
-    text: function(text) {
-        /// <signature>
-        /// <summary>
-        /// Gets or sets the text of the ComboBox. Widget will select the item with same text. If
+kendo.ui.ComboBox = (function () {
+    var original = kendo.ui.ComboBox;
+    var wrapper = function () {
+        var instance = new original();
+        intellisense.annotate(instance, {
+            close: function () {
+                /// <signature>
+                /// <summary>
+                /// Closes the widget popup.
+                /// </summary>
+                /// </signature>
+            },
+            dataItem: function (index) {
+                /// <signature>
+                /// <summary>
+                /// Returns the data item at the specified index. If the index is not specified, the selected index will be used.
+                /// </summary>
+                /// <param name="index" type="Number" >The zero-based index of the data record.</param>
+                /// <returns type="Object">The raw data record. Returns undefined if no data.</returns>
+                /// </signature>
+            },
+            destroy: function () {
+                /// <signature>
+                /// <summary>
+                /// Prepares the ComboBox for safe removal from DOM. Detaches all event handlers and removes jQuery.data attributes to avoid memory leaks. Calls destroy method of any child Kendo widgets.
+                /// </summary>
+                /// </signature>
+            },
+            enable: function (enable) {
+                /// <signature>
+                /// <summary>
+                /// Enables or disables the widget.
+                /// </summary>
+                /// <param name="enable" type="Boolean" >If set to true the widget will be enabled. If set to false the widget will be disabled.</param>
+                /// </signature>
+            },
+            readonly: function (readonly) {
+                /// <signature>
+                /// <summary>
+                /// Toggles the readonly state of the widget. When the widget is readonly it doesn't allow user input.
+                /// </summary>
+                /// <param name="readonly" type="Boolean" >If set to true the widget will not allow user input. If set to false the widget will allow user input.</param>
+                /// </signature>
+            },
+            focus: function () {
+                /// <signature>
+                /// <summary>
+                /// Focuses the widget.
+                /// </summary>
+                /// </signature>
+            },
+            open: function () {
+                /// <signature>
+                /// <summary>
+                /// Opens the popup.
+                /// </summary>
+                /// </signature>
+            },
+            refresh: function () {
+                /// <signature>
+                /// <summary>
+                /// Refresh the popup by rendering all items again.
+                /// </summary>
+                /// </signature>
+            },
+            search: function (word) {
+                /// <signature>
+                /// <summary>
+                /// Searches the data source for the provided value and displays any matches as suggestions.
+                /// </summary>
+                /// <param name="word" type="String" >The filter value.</param>
+                /// </signature>
+            },
+            select: function (li) {
+                /// <signature>
+                /// <summary>
+                /// Selects the item provided as an argument and updates the value and text of the widget.
+                /// </summary>
+                /// <param name="li" type="Object" >A string, DOM element or jQuery object which represents the item to be selected. A string is treated as a jQuery selector. A number representing the index of the item or function predicate which returns the correct data item.</param>
+                /// <returns type="Number">The index of the selected item, if called with no parameters. If a custom value is entered, the returned selected index is -1. If called with a parameter as a setter.</returns>
+                /// </signature>
+            },
+            setDataSource: function (dataSource) {
+                /// <signature>
+                /// <summary>
+                /// Sets the dataSource of an existing ComboBox and rebinds it.
+                /// </summary>
+                /// <param name="dataSource" type="kendo.data.DataSource" ></param>
+                /// </signature>
+            },
+            suggest: function (value) {
+                /// <signature>
+                /// <summary>
+                /// Sets the value of the widget to the specified argument and visually selects the text.
+                /// </summary>
+                /// <param name="value" type="String" >Characters to force a suggestion.</param>
+                /// </signature>
+            },
+            text: function (text) {
+                /// <signature>
+                /// <summary>
+                /// Gets or sets the text of the ComboBox. Widget will select the item with same text. If
 /// there are no matches then the text will be considered as a custom value of the widget.
-        /// </summary>
-        /// <param name="text" type="String" >The text to set.</param>
-        /// <returns type="String">The text of the combobox.</returns>
-        /// </signature>
-    },
-    toggle: function(toggle) {
-        /// <signature>
-        /// <summary>
-        /// Opens or closes the widget popup.
-        /// </summary>
-        /// <param name="toggle" type="Boolean" >Defines the whether to open/close the drop-down list.</param>
-        /// </signature>
-    },
-    value: function(value) {
-        /// <signature>
-        /// <summary>
-        /// Gets or sets the value of the combobox.
-        /// </summary>
-        /// <param name="value" type="String" >The value to set.</param>
-        /// <returns type="String">The value of the combobox.</returns>
-        /// </signature>
-    },
+                /// </summary>
+                /// <param name="text" type="String" >The text to set.</param>
+                /// <returns type="String">The text of the combobox.</returns>
+                /// </signature>
+            },
+            toggle: function (toggle) {
+                /// <signature>
+                /// <summary>
+                /// Opens or closes the widget popup.
+                /// </summary>
+                /// <param name="toggle" type="Boolean" >Defines the whether to open/close the drop-down list.</param>
+                /// </signature>
+            },
+            value: function (value) {
+                /// <signature>
+                /// <summary>
+                /// Gets or sets the value of the combobox.
+                /// </summary>
+                /// <param name="value" type="String" >The value to set.</param>
+                /// <returns type="String">The value of the combobox.</returns>
+                /// </signature>
+            },
 
-    bind: function(event, callback) {
-        /// <signature>
-        /// <summary>
-        /// Binds to a widget event.
-        /// </summary>
-        /// <param name="event" type="String">The event name</param>
-        /// <param name="callback" type="Function">The callback to be executed when the event is triggered.</param>
-        /// </signature>
-    },
+            bind: function (event, callback) {
+                /// <signature>
+                /// <summary>
+                /// Binds to a widget event.
+                /// </summary>
+                /// <param name="event" type="String">The event name</param>
+                /// <param name="callback" type="Function">The callback to be executed when the event is triggered.</param>
+                /// </signature>
+            },
 
-    unbind: function(event, callback) {
-        /// <signature>
-        /// <summary>
-        /// Unbinds a callback from a widget event.
-        /// </summary>
-        /// <param name="event" type="String">The event name</param>
-        /// <param name="callback" type="Function">The callback to be removed.</param>
-        /// </signature>
-    }
+            unbind: function (event, callback) {
+                /// <signature>
+                /// <summary>
+                /// Unbinds a callback from a widget event.
+                /// </summary>
+                /// <param name="event" type="String">The event name</param>
+                /// <param name="callback" type="Function">The callback to be removed.</param>
+                /// </signature>
+            }
 
-});
+        });
 
-return instance;
+        return instance;
 
-};
+    };
 
-intellisense.redirectDefinition(wrapper, original);
+    intellisense.redirectDefinition(wrapper, original);
 
-return wrapper;
+    return wrapper;
 
 })();
 
 
-jQuery.fn.kendoComboBox = function() {
+jQuery.fn.kendoComboBox = function () {
     this.data("kendoComboBox", new kendo.ui.ComboBox());
 
     return this;
 };
 
 intellisense.annotate(jQuery.fn, {
-    getKendoComboBox: function() {
+    getKendoComboBox: function () {
         /// <signature>
         /// <summary>
         /// Returns a reference to the kendo.ui.ComboBox widget, instantiated on the selector.
@@ -2304,7 +2302,7 @@ intellisense.annotate(jQuery.fn, {
         /// <returns type="kendo.ui.ComboBox">The kendo.ui.ComboBox instance (if present).</returns>
         /// </signature>
     },
-    kendoComboBox: function(options) {
+    kendoComboBox: function (options) {
         /// <signature>
         /// <summary>
         /// Instantiates a kendo.ui.ComboBox widget based the DOM elements that match the selector.
@@ -2389,124 +2387,124 @@ intellisense.annotate(jQuery.fn, {
 });
 
 intellisense.annotate(kendo.ui, {
-    DatePicker: function() {
+    DatePicker: function () {
         /// <signature>
         /// <summary>Constructor of kendo.ui.DatePicker</summary>
         /// </signature>
     }
 });
 
-kendo.ui.DatePicker = (function() {
-var original = kendo.ui.DatePicker;
-var wrapper = function() {
-var instance = new original();
-intellisense.annotate(instance, {
-    close: function() {
-        /// <signature>
-        /// <summary>
-        /// Closes the calendar.
-        /// </summary>
-        /// </signature>
-    },
-    destroy: function() {
-        /// <signature>
-        /// <summary>
-        /// Prepares the DatePicker for safe removal from DOM. Detaches all event handlers and removes jQuery.data attributes to avoid memory leaks. Calls destroy method of any child Kendo widgets.
-        /// </summary>
-        /// </signature>
-    },
-    enable: function(enable) {
-        /// <signature>
-        /// <summary>
-        /// Enable/Disable the DatePicker widget.
-        /// </summary>
-        /// <param name="enable" type="Boolean" >The argument, which defines whether to enable/disable the DatePicker.</param>
-        /// </signature>
-    },
-    readonly: function(readonly) {
-        /// <signature>
-        /// <summary>
-        /// Toggles the readonly state of the widget. When the widget is readonly it doesn't allow user input.
-        /// </summary>
-        /// <param name="readonly" type="Boolean" >The argument, which defines whether the datepicker should be readonly or editable.</param>
-        /// </signature>
-    },
-    max: function(value) {
-        /// <signature>
-        /// <summary>
-        /// Gets/Sets the max value of the DatePicker.
-        /// </summary>
-        /// <param name="value" type="Object" >The max date to set.</param>
-        /// <returns type="Date">The max value of the DatePicker.</returns>
-        /// </signature>
-    },
-    min: function(value) {
-        /// <signature>
-        /// <summary>
-        /// Gets/Sets the min value of the DatePicker.
-        /// </summary>
-        /// <param name="value" type="Object" >The min date to set.</param>
-        /// <returns type="Date">The min value of the DatePicker.</returns>
-        /// </signature>
-    },
-    open: function() {
-        /// <signature>
-        /// <summary>
-        /// Opens the calendar.
-        /// </summary>
-        /// </signature>
-    },
-    value: function(value) {
-        /// <signature>
-        /// <summary>
-        /// Gets/Sets the value of the DatePicker.
-        /// </summary>
-        /// <param name="value" type="Object" >The value to set.</param>
-        /// <returns type="Date">The value of the DatePicker.</returns>
-        /// </signature>
-    },
+kendo.ui.DatePicker = (function () {
+    var original = kendo.ui.DatePicker;
+    var wrapper = function () {
+        var instance = new original();
+        intellisense.annotate(instance, {
+            close: function () {
+                /// <signature>
+                /// <summary>
+                /// Closes the calendar.
+                /// </summary>
+                /// </signature>
+            },
+            destroy: function () {
+                /// <signature>
+                /// <summary>
+                /// Prepares the DatePicker for safe removal from DOM. Detaches all event handlers and removes jQuery.data attributes to avoid memory leaks. Calls destroy method of any child Kendo widgets.
+                /// </summary>
+                /// </signature>
+            },
+            enable: function (enable) {
+                /// <signature>
+                /// <summary>
+                /// Enable/Disable the DatePicker widget.
+                /// </summary>
+                /// <param name="enable" type="Boolean" >The argument, which defines whether to enable/disable the DatePicker.</param>
+                /// </signature>
+            },
+            readonly: function (readonly) {
+                /// <signature>
+                /// <summary>
+                /// Toggles the readonly state of the widget. When the widget is readonly it doesn't allow user input.
+                /// </summary>
+                /// <param name="readonly" type="Boolean" >The argument, which defines whether the datepicker should be readonly or editable.</param>
+                /// </signature>
+            },
+            max: function (value) {
+                /// <signature>
+                /// <summary>
+                /// Gets/Sets the max value of the DatePicker.
+                /// </summary>
+                /// <param name="value" type="Object" >The max date to set.</param>
+                /// <returns type="Date">The max value of the DatePicker.</returns>
+                /// </signature>
+            },
+            min: function (value) {
+                /// <signature>
+                /// <summary>
+                /// Gets/Sets the min value of the DatePicker.
+                /// </summary>
+                /// <param name="value" type="Object" >The min date to set.</param>
+                /// <returns type="Date">The min value of the DatePicker.</returns>
+                /// </signature>
+            },
+            open: function () {
+                /// <signature>
+                /// <summary>
+                /// Opens the calendar.
+                /// </summary>
+                /// </signature>
+            },
+            value: function (value) {
+                /// <signature>
+                /// <summary>
+                /// Gets/Sets the value of the DatePicker.
+                /// </summary>
+                /// <param name="value" type="Object" >The value to set.</param>
+                /// <returns type="Date">The value of the DatePicker.</returns>
+                /// </signature>
+            },
 
-    bind: function(event, callback) {
-        /// <signature>
-        /// <summary>
-        /// Binds to a widget event.
-        /// </summary>
-        /// <param name="event" type="String">The event name</param>
-        /// <param name="callback" type="Function">The callback to be executed when the event is triggered.</param>
-        /// </signature>
-    },
+            bind: function (event, callback) {
+                /// <signature>
+                /// <summary>
+                /// Binds to a widget event.
+                /// </summary>
+                /// <param name="event" type="String">The event name</param>
+                /// <param name="callback" type="Function">The callback to be executed when the event is triggered.</param>
+                /// </signature>
+            },
 
-    unbind: function(event, callback) {
-        /// <signature>
-        /// <summary>
-        /// Unbinds a callback from a widget event.
-        /// </summary>
-        /// <param name="event" type="String">The event name</param>
-        /// <param name="callback" type="Function">The callback to be removed.</param>
-        /// </signature>
-    }
+            unbind: function (event, callback) {
+                /// <signature>
+                /// <summary>
+                /// Unbinds a callback from a widget event.
+                /// </summary>
+                /// <param name="event" type="String">The event name</param>
+                /// <param name="callback" type="Function">The callback to be removed.</param>
+                /// </signature>
+            }
 
-});
+        });
 
-return instance;
+        return instance;
 
-};
+    };
 
-intellisense.redirectDefinition(wrapper, original);
+    intellisense.redirectDefinition(wrapper, original);
 
-return wrapper;
+    return wrapper;
 
 })();
 
 
-jQuery.fn.kendoDatePicker = function() {
+jQuery.fn.kendoDatePicker = function () {
     this.data("kendoDatePicker", new kendo.ui.DatePicker());
 
     return this;
 };
 
 intellisense.annotate(jQuery.fn, {
-    getKendoDatePicker: function() {
+    getKendoDatePicker: function () {
         /// <signature>
         /// <summary>
         /// Returns a reference to the kendo.ui.DatePicker widget, instantiated on the selector.
@@ -2514,7 +2512,7 @@ intellisense.annotate(jQuery.fn, {
         /// <returns type="kendo.ui.DatePicker">The kendo.ui.DatePicker instance (if present).</returns>
         /// </signature>
     },
-    kendoDatePicker: function(options) {
+    kendoDatePicker: function (options) {
         /// <signature>
         /// <summary>
         /// Instantiates a kendo.ui.DatePicker widget based the DOM elements that match the selector.
@@ -2549,14 +2547,14 @@ intellisense.annotate(jQuery.fn, {
         /// &#10;Specifies the minimum date that the calendar can show.
         /// &#10;
         /// &#10;month — Object 
-        /// &#10;Templates for the cells rendered in the calendar "month" view.
+        /// &#10;Templates for the cells rendered in the calendar "month" io.
         /// &#10;
         /// &#10;parseFormats — Array 
         /// &#10;Specifies a lis of date formats used to parse the value set with value() method or by direct user input. If not set the value of the format will be used.
 /// &#10; Note that format option is always used parsing process.
         /// &#10;
         /// &#10;start — String (default: "month")
-        /// &#10;Specifies the start view.
+        /// &#10;Specifies the start io.
 /// &#10;The following settings are available for the start value:
         /// &#10;
         /// &#10;value — Date (default: null)
@@ -2571,134 +2569,134 @@ intellisense.annotate(jQuery.fn, {
 });
 
 intellisense.annotate(kendo.ui, {
-    DateTimePicker: function() {
+    DateTimePicker: function () {
         /// <signature>
         /// <summary>Constructor of kendo.ui.DateTimePicker</summary>
         /// </signature>
     }
 });
 
-kendo.ui.DateTimePicker = (function() {
-var original = kendo.ui.DateTimePicker;
-var wrapper = function() {
-var instance = new original();
-intellisense.annotate(instance, {
-    close: function(view) {
-        /// <signature>
-        /// <summary>
-        /// Closes the calendar or the time drop-down list.
-        /// </summary>
-        /// <param name="view" type="String" >The view of the DateTimePicker, expressed as a string. Available views are "time" and "date".</param>
-        /// </signature>
-    },
-    destroy: function() {
-        /// <signature>
-        /// <summary>
-        /// Prepares the DateTimePicker for safe removal from DOM. Detaches all event handlers and removes jQuery.data attributes to avoid memory leaks. Calls destroy method of any child Kendo widgets.
-        /// </summary>
-        /// </signature>
-    },
-    enable: function(enable) {
-        /// <signature>
-        /// <summary>
-        /// Enables or disables a DateTimePicker.
-        /// </summary>
-        /// <param name="enable" type="Boolean" >Enables (true or undefined) or disables (false) a DateTimePicker.</param>
-        /// </signature>
-    },
-    readonly: function(readonly) {
-        /// <signature>
-        /// <summary>
-        /// Toggles the readonly state of the widget. When the widget is readonly it doesn't allow user input.
-        /// </summary>
-        /// <param name="readonly" type="Boolean" >The argument, which defines whether the datetimepicker should be readonly or editable.</param>
-        /// </signature>
-    },
-    max: function(value) {
-        /// <signature>
-        /// <summary>
-        /// Gets or sets the maximum value of the DateTimePicker.
-        /// </summary>
-        /// <param name="value" type="Object" >The maximum time value to set for a DateTimePicker, expressed as a Date object or as a string.</param>
-        /// <returns type="Date">The maximum time value of a DateTimePicker.</returns>
-        /// </signature>
-    },
-    min: function(value) {
-        /// <signature>
-        /// <summary>
-        /// Gets or sets the minimum value of the DateTimePicker.
-        /// </summary>
-        /// <param name="value" type="Object" >The minimum time value to set for a DateTimePicker, expressed as a Date object or as a string.</param>
-        /// <returns type="Date">The minimum time value of a DateTimePicker.</returns>
-        /// </signature>
-    },
-    open: function(view) {
-        /// <signature>
-        /// <summary>
-        /// Opens the calendar or the time drop-down list.
-        /// </summary>
-        /// <param name="view" type="String" >The view of the DateTimePicker, expressed as a string. Available views are "time" and "date".</param>
-        /// </signature>
-    },
-    toggle: function(view) {
-        /// <signature>
-        /// <summary>
-        /// Toggles the calendar or the time drop-down list.
-        /// </summary>
-        /// <param name="view" type="String" >The view of the DateTimePicker, expressed as a string. Available views are "time" and "date".</param>
-        /// </signature>
-    },
-    value: function(value) {
-        /// <signature>
-        /// <summary>
-        /// Gets or sets the value of the DateTimePicker.
-        /// </summary>
-        /// <param name="value" type="Object" >The time value to set for a DateTimePicker, expressed as a Date object or as a string.</param>
-        /// <returns type="Date">The time value of a DateTimePicker.</returns>
-        /// </signature>
-    },
+kendo.ui.DateTimePicker = (function () {
+    var original = kendo.ui.DateTimePicker;
+    var wrapper = function () {
+        var instance = new original();
+        intellisense.annotate(instance, {
+            close: function (view) {
+                /// <signature>
+                /// <summary>
+                /// Closes the calendar or the time drop-down list.
+                /// </summary>
+                /// <param name="io" type="String" >The io of the DateTimePicker, expressed as a string. Available admin.views are "time" and "date".</param>
+                /// </signature>
+            },
+            destroy: function () {
+                /// <signature>
+                /// <summary>
+                /// Prepares the DateTimePicker for safe removal from DOM. Detaches all event handlers and removes jQuery.data attributes to avoid memory leaks. Calls destroy method of any child Kendo widgets.
+                /// </summary>
+                /// </signature>
+            },
+            enable: function (enable) {
+                /// <signature>
+                /// <summary>
+                /// Enables or disables a DateTimePicker.
+                /// </summary>
+                /// <param name="enable" type="Boolean" >Enables (true or undefined) or disables (false) a DateTimePicker.</param>
+                /// </signature>
+            },
+            readonly: function (readonly) {
+                /// <signature>
+                /// <summary>
+                /// Toggles the readonly state of the widget. When the widget is readonly it doesn't allow user input.
+                /// </summary>
+                /// <param name="readonly" type="Boolean" >The argument, which defines whether the datetimepicker should be readonly or editable.</param>
+                /// </signature>
+            },
+            max: function (value) {
+                /// <signature>
+                /// <summary>
+                /// Gets or sets the maximum value of the DateTimePicker.
+                /// </summary>
+                /// <param name="value" type="Object" >The maximum time value to set for a DateTimePicker, expressed as a Date object or as a string.</param>
+                /// <returns type="Date">The maximum time value of a DateTimePicker.</returns>
+                /// </signature>
+            },
+            min: function (value) {
+                /// <signature>
+                /// <summary>
+                /// Gets or sets the minimum value of the DateTimePicker.
+                /// </summary>
+                /// <param name="value" type="Object" >The minimum time value to set for a DateTimePicker, expressed as a Date object or as a string.</param>
+                /// <returns type="Date">The minimum time value of a DateTimePicker.</returns>
+                /// </signature>
+            },
+            open: function (view) {
+                /// <signature>
+                /// <summary>
+                /// Opens the calendar or the time drop-down list.
+                /// </summary>
+                /// <param name="io" type="String" >The io of the DateTimePicker, expressed as a string. Available admin.views are "time" and "date".</param>
+                /// </signature>
+            },
+            toggle: function (view) {
+                /// <signature>
+                /// <summary>
+                /// Toggles the calendar or the time drop-down list.
+                /// </summary>
+                /// <param name="io" type="String" >The io of the DateTimePicker, expressed as a string. Available admin.views are "time" and "date".</param>
+                /// </signature>
+            },
+            value: function (value) {
+                /// <signature>
+                /// <summary>
+                /// Gets or sets the value of the DateTimePicker.
+                /// </summary>
+                /// <param name="value" type="Object" >The time value to set for a DateTimePicker, expressed as a Date object or as a string.</param>
+                /// <returns type="Date">The time value of a DateTimePicker.</returns>
+                /// </signature>
+            },
 
-    bind: function(event, callback) {
-        /// <signature>
-        /// <summary>
-        /// Binds to a widget event.
-        /// </summary>
-        /// <param name="event" type="String">The event name</param>
-        /// <param name="callback" type="Function">The callback to be executed when the event is triggered.</param>
-        /// </signature>
-    },
+            bind: function (event, callback) {
+                /// <signature>
+                /// <summary>
+                /// Binds to a widget event.
+                /// </summary>
+                /// <param name="event" type="String">The event name</param>
+                /// <param name="callback" type="Function">The callback to be executed when the event is triggered.</param>
+                /// </signature>
+            },
 
-    unbind: function(event, callback) {
-        /// <signature>
-        /// <summary>
-        /// Unbinds a callback from a widget event.
-        /// </summary>
-        /// <param name="event" type="String">The event name</param>
-        /// <param name="callback" type="Function">The callback to be removed.</param>
-        /// </signature>
-    }
+            unbind: function (event, callback) {
+                /// <signature>
+                /// <summary>
+                /// Unbinds a callback from a widget event.
+                /// </summary>
+                /// <param name="event" type="String">The event name</param>
+                /// <param name="callback" type="Function">The callback to be removed.</param>
+                /// </signature>
+            }
 
-});
+        });
 
-return instance;
+        return instance;
 
-};
+    };
 
-intellisense.redirectDefinition(wrapper, original);
+    intellisense.redirectDefinition(wrapper, original);
 
-return wrapper;
+    return wrapper;
 
 })();
 
 
-jQuery.fn.kendoDateTimePicker = function() {
+jQuery.fn.kendoDateTimePicker = function () {
     this.data("kendoDateTimePicker", new kendo.ui.DateTimePicker());
 
     return this;
 };
 
 intellisense.annotate(jQuery.fn, {
-    getKendoDateTimePicker: function() {
+    getKendoDateTimePicker: function () {
         /// <signature>
         /// <summary>
         /// Returns a reference to the kendo.ui.DateTimePicker widget, instantiated on the selector.
@@ -2706,7 +2704,7 @@ intellisense.annotate(jQuery.fn, {
         /// <returns type="kendo.ui.DateTimePicker">The kendo.ui.DateTimePicker instance (if present).</returns>
         /// </signature>
     },
-    kendoDateTimePicker: function(options) {
+    kendoDateTimePicker: function (options) {
         /// <signature>
         /// <summary>
         /// Instantiates a kendo.ui.DateTimePicker widget based the DOM elements that match the selector.
@@ -2744,13 +2742,13 @@ intellisense.annotate(jQuery.fn, {
         /// &#10;Specifies the minimum date that the calendar can show.
         /// &#10;
         /// &#10;month — Object 
-        /// &#10;Templates for the cells rendered in the calendar "month" view.
+        /// &#10;Templates for the cells rendered in the calendar "month" io.
         /// &#10;
         /// &#10;parseFormats — Array 
         /// &#10;Specifies the formats, which are used to parse the value set with value() method or by direct input. If not set the value of the options.format and options.timeFormat will be used. Note that value of the format option is always used.
         /// &#10;
         /// &#10;start — String (default: "month")
-        /// &#10;Specifies the start view of the calendar.
+        /// &#10;Specifies the start io of the calendar.
 /// &#10; The following settings are available for the start value:
         /// &#10;
         /// &#10;timeFormat — String (default: "h:mm tt")
@@ -2768,67 +2766,67 @@ intellisense.annotate(jQuery.fn, {
 });
 
 intellisense.annotate(kendo.ui, {
-    Draggable: function() {
+    Draggable: function () {
         /// <signature>
         /// <summary>Constructor of kendo.ui.Draggable</summary>
         /// </signature>
     }
 });
 
-kendo.ui.Draggable = (function() {
-var original = kendo.ui.Draggable;
-var wrapper = function() {
-var instance = new original();
-intellisense.annotate(instance, {
-    cancelHold: function() {
-        /// <signature>
-        /// <summary>
-        /// Has effect only when holdToDrag is set to true. Cancels the activated state of the widget, caused by pressing and holding.
-        /// </summary>
-        /// </signature>
-    },
+kendo.ui.Draggable = (function () {
+    var original = kendo.ui.Draggable;
+    var wrapper = function () {
+        var instance = new original();
+        intellisense.annotate(instance, {
+            cancelHold: function () {
+                /// <signature>
+                /// <summary>
+                /// Has effect only when holdToDrag is set to true. Cancels the activated state of the widget, caused by pressing and holding.
+                /// </summary>
+                /// </signature>
+            },
 
-    bind: function(event, callback) {
-        /// <signature>
-        /// <summary>
-        /// Binds to a widget event.
-        /// </summary>
-        /// <param name="event" type="String">The event name</param>
-        /// <param name="callback" type="Function">The callback to be executed when the event is triggered.</param>
-        /// </signature>
-    },
+            bind: function (event, callback) {
+                /// <signature>
+                /// <summary>
+                /// Binds to a widget event.
+                /// </summary>
+                /// <param name="event" type="String">The event name</param>
+                /// <param name="callback" type="Function">The callback to be executed when the event is triggered.</param>
+                /// </signature>
+            },
 
-    unbind: function(event, callback) {
-        /// <signature>
-        /// <summary>
-        /// Unbinds a callback from a widget event.
-        /// </summary>
-        /// <param name="event" type="String">The event name</param>
-        /// <param name="callback" type="Function">The callback to be removed.</param>
-        /// </signature>
-    }
+            unbind: function (event, callback) {
+                /// <signature>
+                /// <summary>
+                /// Unbinds a callback from a widget event.
+                /// </summary>
+                /// <param name="event" type="String">The event name</param>
+                /// <param name="callback" type="Function">The callback to be removed.</param>
+                /// </signature>
+            }
 
-});
+        });
 
-return instance;
+        return instance;
 
-};
+    };
 
-intellisense.redirectDefinition(wrapper, original);
+    intellisense.redirectDefinition(wrapper, original);
 
-return wrapper;
+    return wrapper;
 
 })();
 
 
-jQuery.fn.kendoDraggable = function() {
+jQuery.fn.kendoDraggable = function () {
     this.data("kendoDraggable", new kendo.ui.Draggable());
 
     return this;
 };
 
 intellisense.annotate(jQuery.fn, {
-    getKendoDraggable: function() {
+    getKendoDraggable: function () {
         /// <signature>
         /// <summary>
         /// Returns a reference to the kendo.ui.Draggable widget, instantiated on the selector.
@@ -2836,7 +2834,7 @@ intellisense.annotate(jQuery.fn, {
         /// <returns type="kendo.ui.Draggable">The kendo.ui.Draggable instance (if present).</returns>
         /// </signature>
     },
-    kendoDraggable: function(options) {
+    kendoDraggable: function (options) {
         /// <signature>
         /// <summary>
         /// Instantiates a kendo.ui.Draggable widget based the DOM elements that match the selector.
@@ -2870,171 +2868,171 @@ intellisense.annotate(jQuery.fn, {
 });
 
 intellisense.annotate(kendo.ui, {
-    DropDownList: function() {
+    DropDownList: function () {
         /// <signature>
         /// <summary>Constructor of kendo.ui.DropDownList</summary>
         /// </signature>
     }
 });
 
-kendo.ui.DropDownList = (function() {
-var original = kendo.ui.DropDownList;
-var wrapper = function() {
-var instance = new original();
-intellisense.annotate(instance, {
-    close: function() {
-        /// <signature>
-        /// <summary>
-        /// Closes the widget popup.
-        /// </summary>
-        /// </signature>
-    },
-    dataItem: function(index) {
-        /// <signature>
-        /// <summary>
-        /// Returns the data item at the specified index. If the index is not specified, the selected index will be used.
-        /// </summary>
-        /// <param name="index" type="Number" >The zero-based index of the data record.</param>
-        /// <returns type="Object">The raw data record. Returns undefined if no data.</returns>
-        /// </signature>
-    },
-    destroy: function() {
-        /// <signature>
-        /// <summary>
-        /// Prepares the DropDownList for safe removal from DOM. Detaches all event handlers and removes jQuery.data attributes to avoid memory leaks. Calls destroy method of any child Kendo widgets.
-        /// </summary>
-        /// </signature>
-    },
-    focus: function() {
-        /// <signature>
-        /// <summary>
-        /// Focuses the widget.
-        /// </summary>
-        /// </signature>
-    },
-    open: function() {
-        /// <signature>
-        /// <summary>
-        /// Opens the popup.
-        /// </summary>
-        /// </signature>
-    },
-    enable: function(enable) {
-        /// <signature>
-        /// <summary>
-        /// Enables or disables the widget.
-        /// </summary>
-        /// <param name="enable" type="Boolean" >If set to true the widget will be enabled. If set to false the widget will be disabled.</param>
-        /// </signature>
-    },
-    readonly: function(readonly) {
-        /// <signature>
-        /// <summary>
-        /// Controls whether the widget is editable or readonly.
-        /// </summary>
-        /// <param name="readonly" type="Boolean" >The argument, which defines whether the datepicker should be readonly or editable.</param>
-        /// </signature>
-    },
-    refresh: function() {
-        /// <signature>
-        /// <summary>
-        /// Refresh the popup by rendering all items again.
-        /// </summary>
-        /// </signature>
-    },
-    search: function(word) {
-        /// <signature>
-        /// <summary>
-        /// Selects an item, which starts with the provided value.
-        /// </summary>
-        /// <param name="word" type="String" >The search value.</param>
-        /// </signature>
-    },
-    select: function(li) {
-        /// <signature>
-        /// <summary>
-        /// Gets or sets the selected item. Selects the item provided as an argument and updates the value and text of the widget.
-        /// </summary>
-        /// <param name="li" type="Object" >A string, DOM element or jQuery object which represents the item to be selected. A string is treated as a jQuery selector. A number representing the index of the item or function predicate which returns the correct data item.</param>
-        /// <returns type="Number">The index of the selected item, if called with no parameters. If a custom value is entered, the returned selected index is -1. If called with a parameter as a setter.</returns>
-        /// </signature>
-    },
-    setDataSource: function(dataSource) {
-        /// <signature>
-        /// <summary>
-        /// Sets the dataSource of an existing DropDownList and rebinds it.
-        /// </summary>
-        /// <param name="dataSource" type="kendo.data.DataSource" ></param>
-        /// </signature>
-    },
-    text: function(text) {
-        /// <signature>
-        /// <summary>
-        /// Gets or sets the text of the dropdownlist.
-        /// </summary>
-        /// <param name="text" type="String" >The text to set.</param>
-        /// <returns type="String">The text of the dropdownlist.</returns>
-        /// </signature>
-    },
-    toggle: function(toggle) {
-        /// <signature>
-        /// <summary>
-        /// Opens or closes the widget popup.
-        /// </summary>
-        /// <param name="toggle" type="Boolean" >Defines the whether to open/close the drop-down list.</param>
-        /// </signature>
-    },
-    value: function(value) {
-        /// <signature>
-        /// <summary>
-        /// Gets or sets the value of the dropdownlist. The value will not be set if there is no item with such value. If value is undefined, text of the data item is used.
-        /// </summary>
-        /// <param name="value" type="String" >The value to set.</param>
-        /// <returns type="String">The value of the dropdownlist.</returns>
-        /// </signature>
-    },
+kendo.ui.DropDownList = (function () {
+    var original = kendo.ui.DropDownList;
+    var wrapper = function () {
+        var instance = new original();
+        intellisense.annotate(instance, {
+            close: function () {
+                /// <signature>
+                /// <summary>
+                /// Closes the widget popup.
+                /// </summary>
+                /// </signature>
+            },
+            dataItem: function (index) {
+                /// <signature>
+                /// <summary>
+                /// Returns the data item at the specified index. If the index is not specified, the selected index will be used.
+                /// </summary>
+                /// <param name="index" type="Number" >The zero-based index of the data record.</param>
+                /// <returns type="Object">The raw data record. Returns undefined if no data.</returns>
+                /// </signature>
+            },
+            destroy: function () {
+                /// <signature>
+                /// <summary>
+                /// Prepares the DropDownList for safe removal from DOM. Detaches all event handlers and removes jQuery.data attributes to avoid memory leaks. Calls destroy method of any child Kendo widgets.
+                /// </summary>
+                /// </signature>
+            },
+            focus: function () {
+                /// <signature>
+                /// <summary>
+                /// Focuses the widget.
+                /// </summary>
+                /// </signature>
+            },
+            open: function () {
+                /// <signature>
+                /// <summary>
+                /// Opens the popup.
+                /// </summary>
+                /// </signature>
+            },
+            enable: function (enable) {
+                /// <signature>
+                /// <summary>
+                /// Enables or disables the widget.
+                /// </summary>
+                /// <param name="enable" type="Boolean" >If set to true the widget will be enabled. If set to false the widget will be disabled.</param>
+                /// </signature>
+            },
+            readonly: function (readonly) {
+                /// <signature>
+                /// <summary>
+                /// Controls whether the widget is editable or readonly.
+                /// </summary>
+                /// <param name="readonly" type="Boolean" >The argument, which defines whether the datepicker should be readonly or editable.</param>
+                /// </signature>
+            },
+            refresh: function () {
+                /// <signature>
+                /// <summary>
+                /// Refresh the popup by rendering all items again.
+                /// </summary>
+                /// </signature>
+            },
+            search: function (word) {
+                /// <signature>
+                /// <summary>
+                /// Selects an item, which starts with the provided value.
+                /// </summary>
+                /// <param name="word" type="String" >The search value.</param>
+                /// </signature>
+            },
+            select: function (li) {
+                /// <signature>
+                /// <summary>
+                /// Gets or sets the selected item. Selects the item provided as an argument and updates the value and text of the widget.
+                /// </summary>
+                /// <param name="li" type="Object" >A string, DOM element or jQuery object which represents the item to be selected. A string is treated as a jQuery selector. A number representing the index of the item or function predicate which returns the correct data item.</param>
+                /// <returns type="Number">The index of the selected item, if called with no parameters. If a custom value is entered, the returned selected index is -1. If called with a parameter as a setter.</returns>
+                /// </signature>
+            },
+            setDataSource: function (dataSource) {
+                /// <signature>
+                /// <summary>
+                /// Sets the dataSource of an existing DropDownList and rebinds it.
+                /// </summary>
+                /// <param name="dataSource" type="kendo.data.DataSource" ></param>
+                /// </signature>
+            },
+            text: function (text) {
+                /// <signature>
+                /// <summary>
+                /// Gets or sets the text of the dropdownlist.
+                /// </summary>
+                /// <param name="text" type="String" >The text to set.</param>
+                /// <returns type="String">The text of the dropdownlist.</returns>
+                /// </signature>
+            },
+            toggle: function (toggle) {
+                /// <signature>
+                /// <summary>
+                /// Opens or closes the widget popup.
+                /// </summary>
+                /// <param name="toggle" type="Boolean" >Defines the whether to open/close the drop-down list.</param>
+                /// </signature>
+            },
+            value: function (value) {
+                /// <signature>
+                /// <summary>
+                /// Gets or sets the value of the dropdownlist. The value will not be set if there is no item with such value. If value is undefined, text of the data item is used.
+                /// </summary>
+                /// <param name="value" type="String" >The value to set.</param>
+                /// <returns type="String">The value of the dropdownlist.</returns>
+                /// </signature>
+            },
 
-    bind: function(event, callback) {
-        /// <signature>
-        /// <summary>
-        /// Binds to a widget event.
-        /// </summary>
-        /// <param name="event" type="String">The event name</param>
-        /// <param name="callback" type="Function">The callback to be executed when the event is triggered.</param>
-        /// </signature>
-    },
+            bind: function (event, callback) {
+                /// <signature>
+                /// <summary>
+                /// Binds to a widget event.
+                /// </summary>
+                /// <param name="event" type="String">The event name</param>
+                /// <param name="callback" type="Function">The callback to be executed when the event is triggered.</param>
+                /// </signature>
+            },
 
-    unbind: function(event, callback) {
-        /// <signature>
-        /// <summary>
-        /// Unbinds a callback from a widget event.
-        /// </summary>
-        /// <param name="event" type="String">The event name</param>
-        /// <param name="callback" type="Function">The callback to be removed.</param>
-        /// </signature>
-    }
+            unbind: function (event, callback) {
+                /// <signature>
+                /// <summary>
+                /// Unbinds a callback from a widget event.
+                /// </summary>
+                /// <param name="event" type="String">The event name</param>
+                /// <param name="callback" type="Function">The callback to be removed.</param>
+                /// </signature>
+            }
 
-});
+        });
 
-return instance;
+        return instance;
 
-};
+    };
 
-intellisense.redirectDefinition(wrapper, original);
+    intellisense.redirectDefinition(wrapper, original);
 
-return wrapper;
+    return wrapper;
 
 })();
 
 
-jQuery.fn.kendoDropDownList = function() {
+jQuery.fn.kendoDropDownList = function () {
     this.data("kendoDropDownList", new kendo.ui.DropDownList());
 
     return this;
 };
 
 intellisense.annotate(jQuery.fn, {
-    getKendoDropDownList: function() {
+    getKendoDropDownList: function () {
         /// <signature>
         /// <summary>
         /// Returns a reference to the kendo.ui.DropDownList widget, instantiated on the selector.
@@ -3042,7 +3040,7 @@ intellisense.annotate(jQuery.fn, {
         /// <returns type="kendo.ui.DropDownList">The kendo.ui.DropDownList instance (if present).</returns>
         /// </signature>
     },
-    kendoDropDownList: function(options) {
+    kendoDropDownList: function (options) {
         /// <signature>
         /// <summary>
         /// Instantiates a kendo.ui.DropDownList widget based the DOM elements that match the selector.
@@ -3118,67 +3116,67 @@ intellisense.annotate(jQuery.fn, {
 });
 
 intellisense.annotate(kendo.ui, {
-    DropTarget: function() {
+    DropTarget: function () {
         /// <signature>
         /// <summary>Constructor of kendo.ui.DropTarget</summary>
         /// </signature>
     }
 });
 
-kendo.ui.DropTarget = (function() {
-var original = kendo.ui.DropTarget;
-var wrapper = function() {
-var instance = new original();
-intellisense.annotate(instance, {
-    destroyGroup: function() {
-        /// <signature>
-        /// <summary>
-        /// Destroys all DropTarget instances from the group with the given name.
-        /// </summary>
-        /// </signature>
-    },
+kendo.ui.DropTarget = (function () {
+    var original = kendo.ui.DropTarget;
+    var wrapper = function () {
+        var instance = new original();
+        intellisense.annotate(instance, {
+            destroyGroup: function () {
+                /// <signature>
+                /// <summary>
+                /// Destroys all DropTarget instances from the group with the given name.
+                /// </summary>
+                /// </signature>
+            },
 
-    bind: function(event, callback) {
-        /// <signature>
-        /// <summary>
-        /// Binds to a widget event.
-        /// </summary>
-        /// <param name="event" type="String">The event name</param>
-        /// <param name="callback" type="Function">The callback to be executed when the event is triggered.</param>
-        /// </signature>
-    },
+            bind: function (event, callback) {
+                /// <signature>
+                /// <summary>
+                /// Binds to a widget event.
+                /// </summary>
+                /// <param name="event" type="String">The event name</param>
+                /// <param name="callback" type="Function">The callback to be executed when the event is triggered.</param>
+                /// </signature>
+            },
 
-    unbind: function(event, callback) {
-        /// <signature>
-        /// <summary>
-        /// Unbinds a callback from a widget event.
-        /// </summary>
-        /// <param name="event" type="String">The event name</param>
-        /// <param name="callback" type="Function">The callback to be removed.</param>
-        /// </signature>
-    }
+            unbind: function (event, callback) {
+                /// <signature>
+                /// <summary>
+                /// Unbinds a callback from a widget event.
+                /// </summary>
+                /// <param name="event" type="String">The event name</param>
+                /// <param name="callback" type="Function">The callback to be removed.</param>
+                /// </signature>
+            }
 
-});
+        });
 
-return instance;
+        return instance;
 
-};
+    };
 
-intellisense.redirectDefinition(wrapper, original);
+    intellisense.redirectDefinition(wrapper, original);
 
-return wrapper;
+    return wrapper;
 
 })();
 
 
-jQuery.fn.kendoDropTarget = function() {
+jQuery.fn.kendoDropTarget = function () {
     this.data("kendoDropTarget", new kendo.ui.DropTarget());
 
     return this;
 };
 
 intellisense.annotate(jQuery.fn, {
-    getKendoDropTarget: function() {
+    getKendoDropTarget: function () {
         /// <signature>
         /// <summary>
         /// Returns a reference to the kendo.ui.DropTarget widget, instantiated on the selector.
@@ -3186,7 +3184,7 @@ intellisense.annotate(jQuery.fn, {
         /// <returns type="kendo.ui.DropTarget">The kendo.ui.DropTarget instance (if present).</returns>
         /// </signature>
     },
-    kendoDropTarget: function(options) {
+    kendoDropTarget: function (options) {
         /// <signature>
         /// <summary>
         /// Instantiates a kendo.ui.DropTarget widget based the DOM elements that match the selector.
@@ -3204,60 +3202,60 @@ intellisense.annotate(jQuery.fn, {
 });
 
 intellisense.annotate(kendo.ui, {
-    DropTargetArea: function() {
+    DropTargetArea: function () {
         /// <signature>
         /// <summary>Constructor of kendo.ui.DropTargetArea</summary>
         /// </signature>
     }
 });
 
-kendo.ui.DropTargetArea = (function() {
-var original = kendo.ui.DropTargetArea;
-var wrapper = function() {
-var instance = new original();
-intellisense.annotate(instance, {
+kendo.ui.DropTargetArea = (function () {
+    var original = kendo.ui.DropTargetArea;
+    var wrapper = function () {
+        var instance = new original();
+        intellisense.annotate(instance, {
 
-    bind: function(event, callback) {
-        /// <signature>
-        /// <summary>
-        /// Binds to a widget event.
-        /// </summary>
-        /// <param name="event" type="String">The event name</param>
-        /// <param name="callback" type="Function">The callback to be executed when the event is triggered.</param>
-        /// </signature>
-    },
+            bind: function (event, callback) {
+                /// <signature>
+                /// <summary>
+                /// Binds to a widget event.
+                /// </summary>
+                /// <param name="event" type="String">The event name</param>
+                /// <param name="callback" type="Function">The callback to be executed when the event is triggered.</param>
+                /// </signature>
+            },
 
-    unbind: function(event, callback) {
-        /// <signature>
-        /// <summary>
-        /// Unbinds a callback from a widget event.
-        /// </summary>
-        /// <param name="event" type="String">The event name</param>
-        /// <param name="callback" type="Function">The callback to be removed.</param>
-        /// </signature>
-    }
+            unbind: function (event, callback) {
+                /// <signature>
+                /// <summary>
+                /// Unbinds a callback from a widget event.
+                /// </summary>
+                /// <param name="event" type="String">The event name</param>
+                /// <param name="callback" type="Function">The callback to be removed.</param>
+                /// </signature>
+            }
 
-});
+        });
 
-return instance;
+        return instance;
 
-};
+    };
 
-intellisense.redirectDefinition(wrapper, original);
+    intellisense.redirectDefinition(wrapper, original);
 
-return wrapper;
+    return wrapper;
 
 })();
 
 
-jQuery.fn.kendoDropTargetArea = function() {
+jQuery.fn.kendoDropTargetArea = function () {
     this.data("kendoDropTargetArea", new kendo.ui.DropTargetArea());
 
     return this;
 };
 
 intellisense.annotate(jQuery.fn, {
-    getKendoDropTargetArea: function() {
+    getKendoDropTargetArea: function () {
         /// <signature>
         /// <summary>
         /// Returns a reference to the kendo.ui.DropTargetArea widget, instantiated on the selector.
@@ -3265,7 +3263,7 @@ intellisense.annotate(jQuery.fn, {
         /// <returns type="kendo.ui.DropTargetArea">The kendo.ui.DropTargetArea instance (if present).</returns>
         /// </signature>
     },
-    kendoDropTargetArea: function(options) {
+    kendoDropTargetArea: function (options) {
         /// <signature>
         /// <summary>
         /// Instantiates a kendo.ui.DropTargetArea widget based the DOM elements that match the selector.
@@ -3286,172 +3284,172 @@ intellisense.annotate(jQuery.fn, {
 });
 
 intellisense.annotate(kendo.ui, {
-    Editor: function() {
+    Editor: function () {
         /// <signature>
         /// <summary>Constructor of kendo.ui.Editor</summary>
         /// </signature>
     }
 });
 
-kendo.ui.Editor = (function() {
-var original = kendo.ui.Editor;
-var wrapper = function() {
-var instance = new original();
-intellisense.annotate(instance, {
-    createRange: function(document) {
-        /// <signature>
-        /// <summary>
-        /// Creates a W3C-compatible Range object.
-        /// </summary>
-        /// <param name="document" type="Document" >The document that the range is associated with. If omitted, the document of the editor editing area will be used.</param>
-        /// <returns type="Range">The created Range object.</returns>
-        /// </signature>
-    },
-    destroy: function() {
-        /// <signature>
-        /// <summary>
-        /// Prepares the widget for safe removal from DOM. Detaches all event handlers and removes jQuery.data attributes to avoid memory leaks. Calls destroy method of any child Kendo widgets.
-        /// </summary>
-        /// </signature>
-    },
-    encodedValue: function() {
-        /// <signature>
-        /// <summary>
-        /// Gets the HTML encoded value of the editor.
-        /// </summary>
-        /// </signature>
-    },
-    exec: function(name,params) {
-        /// <signature>
-        /// <summary>
-        /// Executes an editor command on the currently selected text.
-        /// </summary>
-        /// <param name="name" type="String" >The name of the command to be executed.</param>
-        /// <param name="params" type="String" >The parameters for the executed command.</param>
-        /// </signature>
-    },
-    focus: function() {
-        /// <signature>
-        /// <summary>
-        /// Focuses the editable area.
-        /// </summary>
-        /// </signature>
-    },
-    getRange: function() {
-        /// <signature>
-        /// <summary>
-        /// Gets a Range object form the editable area.
-        /// </summary>
-        /// <returns type="Range">A W3C-compatible Range object that represents the currently selected text in the editor area.</returns>
-        /// </signature>
-    },
-    getSelection: function() {
-        /// <signature>
-        /// <summary>
-        /// Gets a W3C-compatible Selection object form the editable area.
-        /// </summary>
-        /// <returns type="Selection">a W3C-compatible Selection object form the editable area.</returns>
-        /// </signature>
-    },
-    paste: function(html) {
-        /// <signature>
-        /// <summary>
-        /// Pastes HTML into the editable area. Cleans up MS Word formatting.
-        /// </summary>
-        /// <param name="html" type="String" >The HTML to be pasted.</param>
-        /// </signature>
-    },
-    selectedHtml: function() {
-        /// <signature>
-        /// <summary>
-        /// Serializes the currently selected text to a XHTML string.
-        /// </summary>
-        /// <returns type="String">The selectied text as valid XHTML.</returns>
-        /// </signature>
-    },
-    refresh: function() {
-        /// <signature>
-        /// <summary>
-        /// Reinitializes the editing area iframe. Should be used after moving the editor in the DOM.
-        /// </summary>
-        /// </signature>
-    },
-    selectRange: function(range) {
-        /// <signature>
-        /// <summary>
-        /// Focuses the editable area and selects the range described by the range parameter.
-        /// </summary>
-        /// <param name="range" type="Range" >The Range object that describes the new selection.</param>
-        /// </signature>
-    },
-    update: function() {
-        /// <signature>
-        /// <summary>
-        /// Serializes the current state of the editable area to the <textarea> element.
+kendo.ui.Editor = (function () {
+    var original = kendo.ui.Editor;
+    var wrapper = function () {
+        var instance = new original();
+        intellisense.annotate(instance, {
+            createRange: function (document) {
+                /// <signature>
+                /// <summary>
+                /// Creates a W3C-compatible Range object.
+                /// </summary>
+                /// <param name="document" type="Document" >The document that the range is associated with. If omitted, the document of the editor editing area will be used.</param>
+                /// <returns type="Range">The created Range object.</returns>
+                /// </signature>
+            },
+            destroy: function () {
+                /// <signature>
+                /// <summary>
+                /// Prepares the widget for safe removal from DOM. Detaches all event handlers and removes jQuery.data attributes to avoid memory leaks. Calls destroy method of any child Kendo widgets.
+                /// </summary>
+                /// </signature>
+            },
+            encodedValue: function () {
+                /// <signature>
+                /// <summary>
+                /// Gets the HTML encoded value of the editor.
+                /// </summary>
+                /// </signature>
+            },
+            exec: function (name, params) {
+                /// <signature>
+                /// <summary>
+                /// Executes an editor command on the currently selected text.
+                /// </summary>
+                /// <param name="name" type="String" >The name of the command to be executed.</param>
+                /// <param name="params" type="String" >The parameters for the executed command.</param>
+                /// </signature>
+            },
+            focus: function () {
+                /// <signature>
+                /// <summary>
+                /// Focuses the editable area.
+                /// </summary>
+                /// </signature>
+            },
+            getRange: function () {
+                /// <signature>
+                /// <summary>
+                /// Gets a Range object form the editable area.
+                /// </summary>
+                /// <returns type="Range">A W3C-compatible Range object that represents the currently selected text in the editor area.</returns>
+                /// </signature>
+            },
+            getSelection: function () {
+                /// <signature>
+                /// <summary>
+                /// Gets a W3C-compatible Selection object form the editable area.
+                /// </summary>
+                /// <returns type="Selection">a W3C-compatible Selection object form the editable area.</returns>
+                /// </signature>
+            },
+            paste: function (html) {
+                /// <signature>
+                /// <summary>
+                /// Pastes HTML into the editable area. Cleans up MS Word formatting.
+                /// </summary>
+                /// <param name="html" type="String" >The HTML to be pasted.</param>
+                /// </signature>
+            },
+            selectedHtml: function () {
+                /// <signature>
+                /// <summary>
+                /// Serializes the currently selected text to a XHTML string.
+                /// </summary>
+                /// <returns type="String">The selectied text as valid XHTML.</returns>
+                /// </signature>
+            },
+            refresh: function () {
+                /// <signature>
+                /// <summary>
+                /// Reinitializes the editing area iframe. Should be used after moving the editor in the DOM.
+                /// </summary>
+                /// </signature>
+            },
+            selectRange: function (range) {
+                /// <signature>
+                /// <summary>
+                /// Focuses the editable area and selects the range described by the range parameter.
+                /// </summary>
+                /// <param name="range" type="Range" >The Range object that describes the new selection.</param>
+                /// </signature>
+            },
+            update: function () {
+                /// <signature>
+                /// <summary>
+                /// Serializes the current state of the editable area to the <textarea> element.
 /// This method should be called after modifying the editor content through the DOM.
-        /// </summary>
-        /// </signature>
-    },
-    state: function(toolName) {
-        /// <signature>
-        /// <summary>
-        /// Get the state of a given tool. Introduced in the 2013.2.923 internal build.
-        /// </summary>
-        /// <param name="toolName" type="String" >The name of the tool that will be tested if formatted.</param>
-        /// <returns type="Boolean">The state of the tool.</returns>
-        /// </signature>
-    },
-    value: function(value) {
-        /// <signature>
-        /// <summary>
-        /// Gets or sets the editor value.
-        /// </summary>
-        /// <param name="value" type="String" >The value to set.</param>
-        /// <returns type="String">The value of the Editor as HTML string.</returns>
-        /// </signature>
-    },
+                /// </summary>
+                /// </signature>
+            },
+            state: function (toolName) {
+                /// <signature>
+                /// <summary>
+                /// Get the state of a given tool. Introduced in the 2013.2.923 internal build.
+                /// </summary>
+                /// <param name="toolName" type="String" >The name of the tool that will be tested if formatted.</param>
+                /// <returns type="Boolean">The state of the tool.</returns>
+                /// </signature>
+            },
+            value: function (value) {
+                /// <signature>
+                /// <summary>
+                /// Gets or sets the editor value.
+                /// </summary>
+                /// <param name="value" type="String" >The value to set.</param>
+                /// <returns type="String">The value of the Editor as HTML string.</returns>
+                /// </signature>
+            },
 
-    bind: function(event, callback) {
-        /// <signature>
-        /// <summary>
-        /// Binds to a widget event.
-        /// </summary>
-        /// <param name="event" type="String">The event name</param>
-        /// <param name="callback" type="Function">The callback to be executed when the event is triggered.</param>
-        /// </signature>
-    },
+            bind: function (event, callback) {
+                /// <signature>
+                /// <summary>
+                /// Binds to a widget event.
+                /// </summary>
+                /// <param name="event" type="String">The event name</param>
+                /// <param name="callback" type="Function">The callback to be executed when the event is triggered.</param>
+                /// </signature>
+            },
 
-    unbind: function(event, callback) {
-        /// <signature>
-        /// <summary>
-        /// Unbinds a callback from a widget event.
-        /// </summary>
-        /// <param name="event" type="String">The event name</param>
-        /// <param name="callback" type="Function">The callback to be removed.</param>
-        /// </signature>
-    }
+            unbind: function (event, callback) {
+                /// <signature>
+                /// <summary>
+                /// Unbinds a callback from a widget event.
+                /// </summary>
+                /// <param name="event" type="String">The event name</param>
+                /// <param name="callback" type="Function">The callback to be removed.</param>
+                /// </signature>
+            }
 
-});
+        });
 
-return instance;
+        return instance;
 
-};
+    };
 
-intellisense.redirectDefinition(wrapper, original);
+    intellisense.redirectDefinition(wrapper, original);
 
-return wrapper;
+    return wrapper;
 
 })();
 
 
-jQuery.fn.kendoEditor = function() {
+jQuery.fn.kendoEditor = function () {
     this.data("kendoEditor", new kendo.ui.Editor());
 
     return this;
 };
 
 intellisense.annotate(jQuery.fn, {
-    getKendoEditor: function() {
+    getKendoEditor: function () {
         /// <signature>
         /// <summary>
         /// Returns a reference to the kendo.ui.Editor widget, instantiated on the selector.
@@ -3459,7 +3457,7 @@ intellisense.annotate(jQuery.fn, {
         /// <returns type="kendo.ui.Editor">The kendo.ui.Editor instance (if present).</returns>
         /// </signature>
     },
-    kendoEditor: function(options) {
+    kendoEditor: function (options) {
         /// <signature>
         /// <summary>
         /// Instantiates a kendo.ui.Editor widget based the DOM elements that match the selector.
@@ -3491,97 +3489,97 @@ intellisense.annotate(jQuery.fn, {
 });
 
 intellisense.annotate(kendo.ui, {
-    FlatColorPicker: function() {
+    FlatColorPicker: function () {
         /// <signature>
         /// <summary>Constructor of kendo.ui.FlatColorPicker</summary>
         /// </signature>
     }
 });
 
-kendo.ui.FlatColorPicker = (function() {
-var original = kendo.ui.FlatColorPicker;
-var wrapper = function() {
-var instance = new original();
-intellisense.annotate(instance, {
-    focus: function() {
-        /// <signature>
-        /// <summary>
-        /// Focuses the widget.
-        /// </summary>
-        /// </signature>
-    },
-    value: function(color) {
-        /// <signature>
-        /// <summary>
-        /// Get or set the selected color. If no argument is given, this returns the
+kendo.ui.FlatColorPicker = (function () {
+    var original = kendo.ui.FlatColorPicker;
+    var wrapper = function () {
+        var instance = new original();
+        intellisense.annotate(instance, {
+            focus: function () {
+                /// <signature>
+                /// <summary>
+                /// Focuses the widget.
+                /// </summary>
+                /// </signature>
+            },
+            value: function (color) {
+                /// <signature>
+                /// <summary>
+                /// Get or set the selected color. If no argument is given, this returns the
 /// currently selected color as a string in format #FFFFFF when the opacity
 /// option is off, or rgba(255, 255, 255, 1) when opacity is requested.If one argument is given, it selects the new color and updates the UI.  The
 /// argument can be a string in hex, rgb or rgba format, or a Color object.
 /// This does not trigger the "change" event.
-        /// </summary>
-        /// <param name="color" type="String" ></param>
-        /// <returns type="String">the string representation of the current color.</returns>
-        /// </signature>
-    },
-    color: function(color) {
-        /// <signature>
-        /// <summary>
-        /// Get or set the selected color. If no argument is given, this returns the currently selected color as a kendo.Color object.
-        /// </summary>
-        /// <param name="color" type="kendo.Color" >The color that should be set as the current value</param>
-        /// <returns type="kendo.Color">the current value</returns>
-        /// </signature>
-    },
-    enable: function(enable) {
-        /// <signature>
-        /// <summary>
-        /// Enables or disables the widget.
-        /// </summary>
-        /// <param name="enable" type="Boolean" >Whether the widget should be enabled (true) or disabled (false). If not specified, the method will enable the widget.</param>
-        /// </signature>
-    },
+                /// </summary>
+                /// <param name="color" type="String" ></param>
+                /// <returns type="String">the string representation of the current color.</returns>
+                /// </signature>
+            },
+            color: function (color) {
+                /// <signature>
+                /// <summary>
+                /// Get or set the selected color. If no argument is given, this returns the currently selected color as a kendo.Color object.
+                /// </summary>
+                /// <param name="color" type="kendo.Color" >The color that should be set as the current value</param>
+                /// <returns type="kendo.Color">the current value</returns>
+                /// </signature>
+            },
+            enable: function (enable) {
+                /// <signature>
+                /// <summary>
+                /// Enables or disables the widget.
+                /// </summary>
+                /// <param name="enable" type="Boolean" >Whether the widget should be enabled (true) or disabled (false). If not specified, the method will enable the widget.</param>
+                /// </signature>
+            },
 
-    bind: function(event, callback) {
-        /// <signature>
-        /// <summary>
-        /// Binds to a widget event.
-        /// </summary>
-        /// <param name="event" type="String">The event name</param>
-        /// <param name="callback" type="Function">The callback to be executed when the event is triggered.</param>
-        /// </signature>
-    },
+            bind: function (event, callback) {
+                /// <signature>
+                /// <summary>
+                /// Binds to a widget event.
+                /// </summary>
+                /// <param name="event" type="String">The event name</param>
+                /// <param name="callback" type="Function">The callback to be executed when the event is triggered.</param>
+                /// </signature>
+            },
 
-    unbind: function(event, callback) {
-        /// <signature>
-        /// <summary>
-        /// Unbinds a callback from a widget event.
-        /// </summary>
-        /// <param name="event" type="String">The event name</param>
-        /// <param name="callback" type="Function">The callback to be removed.</param>
-        /// </signature>
-    }
+            unbind: function (event, callback) {
+                /// <signature>
+                /// <summary>
+                /// Unbinds a callback from a widget event.
+                /// </summary>
+                /// <param name="event" type="String">The event name</param>
+                /// <param name="callback" type="Function">The callback to be removed.</param>
+                /// </signature>
+            }
 
-});
+        });
 
-return instance;
+        return instance;
 
-};
+    };
 
-intellisense.redirectDefinition(wrapper, original);
+    intellisense.redirectDefinition(wrapper, original);
 
-return wrapper;
+    return wrapper;
 
 })();
 
 
-jQuery.fn.kendoFlatColorPicker = function() {
+jQuery.fn.kendoFlatColorPicker = function () {
     this.data("kendoFlatColorPicker", new kendo.ui.FlatColorPicker());
 
     return this;
 };
 
 intellisense.annotate(jQuery.fn, {
-    getKendoFlatColorPicker: function() {
+    getKendoFlatColorPicker: function () {
         /// <signature>
         /// <summary>
         /// Returns a reference to the kendo.ui.FlatColorPicker widget, instantiated on the selector.
@@ -3589,7 +3587,7 @@ intellisense.annotate(jQuery.fn, {
         /// <returns type="kendo.ui.FlatColorPicker">The kendo.ui.FlatColorPicker instance (if present).</returns>
         /// </signature>
     },
-    kendoFlatColorPicker: function(options) {
+    kendoFlatColorPicker: function (options) {
         /// <signature>
         /// <summary>
         /// Instantiates a kendo.ui.FlatColorPicker widget based the DOM elements that match the selector.
@@ -3626,247 +3624,247 @@ intellisense.annotate(jQuery.fn, {
 });
 
 intellisense.annotate(kendo.ui, {
-    Grid: function() {
+    Grid: function () {
         /// <signature>
         /// <summary>Constructor of kendo.ui.Grid</summary>
         /// </signature>
     }
 });
 
-kendo.ui.Grid = (function() {
-var original = kendo.ui.Grid;
-var wrapper = function() {
-var instance = new original();
-intellisense.annotate(instance, {
-    addRow: function() {
-        /// <signature>
-        /// <summary>
-        /// Adds an empty data item to the grid. In "incell" and "inline" editing mode a table row will be appended. Popup window will be displayed in "popup" editing mode.Fires the edit event.
-        /// </summary>
-        /// </signature>
-    },
-    cancelChanges: function() {
-        /// <signature>
-        /// <summary>
-        /// Cancels any pending changes in the data source. Deleted data items are restored, new data items are removed and updated data items are restored to their initial state.
-        /// </summary>
-        /// </signature>
-    },
-    cancelRow: function() {
-        /// <signature>
-        /// <summary>
-        /// Cancels editing for the table row which is in edit mode. Reverts any changes made.
-        /// </summary>
-        /// </signature>
-    },
-    cellIndex: function(cell) {
-        /// <signature>
-        /// <summary>
-        /// Returns the index of the specified table cell. Skips group and detail table cells.
-        /// </summary>
-        /// <param name="cell" type="Object" >A string, DOM element or jQuery object which represents the table cell. A string is treated as a jQuery selector.</param>
-        /// <returns type="Number">the index of the specified table cell.</returns>
-        /// </signature>
-    },
-    clearSelection: function() {
-        /// <signature>
-        /// <summary>
-        /// Clears the currently selected table rows or cells (depending on the current selection mode).
-        /// </summary>
-        /// </signature>
-    },
-    closeCell: function() {
-        /// <signature>
-        /// <summary>
-        /// Stops editing the table cell which is in edit mode. Requires "incell" edit mode.
-        /// </summary>
-        /// </signature>
-    },
-    collapseGroup: function(row) {
-        /// <signature>
-        /// <summary>
-        /// Collapses the specified group. This hides the group items.
-        /// </summary>
-        /// <param name="row" type="Object" >A string, DOM element or jQuery object which represents the group table row. A string is treated as a jQuery selector.</param>
-        /// </signature>
-    },
-    collapseRow: function(row) {
-        /// <signature>
-        /// <summary>
-        /// Collapses the specified master table row. This hides its detail table row.
-        /// </summary>
-        /// <param name="row" type="Object" >A string, DOM element or jQuery object which represents the master table row. A string is treated as a jQuery selector.</param>
-        /// </signature>
-    },
-    current: function(cell) {
-        /// <signature>
-        /// <summary>
-        /// Selects cell for keyboard navigation. This set the current position of the keyboard navigation.
-        /// </summary>
-        /// <param name="cell" type="Object" >DOM element or jQuery object which represents the navigatable cell.</param>
-        /// </signature>
-    },
-    dataItem: function(row) {
-        /// <signature>
-        /// <summary>
-        /// Returns the data item to which the specified table row is bound.
-        /// </summary>
-        /// <param name="row" type="Object" >A string, DOM element or jQuery object which represents the table row. A string is treated as a jQuery selector.</param>
-        /// <returns type="kendo.data.ObservableObject">the data item to which the specified table row is bound.</returns>
-        /// </signature>
-    },
-    destroy: function() {
-        /// <signature>
-        /// <summary>
-        /// Prepares the widget for safe removal from DOM. Detaches all event handlers and removes jQuery.data attributes to avoid memory leaks. Calls destroy method of any child Kendo widgets.
-        /// </summary>
-        /// </signature>
-    },
-    editCell: function(cell) {
-        /// <signature>
-        /// <summary>
-        /// Switches the specified table cell in edit mode. Requires "incell" edit mode.Fires the edit event.
-        /// </summary>
-        /// <param name="cell" type="jQuery" >The jQuery object which represents the table cell.</param>
-        /// </signature>
-    },
-    editRow: function(row) {
-        /// <signature>
-        /// <summary>
-        /// Switches the specified table row in edit mode. Requires "inline" or "popup" edit mode.Fires the edit event.
-        /// </summary>
-        /// <param name="row" type="jQuery" >The jQuery object which represents the table row.</param>
-        /// </signature>
-    },
-    expandGroup: function(row) {
-        /// <signature>
-        /// <summary>
-        /// Expands the specified group. This shows the group items.
-        /// </summary>
-        /// <param name="row" type="Object" >A string, DOM element or jQuery object which represents the group table row. A string is treated as a jQuery selector. Expands specified group.</param>
-        /// </signature>
-    },
-    expandRow: function(row) {
-        /// <signature>
-        /// <summary>
-        /// Expands the specified master table row. This shows its detail table row.
-        /// </summary>
-        /// <param name="row" type="Object" >A string, DOM element or jQuery object which represents the master table row. A string is treated as a jQuery selector. Expands specified master row.</param>
-        /// </signature>
-    },
-    hideColumn: function(column) {
-        /// <signature>
-        /// <summary>
-        /// Hides the specified grid column.
-        /// </summary>
-        /// <param name="column" type="Object" >The index of the column or the field to which the columns is bound.</param>
-        /// </signature>
-    },
-    refresh: function() {
-        /// <signature>
-        /// <summary>
-        /// Renders all table rows using the current data items.
-        /// </summary>
-        /// </signature>
-    },
-    removeRow: function(row) {
-        /// <signature>
-        /// <summary>
-        /// Removes the specified table row from the grid. Also removes the corresponding data item from the data source.Fires the remove event.
-        /// </summary>
-        /// <param name="row" type="Object" >A string, DOM element or jQuery object which represents the table row. A string is treated as a jQuery selector.</param>
-        /// </signature>
-    },
-    reorderColumn: function(destIndex,column) {
-        /// <signature>
-        /// <summary>
-        /// Changes the position of the specified column.
-        /// </summary>
-        /// <param name="destIndex" type="Number" >The new position of the column. The destination index should be calculated with regard to all columns, including the hidden ones.</param>
-        /// <param name="column" type="Object" >The column whose position should be changed.</param>
-        /// </signature>
-    },
-    saveChanges: function() {
-        /// <signature>
-        /// <summary>
-        /// Saves any pending changes by calling the sync method.Fires the saveChanges event.
-        /// </summary>
-        /// </signature>
-    },
-    saveRow: function() {
-        /// <signature>
-        /// <summary>
-        /// Switches the table row which is in edit mode and saves any changes made by the user.
-        /// </summary>
-        /// </signature>
-    },
-    select: function(rows) {
-        /// <signature>
-        /// <summary>
-        /// Gets or sets the table rows (or cells) which are selected.
-        /// </summary>
-        /// <param name="rows" type="Object" >A string, DOM element or jQuery object which represents the table row(s) or cell(s). A string is treated as a jQuery selector.</param>
-        /// <returns type="jQuery">the selected table rows or cells.</returns>
-        /// </signature>
-    },
-    setDataSource: function(dataSource) {
-        /// <signature>
-        /// <summary>
-        /// Sets the data source of the widget.
-        /// </summary>
-        /// <param name="dataSource" type="kendo.data.DataSource" >The data source to which the widget should be bound.</param>
-        /// </signature>
-    },
-    showColumn: function(column) {
-        /// <signature>
-        /// <summary>
-        /// Shows the specified column.
-        /// </summary>
-        /// <param name="column" type="Object" >The index of the column or the field to which the columns is bound.</param>
-        /// </signature>
-    },
+kendo.ui.Grid = (function () {
+    var original = kendo.ui.Grid;
+    var wrapper = function () {
+        var instance = new original();
+        intellisense.annotate(instance, {
+            addRow: function () {
+                /// <signature>
+                /// <summary>
+                /// Adds an empty data item to the grid. In "incell" and "inline" editing mode a table row will be appended. Popup window will be displayed in "popup" editing mode.Fires the edit event.
+                /// </summary>
+                /// </signature>
+            },
+            cancelChanges: function () {
+                /// <signature>
+                /// <summary>
+                /// Cancels any pending changes in the data source. Deleted data items are restored, new data items are removed and updated data items are restored to their initial state.
+                /// </summary>
+                /// </signature>
+            },
+            cancelRow: function () {
+                /// <signature>
+                /// <summary>
+                /// Cancels editing for the table row which is in edit mode. Reverts any changes made.
+                /// </summary>
+                /// </signature>
+            },
+            cellIndex: function (cell) {
+                /// <signature>
+                /// <summary>
+                /// Returns the index of the specified table cell. Skips group and detail table cells.
+                /// </summary>
+                /// <param name="cell" type="Object" >A string, DOM element or jQuery object which represents the table cell. A string is treated as a jQuery selector.</param>
+                /// <returns type="Number">the index of the specified table cell.</returns>
+                /// </signature>
+            },
+            clearSelection: function () {
+                /// <signature>
+                /// <summary>
+                /// Clears the currently selected table rows or cells (depending on the current selection mode).
+                /// </summary>
+                /// </signature>
+            },
+            closeCell: function () {
+                /// <signature>
+                /// <summary>
+                /// Stops editing the table cell which is in edit mode. Requires "incell" edit mode.
+                /// </summary>
+                /// </signature>
+            },
+            collapseGroup: function (row) {
+                /// <signature>
+                /// <summary>
+                /// Collapses the specified group. This hides the group items.
+                /// </summary>
+                /// <param name="row" type="Object" >A string, DOM element or jQuery object which represents the group table row. A string is treated as a jQuery selector.</param>
+                /// </signature>
+            },
+            collapseRow: function (row) {
+                /// <signature>
+                /// <summary>
+                /// Collapses the specified master table row. This hides its detail table row.
+                /// </summary>
+                /// <param name="row" type="Object" >A string, DOM element or jQuery object which represents the master table row. A string is treated as a jQuery selector.</param>
+                /// </signature>
+            },
+            current: function (cell) {
+                /// <signature>
+                /// <summary>
+                /// Selects cell for keyboard navigation. This set the current position of the keyboard navigation.
+                /// </summary>
+                /// <param name="cell" type="Object" >DOM element or jQuery object which represents the navigatable cell.</param>
+                /// </signature>
+            },
+            dataItem: function (row) {
+                /// <signature>
+                /// <summary>
+                /// Returns the data item to which the specified table row is bound.
+                /// </summary>
+                /// <param name="row" type="Object" >A string, DOM element or jQuery object which represents the table row. A string is treated as a jQuery selector.</param>
+                /// <returns type="kendo.data.ObservableObject">the data item to which the specified table row is bound.</returns>
+                /// </signature>
+            },
+            destroy: function () {
+                /// <signature>
+                /// <summary>
+                /// Prepares the widget for safe removal from DOM. Detaches all event handlers and removes jQuery.data attributes to avoid memory leaks. Calls destroy method of any child Kendo widgets.
+                /// </summary>
+                /// </signature>
+            },
+            editCell: function (cell) {
+                /// <signature>
+                /// <summary>
+                /// Switches the specified table cell in edit mode. Requires "incell" edit mode.Fires the edit event.
+                /// </summary>
+                /// <param name="cell" type="jQuery" >The jQuery object which represents the table cell.</param>
+                /// </signature>
+            },
+            editRow: function (row) {
+                /// <signature>
+                /// <summary>
+                /// Switches the specified table row in edit mode. Requires "inline" or "popup" edit mode.Fires the edit event.
+                /// </summary>
+                /// <param name="row" type="jQuery" >The jQuery object which represents the table row.</param>
+                /// </signature>
+            },
+            expandGroup: function (row) {
+                /// <signature>
+                /// <summary>
+                /// Expands the specified group. This shows the group items.
+                /// </summary>
+                /// <param name="row" type="Object" >A string, DOM element or jQuery object which represents the group table row. A string is treated as a jQuery selector. Expands specified group.</param>
+                /// </signature>
+            },
+            expandRow: function (row) {
+                /// <signature>
+                /// <summary>
+                /// Expands the specified master table row. This shows its detail table row.
+                /// </summary>
+                /// <param name="row" type="Object" >A string, DOM element or jQuery object which represents the master table row. A string is treated as a jQuery selector. Expands specified master row.</param>
+                /// </signature>
+            },
+            hideColumn: function (column) {
+                /// <signature>
+                /// <summary>
+                /// Hides the specified grid column.
+                /// </summary>
+                /// <param name="column" type="Object" >The index of the column or the field to which the columns is bound.</param>
+                /// </signature>
+            },
+            refresh: function () {
+                /// <signature>
+                /// <summary>
+                /// Renders all table rows using the current data items.
+                /// </summary>
+                /// </signature>
+            },
+            removeRow: function (row) {
+                /// <signature>
+                /// <summary>
+                /// Removes the specified table row from the grid. Also removes the corresponding data item from the data source.Fires the remove event.
+                /// </summary>
+                /// <param name="row" type="Object" >A string, DOM element or jQuery object which represents the table row. A string is treated as a jQuery selector.</param>
+                /// </signature>
+            },
+            reorderColumn: function (destIndex, column) {
+                /// <signature>
+                /// <summary>
+                /// Changes the position of the specified column.
+                /// </summary>
+                /// <param name="destIndex" type="Number" >The new position of the column. The destination index should be calculated with regard to all columns, including the hidden ones.</param>
+                /// <param name="column" type="Object" >The column whose position should be changed.</param>
+                /// </signature>
+            },
+            saveChanges: function () {
+                /// <signature>
+                /// <summary>
+                /// Saves any pending changes by calling the sync method.Fires the saveChanges event.
+                /// </summary>
+                /// </signature>
+            },
+            saveRow: function () {
+                /// <signature>
+                /// <summary>
+                /// Switches the table row which is in edit mode and saves any changes made by the user.
+                /// </summary>
+                /// </signature>
+            },
+            select: function (rows) {
+                /// <signature>
+                /// <summary>
+                /// Gets or sets the table rows (or cells) which are selected.
+                /// </summary>
+                /// <param name="rows" type="Object" >A string, DOM element or jQuery object which represents the table row(s) or cell(s). A string is treated as a jQuery selector.</param>
+                /// <returns type="jQuery">the selected table rows or cells.</returns>
+                /// </signature>
+            },
+            setDataSource: function (dataSource) {
+                /// <signature>
+                /// <summary>
+                /// Sets the data source of the widget.
+                /// </summary>
+                /// <param name="dataSource" type="kendo.data.DataSource" >The data source to which the widget should be bound.</param>
+                /// </signature>
+            },
+            showColumn: function (column) {
+                /// <signature>
+                /// <summary>
+                /// Shows the specified column.
+                /// </summary>
+                /// <param name="column" type="Object" >The index of the column or the field to which the columns is bound.</param>
+                /// </signature>
+            },
 
-    bind: function(event, callback) {
-        /// <signature>
-        /// <summary>
-        /// Binds to a widget event.
-        /// </summary>
-        /// <param name="event" type="String">The event name</param>
-        /// <param name="callback" type="Function">The callback to be executed when the event is triggered.</param>
-        /// </signature>
-    },
+            bind: function (event, callback) {
+                /// <signature>
+                /// <summary>
+                /// Binds to a widget event.
+                /// </summary>
+                /// <param name="event" type="String">The event name</param>
+                /// <param name="callback" type="Function">The callback to be executed when the event is triggered.</param>
+                /// </signature>
+            },
 
-    unbind: function(event, callback) {
-        /// <signature>
-        /// <summary>
-        /// Unbinds a callback from a widget event.
-        /// </summary>
-        /// <param name="event" type="String">The event name</param>
-        /// <param name="callback" type="Function">The callback to be removed.</param>
-        /// </signature>
-    }
+            unbind: function (event, callback) {
+                /// <signature>
+                /// <summary>
+                /// Unbinds a callback from a widget event.
+                /// </summary>
+                /// <param name="event" type="String">The event name</param>
+                /// <param name="callback" type="Function">The callback to be removed.</param>
+                /// </signature>
+            }
 
-});
+        });
 
-return instance;
+        return instance;
 
-};
+    };
 
-intellisense.redirectDefinition(wrapper, original);
+    intellisense.redirectDefinition(wrapper, original);
 
-return wrapper;
+    return wrapper;
 
 })();
 
 
-jQuery.fn.kendoGrid = function() {
+jQuery.fn.kendoGrid = function () {
     this.data("kendoGrid", new kendo.ui.Grid());
 
     return this;
 };
 
 intellisense.annotate(jQuery.fn, {
-    getKendoGrid: function() {
+    getKendoGrid: function () {
         /// <signature>
         /// <summary>
         /// Returns a reference to the kendo.ui.Grid widget, instantiated on the selector.
@@ -3874,7 +3872,7 @@ intellisense.annotate(jQuery.fn, {
         /// <returns type="kendo.ui.Grid">The kendo.ui.Grid instance (if present).</returns>
         /// </signature>
     },
-    kendoGrid: function(options) {
+    kendoGrid: function (options) {
         /// <signature>
         /// <summary>
         /// Instantiates a kendo.ui.Grid widget based the DOM elements that match the selector.
@@ -3979,135 +3977,135 @@ intellisense.annotate(jQuery.fn, {
 });
 
 intellisense.annotate(kendo.ui, {
-    ListView: function() {
+    ListView: function () {
         /// <signature>
         /// <summary>Constructor of kendo.ui.ListView</summary>
         /// </signature>
     }
 });
 
-kendo.ui.ListView = (function() {
-var original = kendo.ui.ListView;
-var wrapper = function() {
-var instance = new original();
-intellisense.annotate(instance, {
-    add: function() {
-        /// <signature>
-        /// <summary>
-        /// Inserts empty item as first item on the current view and prepare it for editing.
-        /// </summary>
-        /// </signature>
-    },
-    cancel: function() {
-        /// <signature>
-        /// <summary>
-        /// Cancels changes in currently edited item.
-        /// </summary>
-        /// </signature>
-    },
-    clearSelection: function() {
-        /// <signature>
-        /// <summary>
-        /// Clears ListView selected items and triggers change event.
-        /// </summary>
-        /// </signature>
-    },
-    destroy: function() {
-        /// <signature>
-        /// <summary>
-        /// Prepares the ListView for safe removal from DOM. Detaches all event handlers and removes jQuery.data attributes to avoid memory leaks. Calls destroy method of any child Kendo widgets.
-        /// </summary>
-        /// </signature>
-    },
-    edit: function(item) {
-        /// <signature>
-        /// <summary>
-        /// Edit specified ListView item. Fires the edit event.
-        /// </summary>
-        /// <param name="item" type="jQuery" >jQuery object which represents the item to be edited.</param>
-        /// </signature>
-    },
-    refresh: function() {
-        /// <signature>
-        /// <summary>
-        /// Reloads the data and repaints the list view.
-        /// </summary>
-        /// </signature>
-    },
-    remove: function(item) {
-        /// <signature>
-        /// <summary>
-        /// Removes specified ListView item. Triggers remove event and if not prevented calls DataSource sync method.
-        /// </summary>
-        /// <param name="item" type="Object" >jQuery object which represents the item to be removed.</param>
-        /// </signature>
-    },
-    save: function() {
-        /// <signature>
-        /// <summary>
-        /// Saves edited ListView item. Triggers save event. If save event is not prevented and validation succeeds will call DataSource sync method.
-        /// </summary>
-        /// </signature>
-    },
-    select: function(items) {
-        /// <signature>
-        /// <summary>
-        /// Get/set the selected listview item(s).
-        /// </summary>
-        /// <param name="items" type="Object" >Items to select.</param>
-        /// <returns type="jQuery">the selected items if called without arguments.</returns>
-        /// </signature>
-    },
-    setDataSource: function(dataSource) {
-        /// <signature>
-        /// <summary>
-        /// Sets the dataSource of an existing ListView and rebinds it.
-        /// </summary>
-        /// <param name="dataSource" type="kendo.data.DataSource" >The data source to which the widget should be bound.</param>
-        /// </signature>
-    },
+kendo.ui.ListView = (function () {
+    var original = kendo.ui.ListView;
+    var wrapper = function () {
+        var instance = new original();
+        intellisense.annotate(instance, {
+            add: function () {
+                /// <signature>
+                /// <summary>
+                /// Inserts empty item as first item on the current io and prepare it for editing.
+                /// </summary>
+                /// </signature>
+            },
+            cancel: function () {
+                /// <signature>
+                /// <summary>
+                /// Cancels changes in currently edited item.
+                /// </summary>
+                /// </signature>
+            },
+            clearSelection: function () {
+                /// <signature>
+                /// <summary>
+                /// Clears ListView selected items and triggers change event.
+                /// </summary>
+                /// </signature>
+            },
+            destroy: function () {
+                /// <signature>
+                /// <summary>
+                /// Prepares the ListView for safe removal from DOM. Detaches all event handlers and removes jQuery.data attributes to avoid memory leaks. Calls destroy method of any child Kendo widgets.
+                /// </summary>
+                /// </signature>
+            },
+            edit: function (item) {
+                /// <signature>
+                /// <summary>
+                /// Edit specified ListView item. Fires the edit event.
+                /// </summary>
+                /// <param name="item" type="jQuery" >jQuery object which represents the item to be edited.</param>
+                /// </signature>
+            },
+            refresh: function () {
+                /// <signature>
+                /// <summary>
+                /// Reloads the data and repaints the list io.
+                /// </summary>
+                /// </signature>
+            },
+            remove: function (item) {
+                /// <signature>
+                /// <summary>
+                /// Removes specified ListView item. Triggers remove event and if not prevented calls DataSource sync method.
+                /// </summary>
+                /// <param name="item" type="Object" >jQuery object which represents the item to be removed.</param>
+                /// </signature>
+            },
+            save: function () {
+                /// <signature>
+                /// <summary>
+                /// Saves edited ListView item. Triggers save event. If save event is not prevented and validation succeeds will call DataSource sync method.
+                /// </summary>
+                /// </signature>
+            },
+            select: function (items) {
+                /// <signature>
+                /// <summary>
+                /// Get/set the selected listview item(s).
+                /// </summary>
+                /// <param name="items" type="Object" >Items to select.</param>
+                /// <returns type="jQuery">the selected items if called without arguments.</returns>
+                /// </signature>
+            },
+            setDataSource: function (dataSource) {
+                /// <signature>
+                /// <summary>
+                /// Sets the dataSource of an existing ListView and rebinds it.
+                /// </summary>
+                /// <param name="dataSource" type="kendo.data.DataSource" >The data source to which the widget should be bound.</param>
+                /// </signature>
+            },
 
-    bind: function(event, callback) {
-        /// <signature>
-        /// <summary>
-        /// Binds to a widget event.
-        /// </summary>
-        /// <param name="event" type="String">The event name</param>
-        /// <param name="callback" type="Function">The callback to be executed when the event is triggered.</param>
-        /// </signature>
-    },
+            bind: function (event, callback) {
+                /// <signature>
+                /// <summary>
+                /// Binds to a widget event.
+                /// </summary>
+                /// <param name="event" type="String">The event name</param>
+                /// <param name="callback" type="Function">The callback to be executed when the event is triggered.</param>
+                /// </signature>
+            },
 
-    unbind: function(event, callback) {
-        /// <signature>
-        /// <summary>
-        /// Unbinds a callback from a widget event.
-        /// </summary>
-        /// <param name="event" type="String">The event name</param>
-        /// <param name="callback" type="Function">The callback to be removed.</param>
-        /// </signature>
-    }
+            unbind: function (event, callback) {
+                /// <signature>
+                /// <summary>
+                /// Unbinds a callback from a widget event.
+                /// </summary>
+                /// <param name="event" type="String">The event name</param>
+                /// <param name="callback" type="Function">The callback to be removed.</param>
+                /// </signature>
+            }
 
-});
+        });
 
-return instance;
+        return instance;
 
-};
+    };
 
-intellisense.redirectDefinition(wrapper, original);
+    intellisense.redirectDefinition(wrapper, original);
 
-return wrapper;
+    return wrapper;
 
 })();
 
 
-jQuery.fn.kendoListView = function() {
+jQuery.fn.kendoListView = function () {
     this.data("kendoListView", new kendo.ui.ListView());
 
     return this;
 };
 
 intellisense.annotate(jQuery.fn, {
-    getKendoListView: function() {
+    getKendoListView: function () {
         /// <signature>
         /// <summary>
         /// Returns a reference to the kendo.ui.ListView widget, instantiated on the selector.
@@ -4115,7 +4113,7 @@ intellisense.annotate(jQuery.fn, {
         /// <returns type="kendo.ui.ListView">The kendo.ui.ListView instance (if present).</returns>
         /// </signature>
     },
-    kendoListView: function(options) {
+    kendoListView: function (options) {
         /// <signature>
         /// <summary>
         /// Instantiates a kendo.ui.ListView widget based the DOM elements that match the selector.
@@ -4153,135 +4151,135 @@ intellisense.annotate(jQuery.fn, {
 });
 
 intellisense.annotate(kendo.ui, {
-    Menu: function() {
+    Menu: function () {
         /// <signature>
         /// <summary>Constructor of kendo.ui.Menu</summary>
         /// </signature>
     }
 });
 
-kendo.ui.Menu = (function() {
-var original = kendo.ui.Menu;
-var wrapper = function() {
-var instance = new original();
-intellisense.annotate(instance, {
-    append: function(item,referenceItem) {
-        /// <signature>
-        /// <summary>
-        /// Appends an item to a Menu in the specified referenceItem's sub menu.
-        /// </summary>
-        /// <param name="item" type="Selector" >Target item, specified as a JSON object. Can also handle an array of such objects.</param>
-        /// <param name="referenceItem" type="Selector" >A reference item to append the new item in.</param>
-        /// <returns type="kendo.ui.Menu">Returns the Menu object to support chaining.</returns>
-        /// </signature>
-    },
-    close: function(element) {
-        /// <signature>
-        /// <summary>
-        /// Closes a sub-menu of a specified item(s) in a Menu.
-        /// </summary>
-        /// <param name="element" type="Selector" >Target item selector.</param>
-        /// <returns type="kendo.ui.Menu">Returns the Menu object to support chaining.</returns>
-        /// </signature>
-    },
-    destroy: function() {
-        /// <signature>
-        /// <summary>
-        /// Prepares the Menu for safe removal from DOM. Detaches all event handlers and removes jQuery.data attributes to avoid memory leaks. Calls destroy method of any child Kendo widgets.
-        /// </summary>
-        /// </signature>
-    },
-    enable: function(element,enable) {
-        /// <signature>
-        /// <summary>
-        /// Enables or disables an item of a Menu. This can optionally be accomplished on
+kendo.ui.Menu = (function () {
+    var original = kendo.ui.Menu;
+    var wrapper = function () {
+        var instance = new original();
+        intellisense.annotate(instance, {
+            append: function (item, referenceItem) {
+                /// <signature>
+                /// <summary>
+                /// Appends an item to a Menu in the specified referenceItem's sub menu.
+                /// </summary>
+                /// <param name="item" type="Selector" >Target item, specified as a JSON object. Can also handle an array of such objects.</param>
+                /// <param name="referenceItem" type="Selector" >A reference item to append the new item in.</param>
+                /// <returns type="kendo.ui.Menu">Returns the Menu object to support chaining.</returns>
+                /// </signature>
+            },
+            close: function (element) {
+                /// <signature>
+                /// <summary>
+                /// Closes a sub-menu of a specified item(s) in a Menu.
+                /// </summary>
+                /// <param name="element" type="Selector" >Target item selector.</param>
+                /// <returns type="kendo.ui.Menu">Returns the Menu object to support chaining.</returns>
+                /// </signature>
+            },
+            destroy: function () {
+                /// <signature>
+                /// <summary>
+                /// Prepares the Menu for safe removal from DOM. Detaches all event handlers and removes jQuery.data attributes to avoid memory leaks. Calls destroy method of any child Kendo widgets.
+                /// </summary>
+                /// </signature>
+            },
+            enable: function (element, enable) {
+                /// <signature>
+                /// <summary>
+                /// Enables or disables an item of a Menu. This can optionally be accomplished on
 /// initialization by setting the disabled="disabled" on the desired menu item html element.
-        /// </summary>
-        /// <param name="element" type="Selector" >Target element</param>
-        /// <param name="enable" type="Boolean" >Desired state</param>
-        /// <returns type="kendo.ui.Menu">Returns the Menu object to support chaining.</returns>
-        /// </signature>
-    },
-    insertAfter: function(item,referenceItem) {
-        /// <signature>
-        /// <summary>
-        /// Inserts an item into a Menu after the specified referenceItem.
-        /// </summary>
-        /// <param name="item" type="Selector" >Target item, specified as a JSON object. Can also handle an array of such objects.</param>
-        /// <param name="referenceItem" type="Selector" >A reference item to insert the new item after.</param>
-        /// <returns type="kendo.ui.Menu">Returns the Menu object to support chaining.</returns>
-        /// </signature>
-    },
-    insertBefore: function(item,referenceItem) {
-        /// <signature>
-        /// <summary>
-        /// Inserts an item into a Menu before the specified referenceItem.
-        /// </summary>
-        /// <param name="item" type="Selector" >Target item, specified as a JSON object. Can also handle an array of such objects.</param>
-        /// <param name="referenceItem" type="Selector" >A reference item to insert the new item before</param>
-        /// <returns type="kendo.ui.Menu">Returns the Menu object to support chaining.</returns>
-        /// </signature>
-    },
-    open: function(element) {
-        /// <signature>
-        /// <summary>
-        /// Opens a sub-menu of a specified item(s) in a Menu.
-        /// </summary>
-        /// <param name="element" type="Selector" >Target item selector.</param>
-        /// <returns type="kendo.ui.Menu">Returns the Menu object to support chaining.</returns>
-        /// </signature>
-    },
-    remove: function(element) {
-        /// <signature>
-        /// <summary>
-        /// Removes a specified item(s) from a Menu.
-        /// </summary>
-        /// <param name="element" type="Selector" >Target item selector.</param>
-        /// <returns type="kendo.ui.Menu">Returns the Menu object to support chaining.</returns>
-        /// </signature>
-    },
+                /// </summary>
+                /// <param name="element" type="Selector" >Target element</param>
+                /// <param name="enable" type="Boolean" >Desired state</param>
+                /// <returns type="kendo.ui.Menu">Returns the Menu object to support chaining.</returns>
+                /// </signature>
+            },
+            insertAfter: function (item, referenceItem) {
+                /// <signature>
+                /// <summary>
+                /// Inserts an item into a Menu after the specified referenceItem.
+                /// </summary>
+                /// <param name="item" type="Selector" >Target item, specified as a JSON object. Can also handle an array of such objects.</param>
+                /// <param name="referenceItem" type="Selector" >A reference item to insert the new item after.</param>
+                /// <returns type="kendo.ui.Menu">Returns the Menu object to support chaining.</returns>
+                /// </signature>
+            },
+            insertBefore: function (item, referenceItem) {
+                /// <signature>
+                /// <summary>
+                /// Inserts an item into a Menu before the specified referenceItem.
+                /// </summary>
+                /// <param name="item" type="Selector" >Target item, specified as a JSON object. Can also handle an array of such objects.</param>
+                /// <param name="referenceItem" type="Selector" >A reference item to insert the new item before</param>
+                /// <returns type="kendo.ui.Menu">Returns the Menu object to support chaining.</returns>
+                /// </signature>
+            },
+            open: function (element) {
+                /// <signature>
+                /// <summary>
+                /// Opens a sub-menu of a specified item(s) in a Menu.
+                /// </summary>
+                /// <param name="element" type="Selector" >Target item selector.</param>
+                /// <returns type="kendo.ui.Menu">Returns the Menu object to support chaining.</returns>
+                /// </signature>
+            },
+            remove: function (element) {
+                /// <signature>
+                /// <summary>
+                /// Removes a specified item(s) from a Menu.
+                /// </summary>
+                /// <param name="element" type="Selector" >Target item selector.</param>
+                /// <returns type="kendo.ui.Menu">Returns the Menu object to support chaining.</returns>
+                /// </signature>
+            },
 
-    bind: function(event, callback) {
-        /// <signature>
-        /// <summary>
-        /// Binds to a widget event.
-        /// </summary>
-        /// <param name="event" type="String">The event name</param>
-        /// <param name="callback" type="Function">The callback to be executed when the event is triggered.</param>
-        /// </signature>
-    },
+            bind: function (event, callback) {
+                /// <signature>
+                /// <summary>
+                /// Binds to a widget event.
+                /// </summary>
+                /// <param name="event" type="String">The event name</param>
+                /// <param name="callback" type="Function">The callback to be executed when the event is triggered.</param>
+                /// </signature>
+            },
 
-    unbind: function(event, callback) {
-        /// <signature>
-        /// <summary>
-        /// Unbinds a callback from a widget event.
-        /// </summary>
-        /// <param name="event" type="String">The event name</param>
-        /// <param name="callback" type="Function">The callback to be removed.</param>
-        /// </signature>
-    }
+            unbind: function (event, callback) {
+                /// <signature>
+                /// <summary>
+                /// Unbinds a callback from a widget event.
+                /// </summary>
+                /// <param name="event" type="String">The event name</param>
+                /// <param name="callback" type="Function">The callback to be removed.</param>
+                /// </signature>
+            }
 
-});
+        });
 
-return instance;
+        return instance;
 
-};
+    };
 
-intellisense.redirectDefinition(wrapper, original);
+    intellisense.redirectDefinition(wrapper, original);
 
-return wrapper;
+    return wrapper;
 
 })();
 
 
-jQuery.fn.kendoMenu = function() {
+jQuery.fn.kendoMenu = function () {
     this.data("kendoMenu", new kendo.ui.Menu());
 
     return this;
 };
 
 intellisense.annotate(jQuery.fn, {
-    getKendoMenu: function() {
+    getKendoMenu: function () {
         /// <signature>
         /// <summary>
         /// Returns a reference to the kendo.ui.Menu widget, instantiated on the selector.
@@ -4289,7 +4287,7 @@ intellisense.annotate(jQuery.fn, {
         /// <returns type="kendo.ui.Menu">The kendo.ui.Menu instance (if present).</returns>
         /// </signature>
     },
-    kendoMenu: function(options) {
+    kendoMenu: function (options) {
         /// <signature>
         /// <summary>
         /// Instantiates a kendo.ui.Menu widget based the DOM elements that match the selector.
@@ -4330,152 +4328,152 @@ intellisense.annotate(jQuery.fn, {
 });
 
 intellisense.annotate(kendo.ui, {
-    MultiSelect: function() {
+    MultiSelect: function () {
         /// <signature>
         /// <summary>Constructor of kendo.ui.MultiSelect</summary>
         /// </signature>
     }
 });
 
-kendo.ui.MultiSelect = (function() {
-var original = kendo.ui.MultiSelect;
-var wrapper = function() {
-var instance = new original();
-intellisense.annotate(instance, {
-    close: function() {
-        /// <signature>
-        /// <summary>
-        /// Closes the widget popup.
-        /// </summary>
-        /// </signature>
-    },
-    dataItems: function() {
-        /// <signature>
-        /// <summary>
-        /// Returns list of raw data records corresponding to the selected items.
-        /// </summary>
-        /// <returns type="Array">The raw data records. Returns empty array ([]) if no selected options</returns>
-        /// </signature>
-    },
-    destroy: function() {
-        /// <signature>
-        /// <summary>
-        /// Prepares the MultiSelect for safe removal from DOM. Detaches all event handlers and removes jQuery.data attributes to avoid memory leaks. Calls destroy method of any child Kendo widgets.
-        /// </summary>
-        /// </signature>
-    },
-    enable: function(enable) {
-        /// <signature>
-        /// <summary>
-        /// Enables or disables the widget.
-        /// </summary>
-        /// <param name="enable" type="Boolean" >If set to true the widget will be enabled. If set to false the widget will be disabled.</param>
-        /// </signature>
-    },
-    readonly: function(readonly) {
-        /// <signature>
-        /// <summary>
-        /// Toggles the readonly state of the widget. When the widget is readonly it doesn't allow user input.
-        /// </summary>
-        /// <param name="readonly" type="Boolean" >If set to true the widget will not allow user input. If set to false the widget will allow user input.</param>
-        /// </signature>
-    },
-    focus: function() {
-        /// <signature>
-        /// <summary>
-        /// Focuses the widget.
-        /// </summary>
-        /// </signature>
-    },
-    open: function() {
-        /// <signature>
-        /// <summary>
-        /// Opens the popup.
-        /// </summary>
-        /// </signature>
-    },
-    refresh: function() {
-        /// <signature>
-        /// <summary>
-        /// Refresh the popup by rendering all items again.
-        /// </summary>
-        /// </signature>
-    },
-    search: function(word) {
-        /// <signature>
-        /// <summary>
-        /// Searches the data source for the provided value and displays any matches as suggestions.
-        /// </summary>
-        /// <param name="word" type="String" >The filter value.</param>
-        /// </signature>
-    },
-    setDataSource: function(dataSource) {
-        /// <signature>
-        /// <summary>
-        /// Sets the dataSource of an existing DropDownList and rebinds it.
-        /// </summary>
-        /// <param name="dataSource" type="kendo.data.DataSource" ></param>
-        /// </signature>
-    },
-    toggle: function(toggle) {
-        /// <signature>
-        /// <summary>
-        /// Opens or closes the widget popup.
-        /// </summary>
-        /// <param name="toggle" type="Boolean" >Defines the whether to open/close the drop-down list.</param>
-        /// </signature>
-    },
-    value: function(value) {
-        /// <signature>
-        /// <summary>
-        /// Gets or sets the value of the multiselect. Accepts string value or Array of strings.
-        /// </summary>
-        /// <param name="value" type="Object" >The value to set.</param>
-        /// <returns type="Array">The value of the multiselect.</returns>
-        /// </signature>
-    },
+kendo.ui.MultiSelect = (function () {
+    var original = kendo.ui.MultiSelect;
+    var wrapper = function () {
+        var instance = new original();
+        intellisense.annotate(instance, {
+            close: function () {
+                /// <signature>
+                /// <summary>
+                /// Closes the widget popup.
+                /// </summary>
+                /// </signature>
+            },
+            dataItems: function () {
+                /// <signature>
+                /// <summary>
+                /// Returns list of raw data records corresponding to the selected items.
+                /// </summary>
+                /// <returns type="Array">The raw data records. Returns empty array ([]) if no selected options</returns>
+                /// </signature>
+            },
+            destroy: function () {
+                /// <signature>
+                /// <summary>
+                /// Prepares the MultiSelect for safe removal from DOM. Detaches all event handlers and removes jQuery.data attributes to avoid memory leaks. Calls destroy method of any child Kendo widgets.
+                /// </summary>
+                /// </signature>
+            },
+            enable: function (enable) {
+                /// <signature>
+                /// <summary>
+                /// Enables or disables the widget.
+                /// </summary>
+                /// <param name="enable" type="Boolean" >If set to true the widget will be enabled. If set to false the widget will be disabled.</param>
+                /// </signature>
+            },
+            readonly: function (readonly) {
+                /// <signature>
+                /// <summary>
+                /// Toggles the readonly state of the widget. When the widget is readonly it doesn't allow user input.
+                /// </summary>
+                /// <param name="readonly" type="Boolean" >If set to true the widget will not allow user input. If set to false the widget will allow user input.</param>
+                /// </signature>
+            },
+            focus: function () {
+                /// <signature>
+                /// <summary>
+                /// Focuses the widget.
+                /// </summary>
+                /// </signature>
+            },
+            open: function () {
+                /// <signature>
+                /// <summary>
+                /// Opens the popup.
+                /// </summary>
+                /// </signature>
+            },
+            refresh: function () {
+                /// <signature>
+                /// <summary>
+                /// Refresh the popup by rendering all items again.
+                /// </summary>
+                /// </signature>
+            },
+            search: function (word) {
+                /// <signature>
+                /// <summary>
+                /// Searches the data source for the provided value and displays any matches as suggestions.
+                /// </summary>
+                /// <param name="word" type="String" >The filter value.</param>
+                /// </signature>
+            },
+            setDataSource: function (dataSource) {
+                /// <signature>
+                /// <summary>
+                /// Sets the dataSource of an existing DropDownList and rebinds it.
+                /// </summary>
+                /// <param name="dataSource" type="kendo.data.DataSource" ></param>
+                /// </signature>
+            },
+            toggle: function (toggle) {
+                /// <signature>
+                /// <summary>
+                /// Opens or closes the widget popup.
+                /// </summary>
+                /// <param name="toggle" type="Boolean" >Defines the whether to open/close the drop-down list.</param>
+                /// </signature>
+            },
+            value: function (value) {
+                /// <signature>
+                /// <summary>
+                /// Gets or sets the value of the multiselect. Accepts string value or Array of strings.
+                /// </summary>
+                /// <param name="value" type="Object" >The value to set.</param>
+                /// <returns type="Array">The value of the multiselect.</returns>
+                /// </signature>
+            },
 
-    bind: function(event, callback) {
-        /// <signature>
-        /// <summary>
-        /// Binds to a widget event.
-        /// </summary>
-        /// <param name="event" type="String">The event name</param>
-        /// <param name="callback" type="Function">The callback to be executed when the event is triggered.</param>
-        /// </signature>
-    },
+            bind: function (event, callback) {
+                /// <signature>
+                /// <summary>
+                /// Binds to a widget event.
+                /// </summary>
+                /// <param name="event" type="String">The event name</param>
+                /// <param name="callback" type="Function">The callback to be executed when the event is triggered.</param>
+                /// </signature>
+            },
 
-    unbind: function(event, callback) {
-        /// <signature>
-        /// <summary>
-        /// Unbinds a callback from a widget event.
-        /// </summary>
-        /// <param name="event" type="String">The event name</param>
-        /// <param name="callback" type="Function">The callback to be removed.</param>
-        /// </signature>
-    }
+            unbind: function (event, callback) {
+                /// <signature>
+                /// <summary>
+                /// Unbinds a callback from a widget event.
+                /// </summary>
+                /// <param name="event" type="String">The event name</param>
+                /// <param name="callback" type="Function">The callback to be removed.</param>
+                /// </signature>
+            }
 
-});
+        });
 
-return instance;
+        return instance;
 
-};
+    };
 
-intellisense.redirectDefinition(wrapper, original);
+    intellisense.redirectDefinition(wrapper, original);
 
-return wrapper;
+    return wrapper;
 
 })();
 
 
-jQuery.fn.kendoMultiSelect = function() {
+jQuery.fn.kendoMultiSelect = function () {
     this.data("kendoMultiSelect", new kendo.ui.MultiSelect());
 
     return this;
 };
 
 intellisense.annotate(jQuery.fn, {
-    getKendoMultiSelect: function() {
+    getKendoMultiSelect: function () {
         /// <signature>
         /// <summary>
         /// Returns a reference to the kendo.ui.MultiSelect widget, instantiated on the selector.
@@ -4483,7 +4481,7 @@ intellisense.annotate(jQuery.fn, {
         /// <returns type="kendo.ui.MultiSelect">The kendo.ui.MultiSelect instance (if present).</returns>
         /// </signature>
     },
-    kendoMultiSelect: function(options) {
+    kendoMultiSelect: function (options) {
         /// <signature>
         /// <summary>
         /// Instantiates a kendo.ui.MultiSelect widget based the DOM elements that match the selector.
@@ -4557,126 +4555,126 @@ intellisense.annotate(jQuery.fn, {
 });
 
 intellisense.annotate(kendo.ui, {
-    NumericTextBox: function() {
+    NumericTextBox: function () {
         /// <signature>
         /// <summary>Constructor of kendo.ui.NumericTextBox</summary>
         /// </signature>
     }
 });
 
-kendo.ui.NumericTextBox = (function() {
-var original = kendo.ui.NumericTextBox;
-var wrapper = function() {
-var instance = new original();
-intellisense.annotate(instance, {
-    destroy: function() {
-        /// <signature>
-        /// <summary>
-        /// Prepares the NumericTextBox for safe removal from DOM. Detaches all event handlers and removes jQuery.data attributes to avoid memory leaks. Calls destroy method of any child Kendo widgets.
-        /// </summary>
-        /// </signature>
-    },
-    enable: function(enable) {
-        /// <signature>
-        /// <summary>
-        /// Enables or disables the widget.
-        /// </summary>
-        /// <param name="enable" type="Boolean" >If set to true the widget will be enabled. If set to false the widget will be disabled.</param>
-        /// </signature>
-    },
-    readonly: function(readonly) {
-        /// <signature>
-        /// <summary>
-        /// Toggles the readonly state of the widget. When the widget is readonly it doesn't allow user input.
-        /// </summary>
-        /// <param name="readonly" type="Boolean" >If set to true the widget will not allow user input. If set to false the widget will allow user input.</param>
-        /// </signature>
-    },
-    focus: function() {
-        /// <signature>
-        /// <summary>
-        /// Focuses the widget.
-        /// </summary>
-        /// </signature>
-    },
-    max: function(value) {
-        /// <signature>
-        /// <summary>
-        /// Gets or sets the max value of the widget.
-        /// </summary>
-        /// <param name="value" type="Object" >The max value to set.</param>
-        /// <returns type="Number">The max value of the widget.</returns>
-        /// </signature>
-    },
-    min: function(value) {
-        /// <signature>
-        /// <summary>
-        /// Gets or sets the min value of the widget.
-        /// </summary>
-        /// <param name="value" type="Object" >The min value to set.</param>
-        /// <returns type="Number">The min value of the widget.</returns>
-        /// </signature>
-    },
-    step: function(value) {
-        /// <signature>
-        /// <summary>
-        /// Gets or sets the step value of the widget.
-        /// </summary>
-        /// <param name="value" type="Object" >The step value to set.</param>
-        /// <returns type="Number">The step value of the widget.</returns>
-        /// </signature>
-    },
-    value: function(value) {
-        /// <signature>
-        /// <summary>
-        /// Gets or sets the value of the numerictextbox.
-        /// </summary>
-        /// <param name="value" type="Object" >The value to set.</param>
-        /// <returns type="Number">The value of the widget.</returns>
-        /// </signature>
-    },
+kendo.ui.NumericTextBox = (function () {
+    var original = kendo.ui.NumericTextBox;
+    var wrapper = function () {
+        var instance = new original();
+        intellisense.annotate(instance, {
+            destroy: function () {
+                /// <signature>
+                /// <summary>
+                /// Prepares the NumericTextBox for safe removal from DOM. Detaches all event handlers and removes jQuery.data attributes to avoid memory leaks. Calls destroy method of any child Kendo widgets.
+                /// </summary>
+                /// </signature>
+            },
+            enable: function (enable) {
+                /// <signature>
+                /// <summary>
+                /// Enables or disables the widget.
+                /// </summary>
+                /// <param name="enable" type="Boolean" >If set to true the widget will be enabled. If set to false the widget will be disabled.</param>
+                /// </signature>
+            },
+            readonly: function (readonly) {
+                /// <signature>
+                /// <summary>
+                /// Toggles the readonly state of the widget. When the widget is readonly it doesn't allow user input.
+                /// </summary>
+                /// <param name="readonly" type="Boolean" >If set to true the widget will not allow user input. If set to false the widget will allow user input.</param>
+                /// </signature>
+            },
+            focus: function () {
+                /// <signature>
+                /// <summary>
+                /// Focuses the widget.
+                /// </summary>
+                /// </signature>
+            },
+            max: function (value) {
+                /// <signature>
+                /// <summary>
+                /// Gets or sets the max value of the widget.
+                /// </summary>
+                /// <param name="value" type="Object" >The max value to set.</param>
+                /// <returns type="Number">The max value of the widget.</returns>
+                /// </signature>
+            },
+            min: function (value) {
+                /// <signature>
+                /// <summary>
+                /// Gets or sets the min value of the widget.
+                /// </summary>
+                /// <param name="value" type="Object" >The min value to set.</param>
+                /// <returns type="Number">The min value of the widget.</returns>
+                /// </signature>
+            },
+            step: function (value) {
+                /// <signature>
+                /// <summary>
+                /// Gets or sets the step value of the widget.
+                /// </summary>
+                /// <param name="value" type="Object" >The step value to set.</param>
+                /// <returns type="Number">The step value of the widget.</returns>
+                /// </signature>
+            },
+            value: function (value) {
+                /// <signature>
+                /// <summary>
+                /// Gets or sets the value of the numerictextbox.
+                /// </summary>
+                /// <param name="value" type="Object" >The value to set.</param>
+                /// <returns type="Number">The value of the widget.</returns>
+                /// </signature>
+            },
 
-    bind: function(event, callback) {
-        /// <signature>
-        /// <summary>
-        /// Binds to a widget event.
-        /// </summary>
-        /// <param name="event" type="String">The event name</param>
-        /// <param name="callback" type="Function">The callback to be executed when the event is triggered.</param>
-        /// </signature>
-    },
+            bind: function (event, callback) {
+                /// <signature>
+                /// <summary>
+                /// Binds to a widget event.
+                /// </summary>
+                /// <param name="event" type="String">The event name</param>
+                /// <param name="callback" type="Function">The callback to be executed when the event is triggered.</param>
+                /// </signature>
+            },
 
-    unbind: function(event, callback) {
-        /// <signature>
-        /// <summary>
-        /// Unbinds a callback from a widget event.
-        /// </summary>
-        /// <param name="event" type="String">The event name</param>
-        /// <param name="callback" type="Function">The callback to be removed.</param>
-        /// </signature>
-    }
+            unbind: function (event, callback) {
+                /// <signature>
+                /// <summary>
+                /// Unbinds a callback from a widget event.
+                /// </summary>
+                /// <param name="event" type="String">The event name</param>
+                /// <param name="callback" type="Function">The callback to be removed.</param>
+                /// </signature>
+            }
 
-});
+        });
 
-return instance;
+        return instance;
 
-};
+    };
 
-intellisense.redirectDefinition(wrapper, original);
+    intellisense.redirectDefinition(wrapper, original);
 
-return wrapper;
+    return wrapper;
 
 })();
 
 
-jQuery.fn.kendoNumericTextBox = function() {
+jQuery.fn.kendoNumericTextBox = function () {
     this.data("kendoNumericTextBox", new kendo.ui.NumericTextBox());
 
     return this;
 };
 
 intellisense.annotate(jQuery.fn, {
-    getKendoNumericTextBox: function() {
+    getKendoNumericTextBox: function () {
         /// <signature>
         /// <summary>
         /// Returns a reference to the kendo.ui.NumericTextBox widget, instantiated on the selector.
@@ -4684,7 +4682,7 @@ intellisense.annotate(jQuery.fn, {
         /// <returns type="kendo.ui.NumericTextBox">The kendo.ui.NumericTextBox instance (if present).</returns>
         /// </signature>
     },
-    kendoNumericTextBox: function(options) {
+    kendoNumericTextBox: function (options) {
         /// <signature>
         /// <summary>
         /// Instantiates a kendo.ui.NumericTextBox widget based the DOM elements that match the selector.
@@ -4732,95 +4730,95 @@ intellisense.annotate(jQuery.fn, {
 });
 
 intellisense.annotate(kendo.ui, {
-    Pager: function() {
+    Pager: function () {
         /// <signature>
         /// <summary>Constructor of kendo.ui.Pager</summary>
         /// </signature>
     }
 });
 
-kendo.ui.Pager = (function() {
-var original = kendo.ui.Pager;
-var wrapper = function() {
-var instance = new original();
-intellisense.annotate(instance, {
-    totalPages: function() {
-        /// <signature>
-        /// <summary>
-        /// Returns the number of pages.
-        /// </summary>
-        /// </signature>
-    },
-    pageSize: function() {
-        /// <signature>
-        /// <summary>
-        /// Returns the page size - maximum number of items allowed on one page.
-        /// </summary>
-        /// </signature>
-    },
-    page: function() {
-        /// <signature>
-        /// <summary>
-        /// Set the specified page as a current page. If called without arguments - returns the current page.
-        /// </summary>
-        /// </signature>
-    },
-    refresh: function() {
-        /// <signature>
-        /// <summary>
-        /// Updates all values of pager elements so that these values fit the values of DataSource. This method is automatically called after DataSource change event is fired.
-        /// </summary>
-        /// </signature>
-    },
-    destroy: function() {
-        /// <signature>
-        /// <summary>
-        /// Unbinds all callbacks created within pager initialization. This method doesn't remove pager element from DOM.
-        /// </summary>
-        /// </signature>
-    },
+kendo.ui.Pager = (function () {
+    var original = kendo.ui.Pager;
+    var wrapper = function () {
+        var instance = new original();
+        intellisense.annotate(instance, {
+            totalPages: function () {
+                /// <signature>
+                /// <summary>
+                /// Returns the number of pages.
+                /// </summary>
+                /// </signature>
+            },
+            pageSize: function () {
+                /// <signature>
+                /// <summary>
+                /// Returns the page size - maximum number of items allowed on one page.
+                /// </summary>
+                /// </signature>
+            },
+            page: function () {
+                /// <signature>
+                /// <summary>
+                /// Set the specified page as a current page. If called without arguments - returns the current page.
+                /// </summary>
+                /// </signature>
+            },
+            refresh: function () {
+                /// <signature>
+                /// <summary>
+                /// Updates all values of pager elements so that these values fit the values of DataSource. This method is automatically called after DataSource change event is fired.
+                /// </summary>
+                /// </signature>
+            },
+            destroy: function () {
+                /// <signature>
+                /// <summary>
+                /// Unbinds all callbacks created within pager initialization. This method doesn't remove pager element from DOM.
+                /// </summary>
+                /// </signature>
+            },
 
-    bind: function(event, callback) {
-        /// <signature>
-        /// <summary>
-        /// Binds to a widget event.
-        /// </summary>
-        /// <param name="event" type="String">The event name</param>
-        /// <param name="callback" type="Function">The callback to be executed when the event is triggered.</param>
-        /// </signature>
-    },
+            bind: function (event, callback) {
+                /// <signature>
+                /// <summary>
+                /// Binds to a widget event.
+                /// </summary>
+                /// <param name="event" type="String">The event name</param>
+                /// <param name="callback" type="Function">The callback to be executed when the event is triggered.</param>
+                /// </signature>
+            },
 
-    unbind: function(event, callback) {
-        /// <signature>
-        /// <summary>
-        /// Unbinds a callback from a widget event.
-        /// </summary>
-        /// <param name="event" type="String">The event name</param>
-        /// <param name="callback" type="Function">The callback to be removed.</param>
-        /// </signature>
-    }
+            unbind: function (event, callback) {
+                /// <signature>
+                /// <summary>
+                /// Unbinds a callback from a widget event.
+                /// </summary>
+                /// <param name="event" type="String">The event name</param>
+                /// <param name="callback" type="Function">The callback to be removed.</param>
+                /// </signature>
+            }
 
-});
+        });
 
-return instance;
+        return instance;
 
-};
+    };
 
-intellisense.redirectDefinition(wrapper, original);
+    intellisense.redirectDefinition(wrapper, original);
 
-return wrapper;
+    return wrapper;
 
 })();
 
 
-jQuery.fn.kendoPager = function() {
+jQuery.fn.kendoPager = function () {
     this.data("kendoPager", new kendo.ui.Pager());
 
     return this;
 };
 
 intellisense.annotate(jQuery.fn, {
-    getKendoPager: function() {
+    getKendoPager: function () {
         /// <signature>
         /// <summary>
         /// Returns a reference to the kendo.ui.Pager widget, instantiated on the selector.
@@ -4828,7 +4826,7 @@ intellisense.annotate(jQuery.fn, {
         /// <returns type="kendo.ui.Pager">The kendo.ui.Pager instance (if present).</returns>
         /// </signature>
     },
-    kendoPager: function(options) {
+    kendoPager: function (options) {
         /// <signature>
         /// <summary>
         /// Instantiates a kendo.ui.Pager widget based the DOM elements that match the selector.
@@ -4879,151 +4877,151 @@ intellisense.annotate(jQuery.fn, {
 });
 
 intellisense.annotate(kendo.ui, {
-    PanelBar: function() {
+    PanelBar: function () {
         /// <signature>
         /// <summary>Constructor of kendo.ui.PanelBar</summary>
         /// </signature>
     }
 });
 
-kendo.ui.PanelBar = (function() {
-var original = kendo.ui.PanelBar;
-var wrapper = function() {
-var instance = new original();
-intellisense.annotate(instance, {
-    append: function(item,referenceItem) {
-        /// <signature>
-        /// <summary>
-        /// Appends an item/s to the PanelBar.
-        /// </summary>
-        /// <param name="item" type="Selector" >Target item, specified as the JSON representation of an object. You can pass item text, content or contentUrl here. Can handle an HTML string or array of such strings or JSON.</param>
-        /// <param name="referenceItem" type="Selector" >A reference item to append the new item in the PanelBar, can be omitted.</param>
-        /// <returns type="kendo.ui.PanelBar">Returns the PanelBar object to support chaining.</returns>
-        /// </signature>
-    },
-    collapse: function(element,useAnimation) {
-        /// <signature>
-        /// <summary>
-        /// Collapses the specified item(s) of a PanelBar.
-        /// </summary>
-        /// <param name="element" type="Selector" >The PanelBar item(s) to be collapsed, expressed as a string containing a selector expression or represented by a jQuery selector.</param>
-        /// <param name="useAnimation" type="Boolean" >_optional, default: _Temporarily enables (true) or disables (false) any visual animation(s) when collapsing items.</param>
-        /// <returns type="kendo.ui.PanelBar">Returns the PanelBar object to support chaining.</returns>
-        /// </signature>
-    },
-    destroy: function() {
-        /// <signature>
-        /// <summary>
-        /// Prepares the PanelBar for safe removal from DOM. Detaches all event handlers and removes jQuery.data attributes to avoid memory leaks. Calls destroy method of any child Kendo widgets.
-        /// </summary>
-        /// </signature>
-    },
-    enable: function(element,enable) {
-        /// <signature>
-        /// <summary>
-        /// Enables (true) or disables (false) the specified item(s) of the
+kendo.ui.PanelBar = (function () {
+    var original = kendo.ui.PanelBar;
+    var wrapper = function () {
+        var instance = new original();
+        intellisense.annotate(instance, {
+            append: function (item, referenceItem) {
+                /// <signature>
+                /// <summary>
+                /// Appends an item/s to the PanelBar.
+                /// </summary>
+                /// <param name="item" type="Selector" >Target item, specified as the JSON representation of an object. You can pass item text, content or contentUrl here. Can handle an HTML string or array of such strings or JSON.</param>
+                /// <param name="referenceItem" type="Selector" >A reference item to append the new item in the PanelBar, can be omitted.</param>
+                /// <returns type="kendo.ui.PanelBar">Returns the PanelBar object to support chaining.</returns>
+                /// </signature>
+            },
+            collapse: function (element, useAnimation) {
+                /// <signature>
+                /// <summary>
+                /// Collapses the specified item(s) of a PanelBar.
+                /// </summary>
+                /// <param name="element" type="Selector" >The PanelBar item(s) to be collapsed, expressed as a string containing a selector expression or represented by a jQuery selector.</param>
+                /// <param name="useAnimation" type="Boolean" >_optional, default: _Temporarily enables (true) or disables (false) any visual animation(s) when collapsing items.</param>
+                /// <returns type="kendo.ui.PanelBar">Returns the PanelBar object to support chaining.</returns>
+                /// </signature>
+            },
+            destroy: function () {
+                /// <signature>
+                /// <summary>
+                /// Prepares the PanelBar for safe removal from DOM. Detaches all event handlers and removes jQuery.data attributes to avoid memory leaks. Calls destroy method of any child Kendo widgets.
+                /// </summary>
+                /// </signature>
+            },
+            enable: function (element, enable) {
+                /// <signature>
+                /// <summary>
+                /// Enables (true) or disables (false) the specified item(s) of the
 /// PanelBar.
-        /// </summary>
-        /// <param name="element" type="Object" >The PanelBar item(s) to be enabled (true) or disabled (false), expressed as a string containing a selector expression or represented by a jQuery selector.</param>
-        /// <param name="enable" type="Boolean" >The desired state - enabled (true) or disabled (false) - of the target element(s).</param>
-        /// </signature>
-    },
-    expand: function(element,useAnimation) {
-        /// <signature>
-        /// <summary>
-        /// Expands the specified item(s) of a PanelBar.
-        /// </summary>
-        /// <param name="element" type="Selector" >The PanelBar item(s) to be expanded, expressed as a selector.</param>
-        /// <param name="useAnimation" type="Boolean" >_optional, default: _Temporarily enables (true) or disables (false) any visual animation(s) when expanding items.</param>
-        /// <returns type="kendo.ui.PanelBar">Returns the PanelBar object to support chaining.</returns>
-        /// </signature>
-    },
-    insertAfter: function(item,referenceItem) {
-        /// <signature>
-        /// <summary>
-        /// Inserts a PanelBar item after the specified referenceItem
-        /// </summary>
-        /// <param name="item" type="Selector" >Target item, specified as a JSON object. You can pass item text, content or contentUrl here. Can handle an HTML string or array of such strings or JSON.</param>
-        /// <param name="referenceItem" type="Selector" >A reference item to insert the new item after</param>
-        /// </signature>
-    },
-    insertBefore: function(item,referenceItem) {
-        /// <signature>
-        /// <summary>
-        /// Inserts a PanelBar item before the specified referenceItem
-        /// </summary>
-        /// <param name="item" type="Selector" >Target item, specified as a JSON object. You can pass item text, content or contentUrl here. Can handle an TML string or array of such strings or JSON.</param>
-        /// <param name="referenceItem" type="Selector" >A reference item to insert the new item before.</param>
-        /// <returns type="kendo.ui.PanelBar">Returns the PanelBar object to support chaining.</returns>
-        /// </signature>
-    },
-    reload: function(element) {
-        /// <signature>
-        /// <summary>
-        /// Reloads the content of a PanelBar from an AJAX request.
-        /// </summary>
-        /// <param name="element" type="Selector" >Target element</param>
-        /// </signature>
-    },
-    remove: function(element) {
-        /// <signature>
-        /// <summary>
-        /// Removes the specified PanelBar item(s).
-        /// </summary>
-        /// <param name="element" type="Object" >The PanelBar item(s) to be removed, expressed as a selector string, DOM element or a jQuery object.</param>
-        /// </signature>
-    },
-    select: function(element) {
-        /// <signature>
-        /// <summary>
-        /// Selects the specified item of the PanelBar. If this method is invoked without arguments, it
+                /// </summary>
+                /// <param name="element" type="Object" >The PanelBar item(s) to be enabled (true) or disabled (false), expressed as a string containing a selector expression or represented by a jQuery selector.</param>
+                /// <param name="enable" type="Boolean" >The desired state - enabled (true) or disabled (false) - of the target element(s).</param>
+                /// </signature>
+            },
+            expand: function (element, useAnimation) {
+                /// <signature>
+                /// <summary>
+                /// Expands the specified item(s) of a PanelBar.
+                /// </summary>
+                /// <param name="element" type="Selector" >The PanelBar item(s) to be expanded, expressed as a selector.</param>
+                /// <param name="useAnimation" type="Boolean" >_optional, default: _Temporarily enables (true) or disables (false) any visual animation(s) when expanding items.</param>
+                /// <returns type="kendo.ui.PanelBar">Returns the PanelBar object to support chaining.</returns>
+                /// </signature>
+            },
+            insertAfter: function (item, referenceItem) {
+                /// <signature>
+                /// <summary>
+                /// Inserts a PanelBar item after the specified referenceItem
+                /// </summary>
+                /// <param name="item" type="Selector" >Target item, specified as a JSON object. You can pass item text, content or contentUrl here. Can handle an HTML string or array of such strings or JSON.</param>
+                /// <param name="referenceItem" type="Selector" >A reference item to insert the new item after</param>
+                /// </signature>
+            },
+            insertBefore: function (item, referenceItem) {
+                /// <signature>
+                /// <summary>
+                /// Inserts a PanelBar item before the specified referenceItem
+                /// </summary>
+                /// <param name="item" type="Selector" >Target item, specified as a JSON object. You can pass item text, content or contentUrl here. Can handle an TML string or array of such strings or JSON.</param>
+                /// <param name="referenceItem" type="Selector" >A reference item to insert the new item before.</param>
+                /// <returns type="kendo.ui.PanelBar">Returns the PanelBar object to support chaining.</returns>
+                /// </signature>
+            },
+            reload: function (element) {
+                /// <signature>
+                /// <summary>
+                /// Reloads the content of a PanelBar from an AJAX request.
+                /// </summary>
+                /// <param name="element" type="Selector" >Target element</param>
+                /// </signature>
+            },
+            remove: function (element) {
+                /// <signature>
+                /// <summary>
+                /// Removes the specified PanelBar item(s).
+                /// </summary>
+                /// <param name="element" type="Object" >The PanelBar item(s) to be removed, expressed as a selector string, DOM element or a jQuery object.</param>
+                /// </signature>
+            },
+            select: function (element) {
+                /// <signature>
+                /// <summary>
+                /// Selects the specified item of the PanelBar. If this method is invoked without arguments, it
 /// returns the currently selected item.
-        /// </summary>
-        /// <param name="element" type="Object" >The PanelBar item to be selected, expressed as a string containing a selector expression or represented by a jQuery selector.</param>
-        /// </signature>
-    },
+                /// </summary>
+                /// <param name="element" type="Object" >The PanelBar item to be selected, expressed as a string containing a selector expression or represented by a jQuery selector.</param>
+                /// </signature>
+            },
 
-    bind: function(event, callback) {
-        /// <signature>
-        /// <summary>
-        /// Binds to a widget event.
-        /// </summary>
-        /// <param name="event" type="String">The event name</param>
-        /// <param name="callback" type="Function">The callback to be executed when the event is triggered.</param>
-        /// </signature>
-    },
+            bind: function (event, callback) {
+                /// <signature>
+                /// <summary>
+                /// Binds to a widget event.
+                /// </summary>
+                /// <param name="event" type="String">The event name</param>
+                /// <param name="callback" type="Function">The callback to be executed when the event is triggered.</param>
+                /// </signature>
+            },
 
-    unbind: function(event, callback) {
-        /// <signature>
-        /// <summary>
-        /// Unbinds a callback from a widget event.
-        /// </summary>
-        /// <param name="event" type="String">The event name</param>
-        /// <param name="callback" type="Function">The callback to be removed.</param>
-        /// </signature>
-    }
+            unbind: function (event, callback) {
+                /// <signature>
+                /// <summary>
+                /// Unbinds a callback from a widget event.
+                /// </summary>
+                /// <param name="event" type="String">The event name</param>
+                /// <param name="callback" type="Function">The callback to be removed.</param>
+                /// </signature>
+            }
 
-});
+        });
 
-return instance;
+        return instance;
 
-};
+    };
 
-intellisense.redirectDefinition(wrapper, original);
+    intellisense.redirectDefinition(wrapper, original);
 
-return wrapper;
+    return wrapper;
 
 })();
 
 
-jQuery.fn.kendoPanelBar = function() {
+jQuery.fn.kendoPanelBar = function () {
     this.data("kendoPanelBar", new kendo.ui.PanelBar());
 
     return this;
 };
 
 intellisense.annotate(jQuery.fn, {
-    getKendoPanelBar: function() {
+    getKendoPanelBar: function () {
         /// <signature>
         /// <summary>
         /// Returns a reference to the kendo.ui.PanelBar widget, instantiated on the selector.
@@ -5031,7 +5029,7 @@ intellisense.annotate(jQuery.fn, {
         /// <returns type="kendo.ui.PanelBar">The kendo.ui.PanelBar instance (if present).</returns>
         /// </signature>
     },
-    kendoPanelBar: function(options) {
+    kendoPanelBar: function (options) {
         /// <signature>
         /// <summary>
         /// Instantiates a kendo.ui.PanelBar widget based the DOM elements that match the selector.
@@ -5058,77 +5056,77 @@ intellisense.annotate(jQuery.fn, {
 });
 
 intellisense.annotate(kendo.ui, {
-    ProgressBar: function() {
+    ProgressBar: function () {
         /// <signature>
         /// <summary>Constructor of kendo.ui.ProgressBar</summary>
         /// </signature>
     }
 });
 
-kendo.ui.ProgressBar = (function() {
-var original = kendo.ui.ProgressBar;
-var wrapper = function() {
-var instance = new original();
-intellisense.annotate(instance, {
-    enable: function(enable) {
-        /// <signature>
-        /// <summary>
-        /// Enables/Disables the ProgressBar widget.
-        /// </summary>
-        /// <param name="enable" type="Boolean" >The argument, which defines whether to enable/disable the ProgressBar. If no argument is passed, the widget will be enabled.</param>
-        /// </signature>
-    },
-    value: function(value) {
-        /// <signature>
-        /// <summary>
-        /// Gets or sets the value of the ProgressBar. It accepts a number, a string or false as a parameter. Setting the value to false will set the state of the ProgressBar to indeterminate. If no parameter is passed, it returns the underlying value.
-        /// </summary>
-        /// <param name="value" type="Number" >The value to be set.</param>
-        /// <returns type="Number">the value of the widget.</returns>
-        /// </signature>
-    },
+kendo.ui.ProgressBar = (function () {
+    var original = kendo.ui.ProgressBar;
+    var wrapper = function () {
+        var instance = new original();
+        intellisense.annotate(instance, {
+            enable: function (enable) {
+                /// <signature>
+                /// <summary>
+                /// Enables/Disables the ProgressBar widget.
+                /// </summary>
+                /// <param name="enable" type="Boolean" >The argument, which defines whether to enable/disable the ProgressBar. If no argument is passed, the widget will be enabled.</param>
+                /// </signature>
+            },
+            value: function (value) {
+                /// <signature>
+                /// <summary>
+                /// Gets or sets the value of the ProgressBar. It accepts a number, a string or false as a parameter. Setting the value to false will set the state of the ProgressBar to indeterminate. If no parameter is passed, it returns the underlying value.
+                /// </summary>
+                /// <param name="value" type="Number" >The value to be set.</param>
+                /// <returns type="Number">the value of the widget.</returns>
+                /// </signature>
+            },
 
-    bind: function(event, callback) {
-        /// <signature>
-        /// <summary>
-        /// Binds to a widget event.
-        /// </summary>
-        /// <param name="event" type="String">The event name</param>
-        /// <param name="callback" type="Function">The callback to be executed when the event is triggered.</param>
-        /// </signature>
-    },
+            bind: function (event, callback) {
+                /// <signature>
+                /// <summary>
+                /// Binds to a widget event.
+                /// </summary>
+                /// <param name="event" type="String">The event name</param>
+                /// <param name="callback" type="Function">The callback to be executed when the event is triggered.</param>
+                /// </signature>
+            },
 
-    unbind: function(event, callback) {
-        /// <signature>
-        /// <summary>
-        /// Unbinds a callback from a widget event.
-        /// </summary>
-        /// <param name="event" type="String">The event name</param>
-        /// <param name="callback" type="Function">The callback to be removed.</param>
-        /// </signature>
-    }
+            unbind: function (event, callback) {
+                /// <signature>
+                /// <summary>
+                /// Unbinds a callback from a widget event.
+                /// </summary>
+                /// <param name="event" type="String">The event name</param>
+                /// <param name="callback" type="Function">The callback to be removed.</param>
+                /// </signature>
+            }
 
-});
+        });
 
-return instance;
+        return instance;
 
-};
+    };
 
-intellisense.redirectDefinition(wrapper, original);
+    intellisense.redirectDefinition(wrapper, original);
 
-return wrapper;
+    return wrapper;
 
 })();
 
 
-jQuery.fn.kendoProgressBar = function() {
+jQuery.fn.kendoProgressBar = function () {
     this.data("kendoProgressBar", new kendo.ui.ProgressBar());
 
     return this;
 };
 
 intellisense.annotate(jQuery.fn, {
-    getKendoProgressBar: function() {
+    getKendoProgressBar: function () {
         /// <signature>
         /// <summary>
         /// Returns a reference to the kendo.ui.ProgressBar widget, instantiated on the selector.
@@ -5136,7 +5134,7 @@ intellisense.annotate(jQuery.fn, {
         /// <returns type="kendo.ui.ProgressBar">The kendo.ui.ProgressBar instance (if present).</returns>
         /// </signature>
     },
-    kendoProgressBar: function(options) {
+    kendoProgressBar: function (options) {
         /// <signature>
         /// <summary>
         /// Instantiates a kendo.ui.ProgressBar widget based the DOM elements that match the selector.
@@ -5181,85 +5179,85 @@ intellisense.annotate(jQuery.fn, {
 });
 
 intellisense.annotate(kendo.ui, {
-    RangeSlider: function() {
+    RangeSlider: function () {
         /// <signature>
         /// <summary>Constructor of kendo.ui.RangeSlider</summary>
         /// </signature>
     }
 });
 
-kendo.ui.RangeSlider = (function() {
-var original = kendo.ui.RangeSlider;
-var wrapper = function() {
-var instance = new original();
-intellisense.annotate(instance, {
-    destroy: function() {
-        /// <signature>
-        /// <summary>
-        /// Prepares the RangeSlider for safe removal from the DOM.Detaches event handlers and removes data entries in order to avoid memory leaks.
-        /// </summary>
-        /// </signature>
-    },
-    enable: function(enable) {
-        /// <signature>
-        /// <summary>
-        /// Enable/Disable the RangeSlider widget.
-        /// </summary>
-        /// <param name="enable" type="Boolean" >The argument, which defines whether to enable/disable the RangeSlider.</param>
-        /// </signature>
-    },
-    value: function(value) {
-        /// <signature>
-        /// <summary>
-        /// The value method gets or sets the start and end values of the RangeSlider. It
+kendo.ui.RangeSlider = (function () {
+    var original = kendo.ui.RangeSlider;
+    var wrapper = function () {
+        var instance = new original();
+        intellisense.annotate(instance, {
+            destroy: function () {
+                /// <signature>
+                /// <summary>
+                /// Prepares the RangeSlider for safe removal from the DOM.Detaches event handlers and removes data entries in order to avoid memory leaks.
+                /// </summary>
+                /// </signature>
+            },
+            enable: function (enable) {
+                /// <signature>
+                /// <summary>
+                /// Enable/Disable the RangeSlider widget.
+                /// </summary>
+                /// <param name="enable" type="Boolean" >The argument, which defines whether to enable/disable the RangeSlider.</param>
+                /// </signature>
+            },
+            value: function (value) {
+                /// <signature>
+                /// <summary>
+                /// The value method gets or sets the start and end values of the RangeSlider. It
 /// accepts an array as parameter, and returns an object array with the start and end
 /// selection values.
-        /// </summary>
-        /// <param name="value" type="Number" >The new value of the RangeSlider.</param>
-        /// </signature>
-    },
+                /// </summary>
+                /// <param name="value" type="Number" >The new value of the RangeSlider.</param>
+                /// </signature>
+            },
 
-    bind: function(event, callback) {
-        /// <signature>
-        /// <summary>
-        /// Binds to a widget event.
-        /// </summary>
-        /// <param name="event" type="String">The event name</param>
-        /// <param name="callback" type="Function">The callback to be executed when the event is triggered.</param>
-        /// </signature>
-    },
+            bind: function (event, callback) {
+                /// <signature>
+                /// <summary>
+                /// Binds to a widget event.
+                /// </summary>
+                /// <param name="event" type="String">The event name</param>
+                /// <param name="callback" type="Function">The callback to be executed when the event is triggered.</param>
+                /// </signature>
+            },
 
-    unbind: function(event, callback) {
-        /// <signature>
-        /// <summary>
-        /// Unbinds a callback from a widget event.
-        /// </summary>
-        /// <param name="event" type="String">The event name</param>
-        /// <param name="callback" type="Function">The callback to be removed.</param>
-        /// </signature>
-    }
+            unbind: function (event, callback) {
+                /// <signature>
+                /// <summary>
+                /// Unbinds a callback from a widget event.
+                /// </summary>
+                /// <param name="event" type="String">The event name</param>
+                /// <param name="callback" type="Function">The callback to be removed.</param>
+                /// </signature>
+            }
 
-});
+        });
 
-return instance;
+        return instance;
 
-};
+    };
 
-intellisense.redirectDefinition(wrapper, original);
+    intellisense.redirectDefinition(wrapper, original);
 
-return wrapper;
+    return wrapper;
 
 })();
 
 
-jQuery.fn.kendoRangeSlider = function() {
+jQuery.fn.kendoRangeSlider = function () {
     this.data("kendoRangeSlider", new kendo.ui.RangeSlider());
 
     return this;
 };
 
 intellisense.annotate(jQuery.fn, {
-    getKendoRangeSlider: function() {
+    getKendoRangeSlider: function () {
         /// <signature>
         /// <summary>
         /// Returns a reference to the kendo.ui.RangeSlider widget, instantiated on the selector.
@@ -5267,7 +5265,7 @@ intellisense.annotate(jQuery.fn, {
         /// <returns type="kendo.ui.RangeSlider">The kendo.ui.RangeSlider instance (if present).</returns>
         /// </signature>
     },
-    kendoRangeSlider: function(options) {
+    kendoRangeSlider: function (options) {
         /// <signature>
         /// <summary>
         /// Instantiates a kendo.ui.RangeSlider widget based the DOM elements that match the selector.
@@ -5314,150 +5312,150 @@ intellisense.annotate(jQuery.fn, {
 });
 
 intellisense.annotate(kendo.ui, {
-    Scheduler: function() {
+    Scheduler: function () {
         /// <signature>
         /// <summary>Constructor of kendo.ui.Scheduler</summary>
         /// </signature>
     }
 });
 
-kendo.ui.Scheduler = (function() {
-var original = kendo.ui.Scheduler;
-var wrapper = function() {
-var instance = new original();
-intellisense.annotate(instance, {
-    addEvent: function(data) {
-        /// <signature>
-        /// <summary>
-        /// Adds a new scheduler event and opens the edit form.
-        /// </summary>
-        /// <param name="data" type="Object" >The object containing the scheduler event fields.</param>
-        /// </signature>
-    },
-    cancelEvent: function() {
-        /// <signature>
-        /// <summary>
-        /// Cancels the scheduler event editing. Closes the edit form.
-        /// </summary>
-        /// </signature>
-    },
-    date: function(value) {
-        /// <signature>
-        /// <summary>
-        /// Gets or sets the current scheduler date.
-        /// </summary>
-        /// <param name="value" type="Date" >The new date to set.</param>
-        /// <returns type="Date">the current date.</returns>
-        /// </signature>
-    },
-    destroy: function() {
-        /// <signature>
-        /// <summary>
-        /// Prepares the widget for safe removal from DOM. Detaches all event handlers and removes jQuery.data attributes to avoid memory leaks. Calls destroy method of any child Kendo widgets.
-        /// </summary>
-        /// </signature>
-    },
-    editEvent: function(event) {
-        /// <signature>
-        /// <summary>
-        /// Opens the specified scheduler event in the edit form.
-        /// </summary>
-        /// <param name="event" type="Object" >The event which should be put in edit mode. Also accepts a string which is the uid of the event which should be edited.</param>
-        /// </signature>
-    },
-    removeEvent: function(event) {
-        /// <signature>
-        /// <summary>
-        /// Removes the specified scheduler event.
-        /// </summary>
-        /// <param name="event" type="Object" >The event which should be removed. Also accepts a string which is the uid of the event which should be removed.</param>
-        /// </signature>
-    },
-    saveEvent: function() {
-        /// <signature>
-        /// <summary>
-        /// Saves the scheduler event which is open in the edit form and closes it.
-        /// </summary>
-        /// </signature>
-    },
-    setDataSource: function(dataSource) {
-        /// <signature>
-        /// <summary>
-        /// Sets the data source of the widget.
-        /// </summary>
-        /// <param name="dataSource" type="kendo.data.SchedulerDataSource" >The data source to which the widget should be bound.</param>
-        /// </signature>
-    },
-    slotByPosition: function(xPosition,yPosition) {
-        /// <signature>
-        /// <summary>
-        /// Get the time slot from given horizontal (x) and vertical (y) position.
-        /// </summary>
-        /// <param name="xPosition" type="Number" >The horizontal position.</param>
-        /// <param name="yPosition" type="Number" >The vertical position.</param>
-        /// <returns type="Object">The time slot.</returns>
-        /// </signature>
-    },
-    slotByElement: function(element) {
-        /// <signature>
-        /// <summary>
-        /// Get the time slot from given element.
-        /// </summary>
-        /// <param name="element" type="Object" ></param>
-        /// <returns type="Object">The time slot.</returns>
-        /// </signature>
-    },
-    view: function(type) {
-        /// <signature>
-        /// <summary>
-        /// Gets or sets the current scheduler view.
-        /// </summary>
-        /// <param name="type" type="String" >The view type to select.</param>
-        /// <returns type="kendo.ui.SchedulerView">the current scheduler view.</returns>
-        /// </signature>
-    },
+kendo.ui.Scheduler = (function () {
+    var original = kendo.ui.Scheduler;
+    var wrapper = function () {
+        var instance = new original();
+        intellisense.annotate(instance, {
+            addEvent: function (data) {
+                /// <signature>
+                /// <summary>
+                /// Adds a new scheduler event and opens the edit form.
+                /// </summary>
+                /// <param name="data" type="Object" >The object containing the scheduler event fields.</param>
+                /// </signature>
+            },
+            cancelEvent: function () {
+                /// <signature>
+                /// <summary>
+                /// Cancels the scheduler event editing. Closes the edit form.
+                /// </summary>
+                /// </signature>
+            },
+            date: function (value) {
+                /// <signature>
+                /// <summary>
+                /// Gets or sets the current scheduler date.
+                /// </summary>
+                /// <param name="value" type="Date" >The new date to set.</param>
+                /// <returns type="Date">the current date.</returns>
+                /// </signature>
+            },
+            destroy: function () {
+                /// <signature>
+                /// <summary>
+                /// Prepares the widget for safe removal from DOM. Detaches all event handlers and removes jQuery.data attributes to avoid memory leaks. Calls destroy method of any child Kendo widgets.
+                /// </summary>
+                /// </signature>
+            },
+            editEvent: function (event) {
+                /// <signature>
+                /// <summary>
+                /// Opens the specified scheduler event in the edit form.
+                /// </summary>
+                /// <param name="event" type="Object" >The event which should be put in edit mode. Also accepts a string which is the uid of the event which should be edited.</param>
+                /// </signature>
+            },
+            removeEvent: function (event) {
+                /// <signature>
+                /// <summary>
+                /// Removes the specified scheduler event.
+                /// </summary>
+                /// <param name="event" type="Object" >The event which should be removed. Also accepts a string which is the uid of the event which should be removed.</param>
+                /// </signature>
+            },
+            saveEvent: function () {
+                /// <signature>
+                /// <summary>
+                /// Saves the scheduler event which is open in the edit form and closes it.
+                /// </summary>
+                /// </signature>
+            },
+            setDataSource: function (dataSource) {
+                /// <signature>
+                /// <summary>
+                /// Sets the data source of the widget.
+                /// </summary>
+                /// <param name="dataSource" type="kendo.data.SchedulerDataSource" >The data source to which the widget should be bound.</param>
+                /// </signature>
+            },
+            slotByPosition: function (xPosition, yPosition) {
+                /// <signature>
+                /// <summary>
+                /// Get the time slot from given horizontal (x) and vertical (y) position.
+                /// </summary>
+                /// <param name="xPosition" type="Number" >The horizontal position.</param>
+                /// <param name="yPosition" type="Number" >The vertical position.</param>
+                /// <returns type="Object">The time slot.</returns>
+                /// </signature>
+            },
+            slotByElement: function (element) {
+                /// <signature>
+                /// <summary>
+                /// Get the time slot from given element.
+                /// </summary>
+                /// <param name="element" type="Object" ></param>
+                /// <returns type="Object">The time slot.</returns>
+                /// </signature>
+            },
+            view: function (type) {
+                /// <signature>
+                /// <summary>
+                /// Gets or sets the current scheduler io.
+                /// </summary>
+                /// <param name="type" type="String" >The io type to select.</param>
+                /// <returns type="kendo.ui.SchedulerView">the current scheduler io.</returns>
+                /// </signature>
+            },
 
-    bind: function(event, callback) {
-        /// <signature>
-        /// <summary>
-        /// Binds to a widget event.
-        /// </summary>
-        /// <param name="event" type="String">The event name</param>
-        /// <param name="callback" type="Function">The callback to be executed when the event is triggered.</param>
-        /// </signature>
-    },
+            bind: function (event, callback) {
+                /// <signature>
+                /// <summary>
+                /// Binds to a widget event.
+                /// </summary>
+                /// <param name="event" type="String">The event name</param>
+                /// <param name="callback" type="Function">The callback to be executed when the event is triggered.</param>
+                /// </signature>
+            },
 
-    unbind: function(event, callback) {
-        /// <signature>
-        /// <summary>
-        /// Unbinds a callback from a widget event.
-        /// </summary>
-        /// <param name="event" type="String">The event name</param>
-        /// <param name="callback" type="Function">The callback to be removed.</param>
-        /// </signature>
-    }
+            unbind: function (event, callback) {
+                /// <signature>
+                /// <summary>
+                /// Unbinds a callback from a widget event.
+                /// </summary>
+                /// <param name="event" type="String">The event name</param>
+                /// <param name="callback" type="Function">The callback to be removed.</param>
+                /// </signature>
+            }
 
-});
+        });
 
-return instance;
+        return instance;
 
-};
+    };
 
-intellisense.redirectDefinition(wrapper, original);
+    intellisense.redirectDefinition(wrapper, original);
 
-return wrapper;
+    return wrapper;
 
 })();
 
 
-jQuery.fn.kendoScheduler = function() {
+jQuery.fn.kendoScheduler = function () {
     this.data("kendoScheduler", new kendo.ui.Scheduler());
 
     return this;
 };
 
 intellisense.annotate(jQuery.fn, {
-    getKendoScheduler: function() {
+    getKendoScheduler: function () {
         /// <signature>
         /// <summary>
         /// Returns a reference to the kendo.ui.Scheduler widget, instantiated on the selector.
@@ -5465,7 +5463,7 @@ intellisense.annotate(jQuery.fn, {
         /// <returns type="kendo.ui.Scheduler">The kendo.ui.Scheduler instance (if present).</returns>
         /// </signature>
     },
-    kendoScheduler: function(options) {
+    kendoScheduler: function (options) {
         /// <signature>
         /// <summary>
         /// Instantiates a kendo.ui.Scheduler widget based the DOM elements that match the selector.
@@ -5498,7 +5496,7 @@ intellisense.annotate(jQuery.fn, {
         /// &#10;If set to true the user would be able to create new scheduler events and modify or delete existing ones.
         /// &#10;
         /// &#10;endTime — Date 
-        /// &#10;The end time of the week and day views. The scheduler will display events ending before the endTime.
+        /// &#10;The end time of the week and day admin.views. The scheduler will display events ending before the endTime.
         /// &#10;
         /// &#10;eventTemplate — String|Function 
         /// &#10;The template used to render the scheduler events.The fields which can be used in the template are:
@@ -5547,22 +5545,22 @@ intellisense.annotate(jQuery.fn, {
         /// &#10;If set to true the user would be able to select scheduler cells and events. By default selection is disabled.
         /// &#10;
         /// &#10;showWorkHours — Boolean (default: false)
-        /// &#10;If set to true the view will be initially shown in business hours mode. By default view is displyed in full day mode.
+        /// &#10;If set to true the io will be initially shown in business hours mode. By default io is displyed in full day mode.
         /// &#10;
         /// &#10;snap — Boolean (default: true)
         /// &#10;If set to true the scheduler will snap events to the nearest slot during dragging (resizing or moving). Set it to false to allow free moving and resizing of events.
         /// &#10;
         /// &#10;startTime — Date 
-        /// &#10;The start time of the week and day views. The scheduler will display events starting after the startTime.
+        /// &#10;The start time of the week and day admin.views. The scheduler will display events starting after the startTime.
         /// &#10;
         /// &#10;timezone — String 
         /// &#10;The timezone which the scheduler will use to display the scheduler appointment dates. By default the current system timezone is used. This is an acceptable default when the
 /// &#10;scheduler widget is bound to local array of events. It is advisable to specify a timezone if the scheduler is bound to a remote service.
 /// &#10;That way all users would see the same dates and times no matter their configured system timezone.The complete list of the supported timezones is available in the List of IANA time zones Wikipedia page.
         /// &#10;
-        /// &#10;views — Array 
-        /// &#10;The views displayed by the scheduler and their configuration. The array items can be either objects specifying the view configuration or strings representing the view types (assuming default configuration).
-/// &#10;By default the Kendo UI Scheduler widget displays "day" and "week" view.
+        /// &#10;admin.views — Array
+        /// &#10;The admin.views displayed by the scheduler and their configuration. The array items can be either objects specifying the io configuration or strings representing the io types (assuming default configuration).
+/// &#10;By default the Kendo UI Scheduler widget displays "day" and "week" io.
         /// &#10;
         /// &#10;width — Number|String 
         /// &#10;The width of the widget. Numeric values are treated as pixels.
@@ -5588,84 +5586,84 @@ intellisense.annotate(jQuery.fn, {
 });
 
 intellisense.annotate(kendo.ui, {
-    Slider: function() {
+    Slider: function () {
         /// <signature>
         /// <summary>Constructor of kendo.ui.Slider</summary>
         /// </signature>
     }
 });
 
-kendo.ui.Slider = (function() {
-var original = kendo.ui.Slider;
-var wrapper = function() {
-var instance = new original();
-intellisense.annotate(instance, {
-    destroy: function() {
-        /// <signature>
-        /// <summary>
-        /// Prepares the Slider for safe removal from the DOM.Detaches event handlers and removes data entries in order to avoid memory leaks.
-        /// </summary>
-        /// </signature>
-    },
-    enable: function(enable) {
-        /// <signature>
-        /// <summary>
-        /// Enable/Disable the Slider widget.
-        /// </summary>
-        /// <param name="enable" type="Boolean" >The argument, which defines whether to enable/disable the Slider.</param>
-        /// </signature>
-    },
-    value: function(value) {
-        /// <signature>
-        /// <summary>
-        /// Gets or sets the value of a Slider. It accepts a string or number as parameters and returns
+kendo.ui.Slider = (function () {
+    var original = kendo.ui.Slider;
+    var wrapper = function () {
+        var instance = new original();
+        intellisense.annotate(instance, {
+            destroy: function () {
+                /// <signature>
+                /// <summary>
+                /// Prepares the Slider for safe removal from the DOM.Detaches event handlers and removes data entries in order to avoid memory leaks.
+                /// </summary>
+                /// </signature>
+            },
+            enable: function (enable) {
+                /// <signature>
+                /// <summary>
+                /// Enable/Disable the Slider widget.
+                /// </summary>
+                /// <param name="enable" type="Boolean" >The argument, which defines whether to enable/disable the Slider.</param>
+                /// </signature>
+            },
+            value: function (value) {
+                /// <signature>
+                /// <summary>
+                /// Gets or sets the value of a Slider. It accepts a string or number as parameters and returns
 /// a number representing the underlying value.
-        /// </summary>
-        /// <param name="value" type="String" >_optional, default: _The value to be set for a Slider.</param>
-        /// </signature>
-    },
+                /// </summary>
+                /// <param name="value" type="String" >_optional, default: _The value to be set for a Slider.</param>
+                /// </signature>
+            },
 
-    bind: function(event, callback) {
-        /// <signature>
-        /// <summary>
-        /// Binds to a widget event.
-        /// </summary>
-        /// <param name="event" type="String">The event name</param>
-        /// <param name="callback" type="Function">The callback to be executed when the event is triggered.</param>
-        /// </signature>
-    },
+            bind: function (event, callback) {
+                /// <signature>
+                /// <summary>
+                /// Binds to a widget event.
+                /// </summary>
+                /// <param name="event" type="String">The event name</param>
+                /// <param name="callback" type="Function">The callback to be executed when the event is triggered.</param>
+                /// </signature>
+            },
 
-    unbind: function(event, callback) {
-        /// <signature>
-        /// <summary>
-        /// Unbinds a callback from a widget event.
-        /// </summary>
-        /// <param name="event" type="String">The event name</param>
-        /// <param name="callback" type="Function">The callback to be removed.</param>
-        /// </signature>
-    }
+            unbind: function (event, callback) {
+                /// <signature>
+                /// <summary>
+                /// Unbinds a callback from a widget event.
+                /// </summary>
+                /// <param name="event" type="String">The event name</param>
+                /// <param name="callback" type="Function">The callback to be removed.</param>
+                /// </signature>
+            }
 
-});
+        });
 
-return instance;
+        return instance;
 
-};
+    };
 
-intellisense.redirectDefinition(wrapper, original);
+    intellisense.redirectDefinition(wrapper, original);
 
-return wrapper;
+    return wrapper;
 
 })();
 
 
-jQuery.fn.kendoSlider = function() {
+jQuery.fn.kendoSlider = function () {
     this.data("kendoSlider", new kendo.ui.Slider());
 
     return this;
 };
 
 intellisense.annotate(jQuery.fn, {
-    getKendoSlider: function() {
+    getKendoSlider: function () {
         /// <signature>
         /// <summary>
         /// Returns a reference to the kendo.ui.Slider widget, instantiated on the selector.
@@ -5673,7 +5671,7 @@ intellisense.annotate(jQuery.fn, {
         /// <returns type="kendo.ui.Slider">The kendo.ui.Slider instance (if present).</returns>
         /// </signature>
     },
-    kendoSlider: function(options) {
+    kendoSlider: function (options) {
         /// <signature>
         /// <summary>
         /// Instantiates a kendo.ui.Slider widget based the DOM elements that match the selector.
@@ -5725,171 +5723,171 @@ intellisense.annotate(jQuery.fn, {
 });
 
 intellisense.annotate(kendo.ui, {
-    Splitter: function() {
+    Splitter: function () {
         /// <signature>
         /// <summary>Constructor of kendo.ui.Splitter</summary>
         /// </signature>
     }
 });
 
-kendo.ui.Splitter = (function() {
-var original = kendo.ui.Splitter;
-var wrapper = function() {
-var instance = new original();
-intellisense.annotate(instance, {
-    ajaxRequest: function(pane,url,data) {
-        /// <signature>
-        /// <summary>
-        /// Loads the content of a pane from a local or remote URL.
-        /// </summary>
-        /// <param name="pane" type="Object" >The targeted pane whose content is to be loaded via a URL.</param>
-        /// <param name="url" type="String" >A local or remote URL from which the content of the pane is to be loaded.</param>
-        /// <param name="data" type="Object" >Any data that is necessary to be sent to the server.</param>
-        /// </signature>
-    },
-    append: function(config) {
-        /// <signature>
-        /// <summary>
-        /// Appends a new pane. The method returns the pane element, so it can be populated with arbitrary content, if contentUrl is not set.
+kendo.ui.Splitter = (function () {
+    var original = kendo.ui.Splitter;
+    var wrapper = function () {
+        var instance = new original();
+        intellisense.annotate(instance, {
+            ajaxRequest: function (pane, url, data) {
+                /// <signature>
+                /// <summary>
+                /// Loads the content of a pane from a local or remote URL.
+                /// </summary>
+                /// <param name="pane" type="Object" >The targeted pane whose content is to be loaded via a URL.</param>
+                /// <param name="url" type="String" >A local or remote URL from which the content of the pane is to be loaded.</param>
+                /// <param name="data" type="Object" >Any data that is necessary to be sent to the server.</param>
+                /// </signature>
+            },
+            append: function (config) {
+                /// <signature>
+                /// <summary>
+                /// Appends a new pane. The method returns the pane element, so it can be populated with arbitrary content, if contentUrl is not set.
 /// Invoking this method will force the widget to redraw and it will trigger the resize event.
-        /// </summary>
-        /// <param name="config" type="Object" >The new pane configuration</param>
-        /// </signature>
-    },
-    collapse: function(pane) {
-        /// <signature>
-        /// <summary>
-        /// Collapses a specified pane. Invoking this method will force the widget to redraw and it will trigger the resize event.
+                /// </summary>
+                /// <param name="config" type="Object" >The new pane configuration</param>
+                /// </signature>
+            },
+            collapse: function (pane) {
+                /// <signature>
+                /// <summary>
+                /// Collapses a specified pane. Invoking this method will force the widget to redraw and it will trigger the resize event.
 /// Note: Invoking the method will not trigger a collapse event.
-        /// </summary>
-        /// <param name="pane" type="Object" >The pane to be collapsed.</param>
-        /// </signature>
-    },
-    destroy: function() {
-        /// <signature>
-        /// <summary>
-        /// Prepares the widget for safe removal from DOM. Detaches all event handlers and removes jQuery.data attributes to avoid memory leaks. Calls destroy method of any child Kendo widgets.
-        /// </summary>
-        /// </signature>
-    },
-    expand: function(pane) {
-        /// <signature>
-        /// <summary>
-        /// Expands a specified pane. Invoking this method will force the widget to redraw and it will trigger the resize event.
+                /// </summary>
+                /// <param name="pane" type="Object" >The pane to be collapsed.</param>
+                /// </signature>
+            },
+            destroy: function () {
+                /// <signature>
+                /// <summary>
+                /// Prepares the widget for safe removal from DOM. Detaches all event handlers and removes jQuery.data attributes to avoid memory leaks. Calls destroy method of any child Kendo widgets.
+                /// </summary>
+                /// </signature>
+            },
+            expand: function (pane) {
+                /// <signature>
+                /// <summary>
+                /// Expands a specified pane. Invoking this method will force the widget to redraw and it will trigger the resize event.
 /// Note: Invoking the method will not trigger an expand event.
-        /// </summary>
-        /// <param name="pane" type="Object" >The pane to be expanded.</param>
-        /// </signature>
-    },
-    insertAfter: function(config,referencePane) {
-        /// <signature>
-        /// <summary>
-        /// Inserts a new pane after the specified one. The method returns the pane element, so it can be populated with arbitrary content, if contentUrl is not set.
+                /// </summary>
+                /// <param name="pane" type="Object" >The pane to be expanded.</param>
+                /// </signature>
+            },
+            insertAfter: function (config, referencePane) {
+                /// <signature>
+                /// <summary>
+                /// Inserts a new pane after the specified one. The method returns the pane element, so it can be populated with arbitrary content, if contentUrl is not set.
 /// Invoking this method will force the widget to redraw and it will trigger the resize event.
-        /// </summary>
-        /// <param name="config" type="Object" >The new pane configuration.</param>
-        /// <param name="referencePane" type="Object" >The existing pane after which the new one will be inserted.</param>
-        /// </signature>
-    },
-    insertBefore: function(config,referencePane) {
-        /// <signature>
-        /// <summary>
-        /// Inserts a new pane before the specified one. The method returns the pane element, so it can be populated with arbitrary content, if contentUrl is not set.
+                /// </summary>
+                /// <param name="config" type="Object" >The new pane configuration.</param>
+                /// <param name="referencePane" type="Object" >The existing pane after which the new one will be inserted.</param>
+                /// </signature>
+            },
+            insertBefore: function (config, referencePane) {
+                /// <signature>
+                /// <summary>
+                /// Inserts a new pane before the specified one. The method returns the pane element, so it can be populated with arbitrary content, if contentUrl is not set.
 /// Invoking this method will force the widget to redraw and it will trigger the resize event.
-        /// </summary>
-        /// <param name="config" type="Object" >The new pane configuration.</param>
-        /// <param name="referencePane" type="Object" >The existing pane before which the new one will be inserted.</param>
-        /// </signature>
-    },
-    max: function(pane,value) {
-        /// <signature>
-        /// <summary>
-        /// Sets the maximum size of a pane. Setting this value will not cause the widget to redraw, nor will it trigger any events.
-        /// </summary>
-        /// <param name="pane" type="Object" >The pane being targeted for a new minimum size configuration value.</param>
-        /// <param name="value" type="String" >The maximum size value of the pane defined as pixels (i.e. "200px") or as a percentage (i.e. "50%").</param>
-        /// </signature>
-    },
-    min: function(pane,value) {
-        /// <signature>
-        /// <summary>
-        /// Sets the minimum size of a pane. Setting this value will not cause the widget to redraw, nor will it trigger any events.
-        /// </summary>
-        /// <param name="pane" type="Object" >The pane being targeted for a new minimum size configuration value.</param>
-        /// <param name="value" type="String" >The minimum size value of the pane defined as pixels (i.e. "200px") or as a percentage (i.e. "50%").</param>
-        /// </signature>
-    },
-    remove: function(pane) {
-        /// <signature>
-        /// <summary>
-        /// Removes one or more panes. The method returns the Splitter instance.
+                /// </summary>
+                /// <param name="config" type="Object" >The new pane configuration.</param>
+                /// <param name="referencePane" type="Object" >The existing pane before which the new one will be inserted.</param>
+                /// </signature>
+            },
+            max: function (pane, value) {
+                /// <signature>
+                /// <summary>
+                /// Sets the maximum size of a pane. Setting this value will not cause the widget to redraw, nor will it trigger any events.
+                /// </summary>
+                /// <param name="pane" type="Object" >The pane being targeted for a new minimum size configuration value.</param>
+                /// <param name="value" type="String" >The maximum size value of the pane defined as pixels (i.e. "200px") or as a percentage (i.e. "50%").</param>
+                /// </signature>
+            },
+            min: function (pane, value) {
+                /// <signature>
+                /// <summary>
+                /// Sets the minimum size of a pane. Setting this value will not cause the widget to redraw, nor will it trigger any events.
+                /// </summary>
+                /// <param name="pane" type="Object" >The pane being targeted for a new minimum size configuration value.</param>
+                /// <param name="value" type="String" >The minimum size value of the pane defined as pixels (i.e. "200px") or as a percentage (i.e. "50%").</param>
+                /// </signature>
+            },
+            remove: function (pane) {
+                /// <signature>
+                /// <summary>
+                /// Removes one or more panes. The method returns the Splitter instance.
 /// Invoking this method will force the widget to redraw and it will trigger the resize event.
-        /// </summary>
-        /// <param name="pane" type="Object" >The pane(s) to be removed.</param>
-        /// </signature>
-    },
-    size: function(pane,value) {
-        /// <signature>
-        /// <summary>
-        /// Set the size of the pane. Setting this value will cause the widget to redraw and it will trigger the resize event.
-        /// </summary>
-        /// <param name="pane" type="Object" >The pane to be resized.</param>
-        /// <param name="value" type="String" >The new size of the pane defined as pixels (i.e. "200px") or as a percentage (i.e. "50%"). Note: This value must not exceed panes.max or be less then panes.min.</param>
-        /// </signature>
-    },
-    toggle: function(pane,expand) {
-        /// <signature>
-        /// <summary>
-        /// Toggles the state of a specified pane (i.e. collapsed or expanded).
+                /// </summary>
+                /// <param name="pane" type="Object" >The pane(s) to be removed.</param>
+                /// </signature>
+            },
+            size: function (pane, value) {
+                /// <signature>
+                /// <summary>
+                /// Set the size of the pane. Setting this value will cause the widget to redraw and it will trigger the resize event.
+                /// </summary>
+                /// <param name="pane" type="Object" >The pane to be resized.</param>
+                /// <param name="value" type="String" >The new size of the pane defined as pixels (i.e. "200px") or as a percentage (i.e. "50%"). Note: This value must not exceed panes.max or be less then panes.min.</param>
+                /// </signature>
+            },
+            toggle: function (pane, expand) {
+                /// <signature>
+                /// <summary>
+                /// Toggles the state of a specified pane (i.e. collapsed or expanded).
 /// Invoking this method will force the widget to redraw and it will trigger the resize event.
 /// Note: Invoking the method will not trigger collapse or expand events.
-        /// </summary>
-        /// <param name="pane" type="Object" >The pane to be collapsed.</param>
-        /// <param name="expand" type="Boolean" >Represents the desired state of the specified pane; to be expanded (true) or collapsed (false). If undefined, toggle() will collapse the pane if it is expanded or will expand the pane if it is collapsed.</param>
-        /// </signature>
-    },
+                /// </summary>
+                /// <param name="pane" type="Object" >The pane to be collapsed.</param>
+                /// <param name="expand" type="Boolean" >Represents the desired state of the specified pane; to be expanded (true) or collapsed (false). If undefined, toggle() will collapse the pane if it is expanded or will expand the pane if it is collapsed.</param>
+                /// </signature>
+            },
 
-    bind: function(event, callback) {
-        /// <signature>
-        /// <summary>
-        /// Binds to a widget event.
-        /// </summary>
-        /// <param name="event" type="String">The event name</param>
-        /// <param name="callback" type="Function">The callback to be executed when the event is triggered.</param>
-        /// </signature>
-    },
+            bind: function (event, callback) {
+                /// <signature>
+                /// <summary>
+                /// Binds to a widget event.
+                /// </summary>
+                /// <param name="event" type="String">The event name</param>
+                /// <param name="callback" type="Function">The callback to be executed when the event is triggered.</param>
+                /// </signature>
+            },
 
-    unbind: function(event, callback) {
-        /// <signature>
-        /// <summary>
-        /// Unbinds a callback from a widget event.
-        /// </summary>
-        /// <param name="event" type="String">The event name</param>
-        /// <param name="callback" type="Function">The callback to be removed.</param>
-        /// </signature>
-    }
+            unbind: function (event, callback) {
+                /// <signature>
+                /// <summary>
+                /// Unbinds a callback from a widget event.
+                /// </summary>
+                /// <param name="event" type="String">The event name</param>
+                /// <param name="callback" type="Function">The callback to be removed.</param>
+                /// </signature>
+            }
 
-});
+        });
 
-return instance;
+        return instance;
 
-};
+    };
 
-intellisense.redirectDefinition(wrapper, original);
+    intellisense.redirectDefinition(wrapper, original);
 
-return wrapper;
+    return wrapper;
 
 })();
 
 
-jQuery.fn.kendoSplitter = function() {
+jQuery.fn.kendoSplitter = function () {
     this.data("kendoSplitter", new kendo.ui.Splitter());
 
     return this;
 };
 
 intellisense.annotate(jQuery.fn, {
-    getKendoSplitter: function() {
+    getKendoSplitter: function () {
         /// <signature>
         /// <summary>
         /// Returns a reference to the kendo.ui.Splitter widget, instantiated on the selector.
@@ -5897,7 +5895,7 @@ intellisense.annotate(jQuery.fn, {
         /// <returns type="kendo.ui.Splitter">The kendo.ui.Splitter instance (if present).</returns>
         /// </signature>
     },
-    kendoSplitter: function(options) {
+    kendoSplitter: function (options) {
         /// <signature>
         /// <summary>
         /// Instantiates a kendo.ui.Splitter widget based the DOM elements that match the selector.
@@ -5918,186 +5916,186 @@ intellisense.annotate(jQuery.fn, {
 });
 
 intellisense.annotate(kendo.ui, {
-    TabStrip: function() {
+    TabStrip: function () {
         /// <signature>
         /// <summary>Constructor of kendo.ui.TabStrip</summary>
         /// </signature>
     }
 });
 
-kendo.ui.TabStrip = (function() {
-var original = kendo.ui.TabStrip;
-var wrapper = function() {
-var instance = new original();
-intellisense.annotate(instance, {
-    activateTab: function(item) {
-        /// <signature>
-        /// <summary>
-        /// Activates a tab specified as a selector. Note: Invoking this method will not trigger any events.
-        /// </summary>
-        /// <param name="item" type="jQuery" >The target tab, specified as a selector, to be activated.</param>
-        /// </signature>
-    },
-    append: function(tab) {
-        /// <signature>
-        /// <summary>
-        /// Appends a tab to the collection of tabs in a TabStrip.
-        /// </summary>
-        /// <param name="tab" type="Object" >Target tab, specified as a JSON object. You can pass tab text, content or contentUrl here. Can handle an HTML string or array of such strings or JSON.</param>
-        /// <returns type="kendo.ui.TabStrip">Returns the TabStrip object to support chaining.</returns>
-        /// </signature>
-    },
-    contentElement: function(itemIndex) {
-        /// <signature>
-        /// <summary>
-        /// Obtains the DOM element that encloses tab content by its tab index in the TabStrip.
-        /// </summary>
-        /// <param name="itemIndex" type="Number" >The index of the tab in the TabStrip.</param>
-        /// <returns type="Element">The DOM element enclosing tab content by its tab index in the TabStrip.</returns>
-        /// </signature>
-    },
-    contentHolder: function(itemIndex) {
-        /// <signature>
-        /// <summary>
-        /// Obtains the DOM element that holds tab content by its tab index in the TabStrip.
+kendo.ui.TabStrip = (function () {
+    var original = kendo.ui.TabStrip;
+    var wrapper = function () {
+        var instance = new original();
+        intellisense.annotate(instance, {
+            activateTab: function (item) {
+                /// <signature>
+                /// <summary>
+                /// Activates a tab specified as a selector. Note: Invoking this method will not trigger any events.
+                /// </summary>
+                /// <param name="item" type="jQuery" >The target tab, specified as a selector, to be activated.</param>
+                /// </signature>
+            },
+            append: function (tab) {
+                /// <signature>
+                /// <summary>
+                /// Appends a tab to the collection of tabs in a TabStrip.
+                /// </summary>
+                /// <param name="tab" type="Object" >Target tab, specified as a JSON object. You can pass tab text, content or contentUrl here. Can handle an HTML string or array of such strings or JSON.</param>
+                /// <returns type="kendo.ui.TabStrip">Returns the TabStrip object to support chaining.</returns>
+                /// </signature>
+            },
+            contentElement: function (itemIndex) {
+                /// <signature>
+                /// <summary>
+                /// Obtains the DOM element that encloses tab content by its tab index in the TabStrip.
+                /// </summary>
+                /// <param name="itemIndex" type="Number" >The index of the tab in the TabStrip.</param>
+                /// <returns type="Element">The DOM element enclosing tab content by its tab index in the TabStrip.</returns>
+                /// </signature>
+            },
+            contentHolder: function (itemIndex) {
+                /// <signature>
+                /// <summary>
+                /// Obtains the DOM element that holds tab content by its tab index in the TabStrip.
 /// The difference between contentElement and contentHolder is that contentHolder returns the DOM element that really holds the content, which on mobile is the scroll container.
-        /// </summary>
-        /// <param name="itemIndex" type="Number" >The index of the tab in the TabStrip.</param>
-        /// <returns type="Element">The DOM element holding tab content by its tab index in the TabStrip.</returns>
-        /// </signature>
-    },
-    deactivateTab: function(item) {
-        /// <signature>
-        /// <summary>
-        /// Deactivates a tab specified as a selector. Note: Invoking this method will not trigger any events.
-        /// </summary>
-        /// <param name="item" type="jQuery" >The target tab, specified as a selector, to be deactivated.</param>
-        /// </signature>
-    },
-    destroy: function() {
-        /// <signature>
-        /// <summary>
-        /// Prepares the TabStrip for safe removal from DOM. Detaches all event handlers and removes jQuery.data attributes to avoid memory leaks. Calls destroy method of any child Kendo widgets.
-        /// </summary>
-        /// </signature>
-    },
-    disable: function(element) {
-        /// <signature>
-        /// <summary>
-        /// Disables a tab(s) of a TabStrip.
-        /// </summary>
-        /// <param name="element" type="Object" >The target tab(s), specified as a selector, to be disabled.</param>
-        /// <returns type="kendo.ui.TabStrip">Returns the TabStrip object to support chaining.</returns>
-        /// </signature>
-    },
-    enable: function(element,enable) {
-        /// <signature>
-        /// <summary>
-        /// Disables (false) or enables (true) a tab(s) of a TabStrip.
-        /// </summary>
-        /// <param name="element" type="Object" >The target tab(s), specified as a selector, to be enabled (true) or disabled (false).</param>
-        /// <param name="enable" type="Boolean" >Desired state of the tab(s) specified by the selector; enabled (true) or disabled (false).</param>
-        /// <returns type="kendo.ui.TabStrip">Returns the TabStrip object to support chaining.</returns>
-        /// </signature>
-    },
-    insertAfter: function(item,referenceTab) {
-        /// <signature>
-        /// <summary>
-        /// Inserts a newly-created tab after a specified tab.
-        /// </summary>
-        /// <param name="item" type="Object" >Target tab, specified as a JSON object. You can pass tab text, content or contentUrl here. Can handle an HTML string or array of such strings or JSON.</param>
-        /// <param name="referenceTab" type="Object" >A reference tab to insert the new item after.</param>
-        /// <returns type="kendo.ui.TabStrip">Returns the TabStrip object to support chaining.</returns>
-        /// </signature>
-    },
-    insertBefore: function(item,referenceTab) {
-        /// <signature>
-        /// <summary>
-        /// Inserts a newly-created tab before a specified tab.
-        /// </summary>
-        /// <param name="item" type="Object" >Target tab, specified as a JSON object. You can pass tab text, content or contentUrl here. Can handle an HTML string or array of such strings or JSON.</param>
-        /// <param name="referenceTab" type="Object" >A reference tab to insert the new item before</param>
-        /// <returns type="kendo.ui.TabStrip">Returns the TabStrip object to support chaining.</returns>
-        /// </signature>
-    },
-    items: function() {
-        /// <signature>
-        /// <summary>
-        /// Gets the list of DOM elements that represent the tabs.
-        /// </summary>
-        /// <returns type="HTMLCollection">the tabs as an HTML collection of elements.</returns>
-        /// </signature>
-    },
-    reload: function(element) {
-        /// <signature>
-        /// <summary>
-        /// Reloads TabStrip tab(s) via AJAX.
-        /// </summary>
-        /// <param name="element" type="Object" >The target tab(s), specified as a selector or jQuery object, to be reloaded via AJAX.</param>
-        /// <returns type="kendo.ui.TabStrip">Returns the TabStrip object to support chaining.</returns>
-        /// </signature>
-    },
-    remove: function(element) {
-        /// <signature>
-        /// <summary>
-        /// Removes a specified tab from a TabStrip.
-        /// </summary>
-        /// <param name="element" type="Object" >The target tab(s), specified as a selector or jQuery object, to be removed.</param>
-        /// <returns type="kendo.ui.TabStrip">Returns the TabStrip object to support chaining.</returns>
-        /// </signature>
-    },
-    select: function(element) {
-        /// <signature>
-        /// <summary>
-        /// Get/set the selected tab. If called without arguments, it returns the
+                /// </summary>
+                /// <param name="itemIndex" type="Number" >The index of the tab in the TabStrip.</param>
+                /// <returns type="Element">The DOM element holding tab content by its tab index in the TabStrip.</returns>
+                /// </signature>
+            },
+            deactivateTab: function (item) {
+                /// <signature>
+                /// <summary>
+                /// Deactivates a tab specified as a selector. Note: Invoking this method will not trigger any events.
+                /// </summary>
+                /// <param name="item" type="jQuery" >The target tab, specified as a selector, to be deactivated.</param>
+                /// </signature>
+            },
+            destroy: function () {
+                /// <signature>
+                /// <summary>
+                /// Prepares the TabStrip for safe removal from DOM. Detaches all event handlers and removes jQuery.data attributes to avoid memory leaks. Calls destroy method of any child Kendo widgets.
+                /// </summary>
+                /// </signature>
+            },
+            disable: function (element) {
+                /// <signature>
+                /// <summary>
+                /// Disables a tab(s) of a TabStrip.
+                /// </summary>
+                /// <param name="element" type="Object" >The target tab(s), specified as a selector, to be disabled.</param>
+                /// <returns type="kendo.ui.TabStrip">Returns the TabStrip object to support chaining.</returns>
+                /// </signature>
+            },
+            enable: function (element, enable) {
+                /// <signature>
+                /// <summary>
+                /// Disables (false) or enables (true) a tab(s) of a TabStrip.
+                /// </summary>
+                /// <param name="element" type="Object" >The target tab(s), specified as a selector, to be enabled (true) or disabled (false).</param>
+                /// <param name="enable" type="Boolean" >Desired state of the tab(s) specified by the selector; enabled (true) or disabled (false).</param>
+                /// <returns type="kendo.ui.TabStrip">Returns the TabStrip object to support chaining.</returns>
+                /// </signature>
+            },
+            insertAfter: function (item, referenceTab) {
+                /// <signature>
+                /// <summary>
+                /// Inserts a newly-created tab after a specified tab.
+                /// </summary>
+                /// <param name="item" type="Object" >Target tab, specified as a JSON object. You can pass tab text, content or contentUrl here. Can handle an HTML string or array of such strings or JSON.</param>
+                /// <param name="referenceTab" type="Object" >A reference tab to insert the new item after.</param>
+                /// <returns type="kendo.ui.TabStrip">Returns the TabStrip object to support chaining.</returns>
+                /// </signature>
+            },
+            insertBefore: function (item, referenceTab) {
+                /// <signature>
+                /// <summary>
+                /// Inserts a newly-created tab before a specified tab.
+                /// </summary>
+                /// <param name="item" type="Object" >Target tab, specified as a JSON object. You can pass tab text, content or contentUrl here. Can handle an HTML string or array of such strings or JSON.</param>
+                /// <param name="referenceTab" type="Object" >A reference tab to insert the new item before</param>
+                /// <returns type="kendo.ui.TabStrip">Returns the TabStrip object to support chaining.</returns>
+                /// </signature>
+            },
+            items: function () {
+                /// <signature>
+                /// <summary>
+                /// Gets the list of DOM elements that represent the tabs.
+                /// </summary>
+                /// <returns type="HTMLCollection">the tabs as an HTML collection of elements.</returns>
+                /// </signature>
+            },
+            reload: function (element) {
+                /// <signature>
+                /// <summary>
+                /// Reloads TabStrip tab(s) via AJAX.
+                /// </summary>
+                /// <param name="element" type="Object" >The target tab(s), specified as a selector or jQuery object, to be reloaded via AJAX.</param>
+                /// <returns type="kendo.ui.TabStrip">Returns the TabStrip object to support chaining.</returns>
+                /// </signature>
+            },
+            remove: function (element) {
+                /// <signature>
+                /// <summary>
+                /// Removes a specified tab from a TabStrip.
+                /// </summary>
+                /// <param name="element" type="Object" >The target tab(s), specified as a selector or jQuery object, to be removed.</param>
+                /// <returns type="kendo.ui.TabStrip">Returns the TabStrip object to support chaining.</returns>
+                /// </signature>
+            },
+            select: function (element) {
+                /// <signature>
+                /// <summary>
+                /// Get/set the selected tab. If called without arguments, it returns the
 /// currently selected tab.
-        /// </summary>
-        /// <param name="element" type="Object" >The target tab(s), specified as a selector, jQuery object or index in the tab group.</param>
-        /// <returns type="jQuery">the selected tab if called without arguments. kendo.ui.TabStrip if called with arguments.</returns>
-        /// </signature>
-    },
+                /// </summary>
+                /// <param name="element" type="Object" >The target tab(s), specified as a selector, jQuery object or index in the tab group.</param>
+                /// <returns type="jQuery">the selected tab if called without arguments. kendo.ui.TabStrip if called with arguments.</returns>
+                /// </signature>
+            },
 
-    bind: function(event, callback) {
-        /// <signature>
-        /// <summary>
-        /// Binds to a widget event.
-        /// </summary>
-        /// <param name="event" type="String">The event name</param>
-        /// <param name="callback" type="Function">The callback to be executed when the event is triggered.</param>
-        /// </signature>
-    },
+            bind: function (event, callback) {
+                /// <signature>
+                /// <summary>
+                /// Binds to a widget event.
+                /// </summary>
+                /// <param name="event" type="String">The event name</param>
+                /// <param name="callback" type="Function">The callback to be executed when the event is triggered.</param>
+                /// </signature>
+            },
 
-    unbind: function(event, callback) {
-        /// <signature>
-        /// <summary>
-        /// Unbinds a callback from a widget event.
-        /// </summary>
-        /// <param name="event" type="String">The event name</param>
-        /// <param name="callback" type="Function">The callback to be removed.</param>
-        /// </signature>
-    }
+            unbind: function (event, callback) {
+                /// <signature>
+                /// <summary>
+                /// Unbinds a callback from a widget event.
+                /// </summary>
+                /// <param name="event" type="String">The event name</param>
+                /// <param name="callback" type="Function">The callback to be removed.</param>
+                /// </signature>
+            }
 
-});
+        });
 
-return instance;
+        return instance;
 
-};
+    };
 
-intellisense.redirectDefinition(wrapper, original);
+    intellisense.redirectDefinition(wrapper, original);
 
-return wrapper;
+    return wrapper;
 
 })();
 
 
-jQuery.fn.kendoTabStrip = function() {
+jQuery.fn.kendoTabStrip = function () {
     this.data("kendoTabStrip", new kendo.ui.TabStrip());
 
     return this;
 };
 
 intellisense.annotate(jQuery.fn, {
-    getKendoTabStrip: function() {
+    getKendoTabStrip: function () {
         /// <signature>
         /// <summary>
         /// Returns a reference to the kendo.ui.TabStrip widget, instantiated on the selector.
@@ -6105,7 +6103,7 @@ intellisense.annotate(jQuery.fn, {
         /// <returns type="kendo.ui.TabStrip">The kendo.ui.TabStrip instance (if present).</returns>
         /// </signature>
     },
-    kendoTabStrip: function(options) {
+    kendoTabStrip: function (options) {
         /// <signature>
         /// <summary>
         /// Instantiates a kendo.ui.TabStrip widget based the DOM elements that match the selector.
@@ -6150,124 +6148,124 @@ intellisense.annotate(jQuery.fn, {
 });
 
 intellisense.annotate(kendo.ui, {
-    TimePicker: function() {
+    TimePicker: function () {
         /// <signature>
         /// <summary>Constructor of kendo.ui.TimePicker</summary>
         /// </signature>
     }
 });
 
-kendo.ui.TimePicker = (function() {
-var original = kendo.ui.TimePicker;
-var wrapper = function() {
-var instance = new original();
-intellisense.annotate(instance, {
-    close: function() {
-        /// <signature>
-        /// <summary>
-        /// Closes the drop-down list of a TimePicker.
-        /// </summary>
-        /// </signature>
-    },
-    destroy: function() {
-        /// <signature>
-        /// <summary>
-        /// Prepares the TimePicker for safe removal from DOM. Detaches all event handlers and removes jQuery.data attributes to avoid memory leaks. Calls destroy method of any child Kendo widgets.
-        /// </summary>
-        /// </signature>
-    },
-    enable: function(enable) {
-        /// <signature>
-        /// <summary>
-        /// Enables or disables a TimePicker.
-        /// </summary>
-        /// <param name="enable" type="Boolean" >Enables (true or undefined) or disables (false) a TimePicker.</param>
-        /// </signature>
-    },
-    readonly: function(readonly) {
-        /// <signature>
-        /// <summary>
-        /// Toggles the readonly state of the widget. When the widget is readonly it doesn't allow user input.
-        /// </summary>
-        /// <param name="readonly" type="Boolean" >The argument, which defines whether the timepicker should be readonly or editable.</param>
-        /// </signature>
-    },
-    max: function(value) {
-        /// <signature>
-        /// <summary>
-        /// Gets or sets the maximum value of the TimePicker.
-        /// </summary>
-        /// <param name="value" type="Object" >The maximum time value to set for a TimePicker, expressed as a Date object or as a string.</param>
-        /// <returns type="Date">The maximum time value of a TimePicker.</returns>
-        /// </signature>
-    },
-    min: function(value) {
-        /// <signature>
-        /// <summary>
-        /// Gets or sets the minimum value of the TimePicker.
-        /// </summary>
-        /// <param name="value" type="Object" >The minimum time value to set for a TimePicker, expressed as a Date object or as a string.</param>
-        /// <returns type="Date">The minimum time value of a TimePicker.</returns>
-        /// </signature>
-    },
-    open: function() {
-        /// <signature>
-        /// <summary>
-        /// Opens the drop-down list of a TimePicker.
-        /// </summary>
-        /// </signature>
-    },
-    value: function(value) {
-        /// <signature>
-        /// <summary>
-        /// Gets or sets the value of the TimePicker.
-        /// </summary>
-        /// <param name="value" type="Object" >The time value to set for a TimePicker, expressed as a Date object or as a string.</param>
-        /// <returns type="Date">The time value of a TimePicker.</returns>
-        /// </signature>
-    },
+kendo.ui.TimePicker = (function () {
+    var original = kendo.ui.TimePicker;
+    var wrapper = function () {
+        var instance = new original();
+        intellisense.annotate(instance, {
+            close: function () {
+                /// <signature>
+                /// <summary>
+                /// Closes the drop-down list of a TimePicker.
+                /// </summary>
+                /// </signature>
+            },
+            destroy: function () {
+                /// <signature>
+                /// <summary>
+                /// Prepares the TimePicker for safe removal from DOM. Detaches all event handlers and removes jQuery.data attributes to avoid memory leaks. Calls destroy method of any child Kendo widgets.
+                /// </summary>
+                /// </signature>
+            },
+            enable: function (enable) {
+                /// <signature>
+                /// <summary>
+                /// Enables or disables a TimePicker.
+                /// </summary>
+                /// <param name="enable" type="Boolean" >Enables (true or undefined) or disables (false) a TimePicker.</param>
+                /// </signature>
+            },
+            readonly: function (readonly) {
+                /// <signature>
+                /// <summary>
+                /// Toggles the readonly state of the widget. When the widget is readonly it doesn't allow user input.
+                /// </summary>
+                /// <param name="readonly" type="Boolean" >The argument, which defines whether the timepicker should be readonly or editable.</param>
+                /// </signature>
+            },
+            max: function (value) {
+                /// <signature>
+                /// <summary>
+                /// Gets or sets the maximum value of the TimePicker.
+                /// </summary>
+                /// <param name="value" type="Object" >The maximum time value to set for a TimePicker, expressed as a Date object or as a string.</param>
+                /// <returns type="Date">The maximum time value of a TimePicker.</returns>
+                /// </signature>
+            },
+            min: function (value) {
+                /// <signature>
+                /// <summary>
+                /// Gets or sets the minimum value of the TimePicker.
+                /// </summary>
+                /// <param name="value" type="Object" >The minimum time value to set for a TimePicker, expressed as a Date object or as a string.</param>
+                /// <returns type="Date">The minimum time value of a TimePicker.</returns>
+                /// </signature>
+            },
+            open: function () {
+                /// <signature>
+                /// <summary>
+                /// Opens the drop-down list of a TimePicker.
+                /// </summary>
+                /// </signature>
+            },
+            value: function (value) {
+                /// <signature>
+                /// <summary>
+                /// Gets or sets the value of the TimePicker.
+                /// </summary>
+                /// <param name="value" type="Object" >The time value to set for a TimePicker, expressed as a Date object or as a string.</param>
+                /// <returns type="Date">The time value of a TimePicker.</returns>
+                /// </signature>
+            },
 
-    bind: function(event, callback) {
-        /// <signature>
-        /// <summary>
-        /// Binds to a widget event.
-        /// </summary>
-        /// <param name="event" type="String">The event name</param>
-        /// <param name="callback" type="Function">The callback to be executed when the event is triggered.</param>
-        /// </signature>
-    },
+            bind: function (event, callback) {
+                /// <signature>
+                /// <summary>
+                /// Binds to a widget event.
+                /// </summary>
+                /// <param name="event" type="String">The event name</param>
+                /// <param name="callback" type="Function">The callback to be executed when the event is triggered.</param>
+                /// </signature>
+            },
 
-    unbind: function(event, callback) {
-        /// <signature>
-        /// <summary>
-        /// Unbinds a callback from a widget event.
-        /// </summary>
-        /// <param name="event" type="String">The event name</param>
-        /// <param name="callback" type="Function">The callback to be removed.</param>
-        /// </signature>
-    }
+            unbind: function (event, callback) {
+                /// <signature>
+                /// <summary>
+                /// Unbinds a callback from a widget event.
+                /// </summary>
+                /// <param name="event" type="String">The event name</param>
+                /// <param name="callback" type="Function">The callback to be removed.</param>
+                /// </signature>
+            }
 
-});
+        });
 
-return instance;
+        return instance;
 
-};
+    };
 
-intellisense.redirectDefinition(wrapper, original);
+    intellisense.redirectDefinition(wrapper, original);
 
-return wrapper;
+    return wrapper;
 
 })();
 
 
-jQuery.fn.kendoTimePicker = function() {
+jQuery.fn.kendoTimePicker = function () {
     this.data("kendoTimePicker", new kendo.ui.TimePicker());
 
     return this;
 };
 
 intellisense.annotate(jQuery.fn, {
-    getKendoTimePicker: function() {
+    getKendoTimePicker: function () {
         /// <signature>
         /// <summary>
         /// Returns a reference to the kendo.ui.TimePicker widget, instantiated on the selector.
@@ -6275,7 +6273,7 @@ intellisense.annotate(jQuery.fn, {
         /// <returns type="kendo.ui.TimePicker">The kendo.ui.TimePicker instance (if present).</returns>
         /// </signature>
     },
-    kendoTimePicker: function(options) {
+    kendoTimePicker: function (options) {
         /// <signature>
         /// <summary>
         /// Instantiates a kendo.ui.TimePicker widget based the DOM elements that match the selector.
@@ -6317,90 +6315,90 @@ intellisense.annotate(jQuery.fn, {
 });
 
 intellisense.annotate(kendo.ui, {
-    Tooltip: function() {
+    Tooltip: function () {
         /// <signature>
         /// <summary>Constructor of kendo.ui.Tooltip</summary>
         /// </signature>
     }
 });
 
-kendo.ui.Tooltip = (function() {
-var original = kendo.ui.Tooltip;
-var wrapper = function() {
-var instance = new original();
-intellisense.annotate(instance, {
-    show: function(element) {
-        /// <signature>
-        /// <summary>
-        /// Shows the tooltip for given target.
-        /// </summary>
-        /// <param name="element" type="jQuery" >The target element for which the tooltip should be shown.</param>
-        /// </signature>
-    },
-    hide: function() {
-        /// <signature>
-        /// <summary>
-        /// Hides the tooltip.
-        /// </summary>
-        /// </signature>
-    },
-    refresh: function() {
-        /// <signature>
-        /// <summary>
-        /// Refresh the tooltip content.
-        /// </summary>
-        /// </signature>
-    },
-    target: function() {
-        /// <signature>
-        /// <summary>
-        /// Gets the tooltip current target.
-        /// </summary>
-        /// <returns type="jQuery">The target element or null.</returns>
-        /// </signature>
-    },
+kendo.ui.Tooltip = (function () {
+    var original = kendo.ui.Tooltip;
+    var wrapper = function () {
+        var instance = new original();
+        intellisense.annotate(instance, {
+            show: function (element) {
+                /// <signature>
+                /// <summary>
+                /// Shows the tooltip for given target.
+                /// </summary>
+                /// <param name="element" type="jQuery" >The target element for which the tooltip should be shown.</param>
+                /// </signature>
+            },
+            hide: function () {
+                /// <signature>
+                /// <summary>
+                /// Hides the tooltip.
+                /// </summary>
+                /// </signature>
+            },
+            refresh: function () {
+                /// <signature>
+                /// <summary>
+                /// Refresh the tooltip content.
+                /// </summary>
+                /// </signature>
+            },
+            target: function () {
+                /// <signature>
+                /// <summary>
+                /// Gets the tooltip current target.
+                /// </summary>
+                /// <returns type="jQuery">The target element or null.</returns>
+                /// </signature>
+            },
 
-    bind: function(event, callback) {
-        /// <signature>
-        /// <summary>
-        /// Binds to a widget event.
-        /// </summary>
-        /// <param name="event" type="String">The event name</param>
-        /// <param name="callback" type="Function">The callback to be executed when the event is triggered.</param>
-        /// </signature>
-    },
+            bind: function (event, callback) {
+                /// <signature>
+                /// <summary>
+                /// Binds to a widget event.
+                /// </summary>
+                /// <param name="event" type="String">The event name</param>
+                /// <param name="callback" type="Function">The callback to be executed when the event is triggered.</param>
+                /// </signature>
+            },
 
-    unbind: function(event, callback) {
-        /// <signature>
-        /// <summary>
-        /// Unbinds a callback from a widget event.
-        /// </summary>
-        /// <param name="event" type="String">The event name</param>
-        /// <param name="callback" type="Function">The callback to be removed.</param>
-        /// </signature>
-    }
+            unbind: function (event, callback) {
+                /// <signature>
+                /// <summary>
+                /// Unbinds a callback from a widget event.
+                /// </summary>
+                /// <param name="event" type="String">The event name</param>
+                /// <param name="callback" type="Function">The callback to be removed.</param>
+                /// </signature>
+            }
 
-});
+        });
 
-return instance;
+        return instance;
 
-};
+    };
 
-intellisense.redirectDefinition(wrapper, original);
+    intellisense.redirectDefinition(wrapper, original);
 
-return wrapper;
+    return wrapper;
 
 })();
 
 
-jQuery.fn.kendoTooltip = function() {
+jQuery.fn.kendoTooltip = function () {
     this.data("kendoTooltip", new kendo.ui.Tooltip());
 
     return this;
 };
 
 intellisense.annotate(jQuery.fn, {
-    getKendoTooltip: function() {
+    getKendoTooltip: function () {
         /// <signature>
         /// <summary>
         /// Returns a reference to the kendo.ui.Tooltip widget, instantiated on the selector.
@@ -6408,7 +6406,7 @@ intellisense.annotate(jQuery.fn, {
         /// <returns type="kendo.ui.Tooltip">The kendo.ui.Tooltip instance (if present).</returns>
         /// </signature>
     },
-    kendoTooltip: function(options) {
+    kendoTooltip: function (options) {
         /// <signature>
         /// <summary>
         /// Instantiates a kendo.ui.Tooltip widget based the DOM elements that match the selector.
@@ -6462,220 +6460,220 @@ intellisense.annotate(jQuery.fn, {
 });
 
 intellisense.annotate(kendo.ui, {
-    TreeView: function() {
+    TreeView: function () {
         /// <signature>
         /// <summary>Constructor of kendo.ui.TreeView</summary>
         /// </signature>
     }
 });
 
-kendo.ui.TreeView = (function() {
-var original = kendo.ui.TreeView;
-var wrapper = function() {
-var instance = new original();
-intellisense.annotate(instance, {
-    append: function(nodeData,parentNode,success) {
-        /// <signature>
-        /// <summary>
-        /// Appends a node to any level of the treeview. This method may also be used to reorder nodes.
-        /// </summary>
-        /// <param name="nodeData" type="Object" >A JSON-formatted string or selector that specifies the node to be appended. If the argument is a plain JavaScript object, a new item will be created. If the argument is a jQuery element that holds a node, the treeview node will be moved. If the argument is an array of objects, each item of the array will be appended.</param>
-        /// <param name="parentNode" type="jQuery" >The node that will contain the newly appended node. If not specified, the new node will be appended to the root group of the TreeView.</param>
-        /// <param name="success" type="Function" >A success callback that will be called once the new node has been appended. Useful in the case of remote binding where an item is appended to an unfetched node. The callback is called once the siblings have been fetched.</param>
-        /// <returns type="jQuery">The inserted <li> element, wrapped in a jQuery object,or null if the new model has not been inserted immediately.</returns>
-        /// </signature>
-    },
-    collapse: function(nodes) {
-        /// <signature>
-        /// <summary>
-        /// Collapses nodes.
-        /// </summary>
-        /// <param name="nodes" type="Object" >The nodes that will be collapsed.</param>
-        /// </signature>
-    },
-    dataItem: function(node) {
-        /// <signature>
-        /// <summary>
-        /// Returns the data item to which the specified node is bound.
-        /// </summary>
-        /// <param name="node" type="Object" >A string, DOM element or jQuery object which represents the node. A string is treated as a jQuery selector.</param>
-        /// <returns type="kendo.data.Node">The model of the item that was passed as a parameter.</returns>
-        /// </signature>
-    },
-    destroy: function() {
-        /// <signature>
-        /// <summary>
-        /// Prepares the widget for safe removal from DOM. Detaches all event handlers and removes jQuery.data attributes to avoid memory leaks. Calls destroy method of any child Kendo widgets.
-        /// </summary>
-        /// </signature>
-    },
-    detach: function(node) {
-        /// <signature>
-        /// <summary>
-        /// Removes a node from a TreeView, but keeps its jQuery.data() objects.
-        /// </summary>
-        /// <param name="node" type="Object" >The node that is to be detached.</param>
-        /// <returns type="jQuery">The node that has been detached.</returns>
-        /// </signature>
-    },
-    enable: function(nodes,enable) {
-        /// <signature>
-        /// <summary>
-        /// Enables or disables nodes.
-        /// </summary>
-        /// <param name="nodes" type="Object" >The nodes that are to be enabled/disabled.</param>
-        /// <param name="enable" type="Boolean" >Whether the nodes should be enabled or disabled.</param>
-        /// </signature>
-    },
-    expand: function(nodes) {
-        /// <signature>
-        /// <summary>
-        /// Expands collapsed nodes.
-        /// </summary>
-        /// <param name="nodes" type="Object" >The nodes that are to be expanded.</param>
-        /// </signature>
-    },
-    findByText: function(text) {
-        /// <signature>
-        /// <summary>
-        /// Searches for a node that has specific text.
-        /// </summary>
-        /// <param name="text" type="String" >The text that is being searched for.</param>
-        /// <returns type="jQuery">All nodes that have the text.</returns>
-        /// </signature>
-    },
-    findByUid: function(text) {
-        /// <signature>
-        /// <summary>
-        /// Searches for a node with the given unique identifier.
+kendo.ui.TreeView = (function () {
+    var original = kendo.ui.TreeView;
+    var wrapper = function () {
+        var instance = new original();
+        intellisense.annotate(instance, {
+            append: function (nodeData, parentNode, success) {
+                /// <signature>
+                /// <summary>
+                /// Appends a node to any level of the treeview. This method may also be used to reorder nodes.
+                /// </summary>
+                /// <param name="nodeData" type="Object" >A JSON-formatted string or selector that specifies the node to be appended. If the argument is a plain JavaScript object, a new item will be created. If the argument is a jQuery element that holds a node, the treeview node will be moved. If the argument is an array of objects, each item of the array will be appended.</param>
+                /// <param name="parentNode" type="jQuery" >The node that will contain the newly appended node. If not specified, the new node will be appended to the root group of the TreeView.</param>
+                /// <param name="success" type="Function" >A success callback that will be called once the new node has been appended. Useful in the case of remote binding where an item is appended to an unfetched node. The callback is called once the siblings have been fetched.</param>
+                /// <returns type="jQuery">The inserted <li> element, wrapped in a jQuery object,or null if the new model has not been inserted immediately.</returns>
+                /// </signature>
+            },
+            collapse: function (nodes) {
+                /// <signature>
+                /// <summary>
+                /// Collapses nodes.
+                /// </summary>
+                /// <param name="nodes" type="Object" >The nodes that will be collapsed.</param>
+                /// </signature>
+            },
+            dataItem: function (node) {
+                /// <signature>
+                /// <summary>
+                /// Returns the data item to which the specified node is bound.
+                /// </summary>
+                /// <param name="node" type="Object" >A string, DOM element or jQuery object which represents the node. A string is treated as a jQuery selector.</param>
+                /// <returns type="kendo.data.Node">The model of the item that was passed as a parameter.</returns>
+                /// </signature>
+            },
+            destroy: function () {
+                /// <signature>
+                /// <summary>
+                /// Prepares the widget for safe removal from DOM. Detaches all event handlers and removes jQuery.data attributes to avoid memory leaks. Calls destroy method of any child Kendo widgets.
+                /// </summary>
+                /// </signature>
+            },
+            detach: function (node) {
+                /// <signature>
+                /// <summary>
+                /// Removes a node from a TreeView, but keeps its jQuery.data() objects.
+                /// </summary>
+                /// <param name="node" type="Object" >The node that is to be detached.</param>
+                /// <returns type="jQuery">The node that has been detached.</returns>
+                /// </signature>
+            },
+            enable: function (nodes, enable) {
+                /// <signature>
+                /// <summary>
+                /// Enables or disables nodes.
+                /// </summary>
+                /// <param name="nodes" type="Object" >The nodes that are to be enabled/disabled.</param>
+                /// <param name="enable" type="Boolean" >Whether the nodes should be enabled or disabled.</param>
+                /// </signature>
+            },
+            expand: function (nodes) {
+                /// <signature>
+                /// <summary>
+                /// Expands collapsed nodes.
+                /// </summary>
+                /// <param name="nodes" type="Object" >The nodes that are to be expanded.</param>
+                /// </signature>
+            },
+            findByText: function (text) {
+                /// <signature>
+                /// <summary>
+                /// Searches for a node that has specific text.
+                /// </summary>
+                /// <param name="text" type="String" >The text that is being searched for.</param>
+                /// <returns type="jQuery">All nodes that have the text.</returns>
+                /// </signature>
+            },
+            findByUid: function (text) {
+                /// <signature>
+                /// <summary>
+                /// Searches for a node with the given unique identifier.
 /// Applicable when the widget is bound to a HierarchicalDataSource.
 /// If you want to find a node by its id, use the dataSource.get() method and supply its uid to the findByUid method.
-        /// </summary>
-        /// <param name="text" type="String" >The text that is being searched for.</param>
-        /// <returns type="jQuery">All nodes that have the text.</returns>
-        /// </signature>
-    },
-    insertAfter: function(nodeData,referenceNode) {
-        /// <signature>
-        /// <summary>
-        /// Inserts a node after a specified node.
+                /// </summary>
+                /// <param name="text" type="String" >The text that is being searched for.</param>
+                /// <returns type="jQuery">All nodes that have the text.</returns>
+                /// </signature>
+            },
+            insertAfter: function (nodeData, referenceNode) {
+                /// <signature>
+                /// <summary>
+                /// Inserts a node after a specified node.
 /// This method may also be used to reorder nodes.
-        /// </summary>
-        /// <param name="nodeData" type="Object" >A JSON-formatted string or selector that specifies the node to be inserted.</param>
-        /// <param name="referenceNode" type="jQuery" >The node that will precede the newly-appended node.</param>
-        /// </signature>
-    },
-    insertBefore: function(nodeData,referenceNode) {
-        /// <signature>
-        /// <summary>
-        /// Inserts a node before another node. This method may also be used to reorder nodes.
-        /// </summary>
-        /// <param name="nodeData" type="Object" >A JSON-formatted string or selector that specifies the node to be inserted.</param>
-        /// <param name="referenceNode" type="jQuery" >The node that follows the inserted node.</param>
-        /// </signature>
-    },
-    parent: function(node) {
-        /// <signature>
-        /// <summary>
-        /// Gets the parent node of the item
-        /// </summary>
-        /// <param name="node" type="Object" >The child node whose parent will be returned.</param>
-        /// <returns type="jQuery">The parent node of the given parameter node.</returns>
-        /// </signature>
-    },
-    remove: function(node) {
-        /// <signature>
-        /// <summary>
-        /// Removes a node from the widget.
-        /// </summary>
-        /// <param name="node" type="Object" >The node that is to be removed.</param>
-        /// </signature>
-    },
-    select: function(node) {
-        /// <signature>
-        /// <summary>
-        /// Gets or sets the selected node.
-        /// </summary>
-        /// <param name="node" type="Object" >If provided, the node that should be selected.</param>
-        /// <returns type="jQuery">The currently selected node.</returns>
-        /// </signature>
-    },
-    setDataSource: function(dataSource) {
-        /// <signature>
-        /// <summary>
-        /// Sets and binds a dataSource to the widget.
-        /// </summary>
-        /// <param name="dataSource" type="kendo.data.HierarchicalDataSource" >The new dataSource that the widget will bind to</param>
-        /// </signature>
-    },
-    text: function(node,newText) {
-        /// <signature>
-        /// <summary>
-        /// Gets or sets the text of a node in a TreeView.
-        /// </summary>
-        /// <param name="node" type="Object" >The node of which the text is being retrieved or set.</param>
-        /// <param name="newText" type="String" >Optional. When passed, sets the node text to the specified string</param>
-        /// <returns type="String">The text of a node.</returns>
-        /// </signature>
-    },
-    toggle: function(node) {
-        /// <signature>
-        /// <summary>
-        /// Toggles the node of a TreeView between its expanded and collapsed states.
-        /// </summary>
-        /// <param name="node" type="Object" >The node that should be toggled.</param>
-        /// </signature>
-    },
-    updateIndeterminate: function(node) {
-        /// <signature>
-        /// <summary>
-        /// Updates the indeterminate state of the treeview checkboxes. Should be used for better performance when checking multiple checkboxes through code.
-        /// </summary>
-        /// <param name="node" type="jQuery" >Optional. The root of the hierarchy that will be looped through. Allows only a subtree to be processed. The default value is the treeview root.</param>
-        /// </signature>
-    },
+                /// </summary>
+                /// <param name="nodeData" type="Object" >A JSON-formatted string or selector that specifies the node to be inserted.</param>
+                /// <param name="referenceNode" type="jQuery" >The node that will precede the newly-appended node.</param>
+                /// </signature>
+            },
+            insertBefore: function (nodeData, referenceNode) {
+                /// <signature>
+                /// <summary>
+                /// Inserts a node before another node. This method may also be used to reorder nodes.
+                /// </summary>
+                /// <param name="nodeData" type="Object" >A JSON-formatted string or selector that specifies the node to be inserted.</param>
+                /// <param name="referenceNode" type="jQuery" >The node that follows the inserted node.</param>
+                /// </signature>
+            },
+            parent: function (node) {
+                /// <signature>
+                /// <summary>
+                /// Gets the parent node of the item
+                /// </summary>
+                /// <param name="node" type="Object" >The child node whose parent will be returned.</param>
+                /// <returns type="jQuery">The parent node of the given parameter node.</returns>
+                /// </signature>
+            },
+            remove: function (node) {
+                /// <signature>
+                /// <summary>
+                /// Removes a node from the widget.
+                /// </summary>
+                /// <param name="node" type="Object" >The node that is to be removed.</param>
+                /// </signature>
+            },
+            select: function (node) {
+                /// <signature>
+                /// <summary>
+                /// Gets or sets the selected node.
+                /// </summary>
+                /// <param name="node" type="Object" >If provided, the node that should be selected.</param>
+                /// <returns type="jQuery">The currently selected node.</returns>
+                /// </signature>
+            },
+            setDataSource: function (dataSource) {
+                /// <signature>
+                /// <summary>
+                /// Sets and binds a dataSource to the widget.
+                /// </summary>
+                /// <param name="dataSource" type="kendo.data.HierarchicalDataSource" >The new dataSource that the widget will bind to</param>
+                /// </signature>
+            },
+            text: function (node, newText) {
+                /// <signature>
+                /// <summary>
+                /// Gets or sets the text of a node in a TreeView.
+                /// </summary>
+                /// <param name="node" type="Object" >The node of which the text is being retrieved or set.</param>
+                /// <param name="newText" type="String" >Optional. When passed, sets the node text to the specified string</param>
+                /// <returns type="String">The text of a node.</returns>
+                /// </signature>
+            },
+            toggle: function (node) {
+                /// <signature>
+                /// <summary>
+                /// Toggles the node of a TreeView between its expanded and collapsed states.
+                /// </summary>
+                /// <param name="node" type="Object" >The node that should be toggled.</param>
+                /// </signature>
+            },
+            updateIndeterminate: function (node) {
+                /// <signature>
+                /// <summary>
+                /// Updates the indeterminate state of the treeview checkboxes. Should be used for better performance when checking multiple checkboxes through code.
+                /// </summary>
+                /// <param name="node" type="jQuery" >Optional. The root of the hierarchy that will be looped through. Allows only a subtree to be processed. The default value is the treeview root.</param>
+                /// </signature>
+            },
 
-    bind: function(event, callback) {
-        /// <signature>
-        /// <summary>
-        /// Binds to a widget event.
-        /// </summary>
-        /// <param name="event" type="String">The event name</param>
-        /// <param name="callback" type="Function">The callback to be executed when the event is triggered.</param>
-        /// </signature>
-    },
+            bind: function (event, callback) {
+                /// <signature>
+                /// <summary>
+                /// Binds to a widget event.
+                /// </summary>
+                /// <param name="event" type="String">The event name</param>
+                /// <param name="callback" type="Function">The callback to be executed when the event is triggered.</param>
+                /// </signature>
+            },
 
-    unbind: function(event, callback) {
-        /// <signature>
-        /// <summary>
-        /// Unbinds a callback from a widget event.
-        /// </summary>
-        /// <param name="event" type="String">The event name</param>
-        /// <param name="callback" type="Function">The callback to be removed.</param>
-        /// </signature>
-    }
+            unbind: function (event, callback) {
+                /// <signature>
+                /// <summary>
+                /// Unbinds a callback from a widget event.
+                /// </summary>
+                /// <param name="event" type="String">The event name</param>
+                /// <param name="callback" type="Function">The callback to be removed.</param>
+                /// </signature>
+            }
 
-});
+        });
 
-return instance;
+        return instance;
 
-};
+    };
 
-intellisense.redirectDefinition(wrapper, original);
+    intellisense.redirectDefinition(wrapper, original);
 
-return wrapper;
+    return wrapper;
 
 })();
 
 
-jQuery.fn.kendoTreeView = function() {
+jQuery.fn.kendoTreeView = function () {
     this.data("kendoTreeView", new kendo.ui.TreeView());
 
     return this;
 };
 
 intellisense.annotate(jQuery.fn, {
-    getKendoTreeView: function() {
+    getKendoTreeView: function () {
         /// <signature>
         /// <summary>
         /// Returns a reference to the kendo.ui.TreeView widget, instantiated on the selector.
@@ -6683,7 +6681,7 @@ intellisense.annotate(jQuery.fn, {
         /// <returns type="kendo.ui.TreeView">The kendo.ui.TreeView instance (if present).</returns>
         /// </signature>
     },
-    kendoTreeView: function(options) {
+    kendoTreeView: function (options) {
         /// <signature>
         /// <summary>
         /// Instantiates a kendo.ui.TreeView widget based the DOM elements that match the selector.
@@ -6744,90 +6742,90 @@ intellisense.annotate(jQuery.fn, {
 });
 
 intellisense.annotate(kendo.ui, {
-    Upload: function() {
+    Upload: function () {
         /// <signature>
         /// <summary>Constructor of kendo.ui.Upload</summary>
         /// </signature>
     }
 });
 
-kendo.ui.Upload = (function() {
-var original = kendo.ui.Upload;
-var wrapper = function() {
-var instance = new original();
-intellisense.annotate(instance, {
-    destroy: function() {
-        /// <signature>
-        /// <summary>
-        /// Prepares the Upload for safe removal from DOM. Detaches all event handlers and removes jQuery.data attributes to avoid memory leaks. Calls destroy method of any child Kendo widgets.
-        /// </summary>
-        /// </signature>
-    },
-    disable: function() {
-        /// <signature>
-        /// <summary>
-        /// Disables the upload.
-        /// </summary>
-        /// </signature>
-    },
-    enable: function(enable) {
-        /// <signature>
-        /// <summary>
-        /// Enables the upload.
-        /// </summary>
-        /// <param name="enable" type="Boolean" >The argument, which defines whether to enable/disable the upload.</param>
-        /// </signature>
-    },
-    toggle: function(enable) {
-        /// <signature>
-        /// <summary>
-        /// Toggles the upload enabled state.
-        /// </summary>
-        /// <param name="enable" type="Boolean" >(Optional) The new enabled state.</param>
-        /// </signature>
-    },
+kendo.ui.Upload = (function () {
+    var original = kendo.ui.Upload;
+    var wrapper = function () {
+        var instance = new original();
+        intellisense.annotate(instance, {
+            destroy: function () {
+                /// <signature>
+                /// <summary>
+                /// Prepares the Upload for safe removal from DOM. Detaches all event handlers and removes jQuery.data attributes to avoid memory leaks. Calls destroy method of any child Kendo widgets.
+                /// </summary>
+                /// </signature>
+            },
+            disable: function () {
+                /// <signature>
+                /// <summary>
+                /// Disables the upload.
+                /// </summary>
+                /// </signature>
+            },
+            enable: function (enable) {
+                /// <signature>
+                /// <summary>
+                /// Enables the upload.
+                /// </summary>
+                /// <param name="enable" type="Boolean" >The argument, which defines whether to enable/disable the upload.</param>
+                /// </signature>
+            },
+            toggle: function (enable) {
+                /// <signature>
+                /// <summary>
+                /// Toggles the upload enabled state.
+                /// </summary>
+                /// <param name="enable" type="Boolean" >(Optional) The new enabled state.</param>
+                /// </signature>
+            },
 
-    bind: function(event, callback) {
-        /// <signature>
-        /// <summary>
-        /// Binds to a widget event.
-        /// </summary>
-        /// <param name="event" type="String">The event name</param>
-        /// <param name="callback" type="Function">The callback to be executed when the event is triggered.</param>
-        /// </signature>
-    },
+            bind: function (event, callback) {
+                /// <signature>
+                /// <summary>
+                /// Binds to a widget event.
+                /// </summary>
+                /// <param name="event" type="String">The event name</param>
+                /// <param name="callback" type="Function">The callback to be executed when the event is triggered.</param>
+                /// </signature>
+            },
 
-    unbind: function(event, callback) {
-        /// <signature>
-        /// <summary>
-        /// Unbinds a callback from a widget event.
-        /// </summary>
-        /// <param name="event" type="String">The event name</param>
-        /// <param name="callback" type="Function">The callback to be removed.</param>
-        /// </signature>
-    }
+            unbind: function (event, callback) {
+                /// <signature>
+                /// <summary>
+                /// Unbinds a callback from a widget event.
+                /// </summary>
+                /// <param name="event" type="String">The event name</param>
+                /// <param name="callback" type="Function">The callback to be removed.</param>
+                /// </signature>
+            }
 
-});
+        });
 
-return instance;
+        return instance;
 
-};
+    };
 
-intellisense.redirectDefinition(wrapper, original);
+    intellisense.redirectDefinition(wrapper, original);
 
-return wrapper;
+    return wrapper;
 
 })();
 
 
-jQuery.fn.kendoUpload = function() {
+jQuery.fn.kendoUpload = function () {
     this.data("kendoUpload", new kendo.ui.Upload());
 
     return this;
 };
 
 intellisense.annotate(jQuery.fn, {
-    getKendoUpload: function() {
+    getKendoUpload: function () {
         /// <signature>
         /// <summary>
         /// Returns a reference to the kendo.ui.Upload widget, instantiated on the selector.
@@ -6835,7 +6833,7 @@ intellisense.annotate(jQuery.fn, {
         /// <returns type="kendo.ui.Upload">The kendo.ui.Upload instance (if present).</returns>
         /// </signature>
     },
-    kendoUpload: function(options) {
+    kendoUpload: function (options) {
         /// <signature>
         /// <summary>
         /// Instantiates a kendo.ui.Upload widget based the DOM elements that match the selector.
@@ -6878,92 +6876,92 @@ intellisense.annotate(jQuery.fn, {
 });
 
 intellisense.annotate(kendo.ui, {
-    Validator: function() {
+    Validator: function () {
         /// <signature>
         /// <summary>Constructor of kendo.ui.Validator</summary>
         /// </signature>
     }
 });
 
-kendo.ui.Validator = (function() {
-var original = kendo.ui.Validator;
-var wrapper = function() {
-var instance = new original();
-intellisense.annotate(instance, {
-    errors: function() {
-        /// <signature>
-        /// <summary>
-        /// Get the error messages if any.
-        /// </summary>
-        /// <returns type="Array">Messages for the failed validation rules.</returns>
-        /// </signature>
-    },
-    hideMessages: function() {
-        /// <signature>
-        /// <summary>
-        /// Hides the validation messages.
-        /// </summary>
-        /// </signature>
-    },
-    validate: function() {
-        /// <signature>
-        /// <summary>
-        /// Validates the input element(s) against the declared validation rules.
-        /// </summary>
-        /// <returns type="Boolean">true if all validation rules passed successfully.Note that if a HTML form element is set as validation container, the form submits will be automatically prevented if validation fails.</returns>
-        /// </signature>
-    },
-    validateInput: function(input) {
-        /// <signature>
-        /// <summary>
-        /// Validates the input element against the declared validation rules.
-        /// </summary>
-        /// <param name="input" type="Object" >Input element to be validated.</param>
-        /// <returns type="Boolean">true if all validation rules passed successfully.</returns>
-        /// </signature>
-    },
+kendo.ui.Validator = (function () {
+    var original = kendo.ui.Validator;
+    var wrapper = function () {
+        var instance = new original();
+        intellisense.annotate(instance, {
+            errors: function () {
+                /// <signature>
+                /// <summary>
+                /// Get the error messages if any.
+                /// </summary>
+                /// <returns type="Array">Messages for the failed validation rules.</returns>
+                /// </signature>
+            },
+            hideMessages: function () {
+                /// <signature>
+                /// <summary>
+                /// Hides the validation messages.
+                /// </summary>
+                /// </signature>
+            },
+            validate: function () {
+                /// <signature>
+                /// <summary>
+                /// Validates the input element(s) against the declared validation rules.
+                /// </summary>
+                /// <returns type="Boolean">true if all validation rules passed successfully.Note that if a HTML form element is set as validation container, the form submits will be automatically prevented if validation fails.</returns>
+                /// </signature>
+            },
+            validateInput: function (input) {
+                /// <signature>
+                /// <summary>
+                /// Validates the input element against the declared validation rules.
+                /// </summary>
+                /// <param name="input" type="Object" >Input element to be validated.</param>
+                /// <returns type="Boolean">true if all validation rules passed successfully.</returns>
+                /// </signature>
+            },
 
-    bind: function(event, callback) {
-        /// <signature>
-        /// <summary>
-        /// Binds to a widget event.
-        /// </summary>
-        /// <param name="event" type="String">The event name</param>
-        /// <param name="callback" type="Function">The callback to be executed when the event is triggered.</param>
-        /// </signature>
-    },
+            bind: function (event, callback) {
+                /// <signature>
+                /// <summary>
+                /// Binds to a widget event.
+                /// </summary>
+                /// <param name="event" type="String">The event name</param>
+                /// <param name="callback" type="Function">The callback to be executed when the event is triggered.</param>
+                /// </signature>
+            },
 
-    unbind: function(event, callback) {
-        /// <signature>
-        /// <summary>
-        /// Unbinds a callback from a widget event.
-        /// </summary>
-        /// <param name="event" type="String">The event name</param>
-        /// <param name="callback" type="Function">The callback to be removed.</param>
-        /// </signature>
-    }
+            unbind: function (event, callback) {
+                /// <signature>
+                /// <summary>
+                /// Unbinds a callback from a widget event.
+                /// </summary>
+                /// <param name="event" type="String">The event name</param>
+                /// <param name="callback" type="Function">The callback to be removed.</param>
+                /// </signature>
+            }
 
-});
+        });
 
-return instance;
+        return instance;
 
-};
+    };
 
-intellisense.redirectDefinition(wrapper, original);
+    intellisense.redirectDefinition(wrapper, original);
 
-return wrapper;
+    return wrapper;
 
 })();
 
 
-jQuery.fn.kendoValidator = function() {
+jQuery.fn.kendoValidator = function () {
     this.data("kendoValidator", new kendo.ui.Validator());
 
     return this;
 };
 
 intellisense.annotate(jQuery.fn, {
-    getKendoValidator: function() {
+    getKendoValidator: function () {
         /// <signature>
         /// <summary>
         /// Returns a reference to the kendo.ui.Validator widget, instantiated on the selector.
@@ -6971,7 +6969,7 @@ intellisense.annotate(jQuery.fn, {
         /// <returns type="kendo.ui.Validator">The kendo.ui.Validator instance (if present).</returns>
         /// </signature>
     },
-    kendoValidator: function(options) {
+    kendoValidator: function (options) {
         /// <signature>
         /// <summary>
         /// Instantiates a kendo.ui.Validator widget based the DOM elements that match the selector.
@@ -6996,80 +6994,80 @@ intellisense.annotate(jQuery.fn, {
 });
 
 intellisense.annotate(kendo.ui, {
-    Widget: function() {
+    Widget: function () {
         /// <signature>
         /// <summary>Constructor of kendo.ui.Widget</summary>
         /// </signature>
     }
 });
 
-kendo.ui.Widget = (function() {
-var original = kendo.ui.Widget;
-var wrapper = function() {
-var instance = new original();
-intellisense.annotate(instance, {
-    bind: function() {
-        /// <signature>
-        /// <summary>
-        /// Attaches a handler to an event. Examples and more info can be found in the bind section of the kendo.Observable API reference.
-        /// </summary>
-        /// </signature>
-    },
-    destroy: function() {
-        /// <signature>
-        /// <summary>
-        /// Prepares the widget for safe removal from the DOM. Detaches all event handlers and removes jQuery.data attributes to avoid memory leaks. Calls destroy method of any child Kendo widgets.
-        /// </summary>
-        /// </signature>
-    },
-    one: function() {
-        /// <signature>
-        /// <summary>
-        /// Attaches a handler to an event. The handler is executed only once. Examples and more info can be found in the one section of the
+kendo.ui.Widget = (function () {
+    var original = kendo.ui.Widget;
+    var wrapper = function () {
+        var instance = new original();
+        intellisense.annotate(instance, {
+            bind: function () {
+                /// <signature>
+                /// <summary>
+                /// Attaches a handler to an event. Examples and more info can be found in the bind section of the kendo.Observable API reference.
+                /// </summary>
+                /// </signature>
+            },
+            destroy: function () {
+                /// <signature>
+                /// <summary>
+                /// Prepares the widget for safe removal from the DOM. Detaches all event handlers and removes jQuery.data attributes to avoid memory leaks. Calls destroy method of any child Kendo widgets.
+                /// </summary>
+                /// </signature>
+            },
+            one: function () {
+                /// <signature>
+                /// <summary>
+                /// Attaches a handler to an event. The handler is executed only once. Examples and more info can be found in the one section of the
 /// kendo.Observable API reference.
-        /// </summary>
-        /// </signature>
-    },
-    trigger: function() {
-        /// <signature>
-        /// <summary>
-        /// Executes all handlers attached to the given event. More info can be found in the trigger section of the
+                /// </summary>
+                /// </signature>
+            },
+            trigger: function () {
+                /// <signature>
+                /// <summary>
+                /// Executes all handlers attached to the given event. More info can be found in the trigger section of the
 /// kendo.Observable API reference.
-        /// </summary>
-        /// </signature>
-    },
-    unbind: function() {
-        /// <signature>
-        /// <summary>
-        /// Remove a previously attached event handler. More info can be found in the unbind section of the
+                /// </summary>
+                /// </signature>
+            },
+            unbind: function () {
+                /// <signature>
+                /// <summary>
+                /// Remove a previously attached event handler. More info can be found in the unbind section of the
 /// kendo.Observable API reference.
-        /// </summary>
-        /// </signature>
-    }
+                /// </summary>
+                /// </signature>
+            }
 
 
 
-});
+        });
 
-return instance;
+        return instance;
 
-};
+    };
 
-intellisense.redirectDefinition(wrapper, original);
+    intellisense.redirectDefinition(wrapper, original);
 
-return wrapper;
+    return wrapper;
 
 })();
 
 
-jQuery.fn.kendoWidget = function() {
+jQuery.fn.kendoWidget = function () {
     this.data("kendoWidget", new kendo.ui.Widget());
 
     return this;
 };
 
 intellisense.annotate(jQuery.fn, {
-    getKendoWidget: function() {
+    getKendoWidget: function () {
         /// <signature>
         /// <summary>
         /// Returns a reference to the kendo.ui.Widget widget, instantiated on the selector.
@@ -7077,7 +7075,7 @@ intellisense.annotate(jQuery.fn, {
         /// <returns type="kendo.ui.Widget">The kendo.ui.Widget instance (if present).</returns>
         /// </signature>
     },
-    kendoWidget: function(options) {
+    kendoWidget: function (options) {
         /// <signature>
         /// <summary>
         /// Instantiates a kendo.ui.Widget widget based the DOM elements that match the selector.
@@ -7092,182 +7090,182 @@ intellisense.annotate(jQuery.fn, {
 });
 
 intellisense.annotate(kendo.ui, {
-    Window: function() {
+    Window: function () {
         /// <signature>
         /// <summary>Constructor of kendo.ui.Window</summary>
         /// </signature>
     }
 });
 
-kendo.ui.Window = (function() {
-var original = kendo.ui.Window;
-var wrapper = function() {
-var instance = new original();
-intellisense.annotate(instance, {
-    center: function() {
-        /// <signature>
-        /// <summary>
-        /// Centers the window within the viewport.
-        /// </summary>
-        /// <returns type="kendo.ui.Window">Returns the window object to support chaining.</returns>
-        /// </signature>
-    },
-    close: function() {
-        /// <signature>
-        /// <summary>
-        /// Closes a Window.
-        /// </summary>
-        /// <returns type="kendo.ui.Window">Returns the window object to support chaining.</returns>
-        /// </signature>
-    },
-    content: function(content) {
-        /// <signature>
-        /// <summary>
-        /// Gets or set the content of a window.
-        /// </summary>
-        /// <param name="content" type="String" >The content of the Window.</param>
-        /// <returns type="kendo.ui.Window">If the content parameter is provided, this method will return the widget object to support chaining. Otherwise, it will return the current content of the widget.</returns>
-        /// </signature>
-    },
-    destroy: function() {
-        /// <signature>
-        /// <summary>
-        /// Destroys the window and its modal overlay, if necessary. Removes the widget HTML elements from the DOM.
-        /// </summary>
-        /// </signature>
-    },
-    maximize: function() {
-        /// <signature>
-        /// <summary>
-        /// Maximizes a Window to the entire viewing area of the user agent. Triggers the resize event.
-        /// </summary>
-        /// <returns type="kendo.ui.Window">Returns the window object to support chaining.</returns>
-        /// </signature>
-    },
-    minimize: function() {
-        /// <signature>
-        /// <summary>
-        /// Maximizes a Window to its title bar.
-        /// </summary>
-        /// <returns type="kendo.ui.Window">Returns the window object to support chaining.</returns>
-        /// </signature>
-    },
-    open: function() {
-        /// <signature>
-        /// <summary>
-        /// Opens a Window.
-        /// </summary>
-        /// <returns type="kendo.ui.Window">Returns the window object to support chaining.</returns>
-        /// </signature>
-    },
-    pin: function() {
-        /// <signature>
-        /// <summary>
-        /// Pins the Window at its current position with a position:fixed style, i.e. the widget stops moving together with the other page content when the page is scrolled.
+kendo.ui.Window = (function () {
+    var original = kendo.ui.Window;
+    var wrapper = function () {
+        var instance = new original();
+        intellisense.annotate(instance, {
+            center: function () {
+                /// <signature>
+                /// <summary>
+                /// Centers the window within the viewport.
+                /// </summary>
+                /// <returns type="kendo.ui.Window">Returns the window object to support chaining.</returns>
+                /// </signature>
+            },
+            close: function () {
+                /// <signature>
+                /// <summary>
+                /// Closes a Window.
+                /// </summary>
+                /// <returns type="kendo.ui.Window">Returns the window object to support chaining.</returns>
+                /// </signature>
+            },
+            content: function (content) {
+                /// <signature>
+                /// <summary>
+                /// Gets or set the content of a window.
+                /// </summary>
+                /// <param name="content" type="String" >The content of the Window.</param>
+                /// <returns type="kendo.ui.Window">If the content parameter is provided, this method will return the widget object to support chaining. Otherwise, it will return the current content of the widget.</returns>
+                /// </signature>
+            },
+            destroy: function () {
+                /// <signature>
+                /// <summary>
+                /// Destroys the window and its modal overlay, if necessary. Removes the widget HTML elements from the DOM.
+                /// </summary>
+                /// </signature>
+            },
+            maximize: function () {
+                /// <signature>
+                /// <summary>
+                /// Maximizes a Window to the entire viewing area of the user agent. Triggers the resize event.
+                /// </summary>
+                /// <returns type="kendo.ui.Window">Returns the window object to support chaining.</returns>
+                /// </signature>
+            },
+            minimize: function () {
+                /// <signature>
+                /// <summary>
+                /// Maximizes a Window to its title bar.
+                /// </summary>
+                /// <returns type="kendo.ui.Window">Returns the window object to support chaining.</returns>
+                /// </signature>
+            },
+            open: function () {
+                /// <signature>
+                /// <summary>
+                /// Opens a Window.
+                /// </summary>
+                /// <returns type="kendo.ui.Window">Returns the window object to support chaining.</returns>
+                /// </signature>
+            },
+            pin: function () {
+                /// <signature>
+                /// <summary>
+                /// Pins the Window at its current position with a position:fixed style, i.e. the widget stops moving together with the other page content when the page is scrolled.
 /// The user will still be able to move the Window with the mouse or keyboard.
-        /// </summary>
-        /// </signature>
-    },
-    refresh: function(options) {
-        /// <signature>
-        /// <summary>
-        /// Refreshes the content of a Window from a remote URL or the initially defined content template.
+                /// </summary>
+                /// </signature>
+            },
+            refresh: function (options) {
+                /// <signature>
+                /// <summary>
+                /// Refreshes the content of a Window from a remote URL or the initially defined content template.
 /// Note that passing data and requests different than GET cannot be sent to an iframe at this time, as they tequire a form with a target attribute.
-        /// </summary>
-        /// <param name="options" type="String" >Options for requesting data from the server. If omitted, the window uses the content property that was supplied when the window was created. Any options specified here are passed to jQuery.ajax().</param>
-        /// <returns type="kendo.ui.Window">Returns the window object to support chaining.</returns>
-        /// </signature>
-    },
-    restore: function() {
-        /// <signature>
-        /// <summary>
-        /// Restores a maximized or minimized Window to its previous state. Triggers the resize event.
-        /// </summary>
-        /// <returns type="kendo.ui.Window">Returns the window object to support chaining.</returns>
-        /// </signature>
-    },
-    setOptions: function(options) {
-        /// <signature>
-        /// <summary>
-        /// Allows the window to be configured with new options.
-        /// </summary>
-        /// <param name="options" type="Object" >The configuration options to be set.</param>
-        /// </signature>
-    },
-    title: function(text) {
-        /// <signature>
-        /// <summary>
-        /// Gets or set the title of a Window.
-        /// </summary>
-        /// <param name="text" type="String" >The title of the Window.</param>
-        /// <returns type="kendo.ui.Window">If a title is provided, this method will return the window object to support chaining. Otherwise, it will return the current title of the window.</returns>
-        /// </signature>
-    },
-    toFront: function() {
-        /// <signature>
-        /// <summary>
-        /// Brings forward a Window to the top of the z-index.
-        /// </summary>
-        /// <returns type="kendo.ui.Window">Returns the window object to support chaining.</returns>
-        /// </signature>
-    },
-    toggleMaximization: function() {
-        /// <signature>
-        /// <summary>
-        /// Toggles a Window between a maximized and restored state. Triggers the resize event.
-        /// </summary>
-        /// <returns type="kendo.ui.Window">Returns the window object to support chaining.</returns>
-        /// </signature>
-    },
-    unpin: function() {
-        /// <signature>
-        /// <summary>
-        /// Disables the Window's pinned state, so that the widget will move together with the other page content when the page is scrolled.
-        /// </summary>
-        /// </signature>
-    },
+                /// </summary>
+                /// <param name="options" type="String" >Options for requesting data from the server. If omitted, the window uses the content property that was supplied when the window was created. Any options specified here are passed to jQuery.ajax().</param>
+                /// <returns type="kendo.ui.Window">Returns the window object to support chaining.</returns>
+                /// </signature>
+            },
+            restore: function () {
+                /// <signature>
+                /// <summary>
+                /// Restores a maximized or minimized Window to its previous state. Triggers the resize event.
+                /// </summary>
+                /// <returns type="kendo.ui.Window">Returns the window object to support chaining.</returns>
+                /// </signature>
+            },
+            setOptions: function (options) {
+                /// <signature>
+                /// <summary>
+                /// Allows the window to be configured with new options.
+                /// </summary>
+                /// <param name="options" type="Object" >The configuration options to be set.</param>
+                /// </signature>
+            },
+            title: function (text) {
+                /// <signature>
+                /// <summary>
+                /// Gets or set the title of a Window.
+                /// </summary>
+                /// <param name="text" type="String" >The title of the Window.</param>
+                /// <returns type="kendo.ui.Window">If a title is provided, this method will return the window object to support chaining. Otherwise, it will return the current title of the window.</returns>
+                /// </signature>
+            },
+            toFront: function () {
+                /// <signature>
+                /// <summary>
+                /// Brings forward a Window to the top of the z-index.
+                /// </summary>
+                /// <returns type="kendo.ui.Window">Returns the window object to support chaining.</returns>
+                /// </signature>
+            },
+            toggleMaximization: function () {
+                /// <signature>
+                /// <summary>
+                /// Toggles a Window between a maximized and restored state. Triggers the resize event.
+                /// </summary>
+                /// <returns type="kendo.ui.Window">Returns the window object to support chaining.</returns>
+                /// </signature>
+            },
+            unpin: function () {
+                /// <signature>
+                /// <summary>
+                /// Disables the Window's pinned state, so that the widget will move together with the other page content when the page is scrolled.
+                /// </summary>
+                /// </signature>
+            },
 
-    bind: function(event, callback) {
-        /// <signature>
-        /// <summary>
-        /// Binds to a widget event.
-        /// </summary>
-        /// <param name="event" type="String">The event name</param>
-        /// <param name="callback" type="Function">The callback to be executed when the event is triggered.</param>
-        /// </signature>
-    },
+            bind: function (event, callback) {
+                /// <signature>
+                /// <summary>
+                /// Binds to a widget event.
+                /// </summary>
+                /// <param name="event" type="String">The event name</param>
+                /// <param name="callback" type="Function">The callback to be executed when the event is triggered.</param>
+                /// </signature>
+            },
 
-    unbind: function(event, callback) {
-        /// <signature>
-        /// <summary>
-        /// Unbinds a callback from a widget event.
-        /// </summary>
-        /// <param name="event" type="String">The event name</param>
-        /// <param name="callback" type="Function">The callback to be removed.</param>
-        /// </signature>
-    }
+            unbind: function (event, callback) {
+                /// <signature>
+                /// <summary>
+                /// Unbinds a callback from a widget event.
+                /// </summary>
+                /// <param name="event" type="String">The event name</param>
+                /// <param name="callback" type="Function">The callback to be removed.</param>
+                /// </signature>
+            }
 
-});
+        });
 
-return instance;
+        return instance;
 
-};
+    };
 
-intellisense.redirectDefinition(wrapper, original);
+    intellisense.redirectDefinition(wrapper, original);
 
-return wrapper;
+    return wrapper;
 
 })();
 
 
-jQuery.fn.kendoWindow = function() {
+jQuery.fn.kendoWindow = function () {
     this.data("kendoWindow", new kendo.ui.Window());
 
     return this;
 };
 
 intellisense.annotate(jQuery.fn, {
-    getKendoWindow: function() {
+    getKendoWindow: function () {
         /// <signature>
         /// <summary>
         /// Returns a reference to the kendo.ui.Window widget, instantiated on the selector.
@@ -7275,7 +7273,7 @@ intellisense.annotate(jQuery.fn, {
         /// <returns type="kendo.ui.Window">The kendo.ui.Window instance (if present).</returns>
         /// </signature>
     },
-    kendoWindow: function(options) {
+    kendoWindow: function (options) {
         /// <signature>
         /// <summary>
         /// Instantiates a kendo.ui.Window widget based the DOM elements that match the selector.

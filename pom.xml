@@ -5,13 +5,14 @@
     <modelVersion>4.0.0</modelVersion>
 
     <properties>
-        <dropwizard.verison>0.6.2</dropwizard.verison>
+        <dropwizard.version>0.6.2</dropwizard.version>
         <project.version>0.2-SNAPSHOT</project.version>
         <mysql.version>5.1.26</mysql.version>
         <esapi.version>2.1.0</esapi.version>
         <beanutils.version>1.9.0</beanutils.version>
         <commons.version>1.9</commons.version>
         <vt.version>3.1.1</vt.version>
+        <mail.version>1.4.7</mail.version>
     </properties>
 
     <groupId>io.robe</groupId>
@@ -24,29 +25,34 @@
             <dependency>
                 <groupId>com.yammer.dropwizard</groupId>
                 <artifactId>dropwizard-core</artifactId>
-                <version>${dropwizard.verison}</version>
+                <version>${dropwizard.version}</version>
             </dependency>
             <dependency>
                 <groupId>com.yammer.dropwizard</groupId>
                 <artifactId>dropwizard-hibernate</artifactId>
-                <version>${dropwizard.verison}</version>
+                <version>${dropwizard.version}</version>
             </dependency>
             <dependency>
                 <groupId>com.yammer.dropwizard</groupId>
                 <artifactId>dropwizard-testing</artifactId>
-                <version>${dropwizard.verison}</version>
+                <version>${dropwizard.version}</version>
                 <scope>test</scope>
             </dependency>
             <dependency>
                 <groupId>com.yammer.dropwizard</groupId>
                 <artifactId>dropwizard-auth</artifactId>
-                <version>${dropwizard.verison}</version>
+                <version>${dropwizard.version}</version>
             </dependency>
 
             <dependency>
+                <groupId>com.yammer.dropwizard</groupId>
+                <artifactId>dropwizard-views</artifactId>
+                <version>${dropwizard.version}</version>
+            </dependency>
+            <dependency>
                 <groupId>com.hubspot.dropwizard</groupId>
                 <artifactId>dropwizard-guice</artifactId>
-                <version>${dropwizard.verison}</version>
+                <version>${dropwizard.version}</version>
             </dependency>
 
             <!--Database drivers-->
@@ -81,6 +87,11 @@
                 <artifactId>vt-password</artifactId>
                 <version>${vt.version}</version>
             </dependency>
+            <dependency>
+                <groupId>javax.mail</groupId>
+                <artifactId>mail</artifactId>
+                <version>${mail.version}</version>
+            </dependency>
         </dependencies>
     </dependencyManagement>
 
@@ -101,7 +112,6 @@
         <dependency>
             <groupId>com.yammer.dropwizard</groupId>
             <artifactId>dropwizard-auth</artifactId>
-            <version>${dropwizard.verison}</version>
         </dependency>
 
         <dependency>
@@ -132,6 +142,16 @@
             <groupId>edu.vt.middleware</groupId>
             <artifactId>vt-password</artifactId>
         </dependency>
+        <dependency>
+            <groupId>com.yammer.dropwizard</groupId>
+            <artifactId>dropwizard-views</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>javax.mail</groupId>
+            <artifactId>mail</artifactId>
+            <version>${mail.version}</version>
+        </dependency>
+
     </dependencies>
 
 
