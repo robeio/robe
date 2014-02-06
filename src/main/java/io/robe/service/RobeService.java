@@ -6,6 +6,7 @@ import com.yammer.dropwizard.Service;
 import com.yammer.dropwizard.config.Bootstrap;
 import com.yammer.dropwizard.config.Environment;
 import com.yammer.dropwizard.hibernate.UnitOfWork;
+import com.yammer.dropwizard.views.ViewBundle;
 import io.robe.auth.AuthTokenResponseFilter;
 import io.robe.cli.InitializeCommand;
 import io.robe.exception.RobeExceptionMapper;
@@ -58,8 +59,9 @@ public class RobeService extends Service<RobeServiceConfiguration> {
 				.build()
 		);
         bootstrap.addCommand(new InitializeCommand(this,hibernate));
+        bootstrap.addBundle(new ViewBundle());
 
-	}
+    }
 
 
 	/**
