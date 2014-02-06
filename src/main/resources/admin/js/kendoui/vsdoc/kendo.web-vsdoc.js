@@ -6,14 +6,15 @@ var kendo = {
 };
 
 
-FX = function() { };
+FX = function () {
+};
 
 FX.prototype = {
 
 
 
 
-    kendoAnimate: function(duration,reverse,complete,show,hide) {
+    kendoAnimate: function (duration, reverse, complete, show, hide) {
         /// <summary>
         /// Applies the specified animation effect/s to all selected elements and triggers the callback on every element when it completes its animation.
 /// Uses transitions and transformations where available and falls back to jQuery animate where not. kendoAnimate can be used to run one of the provided
@@ -28,7 +29,7 @@ FX.prototype = {
     },
 
 
-    kendoStop: function(gotoEnd) {
+    kendoStop: function (gotoEnd) {
         /// <summary>
         /// Stops the animation effect running on the specified elements and optionally jumps to the end and clears the animation effect queue.
 /// In browsers that don't support transitions falls back to jQuery stop().This functionality is useful to avoid chaining many effects, causing them to run longer than expected.
@@ -38,7 +39,7 @@ FX.prototype = {
     },
 
 
-    kendoAddClass: function(classes,options) {
+    kendoAddClass: function (classes, options) {
         /// <summary>
         /// Adds a CSS class to the element, while doing a transition to the new state. If the browser doesn't support transitions,
 /// the method falls back to jQuery addClass();
@@ -49,7 +50,7 @@ FX.prototype = {
     },
 
 
-    kendoRemoveClass: function(classes,options) {
+    kendoRemoveClass: function (classes, options) {
         /// <summary>
         /// Removes a CSS class from the element, while doing a transition to the new state. If the browser doesn't support transitions,
 /// the method falls back to jQuery removeClass();
@@ -60,7 +61,7 @@ FX.prototype = {
     },
 
 
-    kendoToggleClass: function(classes,options,toggle) {
+    kendoToggleClass: function (classes, options, toggle) {
         /// <summary>
         /// Toggle a CSS class on the element, based on a flag, while doing a transition to the new state. If the browser doesn't support transitions,
 /// the method falls back to jQuery toggleClass();
@@ -71,7 +72,7 @@ FX.prototype = {
 
     },
 
-    bind: function(event, callback) {
+    bind: function (event, callback) {
         /// <summary>
         /// Binds to a widget event.
         /// </summary>
@@ -79,7 +80,7 @@ FX.prototype = {
         /// <param name="callback" type="Function">The callback to be executed when the event is triggered.</param>
     },
 
-    unbind: function(event, callback) {
+    unbind: function (event, callback) {
         /// <summary>
         /// Unbinds a callback from a widget event.
         /// </summary>
@@ -89,14 +90,14 @@ FX.prototype = {
 
 };
 
-$.fn.getKendoFX = function() {
+$.fn.getKendoFX = function () {
     /// <summary>
     /// Returns a reference to the FX widget, instantiated on the selector.
     /// </summary>
     /// <returns type="FX">The FX instance (if present).</returns>
 };
 
-$.fn.kendoFX = function(options) {
+$.fn.kendoFX = function (options) {
     /// <summary>
     /// Instantiates a FX widget based the DOM elements that match the selector.
 
@@ -113,13 +114,14 @@ if (!kendo) {
     kendo = {};
 }
 
-kendo.Class = function() { };
+kendo.Class = function () {
+};
 
 kendo.Class.prototype = {
 
 
 
-    bind: function(event, callback) {
+    bind: function (event, callback) {
         /// <summary>
         /// Binds to a widget event.
         /// </summary>
@@ -127,7 +129,7 @@ kendo.Class.prototype = {
         /// <param name="callback" type="Function">The callback to be executed when the event is triggered.</param>
     },
 
-    unbind: function(event, callback) {
+    unbind: function (event, callback) {
         /// <summary>
         /// Unbinds a callback from a widget event.
         /// </summary>
@@ -137,14 +139,14 @@ kendo.Class.prototype = {
 
 };
 
-$.fn.getKendoClass = function() {
+$.fn.getKendoClass = function () {
     /// <summary>
     /// Returns a reference to the kendo.Class widget, instantiated on the selector.
     /// </summary>
     /// <returns type="kendo.Class">The kendo.Class instance (if present).</returns>
 };
 
-$.fn.kendoClass = function(options) {
+$.fn.kendoClass = function (options) {
     /// <summary>
     /// Instantiates a kendo.Class widget based the DOM elements that match the selector.
 
@@ -157,14 +159,15 @@ $.fn.kendoClass = function(options) {
 };
 
 
-kendo.Color = function() { };
+kendo.Color = function () {
+};
 
 kendo.Color.prototype = {
 
 
 
 
-    diff: function() {
+    diff: function () {
         /// <summary>
         /// Computes the relative luminance between two colors.
         /// </summary>
@@ -173,7 +176,7 @@ kendo.Color.prototype = {
     },
 
 
-    equals: function() {
+    equals: function () {
         /// <summary>
         /// Compares two color objects for equality.
         /// </summary>
@@ -181,7 +184,7 @@ kendo.Color.prototype = {
 
     },
 
-    bind: function(event, callback) {
+    bind: function (event, callback) {
         /// <summary>
         /// Binds to a widget event.
         /// </summary>
@@ -189,7 +192,7 @@ kendo.Color.prototype = {
         /// <param name="callback" type="Function">The callback to be executed when the event is triggered.</param>
     },
 
-    unbind: function(event, callback) {
+    unbind: function (event, callback) {
         /// <summary>
         /// Unbinds a callback from a widget event.
         /// </summary>
@@ -199,14 +202,14 @@ kendo.Color.prototype = {
 
 };
 
-$.fn.getKendoColor = function() {
+$.fn.getKendoColor = function () {
     /// <summary>
     /// Returns a reference to the kendo.Color widget, instantiated on the selector.
     /// </summary>
     /// <returns type="kendo.Color">The kendo.Color instance (if present).</returns>
 };
 
-$.fn.kendoColor = function(options) {
+$.fn.kendoColor = function (options) {
     /// <summary>
     /// Instantiates a kendo.Color widget based the DOM elements that match the selector.
 
@@ -219,23 +222,24 @@ $.fn.kendoColor = function(options) {
 };
 
 
-kendo.Layout = function() { };
+kendo.Layout = function () {
+};
 
 kendo.Layout.prototype = {
 
 
 
 
-    showIn: function(container,view) {
+    showIn: function (container, view) {
         /// <summary>
         /// Renders the View element in the element specified by the selector
         /// </summary>
-        /// <param name="container" type="String" >The selector of the container in which the view element will be appended.</param>
-        /// <param name="view" type="kendo.View" >The view instance that will be rendered.</param>
+        /// <param name="container" type="String" >The selector of the container in which the io element will be appended.</param>
+        /// <param name="io" type="kendo.View" >The io instance that will be rendered.</param>
 
     },
 
-    bind: function(event, callback) {
+    bind: function (event, callback) {
         /// <summary>
         /// Binds to a widget event.
         /// </summary>
@@ -243,7 +247,7 @@ kendo.Layout.prototype = {
         /// <param name="callback" type="Function">The callback to be executed when the event is triggered.</param>
     },
 
-    unbind: function(event, callback) {
+    unbind: function (event, callback) {
         /// <summary>
         /// Unbinds a callback from a widget event.
         /// </summary>
@@ -253,14 +257,14 @@ kendo.Layout.prototype = {
 
 };
 
-$.fn.getKendoLayout = function() {
+$.fn.getKendoLayout = function () {
     /// <summary>
     /// Returns a reference to the kendo.Layout widget, instantiated on the selector.
     /// </summary>
     /// <returns type="kendo.Layout">The kendo.Layout instance (if present).</returns>
 };
 
-$.fn.kendoLayout = function(options) {
+$.fn.kendoLayout = function (options) {
     /// <summary>
     /// Instantiates a kendo.Layout widget based the DOM elements that match the selector.
 
@@ -273,14 +277,15 @@ $.fn.kendoLayout = function(options) {
 };
 
 
-kendo.Observable = function() { };
+kendo.Observable = function () {
+};
 
 kendo.Observable.prototype = {
 
 
 
 
-    bind: function(eventName,handler) {
+    bind: function (eventName, handler) {
         /// <summary>
         /// Attaches a handler to an event.
         /// </summary>
@@ -290,7 +295,7 @@ kendo.Observable.prototype = {
     },
 
 
-    one: function(eventName,handler) {
+    one: function (eventName, handler) {
         /// <summary>
         /// Attaches a handler to an event. The handler is executed only once.
         /// </summary>
@@ -300,7 +305,7 @@ kendo.Observable.prototype = {
     },
 
 
-    trigger: function(eventName,eventData) {
+    trigger: function (eventName, eventData) {
         /// <summary>
         /// Executes all handlers attached to the given event.
         /// </summary>
@@ -310,7 +315,7 @@ kendo.Observable.prototype = {
     },
 
 
-    unbind: function(eventName,handler) {
+    unbind: function (eventName, handler) {
         /// <summary>
         /// Remove a previously attached event handler.
         /// </summary>
@@ -324,14 +329,14 @@ kendo.Observable.prototype = {
 
 };
 
-$.fn.getKendoObservable = function() {
+$.fn.getKendoObservable = function () {
     /// <summary>
     /// Returns a reference to the kendo.Observable widget, instantiated on the selector.
     /// </summary>
     /// <returns type="kendo.Observable">The kendo.Observable instance (if present).</returns>
 };
 
-$.fn.kendoObservable = function(options) {
+$.fn.kendoObservable = function (options) {
     /// <summary>
     /// Instantiates a kendo.Observable widget based the DOM elements that match the selector.
 
@@ -344,14 +349,15 @@ $.fn.kendoObservable = function(options) {
 };
 
 
-kendo.Router = function() { };
+kendo.Router = function () {
+};
 
 kendo.Router.prototype = {
 
 
 
 
-    start: function() {
+    start: function () {
         /// <summary>
         /// Activates the router binding to the URL fragment part changes.
         /// </summary>
@@ -359,7 +365,7 @@ kendo.Router.prototype = {
     },
 
 
-    route: function(route,callback) {
+    route: function (route, callback) {
         /// <summary>
         /// Specifies a callback for the given route. The route definition can contain bound parameters, optional segments, and route globbing.
 /// The parsed parts of the URL are passed as parameters to the route callback. Query string parameters are parsed and passed as last argument of the callback function.
@@ -370,7 +376,7 @@ kendo.Router.prototype = {
     },
 
 
-    navigate: function(route,silent) {
+    navigate: function (route, silent) {
         /// <summary>
         /// Navigates to the given route.
         /// </summary>
@@ -380,14 +386,14 @@ kendo.Router.prototype = {
     },
 
 
-    destroy: function() {
+    destroy: function () {
         /// <summary>
         /// Unbinds the router instance listeners from the URL fragment part changes.
         /// </summary>
 
     },
 
-    bind: function(event, callback) {
+    bind: function (event, callback) {
         /// <summary>
         /// Binds to a widget event.
         /// </summary>
@@ -395,7 +401,7 @@ kendo.Router.prototype = {
         /// <param name="callback" type="Function">The callback to be executed when the event is triggered.</param>
     },
 
-    unbind: function(event, callback) {
+    unbind: function (event, callback) {
         /// <summary>
         /// Unbinds a callback from a widget event.
         /// </summary>
@@ -405,14 +411,14 @@ kendo.Router.prototype = {
 
 };
 
-$.fn.getKendoRouter = function() {
+$.fn.getKendoRouter = function () {
     /// <summary>
     /// Returns a reference to the kendo.Router widget, instantiated on the selector.
     /// </summary>
     /// <returns type="kendo.Router">The kendo.Router instance (if present).</returns>
 };
 
-$.fn.kendoRouter = function(options) {
+$.fn.kendoRouter = function (options) {
     /// <summary>
     /// Instantiates a kendo.Router widget based the DOM elements that match the selector.
 
@@ -425,14 +431,15 @@ $.fn.kendoRouter = function(options) {
 };
 
 
-kendo.View = function() { };
+kendo.View = function () {
+};
 
 kendo.View.prototype = {
 
 
 
 
-    destroy: function() {
+    destroy: function () {
         /// <summary>
         /// Removes the View element from the DOM. Detaches all event handlers and removes jQuery.data attributes to avoid memory leaks. Calls destroy method of any child Kendo widgets.
         /// </summary>
@@ -440,17 +447,17 @@ kendo.View.prototype = {
     },
 
 
-    render: function(container) {
+    render: function (container) {
         /// <summary>
-        /// Renders the view contents. Accepts a jQuery selector (or jQuery object) to which the contents will be appended.
+        /// Renders the io contents. Accepts a jQuery selector (or jQuery object) to which the contents will be appended.
 /// Alternatively, the render method can be called without parameters in order to retrieve the View element for manual insertion/further manipulation.
         /// </summary>
-        /// <param name="container" type="jQuery" >(optional) the element in which the view element will be appended.</param>
-        /// <returns type="jQuery">the view element.</returns>
+        /// <param name="container" type="jQuery" >(optional) the element in which the io element will be appended.</param>
+        /// <returns type="jQuery">the io element.</returns>
 
     },
 
-    bind: function(event, callback) {
+    bind: function (event, callback) {
         /// <summary>
         /// Binds to a widget event.
         /// </summary>
@@ -458,7 +465,7 @@ kendo.View.prototype = {
         /// <param name="callback" type="Function">The callback to be executed when the event is triggered.</param>
     },
 
-    unbind: function(event, callback) {
+    unbind: function (event, callback) {
         /// <summary>
         /// Unbinds a callback from a widget event.
         /// </summary>
@@ -468,24 +475,24 @@ kendo.View.prototype = {
 
 };
 
-$.fn.getKendoView = function() {
+$.fn.getKendoView = function () {
     /// <summary>
     /// Returns a reference to the kendo.View widget, instantiated on the selector.
     /// </summary>
     /// <returns type="kendo.View">The kendo.View instance (if present).</returns>
 };
 
-$.fn.kendoView = function(options) {
+$.fn.kendoView = function (options) {
     /// <summary>
     /// Instantiates a kendo.View widget based the DOM elements that match the selector.
 
     /// &#10;Accepts an object with the following configuration options:
     /// &#10;
     /// &#10;tagName — String (default: "div")
-    /// &#10;The tag used for the root element of the view.
+    /// &#10;The tag used for the root element of the io.
     /// &#10;
     /// &#10;wrap — Boolean (default: true)
-    /// &#10;If set to false, the view will not wrap its contents in a root element. In that case, the view element will point to the root element in the template.
+    /// &#10;If set to false, the io will not wrap its contents in a root element. In that case, the io element will point to the root element in the template.
     /// &#10;
     /// </summary>
     /// <param name="options" type="Object">
@@ -494,21 +501,22 @@ $.fn.kendoView = function(options) {
 };
 
 
-kendo.data.Binder = function() { };
+kendo.data.Binder = function () {
+};
 
 kendo.data.Binder.prototype = {
 
 
 
 
-    refresh: function() {
+    refresh: function () {
         /// <summary>
-        /// Invoked by the Kendo UI MVVM framework when the bound view model value is changed. The binder should update the UI (HTML element or Kendo UI widget) to reflect the view model change.
+        /// Invoked by the Kendo UI MVVM framework when the bound io model value is changed. The binder should update the UI (HTML element or Kendo UI widget) to reflect the io model change.
         /// </summary>
 
     },
 
-    bind: function(event, callback) {
+    bind: function (event, callback) {
         /// <summary>
         /// Binds to a widget event.
         /// </summary>
@@ -516,7 +524,7 @@ kendo.data.Binder.prototype = {
         /// <param name="callback" type="Function">The callback to be executed when the event is triggered.</param>
     },
 
-    unbind: function(event, callback) {
+    unbind: function (event, callback) {
         /// <summary>
         /// Unbinds a callback from a widget event.
         /// </summary>
@@ -526,14 +534,14 @@ kendo.data.Binder.prototype = {
 
 };
 
-$.fn.getKendoBinder = function() {
+$.fn.getKendoBinder = function () {
     /// <summary>
     /// Returns a reference to the kendo.data.Binder widget, instantiated on the selector.
     /// </summary>
     /// <returns type="kendo.data.Binder">The kendo.data.Binder instance (if present).</returns>
 };
 
-$.fn.kendoBinder = function(options) {
+$.fn.kendoBinder = function (options) {
     /// <summary>
     /// Instantiates a kendo.data.Binder widget based the DOM elements that match the selector.
 
@@ -546,14 +554,15 @@ $.fn.kendoBinder = function(options) {
 };
 
 
-kendo.data.DataSource = function() { };
+kendo.data.DataSource = function () {
+};
 
 kendo.data.DataSource.prototype = {
 
 
 
 
-    add: function(model) {
+    add: function (model) {
         /// <summary>
         /// Appends a data item to the data source.
         /// </summary>
@@ -563,7 +572,7 @@ kendo.data.DataSource.prototype = {
     },
 
 
-    aggregate: function(value) {
+    aggregate: function (value) {
         /// <summary>
         /// Gets or sets the aggregate configuration.
         /// </summary>
@@ -573,7 +582,7 @@ kendo.data.DataSource.prototype = {
     },
 
 
-    aggregates: function() {
+    aggregates: function () {
         /// <summary>
         /// Returns the aggregate results.
         /// </summary>
@@ -582,7 +591,7 @@ kendo.data.DataSource.prototype = {
     },
 
 
-    at: function(index) {
+    at: function (index) {
         /// <summary>
         /// Returns the data item at the specified index. The index is zero-based.
         /// </summary>
@@ -592,7 +601,7 @@ kendo.data.DataSource.prototype = {
     },
 
 
-    cancelChanges: function(model) {
+    cancelChanges: function (model) {
         /// <summary>
         /// Cancels any pending changes in the data source. Deleted data items are restored, new data items are removed and updated data items are restored to their initial state.
         /// </summary>
@@ -601,7 +610,7 @@ kendo.data.DataSource.prototype = {
     },
 
 
-    data: function(value) {
+    data: function (value) {
         /// <summary>
         /// Gets or sets the data items of the data source.If the data source is bound to a remote service (via the transport option) the data method will return the service response.
 /// Every item from the response is wrapped in a kendo.data.ObservableObject or kendo.data.Model (if the schema.model option is set).If the data source is bound to a JavaScript array (via the data option) the data method will return the items of that array.
@@ -614,7 +623,7 @@ kendo.data.DataSource.prototype = {
     },
 
 
-    fetch: function(callback) {
+    fetch: function (callback) {
         /// <summary>
         /// Reads the data items from a remote service (if the transport option is set) or from a JavaScript array (if the data option is set).
         /// </summary>
@@ -623,7 +632,7 @@ kendo.data.DataSource.prototype = {
     },
 
 
-    filter: function(value) {
+    filter: function (value) {
         /// <summary>
         /// Gets or sets the filter configuration.
         /// </summary>
@@ -633,7 +642,7 @@ kendo.data.DataSource.prototype = {
     },
 
 
-    get: function(id) {
+    get: function (id) {
         /// <summary>
         /// Gets the data item (model) with the specified id.
         /// </summary>
@@ -643,7 +652,7 @@ kendo.data.DataSource.prototype = {
     },
 
 
-    getByUid: function(uid) {
+    getByUid: function (uid) {
         /// <summary>
         /// Gets the data item (model) with the specified uid.
         /// </summary>
@@ -653,7 +662,7 @@ kendo.data.DataSource.prototype = {
     },
 
 
-    group: function(value) {
+    group: function (value) {
         /// <summary>
         /// Gets or sets the grouping configuration.
         /// </summary>
@@ -663,7 +672,7 @@ kendo.data.DataSource.prototype = {
     },
 
 
-    hasChanges: function() {
+    hasChanges: function () {
         /// <summary>
         /// Cheks if the data itams have changed.
         /// </summary>
@@ -672,7 +681,7 @@ kendo.data.DataSource.prototype = {
     },
 
 
-    indexOf: function(dataItem) {
+    indexOf: function (dataItem) {
         /// <summary>
         /// Gets the index of the specified data item.
         /// </summary>
@@ -682,7 +691,7 @@ kendo.data.DataSource.prototype = {
     },
 
 
-    insert: function(index,model) {
+    insert: function (index, model) {
         /// <summary>
         /// Inserts a data item in the data source at the specified index.
         /// </summary>
@@ -693,7 +702,7 @@ kendo.data.DataSource.prototype = {
     },
 
 
-    page: function(page) {
+    page: function (page) {
         /// <summary>
         /// Gets or sets the current page.
         /// </summary>
@@ -703,7 +712,7 @@ kendo.data.DataSource.prototype = {
     },
 
 
-    pageSize: function(size) {
+    pageSize: function (size) {
         /// <summary>
         /// Gets or sets the current page size.
         /// </summary>
@@ -713,7 +722,7 @@ kendo.data.DataSource.prototype = {
     },
 
 
-    query: function(options) {
+    query: function (options) {
         /// <summary>
         /// Executes the specified query over the data items. Makes a HTTP request if bound to a remote service.
         /// </summary>
@@ -722,7 +731,7 @@ kendo.data.DataSource.prototype = {
     },
 
 
-    read: function(data) {
+    read: function (data) {
         /// <summary>
         /// Reads data items from a remote service (if the transport option is set) or from a JavaScript array (if the data option is set).
         /// </summary>
@@ -731,7 +740,7 @@ kendo.data.DataSource.prototype = {
     },
 
 
-    remove: function(model) {
+    remove: function (model) {
         /// <summary>
         /// Removes the specified data item from the data source.
         /// </summary>
@@ -740,7 +749,7 @@ kendo.data.DataSource.prototype = {
     },
 
 
-    sort: function(value) {
+    sort: function (value) {
         /// <summary>
         /// Gets or sets the sort order which will be applied over the data items.
         /// </summary>
@@ -750,7 +759,7 @@ kendo.data.DataSource.prototype = {
     },
 
 
-    sync: function() {
+    sync: function () {
         /// <summary>
         /// Saves any data item changes.The sync method will request the remote service if:
         /// </summary>
@@ -758,7 +767,7 @@ kendo.data.DataSource.prototype = {
     },
 
 
-    total: function() {
+    total: function () {
         /// <summary>
         /// Gets the total number of data items. Uses schema.total if the transport.read option is set.
         /// </summary>
@@ -767,7 +776,7 @@ kendo.data.DataSource.prototype = {
     },
 
 
-    totalPages: function() {
+    totalPages: function () {
         /// <summary>
         /// Gets the number of available pages.
         /// </summary>
@@ -776,7 +785,7 @@ kendo.data.DataSource.prototype = {
     },
 
 
-    view: function() {
+    view: function () {
         /// <summary>
         /// Returns the data items which correspond to the current page, filter, sort and group configuration.To ensure that data is available this method should be used within the change event handler or the fetch method.
         /// </summary>
@@ -784,7 +793,7 @@ kendo.data.DataSource.prototype = {
 
     },
 
-    bind: function(event, callback) {
+    bind: function (event, callback) {
         /// <summary>
         /// Binds to a widget event.
         /// </summary>
@@ -792,7 +801,7 @@ kendo.data.DataSource.prototype = {
         /// <param name="callback" type="Function">The callback to be executed when the event is triggered.</param>
     },
 
-    unbind: function(event, callback) {
+    unbind: function (event, callback) {
         /// <summary>
         /// Unbinds a callback from a widget event.
         /// </summary>
@@ -802,14 +811,14 @@ kendo.data.DataSource.prototype = {
 
 };
 
-$.fn.getKendoDataSource = function() {
+$.fn.getKendoDataSource = function () {
     /// <summary>
     /// Returns a reference to the kendo.data.DataSource widget, instantiated on the selector.
     /// </summary>
     /// <returns type="kendo.data.DataSource">The kendo.data.DataSource instance (if present).</returns>
 };
 
-$.fn.kendoDataSource = function(options) {
+$.fn.kendoDataSource = function (options) {
     /// <summary>
     /// Instantiates a kendo.data.DataSource widget based the DOM elements that match the selector.
 
@@ -835,7 +844,7 @@ $.fn.kendoDataSource = function(options) {
     /// &#10;The grouping configuration of the data source. If set the data items will be grouped when the data source is populated. By default grouping is not applied.
     /// &#10;
     /// &#10;page — Number 
-    /// &#10;The page of data which the data source will return when the view method is invoked or request from the remote service.
+    /// &#10;The page of data which the data source will return when the io method is invoked or request from the remote service.
     /// &#10;
     /// &#10;pageSize — Number 
     /// &#10;The number of data items per page.
@@ -875,13 +884,14 @@ $.fn.kendoDataSource = function(options) {
 };
 
 
-kendo.data.HierarchicalDataSource = function() { };
+kendo.data.HierarchicalDataSource = function () {
+};
 
 kendo.data.HierarchicalDataSource.prototype = {
 
 
 
-    bind: function(event, callback) {
+    bind: function (event, callback) {
         /// <summary>
         /// Binds to a widget event.
         /// </summary>
@@ -889,7 +899,7 @@ kendo.data.HierarchicalDataSource.prototype = {
         /// <param name="callback" type="Function">The callback to be executed when the event is triggered.</param>
     },
 
-    unbind: function(event, callback) {
+    unbind: function (event, callback) {
         /// <summary>
         /// Unbinds a callback from a widget event.
         /// </summary>
@@ -899,14 +909,14 @@ kendo.data.HierarchicalDataSource.prototype = {
 
 };
 
-$.fn.getKendoHierarchicalDataSource = function() {
+$.fn.getKendoHierarchicalDataSource = function () {
     /// <summary>
     /// Returns a reference to the kendo.data.HierarchicalDataSource widget, instantiated on the selector.
     /// </summary>
     /// <returns type="kendo.data.HierarchicalDataSource">The kendo.data.HierarchicalDataSource instance (if present).</returns>
 };
 
-$.fn.kendoHierarchicalDataSource = function(options) {
+$.fn.kendoHierarchicalDataSource = function (options) {
     /// <summary>
     /// Instantiates a kendo.data.HierarchicalDataSource widget based the DOM elements that match the selector.
 
@@ -922,14 +932,15 @@ $.fn.kendoHierarchicalDataSource = function(options) {
 };
 
 
-kendo.data.Model = function() { };
+kendo.data.Model = function () {
+};
 
 kendo.data.Model.prototype = {
 
 
 
 
-    bind: function() {
+    bind: function () {
         /// <summary>
         /// Attaches a handler to an event. Examples and more info can be found in the bind section of the kendo.Observable API reference.
         /// </summary>
@@ -937,7 +948,7 @@ kendo.data.Model.prototype = {
     },
 
 
-    editable: function(field) {
+    editable: function (field) {
         /// <summary>
         /// Determines if the specified field is editable or not.
         /// </summary>
@@ -947,7 +958,7 @@ kendo.data.Model.prototype = {
     },
 
 
-    get: function() {
+    get: function () {
         /// <summary>
         /// Gets the value of the specified field. Inherited from kendo.data.ObservableObject. Examples and more info can be found in the get section of the
 /// ObservableObject API reference.
@@ -956,7 +967,7 @@ kendo.data.Model.prototype = {
     },
 
 
-    isNew: function() {
+    isNew: function () {
         /// <summary>
         /// Checks if the Model is new or not. The id field is used to determine if a model instance is new or existing one.
 /// If the value of the field specified is equal to the default value (specified through the fields configuration) the model is considered as new.
@@ -966,7 +977,7 @@ kendo.data.Model.prototype = {
     },
 
 
-    set: function() {
+    set: function () {
         /// <summary>
         /// Sets the value of the specified field. Inherited from kendo.data.ObservableObject. Examples and more info can be found in the set section of the
 /// ObservableObject API reference.
@@ -975,7 +986,7 @@ kendo.data.Model.prototype = {
     },
 
 
-    toJSON: function() {
+    toJSON: function () {
         /// <summary>
         /// Creates a plain JavaScript object which contains all fields of the Model. Inherited from kendo.data.ObservableObject. Examples and more info can be found in the toJSON section of the
 /// ObservableObject API reference.
@@ -984,7 +995,7 @@ kendo.data.Model.prototype = {
     },
 
 
-    unbind: function(event, callback) {
+    unbind: function (event, callback) {
         /// <summary>
         /// Unbinds a callback from a widget event.
         /// </summary>
@@ -994,14 +1005,14 @@ kendo.data.Model.prototype = {
 
 };
 
-$.fn.getKendoModel = function() {
+$.fn.getKendoModel = function () {
     /// <summary>
     /// Returns a reference to the kendo.data.Model widget, instantiated on the selector.
     /// </summary>
     /// <returns type="kendo.data.Model">The kendo.data.Model instance (if present).</returns>
 };
 
-$.fn.kendoModel = function(options) {
+$.fn.kendoModel = function (options) {
     /// <summary>
     /// Instantiates a kendo.data.Model widget based the DOM elements that match the selector.
 
@@ -1014,14 +1025,15 @@ $.fn.kendoModel = function(options) {
 };
 
 
-kendo.data.Node = function() { };
+kendo.data.Node = function () {
+};
 
 kendo.data.Node.prototype = {
 
 
 
 
-    append: function(model) {
+    append: function (model) {
         /// <summary>
         /// Appends a new item to the children data source, and initializes it if necessary.
         /// </summary>
@@ -1030,7 +1042,7 @@ kendo.data.Node.prototype = {
     },
 
 
-    level: function() {
+    level: function () {
         /// <summary>
         /// Gets the current nesting level of the node within the data source.
         /// </summary>
@@ -1039,7 +1051,7 @@ kendo.data.Node.prototype = {
     },
 
 
-    load: function() {
+    load: function () {
         /// <summary>
         /// Loads the child nodes in the child data source, supplying the id of the Node to the request.
         /// </summary>
@@ -1047,7 +1059,7 @@ kendo.data.Node.prototype = {
     },
 
 
-    loaded: function() {
+    loaded: function () {
         /// <summary>
         /// Gets or sets the loaded flag of the Node. Setting the loaded flag to false allows reloading of child items.
         /// </summary>
@@ -1055,7 +1067,7 @@ kendo.data.Node.prototype = {
     },
 
 
-    parentNode: function() {
+    parentNode: function () {
         /// <summary>
         /// Gets the parent node.
         /// </summary>
@@ -1063,7 +1075,7 @@ kendo.data.Node.prototype = {
 
     },
 
-    bind: function(event, callback) {
+    bind: function (event, callback) {
         /// <summary>
         /// Binds to a widget event.
         /// </summary>
@@ -1071,7 +1083,7 @@ kendo.data.Node.prototype = {
         /// <param name="callback" type="Function">The callback to be executed when the event is triggered.</param>
     },
 
-    unbind: function(event, callback) {
+    unbind: function (event, callback) {
         /// <summary>
         /// Unbinds a callback from a widget event.
         /// </summary>
@@ -1081,14 +1093,14 @@ kendo.data.Node.prototype = {
 
 };
 
-$.fn.getKendoNode = function() {
+$.fn.getKendoNode = function () {
     /// <summary>
     /// Returns a reference to the kendo.data.Node widget, instantiated on the selector.
     /// </summary>
     /// <returns type="kendo.data.Node">The kendo.data.Node instance (if present).</returns>
 };
 
-$.fn.kendoNode = function(options) {
+$.fn.kendoNode = function (options) {
     /// <summary>
     /// Instantiates a kendo.data.Node widget based the DOM elements that match the selector.
 
@@ -1101,14 +1113,15 @@ $.fn.kendoNode = function(options) {
 };
 
 
-kendo.data.ObservableArray = function() { };
+kendo.data.ObservableArray = function () {
+};
 
 kendo.data.ObservableArray.prototype = {
 
 
 
 
-    bind: function(eventName,handler) {
+    bind: function (eventName, handler) {
         /// <summary>
         /// Attaches an event handler for the specified event.
         /// </summary>
@@ -1118,7 +1131,7 @@ kendo.data.ObservableArray.prototype = {
     },
 
 
-    join: function(separator) {
+    join: function (separator) {
         /// <summary>
         /// Joins all items of an ObservableArray into a string. Equivalent of
 /// Array.prototype.join.
@@ -1128,7 +1141,7 @@ kendo.data.ObservableArray.prototype = {
     },
 
 
-    parent: function() {
+    parent: function () {
         /// <summary>
         /// Gets the parent of the array if such parent exists.
         /// </summary>
@@ -1137,7 +1150,7 @@ kendo.data.ObservableArray.prototype = {
     },
 
 
-    pop: function() {
+    pop: function () {
         /// <summary>
         /// Removes the last item from an array and returns that item. Equivalent of Array.prototype.pop.
         /// </summary>
@@ -1146,7 +1159,7 @@ kendo.data.ObservableArray.prototype = {
     },
 
 
-    push: function() {
+    push: function () {
         /// <summary>
         /// Appends the given items to the array and returns the new length of the array. Equivalent of Array.prototype.push.
 /// The new items are wrapped as ObservableObject if they are complex objects.
@@ -1156,7 +1169,7 @@ kendo.data.ObservableArray.prototype = {
     },
 
 
-    slice: function(begin,end) {
+    slice: function (begin, end) {
         /// <summary>
         /// Returns a one-level deep copy of a portion of an array. Equivalent of
 /// Array.prototype.slice.
@@ -1168,7 +1181,7 @@ kendo.data.ObservableArray.prototype = {
     },
 
 
-    splice: function(index,howMany) {
+    splice: function (index, howMany) {
         /// <summary>
         /// Changes an ObservableArray, by adding new items while removing old items. Equivalent of
 /// Array.prototype.splice
@@ -1180,7 +1193,7 @@ kendo.data.ObservableArray.prototype = {
     },
 
 
-    shift: function() {
+    shift: function () {
         /// <summary>
         /// Removes the first item from an ObvservableArray and returns that item. Equivalent of Array.prototype.shift.
         /// </summary>
@@ -1189,7 +1202,7 @@ kendo.data.ObservableArray.prototype = {
     },
 
 
-    toJSON: function() {
+    toJSON: function () {
         /// <summary>
         /// Returns a JavaScript Array which represents the contents of the ObservableArray.
         /// </summary>
@@ -1197,7 +1210,7 @@ kendo.data.ObservableArray.prototype = {
     },
 
 
-    unshift: function() {
+    unshift: function () {
         /// <summary>
         /// Adds one or more items to the beginning of an ObservableArray and returns the new length.  Equivalent of Array.prototype.unshift.
         /// </summary>
@@ -1206,7 +1219,7 @@ kendo.data.ObservableArray.prototype = {
     },
 
 
-    unbind: function(event, callback) {
+    unbind: function (event, callback) {
         /// <summary>
         /// Unbinds a callback from a widget event.
         /// </summary>
@@ -1216,14 +1229,14 @@ kendo.data.ObservableArray.prototype = {
 
 };
 
-$.fn.getKendoObservableArray = function() {
+$.fn.getKendoObservableArray = function () {
     /// <summary>
     /// Returns a reference to the kendo.data.ObservableArray widget, instantiated on the selector.
     /// </summary>
     /// <returns type="kendo.data.ObservableArray">The kendo.data.ObservableArray instance (if present).</returns>
 };
 
-$.fn.kendoObservableArray = function(options) {
+$.fn.kendoObservableArray = function (options) {
     /// <summary>
     /// Instantiates a kendo.data.ObservableArray widget based the DOM elements that match the selector.
 
@@ -1236,14 +1249,15 @@ $.fn.kendoObservableArray = function(options) {
 };
 
 
-kendo.data.ObservableObject = function() { };
+kendo.data.ObservableObject = function () {
+};
 
 kendo.data.ObservableObject.prototype = {
 
 
 
 
-    bind: function() {
+    bind: function () {
         /// <summary>
         /// Attaches a handler to an event. Examples and more info can be found in the bind section of the
 /// kendo.Observable API reference.
@@ -1252,7 +1266,7 @@ kendo.data.ObservableObject.prototype = {
     },
 
 
-    get: function(name) {
+    get: function (name) {
         /// <summary>
         /// Gets the value of the specified field.
         /// </summary>
@@ -1262,7 +1276,7 @@ kendo.data.ObservableObject.prototype = {
     },
 
 
-    parent: function() {
+    parent: function () {
         /// <summary>
         /// Gets the parent of the object if such parent exists.
         /// </summary>
@@ -1271,7 +1285,7 @@ kendo.data.ObservableObject.prototype = {
     },
 
 
-    set: function(name,value) {
+    set: function (name, value) {
         /// <summary>
         /// Sets the value of the specified field.
         /// </summary>
@@ -1281,7 +1295,7 @@ kendo.data.ObservableObject.prototype = {
     },
 
 
-    toJSON: function() {
+    toJSON: function () {
         /// <summary>
         /// Creates a plain JavaScript object which contains all fields of the ObservableObject.
         /// </summary>
@@ -1290,7 +1304,7 @@ kendo.data.ObservableObject.prototype = {
     },
 
 
-    unbind: function(event, callback) {
+    unbind: function (event, callback) {
         /// <summary>
         /// Unbinds a callback from a widget event.
         /// </summary>
@@ -1300,14 +1314,14 @@ kendo.data.ObservableObject.prototype = {
 
 };
 
-$.fn.getKendoObservableObject = function() {
+$.fn.getKendoObservableObject = function () {
     /// <summary>
     /// Returns a reference to the kendo.data.ObservableObject widget, instantiated on the selector.
     /// </summary>
     /// <returns type="kendo.data.ObservableObject">The kendo.data.ObservableObject instance (if present).</returns>
 };
 
-$.fn.kendoObservableObject = function(options) {
+$.fn.kendoObservableObject = function (options) {
     /// <summary>
     /// Instantiates a kendo.data.ObservableObject widget based the DOM elements that match the selector.
 
@@ -1320,14 +1334,15 @@ $.fn.kendoObservableObject = function(options) {
 };
 
 
-kendo.data.SchedulerDataSource = function() { };
+kendo.data.SchedulerDataSource = function () {
+};
 
 kendo.data.SchedulerDataSource.prototype = {
 
 
 
 
-    expand: function(start,end) {
+    expand: function (start, end) {
         /// <summary>
         /// Expands all recurring events in the data and returns a list of events for a specific period.
         /// </summary>
@@ -1337,7 +1352,7 @@ kendo.data.SchedulerDataSource.prototype = {
 
     },
 
-    bind: function(event, callback) {
+    bind: function (event, callback) {
         /// <summary>
         /// Binds to a widget event.
         /// </summary>
@@ -1345,7 +1360,7 @@ kendo.data.SchedulerDataSource.prototype = {
         /// <param name="callback" type="Function">The callback to be executed when the event is triggered.</param>
     },
 
-    unbind: function(event, callback) {
+    unbind: function (event, callback) {
         /// <summary>
         /// Unbinds a callback from a widget event.
         /// </summary>
@@ -1355,14 +1370,14 @@ kendo.data.SchedulerDataSource.prototype = {
 
 };
 
-$.fn.getKendoSchedulerDataSource = function() {
+$.fn.getKendoSchedulerDataSource = function () {
     /// <summary>
     /// Returns a reference to the kendo.data.SchedulerDataSource widget, instantiated on the selector.
     /// </summary>
     /// <returns type="kendo.data.SchedulerDataSource">The kendo.data.SchedulerDataSource instance (if present).</returns>
 };
 
-$.fn.kendoSchedulerDataSource = function(options) {
+$.fn.kendoSchedulerDataSource = function (options) {
     /// <summary>
     /// Instantiates a kendo.data.SchedulerDataSource widget based the DOM elements that match the selector.
 
@@ -1378,14 +1393,15 @@ $.fn.kendoSchedulerDataSource = function(options) {
 };
 
 
-kendo.data.SchedulerEvent = function() { };
+kendo.data.SchedulerEvent = function () {
+};
 
 kendo.data.SchedulerEvent.prototype = {
 
 
 
 
-    clone: function(options) {
+    clone: function (options) {
         /// <summary>
         /// Clones the scheduler event.
         /// </summary>
@@ -1395,7 +1411,7 @@ kendo.data.SchedulerEvent.prototype = {
     },
 
 
-    duration: function() {
+    duration: function () {
         /// <summary>
         /// Returns the scheduler event length in milliseconds.
         /// </summary>
@@ -1404,7 +1420,7 @@ kendo.data.SchedulerEvent.prototype = {
     },
 
 
-    expand: function(start,end,timeZoneId) {
+    expand: function (start, end, timeZoneId) {
         /// <summary>
         /// Expands the event for a specific period based on the recurrenceRule option.
         /// </summary>
@@ -1415,7 +1431,7 @@ kendo.data.SchedulerEvent.prototype = {
 
     },
 
-    bind: function(event, callback) {
+    bind: function (event, callback) {
         /// <summary>
         /// Binds to a widget event.
         /// </summary>
@@ -1423,7 +1439,7 @@ kendo.data.SchedulerEvent.prototype = {
         /// <param name="callback" type="Function">The callback to be executed when the event is triggered.</param>
     },
 
-    unbind: function(event, callback) {
+    unbind: function (event, callback) {
         /// <summary>
         /// Unbinds a callback from a widget event.
         /// </summary>
@@ -1433,14 +1449,14 @@ kendo.data.SchedulerEvent.prototype = {
 
 };
 
-$.fn.getKendoSchedulerEvent = function() {
+$.fn.getKendoSchedulerEvent = function () {
     /// <summary>
     /// Returns a reference to the kendo.data.SchedulerEvent widget, instantiated on the selector.
     /// </summary>
     /// <returns type="kendo.data.SchedulerEvent">The kendo.data.SchedulerEvent instance (if present).</returns>
 };
 
-$.fn.kendoSchedulerEvent = function(options) {
+$.fn.kendoSchedulerEvent = function (options) {
     /// <summary>
     /// Instantiates a kendo.data.SchedulerEvent widget based the DOM elements that match the selector.
 
@@ -1486,21 +1502,22 @@ $.fn.kendoSchedulerEvent = function(options) {
 };
 
 
-kendo.mobile.ui.Widget = function() { };
+kendo.mobile.ui.Widget = function () {
+};
 
 kendo.mobile.ui.Widget.prototype = {
 
 
 
 
-    view: function() {
+    view: function () {
         /// <summary>
         /// Returns the kendo.mobile.ui.View which contains the widget. If the widget is contained in a splitview, modalview, or drawer, the respective widget instance is returned.
         /// </summary>
 
     },
 
-    bind: function(event, callback) {
+    bind: function (event, callback) {
         /// <summary>
         /// Binds to a widget event.
         /// </summary>
@@ -1508,7 +1525,7 @@ kendo.mobile.ui.Widget.prototype = {
         /// <param name="callback" type="Function">The callback to be executed when the event is triggered.</param>
     },
 
-    unbind: function(event, callback) {
+    unbind: function (event, callback) {
         /// <summary>
         /// Unbinds a callback from a widget event.
         /// </summary>
@@ -1518,14 +1535,14 @@ kendo.mobile.ui.Widget.prototype = {
 
 };
 
-$.fn.getKendoWidget = function() {
+$.fn.getKendoWidget = function () {
     /// <summary>
     /// Returns a reference to the kendo.mobile.ui.Widget widget, instantiated on the selector.
     /// </summary>
     /// <returns type="kendo.mobile.ui.Widget">The kendo.mobile.ui.Widget instance (if present).</returns>
 };
 
-$.fn.kendoWidget = function(options) {
+$.fn.kendoWidget = function (options) {
     /// <summary>
     /// Instantiates a kendo.mobile.ui.Widget widget based the DOM elements that match the selector.
 
@@ -1542,14 +1559,15 @@ if (!ui) {
     ui = {};
 }
 
-kendo.ui.AutoComplete = function() { };
+kendo.ui.AutoComplete = function () {
+};
 
 kendo.ui.AutoComplete.prototype = {
 
 
 
 
-    close: function() {
+    close: function () {
         /// <summary>
         /// Closes the widget suggestion popup.
         /// </summary>
@@ -1557,7 +1575,7 @@ kendo.ui.AutoComplete.prototype = {
     },
 
 
-    dataItem: function(index) {
+    dataItem: function (index) {
         /// <summary>
         /// Returns the data item at the specified index.
         /// </summary>
@@ -1567,7 +1585,7 @@ kendo.ui.AutoComplete.prototype = {
     },
 
 
-    destroy: function() {
+    destroy: function () {
         /// <summary>
         /// Prepares the widget for safe removal from DOM. Detaches all event handlers and removes jQuery.data attributes to avoid memory leaks. Calls destroy method of any child Kendo widgets.
         /// </summary>
@@ -1575,7 +1593,7 @@ kendo.ui.AutoComplete.prototype = {
     },
 
 
-    enable: function(enable) {
+    enable: function (enable) {
         /// <summary>
         /// Enables or disables the widget.
         /// </summary>
@@ -1584,7 +1602,7 @@ kendo.ui.AutoComplete.prototype = {
     },
 
 
-    focus: function() {
+    focus: function () {
         /// <summary>
         /// Focuses the widget.
         /// </summary>
@@ -1592,7 +1610,7 @@ kendo.ui.AutoComplete.prototype = {
     },
 
 
-    readonly: function(readonly) {
+    readonly: function (readonly) {
         /// <summary>
         /// Toggles the readonly state of the widget. When the widget is readonly it doesn't allow user input.
         /// </summary>
@@ -1601,7 +1619,7 @@ kendo.ui.AutoComplete.prototype = {
     },
 
 
-    refresh: function() {
+    refresh: function () {
         /// <summary>
         /// Refresh the suggestion popup by rendering all items again.
         /// </summary>
@@ -1609,7 +1627,7 @@ kendo.ui.AutoComplete.prototype = {
     },
 
 
-    search: function(word) {
+    search: function (word) {
         /// <summary>
         /// Searches the data source for the provided value and displays any matches as suggestions.
         /// </summary>
@@ -1618,7 +1636,7 @@ kendo.ui.AutoComplete.prototype = {
     },
 
 
-    select: function(item) {
+    select: function (item) {
         /// <summary>
         /// Selects the item provided as an argument and updates the value of the widget.
         /// </summary>
@@ -1627,7 +1645,7 @@ kendo.ui.AutoComplete.prototype = {
     },
 
 
-    setDataSource: function(dataSource) {
+    setDataSource: function (dataSource) {
         /// <summary>
         /// Sets the data source of the widget.
         /// </summary>
@@ -1636,7 +1654,7 @@ kendo.ui.AutoComplete.prototype = {
     },
 
 
-    suggest: function(value) {
+    suggest: function (value) {
         /// <summary>
         /// Sets the value of the widget to the specified argument and visually selects the text.
         /// </summary>
@@ -1645,7 +1663,7 @@ kendo.ui.AutoComplete.prototype = {
     },
 
 
-    value: function(value) {
+    value: function (value) {
         /// <summary>
         /// Gets or sets the value of the widget.
         /// </summary>
@@ -1654,7 +1672,7 @@ kendo.ui.AutoComplete.prototype = {
 
     },
 
-    bind: function(event, callback) {
+    bind: function (event, callback) {
         /// <summary>
         /// Binds to a widget event.
         /// </summary>
@@ -1662,7 +1680,7 @@ kendo.ui.AutoComplete.prototype = {
         /// <param name="callback" type="Function">The callback to be executed when the event is triggered.</param>
     },
 
-    unbind: function(event, callback) {
+    unbind: function (event, callback) {
         /// <summary>
         /// Unbinds a callback from a widget event.
         /// </summary>
@@ -1672,14 +1690,14 @@ kendo.ui.AutoComplete.prototype = {
 
 };
 
-$.fn.getKendoAutoComplete = function() {
+$.fn.getKendoAutoComplete = function () {
     /// <summary>
     /// Returns a reference to the kendo.ui.AutoComplete widget, instantiated on the selector.
     /// </summary>
     /// <returns type="kendo.ui.AutoComplete">The kendo.ui.AutoComplete instance (if present).</returns>
 };
 
-$.fn.kendoAutoComplete = function(options) {
+$.fn.kendoAutoComplete = function (options) {
     /// <summary>
     /// Instantiates a kendo.ui.AutoComplete widget based the DOM elements that match the selector.
 
@@ -1742,14 +1760,15 @@ $.fn.kendoAutoComplete = function(options) {
 };
 
 
-kendo.ui.Button = function() { };
+kendo.ui.Button = function () {
+};
 
 kendo.ui.Button.prototype = {
 
 
 
 
-    enable: function(toggle) {
+    enable: function (toggle) {
         /// <summary>
         /// Enables or disables the Button.
         /// </summary>
@@ -1757,7 +1776,7 @@ kendo.ui.Button.prototype = {
 
     },
 
-    bind: function(event, callback) {
+    bind: function (event, callback) {
         /// <summary>
         /// Binds to a widget event.
         /// </summary>
@@ -1765,7 +1784,7 @@ kendo.ui.Button.prototype = {
         /// <param name="callback" type="Function">The callback to be executed when the event is triggered.</param>
     },
 
-    unbind: function(event, callback) {
+    unbind: function (event, callback) {
         /// <summary>
         /// Unbinds a callback from a widget event.
         /// </summary>
@@ -1775,14 +1794,14 @@ kendo.ui.Button.prototype = {
 
 };
 
-$.fn.getKendoButton = function() {
+$.fn.getKendoButton = function () {
     /// <summary>
     /// Returns a reference to the kendo.ui.Button widget, instantiated on the selector.
     /// </summary>
     /// <returns type="kendo.ui.Button">The kendo.ui.Button instance (if present).</returns>
 };
 
-$.fn.kendoButton = function(options) {
+$.fn.kendoButton = function (options) {
     /// <summary>
     /// Instantiates a kendo.ui.Button widget based the DOM elements that match the selector.
 
@@ -1810,14 +1829,15 @@ $.fn.kendoButton = function(options) {
 };
 
 
-kendo.ui.Calendar = function() { };
+kendo.ui.Calendar = function () {
+};
 
 kendo.ui.Calendar.prototype = {
 
 
 
 
-    current: function() {
+    current: function () {
         /// <summary>
         /// Gets currently focused date.
         /// </summary>
@@ -1826,7 +1846,7 @@ kendo.ui.Calendar.prototype = {
     },
 
 
-    destroy: function() {
+    destroy: function () {
         /// <summary>
         /// Prepares the Calendar for safe removal from DOM. Detaches all event handlers and removes jQuery.data attributes to avoid memory leaks. Calls destroy method of any child Kendo widgets.
         /// </summary>
@@ -1834,7 +1854,7 @@ kendo.ui.Calendar.prototype = {
     },
 
 
-    max: function(value) {
+    max: function (value) {
         /// <summary>
         /// Gets/Sets the max value of the calendar.
         /// </summary>
@@ -1844,7 +1864,7 @@ kendo.ui.Calendar.prototype = {
     },
 
 
-    min: function(value) {
+    min: function (value) {
         /// <summary>
         /// Gets/Sets the min value of the calendar.
         /// </summary>
@@ -1854,26 +1874,26 @@ kendo.ui.Calendar.prototype = {
     },
 
 
-    navigate: function(value,view) {
+    navigate: function (value, view) {
         /// <summary>
-        /// Navigates to view.
+        /// Navigates to io.
         /// </summary>
         /// <param name="value" type="Date" >Desired date.</param>
-        /// <param name="view" type="String" >Desired view.</param>
+        /// <param name="io" type="String" >Desired io.</param>
 
     },
 
 
-    navigateDown: function(value) {
+    navigateDown: function (value) {
         /// <summary>
-        /// Navigates to the lower view.
+        /// Navigates to the lower io.
         /// </summary>
         /// <param name="value" type="Date" >Desired date.</param>
 
     },
 
 
-    navigateToFuture: function() {
+    navigateToFuture: function () {
         /// <summary>
         /// Navigates to the future.
         /// </summary>
@@ -1881,7 +1901,7 @@ kendo.ui.Calendar.prototype = {
     },
 
 
-    navigateToPast: function() {
+    navigateToPast: function () {
         /// <summary>
         /// Navigates to the past.
         /// </summary>
@@ -1889,15 +1909,15 @@ kendo.ui.Calendar.prototype = {
     },
 
 
-    navigateUp: function() {
+    navigateUp: function () {
         /// <summary>
-        /// Navigates to the upper view.
+        /// Navigates to the upper io.
         /// </summary>
 
     },
 
 
-    value: function(value) {
+    value: function (value) {
         /// <summary>
         /// Gets/Sets the value of the calendar.
         /// </summary>
@@ -1907,15 +1927,15 @@ kendo.ui.Calendar.prototype = {
     },
 
 
-    view: function() {
+    view: function () {
         /// <summary>
-        /// Gets an instance of the current view used by the calendar.
+        /// Gets an instance of the current io used by the calendar.
         /// </summary>
-        /// <returns type="Object">The instance of the current view used by the calendar.</returns>
+        /// <returns type="Object">The instance of the current io used by the calendar.</returns>
 
     },
 
-    bind: function(event, callback) {
+    bind: function (event, callback) {
         /// <summary>
         /// Binds to a widget event.
         /// </summary>
@@ -1923,7 +1943,7 @@ kendo.ui.Calendar.prototype = {
         /// <param name="callback" type="Function">The callback to be executed when the event is triggered.</param>
     },
 
-    unbind: function(event, callback) {
+    unbind: function (event, callback) {
         /// <summary>
         /// Unbinds a callback from a widget event.
         /// </summary>
@@ -1933,14 +1953,14 @@ kendo.ui.Calendar.prototype = {
 
 };
 
-$.fn.getKendoCalendar = function() {
+$.fn.getKendoCalendar = function () {
     /// <summary>
     /// Returns a reference to the kendo.ui.Calendar widget, instantiated on the selector.
     /// </summary>
     /// <returns type="kendo.ui.Calendar">The kendo.ui.Calendar instance (if present).</returns>
 };
 
-$.fn.kendoCalendar = function(options) {
+$.fn.kendoCalendar = function (options) {
     /// <summary>
     /// Instantiates a kendo.ui.Calendar widget based the DOM elements that match the selector.
 
@@ -1969,10 +1989,10 @@ $.fn.kendoCalendar = function(options) {
     /// &#10;Specifies the minimum date, which the calendar can show.
     /// &#10;
     /// &#10;month — Object 
-    /// &#10;Templates for the cells rendered in "month" view.
+    /// &#10;Templates for the cells rendered in "month" io.
     /// &#10;
     /// &#10;start — String (default: "month")
-    /// &#10;Specifies the start view.
+    /// &#10;Specifies the start io.
 /// &#10;The following settings are available for the start value:
     /// &#10;
     /// &#10;value — Date (default: null)
@@ -1985,14 +2005,15 @@ $.fn.kendoCalendar = function(options) {
 };
 
 
-kendo.ui.ColorPalette = function() { };
+kendo.ui.ColorPalette = function () {
+};
 
 kendo.ui.ColorPalette.prototype = {
 
 
 
 
-    value: function(color) {
+    value: function (color) {
         /// <summary>
         /// Get or set the selected color. If no argument is given, this returns the currently selected color as a string in format #FFFFFF.If one argument is given, it selects the new color and updates the UI. The argument can be a string in hex, rgb or rgba format, or a kendo.Color object object.
         /// </summary>
@@ -2002,7 +2023,7 @@ kendo.ui.ColorPalette.prototype = {
     },
 
 
-    color: function(color) {
+    color: function (color) {
         /// <summary>
         /// Get or set the selected color. If no argument is given, this returns the currently selected color as a kendo.Color object.
         /// </summary>
@@ -2012,7 +2033,7 @@ kendo.ui.ColorPalette.prototype = {
     },
 
 
-    enable: function(enable) {
+    enable: function (enable) {
         /// <summary>
         /// Enables or disables the widget.
         /// </summary>
@@ -2020,7 +2041,7 @@ kendo.ui.ColorPalette.prototype = {
 
     },
 
-    bind: function(event, callback) {
+    bind: function (event, callback) {
         /// <summary>
         /// Binds to a widget event.
         /// </summary>
@@ -2028,7 +2049,7 @@ kendo.ui.ColorPalette.prototype = {
         /// <param name="callback" type="Function">The callback to be executed when the event is triggered.</param>
     },
 
-    unbind: function(event, callback) {
+    unbind: function (event, callback) {
         /// <summary>
         /// Unbinds a callback from a widget event.
         /// </summary>
@@ -2038,14 +2059,14 @@ kendo.ui.ColorPalette.prototype = {
 
 };
 
-$.fn.getKendoColorPalette = function() {
+$.fn.getKendoColorPalette = function () {
     /// <summary>
     /// Returns a reference to the kendo.ui.ColorPalette widget, instantiated on the selector.
     /// </summary>
     /// <returns type="kendo.ui.ColorPalette">The kendo.ui.ColorPalette instance (if present).</returns>
 };
 
-$.fn.kendoColorPalette = function(options) {
+$.fn.kendoColorPalette = function (options) {
     /// <summary>
     /// Instantiates a kendo.ui.ColorPalette widget based the DOM elements that match the selector.
 
@@ -2074,14 +2095,15 @@ $.fn.kendoColorPalette = function(options) {
 };
 
 
-kendo.ui.ColorPicker = function() { };
+kendo.ui.ColorPicker = function () {
+};
 
 kendo.ui.ColorPicker.prototype = {
 
 
 
 
-    close: function() {
+    close: function () {
         /// <summary>
         /// Closes the popup.
         /// </summary>
@@ -2089,7 +2111,7 @@ kendo.ui.ColorPicker.prototype = {
     },
 
 
-    open: function() {
+    open: function () {
         /// <summary>
         /// Opens the popup element with the color selector.
         /// </summary>
@@ -2097,7 +2119,7 @@ kendo.ui.ColorPicker.prototype = {
     },
 
 
-    toggle: function() {
+    toggle: function () {
         /// <summary>
         /// Toggles the popup.
         /// </summary>
@@ -2105,7 +2127,7 @@ kendo.ui.ColorPicker.prototype = {
     },
 
 
-    value: function(color) {
+    value: function (color) {
         /// <summary>
         /// Get or set the selected color. If no argument is given, this returns the
 /// currently selected color as a string in format #FFFFFF when the opacity
@@ -2119,7 +2141,7 @@ kendo.ui.ColorPicker.prototype = {
     },
 
 
-    color: function(color) {
+    color: function (color) {
         /// <summary>
         /// Get or set the selected color. If no argument is given, this returns the currently selected color as a kendo.Color object.
         /// </summary>
@@ -2129,7 +2151,7 @@ kendo.ui.ColorPicker.prototype = {
     },
 
 
-    enable: function(enable) {
+    enable: function (enable) {
         /// <summary>
         /// Enables or disables the widget.
         /// </summary>
@@ -2137,7 +2159,7 @@ kendo.ui.ColorPicker.prototype = {
 
     },
 
-    bind: function(event, callback) {
+    bind: function (event, callback) {
         /// <summary>
         /// Binds to a widget event.
         /// </summary>
@@ -2145,7 +2167,7 @@ kendo.ui.ColorPicker.prototype = {
         /// <param name="callback" type="Function">The callback to be executed when the event is triggered.</param>
     },
 
-    unbind: function(event, callback) {
+    unbind: function (event, callback) {
         /// <summary>
         /// Unbinds a callback from a widget event.
         /// </summary>
@@ -2155,14 +2177,14 @@ kendo.ui.ColorPicker.prototype = {
 
 };
 
-$.fn.getKendoColorPicker = function() {
+$.fn.getKendoColorPicker = function () {
     /// <summary>
     /// Returns a reference to the kendo.ui.ColorPicker widget, instantiated on the selector.
     /// </summary>
     /// <returns type="kendo.ui.ColorPicker">The kendo.ui.ColorPicker instance (if present).</returns>
 };
 
-$.fn.kendoColorPicker = function(options) {
+$.fn.kendoColorPicker = function (options) {
     /// <summary>
     /// Instantiates a kendo.ui.ColorPicker widget based the DOM elements that match the selector.
 
@@ -2212,14 +2234,15 @@ $.fn.kendoColorPicker = function(options) {
 };
 
 
-kendo.ui.ComboBox = function() { };
+kendo.ui.ComboBox = function () {
+};
 
 kendo.ui.ComboBox.prototype = {
 
 
 
 
-    close: function() {
+    close: function () {
         /// <summary>
         /// Closes the widget popup.
         /// </summary>
@@ -2227,7 +2250,7 @@ kendo.ui.ComboBox.prototype = {
     },
 
 
-    dataItem: function(index) {
+    dataItem: function (index) {
         /// <summary>
         /// Returns the data item at the specified index. If the index is not specified, the selected index will be used.
         /// </summary>
@@ -2237,7 +2260,7 @@ kendo.ui.ComboBox.prototype = {
     },
 
 
-    destroy: function() {
+    destroy: function () {
         /// <summary>
         /// Prepares the ComboBox for safe removal from DOM. Detaches all event handlers and removes jQuery.data attributes to avoid memory leaks. Calls destroy method of any child Kendo widgets.
         /// </summary>
@@ -2245,7 +2268,7 @@ kendo.ui.ComboBox.prototype = {
     },
 
 
-    enable: function(enable) {
+    enable: function (enable) {
         /// <summary>
         /// Enables or disables the widget.
         /// </summary>
@@ -2254,7 +2277,7 @@ kendo.ui.ComboBox.prototype = {
     },
 
 
-    readonly: function(readonly) {
+    readonly: function (readonly) {
         /// <summary>
         /// Toggles the readonly state of the widget. When the widget is readonly it doesn't allow user input.
         /// </summary>
@@ -2263,7 +2286,7 @@ kendo.ui.ComboBox.prototype = {
     },
 
 
-    focus: function() {
+    focus: function () {
         /// <summary>
         /// Focuses the widget.
         /// </summary>
@@ -2271,7 +2294,7 @@ kendo.ui.ComboBox.prototype = {
     },
 
 
-    open: function() {
+    open: function () {
         /// <summary>
         /// Opens the popup.
         /// </summary>
@@ -2279,7 +2302,7 @@ kendo.ui.ComboBox.prototype = {
     },
 
 
-    refresh: function() {
+    refresh: function () {
         /// <summary>
         /// Refresh the popup by rendering all items again.
         /// </summary>
@@ -2287,7 +2310,7 @@ kendo.ui.ComboBox.prototype = {
     },
 
 
-    search: function(word) {
+    search: function (word) {
         /// <summary>
         /// Searches the data source for the provided value and displays any matches as suggestions.
         /// </summary>
@@ -2296,7 +2319,7 @@ kendo.ui.ComboBox.prototype = {
     },
 
 
-    select: function(li) {
+    select: function (li) {
         /// <summary>
         /// Selects the item provided as an argument and updates the value and text of the widget.
         /// </summary>
@@ -2306,7 +2329,7 @@ kendo.ui.ComboBox.prototype = {
     },
 
 
-    setDataSource: function(dataSource) {
+    setDataSource: function (dataSource) {
         /// <summary>
         /// Sets the dataSource of an existing ComboBox and rebinds it.
         /// </summary>
@@ -2315,7 +2338,7 @@ kendo.ui.ComboBox.prototype = {
     },
 
 
-    suggest: function(value) {
+    suggest: function (value) {
         /// <summary>
         /// Sets the value of the widget to the specified argument and visually selects the text.
         /// </summary>
@@ -2324,7 +2347,7 @@ kendo.ui.ComboBox.prototype = {
     },
 
 
-    text: function(text) {
+    text: function (text) {
         /// <summary>
         /// Gets or sets the text of the ComboBox. Widget will select the item with same text. If
 /// there are no matches then the text will be considered as a custom value of the widget.
@@ -2335,7 +2358,7 @@ kendo.ui.ComboBox.prototype = {
     },
 
 
-    toggle: function(toggle) {
+    toggle: function (toggle) {
         /// <summary>
         /// Opens or closes the widget popup.
         /// </summary>
@@ -2344,7 +2367,7 @@ kendo.ui.ComboBox.prototype = {
     },
 
 
-    value: function(value) {
+    value: function (value) {
         /// <summary>
         /// Gets or sets the value of the combobox.
         /// </summary>
@@ -2353,7 +2376,7 @@ kendo.ui.ComboBox.prototype = {
 
     },
 
-    bind: function(event, callback) {
+    bind: function (event, callback) {
         /// <summary>
         /// Binds to a widget event.
         /// </summary>
@@ -2361,7 +2384,7 @@ kendo.ui.ComboBox.prototype = {
         /// <param name="callback" type="Function">The callback to be executed when the event is triggered.</param>
     },
 
-    unbind: function(event, callback) {
+    unbind: function (event, callback) {
         /// <summary>
         /// Unbinds a callback from a widget event.
         /// </summary>
@@ -2371,14 +2394,14 @@ kendo.ui.ComboBox.prototype = {
 
 };
 
-$.fn.getKendoComboBox = function() {
+$.fn.getKendoComboBox = function () {
     /// <summary>
     /// Returns a reference to the kendo.ui.ComboBox widget, instantiated on the selector.
     /// </summary>
     /// <returns type="kendo.ui.ComboBox">The kendo.ui.ComboBox instance (if present).</returns>
 };
 
-$.fn.kendoComboBox = function(options) {
+$.fn.kendoComboBox = function (options) {
     /// <summary>
     /// Instantiates a kendo.ui.ComboBox widget based the DOM elements that match the selector.
 
@@ -2461,14 +2484,15 @@ $.fn.kendoComboBox = function(options) {
 };
 
 
-kendo.ui.DatePicker = function() { };
+kendo.ui.DatePicker = function () {
+};
 
 kendo.ui.DatePicker.prototype = {
 
 
 
 
-    close: function() {
+    close: function () {
         /// <summary>
         /// Closes the calendar.
         /// </summary>
@@ -2476,7 +2500,7 @@ kendo.ui.DatePicker.prototype = {
     },
 
 
-    destroy: function() {
+    destroy: function () {
         /// <summary>
         /// Prepares the DatePicker for safe removal from DOM. Detaches all event handlers and removes jQuery.data attributes to avoid memory leaks. Calls destroy method of any child Kendo widgets.
         /// </summary>
@@ -2484,7 +2508,7 @@ kendo.ui.DatePicker.prototype = {
     },
 
 
-    enable: function(enable) {
+    enable: function (enable) {
         /// <summary>
         /// Enable/Disable the DatePicker widget.
         /// </summary>
@@ -2493,7 +2517,7 @@ kendo.ui.DatePicker.prototype = {
     },
 
 
-    readonly: function(readonly) {
+    readonly: function (readonly) {
         /// <summary>
         /// Toggles the readonly state of the widget. When the widget is readonly it doesn't allow user input.
         /// </summary>
@@ -2502,7 +2526,7 @@ kendo.ui.DatePicker.prototype = {
     },
 
 
-    max: function(value) {
+    max: function (value) {
         /// <summary>
         /// Gets/Sets the max value of the DatePicker.
         /// </summary>
@@ -2512,7 +2536,7 @@ kendo.ui.DatePicker.prototype = {
     },
 
 
-    min: function(value) {
+    min: function (value) {
         /// <summary>
         /// Gets/Sets the min value of the DatePicker.
         /// </summary>
@@ -2522,7 +2546,7 @@ kendo.ui.DatePicker.prototype = {
     },
 
 
-    open: function() {
+    open: function () {
         /// <summary>
         /// Opens the calendar.
         /// </summary>
@@ -2530,7 +2554,7 @@ kendo.ui.DatePicker.prototype = {
     },
 
 
-    value: function(value) {
+    value: function (value) {
         /// <summary>
         /// Gets/Sets the value of the DatePicker.
         /// </summary>
@@ -2539,7 +2563,7 @@ kendo.ui.DatePicker.prototype = {
 
     },
 
-    bind: function(event, callback) {
+    bind: function (event, callback) {
         /// <summary>
         /// Binds to a widget event.
         /// </summary>
@@ -2547,7 +2571,7 @@ kendo.ui.DatePicker.prototype = {
         /// <param name="callback" type="Function">The callback to be executed when the event is triggered.</param>
     },
 
-    unbind: function(event, callback) {
+    unbind: function (event, callback) {
         /// <summary>
         /// Unbinds a callback from a widget event.
         /// </summary>
@@ -2557,14 +2581,14 @@ kendo.ui.DatePicker.prototype = {
 
 };
 
-$.fn.getKendoDatePicker = function() {
+$.fn.getKendoDatePicker = function () {
     /// <summary>
     /// Returns a reference to the kendo.ui.DatePicker widget, instantiated on the selector.
     /// </summary>
     /// <returns type="kendo.ui.DatePicker">The kendo.ui.DatePicker instance (if present).</returns>
 };
 
-$.fn.kendoDatePicker = function(options) {
+$.fn.kendoDatePicker = function (options) {
     /// <summary>
     /// Instantiates a kendo.ui.DatePicker widget based the DOM elements that match the selector.
 
@@ -2599,14 +2623,14 @@ $.fn.kendoDatePicker = function(options) {
     /// &#10;Specifies the minimum date that the calendar can show.
     /// &#10;
     /// &#10;month — Object 
-    /// &#10;Templates for the cells rendered in the calendar "month" view.
+    /// &#10;Templates for the cells rendered in the calendar "month" io.
     /// &#10;
     /// &#10;parseFormats — Array 
     /// &#10;Specifies a lis of date formats used to parse the value set with value() method or by direct user input. If not set the value of the format will be used.
 /// &#10; Note that format option is always used parsing process.
     /// &#10;
     /// &#10;start — String (default: "month")
-    /// &#10;Specifies the start view.
+    /// &#10;Specifies the start io.
 /// &#10;The following settings are available for the start value:
     /// &#10;
     /// &#10;value — Date (default: null)
@@ -2619,23 +2643,24 @@ $.fn.kendoDatePicker = function(options) {
 };
 
 
-kendo.ui.DateTimePicker = function() { };
+kendo.ui.DateTimePicker = function () {
+};
 
 kendo.ui.DateTimePicker.prototype = {
 
 
 
 
-    close: function(view) {
+    close: function (view) {
         /// <summary>
         /// Closes the calendar or the time drop-down list.
         /// </summary>
-        /// <param name="view" type="String" >The view of the DateTimePicker, expressed as a string. Available views are "time" and "date".</param>
+        /// <param name="io" type="String" >The io of the DateTimePicker, expressed as a string. Available admin.views are "time" and "date".</param>
 
     },
 
 
-    destroy: function() {
+    destroy: function () {
         /// <summary>
         /// Prepares the DateTimePicker for safe removal from DOM. Detaches all event handlers and removes jQuery.data attributes to avoid memory leaks. Calls destroy method of any child Kendo widgets.
         /// </summary>
@@ -2643,7 +2668,7 @@ kendo.ui.DateTimePicker.prototype = {
     },
 
 
-    enable: function(enable) {
+    enable: function (enable) {
         /// <summary>
         /// Enables or disables a DateTimePicker.
         /// </summary>
@@ -2652,7 +2677,7 @@ kendo.ui.DateTimePicker.prototype = {
     },
 
 
-    readonly: function(readonly) {
+    readonly: function (readonly) {
         /// <summary>
         /// Toggles the readonly state of the widget. When the widget is readonly it doesn't allow user input.
         /// </summary>
@@ -2661,7 +2686,7 @@ kendo.ui.DateTimePicker.prototype = {
     },
 
 
-    max: function(value) {
+    max: function (value) {
         /// <summary>
         /// Gets or sets the maximum value of the DateTimePicker.
         /// </summary>
@@ -2671,7 +2696,7 @@ kendo.ui.DateTimePicker.prototype = {
     },
 
 
-    min: function(value) {
+    min: function (value) {
         /// <summary>
         /// Gets or sets the minimum value of the DateTimePicker.
         /// </summary>
@@ -2681,25 +2706,25 @@ kendo.ui.DateTimePicker.prototype = {
     },
 
 
-    open: function(view) {
+    open: function (view) {
         /// <summary>
         /// Opens the calendar or the time drop-down list.
         /// </summary>
-        /// <param name="view" type="String" >The view of the DateTimePicker, expressed as a string. Available views are "time" and "date".</param>
+        /// <param name="io" type="String" >The io of the DateTimePicker, expressed as a string. Available admin.views are "time" and "date".</param>
 
     },
 
 
-    toggle: function(view) {
+    toggle: function (view) {
         /// <summary>
         /// Toggles the calendar or the time drop-down list.
         /// </summary>
-        /// <param name="view" type="String" >The view of the DateTimePicker, expressed as a string. Available views are "time" and "date".</param>
+        /// <param name="io" type="String" >The io of the DateTimePicker, expressed as a string. Available admin.views are "time" and "date".</param>
 
     },
 
 
-    value: function(value) {
+    value: function (value) {
         /// <summary>
         /// Gets or sets the value of the DateTimePicker.
         /// </summary>
@@ -2708,7 +2733,7 @@ kendo.ui.DateTimePicker.prototype = {
 
     },
 
-    bind: function(event, callback) {
+    bind: function (event, callback) {
         /// <summary>
         /// Binds to a widget event.
         /// </summary>
@@ -2716,7 +2741,7 @@ kendo.ui.DateTimePicker.prototype = {
         /// <param name="callback" type="Function">The callback to be executed when the event is triggered.</param>
     },
 
-    unbind: function(event, callback) {
+    unbind: function (event, callback) {
         /// <summary>
         /// Unbinds a callback from a widget event.
         /// </summary>
@@ -2726,14 +2751,14 @@ kendo.ui.DateTimePicker.prototype = {
 
 };
 
-$.fn.getKendoDateTimePicker = function() {
+$.fn.getKendoDateTimePicker = function () {
     /// <summary>
     /// Returns a reference to the kendo.ui.DateTimePicker widget, instantiated on the selector.
     /// </summary>
     /// <returns type="kendo.ui.DateTimePicker">The kendo.ui.DateTimePicker instance (if present).</returns>
 };
 
-$.fn.kendoDateTimePicker = function(options) {
+$.fn.kendoDateTimePicker = function (options) {
     /// <summary>
     /// Instantiates a kendo.ui.DateTimePicker widget based the DOM elements that match the selector.
 
@@ -2771,13 +2796,13 @@ $.fn.kendoDateTimePicker = function(options) {
     /// &#10;Specifies the minimum date that the calendar can show.
     /// &#10;
     /// &#10;month — Object 
-    /// &#10;Templates for the cells rendered in the calendar "month" view.
+    /// &#10;Templates for the cells rendered in the calendar "month" io.
     /// &#10;
     /// &#10;parseFormats — Array 
     /// &#10;Specifies the formats, which are used to parse the value set with value() method or by direct input. If not set the value of the options.format and options.timeFormat will be used. Note that value of the format option is always used.
     /// &#10;
     /// &#10;start — String (default: "month")
-    /// &#10;Specifies the start view of the calendar.
+    /// &#10;Specifies the start io of the calendar.
 /// &#10; The following settings are available for the start value:
     /// &#10;
     /// &#10;timeFormat — String (default: "h:mm tt")
@@ -2793,21 +2818,22 @@ $.fn.kendoDateTimePicker = function(options) {
 };
 
 
-kendo.ui.Draggable = function() { };
+kendo.ui.Draggable = function () {
+};
 
 kendo.ui.Draggable.prototype = {
 
 
 
 
-    cancelHold: function() {
+    cancelHold: function () {
         /// <summary>
         /// Has effect only when holdToDrag is set to true. Cancels the activated state of the widget, caused by pressing and holding.
         /// </summary>
 
     },
 
-    bind: function(event, callback) {
+    bind: function (event, callback) {
         /// <summary>
         /// Binds to a widget event.
         /// </summary>
@@ -2815,7 +2841,7 @@ kendo.ui.Draggable.prototype = {
         /// <param name="callback" type="Function">The callback to be executed when the event is triggered.</param>
     },
 
-    unbind: function(event, callback) {
+    unbind: function (event, callback) {
         /// <summary>
         /// Unbinds a callback from a widget event.
         /// </summary>
@@ -2825,14 +2851,14 @@ kendo.ui.Draggable.prototype = {
 
 };
 
-$.fn.getKendoDraggable = function() {
+$.fn.getKendoDraggable = function () {
     /// <summary>
     /// Returns a reference to the kendo.ui.Draggable widget, instantiated on the selector.
     /// </summary>
     /// <returns type="kendo.ui.Draggable">The kendo.ui.Draggable instance (if present).</returns>
 };
 
-$.fn.kendoDraggable = function(options) {
+$.fn.kendoDraggable = function (options) {
     /// <summary>
     /// Instantiates a kendo.ui.Draggable widget based the DOM elements that match the selector.
 
@@ -2864,14 +2890,15 @@ $.fn.kendoDraggable = function(options) {
 };
 
 
-kendo.ui.DropDownList = function() { };
+kendo.ui.DropDownList = function () {
+};
 
 kendo.ui.DropDownList.prototype = {
 
 
 
 
-    close: function() {
+    close: function () {
         /// <summary>
         /// Closes the widget popup.
         /// </summary>
@@ -2879,7 +2906,7 @@ kendo.ui.DropDownList.prototype = {
     },
 
 
-    dataItem: function(index) {
+    dataItem: function (index) {
         /// <summary>
         /// Returns the data item at the specified index. If the index is not specified, the selected index will be used.
         /// </summary>
@@ -2889,7 +2916,7 @@ kendo.ui.DropDownList.prototype = {
     },
 
 
-    destroy: function() {
+    destroy: function () {
         /// <summary>
         /// Prepares the DropDownList for safe removal from DOM. Detaches all event handlers and removes jQuery.data attributes to avoid memory leaks. Calls destroy method of any child Kendo widgets.
         /// </summary>
@@ -2897,7 +2924,7 @@ kendo.ui.DropDownList.prototype = {
     },
 
 
-    focus: function() {
+    focus: function () {
         /// <summary>
         /// Focuses the widget.
         /// </summary>
@@ -2905,7 +2932,7 @@ kendo.ui.DropDownList.prototype = {
     },
 
 
-    open: function() {
+    open: function () {
         /// <summary>
         /// Opens the popup.
         /// </summary>
@@ -2913,7 +2940,7 @@ kendo.ui.DropDownList.prototype = {
     },
 
 
-    enable: function(enable) {
+    enable: function (enable) {
         /// <summary>
         /// Enables or disables the widget.
         /// </summary>
@@ -2922,7 +2949,7 @@ kendo.ui.DropDownList.prototype = {
     },
 
 
-    readonly: function(readonly) {
+    readonly: function (readonly) {
         /// <summary>
         /// Controls whether the widget is editable or readonly.
         /// </summary>
@@ -2931,7 +2958,7 @@ kendo.ui.DropDownList.prototype = {
     },
 
 
-    refresh: function() {
+    refresh: function () {
         /// <summary>
         /// Refresh the popup by rendering all items again.
         /// </summary>
@@ -2939,7 +2966,7 @@ kendo.ui.DropDownList.prototype = {
     },
 
 
-    search: function(word) {
+    search: function (word) {
         /// <summary>
         /// Selects an item, which starts with the provided value.
         /// </summary>
@@ -2948,7 +2975,7 @@ kendo.ui.DropDownList.prototype = {
     },
 
 
-    select: function(li) {
+    select: function (li) {
         /// <summary>
         /// Gets or sets the selected item. Selects the item provided as an argument and updates the value and text of the widget.
         /// </summary>
@@ -2958,7 +2985,7 @@ kendo.ui.DropDownList.prototype = {
     },
 
 
-    setDataSource: function(dataSource) {
+    setDataSource: function (dataSource) {
         /// <summary>
         /// Sets the dataSource of an existing DropDownList and rebinds it.
         /// </summary>
@@ -2967,7 +2994,7 @@ kendo.ui.DropDownList.prototype = {
     },
 
 
-    text: function(text) {
+    text: function (text) {
         /// <summary>
         /// Gets or sets the text of the dropdownlist.
         /// </summary>
@@ -2977,7 +3004,7 @@ kendo.ui.DropDownList.prototype = {
     },
 
 
-    toggle: function(toggle) {
+    toggle: function (toggle) {
         /// <summary>
         /// Opens or closes the widget popup.
         /// </summary>
@@ -2986,7 +3013,7 @@ kendo.ui.DropDownList.prototype = {
     },
 
 
-    value: function(value) {
+    value: function (value) {
         /// <summary>
         /// Gets or sets the value of the dropdownlist. The value will not be set if there is no item with such value. If value is undefined, text of the data item is used.
         /// </summary>
@@ -2995,7 +3022,7 @@ kendo.ui.DropDownList.prototype = {
 
     },
 
-    bind: function(event, callback) {
+    bind: function (event, callback) {
         /// <summary>
         /// Binds to a widget event.
         /// </summary>
@@ -3003,7 +3030,7 @@ kendo.ui.DropDownList.prototype = {
         /// <param name="callback" type="Function">The callback to be executed when the event is triggered.</param>
     },
 
-    unbind: function(event, callback) {
+    unbind: function (event, callback) {
         /// <summary>
         /// Unbinds a callback from a widget event.
         /// </summary>
@@ -3013,14 +3040,14 @@ kendo.ui.DropDownList.prototype = {
 
 };
 
-$.fn.getKendoDropDownList = function() {
+$.fn.getKendoDropDownList = function () {
     /// <summary>
     /// Returns a reference to the kendo.ui.DropDownList widget, instantiated on the selector.
     /// </summary>
     /// <returns type="kendo.ui.DropDownList">The kendo.ui.DropDownList instance (if present).</returns>
 };
 
-$.fn.kendoDropDownList = function(options) {
+$.fn.kendoDropDownList = function (options) {
     /// <summary>
     /// Instantiates a kendo.ui.DropDownList widget based the DOM elements that match the selector.
 
@@ -3094,21 +3121,22 @@ $.fn.kendoDropDownList = function(options) {
 };
 
 
-kendo.ui.DropTarget = function() { };
+kendo.ui.DropTarget = function () {
+};
 
 kendo.ui.DropTarget.prototype = {
 
 
 
 
-    destroyGroup: function() {
+    destroyGroup: function () {
         /// <summary>
         /// Destroys all DropTarget instances from the group with the given name.
         /// </summary>
 
     },
 
-    bind: function(event, callback) {
+    bind: function (event, callback) {
         /// <summary>
         /// Binds to a widget event.
         /// </summary>
@@ -3116,7 +3144,7 @@ kendo.ui.DropTarget.prototype = {
         /// <param name="callback" type="Function">The callback to be executed when the event is triggered.</param>
     },
 
-    unbind: function(event, callback) {
+    unbind: function (event, callback) {
         /// <summary>
         /// Unbinds a callback from a widget event.
         /// </summary>
@@ -3126,14 +3154,14 @@ kendo.ui.DropTarget.prototype = {
 
 };
 
-$.fn.getKendoDropTarget = function() {
+$.fn.getKendoDropTarget = function () {
     /// <summary>
     /// Returns a reference to the kendo.ui.DropTarget widget, instantiated on the selector.
     /// </summary>
     /// <returns type="kendo.ui.DropTarget">The kendo.ui.DropTarget instance (if present).</returns>
 };
 
-$.fn.kendoDropTarget = function(options) {
+$.fn.kendoDropTarget = function (options) {
     /// <summary>
     /// Instantiates a kendo.ui.DropTarget widget based the DOM elements that match the selector.
 
@@ -3149,13 +3177,14 @@ $.fn.kendoDropTarget = function(options) {
 };
 
 
-kendo.ui.DropTargetArea = function() { };
+kendo.ui.DropTargetArea = function () {
+};
 
 kendo.ui.DropTargetArea.prototype = {
 
 
 
-    bind: function(event, callback) {
+    bind: function (event, callback) {
         /// <summary>
         /// Binds to a widget event.
         /// </summary>
@@ -3163,7 +3192,7 @@ kendo.ui.DropTargetArea.prototype = {
         /// <param name="callback" type="Function">The callback to be executed when the event is triggered.</param>
     },
 
-    unbind: function(event, callback) {
+    unbind: function (event, callback) {
         /// <summary>
         /// Unbinds a callback from a widget event.
         /// </summary>
@@ -3173,14 +3202,14 @@ kendo.ui.DropTargetArea.prototype = {
 
 };
 
-$.fn.getKendoDropTargetArea = function() {
+$.fn.getKendoDropTargetArea = function () {
     /// <summary>
     /// Returns a reference to the kendo.ui.DropTargetArea widget, instantiated on the selector.
     /// </summary>
     /// <returns type="kendo.ui.DropTargetArea">The kendo.ui.DropTargetArea instance (if present).</returns>
 };
 
-$.fn.kendoDropTargetArea = function(options) {
+$.fn.kendoDropTargetArea = function (options) {
     /// <summary>
     /// Instantiates a kendo.ui.DropTargetArea widget based the DOM elements that match the selector.
 
@@ -3199,14 +3228,15 @@ $.fn.kendoDropTargetArea = function(options) {
 };
 
 
-kendo.ui.Editor = function() { };
+kendo.ui.Editor = function () {
+};
 
 kendo.ui.Editor.prototype = {
 
 
 
 
-    createRange: function(document) {
+    createRange: function (document) {
         /// <summary>
         /// Creates a W3C-compatible Range object.
         /// </summary>
@@ -3216,7 +3246,7 @@ kendo.ui.Editor.prototype = {
     },
 
 
-    destroy: function() {
+    destroy: function () {
         /// <summary>
         /// Prepares the widget for safe removal from DOM. Detaches all event handlers and removes jQuery.data attributes to avoid memory leaks. Calls destroy method of any child Kendo widgets.
         /// </summary>
@@ -3224,7 +3254,7 @@ kendo.ui.Editor.prototype = {
     },
 
 
-    encodedValue: function() {
+    encodedValue: function () {
         /// <summary>
         /// Gets the HTML encoded value of the editor.
         /// </summary>
@@ -3232,7 +3262,7 @@ kendo.ui.Editor.prototype = {
     },
 
 
-    exec: function(name,params) {
+    exec: function (name, params) {
         /// <summary>
         /// Executes an editor command on the currently selected text.
         /// </summary>
@@ -3242,7 +3272,7 @@ kendo.ui.Editor.prototype = {
     },
 
 
-    focus: function() {
+    focus: function () {
         /// <summary>
         /// Focuses the editable area.
         /// </summary>
@@ -3250,7 +3280,7 @@ kendo.ui.Editor.prototype = {
     },
 
 
-    getRange: function() {
+    getRange: function () {
         /// <summary>
         /// Gets a Range object form the editable area.
         /// </summary>
@@ -3259,7 +3289,7 @@ kendo.ui.Editor.prototype = {
     },
 
 
-    getSelection: function() {
+    getSelection: function () {
         /// <summary>
         /// Gets a W3C-compatible Selection object form the editable area.
         /// </summary>
@@ -3268,7 +3298,7 @@ kendo.ui.Editor.prototype = {
     },
 
 
-    paste: function(html) {
+    paste: function (html) {
         /// <summary>
         /// Pastes HTML into the editable area. Cleans up MS Word formatting.
         /// </summary>
@@ -3277,7 +3307,7 @@ kendo.ui.Editor.prototype = {
     },
 
 
-    selectedHtml: function() {
+    selectedHtml: function () {
         /// <summary>
         /// Serializes the currently selected text to a XHTML string.
         /// </summary>
@@ -3286,7 +3316,7 @@ kendo.ui.Editor.prototype = {
     },
 
 
-    refresh: function() {
+    refresh: function () {
         /// <summary>
         /// Reinitializes the editing area iframe. Should be used after moving the editor in the DOM.
         /// </summary>
@@ -3294,7 +3324,7 @@ kendo.ui.Editor.prototype = {
     },
 
 
-    selectRange: function(range) {
+    selectRange: function (range) {
         /// <summary>
         /// Focuses the editable area and selects the range described by the range parameter.
         /// </summary>
@@ -3303,7 +3333,7 @@ kendo.ui.Editor.prototype = {
     },
 
 
-    update: function() {
+    update: function () {
         /// <summary>
         /// Serializes the current state of the editable area to the <textarea> element.
 /// This method should be called after modifying the editor content through the DOM.
@@ -3312,7 +3342,7 @@ kendo.ui.Editor.prototype = {
     },
 
 
-    state: function(toolName) {
+    state: function (toolName) {
         /// <summary>
         /// Get the state of a given tool. Introduced in the 2013.2.923 internal build.
         /// </summary>
@@ -3322,7 +3352,7 @@ kendo.ui.Editor.prototype = {
     },
 
 
-    value: function(value) {
+    value: function (value) {
         /// <summary>
         /// Gets or sets the editor value.
         /// </summary>
@@ -3331,7 +3361,7 @@ kendo.ui.Editor.prototype = {
 
     },
 
-    bind: function(event, callback) {
+    bind: function (event, callback) {
         /// <summary>
         /// Binds to a widget event.
         /// </summary>
@@ -3339,7 +3369,7 @@ kendo.ui.Editor.prototype = {
         /// <param name="callback" type="Function">The callback to be executed when the event is triggered.</param>
     },
 
-    unbind: function(event, callback) {
+    unbind: function (event, callback) {
         /// <summary>
         /// Unbinds a callback from a widget event.
         /// </summary>
@@ -3349,14 +3379,14 @@ kendo.ui.Editor.prototype = {
 
 };
 
-$.fn.getKendoEditor = function() {
+$.fn.getKendoEditor = function () {
     /// <summary>
     /// Returns a reference to the kendo.ui.Editor widget, instantiated on the selector.
     /// </summary>
     /// <returns type="kendo.ui.Editor">The kendo.ui.Editor instance (if present).</returns>
 };
 
-$.fn.kendoEditor = function(options) {
+$.fn.kendoEditor = function (options) {
     /// <summary>
     /// Instantiates a kendo.ui.Editor widget based the DOM elements that match the selector.
 
@@ -3386,14 +3416,15 @@ $.fn.kendoEditor = function(options) {
 };
 
 
-kendo.ui.FlatColorPicker = function() { };
+kendo.ui.FlatColorPicker = function () {
+};
 
 kendo.ui.FlatColorPicker.prototype = {
 
 
 
 
-    focus: function() {
+    focus: function () {
         /// <summary>
         /// Focuses the widget.
         /// </summary>
@@ -3401,7 +3432,7 @@ kendo.ui.FlatColorPicker.prototype = {
     },
 
 
-    value: function(color) {
+    value: function (color) {
         /// <summary>
         /// Get or set the selected color. If no argument is given, this returns the
 /// currently selected color as a string in format #FFFFFF when the opacity
@@ -3415,7 +3446,7 @@ kendo.ui.FlatColorPicker.prototype = {
     },
 
 
-    color: function(color) {
+    color: function (color) {
         /// <summary>
         /// Get or set the selected color. If no argument is given, this returns the currently selected color as a kendo.Color object.
         /// </summary>
@@ -3425,7 +3456,7 @@ kendo.ui.FlatColorPicker.prototype = {
     },
 
 
-    enable: function(enable) {
+    enable: function (enable) {
         /// <summary>
         /// Enables or disables the widget.
         /// </summary>
@@ -3433,7 +3464,7 @@ kendo.ui.FlatColorPicker.prototype = {
 
     },
 
-    bind: function(event, callback) {
+    bind: function (event, callback) {
         /// <summary>
         /// Binds to a widget event.
         /// </summary>
@@ -3441,7 +3472,7 @@ kendo.ui.FlatColorPicker.prototype = {
         /// <param name="callback" type="Function">The callback to be executed when the event is triggered.</param>
     },
 
-    unbind: function(event, callback) {
+    unbind: function (event, callback) {
         /// <summary>
         /// Unbinds a callback from a widget event.
         /// </summary>
@@ -3451,14 +3482,14 @@ kendo.ui.FlatColorPicker.prototype = {
 
 };
 
-$.fn.getKendoFlatColorPicker = function() {
+$.fn.getKendoFlatColorPicker = function () {
     /// <summary>
     /// Returns a reference to the kendo.ui.FlatColorPicker widget, instantiated on the selector.
     /// </summary>
     /// <returns type="kendo.ui.FlatColorPicker">The kendo.ui.FlatColorPicker instance (if present).</returns>
 };
 
-$.fn.kendoFlatColorPicker = function(options) {
+$.fn.kendoFlatColorPicker = function (options) {
     /// <summary>
     /// Instantiates a kendo.ui.FlatColorPicker widget based the DOM elements that match the selector.
 
@@ -3493,14 +3524,15 @@ $.fn.kendoFlatColorPicker = function(options) {
 };
 
 
-kendo.ui.Grid = function() { };
+kendo.ui.Grid = function () {
+};
 
 kendo.ui.Grid.prototype = {
 
 
 
 
-    addRow: function() {
+    addRow: function () {
         /// <summary>
         /// Adds an empty data item to the grid. In "incell" and "inline" editing mode a table row will be appended. Popup window will be displayed in "popup" editing mode.Fires the edit event.
         /// </summary>
@@ -3508,7 +3540,7 @@ kendo.ui.Grid.prototype = {
     },
 
 
-    cancelChanges: function() {
+    cancelChanges: function () {
         /// <summary>
         /// Cancels any pending changes in the data source. Deleted data items are restored, new data items are removed and updated data items are restored to their initial state.
         /// </summary>
@@ -3516,7 +3548,7 @@ kendo.ui.Grid.prototype = {
     },
 
 
-    cancelRow: function() {
+    cancelRow: function () {
         /// <summary>
         /// Cancels editing for the table row which is in edit mode. Reverts any changes made.
         /// </summary>
@@ -3524,7 +3556,7 @@ kendo.ui.Grid.prototype = {
     },
 
 
-    cellIndex: function(cell) {
+    cellIndex: function (cell) {
         /// <summary>
         /// Returns the index of the specified table cell. Skips group and detail table cells.
         /// </summary>
@@ -3534,7 +3566,7 @@ kendo.ui.Grid.prototype = {
     },
 
 
-    clearSelection: function() {
+    clearSelection: function () {
         /// <summary>
         /// Clears the currently selected table rows or cells (depending on the current selection mode).
         /// </summary>
@@ -3542,7 +3574,7 @@ kendo.ui.Grid.prototype = {
     },
 
 
-    closeCell: function() {
+    closeCell: function () {
         /// <summary>
         /// Stops editing the table cell which is in edit mode. Requires "incell" edit mode.
         /// </summary>
@@ -3550,7 +3582,7 @@ kendo.ui.Grid.prototype = {
     },
 
 
-    collapseGroup: function(row) {
+    collapseGroup: function (row) {
         /// <summary>
         /// Collapses the specified group. This hides the group items.
         /// </summary>
@@ -3559,7 +3591,7 @@ kendo.ui.Grid.prototype = {
     },
 
 
-    collapseRow: function(row) {
+    collapseRow: function (row) {
         /// <summary>
         /// Collapses the specified master table row. This hides its detail table row.
         /// </summary>
@@ -3568,7 +3600,7 @@ kendo.ui.Grid.prototype = {
     },
 
 
-    current: function(cell) {
+    current: function (cell) {
         /// <summary>
         /// Selects cell for keyboard navigation. This set the current position of the keyboard navigation.
         /// </summary>
@@ -3577,7 +3609,7 @@ kendo.ui.Grid.prototype = {
     },
 
 
-    dataItem: function(row) {
+    dataItem: function (row) {
         /// <summary>
         /// Returns the data item to which the specified table row is bound.
         /// </summary>
@@ -3587,7 +3619,7 @@ kendo.ui.Grid.prototype = {
     },
 
 
-    destroy: function() {
+    destroy: function () {
         /// <summary>
         /// Prepares the widget for safe removal from DOM. Detaches all event handlers and removes jQuery.data attributes to avoid memory leaks. Calls destroy method of any child Kendo widgets.
         /// </summary>
@@ -3595,7 +3627,7 @@ kendo.ui.Grid.prototype = {
     },
 
 
-    editCell: function(cell) {
+    editCell: function (cell) {
         /// <summary>
         /// Switches the specified table cell in edit mode. Requires "incell" edit mode.Fires the edit event.
         /// </summary>
@@ -3604,7 +3636,7 @@ kendo.ui.Grid.prototype = {
     },
 
 
-    editRow: function(row) {
+    editRow: function (row) {
         /// <summary>
         /// Switches the specified table row in edit mode. Requires "inline" or "popup" edit mode.Fires the edit event.
         /// </summary>
@@ -3613,7 +3645,7 @@ kendo.ui.Grid.prototype = {
     },
 
 
-    expandGroup: function(row) {
+    expandGroup: function (row) {
         /// <summary>
         /// Expands the specified group. This shows the group items.
         /// </summary>
@@ -3622,7 +3654,7 @@ kendo.ui.Grid.prototype = {
     },
 
 
-    expandRow: function(row) {
+    expandRow: function (row) {
         /// <summary>
         /// Expands the specified master table row. This shows its detail table row.
         /// </summary>
@@ -3631,7 +3663,7 @@ kendo.ui.Grid.prototype = {
     },
 
 
-    hideColumn: function(column) {
+    hideColumn: function (column) {
         /// <summary>
         /// Hides the specified grid column.
         /// </summary>
@@ -3640,7 +3672,7 @@ kendo.ui.Grid.prototype = {
     },
 
 
-    refresh: function() {
+    refresh: function () {
         /// <summary>
         /// Renders all table rows using the current data items.
         /// </summary>
@@ -3648,7 +3680,7 @@ kendo.ui.Grid.prototype = {
     },
 
 
-    removeRow: function(row) {
+    removeRow: function (row) {
         /// <summary>
         /// Removes the specified table row from the grid. Also removes the corresponding data item from the data source.Fires the remove event.
         /// </summary>
@@ -3657,7 +3689,7 @@ kendo.ui.Grid.prototype = {
     },
 
 
-    reorderColumn: function(destIndex,column) {
+    reorderColumn: function (destIndex, column) {
         /// <summary>
         /// Changes the position of the specified column.
         /// </summary>
@@ -3667,7 +3699,7 @@ kendo.ui.Grid.prototype = {
     },
 
 
-    saveChanges: function() {
+    saveChanges: function () {
         /// <summary>
         /// Saves any pending changes by calling the sync method.Fires the saveChanges event.
         /// </summary>
@@ -3675,7 +3707,7 @@ kendo.ui.Grid.prototype = {
     },
 
 
-    saveRow: function() {
+    saveRow: function () {
         /// <summary>
         /// Switches the table row which is in edit mode and saves any changes made by the user.
         /// </summary>
@@ -3683,7 +3715,7 @@ kendo.ui.Grid.prototype = {
     },
 
 
-    select: function(rows) {
+    select: function (rows) {
         /// <summary>
         /// Gets or sets the table rows (or cells) which are selected.
         /// </summary>
@@ -3693,7 +3725,7 @@ kendo.ui.Grid.prototype = {
     },
 
 
-    setDataSource: function(dataSource) {
+    setDataSource: function (dataSource) {
         /// <summary>
         /// Sets the data source of the widget.
         /// </summary>
@@ -3702,7 +3734,7 @@ kendo.ui.Grid.prototype = {
     },
 
 
-    showColumn: function(column) {
+    showColumn: function (column) {
         /// <summary>
         /// Shows the specified column.
         /// </summary>
@@ -3710,7 +3742,7 @@ kendo.ui.Grid.prototype = {
 
     },
 
-    bind: function(event, callback) {
+    bind: function (event, callback) {
         /// <summary>
         /// Binds to a widget event.
         /// </summary>
@@ -3718,7 +3750,7 @@ kendo.ui.Grid.prototype = {
         /// <param name="callback" type="Function">The callback to be executed when the event is triggered.</param>
     },
 
-    unbind: function(event, callback) {
+    unbind: function (event, callback) {
         /// <summary>
         /// Unbinds a callback from a widget event.
         /// </summary>
@@ -3728,14 +3760,14 @@ kendo.ui.Grid.prototype = {
 
 };
 
-$.fn.getKendoGrid = function() {
+$.fn.getKendoGrid = function () {
     /// <summary>
     /// Returns a reference to the kendo.ui.Grid widget, instantiated on the selector.
     /// </summary>
     /// <returns type="kendo.ui.Grid">The kendo.ui.Grid instance (if present).</returns>
 };
 
-$.fn.kendoGrid = function(options) {
+$.fn.kendoGrid = function (options) {
     /// <summary>
     /// Instantiates a kendo.ui.Grid widget based the DOM elements that match the selector.
 
@@ -3838,22 +3870,23 @@ $.fn.kendoGrid = function(options) {
 };
 
 
-kendo.ui.ListView = function() { };
+kendo.ui.ListView = function () {
+};
 
 kendo.ui.ListView.prototype = {
 
 
 
 
-    add: function() {
+    add: function () {
         /// <summary>
-        /// Inserts empty item as first item on the current view and prepare it for editing.
+        /// Inserts empty item as first item on the current io and prepare it for editing.
         /// </summary>
 
     },
 
 
-    cancel: function() {
+    cancel: function () {
         /// <summary>
         /// Cancels changes in currently edited item.
         /// </summary>
@@ -3861,7 +3894,7 @@ kendo.ui.ListView.prototype = {
     },
 
 
-    clearSelection: function() {
+    clearSelection: function () {
         /// <summary>
         /// Clears ListView selected items and triggers change event.
         /// </summary>
@@ -3869,7 +3902,7 @@ kendo.ui.ListView.prototype = {
     },
 
 
-    destroy: function() {
+    destroy: function () {
         /// <summary>
         /// Prepares the ListView for safe removal from DOM. Detaches all event handlers and removes jQuery.data attributes to avoid memory leaks. Calls destroy method of any child Kendo widgets.
         /// </summary>
@@ -3877,7 +3910,7 @@ kendo.ui.ListView.prototype = {
     },
 
 
-    edit: function(item) {
+    edit: function (item) {
         /// <summary>
         /// Edit specified ListView item. Fires the edit event.
         /// </summary>
@@ -3886,15 +3919,15 @@ kendo.ui.ListView.prototype = {
     },
 
 
-    refresh: function() {
+    refresh: function () {
         /// <summary>
-        /// Reloads the data and repaints the list view.
+        /// Reloads the data and repaints the list io.
         /// </summary>
 
     },
 
 
-    remove: function(item) {
+    remove: function (item) {
         /// <summary>
         /// Removes specified ListView item. Triggers remove event and if not prevented calls DataSource sync method.
         /// </summary>
@@ -3903,7 +3936,7 @@ kendo.ui.ListView.prototype = {
     },
 
 
-    save: function() {
+    save: function () {
         /// <summary>
         /// Saves edited ListView item. Triggers save event. If save event is not prevented and validation succeeds will call DataSource sync method.
         /// </summary>
@@ -3911,7 +3944,7 @@ kendo.ui.ListView.prototype = {
     },
 
 
-    select: function(items) {
+    select: function (items) {
         /// <summary>
         /// Get/set the selected listview item(s).
         /// </summary>
@@ -3921,7 +3954,7 @@ kendo.ui.ListView.prototype = {
     },
 
 
-    setDataSource: function(dataSource) {
+    setDataSource: function (dataSource) {
         /// <summary>
         /// Sets the dataSource of an existing ListView and rebinds it.
         /// </summary>
@@ -3929,7 +3962,7 @@ kendo.ui.ListView.prototype = {
 
     },
 
-    bind: function(event, callback) {
+    bind: function (event, callback) {
         /// <summary>
         /// Binds to a widget event.
         /// </summary>
@@ -3937,7 +3970,7 @@ kendo.ui.ListView.prototype = {
         /// <param name="callback" type="Function">The callback to be executed when the event is triggered.</param>
     },
 
-    unbind: function(event, callback) {
+    unbind: function (event, callback) {
         /// <summary>
         /// Unbinds a callback from a widget event.
         /// </summary>
@@ -3947,14 +3980,14 @@ kendo.ui.ListView.prototype = {
 
 };
 
-$.fn.getKendoListView = function() {
+$.fn.getKendoListView = function () {
     /// <summary>
     /// Returns a reference to the kendo.ui.ListView widget, instantiated on the selector.
     /// </summary>
     /// <returns type="kendo.ui.ListView">The kendo.ui.ListView instance (if present).</returns>
 };
 
-$.fn.kendoListView = function(options) {
+$.fn.kendoListView = function (options) {
     /// <summary>
     /// Instantiates a kendo.ui.ListView widget based the DOM elements that match the selector.
 
@@ -3990,14 +4023,15 @@ $.fn.kendoListView = function(options) {
 };
 
 
-kendo.ui.Menu = function() { };
+kendo.ui.Menu = function () {
+};
 
 kendo.ui.Menu.prototype = {
 
 
 
 
-    append: function(item,referenceItem) {
+    append: function (item, referenceItem) {
         /// <summary>
         /// Appends an item to a Menu in the specified referenceItem's sub menu.
         /// </summary>
@@ -4008,7 +4042,7 @@ kendo.ui.Menu.prototype = {
     },
 
 
-    close: function(element) {
+    close: function (element) {
         /// <summary>
         /// Closes a sub-menu of a specified item(s) in a Menu.
         /// </summary>
@@ -4018,7 +4052,7 @@ kendo.ui.Menu.prototype = {
     },
 
 
-    destroy: function() {
+    destroy: function () {
         /// <summary>
         /// Prepares the Menu for safe removal from DOM. Detaches all event handlers and removes jQuery.data attributes to avoid memory leaks. Calls destroy method of any child Kendo widgets.
         /// </summary>
@@ -4026,7 +4060,7 @@ kendo.ui.Menu.prototype = {
     },
 
 
-    enable: function(element,enable) {
+    enable: function (element, enable) {
         /// <summary>
         /// Enables or disables an item of a Menu. This can optionally be accomplished on
 /// initialization by setting the disabled="disabled" on the desired menu item html element.
@@ -4038,7 +4072,7 @@ kendo.ui.Menu.prototype = {
     },
 
 
-    insertAfter: function(item,referenceItem) {
+    insertAfter: function (item, referenceItem) {
         /// <summary>
         /// Inserts an item into a Menu after the specified referenceItem.
         /// </summary>
@@ -4049,7 +4083,7 @@ kendo.ui.Menu.prototype = {
     },
 
 
-    insertBefore: function(item,referenceItem) {
+    insertBefore: function (item, referenceItem) {
         /// <summary>
         /// Inserts an item into a Menu before the specified referenceItem.
         /// </summary>
@@ -4060,7 +4094,7 @@ kendo.ui.Menu.prototype = {
     },
 
 
-    open: function(element) {
+    open: function (element) {
         /// <summary>
         /// Opens a sub-menu of a specified item(s) in a Menu.
         /// </summary>
@@ -4070,7 +4104,7 @@ kendo.ui.Menu.prototype = {
     },
 
 
-    remove: function(element) {
+    remove: function (element) {
         /// <summary>
         /// Removes a specified item(s) from a Menu.
         /// </summary>
@@ -4079,7 +4113,7 @@ kendo.ui.Menu.prototype = {
 
     },
 
-    bind: function(event, callback) {
+    bind: function (event, callback) {
         /// <summary>
         /// Binds to a widget event.
         /// </summary>
@@ -4087,7 +4121,7 @@ kendo.ui.Menu.prototype = {
         /// <param name="callback" type="Function">The callback to be executed when the event is triggered.</param>
     },
 
-    unbind: function(event, callback) {
+    unbind: function (event, callback) {
         /// <summary>
         /// Unbinds a callback from a widget event.
         /// </summary>
@@ -4097,14 +4131,14 @@ kendo.ui.Menu.prototype = {
 
 };
 
-$.fn.getKendoMenu = function() {
+$.fn.getKendoMenu = function () {
     /// <summary>
     /// Returns a reference to the kendo.ui.Menu widget, instantiated on the selector.
     /// </summary>
     /// <returns type="kendo.ui.Menu">The kendo.ui.Menu instance (if present).</returns>
 };
 
-$.fn.kendoMenu = function(options) {
+$.fn.kendoMenu = function (options) {
     /// <summary>
     /// Instantiates a kendo.ui.Menu widget based the DOM elements that match the selector.
 
@@ -4143,14 +4177,15 @@ $.fn.kendoMenu = function(options) {
 };
 
 
-kendo.ui.MultiSelect = function() { };
+kendo.ui.MultiSelect = function () {
+};
 
 kendo.ui.MultiSelect.prototype = {
 
 
 
 
-    close: function() {
+    close: function () {
         /// <summary>
         /// Closes the widget popup.
         /// </summary>
@@ -4158,7 +4193,7 @@ kendo.ui.MultiSelect.prototype = {
     },
 
 
-    dataItems: function() {
+    dataItems: function () {
         /// <summary>
         /// Returns list of raw data records corresponding to the selected items.
         /// </summary>
@@ -4167,7 +4202,7 @@ kendo.ui.MultiSelect.prototype = {
     },
 
 
-    destroy: function() {
+    destroy: function () {
         /// <summary>
         /// Prepares the MultiSelect for safe removal from DOM. Detaches all event handlers and removes jQuery.data attributes to avoid memory leaks. Calls destroy method of any child Kendo widgets.
         /// </summary>
@@ -4175,7 +4210,7 @@ kendo.ui.MultiSelect.prototype = {
     },
 
 
-    enable: function(enable) {
+    enable: function (enable) {
         /// <summary>
         /// Enables or disables the widget.
         /// </summary>
@@ -4184,7 +4219,7 @@ kendo.ui.MultiSelect.prototype = {
     },
 
 
-    readonly: function(readonly) {
+    readonly: function (readonly) {
         /// <summary>
         /// Toggles the readonly state of the widget. When the widget is readonly it doesn't allow user input.
         /// </summary>
@@ -4193,7 +4228,7 @@ kendo.ui.MultiSelect.prototype = {
     },
 
 
-    focus: function() {
+    focus: function () {
         /// <summary>
         /// Focuses the widget.
         /// </summary>
@@ -4201,7 +4236,7 @@ kendo.ui.MultiSelect.prototype = {
     },
 
 
-    open: function() {
+    open: function () {
         /// <summary>
         /// Opens the popup.
         /// </summary>
@@ -4209,7 +4244,7 @@ kendo.ui.MultiSelect.prototype = {
     },
 
 
-    refresh: function() {
+    refresh: function () {
         /// <summary>
         /// Refresh the popup by rendering all items again.
         /// </summary>
@@ -4217,7 +4252,7 @@ kendo.ui.MultiSelect.prototype = {
     },
 
 
-    search: function(word) {
+    search: function (word) {
         /// <summary>
         /// Searches the data source for the provided value and displays any matches as suggestions.
         /// </summary>
@@ -4226,7 +4261,7 @@ kendo.ui.MultiSelect.prototype = {
     },
 
 
-    setDataSource: function(dataSource) {
+    setDataSource: function (dataSource) {
         /// <summary>
         /// Sets the dataSource of an existing DropDownList and rebinds it.
         /// </summary>
@@ -4235,7 +4270,7 @@ kendo.ui.MultiSelect.prototype = {
     },
 
 
-    toggle: function(toggle) {
+    toggle: function (toggle) {
         /// <summary>
         /// Opens or closes the widget popup.
         /// </summary>
@@ -4244,7 +4279,7 @@ kendo.ui.MultiSelect.prototype = {
     },
 
 
-    value: function(value) {
+    value: function (value) {
         /// <summary>
         /// Gets or sets the value of the multiselect. Accepts string value or Array of strings.
         /// </summary>
@@ -4253,7 +4288,7 @@ kendo.ui.MultiSelect.prototype = {
 
     },
 
-    bind: function(event, callback) {
+    bind: function (event, callback) {
         /// <summary>
         /// Binds to a widget event.
         /// </summary>
@@ -4261,7 +4296,7 @@ kendo.ui.MultiSelect.prototype = {
         /// <param name="callback" type="Function">The callback to be executed when the event is triggered.</param>
     },
 
-    unbind: function(event, callback) {
+    unbind: function (event, callback) {
         /// <summary>
         /// Unbinds a callback from a widget event.
         /// </summary>
@@ -4271,14 +4306,14 @@ kendo.ui.MultiSelect.prototype = {
 
 };
 
-$.fn.getKendoMultiSelect = function() {
+$.fn.getKendoMultiSelect = function () {
     /// <summary>
     /// Returns a reference to the kendo.ui.MultiSelect widget, instantiated on the selector.
     /// </summary>
     /// <returns type="kendo.ui.MultiSelect">The kendo.ui.MultiSelect instance (if present).</returns>
 };
 
-$.fn.kendoMultiSelect = function(options) {
+$.fn.kendoMultiSelect = function (options) {
     /// <summary>
     /// Instantiates a kendo.ui.MultiSelect widget based the DOM elements that match the selector.
 
@@ -4350,14 +4385,15 @@ $.fn.kendoMultiSelect = function(options) {
 };
 
 
-kendo.ui.NumericTextBox = function() { };
+kendo.ui.NumericTextBox = function () {
+};
 
 kendo.ui.NumericTextBox.prototype = {
 
 
 
 
-    destroy: function() {
+    destroy: function () {
         /// <summary>
         /// Prepares the NumericTextBox for safe removal from DOM. Detaches all event handlers and removes jQuery.data attributes to avoid memory leaks. Calls destroy method of any child Kendo widgets.
         /// </summary>
@@ -4365,7 +4401,7 @@ kendo.ui.NumericTextBox.prototype = {
     },
 
 
-    enable: function(enable) {
+    enable: function (enable) {
         /// <summary>
         /// Enables or disables the widget.
         /// </summary>
@@ -4374,7 +4410,7 @@ kendo.ui.NumericTextBox.prototype = {
     },
 
 
-    readonly: function(readonly) {
+    readonly: function (readonly) {
         /// <summary>
         /// Toggles the readonly state of the widget. When the widget is readonly it doesn't allow user input.
         /// </summary>
@@ -4383,7 +4419,7 @@ kendo.ui.NumericTextBox.prototype = {
     },
 
 
-    focus: function() {
+    focus: function () {
         /// <summary>
         /// Focuses the widget.
         /// </summary>
@@ -4391,7 +4427,7 @@ kendo.ui.NumericTextBox.prototype = {
     },
 
 
-    max: function(value) {
+    max: function (value) {
         /// <summary>
         /// Gets or sets the max value of the widget.
         /// </summary>
@@ -4401,7 +4437,7 @@ kendo.ui.NumericTextBox.prototype = {
     },
 
 
-    min: function(value) {
+    min: function (value) {
         /// <summary>
         /// Gets or sets the min value of the widget.
         /// </summary>
@@ -4411,7 +4447,7 @@ kendo.ui.NumericTextBox.prototype = {
     },
 
 
-    step: function(value) {
+    step: function (value) {
         /// <summary>
         /// Gets or sets the step value of the widget.
         /// </summary>
@@ -4421,7 +4457,7 @@ kendo.ui.NumericTextBox.prototype = {
     },
 
 
-    value: function(value) {
+    value: function (value) {
         /// <summary>
         /// Gets or sets the value of the numerictextbox.
         /// </summary>
@@ -4430,7 +4466,7 @@ kendo.ui.NumericTextBox.prototype = {
 
     },
 
-    bind: function(event, callback) {
+    bind: function (event, callback) {
         /// <summary>
         /// Binds to a widget event.
         /// </summary>
@@ -4438,7 +4474,7 @@ kendo.ui.NumericTextBox.prototype = {
         /// <param name="callback" type="Function">The callback to be executed when the event is triggered.</param>
     },
 
-    unbind: function(event, callback) {
+    unbind: function (event, callback) {
         /// <summary>
         /// Unbinds a callback from a widget event.
         /// </summary>
@@ -4448,14 +4484,14 @@ kendo.ui.NumericTextBox.prototype = {
 
 };
 
-$.fn.getKendoNumericTextBox = function() {
+$.fn.getKendoNumericTextBox = function () {
     /// <summary>
     /// Returns a reference to the kendo.ui.NumericTextBox widget, instantiated on the selector.
     /// </summary>
     /// <returns type="kendo.ui.NumericTextBox">The kendo.ui.NumericTextBox instance (if present).</returns>
 };
 
-$.fn.kendoNumericTextBox = function(options) {
+$.fn.kendoNumericTextBox = function (options) {
     /// <summary>
     /// Instantiates a kendo.ui.NumericTextBox widget based the DOM elements that match the selector.
 
@@ -4501,14 +4537,15 @@ $.fn.kendoNumericTextBox = function(options) {
 };
 
 
-kendo.ui.Pager = function() { };
+kendo.ui.Pager = function () {
+};
 
 kendo.ui.Pager.prototype = {
 
 
 
 
-    totalPages: function() {
+    totalPages: function () {
         /// <summary>
         /// Returns the number of pages.
         /// </summary>
@@ -4516,7 +4553,7 @@ kendo.ui.Pager.prototype = {
     },
 
 
-    pageSize: function() {
+    pageSize: function () {
         /// <summary>
         /// Returns the page size - maximum number of items allowed on one page.
         /// </summary>
@@ -4524,7 +4561,7 @@ kendo.ui.Pager.prototype = {
     },
 
 
-    page: function() {
+    page: function () {
         /// <summary>
         /// Set the specified page as a current page. If called without arguments - returns the current page.
         /// </summary>
@@ -4532,7 +4569,7 @@ kendo.ui.Pager.prototype = {
     },
 
 
-    refresh: function() {
+    refresh: function () {
         /// <summary>
         /// Updates all values of pager elements so that these values fit the values of DataSource. This method is automatically called after DataSource change event is fired.
         /// </summary>
@@ -4540,14 +4577,14 @@ kendo.ui.Pager.prototype = {
     },
 
 
-    destroy: function() {
+    destroy: function () {
         /// <summary>
         /// Unbinds all callbacks created within pager initialization. This method doesn't remove pager element from DOM.
         /// </summary>
 
     },
 
-    bind: function(event, callback) {
+    bind: function (event, callback) {
         /// <summary>
         /// Binds to a widget event.
         /// </summary>
@@ -4555,7 +4592,7 @@ kendo.ui.Pager.prototype = {
         /// <param name="callback" type="Function">The callback to be executed when the event is triggered.</param>
     },
 
-    unbind: function(event, callback) {
+    unbind: function (event, callback) {
         /// <summary>
         /// Unbinds a callback from a widget event.
         /// </summary>
@@ -4565,14 +4602,14 @@ kendo.ui.Pager.prototype = {
 
 };
 
-$.fn.getKendoPager = function() {
+$.fn.getKendoPager = function () {
     /// <summary>
     /// Returns a reference to the kendo.ui.Pager widget, instantiated on the selector.
     /// </summary>
     /// <returns type="kendo.ui.Pager">The kendo.ui.Pager instance (if present).</returns>
 };
 
-$.fn.kendoPager = function(options) {
+$.fn.kendoPager = function (options) {
     /// <summary>
     /// Instantiates a kendo.ui.Pager widget based the DOM elements that match the selector.
 
@@ -4621,14 +4658,15 @@ $.fn.kendoPager = function(options) {
 };
 
 
-kendo.ui.PanelBar = function() { };
+kendo.ui.PanelBar = function () {
+};
 
 kendo.ui.PanelBar.prototype = {
 
 
 
 
-    append: function(item,referenceItem) {
+    append: function (item, referenceItem) {
         /// <summary>
         /// Appends an item/s to the PanelBar.
         /// </summary>
@@ -4639,7 +4677,7 @@ kendo.ui.PanelBar.prototype = {
     },
 
 
-    collapse: function(element,useAnimation) {
+    collapse: function (element, useAnimation) {
         /// <summary>
         /// Collapses the specified item(s) of a PanelBar.
         /// </summary>
@@ -4650,7 +4688,7 @@ kendo.ui.PanelBar.prototype = {
     },
 
 
-    destroy: function() {
+    destroy: function () {
         /// <summary>
         /// Prepares the PanelBar for safe removal from DOM. Detaches all event handlers and removes jQuery.data attributes to avoid memory leaks. Calls destroy method of any child Kendo widgets.
         /// </summary>
@@ -4658,7 +4696,7 @@ kendo.ui.PanelBar.prototype = {
     },
 
 
-    enable: function(element,enable) {
+    enable: function (element, enable) {
         /// <summary>
         /// Enables (true) or disables (false) the specified item(s) of the
 /// PanelBar.
@@ -4669,7 +4707,7 @@ kendo.ui.PanelBar.prototype = {
     },
 
 
-    expand: function(element,useAnimation) {
+    expand: function (element, useAnimation) {
         /// <summary>
         /// Expands the specified item(s) of a PanelBar.
         /// </summary>
@@ -4680,7 +4718,7 @@ kendo.ui.PanelBar.prototype = {
     },
 
 
-    insertAfter: function(item,referenceItem) {
+    insertAfter: function (item, referenceItem) {
         /// <summary>
         /// Inserts a PanelBar item after the specified referenceItem
         /// </summary>
@@ -4690,7 +4728,7 @@ kendo.ui.PanelBar.prototype = {
     },
 
 
-    insertBefore: function(item,referenceItem) {
+    insertBefore: function (item, referenceItem) {
         /// <summary>
         /// Inserts a PanelBar item before the specified referenceItem
         /// </summary>
@@ -4701,7 +4739,7 @@ kendo.ui.PanelBar.prototype = {
     },
 
 
-    reload: function(element) {
+    reload: function (element) {
         /// <summary>
         /// Reloads the content of a PanelBar from an AJAX request.
         /// </summary>
@@ -4710,7 +4748,7 @@ kendo.ui.PanelBar.prototype = {
     },
 
 
-    remove: function(element) {
+    remove: function (element) {
         /// <summary>
         /// Removes the specified PanelBar item(s).
         /// </summary>
@@ -4719,7 +4757,7 @@ kendo.ui.PanelBar.prototype = {
     },
 
 
-    select: function(element) {
+    select: function (element) {
         /// <summary>
         /// Selects the specified item of the PanelBar. If this method is invoked without arguments, it
 /// returns the currently selected item.
@@ -4728,7 +4766,7 @@ kendo.ui.PanelBar.prototype = {
 
     },
 
-    bind: function(event, callback) {
+    bind: function (event, callback) {
         /// <summary>
         /// Binds to a widget event.
         /// </summary>
@@ -4736,7 +4774,7 @@ kendo.ui.PanelBar.prototype = {
         /// <param name="callback" type="Function">The callback to be executed when the event is triggered.</param>
     },
 
-    unbind: function(event, callback) {
+    unbind: function (event, callback) {
         /// <summary>
         /// Unbinds a callback from a widget event.
         /// </summary>
@@ -4746,14 +4784,14 @@ kendo.ui.PanelBar.prototype = {
 
 };
 
-$.fn.getKendoPanelBar = function() {
+$.fn.getKendoPanelBar = function () {
     /// <summary>
     /// Returns a reference to the kendo.ui.PanelBar widget, instantiated on the selector.
     /// </summary>
     /// <returns type="kendo.ui.PanelBar">The kendo.ui.PanelBar instance (if present).</returns>
 };
 
-$.fn.kendoPanelBar = function(options) {
+$.fn.kendoPanelBar = function (options) {
     /// <summary>
     /// Instantiates a kendo.ui.PanelBar widget based the DOM elements that match the selector.
 
@@ -4778,14 +4816,15 @@ $.fn.kendoPanelBar = function(options) {
 };
 
 
-kendo.ui.ProgressBar = function() { };
+kendo.ui.ProgressBar = function () {
+};
 
 kendo.ui.ProgressBar.prototype = {
 
 
 
 
-    enable: function(enable) {
+    enable: function (enable) {
         /// <summary>
         /// Enables/Disables the ProgressBar widget.
         /// </summary>
@@ -4794,7 +4833,7 @@ kendo.ui.ProgressBar.prototype = {
     },
 
 
-    value: function(value) {
+    value: function (value) {
         /// <summary>
         /// Gets or sets the value of the ProgressBar. It accepts a number, a string or false as a parameter. Setting the value to false will set the state of the ProgressBar to indeterminate. If no parameter is passed, it returns the underlying value.
         /// </summary>
@@ -4803,7 +4842,7 @@ kendo.ui.ProgressBar.prototype = {
 
     },
 
-    bind: function(event, callback) {
+    bind: function (event, callback) {
         /// <summary>
         /// Binds to a widget event.
         /// </summary>
@@ -4811,7 +4850,7 @@ kendo.ui.ProgressBar.prototype = {
         /// <param name="callback" type="Function">The callback to be executed when the event is triggered.</param>
     },
 
-    unbind: function(event, callback) {
+    unbind: function (event, callback) {
         /// <summary>
         /// Unbinds a callback from a widget event.
         /// </summary>
@@ -4821,14 +4860,14 @@ kendo.ui.ProgressBar.prototype = {
 
 };
 
-$.fn.getKendoProgressBar = function() {
+$.fn.getKendoProgressBar = function () {
     /// <summary>
     /// Returns a reference to the kendo.ui.ProgressBar widget, instantiated on the selector.
     /// </summary>
     /// <returns type="kendo.ui.ProgressBar">The kendo.ui.ProgressBar instance (if present).</returns>
 };
 
-$.fn.kendoProgressBar = function(options) {
+$.fn.kendoProgressBar = function (options) {
     /// <summary>
     /// Instantiates a kendo.ui.ProgressBar widget based the DOM elements that match the selector.
 
@@ -4871,14 +4910,15 @@ $.fn.kendoProgressBar = function(options) {
 };
 
 
-kendo.ui.RangeSlider = function() { };
+kendo.ui.RangeSlider = function () {
+};
 
 kendo.ui.RangeSlider.prototype = {
 
 
 
 
-    destroy: function() {
+    destroy: function () {
         /// <summary>
         /// Prepares the RangeSlider for safe removal from the DOM.Detaches event handlers and removes data entries in order to avoid memory leaks.
         /// </summary>
@@ -4886,7 +4926,7 @@ kendo.ui.RangeSlider.prototype = {
     },
 
 
-    enable: function(enable) {
+    enable: function (enable) {
         /// <summary>
         /// Enable/Disable the RangeSlider widget.
         /// </summary>
@@ -4895,7 +4935,7 @@ kendo.ui.RangeSlider.prototype = {
     },
 
 
-    value: function(value) {
+    value: function (value) {
         /// <summary>
         /// The value method gets or sets the start and end values of the RangeSlider. It
 /// accepts an array as parameter, and returns an object array with the start and end
@@ -4905,7 +4945,7 @@ kendo.ui.RangeSlider.prototype = {
 
     },
 
-    bind: function(event, callback) {
+    bind: function (event, callback) {
         /// <summary>
         /// Binds to a widget event.
         /// </summary>
@@ -4913,7 +4953,7 @@ kendo.ui.RangeSlider.prototype = {
         /// <param name="callback" type="Function">The callback to be executed when the event is triggered.</param>
     },
 
-    unbind: function(event, callback) {
+    unbind: function (event, callback) {
         /// <summary>
         /// Unbinds a callback from a widget event.
         /// </summary>
@@ -4923,14 +4963,14 @@ kendo.ui.RangeSlider.prototype = {
 
 };
 
-$.fn.getKendoRangeSlider = function() {
+$.fn.getKendoRangeSlider = function () {
     /// <summary>
     /// Returns a reference to the kendo.ui.RangeSlider widget, instantiated on the selector.
     /// </summary>
     /// <returns type="kendo.ui.RangeSlider">The kendo.ui.RangeSlider instance (if present).</returns>
 };
 
-$.fn.kendoRangeSlider = function(options) {
+$.fn.kendoRangeSlider = function (options) {
     /// <summary>
     /// Instantiates a kendo.ui.RangeSlider widget based the DOM elements that match the selector.
 
@@ -4975,14 +5015,15 @@ $.fn.kendoRangeSlider = function(options) {
 };
 
 
-kendo.ui.Scheduler = function() { };
+kendo.ui.Scheduler = function () {
+};
 
 kendo.ui.Scheduler.prototype = {
 
 
 
 
-    addEvent: function(data) {
+    addEvent: function (data) {
         /// <summary>
         /// Adds a new scheduler event and opens the edit form.
         /// </summary>
@@ -4991,7 +5032,7 @@ kendo.ui.Scheduler.prototype = {
     },
 
 
-    cancelEvent: function() {
+    cancelEvent: function () {
         /// <summary>
         /// Cancels the scheduler event editing. Closes the edit form.
         /// </summary>
@@ -4999,7 +5040,7 @@ kendo.ui.Scheduler.prototype = {
     },
 
 
-    date: function(value) {
+    date: function (value) {
         /// <summary>
         /// Gets or sets the current scheduler date.
         /// </summary>
@@ -5009,7 +5050,7 @@ kendo.ui.Scheduler.prototype = {
     },
 
 
-    destroy: function() {
+    destroy: function () {
         /// <summary>
         /// Prepares the widget for safe removal from DOM. Detaches all event handlers and removes jQuery.data attributes to avoid memory leaks. Calls destroy method of any child Kendo widgets.
         /// </summary>
@@ -5017,7 +5058,7 @@ kendo.ui.Scheduler.prototype = {
     },
 
 
-    editEvent: function(event) {
+    editEvent: function (event) {
         /// <summary>
         /// Opens the specified scheduler event in the edit form.
         /// </summary>
@@ -5026,7 +5067,7 @@ kendo.ui.Scheduler.prototype = {
     },
 
 
-    removeEvent: function(event) {
+    removeEvent: function (event) {
         /// <summary>
         /// Removes the specified scheduler event.
         /// </summary>
@@ -5035,7 +5076,7 @@ kendo.ui.Scheduler.prototype = {
     },
 
 
-    saveEvent: function() {
+    saveEvent: function () {
         /// <summary>
         /// Saves the scheduler event which is open in the edit form and closes it.
         /// </summary>
@@ -5043,7 +5084,7 @@ kendo.ui.Scheduler.prototype = {
     },
 
 
-    setDataSource: function(dataSource) {
+    setDataSource: function (dataSource) {
         /// <summary>
         /// Sets the data source of the widget.
         /// </summary>
@@ -5052,7 +5093,7 @@ kendo.ui.Scheduler.prototype = {
     },
 
 
-    slotByPosition: function(xPosition,yPosition) {
+    slotByPosition: function (xPosition, yPosition) {
         /// <summary>
         /// Get the time slot from given horizontal (x) and vertical (y) position.
         /// </summary>
@@ -5063,7 +5104,7 @@ kendo.ui.Scheduler.prototype = {
     },
 
 
-    slotByElement: function(element) {
+    slotByElement: function (element) {
         /// <summary>
         /// Get the time slot from given element.
         /// </summary>
@@ -5073,16 +5114,16 @@ kendo.ui.Scheduler.prototype = {
     },
 
 
-    view: function(type) {
+    view: function (type) {
         /// <summary>
-        /// Gets or sets the current scheduler view.
+        /// Gets or sets the current scheduler io.
         /// </summary>
-        /// <param name="type" type="String" >The view type to select.</param>
-        /// <returns type="kendo.ui.SchedulerView">the current scheduler view.</returns>
+        /// <param name="type" type="String" >The io type to select.</param>
+        /// <returns type="kendo.ui.SchedulerView">the current scheduler io.</returns>
 
     },
 
-    bind: function(event, callback) {
+    bind: function (event, callback) {
         /// <summary>
         /// Binds to a widget event.
         /// </summary>
@@ -5090,7 +5131,7 @@ kendo.ui.Scheduler.prototype = {
         /// <param name="callback" type="Function">The callback to be executed when the event is triggered.</param>
     },
 
-    unbind: function(event, callback) {
+    unbind: function (event, callback) {
         /// <summary>
         /// Unbinds a callback from a widget event.
         /// </summary>
@@ -5100,14 +5141,14 @@ kendo.ui.Scheduler.prototype = {
 
 };
 
-$.fn.getKendoScheduler = function() {
+$.fn.getKendoScheduler = function () {
     /// <summary>
     /// Returns a reference to the kendo.ui.Scheduler widget, instantiated on the selector.
     /// </summary>
     /// <returns type="kendo.ui.Scheduler">The kendo.ui.Scheduler instance (if present).</returns>
 };
 
-$.fn.kendoScheduler = function(options) {
+$.fn.kendoScheduler = function (options) {
     /// <summary>
     /// Instantiates a kendo.ui.Scheduler widget based the DOM elements that match the selector.
 
@@ -5140,7 +5181,7 @@ $.fn.kendoScheduler = function(options) {
     /// &#10;If set to true the user would be able to create new scheduler events and modify or delete existing ones.
     /// &#10;
     /// &#10;endTime — Date 
-    /// &#10;The end time of the week and day views. The scheduler will display events ending before the endTime.
+    /// &#10;The end time of the week and day admin.views. The scheduler will display events ending before the endTime.
     /// &#10;
     /// &#10;eventTemplate — String|Function 
     /// &#10;The template used to render the scheduler events.The fields which can be used in the template are:
@@ -5189,22 +5230,22 @@ $.fn.kendoScheduler = function(options) {
     /// &#10;If set to true the user would be able to select scheduler cells and events. By default selection is disabled.
     /// &#10;
     /// &#10;showWorkHours — Boolean (default: false)
-    /// &#10;If set to true the view will be initially shown in business hours mode. By default view is displyed in full day mode.
+    /// &#10;If set to true the io will be initially shown in business hours mode. By default io is displyed in full day mode.
     /// &#10;
     /// &#10;snap — Boolean (default: true)
     /// &#10;If set to true the scheduler will snap events to the nearest slot during dragging (resizing or moving). Set it to false to allow free moving and resizing of events.
     /// &#10;
     /// &#10;startTime — Date 
-    /// &#10;The start time of the week and day views. The scheduler will display events starting after the startTime.
+    /// &#10;The start time of the week and day admin.views. The scheduler will display events starting after the startTime.
     /// &#10;
     /// &#10;timezone — String 
     /// &#10;The timezone which the scheduler will use to display the scheduler appointment dates. By default the current system timezone is used. This is an acceptable default when the
 /// &#10;scheduler widget is bound to local array of events. It is advisable to specify a timezone if the scheduler is bound to a remote service.
 /// &#10;That way all users would see the same dates and times no matter their configured system timezone.The complete list of the supported timezones is available in the List of IANA time zones Wikipedia page.
     /// &#10;
-    /// &#10;views — Array 
-    /// &#10;The views displayed by the scheduler and their configuration. The array items can be either objects specifying the view configuration or strings representing the view types (assuming default configuration).
-/// &#10;By default the Kendo UI Scheduler widget displays "day" and "week" view.
+    /// &#10;admin.views — Array
+    /// &#10;The admin.views displayed by the scheduler and their configuration. The array items can be either objects specifying the io configuration or strings representing the io types (assuming default configuration).
+/// &#10;By default the Kendo UI Scheduler widget displays "day" and "week" io.
     /// &#10;
     /// &#10;width — Number|String 
     /// &#10;The width of the widget. Numeric values are treated as pixels.
@@ -5228,14 +5269,15 @@ $.fn.kendoScheduler = function(options) {
 };
 
 
-kendo.ui.Slider = function() { };
+kendo.ui.Slider = function () {
+};
 
 kendo.ui.Slider.prototype = {
 
 
 
 
-    destroy: function() {
+    destroy: function () {
         /// <summary>
         /// Prepares the Slider for safe removal from the DOM.Detaches event handlers and removes data entries in order to avoid memory leaks.
         /// </summary>
@@ -5243,7 +5285,7 @@ kendo.ui.Slider.prototype = {
     },
 
 
-    enable: function(enable) {
+    enable: function (enable) {
         /// <summary>
         /// Enable/Disable the Slider widget.
         /// </summary>
@@ -5252,7 +5294,7 @@ kendo.ui.Slider.prototype = {
     },
 
 
-    value: function(value) {
+    value: function (value) {
         /// <summary>
         /// Gets or sets the value of a Slider. It accepts a string or number as parameters and returns
 /// a number representing the underlying value.
@@ -5261,7 +5303,7 @@ kendo.ui.Slider.prototype = {
 
     },
 
-    bind: function(event, callback) {
+    bind: function (event, callback) {
         /// <summary>
         /// Binds to a widget event.
         /// </summary>
@@ -5269,7 +5311,7 @@ kendo.ui.Slider.prototype = {
         /// <param name="callback" type="Function">The callback to be executed when the event is triggered.</param>
     },
 
-    unbind: function(event, callback) {
+    unbind: function (event, callback) {
         /// <summary>
         /// Unbinds a callback from a widget event.
         /// </summary>
@@ -5279,14 +5321,14 @@ kendo.ui.Slider.prototype = {
 
 };
 
-$.fn.getKendoSlider = function() {
+$.fn.getKendoSlider = function () {
     /// <summary>
     /// Returns a reference to the kendo.ui.Slider widget, instantiated on the selector.
     /// </summary>
     /// <returns type="kendo.ui.Slider">The kendo.ui.Slider instance (if present).</returns>
 };
 
-$.fn.kendoSlider = function(options) {
+$.fn.kendoSlider = function (options) {
     /// <summary>
     /// Instantiates a kendo.ui.Slider widget based the DOM elements that match the selector.
 
@@ -5336,14 +5378,15 @@ $.fn.kendoSlider = function(options) {
 };
 
 
-kendo.ui.Splitter = function() { };
+kendo.ui.Splitter = function () {
+};
 
 kendo.ui.Splitter.prototype = {
 
 
 
 
-    ajaxRequest: function(pane,url,data) {
+    ajaxRequest: function (pane, url, data) {
         /// <summary>
         /// Loads the content of a pane from a local or remote URL.
         /// </summary>
@@ -5354,7 +5397,7 @@ kendo.ui.Splitter.prototype = {
     },
 
 
-    append: function(config) {
+    append: function (config) {
         /// <summary>
         /// Appends a new pane. The method returns the pane element, so it can be populated with arbitrary content, if contentUrl is not set.
 /// Invoking this method will force the widget to redraw and it will trigger the resize event.
@@ -5364,7 +5407,7 @@ kendo.ui.Splitter.prototype = {
     },
 
 
-    collapse: function(pane) {
+    collapse: function (pane) {
         /// <summary>
         /// Collapses a specified pane. Invoking this method will force the widget to redraw and it will trigger the resize event.
 /// Note: Invoking the method will not trigger a collapse event.
@@ -5374,7 +5417,7 @@ kendo.ui.Splitter.prototype = {
     },
 
 
-    destroy: function() {
+    destroy: function () {
         /// <summary>
         /// Prepares the widget for safe removal from DOM. Detaches all event handlers and removes jQuery.data attributes to avoid memory leaks. Calls destroy method of any child Kendo widgets.
         /// </summary>
@@ -5382,7 +5425,7 @@ kendo.ui.Splitter.prototype = {
     },
 
 
-    expand: function(pane) {
+    expand: function (pane) {
         /// <summary>
         /// Expands a specified pane. Invoking this method will force the widget to redraw and it will trigger the resize event.
 /// Note: Invoking the method will not trigger an expand event.
@@ -5392,7 +5435,7 @@ kendo.ui.Splitter.prototype = {
     },
 
 
-    insertAfter: function(config,referencePane) {
+    insertAfter: function (config, referencePane) {
         /// <summary>
         /// Inserts a new pane after the specified one. The method returns the pane element, so it can be populated with arbitrary content, if contentUrl is not set.
 /// Invoking this method will force the widget to redraw and it will trigger the resize event.
@@ -5403,7 +5446,7 @@ kendo.ui.Splitter.prototype = {
     },
 
 
-    insertBefore: function(config,referencePane) {
+    insertBefore: function (config, referencePane) {
         /// <summary>
         /// Inserts a new pane before the specified one. The method returns the pane element, so it can be populated with arbitrary content, if contentUrl is not set.
 /// Invoking this method will force the widget to redraw and it will trigger the resize event.
@@ -5414,7 +5457,7 @@ kendo.ui.Splitter.prototype = {
     },
 
 
-    max: function(pane,value) {
+    max: function (pane, value) {
         /// <summary>
         /// Sets the maximum size of a pane. Setting this value will not cause the widget to redraw, nor will it trigger any events.
         /// </summary>
@@ -5424,7 +5467,7 @@ kendo.ui.Splitter.prototype = {
     },
 
 
-    min: function(pane,value) {
+    min: function (pane, value) {
         /// <summary>
         /// Sets the minimum size of a pane. Setting this value will not cause the widget to redraw, nor will it trigger any events.
         /// </summary>
@@ -5434,7 +5477,7 @@ kendo.ui.Splitter.prototype = {
     },
 
 
-    remove: function(pane) {
+    remove: function (pane) {
         /// <summary>
         /// Removes one or more panes. The method returns the Splitter instance.
 /// Invoking this method will force the widget to redraw and it will trigger the resize event.
@@ -5444,7 +5487,7 @@ kendo.ui.Splitter.prototype = {
     },
 
 
-    size: function(pane,value) {
+    size: function (pane, value) {
         /// <summary>
         /// Set the size of the pane. Setting this value will cause the widget to redraw and it will trigger the resize event.
         /// </summary>
@@ -5454,7 +5497,7 @@ kendo.ui.Splitter.prototype = {
     },
 
 
-    toggle: function(pane,expand) {
+    toggle: function (pane, expand) {
         /// <summary>
         /// Toggles the state of a specified pane (i.e. collapsed or expanded).
 /// Invoking this method will force the widget to redraw and it will trigger the resize event.
@@ -5465,7 +5508,7 @@ kendo.ui.Splitter.prototype = {
 
     },
 
-    bind: function(event, callback) {
+    bind: function (event, callback) {
         /// <summary>
         /// Binds to a widget event.
         /// </summary>
@@ -5473,7 +5516,7 @@ kendo.ui.Splitter.prototype = {
         /// <param name="callback" type="Function">The callback to be executed when the event is triggered.</param>
     },
 
-    unbind: function(event, callback) {
+    unbind: function (event, callback) {
         /// <summary>
         /// Unbinds a callback from a widget event.
         /// </summary>
@@ -5483,14 +5526,14 @@ kendo.ui.Splitter.prototype = {
 
 };
 
-$.fn.getKendoSplitter = function() {
+$.fn.getKendoSplitter = function () {
     /// <summary>
     /// Returns a reference to the kendo.ui.Splitter widget, instantiated on the selector.
     /// </summary>
     /// <returns type="kendo.ui.Splitter">The kendo.ui.Splitter instance (if present).</returns>
 };
 
-$.fn.kendoSplitter = function(options) {
+$.fn.kendoSplitter = function (options) {
     /// <summary>
     /// Instantiates a kendo.ui.Splitter widget based the DOM elements that match the selector.
 
@@ -5509,14 +5552,15 @@ $.fn.kendoSplitter = function(options) {
 };
 
 
-kendo.ui.TabStrip = function() { };
+kendo.ui.TabStrip = function () {
+};
 
 kendo.ui.TabStrip.prototype = {
 
 
 
 
-    activateTab: function(item) {
+    activateTab: function (item) {
         /// <summary>
         /// Activates a tab specified as a selector. Note: Invoking this method will not trigger any events.
         /// </summary>
@@ -5525,7 +5569,7 @@ kendo.ui.TabStrip.prototype = {
     },
 
 
-    append: function(tab) {
+    append: function (tab) {
         /// <summary>
         /// Appends a tab to the collection of tabs in a TabStrip.
         /// </summary>
@@ -5535,7 +5579,7 @@ kendo.ui.TabStrip.prototype = {
     },
 
 
-    contentElement: function(itemIndex) {
+    contentElement: function (itemIndex) {
         /// <summary>
         /// Obtains the DOM element that encloses tab content by its tab index in the TabStrip.
         /// </summary>
@@ -5545,7 +5589,7 @@ kendo.ui.TabStrip.prototype = {
     },
 
 
-    contentHolder: function(itemIndex) {
+    contentHolder: function (itemIndex) {
         /// <summary>
         /// Obtains the DOM element that holds tab content by its tab index in the TabStrip.
 /// The difference between contentElement and contentHolder is that contentHolder returns the DOM element that really holds the content, which on mobile is the scroll container.
@@ -5556,7 +5600,7 @@ kendo.ui.TabStrip.prototype = {
     },
 
 
-    deactivateTab: function(item) {
+    deactivateTab: function (item) {
         /// <summary>
         /// Deactivates a tab specified as a selector. Note: Invoking this method will not trigger any events.
         /// </summary>
@@ -5565,7 +5609,7 @@ kendo.ui.TabStrip.prototype = {
     },
 
 
-    destroy: function() {
+    destroy: function () {
         /// <summary>
         /// Prepares the TabStrip for safe removal from DOM. Detaches all event handlers and removes jQuery.data attributes to avoid memory leaks. Calls destroy method of any child Kendo widgets.
         /// </summary>
@@ -5573,7 +5617,7 @@ kendo.ui.TabStrip.prototype = {
     },
 
 
-    disable: function(element) {
+    disable: function (element) {
         /// <summary>
         /// Disables a tab(s) of a TabStrip.
         /// </summary>
@@ -5583,7 +5627,7 @@ kendo.ui.TabStrip.prototype = {
     },
 
 
-    enable: function(element,enable) {
+    enable: function (element, enable) {
         /// <summary>
         /// Disables (false) or enables (true) a tab(s) of a TabStrip.
         /// </summary>
@@ -5594,7 +5638,7 @@ kendo.ui.TabStrip.prototype = {
     },
 
 
-    insertAfter: function(item,referenceTab) {
+    insertAfter: function (item, referenceTab) {
         /// <summary>
         /// Inserts a newly-created tab after a specified tab.
         /// </summary>
@@ -5605,7 +5649,7 @@ kendo.ui.TabStrip.prototype = {
     },
 
 
-    insertBefore: function(item,referenceTab) {
+    insertBefore: function (item, referenceTab) {
         /// <summary>
         /// Inserts a newly-created tab before a specified tab.
         /// </summary>
@@ -5616,7 +5660,7 @@ kendo.ui.TabStrip.prototype = {
     },
 
 
-    items: function() {
+    items: function () {
         /// <summary>
         /// Gets the list of DOM elements that represent the tabs.
         /// </summary>
@@ -5625,7 +5669,7 @@ kendo.ui.TabStrip.prototype = {
     },
 
 
-    reload: function(element) {
+    reload: function (element) {
         /// <summary>
         /// Reloads TabStrip tab(s) via AJAX.
         /// </summary>
@@ -5635,7 +5679,7 @@ kendo.ui.TabStrip.prototype = {
     },
 
 
-    remove: function(element) {
+    remove: function (element) {
         /// <summary>
         /// Removes a specified tab from a TabStrip.
         /// </summary>
@@ -5645,7 +5689,7 @@ kendo.ui.TabStrip.prototype = {
     },
 
 
-    select: function(element) {
+    select: function (element) {
         /// <summary>
         /// Get/set the selected tab. If called without arguments, it returns the
 /// currently selected tab.
@@ -5655,7 +5699,7 @@ kendo.ui.TabStrip.prototype = {
 
     },
 
-    bind: function(event, callback) {
+    bind: function (event, callback) {
         /// <summary>
         /// Binds to a widget event.
         /// </summary>
@@ -5663,7 +5707,7 @@ kendo.ui.TabStrip.prototype = {
         /// <param name="callback" type="Function">The callback to be executed when the event is triggered.</param>
     },
 
-    unbind: function(event, callback) {
+    unbind: function (event, callback) {
         /// <summary>
         /// Unbinds a callback from a widget event.
         /// </summary>
@@ -5673,14 +5717,14 @@ kendo.ui.TabStrip.prototype = {
 
 };
 
-$.fn.getKendoTabStrip = function() {
+$.fn.getKendoTabStrip = function () {
     /// <summary>
     /// Returns a reference to the kendo.ui.TabStrip widget, instantiated on the selector.
     /// </summary>
     /// <returns type="kendo.ui.TabStrip">The kendo.ui.TabStrip instance (if present).</returns>
 };
 
-$.fn.kendoTabStrip = function(options) {
+$.fn.kendoTabStrip = function (options) {
     /// <summary>
     /// Instantiates a kendo.ui.TabStrip widget based the DOM elements that match the selector.
 
@@ -5723,14 +5767,15 @@ $.fn.kendoTabStrip = function(options) {
 };
 
 
-kendo.ui.TimePicker = function() { };
+kendo.ui.TimePicker = function () {
+};
 
 kendo.ui.TimePicker.prototype = {
 
 
 
 
-    close: function() {
+    close: function () {
         /// <summary>
         /// Closes the drop-down list of a TimePicker.
         /// </summary>
@@ -5738,7 +5783,7 @@ kendo.ui.TimePicker.prototype = {
     },
 
 
-    destroy: function() {
+    destroy: function () {
         /// <summary>
         /// Prepares the TimePicker for safe removal from DOM. Detaches all event handlers and removes jQuery.data attributes to avoid memory leaks. Calls destroy method of any child Kendo widgets.
         /// </summary>
@@ -5746,7 +5791,7 @@ kendo.ui.TimePicker.prototype = {
     },
 
 
-    enable: function(enable) {
+    enable: function (enable) {
         /// <summary>
         /// Enables or disables a TimePicker.
         /// </summary>
@@ -5755,7 +5800,7 @@ kendo.ui.TimePicker.prototype = {
     },
 
 
-    readonly: function(readonly) {
+    readonly: function (readonly) {
         /// <summary>
         /// Toggles the readonly state of the widget. When the widget is readonly it doesn't allow user input.
         /// </summary>
@@ -5764,7 +5809,7 @@ kendo.ui.TimePicker.prototype = {
     },
 
 
-    max: function(value) {
+    max: function (value) {
         /// <summary>
         /// Gets or sets the maximum value of the TimePicker.
         /// </summary>
@@ -5774,7 +5819,7 @@ kendo.ui.TimePicker.prototype = {
     },
 
 
-    min: function(value) {
+    min: function (value) {
         /// <summary>
         /// Gets or sets the minimum value of the TimePicker.
         /// </summary>
@@ -5784,7 +5829,7 @@ kendo.ui.TimePicker.prototype = {
     },
 
 
-    open: function() {
+    open: function () {
         /// <summary>
         /// Opens the drop-down list of a TimePicker.
         /// </summary>
@@ -5792,7 +5837,7 @@ kendo.ui.TimePicker.prototype = {
     },
 
 
-    value: function(value) {
+    value: function (value) {
         /// <summary>
         /// Gets or sets the value of the TimePicker.
         /// </summary>
@@ -5801,7 +5846,7 @@ kendo.ui.TimePicker.prototype = {
 
     },
 
-    bind: function(event, callback) {
+    bind: function (event, callback) {
         /// <summary>
         /// Binds to a widget event.
         /// </summary>
@@ -5809,7 +5854,7 @@ kendo.ui.TimePicker.prototype = {
         /// <param name="callback" type="Function">The callback to be executed when the event is triggered.</param>
     },
 
-    unbind: function(event, callback) {
+    unbind: function (event, callback) {
         /// <summary>
         /// Unbinds a callback from a widget event.
         /// </summary>
@@ -5819,14 +5864,14 @@ kendo.ui.TimePicker.prototype = {
 
 };
 
-$.fn.getKendoTimePicker = function() {
+$.fn.getKendoTimePicker = function () {
     /// <summary>
     /// Returns a reference to the kendo.ui.TimePicker widget, instantiated on the selector.
     /// </summary>
     /// <returns type="kendo.ui.TimePicker">The kendo.ui.TimePicker instance (if present).</returns>
 };
 
-$.fn.kendoTimePicker = function(options) {
+$.fn.kendoTimePicker = function (options) {
     /// <summary>
     /// Instantiates a kendo.ui.TimePicker widget based the DOM elements that match the selector.
 
@@ -5866,14 +5911,15 @@ $.fn.kendoTimePicker = function(options) {
 };
 
 
-kendo.ui.Tooltip = function() { };
+kendo.ui.Tooltip = function () {
+};
 
 kendo.ui.Tooltip.prototype = {
 
 
 
 
-    show: function(element) {
+    show: function (element) {
         /// <summary>
         /// Shows the tooltip for given target.
         /// </summary>
@@ -5882,7 +5928,7 @@ kendo.ui.Tooltip.prototype = {
     },
 
 
-    hide: function() {
+    hide: function () {
         /// <summary>
         /// Hides the tooltip.
         /// </summary>
@@ -5890,7 +5936,7 @@ kendo.ui.Tooltip.prototype = {
     },
 
 
-    refresh: function() {
+    refresh: function () {
         /// <summary>
         /// Refresh the tooltip content.
         /// </summary>
@@ -5898,7 +5944,7 @@ kendo.ui.Tooltip.prototype = {
     },
 
 
-    target: function() {
+    target: function () {
         /// <summary>
         /// Gets the tooltip current target.
         /// </summary>
@@ -5906,7 +5952,7 @@ kendo.ui.Tooltip.prototype = {
 
     },
 
-    bind: function(event, callback) {
+    bind: function (event, callback) {
         /// <summary>
         /// Binds to a widget event.
         /// </summary>
@@ -5914,7 +5960,7 @@ kendo.ui.Tooltip.prototype = {
         /// <param name="callback" type="Function">The callback to be executed when the event is triggered.</param>
     },
 
-    unbind: function(event, callback) {
+    unbind: function (event, callback) {
         /// <summary>
         /// Unbinds a callback from a widget event.
         /// </summary>
@@ -5924,14 +5970,14 @@ kendo.ui.Tooltip.prototype = {
 
 };
 
-$.fn.getKendoTooltip = function() {
+$.fn.getKendoTooltip = function () {
     /// <summary>
     /// Returns a reference to the kendo.ui.Tooltip widget, instantiated on the selector.
     /// </summary>
     /// <returns type="kendo.ui.Tooltip">The kendo.ui.Tooltip instance (if present).</returns>
 };
 
-$.fn.kendoTooltip = function(options) {
+$.fn.kendoTooltip = function (options) {
     /// <summary>
     /// Instantiates a kendo.ui.Tooltip widget based the DOM elements that match the selector.
 
@@ -5983,14 +6029,15 @@ $.fn.kendoTooltip = function(options) {
 };
 
 
-kendo.ui.TreeView = function() { };
+kendo.ui.TreeView = function () {
+};
 
 kendo.ui.TreeView.prototype = {
 
 
 
 
-    append: function(nodeData,parentNode,success) {
+    append: function (nodeData, parentNode, success) {
         /// <summary>
         /// Appends a node to any level of the treeview. This method may also be used to reorder nodes.
         /// </summary>
@@ -6002,7 +6049,7 @@ kendo.ui.TreeView.prototype = {
     },
 
 
-    collapse: function(nodes) {
+    collapse: function (nodes) {
         /// <summary>
         /// Collapses nodes.
         /// </summary>
@@ -6011,7 +6058,7 @@ kendo.ui.TreeView.prototype = {
     },
 
 
-    dataItem: function(node) {
+    dataItem: function (node) {
         /// <summary>
         /// Returns the data item to which the specified node is bound.
         /// </summary>
@@ -6021,7 +6068,7 @@ kendo.ui.TreeView.prototype = {
     },
 
 
-    destroy: function() {
+    destroy: function () {
         /// <summary>
         /// Prepares the widget for safe removal from DOM. Detaches all event handlers and removes jQuery.data attributes to avoid memory leaks. Calls destroy method of any child Kendo widgets.
         /// </summary>
@@ -6029,7 +6076,7 @@ kendo.ui.TreeView.prototype = {
     },
 
 
-    detach: function(node) {
+    detach: function (node) {
         /// <summary>
         /// Removes a node from a TreeView, but keeps its jQuery.data() objects.
         /// </summary>
@@ -6039,7 +6086,7 @@ kendo.ui.TreeView.prototype = {
     },
 
 
-    enable: function(nodes,enable) {
+    enable: function (nodes, enable) {
         /// <summary>
         /// Enables or disables nodes.
         /// </summary>
@@ -6049,7 +6096,7 @@ kendo.ui.TreeView.prototype = {
     },
 
 
-    expand: function(nodes) {
+    expand: function (nodes) {
         /// <summary>
         /// Expands collapsed nodes.
         /// </summary>
@@ -6058,7 +6105,7 @@ kendo.ui.TreeView.prototype = {
     },
 
 
-    findByText: function(text) {
+    findByText: function (text) {
         /// <summary>
         /// Searches for a node that has specific text.
         /// </summary>
@@ -6068,7 +6115,7 @@ kendo.ui.TreeView.prototype = {
     },
 
 
-    findByUid: function(text) {
+    findByUid: function (text) {
         /// <summary>
         /// Searches for a node with the given unique identifier.
 /// Applicable when the widget is bound to a HierarchicalDataSource.
@@ -6080,7 +6127,7 @@ kendo.ui.TreeView.prototype = {
     },
 
 
-    insertAfter: function(nodeData,referenceNode) {
+    insertAfter: function (nodeData, referenceNode) {
         /// <summary>
         /// Inserts a node after a specified node.
 /// This method may also be used to reorder nodes.
@@ -6091,7 +6138,7 @@ kendo.ui.TreeView.prototype = {
     },
 
 
-    insertBefore: function(nodeData,referenceNode) {
+    insertBefore: function (nodeData, referenceNode) {
         /// <summary>
         /// Inserts a node before another node. This method may also be used to reorder nodes.
         /// </summary>
@@ -6101,7 +6148,7 @@ kendo.ui.TreeView.prototype = {
     },
 
 
-    parent: function(node) {
+    parent: function (node) {
         /// <summary>
         /// Gets the parent node of the item
         /// </summary>
@@ -6111,7 +6158,7 @@ kendo.ui.TreeView.prototype = {
     },
 
 
-    remove: function(node) {
+    remove: function (node) {
         /// <summary>
         /// Removes a node from the widget.
         /// </summary>
@@ -6120,7 +6167,7 @@ kendo.ui.TreeView.prototype = {
     },
 
 
-    select: function(node) {
+    select: function (node) {
         /// <summary>
         /// Gets or sets the selected node.
         /// </summary>
@@ -6130,7 +6177,7 @@ kendo.ui.TreeView.prototype = {
     },
 
 
-    setDataSource: function(dataSource) {
+    setDataSource: function (dataSource) {
         /// <summary>
         /// Sets and binds a dataSource to the widget.
         /// </summary>
@@ -6139,7 +6186,7 @@ kendo.ui.TreeView.prototype = {
     },
 
 
-    text: function(node,newText) {
+    text: function (node, newText) {
         /// <summary>
         /// Gets or sets the text of a node in a TreeView.
         /// </summary>
@@ -6150,7 +6197,7 @@ kendo.ui.TreeView.prototype = {
     },
 
 
-    toggle: function(node) {
+    toggle: function (node) {
         /// <summary>
         /// Toggles the node of a TreeView between its expanded and collapsed states.
         /// </summary>
@@ -6159,7 +6206,7 @@ kendo.ui.TreeView.prototype = {
     },
 
 
-    updateIndeterminate: function(node) {
+    updateIndeterminate: function (node) {
         /// <summary>
         /// Updates the indeterminate state of the treeview checkboxes. Should be used for better performance when checking multiple checkboxes through code.
         /// </summary>
@@ -6167,7 +6214,7 @@ kendo.ui.TreeView.prototype = {
 
     },
 
-    bind: function(event, callback) {
+    bind: function (event, callback) {
         /// <summary>
         /// Binds to a widget event.
         /// </summary>
@@ -6175,7 +6222,7 @@ kendo.ui.TreeView.prototype = {
         /// <param name="callback" type="Function">The callback to be executed when the event is triggered.</param>
     },
 
-    unbind: function(event, callback) {
+    unbind: function (event, callback) {
         /// <summary>
         /// Unbinds a callback from a widget event.
         /// </summary>
@@ -6185,14 +6232,14 @@ kendo.ui.TreeView.prototype = {
 
 };
 
-$.fn.getKendoTreeView = function() {
+$.fn.getKendoTreeView = function () {
     /// <summary>
     /// Returns a reference to the kendo.ui.TreeView widget, instantiated on the selector.
     /// </summary>
     /// <returns type="kendo.ui.TreeView">The kendo.ui.TreeView instance (if present).</returns>
 };
 
-$.fn.kendoTreeView = function(options) {
+$.fn.kendoTreeView = function (options) {
     /// <summary>
     /// Instantiates a kendo.ui.TreeView widget based the DOM elements that match the selector.
 
@@ -6251,14 +6298,15 @@ $.fn.kendoTreeView = function(options) {
 };
 
 
-kendo.ui.Upload = function() { };
+kendo.ui.Upload = function () {
+};
 
 kendo.ui.Upload.prototype = {
 
 
 
 
-    destroy: function() {
+    destroy: function () {
         /// <summary>
         /// Prepares the Upload for safe removal from DOM. Detaches all event handlers and removes jQuery.data attributes to avoid memory leaks. Calls destroy method of any child Kendo widgets.
         /// </summary>
@@ -6266,7 +6314,7 @@ kendo.ui.Upload.prototype = {
     },
 
 
-    disable: function() {
+    disable: function () {
         /// <summary>
         /// Disables the upload.
         /// </summary>
@@ -6274,7 +6322,7 @@ kendo.ui.Upload.prototype = {
     },
 
 
-    enable: function(enable) {
+    enable: function (enable) {
         /// <summary>
         /// Enables the upload.
         /// </summary>
@@ -6283,7 +6331,7 @@ kendo.ui.Upload.prototype = {
     },
 
 
-    toggle: function(enable) {
+    toggle: function (enable) {
         /// <summary>
         /// Toggles the upload enabled state.
         /// </summary>
@@ -6291,7 +6339,7 @@ kendo.ui.Upload.prototype = {
 
     },
 
-    bind: function(event, callback) {
+    bind: function (event, callback) {
         /// <summary>
         /// Binds to a widget event.
         /// </summary>
@@ -6299,7 +6347,7 @@ kendo.ui.Upload.prototype = {
         /// <param name="callback" type="Function">The callback to be executed when the event is triggered.</param>
     },
 
-    unbind: function(event, callback) {
+    unbind: function (event, callback) {
         /// <summary>
         /// Unbinds a callback from a widget event.
         /// </summary>
@@ -6309,14 +6357,14 @@ kendo.ui.Upload.prototype = {
 
 };
 
-$.fn.getKendoUpload = function() {
+$.fn.getKendoUpload = function () {
     /// <summary>
     /// Returns a reference to the kendo.ui.Upload widget, instantiated on the selector.
     /// </summary>
     /// <returns type="kendo.ui.Upload">The kendo.ui.Upload instance (if present).</returns>
 };
 
-$.fn.kendoUpload = function(options) {
+$.fn.kendoUpload = function (options) {
     /// <summary>
     /// Instantiates a kendo.ui.Upload widget based the DOM elements that match the selector.
 
@@ -6357,14 +6405,15 @@ $.fn.kendoUpload = function(options) {
 };
 
 
-kendo.ui.Validator = function() { };
+kendo.ui.Validator = function () {
+};
 
 kendo.ui.Validator.prototype = {
 
 
 
 
-    errors: function() {
+    errors: function () {
         /// <summary>
         /// Get the error messages if any.
         /// </summary>
@@ -6373,7 +6422,7 @@ kendo.ui.Validator.prototype = {
     },
 
 
-    hideMessages: function() {
+    hideMessages: function () {
         /// <summary>
         /// Hides the validation messages.
         /// </summary>
@@ -6381,7 +6430,7 @@ kendo.ui.Validator.prototype = {
     },
 
 
-    validate: function() {
+    validate: function () {
         /// <summary>
         /// Validates the input element(s) against the declared validation rules.
         /// </summary>
@@ -6390,7 +6439,7 @@ kendo.ui.Validator.prototype = {
     },
 
 
-    validateInput: function(input) {
+    validateInput: function (input) {
         /// <summary>
         /// Validates the input element against the declared validation rules.
         /// </summary>
@@ -6399,7 +6448,7 @@ kendo.ui.Validator.prototype = {
 
     },
 
-    bind: function(event, callback) {
+    bind: function (event, callback) {
         /// <summary>
         /// Binds to a widget event.
         /// </summary>
@@ -6407,7 +6456,7 @@ kendo.ui.Validator.prototype = {
         /// <param name="callback" type="Function">The callback to be executed when the event is triggered.</param>
     },
 
-    unbind: function(event, callback) {
+    unbind: function (event, callback) {
         /// <summary>
         /// Unbinds a callback from a widget event.
         /// </summary>
@@ -6417,14 +6466,14 @@ kendo.ui.Validator.prototype = {
 
 };
 
-$.fn.getKendoValidator = function() {
+$.fn.getKendoValidator = function () {
     /// <summary>
     /// Returns a reference to the kendo.ui.Validator widget, instantiated on the selector.
     /// </summary>
     /// <returns type="kendo.ui.Validator">The kendo.ui.Validator instance (if present).</returns>
 };
 
-$.fn.kendoValidator = function(options) {
+$.fn.kendoValidator = function (options) {
     /// <summary>
     /// Instantiates a kendo.ui.Validator widget based the DOM elements that match the selector.
 
@@ -6447,14 +6496,15 @@ $.fn.kendoValidator = function(options) {
 };
 
 
-kendo.ui.Widget = function() { };
+kendo.ui.Widget = function () {
+};
 
 kendo.ui.Widget.prototype = {
 
 
 
 
-    bind: function() {
+    bind: function () {
         /// <summary>
         /// Attaches a handler to an event. Examples and more info can be found in the bind section of the kendo.Observable API reference.
         /// </summary>
@@ -6462,7 +6512,7 @@ kendo.ui.Widget.prototype = {
     },
 
 
-    destroy: function() {
+    destroy: function () {
         /// <summary>
         /// Prepares the widget for safe removal from the DOM. Detaches all event handlers and removes jQuery.data attributes to avoid memory leaks. Calls destroy method of any child Kendo widgets.
         /// </summary>
@@ -6470,7 +6520,7 @@ kendo.ui.Widget.prototype = {
     },
 
 
-    one: function() {
+    one: function () {
         /// <summary>
         /// Attaches a handler to an event. The handler is executed only once. Examples and more info can be found in the one section of the
 /// kendo.Observable API reference.
@@ -6479,7 +6529,7 @@ kendo.ui.Widget.prototype = {
     },
 
 
-    trigger: function() {
+    trigger: function () {
         /// <summary>
         /// Executes all handlers attached to the given event. More info can be found in the trigger section of the
 /// kendo.Observable API reference.
@@ -6488,7 +6538,7 @@ kendo.ui.Widget.prototype = {
     },
 
 
-    unbind: function() {
+    unbind: function () {
         /// <summary>
         /// Remove a previously attached event handler. More info can be found in the unbind section of the
 /// kendo.Observable API reference.
@@ -6501,14 +6551,14 @@ kendo.ui.Widget.prototype = {
 
 };
 
-$.fn.getKendoWidget = function() {
+$.fn.getKendoWidget = function () {
     /// <summary>
     /// Returns a reference to the kendo.ui.Widget widget, instantiated on the selector.
     /// </summary>
     /// <returns type="kendo.ui.Widget">The kendo.ui.Widget instance (if present).</returns>
 };
 
-$.fn.kendoWidget = function(options) {
+$.fn.kendoWidget = function (options) {
     /// <summary>
     /// Instantiates a kendo.ui.Widget widget based the DOM elements that match the selector.
 
@@ -6521,14 +6571,15 @@ $.fn.kendoWidget = function(options) {
 };
 
 
-kendo.ui.Window = function() { };
+kendo.ui.Window = function () {
+};
 
 kendo.ui.Window.prototype = {
 
 
 
 
-    center: function() {
+    center: function () {
         /// <summary>
         /// Centers the window within the viewport.
         /// </summary>
@@ -6537,7 +6588,7 @@ kendo.ui.Window.prototype = {
     },
 
 
-    close: function() {
+    close: function () {
         /// <summary>
         /// Closes a Window.
         /// </summary>
@@ -6546,7 +6597,7 @@ kendo.ui.Window.prototype = {
     },
 
 
-    content: function(content) {
+    content: function (content) {
         /// <summary>
         /// Gets or set the content of a window.
         /// </summary>
@@ -6556,7 +6607,7 @@ kendo.ui.Window.prototype = {
     },
 
 
-    destroy: function() {
+    destroy: function () {
         /// <summary>
         /// Destroys the window and its modal overlay, if necessary. Removes the widget HTML elements from the DOM.
         /// </summary>
@@ -6564,7 +6615,7 @@ kendo.ui.Window.prototype = {
     },
 
 
-    maximize: function() {
+    maximize: function () {
         /// <summary>
         /// Maximizes a Window to the entire viewing area of the user agent. Triggers the resize event.
         /// </summary>
@@ -6573,7 +6624,7 @@ kendo.ui.Window.prototype = {
     },
 
 
-    minimize: function() {
+    minimize: function () {
         /// <summary>
         /// Maximizes a Window to its title bar.
         /// </summary>
@@ -6582,7 +6633,7 @@ kendo.ui.Window.prototype = {
     },
 
 
-    open: function() {
+    open: function () {
         /// <summary>
         /// Opens a Window.
         /// </summary>
@@ -6591,7 +6642,7 @@ kendo.ui.Window.prototype = {
     },
 
 
-    pin: function() {
+    pin: function () {
         /// <summary>
         /// Pins the Window at its current position with a position:fixed style, i.e. the widget stops moving together with the other page content when the page is scrolled.
 /// The user will still be able to move the Window with the mouse or keyboard.
@@ -6600,7 +6651,7 @@ kendo.ui.Window.prototype = {
     },
 
 
-    refresh: function(options) {
+    refresh: function (options) {
         /// <summary>
         /// Refreshes the content of a Window from a remote URL or the initially defined content template.
 /// Note that passing data and requests different than GET cannot be sent to an iframe at this time, as they tequire a form with a target attribute.
@@ -6611,7 +6662,7 @@ kendo.ui.Window.prototype = {
     },
 
 
-    restore: function() {
+    restore: function () {
         /// <summary>
         /// Restores a maximized or minimized Window to its previous state. Triggers the resize event.
         /// </summary>
@@ -6620,7 +6671,7 @@ kendo.ui.Window.prototype = {
     },
 
 
-    setOptions: function(options) {
+    setOptions: function (options) {
         /// <summary>
         /// Allows the window to be configured with new options.
         /// </summary>
@@ -6629,7 +6680,7 @@ kendo.ui.Window.prototype = {
     },
 
 
-    title: function(text) {
+    title: function (text) {
         /// <summary>
         /// Gets or set the title of a Window.
         /// </summary>
@@ -6639,7 +6690,7 @@ kendo.ui.Window.prototype = {
     },
 
 
-    toFront: function() {
+    toFront: function () {
         /// <summary>
         /// Brings forward a Window to the top of the z-index.
         /// </summary>
@@ -6648,7 +6699,7 @@ kendo.ui.Window.prototype = {
     },
 
 
-    toggleMaximization: function() {
+    toggleMaximization: function () {
         /// <summary>
         /// Toggles a Window between a maximized and restored state. Triggers the resize event.
         /// </summary>
@@ -6657,14 +6708,14 @@ kendo.ui.Window.prototype = {
     },
 
 
-    unpin: function() {
+    unpin: function () {
         /// <summary>
         /// Disables the Window's pinned state, so that the widget will move together with the other page content when the page is scrolled.
         /// </summary>
 
     },
 
-    bind: function(event, callback) {
+    bind: function (event, callback) {
         /// <summary>
         /// Binds to a widget event.
         /// </summary>
@@ -6672,7 +6723,7 @@ kendo.ui.Window.prototype = {
         /// <param name="callback" type="Function">The callback to be executed when the event is triggered.</param>
     },
 
-    unbind: function(event, callback) {
+    unbind: function (event, callback) {
         /// <summary>
         /// Unbinds a callback from a widget event.
         /// </summary>
@@ -6682,14 +6733,14 @@ kendo.ui.Window.prototype = {
 
 };
 
-$.fn.getKendoWindow = function() {
+$.fn.getKendoWindow = function () {
     /// <summary>
     /// Returns a reference to the kendo.ui.Window widget, instantiated on the selector.
     /// </summary>
     /// <returns type="kendo.ui.Window">The kendo.ui.Window instance (if present).</returns>
 };
 
-$.fn.kendoWindow = function(options) {
+$.fn.kendoWindow = function (options) {
     /// <summary>
     /// Instantiates a kendo.ui.Window widget based the DOM elements that match the selector.
 
