@@ -13,7 +13,12 @@ import org.hibernate.Hibernate;
 import javax.validation.Valid;
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.Request;
+import java.util.HashSet;
 import java.util.List;
+
+import static com.google.common.base.Preconditions.checkNotNull;
+
 
 @Path("role")
 @Consumes(MediaType.APPLICATION_JSON)
@@ -70,5 +75,57 @@ public class RoleResource {
         role = roleDao.findById(role.getOid());
         roleDao.delete(role);
         return role;
+    }
+
+    @PUT
+    @UnitOfWork
+    @Path("group/{groupOid}/{roleOid}")
+    public Role createRoleGroup(@Auth Credentials credentials, @PathParam("groupOid") String groupOid, @PathParam("roleOid") String roleOid) {
+        Role group = roleDao.findById(groupOid);
+        checkNotNull(group, "groupOid mustn't be null");
+        Role role = roleDao.findById(roleOid);
+        checkNotNull(role, "roleOid mustn't be null");
+
+        boolean included = isRoleIncludedAsSubRole(role,groupOid);
+
+        if(included)
+            throw new RobeRuntimeException("","aaa");
+
+        if (group.getRoles() == null) {
+            group.setRoles(new HashSet<Role>());
+        }
+
+        group.getRoles().add(role);
+
+        roleDao.update(group);
+
+        return group;
+    }
+
+    private boolean isRoleIncludedAsSubRole(Role role, String groupOid) {
+        if(role.getOid().equals(groupOid))
+            return true;
+        for(Role child: role.getRoles()){
+            if(isRoleIncludedAsSubRole(child,groupOid))
+                return true;
+        }
+        return false;
+    }
+
+    @DELETE
+    @UnitOfWork
+    @Path("destroyRoleGroup/{groupOid}/{roleOid}")
+    public Role destroyRoleGroup(@Auth Credentials credentials, @PathParam("groupOid") String groupOid, @PathParam("roleOid") String roleOid) {
+        Role group = roleDao.findById(groupOid);
+        Role role = roleDao.findById(roleOid);
+
+        if (group.getRoles() != null) {
+            if (group.getRoles().contains(role)) {
+                group.getRoles().remove(role);
+                roleDao.update(group);
+            }
+        }
+
+        return group;
     }
 }
