@@ -1,6 +1,6 @@
 package io.robe.mail;
 
-public class MailProfile {
+public class MailConfiguration {
     private String host;
     private int port;
     private boolean auth;
@@ -8,7 +8,7 @@ public class MailProfile {
     private String password;
     private boolean tlsssl;
 
-    public MailProfile() {
+    public MailConfiguration() {
         super();
     }
 
