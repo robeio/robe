@@ -1,4 +1,4 @@
-package io.robe.utils;
+package io.robe.mail;
 
 import javax.activation.DataHandler;
 import javax.activation.DataSource;
@@ -10,38 +10,44 @@ import javax.mail.internet.MimeMultipart;
 import java.util.Properties;
 
 
-public class MailUtil {
+public class MailSender {
 
-    private static final String SMTP_HOST_NAME = "mail.gvg.com.tr";
-    private static final String SMTP_PORT = "587";
-    private static final String MAINSENDER = "software@gvg.com.tr";//"web@gvg.com.tr";//"idrissenocak@gmail.com";
+    private static MailSender INSTANCE;
 
+    protected static void createInstance(MailProfile profile) {
+        INSTANCE = new MailSender(profile);
+    }
 
-    public static void sendMessage(String sender, String[] receivers, String title, String body, DataSource attachment) throws MessagingException {
-        boolean debug = true;
+    public static MailSender getInstance() {
+        return INSTANCE;
+    }
+
+    private final MailProfile profile;
+
+    private MailSender(MailProfile profile) {
+        this.profile = profile;
+    }
+
+    public void sendMessage(String sender, String[] receivers, String title, String body, DataSource attachment) throws MessagingException {
 
         Properties props = new Properties();
-        props.put("mail.smtp.host", SMTP_HOST_NAME);
-        props.put("mail.smtp.auth", "true");
+        props.put("mail.smtp.host", profile.getHost());
+        props.put("mail.smtp.port", profile.getPort());
+        props.put("mail.smtp.auth", profile.isAuth());
         //props.put("mail.debug", "true");
-        props.put("mail.smtp.port", SMTP_PORT);
-        props.put("mail.smtp.socketFactory.port", SMTP_PORT);
-        //props.put("mail.smtp.starttls.enable","true");
+        props.put("mail.smtp.starttls.enable", profile.isTlsssl());
         //props.put("mail.smtp.socketFactory.class", SSL_FACTORY);
-        props.put("mail.smtp.socketFactory.fallback", "false");
+        // props.put("mail.smtp.socketFactory.fallback", "false");
 
-        Session session = Session.getDefaultInstance(props,
-                new javax.mail.Authenticator() {
-                    protected PasswordAuthentication getPasswordAuthentication() {
-                        return new PasswordAuthentication(MAINSENDER, "!guanyin2013GVG!");
-                    }
-                });
-
-        session.setDebug(debug);
+        Session session = Session.getDefaultInstance(props, new javax.mail.Authenticator() {
+            protected PasswordAuthentication getPasswordAuthentication() {
+                return new PasswordAuthentication(profile.getUsername(), profile.getPassword());
+            }
+        });
 
         Message msg = new MimeMessage(session);
         if (sender == null || sender.length() == 0)
-            sender = MAINSENDER;
+            sender = profile.getUsername();
 
         InternetAddress addressFrom = new InternetAddress(sender);
         msg.setFrom(addressFrom);
@@ -68,11 +74,6 @@ public class MailUtil {
         msg.setContent(mp);
         Transport.send(msg);
     }
-
-
-//	public static void sendMessage(String[] receivers ,MailTemplate template ,DataSource attachment) throws MessagingException {
-//		sendMessage(template.getSender(),receivers, template.getTitle(), template.getBody(), attachment);
-//	}
 
 
 }
