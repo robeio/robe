@@ -1,19 +1,19 @@
 package io.robe.view;
 
 import com.yammer.dropwizard.views.View;
+import io.robe.dto.BasicPair;
 
 
 public class ChangePasswordView extends View {
 
-    private String tickedOid;
+    private BasicPair ticket;
 
     public ChangePasswordView(String tickedOid) {
         super("ChangePassword.ftl");
-        this.tickedOid = tickedOid;
+        this.ticket = new BasicPair("tickedOid", tickedOid);
     }
 
-    public String getTickedOid() {
-        return this.tickedOid;
+    public BasicPair getTicket() {
+        return ticket;
     }
-
 }
