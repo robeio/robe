@@ -24,6 +24,15 @@ public class Ticket extends BaseEntity<Ticket> {
     @ManyToOne(targetEntity = User.class)
     private User user;
 
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
+    }
+
+
     public Type getType() {
         return type;
     }
