@@ -86,10 +86,19 @@
         </a>
     </div>
     <div id="progressBar"></div>
-    <a class="pull-right" id="logout"><b class="fa fa-sign-out fa-lg"></b>Çıkış </a>
+    <div class="btn-group pull-right">
+        <button type="button" id="settings">
+            <span class="fa fa-cog fa-lg fa-spin"></span> Ayarlar
+        </button>
+        <ul class="dropdown-menu" id="dropdownMenu">
+            <li><a href="#"><b class="fa fa-home fa-lg"></b> Profilim</a></li>
+            <li class="divider"></li>
+            <li id="logout"><a href="#"><b class="fa fa-sign-out fa-lg"></b> Çıkış Yap</a></li>
+        </ul>
+    </div>
+
 </nav>
 <!-- NAV END-->
-
 
 <!-- CONTENT START-->
 <div class="row clearfix">
