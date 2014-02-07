@@ -49,11 +49,13 @@ $(document).ready(function () {
         location.reload();
     });
 
-    $("#settings").click(function () {
-        $("#dropdownMenu").toggle("slow");
+    $("#settings").kendoButton({
+        click: onClickSettingsButton
     });
 
-    $("#settings").kendoButton({});
+    function onClickSettingsButton(e) {
+        $("#dropdownMenu").toggle("slow");
+    }
 
     $('#dialog').kendoWindow({
         actions: ["Close"],
