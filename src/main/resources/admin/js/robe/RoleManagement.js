@@ -42,8 +42,8 @@ function initializeRoleManagement() {
 
     $("#listAllRoles").kendoListView({
 		dataSource: RoleDataSource,
-		template:"<div>#:name#</div>",
-		selectable:"single",
+        template: "<div class='tags k-block'>#:name#</div>",
+        selectable:"single",
 		change: onListChange
 	});
 	$("#listGroupedRoles").kendoListView({
@@ -52,8 +52,7 @@ function initializeRoleManagement() {
     });
     $("#listUnGroupedRoles").kendoListView({
     		dataSource: UnGroupedRoleDataSource,
-    		template:"<div class='tags move k-block'>#:name#</div>",
-    		//selectable:"multiple"
+        template: "<div class='tags move k-block'>#:name#</div>"
     });
     $("#listUnGroupedRoles").kendoDraggable({
             filter: ".move",
