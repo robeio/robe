@@ -5,6 +5,9 @@ import com.yammer.dropwizard.config.Bootstrap;
 import com.yammer.dropwizard.config.Environment;
 import io.robe.service.RobeServiceConfiguration;
 
+/**
+ * Bundle class for mail implementation.
+ */
 public class MailBundle implements ConfiguredBundle<RobeServiceConfiguration> {
 
 
