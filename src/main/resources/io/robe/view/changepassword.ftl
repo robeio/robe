@@ -3,48 +3,52 @@
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
     <title>Robe Change Password</title>
-    <link rel="stylesheet" href="/bootstrap-2.0.2/css/bootstrap.css"/>
-    <link rel="stylesheet" href="/awesome-1.0.0/css/font-awesome.css"/>
-    <script type="text/javascript" src="/js/jquery-1.7.2.js"></script>
-    <script type="text/javascript" src="/bootstrap-2.0.2/js/bootstrap.js"></script>
+    <link href="../../admin-ui/js/bootstrap/bootstrap.orange.css" rel="stylesheet">
+
 </head>
 <body>
-<div class="container">
-    <div class="row">
-        <div class="span8">
+<!-- NAV START-->
+<nav class="navbar navbar-default navbar-static-top" role="navigation">
+    <!-- Brand and toggle get grouped for better mobile display -->
+    <div class="navbar-header">
+        <a class="navbar-brand">
+            <span id="bannerTitle">robe.io</span>
+        </a>
+    </div>
+</nav>
+<!-- NAV END-->
 
-            <form class="form-horizontal" id="registerHere" method="post"
-                  action="/robe/rest/changepassword">
-
-                <fieldset>
-                    <legend>Change Password</legend>
-                    <div class="control-group">
-                        <label class="control-label">New Password</label>
-
-                        <div class="controls">
-                            <input type="password" name="newpassword" class="span3">
-                        </div>
-                    </div>
-                    <div class="control-group">
-                        <label class="control-label">New Password (Confirm)</label>
-
-                        <div class="controls">
-                            <input type="password" name="newpassword2" class="span3">
-                        </div>
-                    </div>
-                </fieldset>
+<div class="container well well-sm">
+    <div class="span8">
+        <form class="form-horizontal" id="registerHere" method="POST" action="../../robe/ticket">
+            <fieldset>
+                <legend>Change Password</legend>
                 <div class="control-group">
-                    <label class="control-label"></label>
+                    <label class="control-label">New Password</label>
 
                     <div class="controls">
-                        <button type="submit" class="btn btn-success">Change It!</button>
+                        <input id="newPassword" type="password" name="newPassword">
                     </div>
                 </div>
-            </form>
-        </div>
+                <div class="control-group">
+                    <label class="control-label">New Password (Confirm)</label>
+
+                    <div class="controls">
+                        <input id="newPasswordConfirm" type="password" name="newPasswordConfirm">
+                    </div>
+                </div>
+            </fieldset>
+            <div class="control-group">
+                <label class="control-label"></label>
+
+                <div class="controls">
+                    <button type="submit" class="btn btn-success">Change It!</button>
+                </div>
+            </div>
+            <input type="hidden" name="ticketOid" value="${ticketOid}"/>
+        </form>
     </div>
 </div>
 </div>
-
 </body>
 </html>
