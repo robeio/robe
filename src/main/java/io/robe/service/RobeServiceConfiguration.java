@@ -3,7 +3,7 @@ package io.robe.service;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.yammer.dropwizard.config.Configuration;
 import com.yammer.dropwizard.db.DatabaseConfiguration;
-import io.robe.mail.MailProfile;
+import io.robe.mail.MailConfiguration;
 
 import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
@@ -21,7 +21,7 @@ public class RobeServiceConfiguration extends Configuration {
     private String entityPackage;
 
     @JsonProperty
-    private MailProfile mail;
+    private MailConfiguration mail;
 
 
     public String getEntityPackage() {
@@ -32,7 +32,7 @@ public class RobeServiceConfiguration extends Configuration {
         return database;
     }
 
-    public MailProfile getMail() {
+    public MailConfiguration getMail() {
         return mail;
     }
 }
