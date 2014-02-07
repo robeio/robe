@@ -37,6 +37,7 @@
                         <input id="newPasswordConfirm" type="password" name="newPasswordConfirm">
                     </div>
                 </div>
+                <input type="hidden" name="ticketOid" value="${ticketOid}"/>
             </fieldset>
             <div class="control-group">
                 <label class="control-label"></label>
@@ -45,7 +46,6 @@
                     <button type="submit" class="btn btn-success">Change It!</button>
                 </div>
             </div>
-            <input type="hidden" name="ticketOid" value="${ticketOid}"/>
         </form>
     </div>
 </div>
