@@ -118,10 +118,6 @@ tr[role="row"]:hover {
     width: 400px;
 }
 
-#logout {
-    margin: 25px 10px 0px 0px;
-}
-
 #liveFeedPanel {
     margin: 0px 10px 0px 0px;
 }
@@ -163,4 +159,12 @@ tr[role="row"]:hover {
 
 #btnMenuManagementHelp {
     margin-right: 10px;
+}
+
+#settings {
+    margin: 25px 10px 0px 0px;
+}
+
+#dropdownMenu {
+    margin-right: 5px;
 }
