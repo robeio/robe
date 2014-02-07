@@ -10,25 +10,27 @@ import io.robe.view.ChangePasswordView;
 
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.Response;
 
 @Path("ticket")
-@Consumes(MediaType.APPLICATION_JSON)
+@Consumes(MediaType.TEXT_HTML)
 @Produces(MediaType.TEXT_HTML)
 public class TicketResource {
-
 
     @Inject
     TicketDao ticketDao;
     @Inject
     RoleDao roleDao;
 
-    @Path("{ticketOid}")
     @POST
     @UnitOfWork
-    public void consumeTicket(@PathParam("ticketOid") String tickedOid) {
-        Preconditions.checkNotNull(tickedOid);
-        Ticket ticket = ticketDao.findById(tickedOid);
-        Preconditions.checkNotNull(ticket);
+    @Consumes(MediaType.APPLICATION_FORM_URLENCODED)
+    public Response consumeTicket(@FormParam("ticketOid") String tickedOid, @FormParam("newPassword") String newPassword, @FormParam("newPasswordConfirm") String newPasswordConfirm) {
+//        Preconditions.checkNotNull(tickedOid);
+//        Ticket ticket = ticketDao.findById(tickedOid);
+//        Preconditions.checkNotNull(ticket);
+
+        return Response.status(200).entity("ticketOid : " + tickedOid + " newPassword : " + newPassword + " newPasswordConfirm : " + newPasswordConfirm).build();
     }
 
     @GET
