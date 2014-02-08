@@ -1,5 +1,12 @@
 function initializeDashboard() {
-	$.ajax({
+    $("#btnHeapDump").kendoButton({
+        click: function (e) {
+            e.preventDefault();
+            window.open(getBackendURL() + "system/heapdump");
+            return false;
+        }
+    })
+    $.ajax({
     		type: "GET",
     		url: "http://127.0.0.1:8080/admin/metrics",
     		dataType: "json",
