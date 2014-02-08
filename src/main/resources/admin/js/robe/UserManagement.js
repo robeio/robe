@@ -52,7 +52,9 @@ function initializeUserManagement() {
             mode: "popup",
             window: {
                 title: "Kayıt"
-            }
+            },
+            confirmation: "Silmek istediğinizden emin misiniz?",
+            confirmDelete: "Yes"
         }
     });
 
