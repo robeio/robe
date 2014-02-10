@@ -1,5 +1,8 @@
 package io.robe.mail;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import javax.activation.DataHandler;
 import javax.activation.DataSource;
 import javax.mail.*;
@@ -18,6 +21,7 @@ import static com.google.common.base.Preconditions.checkNotNull;
 public class MailSender {
 
     private static MailSender INSTANCE;
+    private static final Logger LOGGER = LoggerFactory.getLogger(MailSender.class);
 
     /**
      * Creates an instance for singleton. Will be called from {@link io.robe.mail.MailBundle}
@@ -30,6 +34,7 @@ public class MailSender {
 
     /**
      * Returns an instance of mail sender
+     *
      * @return
      */
     public static MailSender getInstance() {
@@ -45,6 +50,31 @@ public class MailSender {
         this.configuration = configuration;
     }
 
+    public static boolean isSupported() {
+        return INSTANCE != null;
+    }
+
+
+    /**
+     * Sends a mail with the given parameters.
+     *
+     * @param sender     sender mail address
+     * @param receivers  an array of receiver mail addresses
+     * @param title      title of mail
+     * @param body       body of mail
+     * @param attachment a document to attach. If not available send null.
+     * @return true if mail support enabled.
+     * @throws MessagingException in case of any problem.
+     */
+    public static boolean send(String sender, String[] receivers, String title, String body, DataSource attachment) throws MessagingException {
+        if (INSTANCE != null) {
+            INSTANCE.sendMessage(sender, receivers, title, body, attachment);
+            return true;
+        }
+        LOGGER.warn("Mail bundle is not included.");
+        return false;
+    }
+
     /**
      * Sends a mail with the given parameters.
      *
@@ -55,7 +85,7 @@ public class MailSender {
      * @param attachment a document to attach. If not available send null.
      * @throws MessagingException in case of any problem.
      */
-    public void sendMessage(String sender, String[] receivers, String title, String body, DataSource attachment) throws MessagingException {
+    private void sendMessage(String sender, String[] receivers, String title, String body, DataSource attachment) throws MessagingException {
 
         checkNotNull(sender);
         checkNotNull(receivers);
