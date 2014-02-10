@@ -27,8 +27,8 @@ var Charts = {
 					startAngle: -90,
 					endAngle: 90,
 					center: ['50%', '75%'] ,
-					colors:["#00FF00","#FF0000"]
-				}
+                    colors: ["#00FF00", "#FF0000", "#0000FF"]
+                }
 			},
 			series: [{
 				type: 'pie',
@@ -37,7 +37,60 @@ var Charts = {
 				data: data
 			}]
 		});
-	} ,
+	},
+	column : function(id,data,title,serverUptime) {
+	$(function () {
+            $('#'+id).highcharts({
+                chart: {
+                    type: 'column'
+                },
+                title: {
+                    text: title
+                },
+                subtitle: {
+                    text: serverUptime
+                },
+                xAxis: {
+                    categories: [
+                        '1**',
+                        '2**',
+                        '3**',
+                        '4**',
+                        '5**'
+                    ]
+                },
+                yAxis: {
+                    min: 0,
+                    title: {
+                        text: 'Count'
+                    }
+                },
+                tooltip: {
+                    headerFormat: '<span style="font-size:10px">{point.key}</span><table>',
+                    pointFormat: '<tr><td style="color:{series.color};padding:0">{series.name}: </td>' +
+                        '<td style="padding:0"><b>{point.y:.1f} </b></td></tr>',
+                    footerFormat: '</table>',
+                    shared: true,
+                    useHTML: true
+                },
+                plotOptions: {
+                    column: {
+                        pointPadding: 0.2,
+                        borderWidth: 0
+                    }
+                },
+                series: [{
+                    name: 'Http Response Code',
+                    data: data,
+
+                }]
+            });
+        });
+
+
+
+	},
+
 
 	gauge: function(id,data,title){
 		$('#'+id).highcharts({
