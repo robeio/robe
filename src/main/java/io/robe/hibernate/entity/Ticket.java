@@ -7,7 +7,7 @@ import java.util.Date;
 @Table
 public class Ticket extends BaseEntity<Ticket> {
 
-    enum Type {
+    public enum Type {
         CHANGE_PASSWORD,
         INIT_PASSWORD,
         ACTIVATE,
