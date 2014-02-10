@@ -44,6 +44,13 @@ $(document).ready(function () {
         }
     });
 
+    $("#profile").click(function () {
+        $('#dialogMessage').load("../html/ProfileManagement.html", function () {
+            showDialog(null, "Profil Bilgileri");
+            eval("initializeProfileManagement();");
+        });
+    });
+
     $("#logout").click(function () {
         $.cookie.destroy("MedyAuthToken");
         location.reload();
