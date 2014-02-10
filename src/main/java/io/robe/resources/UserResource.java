@@ -50,7 +50,14 @@ public class UserResource {
 		return new UserDTO(userDao.findById(id));
 	}
 
-	@PUT
+    @GET
+    @UnitOfWork
+    @Path("email/{email}")
+    public UserDTO getByEmail(@Auth Credentials credentials, @PathParam("email") String email) {
+        return new UserDTO(userDao.findByEmail(email).get());
+    }
+
+    @PUT
 	@UnitOfWork
 	public UserDTO create(@Auth Credentials credentials, @Valid UserDTO user) {
 		Optional<User> checkUser = userDao.findByEmail(user.getEmail());
