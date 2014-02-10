@@ -20,8 +20,8 @@ function initializeDashboard() {
 
 
             var memoryData = [
-                ["Boş", (data["totalMax"] - data["totalUsed"])],
-                ["Kullanılan", (data["totalUsed"])]
+                ["Unused", (data["totalMax"] - data["totalUsed"])],
+                ["Used", (data["totalUsed"])]
             ];
 
             var connPool = response["org.eclipse.jetty.util.thread.QueuedThreadPool"];
@@ -42,7 +42,10 @@ function initializeDashboard() {
                 ["Warn", (logbackWarn)]
             ];
 
-            var heapMemoryData = [["Unused Heap Memory",(data["heapMax"]-data["heapUsed"])],["Used Heap Memory",(data["heapUsed"])]];
+            var heapMemoryData = [
+                ["Unused", (data["heapMax"] - data["heapUsed"])],
+                ["Used", (data["heapUsed"])]
+            ];
             var vmInfo = response["jvm"]["vm"];
             var vmName = vmInfo["name"];
             var vmVersion = vmInfo["version"];
