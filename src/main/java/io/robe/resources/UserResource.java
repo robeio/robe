@@ -8,20 +8,14 @@ import io.robe.auth.Credentials;
 import io.robe.dto.UserDTO;
 import io.robe.exception.RobeRuntimeException;
 import io.robe.hibernate.dao.RoleDao;
-import io.robe.hibernate.dao.TicketDao;
 import io.robe.hibernate.dao.UserDao;
 import io.robe.hibernate.entity.Role;
-import io.robe.hibernate.entity.Ticket;
 import io.robe.hibernate.entity.User;
-import io.robe.mail.MailSender;
 import io.robe.utils.HashingUtils;
-import org.joda.time.DateTime;
+import org.hibernate.validator.constraints.Email;
 
-import javax.mail.MessagingException;
-import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 import javax.ws.rs.*;
-import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 import java.util.LinkedList;
 import java.util.List;
@@ -36,8 +30,6 @@ public class UserResource {
     UserDao userDao;
     @Inject
     RoleDao roleDao;
-    @Inject
-    TicketDao ticketDao;
 
     @Path("all")
     @GET
@@ -68,7 +60,7 @@ public class UserResource {
 
     @PUT
     @UnitOfWork
-    public UserDTO create(@Auth Credentials credentials, @Valid UserDTO user, @Context HttpServletRequest request) {
+    public UserDTO create(@Auth Credentials credentials, @Valid UserDTO user) {
         Optional<User> checkUser = userDao.findByEmail(user.getEmail());
         if (checkUser.isPresent())
             throw new RobeRuntimeException("E-mail", user.getEmail() + " already used by another user. Please use different e-mail.");
@@ -76,30 +68,14 @@ public class UserResource {
         entity.setEmail(user.getEmail());
         entity.setName(user.getName());
         entity.setSurname(user.getSurname());
-        entity.setActive(false);
+        entity.setPassword(user.getPassword());
+        entity.setActive(user.isActive());
         Role role = roleDao.findById(user.getRoleOid());
         if (role == null) {
             throw new RobeRuntimeException("Role", user.getEmail() + " cannot be null.");
         }
         entity.setRole(role);
         entity.setPassword(HashingUtils.hashSHA2(user.getPassword()));
-
-        if (MailSender.isSupported()) {
-            Ticket ticket = new Ticket();
-            ticket.setType(Ticket.Type.ACTIVATE);
-            DateTime expire = DateTime.now().plusDays(1);
-            ticket.setExpirationDate(expire.toDate());
-            ticket.setUser(entity);
-            ticketDao.create(ticket);
-            try {
-                //TODO: Template support will be used.
-                MailSender.send("serayuzgur@gmail.com", new String[]{entity.getEmail()}, "Activation", ticket.getOid(), null);
-            } catch (MessagingException e) {
-                new RobeRuntimeException(e);
-            }
-        } else {
-            entity.setActive(true);
-        }
 
         return new UserDTO(userDao.create(entity));
 
@@ -121,10 +97,8 @@ public class UserResource {
         entity.setEmail(user.getEmail());
         entity.setName(user.getName());
         entity.setSurname(user.getSurname());
-        entity.setPassword(user.getPassword());
         entity.setActive(user.isActive());
         entity.setRole(role);
-        entity.setPassword(HashingUtils.hashSHA2(user.getPassword()));
 
         entity = userDao.update(entity);
         userDao.flush();
