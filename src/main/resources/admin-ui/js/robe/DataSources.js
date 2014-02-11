@@ -172,7 +172,7 @@ function dataSourceError(e) {
             text: 'Güncelleme sırasında bir hata oluştu.',
             sticky: false,
             type: 'error',
-            position: 'middle-right'
+            position: 'top-right'
         });
     }
     else if (type === "destroy") {
@@ -180,7 +180,7 @@ function dataSourceError(e) {
             text: "Silme sırasında bir hata oluştu.",
             sticky: false,
             type: 'error',
-            position: 'middle-right'
+            position: 'top-right'
         });
     }
     else if (type === "read") {
@@ -188,7 +188,7 @@ function dataSourceError(e) {
             text: "Veriler getirilirken bir hata oluştu.",
             sticky: false,
             type: 'error',
-            position: 'middle-right'
+            position: 'top-right'
         });
     }
     else if (type === "create") {
@@ -196,7 +196,7 @@ function dataSourceError(e) {
             text: "Oluşturulma sırasında bir hata oluştu.",
             sticky: false,
             type: 'error',
-            position: 'middle-right'
+            position: 'top-right'
         });
     }
 }
@@ -209,7 +209,7 @@ function dataSourceRequestEnd(e) {
             text: "Başarı ile güncellendi",
             sticky: false,
             type: 'success',
-            position: 'middle-right'
+            position: 'top-right'
         });
     }
     else if (type === "destroy") {
@@ -217,7 +217,7 @@ function dataSourceRequestEnd(e) {
             text: "Başarı ile silindi",
             sticky: false,
             type: 'success',
-            position: 'middle-right'
+            position: 'top-right'
         });
     }
     else if (type === "create") {
@@ -225,7 +225,7 @@ function dataSourceRequestEnd(e) {
             text: "Başarı ile oluşturuldu",
             sticky: false,
             type: 'success',
-            position: 'middle-right'
+            position: 'top-right'
         });
     }
 
