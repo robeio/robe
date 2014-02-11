@@ -9,6 +9,7 @@ import org.hibernate.SessionFactory;
  */
 public class MailTemplateDao extends BaseDao<MailTemplate> {
 
+
     @Inject
     public MailTemplateDao(SessionFactory sessionFactory) {
         super(sessionFactory);
