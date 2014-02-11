@@ -1,4 +1,4 @@
-//@ sourceURL=MenuTemplateManagement.js
+//@ sourceURL=MailTemplateManagement.js
 
 function initializeMailTemplateManagement() {
     var exampleTemplate =
@@ -98,7 +98,7 @@ function initializeMailTemplateManagement() {
                         text: 'Template başarı ile eklendi.',
                         sticky: false,
                         type: 'success',
-                        position: 'middle-right'
+                        position: 'top-right'
                     });
                 }
             });
