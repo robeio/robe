@@ -18,7 +18,7 @@
     <groupId>io.robe</groupId>
     <artifactId>robe-all</artifactId>
     <version>${project.version}</version>
-    <packaging>pom</packaging>
+    <packaging>jar</packaging>
 
     <dependencyManagement>
         <dependencies>
