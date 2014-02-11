@@ -31,9 +31,9 @@ $.ajaxSetup({
         console.log(status + " : " + xhr);
     }
 });
+loadConfig();
 $(document).ready(function () {
 
-    loadConfig();
     $("#progressBar").kendoProgressBar({
         min: 0,
         max: 1,
