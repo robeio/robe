@@ -168,27 +168,35 @@ function dataSourceError(e) {
     var response = e.response;
     var type = e.type;
     if (type === "update") {
-        $.pnotify({
-            text: "Güncelleme sırasında bir hata oluştu.",
-            type: 'error'
+        $().toastmessage('showToast', {
+            text: 'Güncelleme sırasında bir hata oluştu.',
+            sticky: false,
+            type: 'error',
+            position: 'middle-right'
         });
     }
     else if (type === "destroy") {
-        $.pnotify({
+        $().toastmessage('showToast', {
             text: "Silme sırasında bir hata oluştu.",
-            type: 'error'
+            sticky: false,
+            type: 'error',
+            position: 'middle-right'
         });
     }
     else if (type === "read") {
-        $.pnotify({
+        $().toastmessage('showToast', {
             text: "Veriler getirilirken bir hata oluştu.",
-            type: 'info'
+            sticky: false,
+            type: 'error',
+            position: 'middle-right'
         });
     }
     else if (type === "create") {
-        $.pnotify({
+        $().toastmessage('showToast', {
             text: "Oluşturulma sırasında bir hata oluştu.",
-            type: 'error'
+            sticky: false,
+            type: 'error',
+            position: 'middle-right'
         });
     }
 }
@@ -197,21 +205,27 @@ function dataSourceRequestEnd(e) {
     var response = e.response;
     var type = e.type;
     if (type === "update") {
-        $.pnotify({
-            text: "Güncellendi",
-            type: 'success'
+        $().toastmessage('showToast', {
+            text: "Başarı ile güncellendi",
+            sticky: false,
+            type: 'success',
+            position: 'middle-right'
         });
     }
     else if (type === "destroy") {
-        $.pnotify({
-            text: "Silindi",
-            type: 'info'
+        $().toastmessage('showToast', {
+            text: "Başarı ile silindi",
+            sticky: false,
+            type: 'success',
+            position: 'middle-right'
         });
     }
     else if (type === "create") {
-        $.pnotify({
-            text: "Eklendi",
-            type: 'success'
+        $().toastmessage('showToast', {
+            text: "Başarı ile oluşturuldu",
+            sticky: false,
+            type: 'success',
+            position: 'middle-right'
         });
     }
 

@@ -168,3 +168,7 @@ tr[role="row"]:hover {
 #dropdownMenu {
     margin-right: 5px;
 }
+
+#btnMailTemplateManagementHelp {
+    margin-left: 10px;
+}

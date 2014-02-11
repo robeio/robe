@@ -42,6 +42,8 @@ $(document).ready(function () {
         }
     });
 
+    initializeMailTemplateManagement();
+
     $("#profile").click(function () {
         $('#dialogMessage').load("./ProfileManagement.html", function () {
             showDialog(null, "Profil Bilgileri");
