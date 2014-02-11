@@ -1,6 +1,5 @@
-/**
- * Created by kaanalkim on 11/02/14.
- */
+//@ sourceURL=MenuTemplateManagement.js
+
 function initializeMailTemplateManagement() {
     var exampleTemplate =
         "<p>Sayın $name $username,</p>" +
