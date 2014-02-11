@@ -171,6 +171,14 @@ public class InitializeCommand<T extends RobeServiceConfiguration> extends Envir
 		session.persist(dash);
 		session.persist(createPermission(true, dash.getOid(), role));
 
+        Menu mailTemplate = new Menu();
+        mailTemplate.setCode("MailTemplateManagement");
+        mailTemplate.setItemOrder(0);
+        mailTemplate.setName("Mail Template Yönetimi");
+        mailTemplate.setParentOid(manager.getOid());
+        session.persist(mailTemplate);
+        session.persist(createPermission(true, mailTemplate.getOid(), role));
+
 		session.flush();
 		session.close();
 
