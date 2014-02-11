@@ -77,6 +77,11 @@ $(document).ready(function () {
     $(document).ajaxStop(function () {
         showIndicator(false);
     });
+
+    $.getScript('../js/robe/Validations.js');
+    $.getScript('../js/robe/Models.js');
+    $.getScript('../js/robe/HierarchicalDataSources.js');
+    $.getScript('../js/robe/DataSources.js');
 });
 
 function loadMenu() {
