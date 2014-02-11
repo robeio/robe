@@ -2,7 +2,7 @@ $.ajaxSetup({
     dataType: "json",
     statusCode: {
         401: function () {
-            $('#dialogMessage').load("../html/Login.html", function () {
+            $('#dialogMessage').load("./Login.html", function () {
                 showDialog(null, "Giriş");
                 eval("initializeLogin();");
             });
@@ -21,7 +21,7 @@ $.ajaxSetup({
                     msg += error.message;
                 }
             });
-            showDialog("<img style='float:left; margin-right:10px;' src='../icon/close.png'/>" + msg + "</span>", "Hata");
+            showDialog("<img style='float:left; margin-right:10px;' src='./icon/close.png'/>" + msg + "</span>", "Hata");
         }
     },
     beforeSend: function (xhr) {
@@ -45,7 +45,7 @@ $(document).ready(function () {
     });
 
     $("#profile").click(function () {
-        $('#dialogMessage').load("../html/ProfileManagement.html", function () {
+        $('#dialogMessage').load("./ProfileManagement.html", function () {
             showDialog(null, "Profil Bilgileri");
             eval("initializeProfileManagement();");
         });
@@ -70,7 +70,7 @@ $(document).ready(function () {
         visible: false
     });
 
-    $('#dialogMessage').load("../html/Login.html", function () {
+    $('#dialogMessage').load("./Login.html", function () {
         showDialog(null, "Giriş");
         eval("initializeLogin();");
     });
@@ -93,7 +93,7 @@ function loadMenu() {
             addIcons(response[0]);
             $('#menu').kendoPanelBar({
                 dataSource: response[0].items,
-                select: onSelect,
+                select: onSelect
             });
 
         }
@@ -130,7 +130,7 @@ function openMenuItem(menuitem) {
     if (menuitem.indexOf("k-") == 0)
         return;
 
-    $('#container').load("../html/" + menuitem + ".html", function () {
+    $('#container').load("./" + menuitem + ".html", function () {
         try {
             eval("initialize" + menuitem + "();");
 
