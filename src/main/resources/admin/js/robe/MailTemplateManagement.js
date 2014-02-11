@@ -55,7 +55,12 @@ function initializeMailTemplateManagement() {
     });
 
     function onBtnMailTemplateManagementHelp() {
-        alert("YARDIM EKLENECEK");
+        $().toastmessage('showToast', {
+            text: 'YARDIM EKLENECEK ;)',
+            sticky: false,
+            type: 'success',
+            position: 'middle-right'
+        });
     }
 
     $("#btnMailTemplateManagementSave").kendoButton({
@@ -90,6 +95,12 @@ function initializeMailTemplateManagement() {
                 data: data,
                 contentType: "application/json; charset=utf-8",
                 success: function () {
+                    $().toastmessage('showToast', {
+                        text: 'Template başarı ile eklendi.',
+                        sticky: false,
+                        type: 'success',
+                        position: 'middle-right'
+                    });
                 }
             });
         }
