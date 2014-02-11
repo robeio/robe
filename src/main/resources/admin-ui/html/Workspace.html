@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <title lang="tr">robe.io</title>
+
+    <!--KENDO CSS START-->
+    <link href="../js/kendoui/styles/kendo.common.min.css" rel="stylesheet">
+    <link href="../js/kendoui/styles/kendo.rtl.min.css" rel="stylesheet">
+    <link href="../js/kendoui/styles/kendo.default.min.css" rel="stylesheet">
+    <!--KENDO JS END-->
+
+    <link href="//fonts.googleapis.com/css?family=Ubuntu:300italic,300,400italic,400,500italic,500,700italic,700"
+          rel="stylesheet" type="text/css">
+    <link rel="stylesheet" type="text/css" href="../css/robe.css"/>
+
+    <!--BOOTSTRAP START-->
+    <link href="../js/bootstrap/bootstrap.orange.css" rel="stylesheet">
+    <!--BOOTSTRAP END-->
+
+    <!--FONT AWESOME START-->
+    <link href="//netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.css" rel="stylesheet">
+    <!--FONT AWESOME START-->
+
+    <!--  And include the metrics-watcher library -->
+
+    <!--KENDO JS START-->
+    <script type="text/javascript" charset="utf-8" src="../js/kendoui/js/jquery.min.js"></script>
+    <script type="text/javascript" charset="utf-8" src="../js/kendoui/js/kendo.web.min.js"></script>
+    <script type="text/javascript" charset="utf-8" src='../js/kendoui/js/cultures/kendo.culture.tr-TR.min.js'></script>
+    <!--KENDO JS END-->
+
+    <!--PINES NOTIFY CSS START-->
+    <link href="../js/pinesnotify/jquery.pnotify.default.css" rel="stylesheet">
+    <link href="../js/pinesnotify/jquery.pnotify.default.icons.css" rel="stylesheet">
+    <!--PINES NOTIFY CSS END-->
+
+    <!--PINES NOTIFY JS START-->
+    <script type="text/javascript" charset="utf-8" src='../js/pinesnotify/jquery.pnotify.min.js'></script>
+    <!--PINES NOTIFY JS END-->
+
+    <!--3rd PARTY JS LIBS. START-->
+    <script type="text/javascript" charset="utf-8" src="../js/zebra_cookie.js"></script>
+    <script type="text/javascript" charset="utf-8" src="../js/cryptojs/core-min.js"></script>
+    <script type="text/javascript" charset="utf-8" src="../js/cryptojs/enc-base64-min.js"></script>
+    <script type="text/javascript" charset="utf-8" src="../js/cryptojs/sha256.js"></script>
+
+    <script type="text/javascript" charset="utf-8" src="../js/amcharts/amcharts.js"></script>
+    <script type="text/javascript" charset="utf-8" src="../js/amcharts/pie.js"></script>
+    <!--3rd PARTY JS LIBS. END-->
+    <script src="http://code.highcharts.com/highcharts.js"></script>
+    <script src="http://code.highcharts.com/modules/exporting.js"></script>
+    <script src="http://code.highcharts.com/highcharts-more.js"></script>
+
+
+    <!--ROBE LIB START-->
+    <script type="text/javascript" charset="utf-8" src='../js/robe/Workspace.js'></script>
+    <script type="text/javascript" charset="utf-8" src='../js/robe/Validations.js'></script>
+    <script type="text/javascript" charset="utf-8" src='../js/robe/Models.js'></script>
+    <script type="text/javascript" charset="utf-8" src='../js/robe/HierarchicalDataSources.js'></script>
+    <script type="text/javascript" charset="utf-8" src='../js/robe/DataSources.js'></script>
+    <!--ROBE LIB START-->
+</head>
+
+<body>
+
+<div id="dialog" title="Mesaj" class="dialog">
+    <div id="dialogMessage" class="dialogMessage"></div>
+</div>
+
+<!-- NAV START-->
+<nav class="navbar navbar-default navbar-static-top" role="navigation">
+    <!-- Brand and toggle get grouped for better mobile display -->
+    <div class="navbar-header">
+        <a class="navbar-brand">
+            <img class="footer" src="../robe.png" id="bannerLogo"/>
+            <span id="bannerTitle">robe.io</span>
+        </a>
+    </div>
+    <div id="progressBar"></div>
+    <div class="btn-group pull-right">
+        <button type="button" id="settings">
+            <span class="fa fa-cog fa-lg fa-spin"></span> Ayarlar
+        </button>
+        <ul class="dropdown-menu" id="dropdownMenu">
+            <li id="profile"><a href="#"><b class="fa fa-home fa-lg"></b> Profilim</a></li>
+            <li class="divider"></li>
+            <li id="logout"><a href="#"><b class="fa fa-sign-out fa-lg"></b> Çıkış Yap</a></li>
+        </ul>
+    </div>
+
+</nav>
+<!-- NAV END-->
+
+
+<!-- CONTENT START-->
+<div class="row clearfix">
+    <!-- MENU START -->
+    <div class="col-md-2 column">
+        <div class="sidebar-nav">
+            <div id="menu" class="panel panel-default" style="margin: 0px 0px 0px 10px;">
+            </div>
+        </div>
+    </div>
+    <!-- MENU END-->
+
+    <!-- CONTAINER START -->
+    <div class="col-md-8 column">
+        <div id='container' class="well well-sm">
+            <div class="jumbotron">
+                <h1>robe.io</h1>
+
+                <p>Welcome to the robe.io</p>
+
+                <p><a class="btn btn-primary btn-lg" role="button">Learn more about robe.io</a></p>
+            </div>
+        </div>
+    </div>
+    <!-- CONTAINER END -->
+
+    <!-- LIVE FEED START -->
+    <div class="col-md-2 column">
+        <div id="liveFeedPanel" class="panel panel-default">
+            <div class="panel-heading">
+                <h3 class="panel-title fa fa-fire"> Live Feeds</h3>
+            </div>
+            <div class="panel-body">
+
+            </div>
+        </div>
+    </div>
+    <!-- LIVE FEED END -->
+</div>
+</body>
+</html>
