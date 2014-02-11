@@ -78,10 +78,7 @@ $(document).ready(function () {
         showIndicator(false);
     });
 
-    $.getScript('../js/robe/Validations.js');
-    $.getScript('../js/robe/Models.js');
-    $.getScript('../js/robe/HierarchicalDataSources.js');
-    $.getScript('../js/robe/DataSources.js');
+
 });
 
 function loadMenu() {
@@ -182,6 +179,10 @@ function loadConfig() {
         success: function (response) {
             backendURL = response.backendURL;
             adminURL = response.adminURL;
+            $.getScript('../js/robe/Validations.js');
+            $.getScript('../js/robe/Models.js');
+            $.getScript('../js/robe/HierarchicalDataSources.js');
+            $.getScript('../js/robe/DataSources.js');
         }
     });
 }
