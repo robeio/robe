@@ -5,6 +5,7 @@ import com.google.inject.Inject;
 import com.yammer.dropwizard.auth.AuthenticationException;
 import com.yammer.dropwizard.auth.Authenticator;
 import com.yammer.dropwizard.hibernate.UnitOfWork;
+import com.yammer.metrics.annotation.Timed;
 import io.robe.hibernate.dao.ServiceDao;
 import io.robe.hibernate.dao.UserDao;
 import io.robe.hibernate.entity.Permission;
@@ -98,6 +99,7 @@ public class AuthTokenAuthenticator implements Authenticator<String, Credentials
 		cryptoToken.setExpiration(600);
 		return cryptoToken;
 	}
+
 
 	private void getAllRolePermissions(Role parent, Set<Permission> rolePermissions) {
 		rolePermissions.addAll(parent.getPermissions());

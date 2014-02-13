@@ -4,6 +4,7 @@ import com.google.common.base.Optional;
 import com.google.inject.Inject;
 import com.yammer.dropwizard.auth.Auth;
 import com.yammer.dropwizard.hibernate.UnitOfWork;
+import com.yammer.metrics.annotation.Timed;
 import edu.vt.middleware.password.*;
 import io.robe.hibernate.dao.UserDao;
 import io.robe.hibernate.entity.User;
@@ -26,6 +27,7 @@ import java.util.List;
 @Path("authentication")
 @Produces(MediaType.APPLICATION_JSON)
 @Consumes(MediaType.APPLICATION_JSON)
+
 public class AuthResource {
 
 	@Inject
@@ -35,6 +37,7 @@ public class AuthResource {
 
 	@POST
 	@UnitOfWork
+    @Timed
 	@Path("login")
 	public Credentials login(@Context HttpServletRequest request, @Context HttpServletResponse response, Credentials credentials) {
 

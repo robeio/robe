@@ -5,6 +5,7 @@ import com.google.inject.Inject;
 import com.yammer.dropwizard.auth.Auth;
 import com.yammer.dropwizard.hibernate.UnitOfWork;
 import com.yammer.dropwizard.validation.InvalidEntityException;
+import com.yammer.metrics.annotation.Timed;
 import io.robe.audit.Audited;
 import io.robe.auth.Credentials;
 import io.robe.dto.MenuItem;
@@ -39,6 +40,7 @@ public class MenuResource {
 	@Path("all")
 	@GET
 	@UnitOfWork
+    @Timed
 	public List<Menu> getMenus(@Auth Credentials credentials) {
 		return menuDao.findAll(Menu.class);
 	}
@@ -102,6 +104,7 @@ public class MenuResource {
 
 	@POST
 	@UnitOfWork
+    @Timed
 	@Path("movenode/{item}/{destination}")
 	public Menu move(@Auth Credentials credentials, @PathParam("item") String itemOid, @PathParam("destination") String parentOid) {
 		Menu item = menuDao.findById(itemOid);
@@ -121,6 +124,8 @@ public class MenuResource {
 	}
 
 	@PUT
+    @Timed
+
 	@UnitOfWork
 	public Menu create(@Auth Credentials credentials, @Valid Menu menu) {
 		Optional<Menu> checkMenu = menuDao.findByCode(menu.getCode());
@@ -130,6 +135,7 @@ public class MenuResource {
 	}
 
 	@POST
+    @Timed
 	@UnitOfWork
 	@Audited
 	public Menu update(@Auth Credentials credentials, Menu menu) {
@@ -139,6 +145,7 @@ public class MenuResource {
 
 
 	@DELETE
+    @Timed
 	@UnitOfWork
 	public Menu delete(@Auth Credentials credentials, Menu menu) {
 		menuDao.delete(menu);

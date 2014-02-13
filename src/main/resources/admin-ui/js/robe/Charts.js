@@ -39,7 +39,7 @@ var Charts = {
 			}]
 		});
 	},
-	column : function(id,data,title,serverUptime) {
+	column : function(id,data,xAxisName,yAxisName,title,serverUptime,categoryList) {
 	$(function () {
             $('#'+id).highcharts({
                 chart: {
@@ -52,18 +52,12 @@ var Charts = {
                     text: serverUptime
                 },
                 xAxis: {
-                    categories: [
-                        '1**',
-                        '2**',
-                        '3**',
-                        '4**',
-                        '5**'
-                    ]
+                    categories: categoryList
                 },
                 yAxis: {
                     min: 0,
                     title: {
-                        text: 'Count'
+                        text: yAxisName
                     }
                 },
                 tooltip: {
@@ -81,7 +75,7 @@ var Charts = {
                     }
                 },
                 series: [{
-                    name: 'Http Response Code',
+                    name: xAxisName,
                     data: data,
 
                 }]
