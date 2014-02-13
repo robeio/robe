@@ -180,12 +180,12 @@ function loadConfig() {
             backendURL = response.backendURL;
             adminURL = response.adminURL;
 
-            loadJS('../js/robe/Validations.js');
-            loadJS('../js/robe/Models.js');
-            loadJS('../js/robe/data/SingletonHierarchicalDataSource.js');
-            loadJS('../js/robe/data/SingletonDataSource.js');
-            loadJS('../js/robe/HierarchicalDataSources.js');
-            loadJS('../js/robe/DataSources.js');
+            loadJS(['../js/robe/Validations.js',
+                '../js/robe/Models.js',
+                '../js/robe/data/SingletonHierarchicalDataSource.js',
+                '../js/robe/data/SingletonDataSource.js',
+                '../js/robe/HierarchicalDataSources.js',
+                '../js/robe/DataSources.js']);
 
 
         }
@@ -203,10 +203,11 @@ function getAdminURL() {
 }
 
 
-function loadJS(source){
-    var oHead = document.getElementsByTagName('HEAD').item(0);
-    var oScript= document.createElement("script");
-    oScript.type = "text/javascript";
-    oScript.src=source;
-    oHead.appendChild( oScript);
+function loadJS(sources) {
+    var size = sources.length;
+    if (size > 0) {
+        $.getScript(sources[0], function () {
+            loadJS(sources.slice(1));
+        });
+    }
 }
