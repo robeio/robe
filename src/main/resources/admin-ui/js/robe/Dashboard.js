@@ -22,15 +22,19 @@ function initializeDashboard() {
             var serverUptime = "Server Uptime : " + response["jvm"]["uptime"] + " seconds";
 
 
+            //Memory data
             var memoryData = [
                 ["Unused", (data["totalMax"] - data["totalUsed"])],
                 ["Used", (data["totalUsed"])]
             ];
 
+            //Connection Pool Data
             var connPool = response["org.eclipse.jetty.util.thread.QueuedThreadPool"];
             var connMax = connPool["active-threads"]["value"] + connPool["idle-threads"]["value"];
             var connUsed = connPool["active-threads"]["value"];
 
+
+            //Logback Data
             var logbackAll = response["ch.qos.logback.core.Appender"]["all"]["count"];
             var logbackDebug = response["ch.qos.logback.core.Appender"]["debug"]["count"];
             var logbackError = response["ch.qos.logback.core.Appender"]["error"]["count"];
@@ -45,27 +49,48 @@ function initializeDashboard() {
                 ["Warn", (logbackWarn)]
             ];
 
+
+            //Heap Memory Data
             var heapMemoryData = [
                 ["Unused", (data["heapMax"] - data["heapUsed"])],
                 ["Used", (data["heapUsed"])]
             ];
+            var heapUsage = data["heap_usage"];
+            var nonHeapUsage = data["non_heap_usage"];
+
+            // VM info and HTTP response counts data
             var vmInfo = response["jvm"]["vm"];
             var vmName = vmInfo["name"];
             var vmVersion = vmInfo["version"];
-            var heapUsage = data["heap_usage"];
-            var nonHeapUsage = data["non_heap_usage"];
             var httpResponseCounts = [servletInfo["1xx-responses"]["count"],servletInfo["2xx-responses"]["count"],servletInfo["3xx-responses"]["count"],servletInfo["4xx-responses"]["count"],servletInfo["5xx-responses"]["count"]];
+            var categoryList = ['1**','2**','3**','4**','5**'];
 
+            // Authenticate service counts and response times
+            var authenticateServiceData = response["io.robe.auth.AuthResource"];
+            var loginMin = authenticateServiceData["login"]["duration"]["min"];
+            var loginMax = authenticateServiceData["login"]["duration"]["max"];
+            var loginMean = authenticateServiceData["login"]["duration"]["mean"];
+            var loginCount = authenticateServiceData["login"]["rate"]["count"];
 
+            // Auth Token service counts and response times
+            var authTokenServiceData = response["io.robe.auth.AuthTokenAuthenticator"];
+            var getTokenMin = authTokenServiceData ["gets"]["duration"]["min"];
+            var getTokenMax = authTokenServiceData ["gets"]["duration"]["max"];
+            var getTokenMean = authTokenServiceData ["gets"]["duration"]["mean"];
 
-
-
+            // Menu service counts and response times
+            var menuServiceData = response["io.robe.resources.MenuResource"];
+            var createMenuMean = menuServiceData["create"]["duration"]["mean"];
+            var getMenuMean = menuServiceData["getMenus"]["duration"]["mean"];
+            var deleteMenu = menuServiceData["delete"]["duration"]["mean"];
 
             Charts.pie("memory", memoryData, "Ram");
             Charts.gauge("threads", [connUsed, connMax], "Threads");
             Charts.pie("allLogback", logBackData, "LOGBACK");
             Charts.pie("heapMemory",heapMemoryData,"Heap Memory");
-            Charts.column("responseCount",httpResponseCounts," Response Counts",serverUptime);
+            Charts.column("responseCount",httpResponseCounts,'Http Response Code'," Response Counts","HTTP Response Code Counts",serverUptime,categoryList);
+            Charts.column("responseTime",[getMenuMean,getTokenMean,loginMean],"Http Response Time","Time (miliSeconds) ","Http Response Time",serverUptime,["Get Menus","Get Token", " Post Login"])
+
             document.getElementById("vmName").innerHTML = vmName;
             document.getElementById("vmVersion").innerHTML = vmVersion;
             document.getElementById("heapUsage").innerHTML ="%" + parseInt(heapUsage * 100) ;
