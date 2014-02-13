@@ -15,14 +15,23 @@ public class MailTemplate extends BaseEntity {
         EN;
     }
 
+    @Column(name = "code", nullable = true, length = 25)
+    private String code;
+
     @Enumerated(EnumType.STRING)
-    @Column(name = "tLang", nullable = false)
+    @Column(name = "lang", nullable = false)
     private Type lang;
 
-    @Column(name = "template", nullable = false)
-    @Lob
-    @Basic(fetch = FetchType.EAGER)
-    private Blob template;
+    @Column(name = "template", nullable = false, columnDefinition = "Text")
+    private String template;
+
+    public String getCode() {
+        return code;
+    }
+
+    public void setCode(String code) {
+        this.code = code;
+    }
 
     public Type getLang() {
         return lang;
@@ -32,12 +41,11 @@ public class MailTemplate extends BaseEntity {
         this.lang = lang;
     }
 
-    public Blob getTemplate() {
+    public String getTemplate() {
         return template;
     }
 
-    public void setTemplate(Blob template) {
+    public void setTemplate(String template) {
         this.template = template;
     }
-
 }
