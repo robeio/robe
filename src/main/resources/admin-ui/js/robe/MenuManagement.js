@@ -1,7 +1,7 @@
 //@ sourceURL=MenuManagement.js
 function initializeMenuManagement() {
     $("#gridMenus").kendoGrid({
-        dataSource: MenuDataSource,
+        dataSource: MenuDataSource.get(),
         sortable: true,
         resizable: true,
         pageable: {
@@ -67,7 +67,7 @@ function initializeMenuManagement() {
 
     $("#treeMenus").kendoTreeView({
         dragAndDrop: true,
-        dataSource: MenuHierarchicalDataSource,
+        dataSource: MenuHierarchicalDataSource.get(),
         dataTextField: "name",
         drop: onTreeMenuDrop,
         drag: onTreeMenuDrag

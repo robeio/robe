@@ -3,7 +3,7 @@ var selectedGroup;
 function initializeRoleManagement() {
 
     $("#gridRoles").kendoGrid({
-        dataSource: RoleDataSource,
+        dataSource: RoleDataSource.get(),
         sortable: true,
         toolbar: [
             {
@@ -52,17 +52,17 @@ function initializeRoleManagement() {
     });
 
     $("#listAllRoles").kendoListView({
-        dataSource: RoleDataSource,
+        dataSource: RoleDataSource.get(),
         template: "<div class='tags k-block'>#:name#</div>",
         selectable: "single",
         change: onListChange
     });
     $("#listGroupedRoles").kendoListView({
-        dataSource: GroupedRoleDataSource,
+        dataSource: GroupedRoleDataSource.get(),
         template: "<div class='tags move  k-block'>#:name#</div><a href='javascript:' class='tagitemcls' onclick=\"removeItem(this,'#:uid#')\"><span class='k-icon k-i-close'></span></a>",
     });
     $("#listUnGroupedRoles").kendoListView({
-        dataSource: UnGroupedRoleDataSource,
+        dataSource: UnGroupedRoleDataSource.get(),
         template: "<div class='tags move k-block'>#:name#</div>"
     });
     $("#listUnGroupedRoles").kendoDraggable({
@@ -80,10 +80,10 @@ function initializeRoleManagement() {
         },
         drop: function (e) {
 
-            var data = RoleDataSource.view();
+            var data = RoleDataSource.get().view();
             var groupOid = selectedGroup;
 
-            var item = UnGroupedRoleDataSource.getByUid(e.draggable.hint.data().uid);
+            var item = UnGroupedRoleDataSource.get().getByUid(e.draggable.hint.data().uid);
             if (groupOid === item.oid) {
                 return;
             }
@@ -94,8 +94,8 @@ function initializeRoleManagement() {
                     dataType: "json",
                     contentType: "application/json; charset=utf-8",
                     success: function () {
-                        GroupedRoleDataSource.add(item);
-                        UnGroupedRoleDataSource.remove(item);
+                        GroupedRoleDataSource.get().add(item);
+                        UnGroupedRoleDataSource.get().remove(item);
                     }
                 });
             }
@@ -118,7 +118,7 @@ function initializeRoleManagement() {
 
 
     function onListChange(e) {
-        var data = RoleDataSource.view(), selected = $.map(this.select(), function (item) {
+        var data = RoleDataSource.get().view(), selected = $.map(this.select(), function (item) {
             selectedGroup = data[$(item).index()].oid;
             return selectedGroup;
         });
@@ -129,16 +129,16 @@ function initializeRoleManagement() {
             dataType: "json",
             contentType: "application/json; charset=utf-8",
             success: function (response) {
-                GroupedRoleDataSource.data(response.roles);
+                GroupedRoleDataSource.get().data(response.roles);
                 var oids = [];
                 for (var i = 0; i < response.roles.length; i++) {
                     oids.push(response.roles[i].oid);
                 }
                 oids.push(selectedGroup);
-                var unGrouped = RoleDataSource.data().filter(function (elem) {
+                var unGrouped = RoleDataSource.get().data().filter(function (elem) {
                     return oids.indexOf(elem.oid) === -1;
                 });
-                UnGroupedRoleDataSource.data(unGrouped);
+                UnGroupedRoleDataSource.get().data(unGrouped);
             }
         });
     };
@@ -146,7 +146,7 @@ function initializeRoleManagement() {
     $("#tabstrip").kendoTabStrip();
 }
 function removeItem(e, id) {
-    var item = GroupedRoleDataSource.getByUid(id);
+    var item = GroupedRoleDataSource.get().getByUid(id);
 
     $.ajax({
         type: "DELETE",
@@ -154,8 +154,8 @@ function removeItem(e, id) {
         dataType: "json",
         contentType: "application/json; charset=utf-8",
         success: function (response) {
-            UnGroupedRoleDataSource.add(item);
-            GroupedRoleDataSource.remove(item);
+            UnGroupedRoleDataSource.get().add(item);
+            GroupedRoleDataSource.get().remove(item);
             $(e).parent().remove();
         },
         error: function (e) {
