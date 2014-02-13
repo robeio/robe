@@ -141,3 +141,52 @@ var ServiceModel = kendo.data.Model.define({
         }
     }
 });
+
+
+var MailManagementModel = kendo.data.Model.define({
+    id: "oid",
+    fields: {
+        oid: {
+            editable: false,
+            nullable: true
+        },
+        lastUpdated: {
+            editable: false,
+            nullable: true
+        },
+        lang: {
+            editable: true,
+            nullable: false
+        },
+        code: {
+            editable: true,
+            nullable: false
+        },
+        template: {
+            editable: true,
+            nullable: false
+        }
+    }
+});
+
+var SystemLanguageModel = kendo.data.Model.define({
+    id: "oid",
+    fields: {
+        oid: {
+            editable: false,
+            nullable: true
+        },
+        lastUpdated: {
+            editable: false,
+            nullable: true
+        },
+        code: {
+            editable: true,
+            nullable: false
+        },
+        name: {
+            editable: true,
+            nullable: false
+        }
+    }
+});
