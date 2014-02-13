@@ -1,5 +1,5 @@
 //@ sourceURL=Datasources.js
-var UserDataSource = new robe.data.SingletonDataSource("UserDataSource",{
+var UserDataSource = new robe.data.SingletonDataSource("UserDataSource", {
     transport: {
         read: {
             type: "GET",
@@ -39,7 +39,7 @@ var UserDataSource = new robe.data.SingletonDataSource("UserDataSource",{
 });
 
 
-var RoleDataSource = new robe.data.SingletonDataSource("RoleDataSource",{
+var RoleDataSource = new robe.data.SingletonDataSource("RoleDataSource", {
     transport: {
         read: {
             type: "GET",
@@ -78,20 +78,20 @@ var RoleDataSource = new robe.data.SingletonDataSource("RoleDataSource",{
     }
 });
 
-var GroupedRoleDataSource = new robe.data.SingletonDataSource("GroupedRoleDataSource",{
+var GroupedRoleDataSource = new robe.data.SingletonDataSource("GroupedRoleDataSource", {
     data: [],
     schema: {
         model: RoleModel
     }
 });
-var UnGroupedRoleDataSource = new robe.data.SingletonDataSource("UnGroupedRoleDataSource",{
+var UnGroupedRoleDataSource = new robe.data.SingletonDataSource("UnGroupedRoleDataSource", {
     data: [],
     schema: {
         model: RoleModel
     }
 });
 
-var MenuDataSource = new robe.data.SingletonDataSource("MenuDataSource",{
+var MenuDataSource = new robe.data.SingletonDataSource("MenuDataSource", {
     transport: {
         read: {
             type: "GET",
@@ -133,7 +133,7 @@ var MenuDataSource = new robe.data.SingletonDataSource("MenuDataSource",{
     }
 });
 
-var ServiceDataSource = new robe.data.SingletonDataSource("ServiceDataSource",{
+var ServiceDataSource = new robe.data.SingletonDataSource("ServiceDataSource", {
     transport: {
         read: {
             type: "GET",
@@ -145,6 +145,59 @@ var ServiceDataSource = new robe.data.SingletonDataSource("ServiceDataSource",{
     batch: false,
     schema: {
         model: ServiceModel
+    }
+});
+
+var MailManagementDataSource = new robe.data.SingletonDataSource("MailManagementDataSource", {
+    transport: {
+        read: {
+            type: "GET",
+            url: getBackendURL() + "mailtemplate/all",
+            dataType: "json",
+            contentType: "application/json"
+        },
+        create: {
+            type: "PUT",
+            url: getBackendURL() + "mailtemplate",
+            dataType: "json",
+            contentType: "application/json"
+        },
+        update: {
+            type: "POST",
+            url: getBackendURL() + "mailtemplate",
+            dataType: "json",
+            contentType: "application/json"
+        },
+        destroy: {
+            type: "DELETE",
+            url: getBackendURL() + "mailtemplate",
+            dataType: "json",
+            contentType: "application/json"
+        }
+    },
+    parameterMap: function (options, operation) {
+        if (operation !== "read") {
+            return JSON.stringify(options);
+        }
+    },
+    batch: false,
+    schema: {
+        model: MailManagementModel
+    }
+});
+
+var SystemLanguageDatasource = new robe.data.SingletonDataSource("SystemLanguageDatasource", {
+    transport: {
+        read: {
+            type: "GET",
+            url: getBackendURL() + "language/all",
+            dataType: "json",
+            contentType: "application/json"
+        }
+    },
+    batch: false,
+    schema: {
+        model: SystemLanguageModel
     }
 });
 
