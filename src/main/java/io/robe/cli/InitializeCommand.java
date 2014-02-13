@@ -116,11 +116,11 @@ public class InitializeCommand<T extends RobeServiceConfiguration> extends Envir
 
         Language systemLanguageTR = new Language();
         systemLanguageTR.setCode(Language.Type.TR);
-        systemLanguageTR.setName("Türkiye");
+        systemLanguageTR.setName("Türkçe");
         session.persist(systemLanguageTR);
         Language systemLanguageEN = new Language();
         systemLanguageEN.setCode(Language.Type.EN);
-        systemLanguageEN.setName("English");
+        systemLanguageEN.setName("İngilizce");
         session.persist(systemLanguageEN);
 
         Menu root = new Menu();
