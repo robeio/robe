@@ -2,7 +2,7 @@
 function initializeUserManagement() {
 
     $("#gridUsers").kendoGrid({
-        dataSource: UserDataSource,
+        dataSource: UserDataSource.get(),
         sortable: true,
         toolbar: [
             {
@@ -74,7 +74,7 @@ function initializeUserManagement() {
                 dataTextField: "name",
                 dataValueField: "oid",
                 text: "Seçiniz...",
-                dataSource: RoleDataSource,
+                dataSource: RoleDataSource.get(),
                 placeholder: "Seçiniz...",
                 index: -1
             });

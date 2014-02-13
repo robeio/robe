@@ -1,7 +1,6 @@
 function initializePermissionManagement() {
 
     $("#horizontalTabStrips").kendoSplitter({
-        //TODO Attributes
         panes: [
             { collapsible: false, size: "20%", resizable: false },
             { collapsible: false, size: "20%", resizable: false  },
@@ -10,7 +9,7 @@ function initializePermissionManagement() {
     });
 
   $("#gridServices").kendoGrid({
-    dataSource: ServiceDataSource,
+    dataSource: ServiceDataSource.get(),
     width: 75,
     columns: [{
       template: "<input type='checkbox' class='checkbox' />",
@@ -25,7 +24,7 @@ function initializePermissionManagement() {
       field: "path",
       title: "Servis",
       width: 50
-    }],
+    }]
   });
 
   $("#gridServices").data("kendoGrid").table.on("click", ".checkbox", selectRow);
@@ -34,7 +33,7 @@ function initializePermissionManagement() {
   $("#cmbRoles").kendoDropDownList({
     dataTextField: "name",
     dataValueField: "oid",
-    dataSource: RoleDataSource,
+    dataSource: RoleDataSource.get(),
     change: onCmbRolesChange,
     autoBind: false,
     text: "Seçiniz...",
@@ -47,7 +46,7 @@ function initializePermissionManagement() {
     checkboxes: {
       checkChildren: true
     },
-    dataSource: MenuHierarchicalDataSource,
+    dataSource: MenuHierarchicalDataSource.get(),
     dataTextField: "name"
   });
 

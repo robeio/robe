@@ -1,5 +1,5 @@
 //@ sourceURL=Datasources.js
-var UserDataSource = new kendo.data.DataSource({
+var UserDataSource = new robe.data.SingletonDataSource("UserDataSource",{
     transport: {
         read: {
             type: "GET",
@@ -38,7 +38,8 @@ var UserDataSource = new kendo.data.DataSource({
     }
 });
 
-var RoleDataSource = new kendo.data.DataSource({
+
+var RoleDataSource = new robe.data.SingletonDataSource("RoleDataSource",{
     transport: {
         read: {
             type: "GET",
@@ -77,20 +78,20 @@ var RoleDataSource = new kendo.data.DataSource({
     }
 });
 
-var GroupedRoleDataSource = new kendo.data.DataSource({
+var GroupedRoleDataSource = new robe.data.SingletonDataSource("GroupedRoleDataSource",{
     data: [],
     schema: {
         model: RoleModel
     }
 });
-var UnGroupedRoleDataSource = new kendo.data.DataSource({
+var UnGroupedRoleDataSource = new robe.data.SingletonDataSource("UnGroupedRoleDataSource",{
     data: [],
     schema: {
         model: RoleModel
     }
 });
 
-var MenuDataSource = new kendo.data.DataSource({
+var MenuDataSource = new robe.data.SingletonDataSource("MenuDataSource",{
     transport: {
         read: {
             type: "GET",
@@ -123,7 +124,7 @@ var MenuDataSource = new kendo.data.DataSource({
         }
     },
     change: function (e) {
-        MenuHierarchicalDataSource.read();
+        MenuHierarchicalDataSource.get();
     },
     batch: false,
     pageSize: 20,
@@ -132,7 +133,7 @@ var MenuDataSource = new kendo.data.DataSource({
     }
 });
 
-var ServiceDataSource = new kendo.data.DataSource({
+var ServiceDataSource = new robe.data.SingletonDataSource("ServiceDataSource",{
     transport: {
         read: {
             type: "GET",
@@ -147,87 +148,4 @@ var ServiceDataSource = new kendo.data.DataSource({
     }
 });
 
-/*  DATASOURCE AJAX REQUEST CONTROL */
-MenuDataSource.bind("error", dataSourceError);
-MenuDataSource.bind("requestEnd", dataSourceRequestEnd);
-MenuDataSource.fetch();
-
-UserDataSource.bind("error", dataSourceError);
-UserDataSource.bind("requestEnd", dataSourceRequestEnd);
-UserDataSource.fetch();
-
-RoleDataSource.bind("error", dataSourceError);
-RoleDataSource.bind("requestEnd", dataSourceRequestEnd);
-RoleDataSource.fetch();
-
-ServiceDataSource.bind("error", dataSourceError);
-ServiceDataSource.bind("requestEnd", dataSourceRequestEnd);
-ServiceDataSource.fetch();
-
-function dataSourceError(e) {
-    var response = e.response;
-    var type = e.type;
-    if (type === "update") {
-        $().toastmessage('showToast', {
-            text: 'Güncelleme sırasında bir hata oluştu.',
-            sticky: false,
-            type: 'error',
-            position: 'top-right'
-        });
-    }
-    else if (type === "destroy") {
-        $().toastmessage('showToast', {
-            text: "Silme sırasında bir hata oluştu.",
-            sticky: false,
-            type: 'error',
-            position: 'top-right'
-        });
-    }
-    else if (type === "read") {
-        $().toastmessage('showToast', {
-            text: "Veriler getirilirken bir hata oluştu.",
-            sticky: false,
-            type: 'error',
-            position: 'top-right'
-        });
-    }
-    else if (type === "create") {
-        $().toastmessage('showToast', {
-            text: "Oluşturulma sırasında bir hata oluştu.",
-            sticky: false,
-            type: 'error',
-            position: 'top-right'
-        });
-    }
-}
-
-function dataSourceRequestEnd(e) {
-    var response = e.response;
-    var type = e.type;
-    if (type === "update") {
-        $().toastmessage('showToast', {
-            text: "Başarı ile güncellendi",
-            sticky: false,
-            type: 'success',
-            position: 'top-right'
-        });
-    }
-    else if (type === "destroy") {
-        $().toastmessage('showToast', {
-            text: "Başarı ile silindi",
-            sticky: false,
-            type: 'success',
-            position: 'top-right'
-        });
-    }
-    else if (type === "create") {
-        $().toastmessage('showToast', {
-            text: "Başarı ile oluşturuldu",
-            sticky: false,
-            type: 'success',
-            position: 'top-right'
-        });
-    }
-
-}
 /*  DATASOURCE AJAX REQUEST CONTROL */
