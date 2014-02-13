@@ -119,7 +119,7 @@ function onSelect(e) {
     }
     openMenuItem(selection);
 }
-//
+
 function openMenuItem(menuitem) {
 
     kendo.destroy($('#container'));
@@ -134,11 +134,11 @@ function openMenuItem(menuitem) {
                 try {
                     eval("initialize" + menuitem + "();");
                 } catch (e) {
-                    console.log(menuitem + " JS: " + e);
+                    console.error(menuitem + " JS: " + e);
                 }
             });
         } catch (e) {
-            console.log(menuitem + " HTML: " + e);
+            console.error(menuitem + " HTML: " + e);
         }
         kendo.fx($("#container")).fade("in").play();
     });
@@ -179,10 +179,15 @@ function loadConfig() {
         success: function (response) {
             backendURL = response.backendURL;
             adminURL = response.adminURL;
-            $.getScript('../js/robe/Validations.js');
-            $.getScript('../js/robe/Models.js');
-            $.getScript('../js/robe/HierarchicalDataSources.js');
-            $.getScript('../js/robe/DataSources.js');
+
+            loadJS('../js/robe/Validations.js');
+            loadJS('../js/robe/Models.js');
+            loadJS('../js/robe/data/SingletonHierarchicalDataSource.js');
+            loadJS('../js/robe/data/SingletonDataSource.js');
+            loadJS('../js/robe/HierarchicalDataSources.js');
+            loadJS('../js/robe/DataSources.js');
+
+
         }
     });
 }
@@ -195,4 +200,13 @@ function getBackendURL() {
 
 function getAdminURL() {
     return adminURL;
+}
+
+
+function loadJS(source){
+    var oHead = document.getElementsByTagName('HEAD').item(0);
+    var oScript= document.createElement("script");
+    oScript.type = "text/javascript";
+    oScript.src=source;
+    oHead.appendChild( oScript);
 }
