@@ -68,7 +68,7 @@ $(document).ready(function () {
     });
 
     function onClickSettingsButton(e) {
-        $("#dropdownMenu").toggle("slow");
+        $("#dropdownMenu").toggle(100);
     }
 
     $('#dialog').kendoWindow({
