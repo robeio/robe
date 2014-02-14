@@ -1,6 +1,4 @@
-/**
- * Created by kaanalkim on 14/02/14.
- */
+//@ sourceURL=AlertDialog.js
 
 function showToast(type, message) {
     $().toastmessage('showToast', {
