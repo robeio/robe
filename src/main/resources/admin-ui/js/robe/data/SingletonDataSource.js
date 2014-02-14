@@ -2,18 +2,18 @@
 var robe = robe || {};
 robe.data = robe.data || {};
 
-robe.data.SingletonDataSource = function(name,parameters) {
+robe.data.SingletonDataSource = function (name, parameters) {
     this.data = null;
     this.name = name;
     this.parameters = parameters;
     this._self = this;
     this.get = function () {
         if (this.data == null) {
-            console.log("Initializing "+ name);
+            console.log("Initializing " + name);
             this.data = new kendo.data.DataSource(this.parameters);
             this.data.bind("error", this.requestError);
             this.data.bind("requestEnd", this.requestEnd);
-        }else{
+        } else {
             console.log("Refreshing " + name);
             this.data.read();
         }
@@ -35,7 +35,7 @@ robe.data.SingletonDataSource = function(name,parameters) {
         else if (type === "create") {
             message = "Oluşturulma sırasında bir hata oluştu.";
         }
-        if(message != "")
+        if (message != "")
             showToast("error", message);
 
     };
@@ -53,15 +53,7 @@ robe.data.SingletonDataSource = function(name,parameters) {
         else if (type === "create") {
             message = "Başarı ile oluşturuldu";
         }
-        if(message != "")
-            showToast("info",message);
+        if (message != "")
+            showToast("success", message);
     };
-};
-function showToast (type, message) {
-    $().toastmessage('showToast', {
-        text: message,
-        sticky: false,
-        type: type,
-        position: 'top-right'
-    });
 };
