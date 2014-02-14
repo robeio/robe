@@ -32,6 +32,13 @@ $.ajaxSetup({
 loadConfig();
 $(document).ready(function () {
 
+    /*  Press enter for login   */
+    $(document.body).keydown(function (e) {
+        if (e.keyCode == 13) {
+            $("#login-button")[0].focus();
+        }
+    });
+
     $("#progressBar").kendoProgressBar({
         min: 0,
         max: 1,
@@ -189,6 +196,8 @@ function loadConfig() {
                 '../js/robe/data/SingletonDataSource.js',
                 '../js/robe/HierarchicalDataSources.js',
                 '../js/robe/DataSources.js']);
+
+
         }
     });
 }
