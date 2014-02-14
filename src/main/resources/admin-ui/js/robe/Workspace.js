@@ -44,8 +44,10 @@ $(document).ready(function () {
 
     $("#profile").click(function () {
         $('#dialogMessage').load("./ProfileManagement.html", function () {
-            showDialog(null, "Profil Bilgileri");
-            eval("initializeProfileManagement();");
+            $.getScript("../js/robe/ProfileManagement.js", function () {
+                showDialog(null, "Profil Bilgileri");
+                eval("initializeProfileManagement();");
+            });
         });
     });
 
