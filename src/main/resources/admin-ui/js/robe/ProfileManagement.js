@@ -31,6 +31,10 @@ function initializeProfileManagement() {
             success: function (response) {
                 console.log(response);
                 showToast("success", "Profil bilgileriniz başarı ile güncellendi.");
+
+                /*  LOGOUT  */
+                $.cookie.destroy("MedyAuthToken");
+                location.reload();
             },
             error: function (jqXHR, textStatus, errorThrown) {
                 console.log(errorThrown);
