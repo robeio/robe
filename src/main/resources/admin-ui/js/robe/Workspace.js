@@ -183,14 +183,12 @@ function loadConfig() {
             adminURL = response.adminURL;
 
             loadJS(['../js/robe/Validations.js',
-                '../js/robe/ToastMessage.js',
+                '../js/robe/AlertDialog.js',
                 '../js/robe/Models.js',
                 '../js/robe/data/SingletonHierarchicalDataSource.js',
                 '../js/robe/data/SingletonDataSource.js',
                 '../js/robe/HierarchicalDataSources.js',
                 '../js/robe/DataSources.js']);
-
-
         }
     });
 }
