@@ -65,11 +65,14 @@ function initializeMailTemplateManagement() {
             confirmation: "Silmek istediğinizden emin misiniz?",
             confirmDelete: "Yes"
         },
-        edit: function (e) {
-            var editWindow = this.editable.element.data("kendoWindow");
-            editWindow.wrapper.css({ width: 800 });
-        }
+        edit: onEdit
     });
+
+    function onEdit(e) {
+        var editWindow = this.editable.element.data("kendoWindow");
+        editWindow.wrapper.css({ width: 800 });
+    }
+
     function userTemplatePopupEditor(container, options) {
         $('<textarea id="editor" style="width: 600px;" data-bind="value:' + options.field + '"/>')
             .appendTo(container)
