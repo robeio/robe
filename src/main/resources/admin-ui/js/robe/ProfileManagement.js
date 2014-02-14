@@ -30,9 +30,11 @@ function initializeProfileManagement() {
             contentType: "application/json; charset=utf-8",
             success: function (response) {
                 console.log(response);
+                showToast("success", "Profil bilgileriniz başarı ile güncellendi.");
             },
             error: function (jqXHR, textStatus, errorThrown) {
                 console.log(errorThrown);
+                showToast("error", "Güncelleme esnasında bir hata oluştu.");
             }
         });
     }
