@@ -1,16 +1,14 @@
-//@ sourceURL=SingletonDataSource.js
-var robe = robe || {};
-robe.data = robe.data || {};
+//@ sourceURL=SingletonHierarchicalDataSource.js
+admin.data = admin.data || {};
 
-robe.data.SingletonDataSource = function (name, parameters) {
+admin.data.SingletonHierarchicalDataSource = function (name, parameters) {
     this.data = null;
     this.name = name;
     this.parameters = parameters;
-    this._self = this;
     this.get = function () {
         if (this.data == null) {
             console.log("Initializing " + name);
-            this.data = new kendo.data.DataSource(this.parameters);
+            this.data = new kendo.data.HierarchicalDataSource(this.parameters);
             this.data.bind("error", this.requestError);
             this.data.bind("requestEnd", this.requestEnd);
         } else {
@@ -56,4 +54,5 @@ robe.data.SingletonDataSource = function (name, parameters) {
         if (message != "")
             showToast("success", message);
     };
+
 };
