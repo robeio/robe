@@ -1,0 +1,1 @@
+robe.data = robe.data || {};

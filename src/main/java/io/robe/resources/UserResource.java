@@ -81,7 +81,7 @@ public class UserResource {
             throw new RobeRuntimeException("Role", user.getEmail() + " cannot be null.");
         }
         entity.setRole(role);
-        entity.setPassword(HashingUtils.hashSHA2(user.getPassword()));
+        entity.setPassword(HashingUtils.hashSHA2(user.getName()));
 
         if (MailSender.isSupported()) {
             Ticket ticket = new Ticket();
