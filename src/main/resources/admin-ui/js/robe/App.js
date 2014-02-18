@@ -9,80 +9,147 @@ var robe = robe || {
                 child[prop] = parent[prop];
             }
             return child;
+        },
+        isArray: function (o) {
+            return Object.prototype.toString.call(o) === '[object Array]';
+        },
+        isObject: function (o) {
+            return Object.prototype.toString.call(o) === '[object Object]';
+        },
+        isString: function (o) {
+            return Object.prototype.toString.call(o) === '[object String]';
+        },
+        isFunction: function (o) {
+            return Object.prototype.toString.call(o) === '[object Function]';
         }
+
     }
 };
-robe.App = function (name, parameters) {
-    this.name = name;
-    this.isReady = false;
-    var parameters = parameters;
+robe.App = {
+    name: name,
+    isReady: false,
+    parameters: null,
 
-    this.initialize = function () {
+    initialize: function () {
         console.log("Initializing " + this.name);
         //TODO: set all configurations
         this.loadConfig();
 
         <!--KENDO JS START-->
         var libs = [
-            "./js/kendoui/js/kendo.web.min.js",
-            "./js/kendoui/js/cultures/kendo.culture.tr-TR.min.js",
-            "./js/alertmessage/jquery.toastmessage.js",
-            "./js/zebra_cookie.js",
-            "./js/cryptojs/core-min.js",
-            "./js/cryptojs/enc-base64-min.js",
-            "./js/cryptojs/sha256.js",
-            "./js/highcharts/highcharts.js",
-            "./js/highcharts//exporting.js",
-            "./js/highcharts//highcharts-more.js",
+            {
+                1: ["./js/kendoui/js/kendo.web.min.js",
+                    "./js/kendoui/js/cultures/kendo.culture.tr-TR.min.js"],
+                2: "./js/alertmessage/jquery.toastmessage.js",
+                3: "./js/zebra_cookie.js",
+                4: [
+                    "./js/cryptojs/core-min.js",
+                    "./js/cryptojs/enc-base64-min.js",
+                    "./js/cryptojs/sha256.js"],
+                5: [
+                    "./js/highcharts/highcharts.js",
+                    "./js/highcharts//exporting.js",
+                    "./js/highcharts//highcharts-more.js"]
+            },
             "./js/robe/core/Class.js",
             "./js/robe/core/Singleton.js",
-            "./js/robe/Charts.js",
-            "./js/robe/Validations.js",
-            "./js/robe/view/Page.js"
+            {
+                1: "./js/robe/Charts.js",
+                2: "./js/robe/Validations.js",
+                3: "./js/robe/view/Page.js"
+            }
         ]
 
         //Initialize models
-        if (parameters.models)
-            libs = libs.concat(parameters.models);
+        if (this.parameters.models)
+            libs = libs.concat(this.parameters.models);
 
         //Initialize Datasources
-        if (parameters.datasources)
-            libs = libs.concat(parameters.datasources);
+        if (this.parameters.datasources)
+            libs = libs.concat(this.parameters.datasources);
 
         //Initialize Pages
-        if (parameters.views)
-            libs = libs.concat(parameters.views);
+        if (this.parameters.views)
+            libs = libs.concat(this.parameters.views);
+        function ready() {
+            console.log("ready")
+            if (!me.isReady) {
+                $.ajaxSetup({
+                    cache: false
+                });
+                me.isReady = true;
+                me.ready();
 
-        robe.App.instance = this;
-        this.loadJS(libs);
-    };
+            };
+        }
+        libs.push(ready);
+        $.ajaxSetup({
+            cache: true
+        });
+        var me = this;
+        this.loadJS(me, libs);
 
-    this.destroy = function () {
+    },
+
+    destroy: function () {
         console.log("Initialize must be implemented.")
-    };
+    },
 
 
-    this.loadJS = function (sources) {
+    loadJS: function (me, sources, callback,initial) {
+        if (robe.util.isArray(sources)) {
+            me.loadSequential(me, sources, callback);
+        } else if (robe.util.isObject(sources)) {
+            me.loadSimultaneously(me, sources, callback);
+        } else if (robe.util.isString(sources, callback)) {
+            me.loadSingle(me, sources, callback);
+        } else if (robe.util.isFunction(sources)){
+            console.log(sources);
+            sources();
+
+        }
+
+
+    },
+    loadSequential: function (me, sources, callback) {
         var size = sources.length;
         try {
             if (size > 0) {
-                console.log("Loading " + sources[0]);
-                $.getScript(sources[0],function (data, textStatus, jqxhr) {
-                    robe.App.instance.loadJS(sources.slice(1));
-                }).fail(function (jqxhr, settings, exception) {
-                    console.error(jqxhr, settings, exception);
-
+                var remaining = sources.slice(1);
+                me.loadJS(me, sources[0], function callback2() {
+                    me.loadJS(me, remaining, callback);
                 });
-            } else {
-                this.isReady = true;
-                this.ready();
-                console.log("Ready...");
             }
         } catch (e) {
             console.error(e);
+            console.log(Object.prototype.toString.call(sources));
         }
-    };
-    this.loadConfig = function () {
+
+    },
+    loadSimultaneously: function (me, sources, callback) {
+        try {
+            for (var i = 1; sources[i] != null; i++) {
+                me.loadJS(me, sources[i]);
+            }
+            if (callback)
+                callback();
+        } catch (e) {
+            console.error(e);
+        }
+    },
+    loadSingle: function (me, sources, callback) {
+        try {
+            console.log("Loading " + sources);
+
+            $.getScript(sources,callback).fail(function (jqxhr, settings, exception) {
+                console.error(jqxhr, settings, exception);
+            });
+        } catch (e) {
+            console.error(e);
+        }
+    },
+
+    loadConfig: function () {
         console.log("Loading configuration.");
         var response = JSON.parse($.ajax({
             dataType: "json",
@@ -90,15 +157,16 @@ robe.App = function (name, parameters) {
             async: false
         }).responseText);
         this.backendURL = response.backendURL;
-    };
-    var backendURL = "";
+    },
 
-    this.getBackendURL = function () {
+    backendURL: "",
+
+    getBackendURL: function () {
         return this.backendURL;
-    }
-    this.ready = function () {
+    },
+
+    ready: function () {
         console.log("This function must be implemented be developer.");
-    };
+    }
 };
-robe.App.instance = null;
 
