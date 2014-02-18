@@ -8,7 +8,7 @@ import org.slf4j.LoggerFactory;
  * Created by sinanselimoglu on 14/02/14.
  */
 
-@Scheduled(cron="0 0/33 * * * ?",manager = Scheduled.Manager.ANNOTATION)
+@Scheduled(cron="0 0/33 * * * ?")
 public class HelloQuartz implements Job {
     private final Logger LOGGER = LoggerFactory.getLogger(this.getClass());
     public HelloQuartz() {
