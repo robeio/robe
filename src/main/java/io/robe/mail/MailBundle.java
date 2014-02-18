@@ -26,7 +26,7 @@ public class MailBundle implements ConfiguredBundle<RobeServiceConfiguration> {
         if(configuration.getMail() != null)
             MailSender.createInstance(configuration.getMail());
         else
-            LOGGER.warn("Mail Bundle included but no configuration (mail) found at yml.");
+            LOGGER.warn("Bundle included but no configuration (mail) found at yml.");
     }
 
     /**
