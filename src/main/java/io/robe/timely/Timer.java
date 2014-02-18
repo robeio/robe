@@ -3,10 +3,6 @@ package io.robe.timely;
 import io.robe.hibernate.DBConfiguration;
 import org.quartz.*;
 import org.quartz.impl.StdSchedulerFactory;
-import org.quartz.impl.jdbcjobstore.JobStoreTX;
-import org.quartz.simpl.RAMJobStore;
-import org.quartz.spi.JobStore;
-import org.quartz.spi.OperableTrigger;
 import org.reflections.Reflections;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -76,31 +72,31 @@ public class Timer {
      */
     private void scheduleJob(Set<Class<? extends Job>> timelyClassses, Scheduler scheduler) throws SchedulerException {
         for (Class<? extends Job> timelyClass : timelyClassses) {
-            Timely timelyAnnotation = timelyClass.getAnnotation(Timely.class);
-            if (timelyAnnotation != null) {
+            Scheduled scheduledAnnotation = timelyClass.getAnnotation(Scheduled.class);
+            if (scheduledAnnotation != null) {
                 JobDetail job = newJob(timelyClass).
                         build();
-                Trigger trigger = buildTrigger(timelyAnnotation);
+                Trigger trigger = buildTrigger(scheduledAnnotation);
                 scheduler.scheduleJob(job, trigger);
                 LOGGER.info("Scheduled job : "+ job.toString() +" with trigger : " + trigger.toString());
 
             }
             else
-                LOGGER.info("There is no annotated class with @Timely");
+                LOGGER.info("There is no annotated class with @Scheduled");
         }
     }
 
     /**
      * Builds cron trigger with parameters of @timely annotation
-     * @param timelyAnnotation
+     * @param scheduledAnnotation
      * @return trigger
      */
-    private Trigger buildTrigger(Timely timelyAnnotation) {
+    private Trigger buildTrigger(Scheduled scheduledAnnotation) {
         TriggerBuilder<Trigger> trigger = newTrigger();
-        if (timelyAnnotation.cron() != null && timelyAnnotation.cron().trim().length() > 0) {
-            trigger.withSchedule(CronScheduleBuilder.cronSchedule(timelyAnnotation.cron()));
+        if (scheduledAnnotation.cron() != null && scheduledAnnotation.cron().trim().length() > 0) {
+            trigger.withSchedule(CronScheduleBuilder.cronSchedule(scheduledAnnotation.cron()));
         } else
-            throw new IllegalArgumentException("You need cron definition for the @Timely annotation");
+            throw new IllegalArgumentException("You need cron definition for the @Scheduled annotation");
 
         return trigger.build();
     }
