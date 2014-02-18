@@ -22,13 +22,17 @@ public class MailSender {
 
     private static MailSender INSTANCE;
     private static final Logger LOGGER = LoggerFactory.getLogger(MailSender.class);
-
+    private static final Properties props = new Properties();
     /**
      * Creates an instance for singleton. Will be called from {@link io.robe.mail.MailBundle}
      *
      * @param configuration mail configuration
      */
     protected static void createInstance(MailConfiguration configuration) {
+        props.put("mail.smtp.host", configuration.getHost());
+        props.put("mail.smtp.port", configuration.getPort());
+        props.put("mail.smtp.auth", configuration.isAuth());
+        props.put("mail.smtp.starttls.enable", configuration.isTlsssl());
         INSTANCE = new MailSender(configuration);
     }
 
@@ -92,11 +96,7 @@ public class MailSender {
         checkNotNull(receivers[0]);
         checkNotNull(title);
         checkNotNull(body);
-        Properties props = new Properties();
-        props.put("mail.smtp.host", configuration.getHost());
-        props.put("mail.smtp.port", configuration.getPort());
-        props.put("mail.smtp.auth", configuration.isAuth());
-        props.put("mail.smtp.starttls.enable", configuration.isTlsssl());
+
 
         Session session = Session.getDefaultInstance(props, new javax.mail.Authenticator() {
             protected PasswordAuthentication getPasswordAuthentication() {
