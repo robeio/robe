@@ -14,6 +14,11 @@ import java.lang.annotation.Target;
  */
 @Target(ElementType.TYPE)
 @Retention(RetentionPolicy.RUNTIME)
-public @interface Timely {
+public @interface Scheduled {
+    enum Manager{
+        DB,
+        ANNOTATION
+    }
     String cron();
+    Manager manager();
 }
