@@ -6,7 +6,6 @@ import com.yammer.dropwizard.ConfiguredBundle;
 import com.yammer.dropwizard.config.Bootstrap;
 import com.yammer.dropwizard.config.Environment;
 import com.yammer.dropwizard.db.ConfigurationStrategy;
-import com.yammer.dropwizard.db.DatabaseConfiguration;
 import com.yammer.dropwizard.hibernate.SessionFactoryFactory;
 import com.yammer.dropwizard.hibernate.SessionFactoryHealthCheck;
 import com.yammer.dropwizard.hibernate.UnitOfWorkResourceMethodDispatchAdapter;
@@ -27,8 +26,6 @@ import java.util.Set;
  */
 public class HibernateBundle implements ConfiguredBundle<RobeServiceConfiguration>, ConfigurationStrategy<RobeServiceConfiguration> {
 	private SessionFactory sessionFactory;
-
-	private String[] packages;
 	private final SessionFactoryFactory sessionFactoryFactory = new SessionFactoryFactory();
 
 	public HibernateBundle() {
@@ -50,13 +47,14 @@ public class HibernateBundle implements ConfiguredBundle<RobeServiceConfiguratio
 	 */
 	@Override
 	public final void run(RobeServiceConfiguration configuration, Environment environment) throws Exception {
-		final DatabaseConfiguration dbConfig = getDatabaseConfiguration(configuration);
-		this.sessionFactory = sessionFactoryFactory.build(environment, dbConfig, getEntities(configuration.getEntityPackage().split(",")));
+		final DBConfiguration dbConfig = getDatabaseConfiguration(configuration);
+		this.sessionFactory = sessionFactoryFactory.build(environment, dbConfig, getEntities(dbConfig.getEntityPackage().split(",")));
 		environment.addProvider(new UnitOfWorkResourceMethodDispatchAdapter(sessionFactory));
-		environment.addHealthCheck(new SessionFactoryHealthCheck("hibernate",sessionFactory,dbConfig.getValidationQuery()));
-	}
+		environment.addHealthCheck(new SessionFactoryHealthCheck("hibernate", sessionFactory, dbConfig.getValidationQuery()));
+ 	}
 
 	private List<Class<?>> getEntities(String[] packages) {
+
 		Set<Class<?>> classes = new HashSet<Class<?>>();
 		for(String package1 : packages){
 			Reflections reflections = new Reflections(package1);
@@ -75,7 +73,7 @@ public class HibernateBundle implements ConfiguredBundle<RobeServiceConfiguratio
 
 
 	@Override
-	public DatabaseConfiguration getDatabaseConfiguration(RobeServiceConfiguration configuration) {
+	public DBConfiguration getDatabaseConfiguration(RobeServiceConfiguration configuration) {
 		return configuration.getDatabaseConfiguration();
 	}
 

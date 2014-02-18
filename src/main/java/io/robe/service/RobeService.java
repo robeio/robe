@@ -12,6 +12,7 @@ import io.robe.cli.InitializeCommand;
 import io.robe.exception.RobeExceptionMapper;
 import io.robe.hibernate.HibernateBundle;
 import io.robe.mail.MailBundle;
+import io.robe.timely.QuartzBundle;
 
 import javax.ws.rs.ext.ExceptionMapper;
 import java.util.ArrayList;
@@ -62,6 +63,9 @@ public class RobeService extends Service<RobeServiceConfiguration> {
         bootstrap.addCommand(new InitializeCommand(this,hibernate));
         bootstrap.addBundle(new ViewBundle());
         bootstrap.addBundle(new MailBundle());
+        bootstrap.addBundle(new QuartzBundle());
+
+
 
     }
 
