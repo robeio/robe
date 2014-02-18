@@ -35,18 +35,19 @@ robe.App = {
         //TODO: set all configurations
         this.loadConfig();
 
-        <!--KENDO JS START-->
+
+        // Always put the largest file to the last index of map.
         var libs = [
+            "./js/kendoui/js/kendo.web.min.js",
+            "./js/kendoui/js/cultures/kendo.culture.tr-TR.min.js",
             {
-                1: ["./js/kendoui/js/kendo.web.min.js",
-                    "./js/kendoui/js/cultures/kendo.culture.tr-TR.min.js"],
-                2: "./js/alertmessage/jquery.toastmessage.js",
-                3: "./js/zebra_cookie.js",
-                4: [
+                1: "./js/alertmessage/jquery.toastmessage.js",
+                2: "./js/zebra_cookie.js",
+                3: [
                     "./js/cryptojs/core-min.js",
                     "./js/cryptojs/enc-base64-min.js",
                     "./js/cryptojs/sha256.js"],
-                5: [
+                4: [
                     "./js/highcharts/highcharts.js",
                     "./js/highcharts//exporting.js",
                     "./js/highcharts//highcharts-more.js"]
