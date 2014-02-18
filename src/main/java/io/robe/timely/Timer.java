@@ -36,7 +36,6 @@ public class Timer {
         properties.setProperty("org.quartz.dataSource.myDS.user",dbConfiguration.getUser());
         properties.setProperty("org.quartz.dataSource.myDS.password",dbConfiguration.getPassword());
 
-
         properties.setProperty("org.quartz.scheduler.instanceName", quartzConfiguration.getInstanceName());
         properties.setProperty("org.quartz.dataSource.myDS.maxConnections", String.valueOf(quartzConfiguration.getMaxConnections()));
         properties.setProperty("org.quartz.jobStore.driverDelegateClass",quartzConfiguration.getDriverDelegateClass());
@@ -47,14 +46,7 @@ public class Timer {
         properties.setProperty("org.quartz.jobStore.tablePrefix",quartzConfiguration.getTablePrefix());
         properties.setProperty("org.quartz.jobStore.class",quartzConfiguration.getJobStoreClass());
 
-
-
-
-
         SchedulerFactory factory =new StdSchedulerFactory(properties);
-
-
-
 
         Scheduler scheduler=null;
         try {
@@ -70,7 +62,6 @@ public class Timer {
             Reflections reflections = new Reflections(myPackage);
             classes = reflections.getSubTypesOf(Job.class);
             scheduleJob(classes,scheduler);
-
         }
 
 
@@ -83,22 +74,20 @@ public class Timer {
      * @return
      * @throws SchedulerException
      */
-    private String scheduleJob(Set<Class<? extends Job>> timelyClassses, Scheduler scheduler) throws SchedulerException {
+    private void scheduleJob(Set<Class<? extends Job>> timelyClassses, Scheduler scheduler) throws SchedulerException {
         for (Class<? extends Job> timelyClass : timelyClassses) {
             Timely timelyAnnotation = timelyClass.getAnnotation(Timely.class);
             if (timelyAnnotation != null) {
-                JobDetail job = newJob(timelyClass).build();
+                JobDetail job = newJob(timelyClass).
+                        build();
                 Trigger trigger = buildTrigger(timelyAnnotation);
-
-                JobStore jobStore= new JobStoreTX();
                 scheduler.scheduleJob(job, trigger);
-                jobStore.storeJob(job, true);
+                LOGGER.info("Scheduled job : "+ job.toString() +" with trigger : " + trigger.toString());
 
-                LOGGER.info(jobStore.getNumberOfJobs() + " NUMBER OF JOBS");
-                return "Scheduled job"+ job.toString() +" with trigger" + trigger.toString();
             }
+            else
+                LOGGER.info("There is no annotated class with @Timely");
         }
-        return " ";
     }
 
     /**
