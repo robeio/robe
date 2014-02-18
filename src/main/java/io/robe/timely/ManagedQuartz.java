@@ -18,7 +18,7 @@ public class ManagedQuartz implements Managed {
     protected Scheduler scheduler;
 
     public ManagedQuartz() {
-        this("");
+
     }
 
     public ManagedQuartz(String scanUrl) {
