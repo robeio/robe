@@ -1,7 +1,9 @@
 package io.robe.timely;
 
 import com.google.common.collect.Sets;
+import com.google.inject.Inject;
 import com.yammer.dropwizard.lifecycle.Managed;
+import org.hibernate.criterion.Restrictions;
 import org.quartz.*;
 import org.quartz.impl.StdSchedulerFactory;
 import org.reflections.Reflections;
@@ -11,23 +13,27 @@ import org.slf4j.LoggerFactory;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+import static com.google.common.base.Preconditions.checkNotNull;
+
 
 public class ManagedQuartz implements Managed {
     private static final Logger log = LoggerFactory.getLogger(ManagedQuartz.class);
-    private Reflections reflections = null;
-    protected Scheduler scheduler;
+    private Set<Class<? extends Job>> onStartJobs;
+    private Set<Class<? extends Job>> onStopJobs;
+    private Scheduler scheduler;
 
-    public ManagedQuartz() {
-
+    @Inject
+    public ManagedQuartz(Scheduler scheduler,Set<Class<? extends Job>> onStartJobs, Set<Class<? extends Job>> onStopJobs) {
+        checkNotNull(scheduler);
+        this.scheduler = scheduler;
+        this.onStartJobs = onStartJobs;
+        this.onStopJobs = onStopJobs;
     }
 
-    public ManagedQuartz(String scanUrl) {
-        reflections = new Reflections(scanUrl);
-    }
+
 
     @Override
     public void start() throws Exception {
-        scheduler = StdSchedulerFactory.getDefaultScheduler();
         scheduler.start();
         scheduleAllJobsOnApplicationStart();
     }
@@ -38,39 +44,29 @@ public class ManagedQuartz implements Managed {
 
         try {
             Thread.sleep(100);
-        }catch ( InterruptedException e){
+        } catch (InterruptedException e) {
 
         }
-
         scheduler.shutdown(true);
     }
 
     private void scheduleAllJobsOnApplicationStop() throws SchedulerException {
-        List<Class<? extends Job>> stopJobClasses = getJobClasses(OnApplicationStop.class);
-        for (Class<? extends Job> clazz : stopJobClasses) {
+        for (Class<? extends Job> clazz : onStopJobs) {
             JobBuilder jobDetail = JobBuilder.newJob(clazz);
             scheduler.scheduleJob(jobDetail.build(), executeNowTrigger());
         }
     }
 
-    private List<Class<? extends Job>> getJobClasses(Class annotation) {
-        Set<Class<? extends Job>> jobs = (Set<Class<? extends Job>>) reflections.getSubTypesOf(Job.class);
-        Set<Class<?>> annotatedClasses = reflections.getTypesAnnotatedWith(annotation);
-
-        return Sets.intersection(new HashSet<Class<? extends Job>>(jobs), annotatedClasses).immutableCopy().asList();
-    }
-
 
     private void scheduleAllJobsOnApplicationStart() throws SchedulerException {
-        List<Class<? extends Job>> startJobClasses = getJobClasses(OnApplicationStart.class);
-        log.info("Jobs to run on application start: " + startJobClasses);
-        for (Class<? extends org.quartz.Job> clazz : startJobClasses) {
+        log.info("Jobs to run on application start: " + onStartJobs);
+        for (Class<? extends org.quartz.Job> clazz : onStartJobs) {
             JobBuilder jobBuilder = JobBuilder.newJob(clazz);
             scheduler.scheduleJob(jobBuilder.build(), executeNowTrigger());
         }
     }
 
     private Trigger executeNowTrigger() {
-        return  TriggerBuilder.newTrigger().startNow().build();
+        return TriggerBuilder.newTrigger().startNow().build();
     }
 }

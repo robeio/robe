@@ -1,6 +1,6 @@
 package io.robe.timely;
 
-import ch.qos.logback.core.spi.LifeCycle;
+import com.google.inject.Provider;
 import com.yammer.dropwizard.ConfiguredBundle;
 import com.yammer.dropwizard.config.Bootstrap;
 import com.yammer.dropwizard.config.Environment;
@@ -12,6 +12,7 @@ import org.reflections.Reflections;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.util.HashSet;
 import java.util.Properties;
 import java.util.Set;
 
@@ -24,6 +25,11 @@ import static org.quartz.TriggerBuilder.newTrigger;
 public class QuartzBundle implements ConfiguredBundle<RobeServiceConfiguration> {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(QuartzBundle.class);
+
+    Scheduler scheduler = null;
+    Set<Class<? extends Job>> onStartJobs = null;
+    Set<Class<? extends Job>> onStopJobs = null;
+
 
     @Override
     public void run(RobeServiceConfiguration configuration, Environment environment) throws Exception {
@@ -51,7 +57,6 @@ public class QuartzBundle implements ConfiguredBundle<RobeServiceConfiguration> 
 
         SchedulerFactory factory = new StdSchedulerFactory(properties);
 
-        Scheduler scheduler = null;
         try {
             scheduler = factory.getScheduler();
             scheduler.start();
@@ -60,15 +65,24 @@ public class QuartzBundle implements ConfiguredBundle<RobeServiceConfiguration> 
             e.printStackTrace();
         }
         String[] jobPackage = quartzConfiguration.getJobPackage().split(",");
-        Set<Class<? extends Job>> classes;
+        Set<Class<? extends Job>> jobClasses;
         for (String myPackage : jobPackage) {
             Reflections reflections = new Reflections(myPackage);
-            classes = reflections.getSubTypesOf(Job.class);
-            scheduleJob(classes, scheduler);
+            jobClasses = reflections.getSubTypesOf(Job.class);
+
+            onStartJobs = new HashSet<Class<? extends Job>>();
+            onStopJobs = new HashSet<Class<? extends Job>>();
+
+            for(Class<? extends Job> clazz: jobClasses){
+                if(clazz.isAnnotationPresent(OnApplicationStart.class))
+                    onStartJobs.add(clazz);
+                else if(clazz.isAnnotationPresent(OnApplicationStop.class))
+                    onStopJobs.add(clazz);
+            }
+
+
+            scheduleJob(jobClasses, scheduler);
         }
-
-
-
     }
 
     @Override
@@ -80,23 +94,23 @@ public class QuartzBundle implements ConfiguredBundle<RobeServiceConfiguration> 
     /**
      * Schedule all classes with @timely annotation
      *
-     * @param timelyClassses
+     * @param jobClassses
      * @param scheduler
      * @return
      * @throws SchedulerException
      */
-    private void scheduleJob(Set<Class<? extends Job>> timelyClassses, Scheduler scheduler) throws SchedulerException {
-        for (Class<? extends Job> timelyClass : timelyClassses) {
-            Scheduled scheduledAnnotation = timelyClass.getAnnotation(Scheduled.class);
-            if (scheduledAnnotation != null) {
-                JobDetail job = newJob(timelyClass).
+    private void scheduleJob(Set<Class<? extends Job>> jobClassses, Scheduler scheduler) throws SchedulerException {
+        for (Class<? extends Job> jobClass : jobClassses) {
+            Scheduled scheduledAnnotation = jobClass.getAnnotation(Scheduled.class);
+
+            if (scheduledAnnotation!=null) {
+                JobDetail job = newJob(jobClass).
                         build();
                 Trigger trigger = buildTrigger(scheduledAnnotation);
                 scheduler.scheduleJob(job, trigger);
                 LOGGER.info("Scheduled job : " + job.toString() + " with trigger : " + trigger.toString());
 
-            } else
-                LOGGER.info("There is no annotated class with @Scheduled");
+            }
         }
     }
 
@@ -114,6 +128,17 @@ public class QuartzBundle implements ConfiguredBundle<RobeServiceConfiguration> 
             throw new IllegalArgumentException("You need cron definition for the @Scheduled annotation");
 
         return trigger.build();
+    }
+
+    public  Scheduler getScheduler(){
+        return scheduler;
+    }
+
+    public Set<Class<? extends Job>> getOnStartJobs(){
+        return onStartJobs;
+    }
+    public Set<Class<? extends Job>> getOnStopJobs(){
+        return onStopJobs;
     }
 
 
