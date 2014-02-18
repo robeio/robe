@@ -1,9 +1,9 @@
 //@ sourceURL=HierarchicalDataSources.js
-var MenuHierarchicalDataSource = new robe.data.SingletonHierarchicalDataSource("MenuHierarchicalDataSource",{
+var MenuHierarchicalDataSource = new admin.data.SingletonHierarchicalDataSource("MenuHierarchicalDataSource",{
     transport: {
         read: {
             type: "GET",
-            url: getBackendURL() + "menu/roots",
+            url: AdminApp.getBackendURL() + "menu/roots",
             dataType: "json",
             contentType: "application/json"
         }
