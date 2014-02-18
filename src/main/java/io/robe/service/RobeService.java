@@ -6,13 +6,16 @@ import com.yammer.dropwizard.Service;
 import com.yammer.dropwizard.config.Bootstrap;
 import com.yammer.dropwizard.config.Environment;
 import com.yammer.dropwizard.hibernate.UnitOfWork;
+import com.yammer.dropwizard.lifecycle.ServerLifecycleListener;
 import com.yammer.dropwizard.views.ViewBundle;
 import io.robe.auth.AuthTokenResponseFilter;
 import io.robe.cli.InitializeCommand;
 import io.robe.exception.RobeExceptionMapper;
 import io.robe.hibernate.HibernateBundle;
 import io.robe.mail.MailBundle;
+import io.robe.timely.ManagedQuartz;
 import io.robe.timely.QuartzBundle;
+import org.eclipse.jetty.server.Server;
 
 import javax.ws.rs.ext.ExceptionMapper;
 import java.util.ArrayList;
@@ -64,9 +67,6 @@ public class RobeService extends Service<RobeServiceConfiguration> {
         bootstrap.addBundle(new ViewBundle());
         bootstrap.addBundle(new MailBundle());
         bootstrap.addBundle(new QuartzBundle());
-
-
-
     }
 
 
@@ -82,8 +82,9 @@ public class RobeService extends Service<RobeServiceConfiguration> {
 	public void run(RobeServiceConfiguration configuration, Environment environment) throws Exception {
 		addExceptionMappers(environment);
 		environment.getJerseyResourceConfig().getContainerResponseFilters().add(new AuthTokenResponseFilter());
-
+        environment.start();
 	}
+
 
 	private void addExceptionMappers(Environment environment) {
 		ResourceConfig jrConfig = environment.getJerseyResourceConfig();
