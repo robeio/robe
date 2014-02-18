@@ -2,6 +2,7 @@ package io.robe.service;
 
 import com.google.common.cache.CacheBuilderSpec;
 import com.google.inject.AbstractModule;
+import com.google.inject.Inject;
 import com.google.inject.Provider;
 import com.yammer.dropwizard.auth.Authenticator;
 import com.yammer.dropwizard.auth.CachingAuthenticator;
@@ -10,7 +11,10 @@ import io.robe.auth.Credentials;
 import io.robe.hibernate.HibernateBundle;
 import io.robe.hibernate.dao.ServiceDao;
 import io.robe.hibernate.dao.UserDao;
+import io.robe.timely.ManagedQuartz;
+import io.robe.timely.QuartzBundle;
 import org.hibernate.SessionFactory;
+import org.quartz.Scheduler;
 
 /**
  * Default Guice bindings are done at this class.
@@ -18,9 +22,11 @@ import org.hibernate.SessionFactory;
 public class ConfigurationModule extends AbstractModule {
 
 	HibernateBundle hibernate;
+    QuartzBundle quartz;
 
-	public ConfigurationModule(HibernateBundle hibernate) {
+    public ConfigurationModule(HibernateBundle hibernate,QuartzBundle quartz) {
 		this.hibernate = hibernate;
+        this.quartz = quartz;
 	}
 
 	@Override
@@ -39,6 +45,19 @@ public class ConfigurationModule extends AbstractModule {
 				return CachingAuthenticator.wrap(authTokenAuthenticator, CacheBuilderSpec.parse("maximumSize=10000, expireAfterAccess=1m"));
 			}
 		});
+
+//        bind(Scheduler.class).toProvider(new Provider<Scheduler>() {
+//            @Override
+//            public Scheduler get() {
+//                return quartz.getScheduler();
+//            }
+//        });
+        bind(ManagedQuartz.class).toProvider(new Provider<ManagedQuartz>() {
+            @Override
+            public ManagedQuartz get() {
+                return new ManagedQuartz(quartz.getScheduler(),quartz.getOnStartJobs(),quartz.getOnStopJobs());
+            }
+        });
 
 	}
 
