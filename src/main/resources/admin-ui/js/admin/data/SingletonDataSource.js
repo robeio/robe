@@ -1,24 +1,21 @@
-//@ sourceURL=SingletonHierarchicalDataSource.js
-var robe = robe || {};
-robe.data = robe.data || {};
+//@ sourceURL=SingletonDataSource.js
+admin.data = admin.data || {};
 
-robe.data.SingletonHierarchicalDataSource = function (name, parameters) {
-    this.data = null;
-    this.name = name;
-    this.parameters = parameters;
-    this.get = function () {
-        if (this.data == null) {
-            console.log("Initializing " + name);
-            this.data = new kendo.data.HierarchicalDataSource(this.parameters);
-            this.data.bind("error", this.requestError);
-            this.data.bind("requestEnd", this.requestEnd);
-        } else {
-            console.log("Refreshing " + name);
-            this.data.read();
-        }
-        return this.data;
-    };
-    this.requestError = function (e) {
+admin.data.SingletonDataSource = robe.util.inherit(robe.core.Singleton, {
+    data: null,
+    name: "admin.data.SingletonDataSource",
+    parameters: null,
+    initialize: function () {
+        data = new kendo.data.DataSource(this.parameters);
+        data.bind("error", this.requestError);
+        data.bind("requestEnd", this.requestEnd);
+        return data;
+    },
+    read: function(){
+        console.log("Refreshing " + this.name);
+        data.read();
+    },
+    requestError: function (e) {
         var response = e.response;
         var type = e.type;
         var message = "";
@@ -37,9 +34,8 @@ robe.data.SingletonHierarchicalDataSource = function (name, parameters) {
         if (message != "")
             showToast("error", message);
 
-    };
-
-    this.requestEnd = function (e) {
+    },
+    requestEnd: function (e) {
         var response = e.response;
         var type = e.type;
         var message = "";
@@ -54,14 +50,6 @@ robe.data.SingletonHierarchicalDataSource = function (name, parameters) {
         }
         if (message != "")
             showToast("info", message);
-    };
+    }
 
-};
-function showToast(type, message) {
-    $().toastmessage('showToast', {
-        text: message,
-        sticky: false,
-        type: type,
-        position: 'top-right'
-    });
-};
+});
