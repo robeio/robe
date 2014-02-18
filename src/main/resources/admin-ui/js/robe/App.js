@@ -104,9 +104,7 @@ robe.App = {
         } else if (robe.util.isString(sources, callback)) {
             me.loadSingle(me, sources, callback);
         } else if (robe.util.isFunction(sources)){
-            console.log(sources);
             sources();
-
         }
 
 
@@ -129,10 +127,15 @@ robe.App = {
     loadSimultaneously: function (me, sources, callback) {
         try {
             for (var i = 1; sources[i] != null; i++) {
-                me.loadJS(me, sources[i]);
+                var isLast = sources[i+1] != null;
+                if(isLast)
+                    me.loadJS(me, sources[i],callback);
+                else
+                    me.loadJS(me, sources[i]);
             }
-            if (callback)
-                callback();
+
+//            if (callback)
+//                callback();
         } catch (e) {
             console.error(e);
         }
@@ -141,7 +144,7 @@ robe.App = {
         try {
             console.log("Loading " + sources);
 
-            $.getScript(sources,callback).fail(function (jqxhr, settings, exception) {
+            $.getScript(sources).done(function (){ if(callback)callback();}).fail(function (jqxhr, settings, exception) {
                 console.error(jqxhr, settings, exception);
             });
         } catch (e) {
