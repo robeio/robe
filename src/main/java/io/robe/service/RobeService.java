@@ -31,76 +31,77 @@ import java.util.Set;
 public class RobeService extends Service<RobeServiceConfiguration> {
 
 
-	public static void main(String[] args) throws Exception {
-		new RobeService().run(args);
-	}
+    public static void main(String[] args) throws Exception {
+        new RobeService().run(args);
+    }
 
-	/**
-	 * Adds
-	 * Hibernate bundle for DB connection
-	 * Asset bundle for admin screens and
-	 * Class scanners for
-	 * <ul>
-	 * <li>Entities</li>
-	 * <li>HealthChecks</li>
-	 * <li>Providers</li>
-	 * <li>InjectableProviders</li>
-	 * <li>Resources</li>
-	 * <li>Tasks</li>
-	 * <li>Managed objects</li>
-	 * </ul>
-	 *
-	 * @param bootstrap
-	 */
-	@Override
-	public void initialize(Bootstrap<RobeServiceConfiguration> bootstrap) {
-		HibernateBundle hibernate = new HibernateBundle();
+    /**
+     * Adds
+     * Hibernate bundle for DB connection
+     * Asset bundle for admin screens and
+     * Class scanners for
+     * <ul>
+     * <li>Entities</li>
+     * <li>HealthChecks</li>
+     * <li>Providers</li>
+     * <li>InjectableProviders</li>
+     * <li>Resources</li>
+     * <li>Tasks</li>
+     * <li>Managed objects</li>
+     * </ul>
+     *
+     * @param bootstrap
+     */
+    @Override
+    public void initialize(Bootstrap<RobeServiceConfiguration> bootstrap) {
+        HibernateBundle hibernate = new HibernateBundle();
+        QuartzBundle quartzBundle = new QuartzBundle();
+        bootstrap.addBundle(hibernate);
+        bootstrap.addBundle(quartzBundle);
 
-		bootstrap.addBundle(hibernate);
         bootstrap.addBundle(new NamedAssetsBundle("/admin-ui/", "/admin-ui", "admin-ui/index.html", "admin"));
         bootstrap.addBundle(GuiceBundle.newBuilder()
-				.addModule(new ConfigurationModule(hibernate))
-				.enableAutoConfig("io")
-				.build()
-		);
-        bootstrap.addCommand(new InitializeCommand(this,hibernate));
+                .addModule(new ConfigurationModule(hibernate, quartzBundle))
+                .enableAutoConfig("io")
+                .build()
+        );
+        bootstrap.addCommand(new InitializeCommand(this, hibernate));
         bootstrap.addBundle(new ViewBundle());
         bootstrap.addBundle(new MailBundle());
-        bootstrap.addBundle(new QuartzBundle());
     }
 
 
-	/**
-	 * {@inheritDoc}
-	 * In addition adds exception mapper.
-	 * @param configuration
-	 * @param environment
-	 * @throws Exception
-	 */
-	@UnitOfWork
-	@Override
-	public void run(RobeServiceConfiguration configuration, Environment environment) throws Exception {
-		addExceptionMappers(environment);
-		environment.getJerseyResourceConfig().getContainerResponseFilters().add(new AuthTokenResponseFilter());
+    /**
+     * {@inheritDoc}
+     * In addition adds exception mapper.
+     *
+     * @param configuration
+     * @param environment
+     * @throws Exception
+     */
+    @UnitOfWork
+    @Override
+    public void run(RobeServiceConfiguration configuration, Environment environment) throws Exception {
+        addExceptionMappers(environment);
+        environment.getJerseyResourceConfig().getContainerResponseFilters().add(new AuthTokenResponseFilter());
         environment.start();
-	}
+    }
 
+    private void addExceptionMappers(Environment environment) {
+        ResourceConfig jrConfig = environment.getJerseyResourceConfig();
+        Set<Object> dwSingletons = jrConfig.getSingletons();
+        List<Object> singletonsToRemove = new ArrayList<Object>();
+        for (Object s : dwSingletons) {
+            if (s instanceof ExceptionMapper && s.getClass().getName().startsWith("com.yammer.dropwizard.jersey.InvalidEntityExceptionMapper")) {
+                singletonsToRemove.add(s);
+            }
+        }
 
-	private void addExceptionMappers(Environment environment) {
-		ResourceConfig jrConfig = environment.getJerseyResourceConfig();
-		Set<Object> dwSingletons = jrConfig.getSingletons();
-		List<Object> singletonsToRemove = new ArrayList<Object>();
-		for (Object s : dwSingletons) {
-			if (s instanceof ExceptionMapper && s.getClass().getName().startsWith("com.yammer.dropwizard.jersey.InvalidEntityExceptionMapper")) {
-				singletonsToRemove.add(s);
-			}
-		}
+        for (Object s : singletonsToRemove) {
+            jrConfig.getSingletons().remove(s);
+        }
 
-		for (Object s : singletonsToRemove) {
-			jrConfig.getSingletons().remove(s);
-		}
+        environment.addProvider(new RobeExceptionMapper());
 
-		environment.addProvider(new RobeExceptionMapper());
-
-	}
+    }
 }
