@@ -1,7 +1,7 @@
 //@ sourceURL=ProfileManagement.js
 var ProfileManagement = robe.util.inherit(robe.view.Page, {
     name: "ProfileManagement",
-    htmlPath: "./html/ProfileManagement",
+    htmlPath: "./html/ProfileManagement.html",
     data: null,
     initialize: function () {
         $.ajax({
