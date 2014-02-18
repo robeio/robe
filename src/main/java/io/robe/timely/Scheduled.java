@@ -20,5 +20,5 @@ public @interface Scheduled {
         ANNOTATION
     }
     String cron();
-    Manager manager();
+    Manager manager() default Manager.ANNOTATION;
 }
