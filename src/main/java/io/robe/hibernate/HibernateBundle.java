@@ -13,6 +13,8 @@ import io.robe.hibernate.entity.BaseEntity;
 import io.robe.service.RobeServiceConfiguration;
 import org.hibernate.SessionFactory;
 import org.reflections.Reflections;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import javax.persistence.Entity;
 import java.util.HashSet;
@@ -25,7 +27,9 @@ import java.util.Set;
  * Takes scannable paths from configuration yml from entityPackage element as array separated by ','
  */
 public class HibernateBundle implements ConfiguredBundle<RobeServiceConfiguration>, ConfigurationStrategy<RobeServiceConfiguration> {
-	private SessionFactory sessionFactory;
+    private static final Logger LOGGER = LoggerFactory.getLogger(HibernateBundle.class);
+
+    private SessionFactory sessionFactory;
 	private final SessionFactoryFactory sessionFactoryFactory = new SessionFactoryFactory();
 
 	public HibernateBundle() {
@@ -47,19 +51,36 @@ public class HibernateBundle implements ConfiguredBundle<RobeServiceConfiguratio
 	 */
 	@Override
 	public final void run(RobeServiceConfiguration configuration, Environment environment) throws Exception {
-		final DBConfiguration dbConfig = getDatabaseConfiguration(configuration);
-		this.sessionFactory = sessionFactoryFactory.build(environment, dbConfig, getEntities(dbConfig.getEntityPackage().split(",")));
+		final HibernateConfiguration databaseConfiguration = getDatabaseConfiguration(configuration);
+		this.sessionFactory = sessionFactoryFactory.build(environment, databaseConfiguration,
+                getEntities(databaseConfiguration.getScanPackages(),
+                databaseConfiguration.getEntities()));
 		environment.addProvider(new UnitOfWorkResourceMethodDispatchAdapter(sessionFactory));
-		environment.addHealthCheck(new SessionFactoryHealthCheck("hibernate", sessionFactory, dbConfig.getValidationQuery()));
+		environment.addHealthCheck(new SessionFactoryHealthCheck("hibernate", sessionFactory, databaseConfiguration.getValidationQuery()));
  	}
 
-	private List<Class<?>> getEntities(String[] packages) {
+	private List<Class<?>> getEntities(String[] packages,String[] entities) {
 
 		Set<Class<?>> classes = new HashSet<Class<?>>();
-		for(String package1 : packages){
-			Reflections reflections = new Reflections(package1);
-			classes.addAll(reflections.getTypesAnnotatedWith(Entity.class));
-		}
+        if(packages != null){
+            for(String package_ : packages){
+                Reflections reflections = new Reflections(package_);
+                classes.addAll(reflections.getTypesAnnotatedWith(Entity.class));
+            }
+        }
+        if(entities != null){
+            for(String entity : entities){
+                try {
+                    Class entityClass = Class.forName(entity);
+                    if ((entityClass.isAnnotationPresent(Entity.class)))
+                        classes.add(entityClass);
+                    else
+                        LOGGER.warn("Class is not annotated with Entity: " + entity );
+                } catch (ClassNotFoundException e) {
+                    LOGGER.warn("Can't load class: " + entity , e);
+                }
+            }
+        }
 		return  ImmutableList.<Class<?>>builder().add(BaseEntity.class).addAll(classes).build();
 	}
 
@@ -73,7 +94,7 @@ public class HibernateBundle implements ConfiguredBundle<RobeServiceConfiguratio
 
 
 	@Override
-	public DBConfiguration getDatabaseConfiguration(RobeServiceConfiguration configuration) {
+	public HibernateConfiguration getDatabaseConfiguration(RobeServiceConfiguration configuration) {
 		return configuration.getDatabaseConfiguration();
 	}
 
