@@ -5,6 +5,7 @@ import com.yammer.dropwizard.config.Bootstrap;
 import com.yammer.dropwizard.config.Environment;
 import io.robe.audit.AuditedMethodDispatchProvider;
 import io.robe.hibernate.DBConfiguration;
+import io.robe.hibernate.HibernateBundle;
 import io.robe.hibernate.entity.QuartzJob;
 import io.robe.service.RobeServiceConfiguration;
 import org.hibernate.Session;
@@ -23,9 +24,6 @@ import java.util.Set;
 import static org.quartz.JobBuilder.newJob;
 import static org.quartz.TriggerBuilder.newTrigger;
 
-/**
- * Created by sinanselimoglu on 14/02/14.
- */
 public class QuartzBundle implements ConfiguredBundle<RobeServiceConfiguration> {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(QuartzBundle.class);
@@ -35,10 +33,10 @@ public class QuartzBundle implements ConfiguredBundle<RobeServiceConfiguration> 
     Set<Class<? extends Job>> onStopJobs = null;
 
     RobeServiceConfiguration configuration;
-    SessionFactory sessionFactory;
+    HibernateBundle hibernateBundle;
 
-    public QuartzBundle(SessionFactory sessionFactory){
-        this.sessionFactory = sessionFactory;
+    public QuartzBundle(HibernateBundle hibernateBundle){
+        this.hibernateBundle = hibernateBundle;
     }
 
 
@@ -47,7 +45,7 @@ public class QuartzBundle implements ConfiguredBundle<RobeServiceConfiguration> 
     @Override
     public void run(RobeServiceConfiguration configuration, Environment environment) throws Exception {
         this.configuration = configuration;
-        initializeScheduler(sessionFactory);
+        initializeScheduler(hibernateBundle.getSessionFactory());
 
     }
 
