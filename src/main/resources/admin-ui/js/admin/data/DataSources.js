@@ -225,3 +225,27 @@ var SystemLanguageDatasource = robe.util.inherit(admin.data.SingletonDataSource,
     }
 });
 
+var QuartzJobDataSource = robe.util.inherit(admin.data.SingletonDataSource, {
+    name: "QuartzJobDataSource",
+    parameters: {
+        transport: {
+            read: {
+                type: "GET",
+                url: AdminApp.getBackendURL() + "quartzJob",
+                dataType: "json",
+                contentType: "application/json"
+            }
+        },
+        parameterMap: function (options, operation) {
+            if (operation !== "read") {
+                return kendo.stringify(options);
+            }
+        },
+        batch: false,
+        schema: {
+            model: QuartzJobModel
+        }
+    }
+})
+
+

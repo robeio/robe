@@ -23,7 +23,8 @@ AdminApp = robe.util.inherit(robe.App, {
                 5: "./js/admin/view/PermissionManagement.js",
                 6: "./js/admin/view/Dashboard.js",
                 7: "./js/admin/view/ProfileManagement.js",
-                8: "./js/admin/view/MailTemplateManagement.js"
+                8: "./js/admin/view/MailTemplateManagement.js",
+                9: "./js/admin/view/QuartzJobManagement.js"
             }
         ]
     }

@@ -1,18 +1,13 @@
-package io.robe.timely;
+package io.robe.quartz;
 
-import com.google.common.collect.Sets;
 import com.google.inject.Inject;
 import com.yammer.dropwizard.lifecycle.Managed;
-import org.hibernate.criterion.Restrictions;
 import org.quartz.*;
-import org.quartz.impl.StdSchedulerFactory;
-import org.reflections.Reflections;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
+
 import static com.google.common.base.Preconditions.checkNotNull;
 
 

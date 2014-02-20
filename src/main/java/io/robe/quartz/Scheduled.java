@@ -1,4 +1,4 @@
-package io.robe.timely;
+package io.robe.quartz;
 
 /**
  * Created by sinanselimoglu on 13/02/14.

@@ -6,16 +6,14 @@ import com.yammer.dropwizard.Service;
 import com.yammer.dropwizard.config.Bootstrap;
 import com.yammer.dropwizard.config.Environment;
 import com.yammer.dropwizard.hibernate.UnitOfWork;
-import com.yammer.dropwizard.lifecycle.ServerLifecycleListener;
 import com.yammer.dropwizard.views.ViewBundle;
 import io.robe.auth.AuthTokenResponseFilter;
 import io.robe.cli.InitializeCommand;
 import io.robe.exception.RobeExceptionMapper;
 import io.robe.hibernate.HibernateBundle;
+import io.robe.hibernate.dao.QuartzJobDao;
 import io.robe.mail.MailBundle;
-import io.robe.timely.ManagedQuartz;
-import io.robe.timely.QuartzBundle;
-import org.eclipse.jetty.server.Server;
+import io.robe.quartz.QuartzBundle;
 
 import javax.ws.rs.ext.ExceptionMapper;
 import java.util.ArrayList;
@@ -55,8 +53,8 @@ public class RobeService extends Service<RobeServiceConfiguration> {
     @Override
     public void initialize(Bootstrap<RobeServiceConfiguration> bootstrap) {
         HibernateBundle hibernate = new HibernateBundle();
-        QuartzBundle quartzBundle = new QuartzBundle();
         bootstrap.addBundle(hibernate);
+        QuartzBundle quartzBundle = new QuartzBundle(hibernate.getSessionFactory());
         bootstrap.addBundle(quartzBundle);
 
         bootstrap.addBundle(new NamedAssetsBundle("/admin-ui/", "/admin-ui", "admin-ui/index.html", "admin"));
@@ -68,6 +66,7 @@ public class RobeService extends Service<RobeServiceConfiguration> {
         bootstrap.addCommand(new InitializeCommand(this, hibernate));
         bootstrap.addBundle(new ViewBundle());
         bootstrap.addBundle(new MailBundle());
+
     }
 
 
@@ -102,6 +101,7 @@ public class RobeService extends Service<RobeServiceConfiguration> {
         }
 
         environment.addProvider(new RobeExceptionMapper());
+
 
     }
 }
