@@ -2,7 +2,6 @@ package io.robe.service;
 
 import com.google.common.cache.CacheBuilderSpec;
 import com.google.inject.AbstractModule;
-import com.google.inject.Inject;
 import com.google.inject.Provider;
 import com.yammer.dropwizard.auth.Authenticator;
 import com.yammer.dropwizard.auth.CachingAuthenticator;
@@ -11,10 +10,9 @@ import io.robe.auth.Credentials;
 import io.robe.hibernate.HibernateBundle;
 import io.robe.hibernate.dao.ServiceDao;
 import io.robe.hibernate.dao.UserDao;
-import io.robe.timely.ManagedQuartz;
-import io.robe.timely.QuartzBundle;
+import io.robe.quartz.ManagedQuartz;
+import io.robe.quartz.QuartzBundle;
 import org.hibernate.SessionFactory;
-import org.quartz.Scheduler;
 
 /**
  * Default Guice bindings are done at this class.
@@ -46,12 +44,7 @@ public class ConfigurationModule extends AbstractModule {
 			}
 		});
 
-//        bind(Scheduler.class).toProvider(new Provider<Scheduler>() {
-//            @Override
-//            public Scheduler get() {
-//                return quartz.getScheduler();
-//            }
-//        });
+
         bind(ManagedQuartz.class).toProvider(new Provider<ManagedQuartz>() {
             @Override
             public ManagedQuartz get() {
@@ -59,7 +52,8 @@ public class ConfigurationModule extends AbstractModule {
             }
         });
 
-	}
+
+    }
 
 
 }

@@ -35,9 +35,7 @@ public class InitializeCommand<T extends RobeServiceConfiguration> extends Envir
     @Override
     @UnitOfWork
     protected void run(Environment environment, Namespace namespace, T configuration) throws Exception {
-
         final Logger logger = LoggerFactory.getLogger(InitializeCommand.class);
-
         execute();
 
 
@@ -184,6 +182,14 @@ public class InitializeCommand<T extends RobeServiceConfiguration> extends Envir
         mailTemplate.setParentOid(manager.getOid());
         session.persist(mailTemplate);
         session.persist(createPermission(true, mailTemplate.getOid(), role));
+
+        Menu quartzJob = new Menu();
+        quartzJob.setCode("QuartzJobManagement");
+        quartzJob.setItemOrder(0);
+        quartzJob.setName("Quartz Job Manager");
+        quartzJob.setParentOid(manager.getOid());
+        session.persist(quartzJob);
+        session.persist(createPermission(true, quartzJob.getOid(), role));
 
         session.flush();
         session.close();
