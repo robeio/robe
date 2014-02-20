@@ -8,6 +8,7 @@ import com.yammer.dropwizard.config.Environment;
 import com.yammer.dropwizard.hibernate.UnitOfWork;
 import com.yammer.dropwizard.views.ViewBundle;
 import io.robe.auth.AuthTokenResponseFilter;
+import io.robe.cli.ControllableServerCommand;
 import io.robe.cli.InitializeCommand;
 import io.robe.exception.RobeExceptionMapper;
 import io.robe.hibernate.HibernateBundle;
@@ -54,7 +55,7 @@ public class RobeService extends Service<RobeServiceConfiguration> {
     public void initialize(Bootstrap<RobeServiceConfiguration> bootstrap) {
         HibernateBundle hibernate = new HibernateBundle();
         bootstrap.addBundle(hibernate);
-        QuartzBundle quartzBundle = new QuartzBundle(hibernate.getSessionFactory());
+        QuartzBundle quartzBundle = new QuartzBundle(hibernate);
         bootstrap.addBundle(quartzBundle);
 
         bootstrap.addBundle(new NamedAssetsBundle("/admin-ui/", "/admin-ui", "admin-ui/index.html", "admin"));
@@ -64,9 +65,9 @@ public class RobeService extends Service<RobeServiceConfiguration> {
                 .build()
         );
         bootstrap.addCommand(new InitializeCommand(this, hibernate));
+        bootstrap.addCommand(new ControllableServerCommand<RobeServiceConfiguration>(this));
         bootstrap.addBundle(new ViewBundle());
         bootstrap.addBundle(new MailBundle());
-
     }
 
 
@@ -101,7 +102,6 @@ public class RobeService extends Service<RobeServiceConfiguration> {
         }
 
         environment.addProvider(new RobeExceptionMapper());
-
 
     }
 }
