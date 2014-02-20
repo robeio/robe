@@ -1,4 +1,4 @@
-package io.robe.timely;
+package io.robe.quartz;
 
 import org.quartz.Job;
 import org.quartz.JobExecutionContext;
@@ -10,7 +10,6 @@ import org.slf4j.LoggerFactory;
  * Created by sinanselimoglu on 18/02/14.
  */
 @OnApplicationStart
-
 public class HelloManagedQuartz implements Job {
 
     private static Logger LOGGER = LoggerFactory.getLogger(HelloManagedQuartz.class);

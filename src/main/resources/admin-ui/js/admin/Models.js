@@ -190,3 +190,29 @@ var SystemLanguageModel = kendo.data.Model.define({
         }
     }
 });
+
+var QuartzJobModel = kendo.data.Model.define({
+    id: "oid",
+    fields: {
+        oid: {
+            editable: false,
+            nullable: true
+        },
+        lastUpdated: {
+            editable: false,
+            nullable: true
+        },
+        schedulerName: {
+            editable: false,
+            nullable: false
+        },
+        jobClassName: {
+            editable: false,
+            nullable: false
+        },
+        cronExpression: {
+            editable: false,
+            nullable: true
+        }
+    }
+})

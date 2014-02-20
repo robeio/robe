@@ -1,6 +1,4 @@
-package io.robe.timely;
-
-import com.yammer.dropwizard.config.Configuration;
+package io.robe.quartz;
 
 public class QuartzConfiguration {
     private String instanceName;

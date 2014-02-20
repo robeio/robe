@@ -2,10 +2,9 @@ package io.robe.service;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.yammer.dropwizard.config.Configuration;
-import com.yammer.dropwizard.db.DatabaseConfiguration;
 import io.robe.hibernate.DBConfiguration;
 import io.robe.mail.MailConfiguration;
-import io.robe.timely.QuartzConfiguration;
+import io.robe.quartz.QuartzConfiguration;
 
 import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
