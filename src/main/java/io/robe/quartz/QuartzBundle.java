@@ -3,8 +3,7 @@ package io.robe.quartz;
 import com.yammer.dropwizard.ConfiguredBundle;
 import com.yammer.dropwizard.config.Bootstrap;
 import com.yammer.dropwizard.config.Environment;
-import io.robe.audit.AuditedMethodDispatchProvider;
-import io.robe.hibernate.DBConfiguration;
+import io.robe.hibernate.HibernateConfiguration;
 import io.robe.hibernate.HibernateBundle;
 import io.robe.hibernate.entity.QuartzJob;
 import io.robe.service.RobeServiceConfiguration;
@@ -56,7 +55,7 @@ public class QuartzBundle implements ConfiguredBundle<RobeServiceConfiguration> 
 
         Properties properties = new Properties();
 
-        DBConfiguration dbConfiguration = configuration.getDatabaseConfiguration();
+        HibernateConfiguration hibernateConfiguration = configuration.getHibernateConfiguration();
         QuartzConfiguration quartzConfiguration = configuration.getQuartzConfiguration();
 
 
@@ -68,10 +67,10 @@ public class QuartzBundle implements ConfiguredBundle<RobeServiceConfiguration> 
 
         if (!"org.quartz.simpl.RAMJobStore".equals(quartzConfiguration.getJobStoreClass())) {
             properties.setProperty("org.quartz.jobStore.dataSource", "myDS");
-            properties.setProperty("org.quartz.dataSource.myDS.driver", dbConfiguration.getDriverClass());
-            properties.setProperty("org.quartz.dataSource.myDS.URL", dbConfiguration.getUrl());
-            properties.setProperty("org.quartz.dataSource.myDS.user", dbConfiguration.getUser());
-            properties.setProperty("org.quartz.dataSource.myDS.password", dbConfiguration.getPassword());
+            properties.setProperty("org.quartz.dataSource.myDS.driver", hibernateConfiguration.getDriverClass());
+            properties.setProperty("org.quartz.dataSource.myDS.URL", hibernateConfiguration.getUrl());
+            properties.setProperty("org.quartz.dataSource.myDS.user", hibernateConfiguration.getUser());
+            properties.setProperty("org.quartz.dataSource.myDS.password", hibernateConfiguration.getPassword());
             properties.setProperty("org.quartz.dataSource.myDS.maxConnections", String.valueOf(quartzConfiguration.getMaxConnections()));
             properties.setProperty("org.quartz.jobStore.tablePrefix", quartzConfiguration.getTablePrefix());
             properties.setProperty("org.quartz.jobStore.driverDelegateClass", quartzConfiguration.getDriverDelegateClass());
