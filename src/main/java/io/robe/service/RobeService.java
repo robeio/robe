@@ -8,6 +8,7 @@ import com.yammer.dropwizard.hibernate.UnitOfWork;
 import com.yammer.dropwizard.views.ViewBundle;
 import io.robe.auth.AuthTokenResponseFilter;
 import io.robe.cli.ControllableServerCommand;
+import io.robe.cli.InitializeCommand;
 import io.robe.exception.RobeExceptionMapper;
 import io.robe.guice.ConfigurationModule;
 import io.robe.guice.GuiceBundle;
@@ -61,15 +62,10 @@ public class RobeService extends Service<RobeServiceConfiguration> {
         bootstrap.addBundle(new ViewBundle());
         bootstrap.addBundle(new MailBundle());
         bootstrap.addBundle(new NamedAssetsBundle("/admin-ui/", "/admin-ui", "admin-ui/index.html", "admin"));
-//        bootstrap.addBundle(GuiceBundle.newBuilder()
-//                .addModule(new ConfigurationModule(hibernate, quartzBundle))
-//                .enableAutoConfig("io")
-//                .build()
-//        );
         ConfigurationModule.setHibernateBundle(hibernate);
         ConfigurationModule.setQuartzBundle(quartzBundle);
         bootstrap.addBundle(new GuiceBundle());
-//        bootstrap.addCommand(new InitializeCommand(this, hibernate));
+        bootstrap.addCommand(new InitializeCommand(this, hibernate));
 
     }
 
