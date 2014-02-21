@@ -2,8 +2,8 @@ package io.robe.service;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.yammer.dropwizard.config.Configuration;
-import com.yammer.dropwizard.db.DatabaseConfiguration;
-import io.robe.hibernate.DBConfiguration;
+import io.robe.guice.GuiceConfiguration;
+import io.robe.hibernate.HibernateConfiguration;
 import io.robe.mail.MailConfiguration;
 import io.robe.mq.MessageQueueConfiguration;
 import io.robe.quartz.QuartzConfiguration;
@@ -16,7 +16,7 @@ public class RobeServiceConfiguration extends Configuration {
     @Valid
     @NotNull
     @JsonProperty
-    private DBConfiguration database = new DBConfiguration();
+    private HibernateConfiguration hibernate;
 
     @Valid
     @JsonProperty
@@ -25,25 +25,34 @@ public class RobeServiceConfiguration extends Configuration {
     @Valid
     @NotNull
     @JsonProperty
-    private QuartzConfiguration quartzConfiguration;
+    private QuartzConfiguration quartz;
 
     @Valid
     @JsonProperty
-    private MessageQueueConfiguration messageQueue = new MessageQueueConfiguration();
+    private GuiceConfiguration guice;
 
-    public DBConfiguration getDatabaseConfiguration() {
-        return database;
+    @Valid
+    @JsonProperty
+    private MessageQueueConfiguration messageQueue;
+
+
+    public HibernateConfiguration getHibernateConfiguration() {
+        return hibernate;
     }
 
-    public MailConfiguration getMail() {
+    public MailConfiguration getMailConfiguration() {
         return mail;
     }
 
     public QuartzConfiguration getQuartzConfiguration() {
-        return quartzConfiguration;
+        return quartz;
     }
 
-    public MessageQueueConfiguration getMessageQueueConfiguration() {
+    public GuiceConfiguration getGuiceConfiguration() {
+        return guice;
+    }
+
+    public MessageQueueConfiguration getMqConfiguration() {
         return messageQueue;
     }
 }
