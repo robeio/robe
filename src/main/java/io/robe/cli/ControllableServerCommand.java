@@ -23,6 +23,7 @@ public class ControllableServerCommand<T extends Configuration> extends Environm
 
     private final Class<T> configurationClass;
 
+
     public ControllableServerCommand(Service<T> service) {
         super(service, "cserver", "Runs the Dropwizard service as an HTTP server");
         this.configurationClass = service.getConfigurationClass();

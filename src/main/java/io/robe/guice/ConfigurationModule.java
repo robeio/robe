@@ -1,4 +1,4 @@
-package io.robe.service;
+package io.robe.guice;
 
 import com.google.common.cache.CacheBuilderSpec;
 import com.google.inject.AbstractModule;
@@ -19,15 +19,21 @@ import org.hibernate.SessionFactory;
  */
 public class ConfigurationModule extends AbstractModule {
 
-	HibernateBundle hibernate;
-    QuartzBundle quartz;
+	public static HibernateBundle hibernate;
+    public static QuartzBundle quartz;
 
-    public ConfigurationModule(HibernateBundle hibernate,QuartzBundle quartz) {
-		this.hibernate = hibernate;
-        this.quartz = quartz;
+    public ConfigurationModule() {
 	}
 
-	@Override
+    public static void setHibernateBundle(HibernateBundle hibernate) {
+        ConfigurationModule.hibernate = hibernate;
+    }
+
+    public static void setQuartzBundle(QuartzBundle quartz) {
+        ConfigurationModule.quartz = quartz;
+    }
+
+    @Override
 	protected void configure() {
 		bind(SessionFactory.class).toProvider(new Provider<SessionFactory>() {
 			@Override
@@ -51,8 +57,6 @@ public class ConfigurationModule extends AbstractModule {
                 return new ManagedQuartz(quartz.getScheduler(),quartz.getOnStartJobs(),quartz.getOnStopJobs());
             }
         });
-
-
     }
 
 
