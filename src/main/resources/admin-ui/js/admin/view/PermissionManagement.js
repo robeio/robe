@@ -57,12 +57,12 @@ var PermissionManagement = robe.util.inherit(robe.view.Page, {
         });
 
         $("#btnSavePermission").kendoButton({
-            click: this.onSave
+            click: PermissionManagement.onSave
         });
 
 
         $("#btnMenuManagementHelp").kendoButton({
-            click: this.onShowHelp
+            click: PermissionManagement.onShowHelp
         });
     },
 
@@ -81,24 +81,23 @@ var PermissionManagement = robe.util.inherit(robe.view.Page, {
 
     onCmbRolesChange: function () {
         var roleOid = $("#cmbRoles").val();
-        var me = this;
         $.ajax({
             type: "GET",
-            url: getBackendURL() + "permission/" + roleOid + "/menu",
+            url: AdminApp.getBackendURL() + "permission/" + roleOid + "/menu",
             dataType: "json",
             contentType: "application/json; charset=utf-8",
             success: function (response) {
                 $("#treeMenus").data("kendoTreeView").expand(".k-item");
-                me.checkByNodeIds($("#treeMenus").data("kendoTreeView").dataSource.data(), response);
+                PermissionManagement.checkByNodeIds($("#treeMenus").data("kendoTreeView").dataSource.data(), response);
             }
         });
         $.ajax({
             type: "GET",
-            url: getBackendURL() + "permission/" + roleOid + "/service",
+            url: AdminApp.getBackendURL() + "permission/" + roleOid + "/service",
             dataType: "json",
             contentType: "application/json; charset=utf-8",
             success: function (response) {
-                me.checkRows(response);
+                PermissionManagement.checkRows(response);
             }
         });
     },
@@ -108,10 +107,10 @@ var PermissionManagement = robe.util.inherit(robe.view.Page, {
         var checkedNodes = [];
         var treeMenus = $("#treeMenus").data("kendoTreeView");
 
-        this.checkedNodeIds(treeMenus.dataSource.view(), checkedNodes);
+        PermissionManagement.checkedNodeIds(treeMenus.dataSource.view(), checkedNodes);
         $.ajax({
             type: "PUT",
-            url: getBackendURL() + "permission/" + roleOid + "/menu",
+            url: AdminApp.getBackendURL() + "permission/" + roleOid + "/menu",
             dataType: "json",
             data: kendo.stringify(checkedNodes),
             contentType: "application/json; charset=utf-8",
@@ -122,9 +121,9 @@ var PermissionManagement = robe.util.inherit(robe.view.Page, {
 
         $.ajax({
             type: "PUT",
-            url: getBackendURL() + "permission/" + roleOid + "/service",
+            url: AdminApp.getBackendURL() + "permission/" + roleOid + "/service",
             dataType: "json",
-            data: kendo.stringify(getCheckedRows()),
+            data: kendo.stringify(this.getCheckedRows()),
             contentType: "application/json; charset=utf-8",
             success: function (result) {
             }
@@ -133,14 +132,14 @@ var PermissionManagement = robe.util.inherit(robe.view.Page, {
     },
 
 // function that gathers IDs of checked nodes
-    checkedNodeIds: function (nodes, checkedNodes) {
+    checkedNodeIds: function (me, nodes, checkedNodes) {
         for (var i = 0; i < nodes.length; i++) {
             if (nodes[i].checked) {
-                this.checkedNodes.push(nodes[i].id);
+                PermissionManagement.checkedNodes.push(nodes[i].id);
             }
 
             if (nodes[i].hasChildren) {
-                this.checkedNodeIds(nodes[i].children.view(), checkedNodes);
+                PermissionManagement.checkedNodeIds(me, nodes[i].children.view(), checkedNodes);
             }
         }
     },
@@ -156,7 +155,7 @@ var PermissionManagement = robe.util.inherit(robe.view.Page, {
             tree.findByUid(nodeUid).find(":checkbox").prop("checked", isChecked);
             nodes[i].set("checked", isChecked);
             if (nodes[i].hasChildren) {
-                this.checkByNodeIds(nodes[i].children.data(), targetNodes);
+                PermissionManagement.checkByNodeIds(nodes[i].children.data(), targetNodes);
             }
         }
     },
