@@ -16,6 +16,7 @@
         <quartz.version>2.2.1</quartz.version>
         <swagger.version>2.10</swagger.version>
         <cglib.version>2.2.2</cglib.version>
+        <guice.version>3.0</guice.version>
     </properties>
 
     <groupId>io.robe</groupId>
@@ -50,11 +51,6 @@
             <dependency>
                 <groupId>com.yammer.dropwizard</groupId>
                 <artifactId>dropwizard-views</artifactId>
-                <version>${dropwizard.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>com.hubspot.dropwizard</groupId>
-                <artifactId>dropwizard-guice</artifactId>
                 <version>${dropwizard.version}</version>
             </dependency>
 
@@ -112,6 +108,17 @@
                 <artifactId>cglib</artifactId>
                 <version>${cglib.version}</version>
             </dependency>
+            <dependency>
+                <groupId>com.google.inject</groupId>
+                <artifactId>guice</artifactId>
+                <version>${guice.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.reflections</groupId>
+                <artifactId>reflections</artifactId>
+                <version>0.9.8</version>
+            </dependency>
+
 
         </dependencies>
     </dependencyManagement>
@@ -133,11 +140,6 @@
         <dependency>
             <groupId>com.yammer.dropwizard</groupId>
             <artifactId>dropwizard-auth</artifactId>
-        </dependency>
-
-        <dependency>
-            <groupId>com.hubspot.dropwizard</groupId>
-            <artifactId>dropwizard-guice</artifactId>
         </dependency>
 
         <dependency>
@@ -170,7 +172,6 @@
         <dependency>
             <groupId>javax.mail</groupId>
             <artifactId>mail</artifactId>
-            <version>${mail.version}</version>
         </dependency>
 
         <!-- Timed Operations - Quartz -->
@@ -187,6 +188,24 @@
             <artifactId>cglib</artifactId>
         </dependency>
 
+        <dependency>
+            <groupId>com.google.inject</groupId>
+            <artifactId>guice</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.reflections</groupId>
+            <artifactId>reflections</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.google.inject.extensions</groupId>
+            <artifactId>guice-servlet</artifactId>
+            <version>3.0</version>
+        </dependency>
+        <dependency>
+            <groupId>com.sun.jersey.contribs</groupId>
+            <artifactId>jersey-guice</artifactId>
+            <version>1.9.1</version>
+        </dependency>
     </dependencies>
 
 
