@@ -81,14 +81,14 @@ public class GuiceBundle implements ConfiguredBundle<RobeServiceConfiguration> {
         dropwizardEnvironmentModule.setEnvironmentData(configuration, environment);
     }
 
-    private void createReflections(String[] scanablePackages) {
-        if (scanablePackages.length < 1) {
-            LOGGER.warn("No package defined in configuration (scanablePackages)!");
+    private void createReflections(String[] scanPackages) {
+        if (scanPackages.length < 1) {
+            LOGGER.warn("No package defined in configuration (scanPackages)!");
             return;
         }
         ConfigurationBuilder configurationBuilder = new ConfigurationBuilder();
         FilterBuilder filterBuilder = new FilterBuilder();
-        for (String package_ : scanablePackages) {
+        for (String package_ : scanPackages) {
             configurationBuilder.addUrls(ClasspathHelper.forPackage(package_));
             filterBuilder.include(FilterBuilder.prefix(package_));
         }
