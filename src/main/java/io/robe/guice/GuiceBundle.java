@@ -6,9 +6,6 @@ import com.google.inject.Injector;
 import com.google.inject.Module;
 import com.google.inject.servlet.GuiceFilter;
 import com.google.inject.util.Modules;
-import com.hubspot.dropwizard.guice.DropwizardEnvironmentModule;
-import com.hubspot.dropwizard.guice.GuiceContainer;
-import com.hubspot.dropwizard.guice.JerseyContainerModule;
 import com.sun.jersey.guice.JerseyServletModule;
 import com.sun.jersey.spi.inject.InjectableProvider;
 import com.yammer.dropwizard.ConfiguredBundle;
@@ -114,6 +111,8 @@ public class GuiceBundle implements ConfiguredBundle<RobeServiceConfiguration> {
     private void addModules(Environment environment) throws IllegalAccessException, InstantiationException {
         //TODO<seray>: change to Module interface for query.
         Set<Class<? extends AbstractModule>> moduleClasses = reflections.getSubTypesOf(AbstractModule.class);
+        moduleClasses.remove(DropwizardEnvironmentModule.class);
+        moduleClasses.remove(JerseyContainerModule.class);
         for (Class<? extends AbstractModule> module : moduleClasses) {
             try {
                 modules.add(module.newInstance());
