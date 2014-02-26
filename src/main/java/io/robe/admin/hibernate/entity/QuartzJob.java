@@ -6,9 +6,6 @@ import io.robe.hibernate.entity.BaseEntity;
 import javax.persistence.Entity;
 import javax.persistence.Table;
 
-/**
- * Created by sinanselimoglu on 19/02/14.
- */
 @Entity
 @Table
 public class QuartzJob extends BaseEntity {
