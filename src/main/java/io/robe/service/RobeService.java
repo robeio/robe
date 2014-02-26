@@ -1,6 +1,5 @@
 package io.robe.service;
 
-import com.hubspot.dropwizard.guice.GuiceBundle;
 import com.sun.jersey.api.core.ResourceConfig;
 import com.yammer.dropwizard.Service;
 import com.yammer.dropwizard.config.Bootstrap;
@@ -11,8 +10,9 @@ import io.robe.auth.AuthTokenResponseFilter;
 import io.robe.cli.ControllableServerCommand;
 import io.robe.cli.InitializeCommand;
 import io.robe.exception.RobeExceptionMapper;
+import io.robe.guice.ConfigurationModule;
+import io.robe.guice.GuiceBundle;
 import io.robe.hibernate.HibernateBundle;
-import io.robe.hibernate.dao.QuartzJobDao;
 import io.robe.mail.MailBundle;
 import io.robe.quartz.QuartzBundle;
 
@@ -53,21 +53,20 @@ public class RobeService extends Service<RobeServiceConfiguration> {
      */
     @Override
     public void initialize(Bootstrap<RobeServiceConfiguration> bootstrap) {
-        HibernateBundle hibernate = new HibernateBundle();
-        bootstrap.addBundle(hibernate);
-        QuartzBundle quartzBundle = new QuartzBundle(hibernate);
-        bootstrap.addBundle(quartzBundle);
-
-        bootstrap.addBundle(new NamedAssetsBundle("/admin-ui/", "/admin-ui", "admin-ui/index.html", "admin"));
-        bootstrap.addBundle(GuiceBundle.newBuilder()
-                .addModule(new ConfigurationModule(hibernate, quartzBundle))
-                .enableAutoConfig("io")
-                .build()
-        );
-        bootstrap.addCommand(new InitializeCommand(this, hibernate));
         bootstrap.addCommand(new ControllableServerCommand<RobeServiceConfiguration>(this));
+
+        HibernateBundle hibernate = new HibernateBundle();
+        QuartzBundle quartzBundle = new QuartzBundle(hibernate);
+        bootstrap.addBundle(hibernate);
+        bootstrap.addBundle(quartzBundle);
         bootstrap.addBundle(new ViewBundle());
         bootstrap.addBundle(new MailBundle());
+        bootstrap.addBundle(new NamedAssetsBundle("/admin-ui/", "/admin-ui", "admin-ui/index.html", "admin"));
+        ConfigurationModule.setHibernateBundle(hibernate);
+        ConfigurationModule.setQuartzBundle(quartzBundle);
+        bootstrap.addBundle(new GuiceBundle());
+        bootstrap.addCommand(new InitializeCommand(this, hibernate));
+
     }
 
 

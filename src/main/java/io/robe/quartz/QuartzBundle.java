@@ -37,6 +37,8 @@ public class QuartzBundle implements ConfiguredBundle<RobeServiceConfiguration> 
     }
 
 
+
+
     @Override
     public void run(RobeServiceConfiguration configuration, Environment environment) throws Exception {
         this.configuration = configuration;
@@ -45,12 +47,13 @@ public class QuartzBundle implements ConfiguredBundle<RobeServiceConfiguration> 
     }
 
 
+
     public void initializeScheduler(SessionFactory sessionFactory) throws Exception {
         final Session session = sessionFactory.openSession();
 
         Properties properties = new Properties();
 
-        HibernateConfiguration hibernateConfiguration = configuration.getDatabaseConfiguration();
+        HibernateConfiguration hibernateConfiguration = configuration.getHibernateConfiguration();
         QuartzConfiguration quartzConfiguration = configuration.getQuartzConfiguration();
 
 

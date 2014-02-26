@@ -23,8 +23,8 @@ public class MailBundle implements ConfiguredBundle<RobeServiceConfiguration> {
      */
     @Override
     public void run(RobeServiceConfiguration configuration, Environment environment) throws Exception {
-        if(configuration.getMail() != null)
-            MailSender.createInstance(configuration.getMail());
+        if(configuration.getMailConfiguration() != null)
+            MailSender.createInstance(configuration.getMailConfiguration());
         else
             LOGGER.warn("Bundle included but no configuration (mail) found at yml.");
     }
