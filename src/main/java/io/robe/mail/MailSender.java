@@ -1,5 +1,6 @@
 package io.robe.mail;
 
+import io.robe.quartz.Scheduled;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

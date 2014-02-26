@@ -196,23 +196,29 @@ var QuartzJobModel = kendo.data.Model.define({
     fields: {
         oid: {
             editable: false,
-            nullable: true
-        },
-        lastUpdated: {
-            editable: false,
-            nullable: true
+            nullable: true,
+            type:"string"
         },
         schedulerName: {
             editable: false,
-            nullable: false
+            nullable: true,
+            type:"string"
         },
         jobClassName: {
             editable: false,
-            nullable: false
+            nullable: true,
+            type:"string"
         },
         cronExpression: {
+            editable: true,
+            nullable: true,
+            type:"string"
+        },
+        fireTime: {
             editable: false,
-            nullable: true
+            nullable: true,
+            type:"string"
         }
     }
-})
+});
+

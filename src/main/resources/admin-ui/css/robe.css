@@ -172,3 +172,11 @@ tr[role="row"]:hover {
 #btnMailTemplateManagementHelp {
     margin-left: 10px;
 }
+
+.cron span {
+    margin : 10 10 0 10;
+}
+
+.cron well well-sm {
+    margin-top: 10;
+}

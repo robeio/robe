@@ -12,7 +12,7 @@ import static org.quartz.TriggerBuilder.newTrigger;
 public class Lighter {
 
     @Inject
-    SchedulerFactory schedulerFactory;
+    ManagedQuartz managedQuartz;
 
 
     /**
@@ -24,7 +24,7 @@ public class Lighter {
     public String fire(QuartzJob quartzJob) {
         String cronExpression=null;
         try {
-            Scheduler scheduler = schedulerFactory.getScheduler();
+            Scheduler scheduler = managedQuartz.getScheduler();
             JobDetail jobDetail = scheduler.getJobDetail(new JobKey(quartzJob.getJobClassName()));
             cronExpression = quartzJob.getCronExpression();
             if (cronExpression != null) {

@@ -2,8 +2,7 @@ package io.robe.service;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.yammer.dropwizard.config.Configuration;
-import com.yammer.dropwizard.db.DatabaseConfiguration;
-import io.robe.hibernate.DBConfiguration;
+import io.robe.hibernate.HibernateConfiguration;
 import io.robe.mail.MailConfiguration;
 import io.robe.mq.MessageQueueConfiguration;
 import io.robe.quartz.QuartzConfiguration;
@@ -16,7 +15,7 @@ public class RobeServiceConfiguration extends Configuration {
     @Valid
     @NotNull
     @JsonProperty
-    private DBConfiguration database = new DBConfiguration();
+    private HibernateConfiguration database = new HibernateConfiguration();
 
     @Valid
     @JsonProperty
@@ -31,7 +30,7 @@ public class RobeServiceConfiguration extends Configuration {
     @JsonProperty
     private MessageQueueConfiguration messageQueue = new MessageQueueConfiguration();
 
-    public DBConfiguration getDatabaseConfiguration() {
+    public HibernateConfiguration getDatabaseConfiguration() {
         return database;
     }
 
