@@ -1,7 +1,7 @@
 //@ sourceURL=Dashboard.js
 var Dashboard = robe.util.inherit(robe.view.Page, {
     name: "Dashboard",
-    htmlPath:"./html/Dashboard.html",
+    htmlPath: "./html/Dashboard.html",
     initialize: function () {
         $("#btnHeapDump").kendoButton({
             click: function (e) {
@@ -66,21 +66,21 @@ var Dashboard = robe.util.inherit(robe.view.Page, {
                 var httpResponseCounts = [servletInfo["1xx-responses"]["count"], servletInfo["2xx-responses"]["count"], servletInfo["3xx-responses"]["count"], servletInfo["4xx-responses"]["count"], servletInfo["5xx-responses"]["count"]];
                 var categoryList = ['1**', '2**', '3**', '4**', '5**'];
 
-                // Authenticate service counts and response times
+                // Authenticate admin counts and response times
                 var authenticateServiceData = response["io.robe.auth.AuthResource"];
                 var loginMin = authenticateServiceData["login"]["duration"]["min"];
                 var loginMax = authenticateServiceData["login"]["duration"]["max"];
                 var loginMean = authenticateServiceData["login"]["duration"]["mean"];
                 var loginCount = authenticateServiceData["login"]["rate"]["count"];
 
-                // Auth Token service counts and response times
+                // Auth Token admin counts and response times
                 var authTokenServiceData = response["io.robe.auth.AuthTokenAuthenticator"];
                 var getTokenMin = authTokenServiceData ["gets"]["duration"]["min"];
                 var getTokenMax = authTokenServiceData ["gets"]["duration"]["max"];
                 var getTokenMean = authTokenServiceData ["gets"]["duration"]["mean"];
 
-                // Menu service counts and response times
-                var menuServiceData = response["io.robe.resources.MenuResource"];
+                // Menu admin counts and response times
+                var menuServiceData = response["io.robe.admin.resources.MenuResource"];
                 var createMenuMean = menuServiceData["create"]["duration"]["mean"];
                 var getMenuMean = menuServiceData["getMenus"]["duration"]["mean"];
                 var deleteMenu = menuServiceData["delete"]["duration"]["mean"];

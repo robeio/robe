@@ -4,52 +4,52 @@ import com.yammer.dropwizard.ConfiguredBundle;
 import com.yammer.dropwizard.config.Bootstrap;
 import com.yammer.dropwizard.config.Environment;
 import io.robe.admin.RobeServiceConfiguration;
+import io.robe.admin.hibernate.entity.QuartzJob;
 import io.robe.hibernate.HibernateBundle;
 import io.robe.hibernate.HibernateConfiguration;
-import io.robe.hibernate.entity.QuartzJob;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
-import org.hibernate.criterion.Restrictions;
 import org.quartz.*;
 import org.quartz.impl.StdSchedulerFactory;
 import org.reflections.Reflections;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.util.*;
+import java.util.HashSet;
+import java.util.LinkedHashSet;
+import java.util.Properties;
+import java.util.Set;
 
 import static org.quartz.JobBuilder.newJob;
 import static org.quartz.TriggerBuilder.newTrigger;
 
-public class QuartzBundle implements ConfiguredBundle<RobeServiceConfiguration> {
+public class HibernateManagableQuartzBundle implements ConfiguredBundle<RobeServiceConfiguration> {
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(QuartzBundle.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(HibernateManagableQuartzBundle.class);
 
     Scheduler scheduler = null;
     Set<Class<? extends Job>> onStartJobs = null;
     Set<Class<? extends Job>> onStopJobs = null;
 
     RobeServiceConfiguration configuration;
+
     HibernateBundle hibernateBundle;
 
-    public QuartzBundle(HibernateBundle hibernateBundle) {
+    public HibernateManagableQuartzBundle(HibernateBundle hibernateBundle) {
         this.hibernateBundle = hibernateBundle;
     }
-
-
 
 
     @Override
     public void run(RobeServiceConfiguration configuration, Environment environment) throws Exception {
         this.configuration = configuration;
-        initializeScheduler(hibernateBundle.getSessionFactory());
-
+        initializeScheduler(hibernateBundle);
     }
 
 
-
-    public void initializeScheduler(SessionFactory sessionFactory) throws Exception {
-        final Session session = sessionFactory.openSession();
+    public void initializeScheduler(HibernateBundle hibernateBundle) throws Exception {
+        SessionFactory sessionFactory = hibernateBundle.getSessionFactory();
+        Session session = sessionFactory.openSession();
 
         Properties properties = new Properties();
 
@@ -134,24 +134,14 @@ public class QuartzBundle implements ConfiguredBundle<RobeServiceConfiguration> 
                     scheduler.scheduleJob(job, triggers, true);
                     LOGGER.info("Scheduled job : " + job.toString() + " with trigger : " + trigger.toString());
                 } else if (scheduledAnnotation.manager().equals(Scheduled.Manager.DB)) {
-                    List<QuartzJob> quartzJobList = session.createCriteria(QuartzJob.class).add(Restrictions.eq("jobClassName", jobClass.getName())).list();
-                    QuartzJob quartzJob;
-                    if (quartzJobList.size() < 1) {
-                        quartzJob = new QuartzJob();
-                        quartzJob.setJobClassName(jobClass.getName());
-                        quartzJob.setCronExpression(scheduledAnnotation.cron());
-                        quartzJob.setSchedulerName(scheduler.getSchedulerName());
-                        session.persist(quartzJob);
-                    }
-                    else if(quartzJobList.size() ==1){
-                        quartzJob = quartzJobList.get(0);
-                        Lighter lighter = new Lighter();
-                    }
+                    QuartzJob quartzJob = new QuartzJob();
+                    quartzJob.setJobClassName(jobClass.getName());
+                    quartzJob.setCronExpression(scheduledAnnotation.cron());
+                    quartzJob.setSchedulerName(scheduler.getSchedulerName());
+                    session.persist(quartzJob);
                 }
             }
         }
-        session.flush();
-        session.close();
     }
 
     /**
