@@ -77,7 +77,7 @@ public class RobeService extends Service<RobeServiceConfiguration> {
         modules.add(new MailModule(mailBundle));
 
         bootstrap.addBundle(new GuiceBundle(modules));
-        bootstrap.addCommand(new InitializeCommand(this));
+        bootstrap.addCommand(new InitializeCommand(this, hibernateBundle));
 
     }
 
