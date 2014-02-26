@@ -29,7 +29,7 @@ public class QuartzJobResource {
         return list;
     }
 
-    @PUT
+    @POST
     @Path("/update")
     @UnitOfWork
     public QuartzJob setCron(QuartzJob quartzJob) {
@@ -37,7 +37,7 @@ public class QuartzJobResource {
         return quartzJob;
     }
 
-    @PUT
+    @POST
     @Path("/fire")
     @UnitOfWork
     public String fireJob(QuartzJob quartzJob) {

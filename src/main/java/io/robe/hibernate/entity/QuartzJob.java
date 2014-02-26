@@ -1,5 +1,7 @@
 package io.robe.hibernate.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import javax.persistence.Entity;
 import javax.persistence.Table;
 
@@ -12,7 +14,10 @@ public class QuartzJob extends BaseEntity{
     private String cronExpression;
     private String schedulerName;
     private String jobClassName;
+
+    @JsonIgnore
     private String fireTime;
+
 
     public String getCronExpression() {
         return cronExpression;

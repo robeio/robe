@@ -234,18 +234,30 @@ var QuartzJobDataSource = robe.util.inherit(admin.data.SingletonDataSource, {
                 url: AdminApp.getBackendURL() + "quartzJob",
                 dataType: "json",
                 contentType: "application/json"
-            }
-        },
-        parameterMap: function (options, operation) {
-            if (operation !== "read") {
-                return kendo.stringify(options);
-            }
+            },
+             update: {
+                 type: "POST",
+                 url: AdminApp.getBackendURL() + "quartzJob/update",
+                 dataType: "json",
+                 contentType: "application/json"
+             },
+             create: {
+                 type: "POST",
+                 url: AdminApp.getBackendURL() + "quartzJob/fire",
+                 dataType: "json",
+                 contentType: "application/json"
+             },
+             parameterMap: function (options, operation) {
+                 if (operation !== "read") {
+                     return kendo.stringify(options);
+                 }
+             }
         },
         batch: false,
         schema: {
-            model: QuartzJobModel
+                model: QuartzJobModel
         }
     }
-})
+});
 
 

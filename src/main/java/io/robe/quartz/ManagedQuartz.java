@@ -64,4 +64,8 @@ public class ManagedQuartz implements Managed {
     private Trigger executeNowTrigger() {
         return TriggerBuilder.newTrigger().startNow().build();
     }
+
+    public Scheduler getScheduler() {
+        return scheduler;
+    }
 }
