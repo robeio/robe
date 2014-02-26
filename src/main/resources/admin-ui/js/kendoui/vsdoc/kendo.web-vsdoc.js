@@ -612,7 +612,7 @@ kendo.data.DataSource.prototype = {
 
     data: function (value) {
         /// <summary>
-        /// Gets or sets the data items of the data source.If the data source is bound to a remote service (via the transport option) the data method will return the service response.
+        /// Gets or sets the data items of the data source.If the data source is bound to a remote admin (via the transport option) the data method will return the admin response.
 /// Every item from the response is wrapped in a kendo.data.ObservableObject or kendo.data.Model (if the schema.model option is set).If the data source is bound to a JavaScript array (via the data option) the data method will return the items of that array.
 /// Every item from the array is wrapped in a kendo.data.ObservableObject or kendo.data.Model (if the schema.model option is set).If the data source is grouped (via the group option or the group method) and the serverGrouping is set to true
 /// the data method will return the group items.
@@ -625,7 +625,7 @@ kendo.data.DataSource.prototype = {
 
     fetch: function (callback) {
         /// <summary>
-        /// Reads the data items from a remote service (if the transport option is set) or from a JavaScript array (if the data option is set).
+        /// Reads the data items from a remote admin (if the transport option is set) or from a JavaScript array (if the data option is set).
         /// </summary>
         /// <param name="callback" type="Function" >The optional function which is executed when the remote request is finished.  The function context (available via the this keyword) will be set to the data source instance.</param>
 
@@ -724,7 +724,7 @@ kendo.data.DataSource.prototype = {
 
     query: function (options) {
         /// <summary>
-        /// Executes the specified query over the data items. Makes a HTTP request if bound to a remote service.
+        /// Executes the specified query over the data items. Makes a HTTP request if bound to a remote admin.
         /// </summary>
         /// <param name="options" type="" >The query options which should be applied.</param>
 
@@ -733,9 +733,9 @@ kendo.data.DataSource.prototype = {
 
     read: function (data) {
         /// <summary>
-        /// Reads data items from a remote service (if the transport option is set) or from a JavaScript array (if the data option is set).
+        /// Reads data items from a remote admin (if the transport option is set) or from a JavaScript array (if the data option is set).
         /// </summary>
-        /// <param name="data" type="Object" >Optional data to pass to the remote service.</param>
+        /// <param name="data" type="Object" >Optional data to pass to the remote admin.</param>
 
     },
 
@@ -761,7 +761,7 @@ kendo.data.DataSource.prototype = {
 
     sync: function () {
         /// <summary>
-        /// Saves any data item changes.The sync method will request the remote service if:
+        /// Saves any data item changes.The sync method will request the remote admin if:
         /// </summary>
 
     },
@@ -844,34 +844,34 @@ $.fn.kendoDataSource = function (options) {
     /// &#10;The grouping configuration of the data source. If set the data items will be grouped when the data source is populated. By default grouping is not applied.
     /// &#10;
     /// &#10;page — Number 
-    /// &#10;The page of data which the data source will return when the io method is invoked or request from the remote service.
+    /// &#10;The page of data which the data source will return when the io method is invoked or request from the remote admin.
     /// &#10;
     /// &#10;pageSize — Number 
     /// &#10;The number of data items per page.
     /// &#10;
     /// &#10;schema — Object 
-    /// &#10;The configuration used to parse the remote service response.
+    /// &#10;The configuration used to parse the remote admin response.
     /// &#10;
     /// &#10;serverAggregates — Boolean (default: false)
-    /// &#10;If set to true the data source will leave the aggregate calculation to the remote service. By default the data source calculates aggregates client-side.
+    /// &#10;If set to true the data source will leave the aggregate calculation to the remote admin. By default the data source calculates aggregates client-side.
     /// &#10;
     /// &#10;serverFiltering — Boolean (default: false)
-    /// &#10;If set to true the data source will leave the filtering implementation to the remote service. By default the data source performs filtering client-side.By default the filter is sent to the server following jQuery's conventions.For example the filter { logic: "and", filters: [ { field: "name", operator: "startswith", value: "Jane" } ] } is sent as:Use the parameterMap option to send the filter option in a different format.
+    /// &#10;If set to true the data source will leave the filtering implementation to the remote admin. By default the data source performs filtering client-side.By default the filter is sent to the server following jQuery's conventions.For example the filter { logic: "and", filters: [ { field: "name", operator: "startswith", value: "Jane" } ] } is sent as:Use the parameterMap option to send the filter option in a different format.
     /// &#10;
     /// &#10;serverGrouping — Boolean (default: false)
-    /// &#10;If set to true the data source will leave the grouping implementation to the remote service. By default the data source performs grouping client-side.By default the group is sent to the server following jQuery's conventions.For example the group { field: "category", dir: "desc" } is sent as:Use the parameterMap option to send the group option in a different format.
+    /// &#10;If set to true the data source will leave the grouping implementation to the remote admin. By default the data source performs grouping client-side.By default the group is sent to the server following jQuery's conventions.For example the group { field: "category", dir: "desc" } is sent as:Use the parameterMap option to send the group option in a different format.
     /// &#10;
     /// &#10;serverPaging — Boolean (default: false)
-    /// &#10;If set to true the data source will leave the data item paging implementation to the remote service. By default the data source performs paging client-side.The following options are sent to the server when server paging is enabled:Use the parameterMap option to send the paging options in a different format.
+    /// &#10;If set to true the data source will leave the data item paging implementation to the remote admin. By default the data source performs paging client-side.The following options are sent to the server when server paging is enabled:Use the parameterMap option to send the paging options in a different format.
     /// &#10;
     /// &#10;serverSorting — Boolean (default: false)
-    /// &#10;If set to true the data source will leave the data item sorting implementation to the remote service. By default the data source performs sorting client-side.By default the sort is sent to the server following jQuery's conventions.For example the sort { field: "age", dir: "desc" } is sent as:Use the parameterMap option to send the paging options in a different format.
+    /// &#10;If set to true the data source will leave the data item sorting implementation to the remote admin. By default the data source performs sorting client-side.By default the sort is sent to the server following jQuery's conventions.For example the sort { field: "age", dir: "desc" } is sent as:Use the parameterMap option to send the paging options in a different format.
     /// &#10;
     /// &#10;sort — Array|Object 
     /// &#10;The sort order which will be applied over the data items. By default the data items are not sorted.
     /// &#10;
     /// &#10;transport — Object 
-    /// &#10;The configuration used to load and save the data items. A data source is remote or local based on the way of it retrieves data items.Remote data sources load and save data items from and to a remote end-point (a.k.a. remote service or server). The transport option describes the remote service configuration - URL, HTTP verb, HTTP headers etc.
+    /// &#10;The configuration used to load and save the data items. A data source is remote or local based on the way of it retrieves data items.Remote data sources load and save data items from and to a remote end-point (a.k.a. remote admin or server). The transport option describes the remote admin configuration - URL, HTTP verb, HTTP headers etc.
 /// &#10;The transport option can also be used to implement custom data loading and saving.Local data sources are bound to a JavaScript array via the data option.
     /// &#10;
     /// &#10;type — String 
@@ -5240,7 +5240,7 @@ $.fn.kendoScheduler = function (options) {
     /// &#10;
     /// &#10;timezone — String 
     /// &#10;The timezone which the scheduler will use to display the scheduler appointment dates. By default the current system timezone is used. This is an acceptable default when the
-/// &#10;scheduler widget is bound to local array of events. It is advisable to specify a timezone if the scheduler is bound to a remote service.
+/// &#10;scheduler widget is bound to local array of events. It is advisable to specify a timezone if the scheduler is bound to a remote admin.
 /// &#10;That way all users would see the same dates and times no matter their configured system timezone.The complete list of the supported timezones is available in the List of IANA time zones Wikipedia page.
     /// &#10;
     /// &#10;admin.views — Array

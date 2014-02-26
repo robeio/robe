@@ -1,7 +1,7 @@
 package io.robe.quartz;
 
 import com.google.inject.Inject;
-import io.robe.hibernate.entity.QuartzJob;
+import io.robe.admin.hibernate.entity.QuartzJob;
 import org.quartz.*;
 
 import static org.quartz.TriggerBuilder.newTrigger;
@@ -22,7 +22,7 @@ public class Lighter {
      * @return
      */
     public String fire(QuartzJob quartzJob) {
-        String cronExpression=null;
+        String cronExpression = null;
         try {
             Scheduler scheduler = managedQuartz.getScheduler();
             JobDetail jobDetail = scheduler.getJobDetail(new JobKey(quartzJob.getJobClassName()));
@@ -33,7 +33,7 @@ public class Lighter {
 
                 scheduler.scheduleJob(jobDetail, trigger.build());
             }
-        }catch(SchedulerException e){
+        } catch (SchedulerException e) {
             e.printStackTrace();
         }
         return cronExpression;
