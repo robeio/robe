@@ -486,7 +486,7 @@ kendo.data.DataSource = (function () {
             data: function (value) {
                 /// <signature>
                 /// <summary>
-                /// Gets or sets the data items of the data source.If the data source is bound to a remote service (via the transport option) the data method will return the service response.
+                /// Gets or sets the data items of the data source.If the data source is bound to a remote admin (via the transport option) the data method will return the admin response.
 /// Every item from the response is wrapped in a kendo.data.ObservableObject or kendo.data.Model (if the schema.model option is set).If the data source is bound to a JavaScript array (via the data option) the data method will return the items of that array.
 /// Every item from the array is wrapped in a kendo.data.ObservableObject or kendo.data.Model (if the schema.model option is set).If the data source is grouped (via the group option or the group method) and the serverGrouping is set to true
 /// the data method will return the group items.
@@ -498,7 +498,7 @@ kendo.data.DataSource = (function () {
             fetch: function (callback) {
                 /// <signature>
                 /// <summary>
-                /// Reads the data items from a remote service (if the transport option is set) or from a JavaScript array (if the data option is set).
+                /// Reads the data items from a remote admin (if the transport option is set) or from a JavaScript array (if the data option is set).
                 /// </summary>
                 /// <param name="callback" type="Function" >The optional function which is executed when the remote request is finished.  The function context (available via the this keyword) will be set to the data source instance.</param>
                 /// </signature>
@@ -587,7 +587,7 @@ kendo.data.DataSource = (function () {
             query: function (options) {
                 /// <signature>
                 /// <summary>
-                /// Executes the specified query over the data items. Makes a HTTP request if bound to a remote service.
+                /// Executes the specified query over the data items. Makes a HTTP request if bound to a remote admin.
                 /// </summary>
                 /// <param name="options" type="" >The query options which should be applied.</param>
                 /// </signature>
@@ -595,9 +595,9 @@ kendo.data.DataSource = (function () {
             read: function (data) {
                 /// <signature>
                 /// <summary>
-                /// Reads data items from a remote service (if the transport option is set) or from a JavaScript array (if the data option is set).
+                /// Reads data items from a remote admin (if the transport option is set) or from a JavaScript array (if the data option is set).
                 /// </summary>
-                /// <param name="data" type="Object" >Optional data to pass to the remote service.</param>
+                /// <param name="data" type="Object" >Optional data to pass to the remote admin.</param>
                 /// </signature>
             },
             remove: function (model) {
@@ -620,7 +620,7 @@ kendo.data.DataSource = (function () {
             sync: function () {
                 /// <signature>
                 /// <summary>
-                /// Saves any data item changes.The sync method will request the remote service if:
+                /// Saves any data item changes.The sync method will request the remote admin if:
                 /// </summary>
                 /// </signature>
             },
@@ -5555,7 +5555,7 @@ intellisense.annotate(jQuery.fn, {
         /// &#10;
         /// &#10;timezone — String 
         /// &#10;The timezone which the scheduler will use to display the scheduler appointment dates. By default the current system timezone is used. This is an acceptable default when the
-/// &#10;scheduler widget is bound to local array of events. It is advisable to specify a timezone if the scheduler is bound to a remote service.
+/// &#10;scheduler widget is bound to local array of events. It is advisable to specify a timezone if the scheduler is bound to a remote admin.
 /// &#10;That way all users would see the same dates and times no matter their configured system timezone.The complete list of the supported timezones is available in the List of IANA time zones Wikipedia page.
         /// &#10;
         /// &#10;admin.views — Array

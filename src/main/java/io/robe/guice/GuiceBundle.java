@@ -1,5 +1,6 @@
 package io.robe.guice;
 
+import com.google.common.base.Preconditions;
 import com.google.inject.AbstractModule;
 import com.google.inject.Guice;
 import com.google.inject.Injector;
@@ -14,7 +15,7 @@ import com.yammer.dropwizard.config.Environment;
 import com.yammer.dropwizard.lifecycle.Managed;
 import com.yammer.dropwizard.tasks.Task;
 import com.yammer.metrics.core.HealthCheck;
-import io.robe.service.RobeServiceConfiguration;
+import io.robe.admin.RobeServiceConfiguration;
 import org.reflections.Reflections;
 import org.reflections.scanners.SubTypesScanner;
 import org.reflections.scanners.TypeAnnotationsScanner;
@@ -33,16 +34,24 @@ import java.util.Set;
 public class GuiceBundle implements ConfiguredBundle<RobeServiceConfiguration> {
     private static final Logger LOGGER = LoggerFactory.getLogger(GuiceBundle.class);
     private Reflections reflections;
-    private List<Module> modules  = new LinkedList<Module>();
-
+    private List<Module> modules = new LinkedList<Module>();
     Injector injector;
+
+
+    public GuiceBundle() {
+    }
+
+    public GuiceBundle(List<Module> modules) {
+        Preconditions.checkNotNull(modules);
+        this.modules = modules;
+    }
 
 
     /**
      * Initializes the environment.
      *
      * @param configuration the configuration object
-     * @param environment   the service's {@link com.yammer.dropwizard.config.Environment}
+     * @param environment   the admin's {@link com.yammer.dropwizard.config.Environment}
      * @throws Exception if something goes wrong
      */
     @Override
@@ -52,8 +61,8 @@ public class GuiceBundle implements ConfiguredBundle<RobeServiceConfiguration> {
                 LOGGER.error("GuiceBundle can not work without and configuration!");
             }
             createReflections(configuration.getGuiceConfiguration().getScanPackages());
-            addModules(environment);
-            createInjector(configuration,environment);
+            //  addModules(environment);
+            createInjector(configuration, environment);
             addProviders(environment, injector);
             addHealthChecks(environment, injector);
             addInjectableProviders(environment, injector);
@@ -67,11 +76,11 @@ public class GuiceBundle implements ConfiguredBundle<RobeServiceConfiguration> {
 
     }
 
-    private void createInjector(RobeServiceConfiguration configuration,Environment environment) {
+    private void createInjector(RobeServiceConfiguration configuration, Environment environment) {
         GuiceContainer container = new GuiceContainer();
         JerseyContainerModule jerseyContainerModule = new JerseyContainerModule(container);
         DropwizardEnvironmentModule dropwizardEnvironmentModule = new DropwizardEnvironmentModule<RobeServiceConfiguration>(RobeServiceConfiguration.class);
-        modules.add(0,Modules.override(new JerseyServletModule()).with(jerseyContainerModule));
+        modules.add(0, Modules.override(new JerseyServletModule()).with(jerseyContainerModule));
         modules.add(dropwizardEnvironmentModule);
         injector = Guice.createInjector(modules);
 
@@ -99,13 +108,12 @@ public class GuiceBundle implements ConfiguredBundle<RobeServiceConfiguration> {
     }
 
     /**
-     * Initializes the service bootstrap.
+     * Initializes the admin bootstrap.
      *
-     * @param bootstrap the service bootstrap
+     * @param bootstrap the admin bootstrap
      */
     @Override
     public void initialize(Bootstrap<?> bootstrap) {
-
     }
 
     private void addModules(Environment environment) throws IllegalAccessException, InstantiationException {
