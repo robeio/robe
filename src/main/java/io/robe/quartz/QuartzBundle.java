@@ -3,23 +3,20 @@ package io.robe.quartz;
 import com.yammer.dropwizard.ConfiguredBundle;
 import com.yammer.dropwizard.config.Bootstrap;
 import com.yammer.dropwizard.config.Environment;
-import io.robe.audit.AuditedMethodDispatchProvider;
-import io.robe.hibernate.DBConfiguration;
 import io.robe.hibernate.HibernateBundle;
+import io.robe.hibernate.HibernateConfiguration;
 import io.robe.hibernate.entity.QuartzJob;
 import io.robe.service.RobeServiceConfiguration;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
+import org.hibernate.criterion.Restrictions;
 import org.quartz.*;
 import org.quartz.impl.StdSchedulerFactory;
 import org.reflections.Reflections;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.util.HashSet;
-import java.util.LinkedHashSet;
-import java.util.Properties;
-import java.util.Set;
+import java.util.*;
 
 import static org.quartz.JobBuilder.newJob;
 import static org.quartz.TriggerBuilder.newTrigger;
@@ -35,11 +32,9 @@ public class QuartzBundle implements ConfiguredBundle<RobeServiceConfiguration> 
     RobeServiceConfiguration configuration;
     HibernateBundle hibernateBundle;
 
-    public QuartzBundle(HibernateBundle hibernateBundle){
+    public QuartzBundle(HibernateBundle hibernateBundle) {
         this.hibernateBundle = hibernateBundle;
     }
-
-
 
 
     @Override
@@ -50,13 +45,12 @@ public class QuartzBundle implements ConfiguredBundle<RobeServiceConfiguration> 
     }
 
 
-
     public void initializeScheduler(SessionFactory sessionFactory) throws Exception {
         final Session session = sessionFactory.openSession();
 
         Properties properties = new Properties();
 
-        DBConfiguration dbConfiguration = configuration.getDatabaseConfiguration();
+        HibernateConfiguration hibernateConfiguration = configuration.getDatabaseConfiguration();
         QuartzConfiguration quartzConfiguration = configuration.getQuartzConfiguration();
 
 
@@ -68,10 +62,10 @@ public class QuartzBundle implements ConfiguredBundle<RobeServiceConfiguration> 
 
         if (!"org.quartz.simpl.RAMJobStore".equals(quartzConfiguration.getJobStoreClass())) {
             properties.setProperty("org.quartz.jobStore.dataSource", "myDS");
-            properties.setProperty("org.quartz.dataSource.myDS.driver", dbConfiguration.getDriverClass());
-            properties.setProperty("org.quartz.dataSource.myDS.URL", dbConfiguration.getUrl());
-            properties.setProperty("org.quartz.dataSource.myDS.user", dbConfiguration.getUser());
-            properties.setProperty("org.quartz.dataSource.myDS.password", dbConfiguration.getPassword());
+            properties.setProperty("org.quartz.dataSource.myDS.driver", hibernateConfiguration.getDriverClass());
+            properties.setProperty("org.quartz.dataSource.myDS.URL", hibernateConfiguration.getUrl());
+            properties.setProperty("org.quartz.dataSource.myDS.user", hibernateConfiguration.getUser());
+            properties.setProperty("org.quartz.dataSource.myDS.password", hibernateConfiguration.getPassword());
             properties.setProperty("org.quartz.dataSource.myDS.maxConnections", String.valueOf(quartzConfiguration.getMaxConnections()));
             properties.setProperty("org.quartz.jobStore.tablePrefix", quartzConfiguration.getTablePrefix());
             properties.setProperty("org.quartz.jobStore.driverDelegateClass", quartzConfiguration.getDriverDelegateClass());
@@ -115,7 +109,6 @@ public class QuartzBundle implements ConfiguredBundle<RobeServiceConfiguration> 
     /**
      * Schedule all classes with @quartz annotation
      *
-     *
      * @param jobClassses
      * @param scheduler
      * @param session
@@ -138,14 +131,24 @@ public class QuartzBundle implements ConfiguredBundle<RobeServiceConfiguration> 
                     scheduler.scheduleJob(job, triggers, true);
                     LOGGER.info("Scheduled job : " + job.toString() + " with trigger : " + trigger.toString());
                 } else if (scheduledAnnotation.manager().equals(Scheduled.Manager.DB)) {
-                    QuartzJob quartzJob = new QuartzJob();
-                    quartzJob.setJobClassName(jobClass.getName());
-                    quartzJob.setCronExpression(scheduledAnnotation.cron());
-                    quartzJob.setSchedulerName(scheduler.getSchedulerName());
-                    session.persist(quartzJob);
+                    List<QuartzJob> quartzJobList = session.createCriteria(QuartzJob.class).add(Restrictions.eq("jobClassName", jobClass.getName())).list();
+                    QuartzJob quartzJob;
+                    if (quartzJobList.size() < 1) {
+                        quartzJob = new QuartzJob();
+                        quartzJob.setJobClassName(jobClass.getName());
+                        quartzJob.setCronExpression(scheduledAnnotation.cron());
+                        quartzJob.setSchedulerName(scheduler.getSchedulerName());
+                        session.persist(quartzJob);
+                    }
+                    else if(quartzJobList.size() ==1){
+                        quartzJob = quartzJobList.get(0);
+                        Lighter lighter = new Lighter();
+                    }
                 }
             }
         }
+        session.flush();
+        session.close();
     }
 
     /**
