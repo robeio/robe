@@ -3,7 +3,7 @@ package io.robe.admin.resources;
 import com.google.inject.Inject;
 import com.yammer.dropwizard.hibernate.UnitOfWork;
 import io.robe.admin.hibernate.dao.LanguageDao;
-import io.robe.admin.hibernate.dao.entity.Language;
+import io.robe.admin.hibernate.entity.Language;
 
 import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;

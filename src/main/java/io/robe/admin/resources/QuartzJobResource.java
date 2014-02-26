@@ -6,15 +6,12 @@ import com.yammer.dropwizard.hibernate.UnitOfWork;
 import io.robe.admin.hibernate.dao.QuartzJobDao;
 import io.robe.admin.hibernate.entity.QuartzJob;
 import io.robe.auth.Credentials;
-import io.robe.quartz.Lighter;
+import io.robe.quartz.JobScheduler;
 
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 import java.util.List;
 
-/**
- * Created by sinanselimoglu on 19/02/14.
- */
 @Path("quartzJob")
 @Consumes(MediaType.APPLICATION_JSON)
 @Produces(MediaType.APPLICATION_JSON)
@@ -41,8 +38,8 @@ public class QuartzJobResource {
     @Path("/fire")
     @UnitOfWork
     public String fireJob(QuartzJob quartzJob) {
-        Lighter lighter = new Lighter();
-        String cron = lighter.fire(quartzJob);
+        JobScheduler scheduler = new JobScheduler();
+        String cron = scheduler.scheduleJob(quartzJob);
         return cron;
     }
 
