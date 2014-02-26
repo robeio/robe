@@ -49,15 +49,16 @@ robe.App = {
                     "./js/cryptojs/sha256.js"],
                 4: [
                     "./js/highcharts/highcharts.js",
-                    "./js/highcharts//exporting.js",
-                    "./js/highcharts//highcharts-more.js"]
+                    "./js/highcharts/exporting.js",
+                    "./js/highcharts/highcharts-more.js"]
             },
             "./js/robe/core/Class.js",
             "./js/robe/core/Singleton.js",
             {
                 1: "./js/robe/Charts.js",
                 2: "./js/robe/Validations.js",
-                3: "./js/robe/view/Page.js"
+                3: "./js/robe/view/Page.js",
+                4: "./js/robe/AlertDialog.js"
             }
         ]
 
