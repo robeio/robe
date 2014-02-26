@@ -145,7 +145,7 @@ public class QuartzBundle implements ConfiguredBundle<RobeServiceConfiguration> 
                     }
                     else if(quartzJobList.size() ==1){
                         quartzJob = quartzJobList.get(0);
-                        Lighter lighter = new Lighter();
+                        JobScheduler lighter = new JobScheduler();
                     }
                 }
             }

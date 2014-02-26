@@ -9,19 +9,19 @@ import static org.quartz.TriggerBuilder.newTrigger;
 /**
  * Handles with user defined Cron from admin panel
  */
-public class Lighter {
+public class JobScheduler {
 
     @Inject
     ManagedQuartz managedQuartz;
 
 
     /**
-     * Gets trigger and job values from QuartzJob and make them fire.
+     * Gets trigger and job values from QuartzJob and make them scheduleJob.
      *
      * @param quartzJob
      * @return
      */
-    public String fire(QuartzJob quartzJob) {
+    public String scheduleJob(QuartzJob quartzJob) {
         String cronExpression = null;
         try {
             Scheduler scheduler = managedQuartz.getScheduler();
