@@ -95,7 +95,7 @@ public class HibernateBundle implements ConfiguredBundle<RobeServiceConfiguratio
 
 	@Override
 	public HibernateConfiguration getDatabaseConfiguration(RobeServiceConfiguration configuration) {
-		return configuration.getDatabaseConfiguration();
+		return configuration.getHibernateConfiguration();
 	}
 
 }
