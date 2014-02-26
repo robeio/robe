@@ -1,6 +1,5 @@
 package io.robe.admin.cli;
 
-import com.google.inject.Inject;
 import com.yammer.dropwizard.Service;
 import com.yammer.dropwizard.cli.EnvironmentCommand;
 import com.yammer.dropwizard.config.Environment;
@@ -23,12 +22,12 @@ import java.util.Set;
 
 public class InitializeCommand<T extends RobeServiceConfiguration> extends EnvironmentCommand<T> {
 
-    @Inject
     private HibernateBundle hibernateBundle;
 
 
-    public InitializeCommand(Service<T> service) {
+    public InitializeCommand(Service<T> service, HibernateBundle hibernateBundle) {
         super(service, "initialize", "Runs Hibernate and initialize required columns");
+        this.hibernateBundle = hibernateBundle;
     }
 
 
