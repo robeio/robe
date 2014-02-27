@@ -11,6 +11,8 @@ import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.quartz.*;
 import org.quartz.impl.StdSchedulerFactory;
+import org.quartz.impl.jdbcjobstore.JobStoreTX;
+import org.quartz.spi.JobStore;
 import org.reflections.Reflections;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -62,6 +64,7 @@ public class HibernateManagableQuartzBundle implements ConfiguredBundle<RobeServ
         properties.setProperty("org.quartz.threadPool.threadCount", String.valueOf(quartzConfiguration.getThreadCount()));
         properties.setProperty("org.quartz.threadPool.threadPriority", String.valueOf(quartzConfiguration.getThreadPriority()));
         properties.setProperty("org.quartz.jobStore.class", quartzConfiguration.getJobStoreClass());
+        properties.setProperty("org.quartz.scheduler.skipUpdateCheck",quartzConfiguration.getSkipUpdateCheck());
 
         if (!"org.quartz.simpl.RAMJobStore".equals(quartzConfiguration.getJobStoreClass())) {
             properties.setProperty("org.quartz.jobStore.dataSource", "myDS");
@@ -101,6 +104,7 @@ public class HibernateManagableQuartzBundle implements ConfiguredBundle<RobeServ
             }
             scheduleJob(jobClasses, scheduler, session);
         }
+
     }
 
     @Override
@@ -138,10 +142,13 @@ public class HibernateManagableQuartzBundle implements ConfiguredBundle<RobeServ
                     quartzJob.setJobClassName(jobClass.getName());
                     quartzJob.setCronExpression(scheduledAnnotation.cron());
                     quartzJob.setSchedulerName(scheduler.getSchedulerName());
+                    JobDetail jobDetail = newJob(jobClass).withIdentity(jobName).build();
                     session.persist(quartzJob);
                 }
             }
         }
+        session.flush();
+        session.close();
     }
 
     /**

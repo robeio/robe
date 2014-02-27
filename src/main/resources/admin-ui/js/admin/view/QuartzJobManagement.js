@@ -98,7 +98,10 @@ var QuartzJobManagement = robe.util.inherit(robe.view.Page, {
         change: onChange
     });
 
-    setDefaultValues(options.model.cronExpression);
+    if(options.model.cronExpression!="")
+        setDefaultValues(options.model.cronExpression);
+    else
+        setDefaultValues("1 1 1 1");
 
 }
 })
@@ -122,6 +125,8 @@ function onChange(e) {
         var test = $("#hiddenCron").val();
         console.log(" hidden Cron "+test);
 
+        //Minute cron builder and controller
+
         var multiselect = $("#minute").data("kendoMultiSelect");
         if (multiselect.value().indexOf("Every Minute") != -1){
             multiselect.value(["Every Minute"]);
@@ -131,6 +136,8 @@ function onChange(e) {
         }else {
             cronString = multiselect.value() + " ";
         }
+
+        //Hour cron builder and controller
 
         var multiselect = $("#hour").data("kendoMultiSelect");
         if(multiselect.value().indexOf("Every Hour") != -1){
@@ -142,6 +149,8 @@ function onChange(e) {
         }else{
             cronString += (multiselect.value() + " ");
         }
+
+        //Day cron builder and controller
 
         var multiselect = $("#day").data("kendoMultiSelect");
         if( multiselect.value().indexOf("Every Day") != -1 ){
@@ -155,6 +164,8 @@ function onChange(e) {
             cronString += ( multiselect.value() + " ");
         }
 
+        //Month cron builder and controller
+
         var multiselect = $("#month").data("kendoMultiSelect");
         if(multiselect.value().indexOf("Every Month")!=-1) {
             var multiselect = $("#month").data("kendoMultiSelect");
@@ -167,12 +178,8 @@ function onChange(e) {
             cronString +=( multiselect.value() + " ");
         }
 
-
         $("#hiddenCron").val(cronString);
-
         $("#hiddenCron").trigger("change");
-
-
     }
 
 function setDefaultValues(exCron) {

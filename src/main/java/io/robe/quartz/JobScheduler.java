@@ -14,13 +14,13 @@ public class JobScheduler {
     @Inject
     ManagedQuartz managedQuartz;
 
-
     /**
      * Gets trigger and job values from QuartzJob and make them scheduleJob.
      *
      * @param quartzJob
      * @return
      */
+
     public String scheduleJob(QuartzJob quartzJob) {
         String cronExpression = null;
         try {

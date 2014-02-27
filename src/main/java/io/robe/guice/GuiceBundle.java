@@ -61,7 +61,7 @@ public class GuiceBundle implements ConfiguredBundle<RobeServiceConfiguration> {
                 LOGGER.error("GuiceBundle can not work without and configuration!");
             }
             createReflections(configuration.getGuiceConfiguration().getScanPackages());
-            //  addModules(environment);
+//            addModules(environment);
             createInjector(configuration, environment);
             addProviders(environment, injector);
             addHealthChecks(environment, injector);
@@ -128,18 +128,10 @@ public class GuiceBundle implements ConfiguredBundle<RobeServiceConfiguration> {
                 LOGGER.error("Can not create instance of module: " + module, e);
                 throw e;
             } catch (IllegalAccessException e) {
-                LOGGER.error("Can not create instance of module: " + module, e);
+                LOGGER.error("Can not create instance of module: " + module, e.getMessage());
                 throw e;
             }
             LOGGER.info("Added module: " + module);
-        }
-    }
-
-    private void addManaged(Environment environment, Injector injector) {
-        Set<Class<? extends Managed>> managedClasses = reflections.getSubTypesOf(Managed.class);
-        for (Class<? extends Managed> managed : managedClasses) {
-            environment.manage(injector.getInstance(managed));
-            LOGGER.info("Added managed: " + managed);
         }
     }
 
@@ -183,4 +175,13 @@ public class GuiceBundle implements ConfiguredBundle<RobeServiceConfiguration> {
             LOGGER.info("Added resource class: " + resource);
         }
     }
+    
+    private void addManaged(Environment environment, Injector injector) {
+        Set<Class<? extends Managed>> managedClasses = reflections.getSubTypesOf(Managed.class);
+        for (Class<? extends Managed> managed : managedClasses) {
+            environment.manage(injector.getInstance(managed));
+            LOGGER.info("Added managed: " + managed);
+        }
+    }
+
 }
