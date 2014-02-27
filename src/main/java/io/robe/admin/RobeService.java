@@ -111,7 +111,6 @@ public class RobeService extends Service<RobeServiceConfiguration> {
         for (Object s : singletonsToRemove) {
             jrConfig.getSingletons().remove(s);
         }
-
         environment.addProvider(new RobeExceptionMapper());
 
     }
