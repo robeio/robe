@@ -6,11 +6,14 @@ import com.yammer.dropwizard.hibernate.UnitOfWork;
 import io.robe.admin.hibernate.dao.QuartzJobDao;
 import io.robe.admin.hibernate.entity.QuartzJob;
 import io.robe.auth.Credentials;
-import io.robe.quartz.JobScheduler;
+import io.robe.quartz.ManagedQuartz;
+import org.quartz.*;
 
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 import java.util.List;
+
+import static org.quartz.TriggerBuilder.newTrigger;
 
 @Path("quartzJob")
 @Consumes(MediaType.APPLICATION_JSON)
@@ -18,6 +21,8 @@ import java.util.List;
 public class QuartzJobResource {
     @Inject
     QuartzJobDao quartzJobDao;
+    @Inject
+    ManagedQuartz managedQuartz;
 
     @GET
     @UnitOfWork
@@ -38,9 +43,27 @@ public class QuartzJobResource {
     @Path("/fire")
     @UnitOfWork
     public String fireJob(QuartzJob quartzJob) {
-        JobScheduler scheduler = new JobScheduler();
-        String cron = scheduler.scheduleJob(quartzJob);
+        String cron = scheduleJob(quartzJob);
         return cron;
+    }
+
+
+    private String scheduleJob(QuartzJob quartzJob) {
+        String cronExpression = null;
+        try {
+            Scheduler scheduler = managedQuartz.getScheduler();
+            JobDetail jobDetail = scheduler.getJobDetail(new JobKey(quartzJob.getJobClassName()));
+            cronExpression = quartzJob.getCronExpression();
+            if (cronExpression != null) {
+                TriggerBuilder<Trigger> trigger = newTrigger();
+                trigger.withSchedule(CronScheduleBuilder.cronSchedule(cronExpression));
+
+                scheduler.scheduleJob(jobDetail, trigger.build());
+            }
+        } catch (SchedulerException e) {
+            e.printStackTrace();
+        }
+        return cronExpression;
     }
 
 }

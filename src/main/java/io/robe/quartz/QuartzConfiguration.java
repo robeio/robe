@@ -10,6 +10,7 @@ public class QuartzConfiguration {
     private String driverDelegateClass;
     private String tablePrefix;
     private int maxConnections;
+    private String skipUpdateCheck;
 
     public String getInstanceName() {
         return instanceName;
@@ -81,5 +82,13 @@ public class QuartzConfiguration {
 
     public void setMaxConnections(int maxConnections) {
         this.maxConnections = maxConnections;
+    }
+
+    public String getSkipUpdateCheck() {
+        return skipUpdateCheck;
+    }
+
+    public void setSkipUpdateCheck(String skipUpdateCheck) {
+        this.skipUpdateCheck = skipUpdateCheck;
     }
 }

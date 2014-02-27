@@ -62,6 +62,7 @@ public class QuartzBundle implements ConfiguredBundle<RobeServiceConfiguration> 
         properties.setProperty("org.quartz.threadPool.threadCount", String.valueOf(quartzConfiguration.getThreadCount()));
         properties.setProperty("org.quartz.threadPool.threadPriority", String.valueOf(quartzConfiguration.getThreadPriority()));
         properties.setProperty("org.quartz.jobStore.class", quartzConfiguration.getJobStoreClass());
+        properties.setProperty("org.quartz.scheduler.skipUpdateCheck",quartzConfiguration.getSkipUpdateCheck());
 
         if (!"org.quartz.simpl.RAMJobStore".equals(quartzConfiguration.getJobStoreClass())) {
             properties.setProperty("org.quartz.jobStore.dataSource", "myDS");
