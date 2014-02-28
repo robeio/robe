@@ -8,6 +8,7 @@ import io.robe.hibernate.HasHibernateConfiguration;
 import io.robe.hibernate.HibernateConfiguration;
 import io.robe.mail.HasMailConfiguration;
 import io.robe.mail.MailConfiguration;
+import io.robe.mq.HasMessageQueueConfiguration;
 import io.robe.mq.MessageQueueConfiguration;
 import io.robe.quartz.HasQuartzConfiguration;
 import io.robe.quartz.QuartzConfiguration;
@@ -19,7 +20,8 @@ public class RobeServiceConfiguration extends Configuration implements
         HasHibernateConfiguration,
         HasGuiceConfiguration,
         HasQuartzConfiguration,
-        HasMailConfiguration{
+        HasMailConfiguration,
+        HasMessageQueueConfiguration{
 
     @Valid
     @NotNull
@@ -60,7 +62,7 @@ public class RobeServiceConfiguration extends Configuration implements
         return guice;
     }
 
-    public MessageQueueConfiguration getMqConfiguration() {
+    public MessageQueueConfiguration getMessageQueueConfiguration() {
         return messageQueue;
     }
 }
