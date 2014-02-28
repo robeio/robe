@@ -1,6 +1,5 @@
 package io.robe.quartz;
 
-import com.google.inject.Inject;
 import com.yammer.dropwizard.lifecycle.Managed;
 import org.quartz.*;
 import org.slf4j.Logger;
@@ -17,15 +16,12 @@ public class ManagedQuartz implements Managed {
     private Set<Class<? extends Job>> onStopJobs;
     private Scheduler scheduler;
 
-    @Inject
     public ManagedQuartz(Scheduler scheduler,Set<Class<? extends Job>> onStartJobs, Set<Class<? extends Job>> onStopJobs) {
         checkNotNull(scheduler);
         this.scheduler = scheduler;
         this.onStartJobs = onStartJobs;
         this.onStopJobs = onStopJobs;
     }
-
-
 
     @Override
     public void start() throws Exception {
