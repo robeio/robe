@@ -1,6 +1,5 @@
 package io.robe.auth;
 
-import com.google.inject.Inject;
 import com.sun.jersey.api.model.Parameter;
 import com.sun.jersey.core.spi.component.ComponentContext;
 import com.sun.jersey.core.spi.component.ComponentScope;
@@ -24,7 +23,6 @@ public class AuthProvider<T extends Credentials> implements InjectableProvider<A
 	 * Creates a new AuthProvider with the given {@link Authenticator}
 	 * @param authenticator  Desired Authenticator to provide.
 	 */
-	@Inject
 	public AuthProvider(Authenticator authenticator) {
 		this.authenticator = authenticator;
 	}
