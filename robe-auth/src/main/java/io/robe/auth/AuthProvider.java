@@ -8,6 +8,8 @@ import com.sun.jersey.spi.inject.InjectableProvider;
 import com.yammer.dropwizard.auth.Auth;
 import com.yammer.dropwizard.auth.Authenticator;
 
+import javax.inject.Inject;
+
 /**
  * Injectable provider for {@link com.yammer.dropwizard.auth.Auth} annotation.
  * {@inheritDoc}
@@ -16,14 +18,14 @@ import com.yammer.dropwizard.auth.Authenticator;
  */
 public class AuthProvider<T extends Credentials> implements InjectableProvider<Auth, Parameter> {
 
-
-	private  Authenticator authenticator;
+    private Authenticator authenticator;
 
 	/**
 	 * Creates a new AuthProvider with the given {@link Authenticator}
 	 * @param authenticator  Desired Authenticator to provide.
 	 */
-	public AuthProvider(Authenticator authenticator) {
+    @Inject
+    public AuthProvider(Authenticator authenticator) {
 		this.authenticator = authenticator;
 	}
 
