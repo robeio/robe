@@ -1,9 +1,5 @@
 package io.robe.quartz;
 
-/**
- * Created by sinanselimoglu on 13/02/14.
- */
-
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
