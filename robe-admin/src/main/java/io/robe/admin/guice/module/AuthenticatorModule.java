@@ -19,6 +19,7 @@ public class AuthenticatorModule extends AbstractModule {
 
     @Override
     protected void configure() {
+
         bind(Authenticator.class).toProvider(new Provider<Authenticator<String, Credentials>>() {
             @Inject
             HibernateBundle hibernateBundle;
