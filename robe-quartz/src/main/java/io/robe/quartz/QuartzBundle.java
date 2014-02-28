@@ -145,7 +145,7 @@ public class QuartzBundle<T extends Configuration & HasQuartzConfiguration & Has
                     }
                     else if(quartzJobList.size() ==1){
                         quartzJob = quartzJobList.get(0);
-                        JobScheduler lighter = new JobScheduler();
+                      //  JobScheduler lighter = new JobScheduler();
                     }
                 }
             }
