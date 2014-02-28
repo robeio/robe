@@ -1,7 +1,6 @@
 package io.robe.auth;
 
 import com.google.common.base.Optional;
-import com.google.inject.Inject;
 import com.yammer.dropwizard.auth.AuthenticationException;
 import com.yammer.dropwizard.auth.Authenticator;
 import org.owasp.esapi.crypto.CryptoToken;
@@ -27,7 +26,6 @@ public class AuthTokenAuthenticator implements Authenticator<String, Credentials
      * @param userStore    User DAO for authenticating user
      * @param serviceStore Service DAO for permission list
      */
-    @Inject
     public AuthTokenAuthenticator(UserStore userStore, ServiceStore serviceStore) {
         this.userStore = userStore;
         this.serviceStore = serviceStore;
