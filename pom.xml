@@ -3,6 +3,16 @@
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
+    <modules>
+        <module>robe-admin</module>
+        <module>robe-mail</module>
+        <module>robe-guice</module>
+        <module>robe-hibernate</module>
+        <module>robe-auth</module>
+        <module>robe-common</module>
+        <module>robe-quartz</module>
+        <module>robe-mq</module>
+    </modules>
 
     <properties>
         <dropwizard.version>0.6.2</dropwizard.version>
@@ -17,12 +27,13 @@
         <swagger.version>2.10</swagger.version>
         <cglib.version>2.2.2</cglib.version>
         <guice.version>3.0</guice.version>
+        <reflections.version>0.9.8</reflections.version>
     </properties>
 
     <groupId>io.robe</groupId>
     <artifactId>robe-all</artifactId>
     <version>${project.version}</version>
-    <packaging>jar</packaging>
+    <packaging>pom</packaging>
 
     <dependencyManagement>
         <dependencies>
@@ -113,10 +124,22 @@
                 <artifactId>guice</artifactId>
                 <version>${guice.version}</version>
             </dependency>
+
+            <dependency>
+                <groupId>com.google.inject.extensions</groupId>
+                <artifactId>guice-servlet</artifactId>
+                <version>${guice.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.sun.jersey.contribs</groupId>
+                <artifactId>jersey-guice</artifactId>
+                <version>1.9.1</version>
+            </dependency>
+
             <dependency>
                 <groupId>org.reflections</groupId>
                 <artifactId>reflections</artifactId>
-                <version>0.9.8</version>
+                <version>${reflections.version}</version>
             </dependency>
 
 
@@ -124,57 +147,9 @@
     </dependencyManagement>
 
     <dependencies>
-        <dependency>
-            <groupId>com.yammer.dropwizard</groupId>
-            <artifactId>dropwizard-core</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>com.yammer.dropwizard</groupId>
-            <artifactId>dropwizard-hibernate</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>com.yammer.dropwizard</groupId>
-            <artifactId>dropwizard-testing</artifactId>
-            <scope>test</scope>
-        </dependency>
-        <dependency>
-            <groupId>com.yammer.dropwizard</groupId>
-            <artifactId>dropwizard-auth</artifactId>
-        </dependency>
 
-        <dependency>
-            <groupId>mysql</groupId>
-            <artifactId>mysql-connector-java</artifactId>
-        </dependency>
 
-        <dependency>
-            <groupId>commons-beanutils</groupId>
-            <artifactId>commons-beanutils</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>commons-codec</groupId>
-            <artifactId>commons-codec</artifactId>
-        </dependency>
-
-        <dependency>
-            <groupId>org.owasp.esapi</groupId>
-            <artifactId>esapi</artifactId>
-        </dependency>
-
-        <dependency>
-            <groupId>edu.vt.middleware</groupId>
-            <artifactId>vt-password</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>com.yammer.dropwizard</groupId>
-            <artifactId>dropwizard-views</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>javax.mail</groupId>
-            <artifactId>mail</artifactId>
-        </dependency>
-
-        <!-- Timed Operations - Quartz -->
+       <!-- Timed Operations - Quartz -->
         <dependency>
             <groupId>org.quartz-scheduler</groupId>
             <artifactId>quartz</artifactId>
@@ -188,24 +163,6 @@
             <artifactId>cglib</artifactId>
         </dependency>
 
-        <dependency>
-            <groupId>com.google.inject</groupId>
-            <artifactId>guice</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>org.reflections</groupId>
-            <artifactId>reflections</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>com.google.inject.extensions</groupId>
-            <artifactId>guice-servlet</artifactId>
-            <version>3.0</version>
-        </dependency>
-        <dependency>
-            <groupId>com.sun.jersey.contribs</groupId>
-            <artifactId>jersey-guice</artifactId>
-            <version>1.9.1</version>
-        </dependency>
     </dependencies>
 
 
@@ -327,7 +284,7 @@
             <!--implementation="org.apache.maven.plugins.shade.resource.ServicesResourceTransformer"/>-->
             <!--<transformer-->
             <!--implementation="org.apache.maven.plugins.shade.resource.ManifestResourceTransformer">-->
-            <!--<mainClass>io.robe.service.RobeService</mainClass>-->
+            <!--<mainClass>io.robe.adminobeService</mainClass>-->
             <!--</transformer>-->
             <!--</transformers>-->
             <!--</configuration>-->
