@@ -173,10 +173,22 @@ tr[role="row"]:hover {
     margin-left: 10px;
 }
 
-.cron span {
-    margin : 10 10 0 10;
+.cron .header {
+    text-align: center;
 }
 
-.cron well well-sm {
-    margin-top: 10;
+.k-edit-field {
+    padding: .4em 0 1em;
+}
+
+.well well-sm {
+    margin-bottom: 10px !important;
+}
+
+.cron .k-widget{
+    margin: 3 0 5 3;
+
+}
+li.k-button {
+    margin: 1px 0 1px 1px !important;
 }
