@@ -283,6 +283,7 @@ function setDefaultValues(exCron) {
 function changeCheckBox() {
     if ($(this).is(':checked')) {
         $("#dayOfWeek").data("kendoMultiSelect").enable(true);
+        $("#dayOfWeek").data("kendoMultiSelect").value(6);
         $("#day").data("kendoMultiSelect").value("?");
         $("#day").data("kendoMultiSelect").enable(false);
     }
