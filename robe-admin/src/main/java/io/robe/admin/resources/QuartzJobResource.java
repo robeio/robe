@@ -4,9 +4,9 @@ import com.google.inject.Inject;
 import com.yammer.dropwizard.auth.Auth;
 import com.yammer.dropwizard.hibernate.UnitOfWork;
 import io.robe.admin.hibernate.dao.QuartzJobDao;
-import io.robe.admin.hibernate.entity.QuartzJob;
 import io.robe.auth.Credentials;
 import io.robe.quartz.ManagedQuartz;
+import io.robe.quartz.QuartzJob;
 import org.apache.log4j.Logger;
 import org.quartz.*;
 

@@ -76,9 +76,10 @@ public class HibernateManagableQuartzBundle<T extends Configuration & HasQuartzC
         scheduler = factory.getScheduler();
         scheduler.start();
 
-        String[] jobPackage = quartzConfiguration.getJobPackage().split(",");
+        String[] jobPackage = quartzConfiguration.getScanPackages();
         Set<Class<? extends Job>> jobClasses;
         for (String myPackage : jobPackage) {
+            LOGGER.info("Job class packages : "+myPackage);
             Reflections reflections = new Reflections(myPackage);
             jobClasses = reflections.getSubTypesOf(Job.class);
 
@@ -138,7 +139,7 @@ public class HibernateManagableQuartzBundle<T extends Configuration & HasQuartzC
                         quartzJob.setSchedulerName(scheduler.getSchedulerName());
                         quartzJob.setActive(false);
 
-                        JobKey jobKey = JobKey.jobKey(jobName, "DynamicCronJobs");
+                        JobKey jobKey = JobKey.jobKey(jobName, "DynamicCronJob");
                         JobDetail jobDetail = newJob(jobClass).storeDurably().withIdentity(jobKey).build();
                         scheduler.addJob(jobDetail, true);
                         session.persist(quartzJob);
