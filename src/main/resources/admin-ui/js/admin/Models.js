@@ -214,6 +214,11 @@ var QuartzJobModel = kendo.data.Model.define({
             nullable: true,
             type:"string"
         },
+        active: {
+            editable: false,
+            nullable: true,
+            type:"boolean"
+        },
         fireTime: {
             editable: false,
             nullable: true,
