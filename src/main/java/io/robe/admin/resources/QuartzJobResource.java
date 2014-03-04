@@ -7,11 +7,14 @@ import io.robe.admin.hibernate.dao.QuartzJobDao;
 import io.robe.admin.hibernate.entity.QuartzJob;
 import io.robe.auth.Credentials;
 import io.robe.quartz.ManagedQuartz;
+import org.apache.log4j.Logger;
 import org.quartz.*;
 
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
+import java.util.LinkedHashSet;
 import java.util.List;
+import java.util.Set;
 
 import static org.quartz.TriggerBuilder.newTrigger;
 
@@ -24,6 +27,8 @@ public class QuartzJobResource {
     @Inject
     ManagedQuartz managedQuartz;
 
+    private static Logger LOGGER = Logger.getLogger(QuartzJobResource.class);
+
     @GET
     @UnitOfWork
     public List<QuartzJob> getAll(@Auth Credentials credentials) {
@@ -35,6 +40,7 @@ public class QuartzJobResource {
     @Path("/update")
     @UnitOfWork
     public QuartzJob setCron(QuartzJob quartzJob) {
+        quartzJob.setActive(false);
         quartzJobDao.update(quartzJob);
         return quartzJob;
     }
@@ -42,28 +48,38 @@ public class QuartzJobResource {
     @POST
     @Path("/fire")
     @UnitOfWork
-    public String fireJob(QuartzJob quartzJob) {
-        String cron = scheduleJob(quartzJob);
-        return cron;
+    public QuartzJob fireJob(QuartzJob quartzJob) throws SchedulerException {
+        QuartzJob cron = scheduleJob(quartzJob);
+        return quartzJob;
     }
 
-
-    private String scheduleJob(QuartzJob quartzJob) {
-        String cronExpression = null;
-        try {
-            Scheduler scheduler = managedQuartz.getScheduler();
-            JobDetail jobDetail = scheduler.getJobDetail(new JobKey(quartzJob.getJobClassName()));
-            cronExpression = quartzJob.getCronExpression();
-            if (cronExpression != null) {
-                TriggerBuilder<Trigger> trigger = newTrigger();
-                trigger.withSchedule(CronScheduleBuilder.cronSchedule(cronExpression));
-
-                scheduler.scheduleJob(jobDetail, trigger.build());
-            }
-        } catch (SchedulerException e) {
-            e.printStackTrace();
+    /**
+     * Gets QuartzJob instance and fire related job with its trigger.
+     *
+     * @param quartzJob choosen Job instance
+     * @return quartzjob instance
+     * @throws SchedulerException
+     * @throws
+     */
+    private QuartzJob scheduleJob(QuartzJob quartzJob) throws SchedulerException {
+        String cronExpression = quartzJob.getCronExpression();
+        Scheduler scheduler = managedQuartz.getScheduler();
+        JobDetail jobDetail = scheduler.getJobDetail(new JobKey(quartzJob.getJobClassName(), "DynamicCronJob"));
+        if (cronExpression != null) {
+            TriggerKey triggerKey = new TriggerKey(quartzJob.getJobClassName(), "DynamicCronTrigger");
+            boolean unscheduleResult = scheduler.unscheduleJob(triggerKey);
+            LOGGER.info(quartzJob.getJobClassName() +"unscheduling process returns with : " +unscheduleResult);
+            TriggerBuilder<Trigger> trigger = newTrigger().withIdentity(triggerKey);
+            trigger.withSchedule(CronScheduleBuilder.cronSchedule(cronExpression));
+            // Set of triggers will be user for multiple triggers later.
+            Set<Trigger> triggers = new LinkedHashSet<Trigger>();
+            triggers.add(trigger.withSchedule(CronScheduleBuilder.cronSchedule(cronExpression)).build());
+            scheduler.scheduleJob(jobDetail, triggers, true);
+            quartzJob.setActive(true);
+            quartzJobDao.update(quartzJob);
         }
-        return cronExpression;
+
+        return quartzJob;
     }
 
 }

@@ -12,6 +12,7 @@ public class QuartzJob extends BaseEntity {
     private String cronExpression;
     private String schedulerName;
     private String jobClassName;
+    private boolean active;
 
     @JsonIgnore
     private String fireTime;
@@ -49,4 +50,11 @@ public class QuartzJob extends BaseEntity {
         this.fireTime = fireTime;
     }
 
+    public boolean isActive() {
+        return active;
+    }
+
+    public void setActive(boolean active) {
+        this.active = active;
+    }
 }

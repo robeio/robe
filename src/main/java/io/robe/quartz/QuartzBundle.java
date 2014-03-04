@@ -113,10 +113,10 @@ public class QuartzBundle implements ConfiguredBundle<RobeServiceConfiguration> 
     /**
      * Schedule all classes with @quartz annotation
      *
-     * @param jobClassses
-     * @param scheduler
-     * @param session
-     * @return
+     * @param jobClassses classes which extends job super class
+     * @param scheduler Quartz scheduler
+     * @param session Hibernate session for saving jobs to database
+     * @return none
      * @throws SchedulerException
      */
     private void scheduleJob(Set<Class<? extends Job>> jobClassses, Scheduler scheduler, Session session) throws SchedulerException {
@@ -142,7 +142,7 @@ public class QuartzBundle implements ConfiguredBundle<RobeServiceConfiguration> 
                         quartzJob.setJobClassName(jobClass.getName());
                         quartzJob.setCronExpression(scheduledAnnotation.cron());
                         quartzJob.setSchedulerName(scheduler.getSchedulerName());
-                        session.persist(quartzJob);
+
                     }
                     else if(quartzJobList.size() ==1){
                         quartzJob = quartzJobList.get(0);
@@ -158,7 +158,7 @@ public class QuartzBundle implements ConfiguredBundle<RobeServiceConfiguration> 
     /**
      * Builds cron trigger with parameters of @quartz annotation
      *
-     * @param scheduledAnnotation
+     * @param scheduledAnnotation stores job classes and properties of this class
      * @return trigger
      */
     private Trigger buildTrigger(Scheduled scheduledAnnotation) {

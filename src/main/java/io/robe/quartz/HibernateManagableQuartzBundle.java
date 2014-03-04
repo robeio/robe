@@ -9,18 +9,14 @@ import io.robe.hibernate.HibernateBundle;
 import io.robe.hibernate.HibernateConfiguration;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
+import org.hibernate.criterion.Property;
 import org.quartz.*;
 import org.quartz.impl.StdSchedulerFactory;
-import org.quartz.impl.jdbcjobstore.JobStoreTX;
-import org.quartz.spi.JobStore;
 import org.reflections.Reflections;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.util.HashSet;
-import java.util.LinkedHashSet;
-import java.util.Properties;
-import java.util.Set;
+import java.util.*;
 
 import static org.quartz.JobBuilder.newJob;
 import static org.quartz.TriggerBuilder.newTrigger;
@@ -63,8 +59,7 @@ public class HibernateManagableQuartzBundle implements ConfiguredBundle<RobeServ
         properties.setProperty("org.quartz.scheduler.instanceName", quartzConfiguration.getInstanceName());
         properties.setProperty("org.quartz.threadPool.threadCount", String.valueOf(quartzConfiguration.getThreadCount()));
         properties.setProperty("org.quartz.threadPool.threadPriority", String.valueOf(quartzConfiguration.getThreadPriority()));
-        properties.setProperty("org.quartz.jobStore.class", quartzConfiguration.getJobStoreClass());
-        properties.setProperty("org.quartz.scheduler.skipUpdateCheck",quartzConfiguration.getSkipUpdateCheck());
+        properties.setProperty("org.quartz.scheduler.skipUpdateCheck", quartzConfiguration.getSkipUpdateCheck());
 
         if (!"org.quartz.simpl.RAMJobStore".equals(quartzConfiguration.getJobStoreClass())) {
             properties.setProperty("org.quartz.jobStore.dataSource", "myDS");
@@ -78,13 +73,9 @@ public class HibernateManagableQuartzBundle implements ConfiguredBundle<RobeServ
         }
         SchedulerFactory factory = new StdSchedulerFactory(properties);
 
-        try {
-            scheduler = factory.getScheduler();
-            scheduler.start();
+        scheduler = factory.getScheduler();
+        scheduler.start();
 
-        } catch (SchedulerException e) {
-            e.printStackTrace();
-        }
         String[] jobPackage = quartzConfiguration.getJobPackage().split(",");
         Set<Class<? extends Job>> jobClasses;
         for (String myPackage : jobPackage) {
@@ -138,12 +129,21 @@ public class HibernateManagableQuartzBundle implements ConfiguredBundle<RobeServ
                     scheduler.scheduleJob(job, triggers, true);
                     LOGGER.info("Scheduled job : " + job.toString() + " with trigger : " + trigger.toString());
                 } else if (scheduledAnnotation.manager().equals(Scheduled.Manager.DB)) {
-                    QuartzJob quartzJob = new QuartzJob();
-                    quartzJob.setJobClassName(jobClass.getName());
-                    quartzJob.setCronExpression(scheduledAnnotation.cron());
-                    quartzJob.setSchedulerName(scheduler.getSchedulerName());
-                    JobDetail jobDetail = newJob(jobClass).withIdentity(jobName).build();
-                    session.persist(quartzJob);
+                    List<QuartzJob> jobList = session.createCriteria(QuartzJob.class).
+                            add(Property.forName("jobClassName").eq(jobName)).list();
+                    if (jobList.size() < 1) {
+                        QuartzJob quartzJob = new QuartzJob();
+                        quartzJob.setJobClassName(jobName);
+                        quartzJob.setCronExpression(scheduledAnnotation.cron());
+                        quartzJob.setSchedulerName(scheduler.getSchedulerName());
+                        quartzJob.setActive(false);
+
+                        JobKey jobKey = JobKey.jobKey(jobName, "DynamicCronJobs");
+                        JobDetail jobDetail = newJob(jobClass).storeDurably().withIdentity(jobKey).build();
+                        scheduler.addJob(jobDetail, true);
+                        session.persist(quartzJob);
+                        LOGGER.info(jobName + " Job saved to database");
+                    }
                 }
             }
         }
@@ -161,6 +161,7 @@ public class HibernateManagableQuartzBundle implements ConfiguredBundle<RobeServ
         TriggerBuilder<Trigger> trigger = newTrigger();
         if (scheduledAnnotation.cron() != null && scheduledAnnotation.cron().trim().length() > 0) {
             trigger.withSchedule(CronScheduleBuilder.cronSchedule(scheduledAnnotation.cron()));
+            LOGGER.info("Trigger set to start now");
         } else
             throw new IllegalArgumentException("You need cron definition for the @Scheduled annotation");
 
