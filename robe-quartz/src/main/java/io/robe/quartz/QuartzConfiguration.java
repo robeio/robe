@@ -6,7 +6,7 @@ public class QuartzConfiguration {
     private int threadCount;
     private int threadPriority;
     private String jobStoreClass;
-    private String jobPackage;
+    private String[] scanPackages;
     private String driverDelegateClass;
     private String tablePrefix;
     private int maxConnections;
@@ -52,12 +52,12 @@ public class QuartzConfiguration {
         this.jobStoreClass = jobStoreClass;
     }
 
-    public String getJobPackage() {
-        return jobPackage;
+    public String[] getScanPackages() {
+        return scanPackages;
     }
 
-    public void setJobPackage(String jobPackage) {
-        this.jobPackage = jobPackage;
+    public void setScanPackages(String[] scanPackages) {
+        this.scanPackages = scanPackages;
     }
 
     public String getDriverDelegateClass() {
