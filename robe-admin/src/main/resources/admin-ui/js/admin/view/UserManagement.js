@@ -1,16 +1,11 @@
 //@ sourceURL=UserManagement.js
 define([
-    'jquery',
-    'underscore',
-    'backbone',
-
     'text!html/UserManagement.html',
     'datasources/DataSources',
 
     'kendo/kendo.grid.min',
     'kendo/kendo.window.min'
-
-], function ($, _, Backbone, view) {
+], function (view) {
     var UserManagementView = Backbone.View.extend({
         el: $('#container'),
         render: function () {

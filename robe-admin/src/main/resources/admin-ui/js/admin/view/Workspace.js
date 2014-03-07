@@ -1,9 +1,5 @@
 //@ sourceURL=Workspace.js
 define([
-    'jquery',
-    'underscore',
-    'backbone',
-
     'text!html/Workspace.html',
     'view/Login',
     'view/ProfileManagement',
@@ -16,7 +12,7 @@ define([
     'kendo/kendo.button.min',
     'kendo/kendo.window.min',
     'kendo/kendo.panelbar.min'
-], function ($, _, Backbone,view,LoginView,ProfileManagmentView) {
+], function (view,LoginView,ProfileManagmentView) {
     var WorkspaceView = Backbone.View.extend({
         el: $('#body'),
         render: function () {
@@ -110,6 +106,7 @@ define([
             menu.imageUrl = "./icon/menu/" + menu.cssClass.substring(8) + ".png";
         },
 
+        previousItem: "",
         openMenuItem: function (menuitem) {
 
             kendo.destroy($('#container'));
@@ -117,6 +114,10 @@ define([
 
             if (menuitem.indexOf("k-") == 0)
                 return;
+            if(this.previousItem == menuitem)
+                return;
+            else
+                this.previousItem = menuitem;
             try {
                 window.location.href='#/'+menuitem;
             } catch (e) {
