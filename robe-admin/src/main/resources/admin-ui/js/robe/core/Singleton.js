@@ -1,6 +1,6 @@
 // @ sourceURL = robe/core/Singleton.js
 robe.core = robe.core || {};
-robe.core.Singleton = robe.util.inherit(robe.core.Class, {
+robe.core.Singleton = {
     name: "robe.core.Singleton",
     data: null,
     initialize: function () {
@@ -14,11 +14,9 @@ robe.core.Singleton = robe.util.inherit(robe.core.Class, {
         if (this.data == null) {
             console.log("Initializing " + this.name);
             this.data = this.initialize();
-        } else {
-            this.read();
-            if (read)
-                read();
+        } else if (read) {
+            read();
         }
         return this.data;
     }
-});
+};
