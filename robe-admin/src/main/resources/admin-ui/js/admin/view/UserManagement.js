@@ -1,7 +1,7 @@
 //@ sourceURL=UserManagement.js
 define([
     'text!html/UserManagement.html',
-    'datasources/DataSources',
+    'admin/data/DataSources',
 
     'kendo/kendo.grid.min',
     'kendo/kendo.window.min'
@@ -15,7 +15,6 @@ define([
         },
 
     initial: function () {
-
         $("#gridUsers").kendoGrid({
             dataSource: UserDataSource.get(),
             sortable: true,

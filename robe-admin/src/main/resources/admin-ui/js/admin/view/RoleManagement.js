@@ -1,7 +1,7 @@
 //@ sourceURL=RoleManagement.js
 define([
     'text!html/RoleManagement.html',
-    'datasources/DataSources',
+    'admin/data/DataSources',
 
     'kendo/kendo.grid.min',
     'kendo/kendo.window.min',
@@ -19,8 +19,6 @@ define([
 
         selectedGroup: null,
         initial: function () {
-            UnGroupedRoleDataSource.get().read();
-
             $("#gridRoles").kendoGrid({
                 dataSource: RoleDataSource.get(),
                 sortable: true,
