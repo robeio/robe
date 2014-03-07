@@ -1,8 +1,25 @@
 //@ sourceURL=UserManagement.js
-var UserManagement = robe.util.inherit(robe.view.Page, {
-    name: "UserManagement",
-    htmlPath: "./html/UserManagement.html",
-    initialize: function () {
+define([
+    'jquery',
+    'underscore',
+    'backbone',
+
+    'text!html/UserManagement.html',
+    'datasources/DataSources',
+
+    'kendo/kendo.grid.min',
+    'kendo/kendo.window.min'
+
+], function ($, _, Backbone, view) {
+    var UserManagementView = Backbone.View.extend({
+        el: $('#container'),
+        render: function () {
+            // Append our compiled template to this Views "el"
+            this.$el.append(view);
+            this.initial();
+        },
+
+    initial: function () {
 
         $("#gridUsers").kendoGrid({
             dataSource: UserDataSource.get(),
@@ -90,7 +107,7 @@ var UserManagement = robe.util.inherit(robe.view.Page, {
             });
     },
     onShowHelp: function () {
-        wnd = $("#userManagementHelpWindow").kendoWindow({
+        var wnd = $("#userManagementHelpWindow").kendoWindow({
             title: "Yardım",
             modal: true,
             visible: false,
@@ -101,4 +118,7 @@ var UserManagement = robe.util.inherit(robe.view.Page, {
         wnd.center().open();
     }
 
+    });
+    return UserManagementView;
 });
+
