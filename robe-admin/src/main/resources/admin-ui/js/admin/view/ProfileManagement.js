@@ -1,13 +1,9 @@
 //@ sourceURL=ProfileManagement.js
 define([
-    'jquery',
-    'underscore',
-    'backbone',
-
     'text!html/ProfileManagement.html',
 
     'kendo/kendo.button.min'
-], function ($, _, Backbone, view) {
+], function (view) {
     var ProfileManagementView = Backbone.View.extend({
         el: $('#dialogMessage'),
         render: function () {
