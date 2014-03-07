@@ -1,10 +1,7 @@
 define([
-    'jquery',
-    'underscore',
-    'backbone',
-    'router'
+    'bower_components/requirejs-router/router'
 
-], function ($, _, Backbone, Router) {
+], function (Router) {
     console.log("Registering router.");
     Router.registerRoutes({
         Workspace:
@@ -25,7 +22,7 @@ define([
     }).init();
 
     var href = window.location.href;
-    if(href.indexOf("#/Workspace", href.length - "#/Workspace".length) == -1);
+    if(href.indexOf("#/Workspace", href.length - "#/Workspace".length) == -1)
         window.location.href = "#/Workspace";
     return Router;
 
