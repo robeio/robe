@@ -1,9 +1,5 @@
 //@ sourceURL=RoleManagement.js
 define([
-    'jquery',
-    'underscore',
-    'backbone',
-
     'text!html/RoleManagement.html',
     'datasources/DataSources',
 
@@ -12,7 +8,7 @@ define([
     'kendo/kendo.listview.min',
     'kendo/kendo.tabstrip.min'
 
-], function ($, _, Backbone, view) {
+], function (view) {
     var RoleManagementView = Backbone.View.extend({
         el: $('#container'),
         render: function () {

@@ -1,9 +1,5 @@
 //@ sourceURL=Login.js
 define([
-    'jquery',
-    'underscore',
-    'backbone',
-
     'text!html/Login.html',
 
     'kendo/kendo.button.min',
@@ -12,7 +8,7 @@ define([
     'cryptojs/enc-base64-min',
     'cryptojs/sha256'
 
-], function ($, _, Backbone, view) {
+], function (view) {
     var LoginView = Backbone.View.extend({
         render: function () {
             $('#dialogMessage').append(view);
