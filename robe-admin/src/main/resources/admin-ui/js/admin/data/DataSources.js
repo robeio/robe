@@ -1,7 +1,7 @@
 //@ sourceURL=Datasources.js
 var UserDataSource, RoleDataSource, GroupedRoleDataSource, UnGroupedRoleDataSource, MenuDataSource, ServiceDataSource, MailManagementDataSource, SystemLanguageDatasource, QuartzJobDataSource;
 define([
-    'admin/data/SingletonDataSource','datasources/HierarchicalDataSources', 'admin/Models'], function (S,HDS) {
+    'admin/data/SingletonDataSource','admin/data/HierarchicalDataSources', 'admin/Models'], function (S,HDS) {
     console.log("Loading : Datasources");
     UserDataSource = robe.util.inherit(admin.data.SingletonDataSource, {
         name: "UserDataSource",
