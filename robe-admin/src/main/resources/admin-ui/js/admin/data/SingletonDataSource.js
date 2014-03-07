@@ -10,6 +10,7 @@ define([
             data = new kendo.data.DataSource(this.parameters);
             data.bind("error", this.requestError);
             data.bind("requestEnd", this.requestEnd);
+            data.read();
             return data;
         },
         read: function () {

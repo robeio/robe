@@ -1,8 +1,8 @@
 //@ sourceURL=MenuManagement.js
 define([
     'text!html/MenuManagement.html',
-    'datasources/HierarchicalDataSources',
-    'datasources/DataSources',
+    'admin/data/HierarchicalDataSources',
+    'admin/data/DataSources',
 
     'kendo/kendo.grid.min',
     'kendo/kendo.window.min',
