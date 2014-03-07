@@ -1,9 +1,5 @@
 //@ sourceURL=MenuManagement.js
 define([
-    'jquery',
-    'underscore',
-    'backbone',
-
     'text!html/MenuManagement.html',
     'datasources/HierarchicalDataSources',
     'datasources/DataSources',
@@ -12,7 +8,7 @@ define([
     'kendo/kendo.window.min',
     'kendo/kendo.treeview.min'
 
-], function ($, _, Backbone, view) {
+], function (view) {
     var MenuManagementView = Backbone.View.extend({
         el: $('#container'),
         render: function () {
