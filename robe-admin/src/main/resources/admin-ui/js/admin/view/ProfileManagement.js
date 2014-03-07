@@ -1,48 +1,64 @@
 //@ sourceURL=ProfileManagement.js
-var ProfileManagement = robe.util.inherit(robe.view.Page, {
-    name: "ProfileManagement",
-    htmlPath: "./html/ProfileManagement.html",
-    data: null,
-    initialize: function () {
-        $.ajax({
-            type: "GET",
-            url: AdminApp.getBackendURL() + "user/email/" + $.cookie.read("userEmail"),
-            contentType: "application/json",
-            success: function (response) {
-                $("#userEmail").val(response.email);
-                $("#userName").val(response.name);
-                $("#userSurname").val(response.surname);
-                data = response;
-            }
-        });
+define([
+    'jquery',
+    'underscore',
+    'backbone',
 
-        $("#btnProfileManagement").kendoButton({
-            click: this.onBtnProfileManagement
-        });
-    },
+    'text!html/ProfileManagement.html',
 
-    onBtnProfileManagement: function () {
-        data.email = $("#userEmail").val();
-        data.name = $("#userName").val();
-        data.surname = $("#userSurname").val();
+    'kendo/kendo.button.min'
+], function ($, _, Backbone, view) {
+    var ProfileManagementView = Backbone.View.extend({
+        el: $('#dialogMessage'),
+        render: function () {
+            // Append our compiled template to this Views "el"
+            this.$el.append(view);
+            this.initial();
+        },
+        data: null,
+        initial: function () {
+            var me = this;
+            $.ajax({
+                type: "GET",
+                url: AdminApp.getBackendURL() + "user/email/" + $.cookie.read("userEmail"),
+                contentType: "application/json",
+                success: function (response) {
+                    $("#userEmail").val(response.email);
+                    $("#userName").val(response.name);
+                    $("#userSurname").val(response.surname);
+                    me.data = response;
+                }
+            });
 
-        $.ajax({
-            type: "POST",
-            url: AdminApp.getBackendURL() + "user",
-            data: JSON.stringify(data),
-            contentType: "application/json; charset=utf-8",
-            success: function (response) {
-                console.log(response);
-                showToast("success", "Profil bilgileriniz başarı ile güncellendi.");
+            $("#btnProfileManagement").kendoButton({
+                click: this.onBtnProfileManagement
+            });
+        },
 
-                /*  LOGOUT  */
-                $.cookie.destroy("auth-token");
-                location.reload();
-            },
-            error: function (jqXHR, textStatus, errorThrown) {
-                console.log(errorThrown);
-                showToast("error", "Güncelleme esnasında bir hata oluştu.");
-            }
-        });
-    }
+        onBtnProfileManagement: function () {
+            data.email = $("#userEmail").val();
+            data.name = $("#userName").val();
+            data.surname = $("#userSurname").val();
+
+            $.ajax({
+                type: "POST",
+                url: AdminApp.getBackendURL() + "user",
+                data: JSON.stringify(data),
+                contentType: "application/json; charset=utf-8",
+                success: function (response) {
+                    console.log(response);
+                    showToast("success", "Profil bilgileriniz başarı ile güncellendi.");
+
+                    /*  LOGOUT  */
+                    $.cookie.destroy("auth-token");
+                    location.reload();
+                },
+                error: function (jqXHR, textStatus, errorThrown) {
+                    console.log(errorThrown);
+                    showToast("error", "Güncelleme esnasında bir hata oluştu.");
+                }
+            });
+        }
+    });
+    return ProfileManagementView;
 });
