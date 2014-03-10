@@ -7,6 +7,7 @@ define([
     'highcharts/highcharts',
     'highcharts/highcharts-more',
     'highcharts/exporting',
+//    'highcharts/highcharts-all',
     'robe/Charts'
 ], function (view) {
     var Dashboard = Backbone.View.extend({

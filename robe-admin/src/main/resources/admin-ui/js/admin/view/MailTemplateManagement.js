@@ -4,9 +4,11 @@ define([
     'text!html/MailTemplateManagement.html',
     'admin/data/DataSources',
 
+    'kendo/kendo.button.min',
     'kendo/kendo.grid.min',
     'kendo/kendo.editor.min',
-    'kendo/kendo.dropdownlist.min'
+    'kendo/kendo.dropdownlist.min',
+    'robe/AlertDialog'
 ], function (view) {
     var MailTemplateManagement = Backbone.View.extend({
         el: $('#container'),
@@ -146,7 +148,7 @@ define([
                 });
         },
         onBtnMailTemplateManagementHelp: function () {
-//            showToast("success", "YARDIM EKLENECEK ;)");
+            showToast("success", "YARDIM EKLENECEK ;)");
         }
     });
 
