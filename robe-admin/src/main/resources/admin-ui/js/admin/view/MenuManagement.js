@@ -18,7 +18,7 @@ define([
         },
 
         initial: function () {
-            MenuHierarchicalDataSource.read();
+//            MenuHierarchicalDataSource.read();
             $("#gridMenus").kendoGrid({
                 dataSource: MenuDataSource.get(),
                 sortable: true,
