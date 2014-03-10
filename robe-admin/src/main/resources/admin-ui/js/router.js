@@ -15,7 +15,9 @@ define([
         RoleManagement:
             { path:'/RoleManagement'      ,moduleId:'admin/view/RoleManagement'},
         MenuManagement:
-        { path:'/MenuManagement'      ,moduleId:'admin/view/MenuManagement'}
+        { path:'/MenuManagement'      ,moduleId:'admin/view/MenuManagement'},
+        PermissionManagement:
+        { path:'/PermissionManagement'      ,moduleId:'admin/view/PermissionManagement'}
     }).on('routeload', function (View, routeArguments) {
         var view = new View(routeArguments);
         view.render();
