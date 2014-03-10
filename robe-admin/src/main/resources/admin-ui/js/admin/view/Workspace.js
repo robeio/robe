@@ -109,9 +109,6 @@ define([
         previousItem: "",
         openMenuItem: function (menuitem) {
 
-            kendo.destroy($('#container'));
-            $('#container').html('');
-
             if (menuitem.indexOf("k-") == 0)
                 return;
             if(this.previousItem == menuitem)
@@ -119,6 +116,8 @@ define([
             else
                 this.previousItem = menuitem;
             try {
+                kendo.destroy($('#container'));
+                $('#container').html('');
                 window.location.href='#/'+menuitem;
             } catch (e) {
                 console.error(menuitem + " JS: " + e);
