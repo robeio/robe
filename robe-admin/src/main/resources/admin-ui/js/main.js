@@ -31,7 +31,6 @@ require.config({
         'robe/core/Singleton': {
             deps: ['robe/core/Class']
         }
-
     }
 });
 
