@@ -1,7 +1,7 @@
 //@ sourceURL=Datasources.js
 var UserDataSource, RoleDataSource, GroupedRoleDataSource, UnGroupedRoleDataSource, MenuDataSource, ServiceDataSource, MailManagementDataSource, SystemLanguageDatasource, QuartzJobDataSource;
 define([
-    'admin/data/SingletonDataSource','admin/data/HierarchicalDataSources', 'admin/Models'], function (S,HDS) {
+    'admin/data/SingletonDataSource','admin/Models'], function (S,HDS) {
     console.log("Loading : Datasources");
     UserDataSource = robe.util.inherit(admin.data.SingletonDataSource, {
         name: "UserDataSource",
@@ -140,9 +140,6 @@ define([
                         return kendo.stringify(options);
                     }
                 }
-            },
-            change: function (e) {
-                MenuHierarchicalDataSource.read();
             },
             batch: false,
             pageSize: 20,
