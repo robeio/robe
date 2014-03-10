@@ -1,7 +1,7 @@
 //@ sourceURL=MenuManagement.js
+
 define([
     'text!html/MenuManagement.html',
-    'admin/data/HierarchicalDataSources',
     'admin/data/DataSources',
 
     'kendo/kendo.grid.min',
@@ -83,16 +83,27 @@ define([
                 }
             });
 
+            $.ajax({
+                type: "GET",
+                url: AdminApp.getBackendURL() + "menu/roots",
+                dataType: "json",
+                contentType: "application/json; charset=utf-8",
+                success: function (response) {
+                    var dataSource = new kendo.data.HierarchicalDataSource({
+                        data: response,
+                        schema: MenuTreeModel
+                    });
+                    $("#treeMenus").data("kendoTreeView").setDataSource(dataSource);
+                }
+            });
 
             $("#treeMenus").kendoTreeView({
                 dragAndDrop: true,
-                dataSource: MenuHierarchicalDataSource,
                 dataTextField: "name",
                 drop: this.onTreeMenuDrop,
                 drag: this.onTreeMenuDrag
 
             });
-
 
             $("#btnMenuManagementHelp").kendoButton({
                 click: this.onShowHelp
