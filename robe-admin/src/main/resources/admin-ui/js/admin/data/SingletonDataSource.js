@@ -1,7 +1,7 @@
 //@ sourceURL=SingletonDataSource.js
 admin.data = admin.data || {};
 define([
-    'robe/core/Singleton', 'admin/Models'], function () {
+    'robe/core/Singleton', 'admin/Models', 'robe/AlertDialog'], function () {
     admin.data.SingletonDataSource = robe.util.inherit(robe.core.Singleton, {
         data: null,
         name: "admin.data.SingletonDataSource",
