@@ -46,6 +46,9 @@ require.config({
         },
         'robe/AlertDialog': {
             deps: ['alertmessage/jquery.toastmessage']
+        },
+        'router': {
+            deps: ['bower_components/jquery/dist/jquery.min']
         }
     }
 });
