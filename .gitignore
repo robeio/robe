@@ -16,4 +16,4 @@ log/
 target/
 
 # netbeans
-nbactions.xml
+nbactions.xmlRakefile
