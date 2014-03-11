@@ -1,6 +1,7 @@
 package io.robe.admin.dto;
 
 import java.util.LinkedList;
+import java.util.List;
 
 public class MenuItem {
     private String text;
