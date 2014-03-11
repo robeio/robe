@@ -12,7 +12,7 @@ define([
     'kendo/kendo.button.min',
     'kendo/kendo.window.min',
     'kendo/kendo.panelbar.min'
-], function (view,LoginView,ProfileManagmentView) {
+], function (view, LoginView, ProfileManagementView) {
     var WorkspaceView = Backbone.View.extend({
         el: $('#body'),
         render: function () {
@@ -31,10 +31,14 @@ define([
                     duration: 200
                 }
             });
-
+            kendo.destroy($("#container"));
+            $("#container").html("");
             $("#profile").click(function () {
-                this.showDialog(null, "Profil Bilgileri");
-                var profileView = new ProfileManagmentView();
+
+                showProfileDialog(null, "Profil Bilgileri");
+                console.log($("#dialogMessage"));
+
+                var profileView = new ProfileManagementView();
                 profileView.parentPage = this;
                 profileView.render();
             });
@@ -64,9 +68,8 @@ define([
             });
 
             this.loadLogin();
-
-
         },
+
         onClickSettingsButton: function (e) {
             $("#dropdownMenu").toggle("slow");
         },
@@ -111,26 +114,27 @@ define([
 
             if (menuitem.indexOf("k-") == 0)
                 return;
-            if(this.previousItem == menuitem)
+            if (this.previousItem == menuitem)
                 return;
             else
                 this.previousItem = menuitem;
             try {
                 kendo.destroy($('#container'));
                 $('#container').html('');
-                window.location.href='#/'+menuitem;
+                window.location.href = '#/' + menuitem;
             } catch (e) {
                 console.error(menuitem + " JS: " + e);
             }
             kendo.fx($("#container")).fade("in").play();
         },
+
         showIndicator: function (show) {
             if (show)
                 $("#progressBar").data("kendoProgressBar").value(0);
             else
                 $("#progressBar").data("kendoProgressBar").value(1);
-
         },
+
         showDialog: function (message, title) {
             if (message != null)
                 $('#dialogMessage').html(message);
@@ -142,16 +146,23 @@ define([
         },
 
         loadLogin: function () {
-
             this.showDialog(null, "Giriş");
             var loginView = new LoginView();
             loginView.parentPage = this;
             loginView.render();
-
-
         }
-
     });
+
+    function showProfileDialog(message, title) {
+        if (message != null)
+            $('#dialogMessage').html(message);
+        if (title == null)
+            title = "";
+        $('#dialog').data("kendoWindow").title(title);
+        $('#dialog').data("kendoWindow").center();
+        $('#dialog').data("kendoWindow").open();
+    }
+
     // Our module now returns our view
     return WorkspaceView;
 });
