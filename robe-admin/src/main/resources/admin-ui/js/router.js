@@ -14,7 +14,7 @@ define([
         },
         ProfileManagement: {
             path: '/ProfileManagement',
-            moduleId: 'admin/view/ProfileManagement'
+            moduleId: 'admin/view/ProfileManagemen'
         },
         UserManagement: {
             path: '/UserManagement',
