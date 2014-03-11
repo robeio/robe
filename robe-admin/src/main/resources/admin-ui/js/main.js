@@ -36,6 +36,9 @@ require.config({
         },
         'highcharts/highcharts-more': {
             deps: ['highcharts/highcharts']
+        },
+        'robe/AlertDialog': {
+            deps: ['alertmessage/jquery.toastmessage']
         }
     }
 });

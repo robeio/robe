@@ -47,8 +47,9 @@ public class AuthResource {
 
         Optional<User> user = userDao.findByEmail(credentials.getUsername());
         String token;
-        if (!user.isPresent())
+        if (!user.isPresent()) {
             throw new WebApplicationException(Response.Status.UNAUTHORIZED);
+        }
         else if (user.get().getPassword().equals(credentials.getPassword())) {
 //            try {
 //                mailSender.sendMessage("seray.uzgur@mebitech.com",new String[]{"serayuzgur@gmail.com"},"aa","Hop",null);
@@ -56,7 +57,8 @@ public class AuthResource {
 //                e.printStackTrace();
 //            }
             return credentials;
-        } else {
+        }
+        else {
             throw new WebApplicationException(Response.Status.UNAUTHORIZED);
         }
 

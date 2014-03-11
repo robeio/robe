@@ -118,11 +118,10 @@ public class RoleResource {
         Role group = roleDao.findById(groupOid);
         Role role = roleDao.findById(roleOid);
 
-        if (group.getRoles() != null) {
-            if (group.getRoles().contains(role)) {
-                group.getRoles().remove(role);
-                roleDao.update(group);
-            }
+        if (group.getRoles() != null && group.getRoles().contains(role)) {
+            group.getRoles().remove(role);
+               roleDao.update(group);
+
         }
 
         return group;
