@@ -5,7 +5,7 @@ import java.util.LinkedList;
 public class MenuItem {
     private String text;
     private String cssClass;
-    private LinkedList<MenuItem> items = new LinkedList<MenuItem>();
+    private List<MenuItem> items = new LinkedList<MenuItem>();
     private boolean expanded = true;
 
     public MenuItem(String text, String cssClass) {
@@ -30,7 +30,7 @@ public class MenuItem {
         this.cssClass = cssClass;
     }
 
-    public LinkedList<MenuItem> getItems() {
+    public List<MenuItem> getItems() {
         return items;
     }
 
@@ -42,7 +42,7 @@ public class MenuItem {
         this.expanded = expanded;
     }
 
-    public void setItems(LinkedList<MenuItem> items) {
+    public void setItems(List<MenuItem> items) {
         this.items = items;
     }
 }
