@@ -50,9 +50,10 @@ define([
     }).init();
 
     var href = window.location.href;
-    $('#body').html('');
-    if (href.indexOf("#/Workspace", href.length - "#/Workspace".length) == -1)
+    if (href.indexOf("#/Workspace", href.length - "#/Workspace".length) == -1){
+        $('#body').html('');
         window.location.href = "#/Workspace";
+    }
     return Router;
 
 });
