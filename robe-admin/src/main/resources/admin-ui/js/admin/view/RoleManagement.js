@@ -10,10 +10,8 @@ define([
 
 ], function (view) {
     var RoleManagementView = Backbone.View.extend({
-        el: $('#container'),
         render: function () {
-            // Append our compiled template to this Views "el"
-            this.$el.append(view);
+            $('#container').append(view);
             this.initial();
         },
 

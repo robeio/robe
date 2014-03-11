@@ -7,10 +7,8 @@ define([
     'kendo/kendo.grid.min'
 ], function (view) {
     var UserManagementView = Backbone.View.extend({
-        el: $('#container'),
         render: function () {
-            // Append our compiled template to this Views "el"
-            this.$el.append(view);
+            $('#container').append(view);
             this.initial();
         },
 
