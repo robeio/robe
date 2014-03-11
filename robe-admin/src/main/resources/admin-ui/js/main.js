@@ -30,8 +30,16 @@ require.config({
         },
         'robe/core/Singleton': {
             deps: ['robe/core/Class']
+        },
+        'robe/Charts': {
+            deps: ['highcharts/highcharts']
+        },
+        'highcharts/highcharts-more': {
+            deps: ['highcharts/highcharts']
+        },
+        'robe/AlertDialog': {
+            deps: ['alertmessage/jquery.toastmessage']
         }
-
     }
 });
 
