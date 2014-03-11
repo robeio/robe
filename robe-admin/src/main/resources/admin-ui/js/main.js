@@ -55,7 +55,8 @@ define([
     'admin/AdminUIApp',
     'bower_components/jquery/dist/jquery.min',
     'bower_components/underscore/underscore',
-    'bower_components/backbone/backbone'
+    'bower_components/backbone/backbone',
+    'highcharts/highcharts'
 ], function (App) {
     App.initialize();
 });
