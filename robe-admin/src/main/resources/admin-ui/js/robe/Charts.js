@@ -1,5 +1,6 @@
 //@ sourceURL=Charts.js
 var Charts = {
+    //TODO: Require.js
 
 	pie: function(id,data,title){
 		$('#'+id).highcharts({
