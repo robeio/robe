@@ -50,6 +50,7 @@ define([
     }).init();
 
     var href = window.location.href;
+    $('#body').html('');
     if (href.indexOf("#/Workspace", href.length - "#/Workspace".length) == -1)
         window.location.href = "#/Workspace";
     return Router;
