@@ -14,10 +14,10 @@ define([
     'kendo/kendo.panelbar.min'
 ], function (view, LoginView, ProfileManagementView) {
     var WorkspaceView = Backbone.View.extend({
-        el: $('#body'),
         render: function () {
-            // Append our compiled template to this Views "el"
-            this.$el.append(view);
+            kendo.destroy($('#body'));
+            $('#body').html('');
+            $('#body').append(view);
             this.initial();
         },
         initial: function () {
@@ -36,8 +36,8 @@ define([
             $("#profile").click(function () {
 
                 showProfileDialog(null, "Profil Bilgileri");
-                console.log($("#dialogMessage"));
-
+                kendo.destroy($('#dialogMessage'));
+                $('#dialogMessage').html('');
                 var profileView = new ProfileManagementView();
                 profileView.parentPage = this;
                 profileView.render();
@@ -147,6 +147,8 @@ define([
 
         loadLogin: function () {
             this.showDialog(null, "Giriş");
+            kendo.destroy($('#dialogMessage'));
+            $('#dialogMessage').html('');
             var loginView = new LoginView();
             loginView.parentPage = this;
             loginView.render();

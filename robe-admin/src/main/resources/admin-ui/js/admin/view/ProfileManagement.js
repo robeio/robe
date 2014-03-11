@@ -6,11 +6,8 @@ define([
     'robe/AlertDialog'
 ], function (view) {
     var ProfileManagementView = Backbone.View.extend({
-//        el: $('#dialogMessage'),
         render: function () {
-            // Append our compiled template to this Views "el"
-//            this.$el.append(view);
-            $("#dialog").append(view);
+            $('#dialogMessage').append(view);
             this.initial();
         },
         data: null,
