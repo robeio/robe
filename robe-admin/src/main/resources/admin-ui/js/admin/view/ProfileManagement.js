@@ -26,31 +26,29 @@ define([
             });
 
             $("#btnProfileManagement").kendoButton({
-                click: this.onBtnProfileManagement
-            });
-        },
+                click: function () {
+                    me.data.email = $("#userEmail").val();
+                    me.data.name = $("#userName").val();
+                    me.data.surname = $("#userSurname").val();
 
-        onBtnProfileManagement: function () {
-            data.email = $("#userEmail").val();
-            data.name = $("#userName").val();
-            data.surname = $("#userSurname").val();
+                    $.ajax({
+                        type: "POST",
+                        url: AdminApp.getBackendURL() + "user",
+                        data: JSON.stringify(me.data),
+                        contentType: "application/json; charset=utf-8",
+                        success: function (response) {
+                            console.log(response);
+                            showToast("success", "Profil bilgileriniz başarı ile güncellendi.");
 
-            $.ajax({
-                type: "POST",
-                url: AdminApp.getBackendURL() + "user",
-                data: JSON.stringify(data),
-                contentType: "application/json; charset=utf-8",
-                success: function (response) {
-                    console.log(response);
-                    showToast("success", "Profil bilgileriniz başarı ile güncellendi.");
-
-                    /*  LOGOUT  */
-                    $.cookie.destroy("auth-token");
-                    location.reload();
-                },
-                error: function (jqXHR, textStatus, errorThrown) {
-                    console.log(errorThrown);
-                    showToast("error", "Güncelleme esnasında bir hata oluştu.");
+                            /*  LOGOUT  */
+                            $.cookie.destroy("auth-token");
+                            location.reload();
+                        },
+                        error: function (jqXHR, textStatus, errorThrown) {
+                            console.log(errorThrown);
+                            showToast("error", "Güncelleme esnasında bir hata oluştu.");
+                        }
+                    });
                 }
             });
         }
