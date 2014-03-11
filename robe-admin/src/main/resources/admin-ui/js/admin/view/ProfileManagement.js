@@ -2,13 +2,15 @@
 define([
     'text!html/ProfileManagement.html',
 
-    'kendo/kendo.button.min'
+    'kendo/kendo.button.min',
+    'robe/AlertDialog'
 ], function (view) {
     var ProfileManagementView = Backbone.View.extend({
-        el: $('#dialogMessage'),
+//        el: $('#dialogMessage'),
         render: function () {
             // Append our compiled template to this Views "el"
-            this.$el.append(view);
+//            this.$el.append(view);
+            $("#dialog").append(view);
             this.initial();
         },
         data: null,
