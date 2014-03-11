@@ -34,7 +34,14 @@ require.config({
         'robe/Charts': {
             deps: ['highcharts/highcharts']
         },
+        'highcharts/highcharts': {
+            deps: [ "bower_components/jquery/dist/jquery.min"],
+            exports: 'Highcharts'
+        },
         'highcharts/highcharts-more': {
+            deps: ['highcharts/highcharts']
+        },
+        'highcharts/exports': {
             deps: ['highcharts/highcharts']
         },
         'robe/AlertDialog': {
