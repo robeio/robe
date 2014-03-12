@@ -33,7 +33,7 @@ public class TokenBasedAuthResponseFilter implements ContainerResponseFilter {
 					authToken = token.getToken();
 				}
 			} catch (Exception e) {
-				LOGGER.error("CryptoToken creation failed", e);
+				LOGGER.error("Token creation failed", e);
 			}
 		} else {
 			authToken = extractAuthTokenFromCookieList(request.getHeaderValue("Cookie"));
@@ -50,7 +50,7 @@ public class TokenBasedAuthResponseFilter implements ContainerResponseFilter {
 					authToken = cryptoToken.getToken();
 				}
 			} catch (Exception e) {
-				LOGGER.error("CryptoToken re-creation failed", e);
+				LOGGER.error("Token re-creation failed", e);
 			}
 
 			response.getHttpHeaders().putSingle("Set-Cookie", "auth-token=" + authToken + ";path=/;domain=" + request.getBaseUri().getHost() + ";");
