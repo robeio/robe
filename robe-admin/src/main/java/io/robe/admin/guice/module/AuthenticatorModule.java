@@ -6,10 +6,10 @@ import com.google.inject.Inject;
 import com.google.inject.Provider;
 import com.yammer.dropwizard.auth.Authenticator;
 import com.yammer.dropwizard.auth.CachingAuthenticator;
+import io.robe.admin.auth.ESAPIToken;
 import io.robe.admin.hibernate.dao.ServiceDao;
 import io.robe.admin.hibernate.dao.UserDao;
 import io.robe.auth.Credentials;
-import io.robe.auth.SampleToken;
 import io.robe.auth.TokenWrapper;
 import io.robe.auth.impl.tokenbased.TokenBasedAuthenticator;
 import io.robe.hibernate.HibernateBundle;
@@ -28,7 +28,7 @@ public class AuthenticatorModule extends AbstractModule {
 
             @Override
             public Authenticator get() {
-                TokenWrapper.initialize(SampleToken.class);
+                TokenWrapper.initialize(ESAPIToken.class);
                 TokenBasedAuthenticator tokenBasedAuthenticator =
                         new TokenBasedAuthenticator(
                                 new UserDao(hibernateBundle.getSessionFactory()),

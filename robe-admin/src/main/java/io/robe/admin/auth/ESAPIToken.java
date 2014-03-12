@@ -1,20 +1,22 @@
-package io.robe.auth;
+package io.robe.admin.auth;
 
+import io.robe.auth.Credentials;
+import io.robe.auth.IsToken;
 import org.owasp.esapi.crypto.CryptoToken;
 import org.owasp.esapi.errors.EncryptionException;
 
 import java.util.Collections;
 import java.util.Set;
 
-public class SampleToken extends CryptoToken implements IsToken<SampleToken>,Credentials {
+public class ESAPIToken extends CryptoToken implements IsToken<ESAPIToken>,Credentials {
 
     private Set<String> permissions;
 
-    public SampleToken(){
+    public ESAPIToken(){
         super();
     }
 
-    public SampleToken (String token) throws EncryptionException {
+    public ESAPIToken(String token) throws EncryptionException {
         super(token);
     }
 
