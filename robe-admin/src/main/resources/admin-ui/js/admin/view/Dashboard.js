@@ -120,6 +120,5 @@ define([
             });
         }
     });
-
     return Dashboard;
 });
