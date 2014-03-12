@@ -1,4 +1,4 @@
-package io.robe.auth;
+package io.robe.auth.entry;
 
 public interface UserEntry {
     boolean isActive();
@@ -7,6 +7,6 @@ public interface UserEntry {
 
     String getPassword();
 
-     RoleEntry getRole();
+    RoleEntry getRole();
 
 }

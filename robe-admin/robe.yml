@@ -47,7 +47,7 @@ quartz:
   threadCount: 5
   threadPriority: 5
   jobStoreClass: org.quartz.simpl.RAMJobStore # org.quartz.impl.jdbcjobstore.JobStoreTX
-  jobPackage: io.robe.timely
+  scanPackages: [io.robe.timely]
   driverDelegateClass: org.quartz.impl.jdbcjobstore.StdJDBCDelegate
   tablePrefix: QRTZ_
   maxConnections: 30

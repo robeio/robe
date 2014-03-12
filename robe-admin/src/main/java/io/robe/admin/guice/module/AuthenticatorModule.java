@@ -8,8 +8,10 @@ import com.yammer.dropwizard.auth.Authenticator;
 import com.yammer.dropwizard.auth.CachingAuthenticator;
 import io.robe.admin.hibernate.dao.ServiceDao;
 import io.robe.admin.hibernate.dao.UserDao;
-import io.robe.auth.AuthTokenAuthenticator;
 import io.robe.auth.Credentials;
+import io.robe.auth.SampleToken;
+import io.robe.auth.TokenWrapper;
+import io.robe.auth.impl.tokenbased.TokenBasedAuthenticator;
 import io.robe.hibernate.HibernateBundle;
 
 /**
@@ -26,11 +28,12 @@ public class AuthenticatorModule extends AbstractModule {
 
             @Override
             public Authenticator get() {
-                AuthTokenAuthenticator authTokenAuthenticator =
-                        new AuthTokenAuthenticator(
+                TokenWrapper.initialize(SampleToken.class);
+                TokenBasedAuthenticator tokenBasedAuthenticator =
+                        new TokenBasedAuthenticator(
                                 new UserDao(hibernateBundle.getSessionFactory()),
                                 new ServiceDao(hibernateBundle.getSessionFactory()));
-                return CachingAuthenticator.wrap(authTokenAuthenticator, CacheBuilderSpec.parse("maximumSize=10000, expireAfterAccess=1m"));
+                return CachingAuthenticator.wrap(tokenBasedAuthenticator, CacheBuilderSpec.parse("maximumSize=10000, expireAfterAccess=1m"));
             }
         });
 

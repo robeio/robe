@@ -1,6 +1,6 @@
 package io.robe.admin.hibernate.entity;
 
-import io.robe.auth.PermissionEntry;
+import io.robe.auth.entry.PermissionEntry;
 import io.robe.hibernate.entity.BaseEntity;
 
 import javax.persistence.*;

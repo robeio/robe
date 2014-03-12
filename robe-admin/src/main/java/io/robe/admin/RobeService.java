@@ -12,7 +12,7 @@ import io.robe.admin.guice.module.AuthenticatorModule;
 import io.robe.admin.guice.module.HibernateModule;
 import io.robe.admin.guice.module.MailModule;
 import io.robe.admin.guice.module.QuartzModule;
-import io.robe.auth.AuthTokenResponseFilter;
+import io.robe.auth.impl.tokenbased.TokenBasedAuthResponseFilter;
 import io.robe.common.cli.ControllableServerCommand;
 import io.robe.common.exception.RobeExceptionMapper;
 import io.robe.guice.GuiceBundle;
@@ -94,7 +94,7 @@ public class RobeService extends Service<RobeServiceConfiguration> {
     @Override
     public void run(RobeServiceConfiguration configuration, Environment environment) throws Exception {
         addExceptionMappers(environment);
-        environment.getJerseyResourceConfig().getContainerResponseFilters().add(new AuthTokenResponseFilter());
+        environment.getJerseyResourceConfig().getContainerResponseFilters().add(new TokenBasedAuthResponseFilter());
         environment.start();
     }
 

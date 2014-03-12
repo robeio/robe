@@ -1,4 +1,4 @@
-package io.robe.auth;
+package io.robe.auth.impl.tokenbased;
 
 import com.google.common.base.Optional;
 import com.sun.jersey.api.core.HttpContext;
@@ -7,6 +7,7 @@ import com.sun.jersey.server.impl.application.WebApplicationContext;
 import com.sun.jersey.server.impl.inject.AbstractHttpContextInjectable;
 import com.yammer.dropwizard.auth.AuthenticationException;
 import com.yammer.dropwizard.auth.Authenticator;
+import io.robe.auth.IsToken;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -22,9 +23,9 @@ import java.util.List;
  *
  * @param <T> The type of the injectable.
  */
-public class AuthInjectable<T extends Credentials> extends AbstractHttpContextInjectable<T> {
+public class TokenBasedAuthInjectable<T extends IsToken> extends AbstractHttpContextInjectable<T> {
 
-	private static final Logger LOGGER = LoggerFactory.getLogger(AuthInjectable.class);
+	private static final Logger LOGGER = LoggerFactory.getLogger(TokenBasedAuthInjectable.class);
 
 	private final Authenticator<String, T> authenticator;
 
@@ -33,13 +34,13 @@ public class AuthInjectable<T extends Credentials> extends AbstractHttpContextIn
 	 *
 	 * @param authenticator The authenticator which will be used with Authenticate controls.
 	 */
-	protected AuthInjectable(Authenticator<String, T> authenticator) {
+	protected TokenBasedAuthInjectable(Authenticator<String, T> authenticator) {
 		this.authenticator = authenticator;
 	}
 
 	/**
 	 * This method gets the context and does all necessary controls.
-	 * Returns injectable or throws {@link javax.ws.rs.WebApplicationException} with response type {@link javax.ws.rs.core.Response.Status} UNAUTHORIZED
+	 * Returns injectable or throws {@link javax.ws.rs.WebApplicationException} with response type {@link Response.Status} UNAUTHORIZED
 	 *
 	 * @param c The http context of the inject request.
 	 * @return Returns the desired injectable.
@@ -81,12 +82,12 @@ public class AuthInjectable<T extends Credentials> extends AbstractHttpContextIn
 	 * Merges all path patterns and and creates a single string value which will be equal with service methods path
      * annotation value and HTTP method type. Generated string will be used for permission checks.
 	 *
-	 * @param credentials      for checking permission list
+	 * @param token      for checking permission list
 	 * @param matchedTemplates matched templates of context. They will be merged with reverse order
 	 * @param method           HTTP Method of the request. Will be merged with
 	 * @return true if user is Authorized.
 	 */
-	private boolean isAuthorized(Credentials credentials, List<UriTemplate> matchedTemplates, String method) {
+	private boolean isAuthorized(IsToken token, List<UriTemplate> matchedTemplates, String method) {
 		StringBuilder path = new StringBuilder();
         // Merge all path templates and generate a path.
 		for (UriTemplate template : matchedTemplates)
@@ -94,7 +95,7 @@ public class AuthInjectable<T extends Credentials> extends AbstractHttpContextIn
 		path.append(":").append(method);
 
         //Look at user permissions to see if the service is permitted.
-		return credentials.getPermissions().contains(path.toString());
+		return token.getPermissions().contains(path.toString());
 	}
 
 }

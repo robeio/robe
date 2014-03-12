@@ -1,18 +1,21 @@
-package io.robe.auth;
+package io.robe.auth.impl.tokenbased;
 
 import com.sun.jersey.spi.container.ContainerRequest;
 import com.sun.jersey.spi.container.ContainerResponse;
 import com.sun.jersey.spi.container.ContainerResponseFilter;
-import org.owasp.esapi.crypto.CryptoToken;
+import io.robe.auth.IsToken;
+import io.robe.auth.TokenWrapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import java.util.Map;
 
 
 /**
  * The response filter for creating or refreshing AuthTokens. Refreshing controlled by created token.
  */
-public class AuthTokenResponseFilter implements ContainerResponseFilter {
-	private static final Logger LOGGER = LoggerFactory.getLogger(AuthTokenResponseFilter.class);
+public class TokenBasedAuthResponseFilter implements ContainerResponseFilter {
+	private static final Logger LOGGER = LoggerFactory.getLogger(TokenBasedAuthResponseFilter.class);
 
 	@Override
 	public ContainerResponse filter(ContainerRequest request, ContainerResponse response) {
@@ -25,9 +28,9 @@ public class AuthTokenResponseFilter implements ContainerResponseFilter {
 		  */
 		if (request.getPath().equals("authentication/login")) {
 			try {
-				if(response.getEntity() instanceof  Credentials){
-					CryptoToken cryptoToken = AuthTokenAuthenticator.createToken(((Credentials) response.getEntity()));
-					authToken = cryptoToken.getToken();
+				if(response.getEntity() instanceof Map){
+                    IsToken token = TokenWrapper.createToken( ((Map) response.getEntity()).get("username").toString(),null);
+					authToken = token.getToken();
 				}
 			} catch (Exception e) {
 				LOGGER.error("CryptoToken creation failed", e);
@@ -42,7 +45,7 @@ public class AuthTokenResponseFilter implements ContainerResponseFilter {
 				return response;
 			}
 			try {
-				CryptoToken cryptoToken = new CryptoToken(authToken);
+				IsToken cryptoToken = TokenWrapper.createToken(authToken);
 				if (cryptoToken.isExpired()) {
 					authToken = cryptoToken.getToken();
 				}
