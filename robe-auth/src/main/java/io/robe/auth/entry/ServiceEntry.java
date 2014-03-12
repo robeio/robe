@@ -1,4 +1,4 @@
-package io.robe.auth;
+package io.robe.auth.entry;
 
 public interface ServiceEntry {
     public enum Method {

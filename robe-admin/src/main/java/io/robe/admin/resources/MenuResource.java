@@ -56,7 +56,7 @@ public class MenuResource {
     @GET
     @UnitOfWork
     public List<MenuItem> getUserHierarchicalMenu(@Auth Credentials credentials) {
-        Optional<User> user = userDao.findByEmail(credentials.getUsername());
+        Optional<User> user = userDao.findByUsername(credentials.getUsername());
         Set<Permission> permissions = new HashSet<Permission>();
         getAllRolePermissions(user.get().getRole(), permissions);
         HashSet<String> menuOids = new HashSet<String>();

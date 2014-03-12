@@ -1,4 +1,4 @@
-package io.robe.auth;
+package io.robe.auth.entry;
 
 import java.util.Collection;
 import java.util.Set;

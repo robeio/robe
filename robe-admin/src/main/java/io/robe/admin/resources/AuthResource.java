@@ -19,6 +19,7 @@ import javax.ws.rs.core.Response;
 import javax.ws.rs.core.UriInfo;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 
 /**
@@ -43,19 +44,15 @@ public class AuthResource {
     @UnitOfWork
     @Timed
     @Path("login")
-    public Credentials login(@Context HttpServletRequest request, @Context HttpServletResponse response, Credentials credentials) {
+    public Map<String,String> login(@Context HttpServletRequest request, @Context HttpServletResponse response, Map<String,String> credentials) {
 
-        Optional<User> user = userDao.findByEmail(credentials.getUsername());
+        Optional<User> user = userDao.findByUsername(credentials.get("username"));
         String token;
         if (!user.isPresent()) {
             throw new WebApplicationException(Response.Status.UNAUTHORIZED);
         }
-        else if (user.get().getPassword().equals(credentials.getPassword())) {
-//            try {
-//                mailSender.sendMessage("seray.uzgur@mebitech.com",new String[]{"serayuzgur@gmail.com"},"aa","Hop",null);
-//            } catch (MessagingException e) {
-//                e.printStackTrace();
-//            }
+        else if (user.get().getPassword().equals(credentials.get("password"))) {
+            credentials.remove("password");
             return credentials;
         }
         else {

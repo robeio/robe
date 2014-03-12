@@ -58,13 +58,13 @@ public class UserResource {
     @UnitOfWork
     @Path("email/{email}")
     public UserDTO getByEmail(@Auth Credentials credentials, @PathParam("email") String email) {
-        return new UserDTO(userDao.findByEmail(email).get());
+        return new UserDTO(userDao.findByUsername(email).get());
     }
 
     @PUT
     @UnitOfWork
     public UserDTO create(@Auth Credentials credentials, @Valid UserDTO user) {
-        Optional<User> checkUser = userDao.findByEmail(user.getEmail());
+        Optional<User> checkUser = userDao.findByUsername(user.getEmail());
         if (checkUser.isPresent())
             throw new RobeRuntimeException("E-mail", user.getEmail() + " already used by another user. Please use different e-mail.");
         User entity = new User();

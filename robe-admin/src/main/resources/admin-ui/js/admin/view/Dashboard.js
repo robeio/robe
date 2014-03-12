@@ -88,7 +88,7 @@ define([
                     var loginCount = authenticateServiceData["login"]["rate"]["count"];
 
                     // Auth Token io.robe.admin counts and response times
-                    var authTokenServiceData = response["io.robe.auth.AuthTokenAuthenticator"];
+                    var authTokenServiceData = response["io.robe.auth.impl.tokenbased.TokenBasedAuthenticator"];
                     var getTokenMin = authTokenServiceData ["gets"]["duration"]["min"];
                     var getTokenMax = authTokenServiceData ["gets"]["duration"]["max"];
                     var getTokenMean = authTokenServiceData ["gets"]["duration"]["mean"];

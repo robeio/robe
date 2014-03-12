@@ -1,4 +1,4 @@
-package io.robe.auth;
+package io.robe.auth.entry;
 
 public interface PermissionEntry {
     public String getRestrictedItemId();
