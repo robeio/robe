@@ -16,5 +16,11 @@ log/
 target/
 
 # netbeans
-nbactions.xmlRakefile
-Rakefile
+nbactions.xml
+
+*.class
+
+# Package Files #
+*.jar
+*.war
+*.ear
