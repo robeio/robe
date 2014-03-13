@@ -26,8 +26,8 @@ public class TokenBasedAuthenticator implements Authenticator<String, IsToken> {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(TokenBasedAuthenticator.class);
 
-    final ServiceStore serviceStore;
-    final UserStore userStore;
+    private final ServiceStore serviceStore;
+    private final UserStore userStore;
 
     /**
      * Creates an instance of TokenBasedAuthenticator with the store classes.

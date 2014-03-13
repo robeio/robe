@@ -3,6 +3,7 @@ package io.robe.admin.hibernate.dao;
 import com.google.common.base.Optional;
 import com.google.inject.Inject;
 import io.robe.admin.hibernate.entity.User;
+import io.robe.auth.entry.UserEntry;
 import io.robe.auth.store.UserStore;
 import io.robe.hibernate.dao.BaseDao;
 import org.hibernate.Criteria;
@@ -20,6 +21,16 @@ public class UserDao extends BaseDao<User> implements UserStore {
         Criteria criteria = currentSession().createCriteria(User.class);
         criteria.add(Restrictions.eq("email", username));
         return Optional.fromNullable(uniqueResult(criteria));
+    }
+
+    @Override
+    public Optional<? extends UserEntry> changePassword(String username, String newPassword) {
+        Optional<User> user = findByUsername(username);
+        if(user.isPresent()){
+            user.get().setPassword(newPassword);
+            persist(user.get());
+        }
+        return  user;
     }
 
     public Optional<User> getByApiKey(String api) {
