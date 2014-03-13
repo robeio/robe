@@ -5,4 +5,6 @@ import io.robe.auth.entry.UserEntry;
 
 public interface UserStore {
     Optional<? extends UserEntry> findByUsername(String username);
+
+    Optional<? extends UserEntry> changePassword(String username ,String newPassword);
 }
