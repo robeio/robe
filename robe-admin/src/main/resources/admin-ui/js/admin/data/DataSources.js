@@ -44,6 +44,7 @@ define([
         }
     });
     UserDataSource.setName("UserDataSource");
+    UserDataSource.initialize();
 
     RoleDataSource = new SingletonDataSource();
     RoleDataSource.setParameters({
@@ -85,6 +86,7 @@ define([
         }
     });
     RoleDataSource.setName("RoleDataSource");
+    RoleDataSource.initialize();
 
     GroupedRoleDataSource = new SingletonDataSource();
     GroupedRoleDataSource.setParameters({
@@ -94,6 +96,7 @@ define([
         }
     });
     GroupedRoleDataSource.setName("GroupedRoleDataSource");
+    GroupedRoleDataSource.initialize();
 
     UnGroupedRoleDataSource = new SingletonDataSource();
     UnGroupedRoleDataSource.setParameters({
@@ -103,6 +106,7 @@ define([
         }
     });
     UnGroupedRoleDataSource.setName("UnGroupedRoleDataSource");
+    UnGroupedRoleDataSource.initialize();
 
     MenuDataSource = new SingletonDataSource();
     MenuDataSource.setParameters({
@@ -144,6 +148,7 @@ define([
         }
     });
     MenuDataSource.setName("MenuDataSource");
+    MenuDataSource.initialize();
 
     ServiceDataSource = new SingletonDataSource();
     ServiceDataSource.setParameters({
@@ -161,6 +166,7 @@ define([
         }
     });
     ServiceDataSource.setName("ServiceDataSource");
+    ServiceDataSource.initialize();
 
     MailManagementDataSource = new SingletonDataSource();
     MailManagementDataSource.setParameters({
@@ -201,6 +207,7 @@ define([
         }
     });
     MailManagementDataSource.setName("MailManagementDataSource");
+    MailManagementDataSource.initialize();
 
     SystemLanguageDatasource = new SingletonDataSource();
     SystemLanguageDatasource.setParameters({
@@ -218,6 +225,7 @@ define([
         }
     });
     SystemLanguageDatasource.setName("SystemLanguageDatasource");
+    SystemLanguageDatasource.initialize();
 
     QuartzJobDataSource = new SingletonDataSource();
     QuartzJobDataSource.setParameters({
@@ -252,6 +260,7 @@ define([
         }
     });
     QuartzJobDataSource.setName("QuartzJobDataSource");
+    QuartzJobDataSource.initialize();
 
     console.log("Finished : Datasources");
 });
