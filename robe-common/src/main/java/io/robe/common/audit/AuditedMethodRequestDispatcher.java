@@ -18,7 +18,7 @@ import java.util.logging.Logger;
  */
 public class AuditedMethodRequestDispatcher implements RequestDispatcher {
 
-	private final static Set<String> REDACTED_HEADERS = ImmutableSet.of(HttpHeaders.AUTHORIZATION);
+	private static final Set<String> REDACTED_HEADERS = ImmutableSet.of(HttpHeaders.AUTHORIZATION);
 	private final RequestDispatcher dispatcher;
 	private final Logger LOGGER;
 
