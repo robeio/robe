@@ -3,47 +3,50 @@ var UserDataSource, RoleDataSource, GroupedRoleDataSource, UnGroupedRoleDataSour
 define([
     'admin/data/SingletonDataSource','admin/Models'], function (S,HDS) {
     console.log("Loading : Datasources");
-    UserDataSource = robe.util.inherit(admin.data.SingletonDataSource, {
-        name: "UserDataSource",
-        parameters: {
-            transport: {
-                read: {
-                    type: "GET",
-                    url: AdminApp.getBackendURL() + "user/all",
-                    dataType: "json",
-                    contentType: "application/json"
-                },
-                update: {
-                    type: "POST",
-                    url: AdminApp.getBackendURL() + "user",
-                    dataType: "json",
-                    contentType: "application/json"
-                },
-                destroy: {
-                    type: "DELETE",
-                    url: AdminApp.getBackendURL() + "user",
-                    dataType: "json",
-                    contentType: "application/json"
-                },
-                create: {
-                    type: "PUT",
-                    url: AdminApp.getBackendURL() + "user",
-                    dataType: "json",
-                    contentType: "application/json"
-                },
-                parameterMap: function (options, operation) {
-                    if (operation !== "read") {
-                        return kendo.stringify(options);
-                    }
-                }
-            },
-            batch: false,
-            pageSize: 20,
-            schema: {
-                model: UserModel
-            }
-        }
-    });
+//    UserDataSource = robe.util.inherit(admin.data.SingletonDataSource, {
+//        name: "UserDataSource",
+//        parameters: {
+//            transport: {
+//                read: {
+//                    type: "GET",
+//                    url: AdminApp.getBackendURL() + "user/all",
+//                    dataType: "json",
+//                    contentType: "application/json"
+//                },
+//                update: {
+//                    type: "POST",
+//                    url: AdminApp.getBackendURL() + "user",
+//                    dataType: "json",
+//                    contentType: "application/json"
+//                },
+//                destroy: {
+//                    type: "DELETE",
+//                    url: AdminApp.getBackendURL() + "user",
+//                    dataType: "json",
+//                    contentType: "application/json"
+//                },
+//                create: {
+//                    type: "PUT",
+//                    url: AdminApp.getBackendURL() + "user",
+//                    dataType: "json",
+//                    contentType: "application/json"
+//                },
+//                parameterMap: function (options, operation) {
+//                    if (operation !== "read") {
+//                        return kendo.stringify(options);
+//                    }
+//                }
+//            },
+//            batch: false,
+//            pageSize: 20,
+//            schema: {
+//                model: UserModel
+//            }
+//        }
+//    });
+
+    UserDataSource = new SingletonDataSource();
+    //TODO: UserDataSource.setParameters("");
 
 
     RoleDataSource = robe.util.inherit(admin.data.SingletonDataSource, {
