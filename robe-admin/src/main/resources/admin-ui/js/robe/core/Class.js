@@ -65,5 +65,3 @@ var Robe = (function () {
 
     return Robe;
 })();
-
-var robe = new Robe("Robe");

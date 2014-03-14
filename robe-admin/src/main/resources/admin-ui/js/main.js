@@ -29,7 +29,13 @@ require.config({
             deps: ['cryptojs/enc-base64-min']
         },
         'robe/core/Singleton': {
+            deps: ['robe/core/Class', 'robe/data/DataSource']
+        },
+        'robe/data/DataSource': {
             deps: ['robe/core/Class']
+        },
+        'admin/data/SingletonDataSource': {
+            deps: ['robe/core/Singleton']
         },
         'robe/Charts': {
             deps: ['highcharts/highcharts']
