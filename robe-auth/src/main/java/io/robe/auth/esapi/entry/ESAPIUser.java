@@ -8,5 +8,4 @@ public class ESAPIUser extends DefaultUser {
     public ESAPIUser(String accountName){
         super(accountName);
     }
-
 }
