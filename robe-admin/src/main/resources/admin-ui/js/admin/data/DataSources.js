@@ -4,8 +4,7 @@ define([
     'admin/data/SingletonDataSource', 'admin/Models'], function (S, HDS) {
     console.log("Loading : Datasources");
 
-    UserDataSource = new SingletonDataSource();
-    UserDataSource.setParameters({
+    UserDataSource = new SingletonDataSource("UserDataSource", {
         transport: {
             read: {
                 type: "GET",
@@ -43,11 +42,8 @@ define([
             model: UserModel
         }
     });
-    UserDataSource.setName("UserDataSource");
-    UserDataSource.initialize();
 
-    RoleDataSource = new SingletonDataSource();
-    RoleDataSource.setParameters({
+    RoleDataSource = new SingletonDataSource("RoleDataSource", {
         transport: {
             read: {
                 type: "GET",
@@ -85,31 +81,22 @@ define([
             model: RoleModel
         }
     });
-    RoleDataSource.setName("RoleDataSource");
-    RoleDataSource.initialize();
 
-    GroupedRoleDataSource = new SingletonDataSource();
-    GroupedRoleDataSource.setParameters({
+    GroupedRoleDataSource = new SingletonDataSource("GroupedRoleDataSource", {
         data: [],
         schema: {
             model: RoleModel
         }
     });
-    GroupedRoleDataSource.setName("GroupedRoleDataSource");
-    GroupedRoleDataSource.initialize();
 
-    UnGroupedRoleDataSource = new SingletonDataSource();
-    UnGroupedRoleDataSource.setParameters({
+    UnGroupedRoleDataSource = new SingletonDataSource("UnGroupedRoleDataSource", {
         data: [],
         schema: {
             model: RoleModel
         }
     });
-    UnGroupedRoleDataSource.setName("UnGroupedRoleDataSource");
-    UnGroupedRoleDataSource.initialize();
 
-    MenuDataSource = new SingletonDataSource();
-    MenuDataSource.setParameters({
+    MenuDataSource = new SingletonDataSource("MenuDataSource", {
         transport: {
             read: {
                 type: "GET",
@@ -147,11 +134,8 @@ define([
             model: MenuModel
         }
     });
-    MenuDataSource.setName("MenuDataSource");
-    MenuDataSource.initialize();
 
-    ServiceDataSource = new SingletonDataSource();
-    ServiceDataSource.setParameters({
+    ServiceDataSource = new SingletonDataSource("ServiceDataSource", {
         transport: {
             read: {
                 type: "GET",
@@ -165,11 +149,8 @@ define([
             model: ServiceModel
         }
     });
-    ServiceDataSource.setName("ServiceDataSource");
-    ServiceDataSource.initialize();
 
-    MailManagementDataSource = new SingletonDataSource();
-    MailManagementDataSource.setParameters({
+    MailManagementDataSource = new SingletonDataSource("MailManagementDataSource", {
         transport: {
             read: {
                 type: "GET",
@@ -206,11 +187,8 @@ define([
             model: MailManagementModel
         }
     });
-    MailManagementDataSource.setName("MailManagementDataSource");
-    MailManagementDataSource.initialize();
 
-    SystemLanguageDatasource = new SingletonDataSource();
-    SystemLanguageDatasource.setParameters({
+    SystemLanguageDatasource = new SingletonDataSource("SystemLanguageDatasource", {
         transport: {
             read: {
                 type: "GET",
@@ -224,11 +202,8 @@ define([
             model: SystemLanguageModel
         }
     });
-    SystemLanguageDatasource.setName("SystemLanguageDatasource");
-    SystemLanguageDatasource.initialize();
 
-    QuartzJobDataSource = new SingletonDataSource();
-    QuartzJobDataSource.setParameters({
+    QuartzJobDataSource = new SingletonDataSource("QuartzJobDataSource", {
         transport: {
             read: {
                 type: "GET",
@@ -259,8 +234,6 @@ define([
             model: QuartzJobModel
         }
     });
-    QuartzJobDataSource.setName("QuartzJobDataSource");
-    QuartzJobDataSource.initialize();
 
     console.log("Finished : Datasources");
 });

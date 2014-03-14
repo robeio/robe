@@ -1,17 +1,20 @@
 //@ sourceURL=SingletonDataSource.js
-function SingletonDataSource() {
+function SingletonDataSource(name, parameters) {
+    this.name = name;
     this.data = null;
-    this.parameters = null;
+    this.parameters = parameters;
 
-    Robe.call(this, "SingletonDataSource");
+    Robe.call(this, name);
+
+//    function SingletonDataSource() {
+//        console.log("naber len !");
+//    }
 
     SingletonDataSource.prototype.initialize = function () {
-        console.log("SingletonDataSource running!");
         this.data = new kendo.data.DataSource(this.parameters);
         this.data.bind("error", this.requestError);
         this.data.bind("requestEnd", this.requestEnd);
         this.data.read();
-        return this.data;
     };
 
     SingletonDataSource.prototype.setParameters = function (parameters) {
@@ -59,7 +62,8 @@ function SingletonDataSource() {
         if (message != "")
             showToast("info", message);
     };
-
+    this.initialize();
 };
 
 SingletonDataSource.prototype = new Singleton();
+
