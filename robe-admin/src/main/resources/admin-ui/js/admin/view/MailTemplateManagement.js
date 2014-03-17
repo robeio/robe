@@ -1,4 +1,5 @@
 //@ sourceURL=MailTemplateManagement.js
+var MailTemplateManagement;
 
 define([
     'text!html/MailTemplateManagement.html',
@@ -10,82 +11,83 @@ define([
     'kendo/kendo.dropdownlist.min',
     'robe/AlertDialog'
 ], function (view) {
-    var MailTemplateManagement = Backbone.View.extend({
-        render: function () {
-            $('#container').append(view);
-            this.initial();
-        },
 
-        initial: function () {
-            $("#templateGrid").kendoGrid({
-                dataSource: MailManagementDataSource.get(),
-                sortable: true,
-                toolbar: [
-                    {
-                        name: "create",
-                        text: "Yeni Template",
-                        height: 100,
-                        width: 100
-                    }
-                ],
-                columns: [
-                    {
-                        field: "lang",
-                        title: "Dil",
-                        editor: this.userTemplateLanguagePopupEditor
+    MailTemplateManagement = new RobeView("MailTemplateManagement", view, "container");
 
-                    },
-                    {
-                        field: "code",
-                        title: "Kod"
-                    },
-                    {
-                        field: "template",
-                        title: "Template",
-                        editor: this.userTemplatePopupEditor,
-                        hidden: true
-                    },
-                    {
-                        command: [
-                            {
-                                name: "edit",
-                                text: {
-                                    edit: "",
-                                    update: "Güncelle",
-                                    cancel: "İptal"
-                                },
-                                className: "grid-command-iconfix"
-                            },
-                            {
-                                name: "destroy",
-                                text: "",
-                                className: "grid-command-iconfix"
-                            }
-                        ],
-                        title: "&nbsp;",
-                        width: "80px"
-                    }
-                ],
-                editable: {
-                    mode: "popup",
-                    window: {
-                        title: "Kayıt"
-                    },
-                    confirmation: "Silmek istediğinizden emin misiniz?",
-                    confirmDelete: "Yes"
+    MailTemplateManagement.render = function () {
+        $('#container').append(view);
+        MailTemplateManagement.initialize();
+    };
+
+    MailTemplateManagement.initialize = function () {
+        $("#templateGrid").kendoGrid({
+            dataSource: MailManagementDataSource.get(),
+            sortable: true,
+            toolbar: [
+                {
+                    name: "create",
+                    text: "Yeni Template",
+                    height: 100,
+                    width: 100
+                }
+            ],
+            columns: [
+                {
+                    field: "lang",
+                    title: "Dil",
+                    editor: userTemplateLanguagePopupEditor
+
                 },
-                edit: this.onEdit
-            });
-            $("#btnMailTemplateManagementHelp").kendoButton({
-                click: this.onBtnMailTemplateManagementHelp
-            });
-        },
+                {
+                    field: "code",
+                    title: "Kod"
+                },
+                {
+                    field: "template",
+                    title: "Template",
+                    editor: userTemplatePopupEditor,
+                    hidden: true
+                },
+                {
+                    command: [
+                        {
+                            name: "edit",
+                            text: {
+                                edit: "",
+                                update: "Güncelle",
+                                cancel: "İptal"
+                            },
+                            className: "grid-command-iconfix"
+                        },
+                        {
+                            name: "destroy",
+                            text: "",
+                            className: "grid-command-iconfix"
+                        }
+                    ],
+                    title: "&nbsp;",
+                    width: "80px"
+                }
+            ],
+            editable: {
+                mode: "popup",
+                window: {
+                    title: "Kayıt"
+                },
+                confirmation: "Silmek istediğinizden emin misiniz?",
+                confirmDelete: "Yes"
+            },
+            edit: this.onEdit
+        });
+        $("#btnMailTemplateManagementHelp").kendoButton({
+            click: onBtnMailTemplateManagementHelp
+        });
 
-        onEdit: function (e) {
+        function onEdit(e) {
             var editWindow = this.editable.element.data("kendoWindow");
             editWindow.wrapper.css({ width: 800 });
-        },
-        userTemplatePopupEditor: function (container, options) {
+        };
+        function userTemplatePopupEditor(container, options) {
             var exampleTemplate =
                 "<p>Sayın $name $username,</p>" +
                     " <p>Kısa süre önce bir şifre sıfırlama isteği aldık. Şifrenizi sıfırlamak istiyorsanız <a>buradan</a> " +
@@ -133,8 +135,8 @@ define([
                     ]
                 });
 
-        },
-        userTemplateLanguagePopupEditor: function (container, options) {
+        };
+        function userTemplateLanguagePopupEditor(container, options) {
             $('<input id="cmbLanguage" data-text-field="name" data-value-field="code" class="pull-left" style="width: 600px;" data-bind="value:' + options.field + '"/>')
                 .appendTo(container)
                 .kendoDropDownList({
@@ -144,11 +146,11 @@ define([
                     dataSource: SystemLanguageDatasource.get(),
                     index: 0
                 });
-        },
-        onBtnMailTemplateManagementHelp: function () {
+        };
+        function onBtnMailTemplateManagementHelp() {
             showToast("success", "YARDIM EKLENECEK ;)");
-        }
-    });
+        };
+    };
 
     return MailTemplateManagement;
 });
