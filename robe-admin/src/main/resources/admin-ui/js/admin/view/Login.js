@@ -16,6 +16,7 @@ define([
         $('#dialogMessage').append(view);
         LoginView.initialize();
     };
+    LoginView.parentPage = null;
 
     LoginView.initialize = function () {
         var token = $.cookie.read("auth-token");
@@ -34,6 +35,7 @@ define([
                     success: function (response) {
                         $.cookie.write("userEmail", $("#username").val());
                         $(document.body).unbind("keydown");
+                        me.parentPage.loadMenu();
                         $('#dialog').data("kendoWindow").close();
                     },
                     error: function (jqXHR, textStatus, errorThrown) {
