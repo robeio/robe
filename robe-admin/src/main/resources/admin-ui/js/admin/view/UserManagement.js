@@ -1,18 +1,20 @@
 //@ sourceURL=UserManagement.js
+var UserManagementView;
 define([
     'text!html/UserManagement.html',
     'admin/data/DataSources',
 
     'kendo/kendo.grid.min',
-    'kendo/kendo.window.min'
+    'kendo/kendo.window.min',
+    'robe/view/Page'
 ], function (view) {
-    var UserManagementView = Backbone.View.extend({
-        render: function () {
-            $('#container').append(view);
-            this.initial();
-        },
+    UserManagementView = new RobeView("UserManagementView", view, "container");
+    UserManagementView.render = function () {
+        $('#container').append(view);
+        UserManagementView.initialize();
+    };
 
-    initial: function () {
+    UserManagementView.initialize = function () {
         $("#gridUsers").kendoGrid({
             dataSource: UserDataSource.get(),
             sortable: true,
@@ -83,34 +85,33 @@ define([
             click: this.onShowHelp
         });
 
+        function userRoleDropDownEditor(container, options) {
+            $('<input required  data-text-field="name" data-value-field="oid"  data-bind="value:' + options.field + '"/>')
+                .appendTo(container)
+                .kendoDropDownList({
+                    autoBind: false,
+                    dataTextField: "name",
+                    dataValueField: "oid",
+                    text: "Seçiniz...",
+                    dataSource: RoleDataSource.get(),
+                    placeholder: "Seçiniz...",
+                    index: -1
+                });
+        };
 
-    },
-    userRoleDropDownEditor: function (container, options) {
-        $('<input required  data-text-field="name" data-value-field="oid"  data-bind="value:' + options.field + '"/>')
-            .appendTo(container)
-            .kendoDropDownList({
-                autoBind: false,
-                dataTextField: "name",
-                dataValueField: "oid",
-                text: "Seçiniz...",
-                dataSource: RoleDataSource.get(),
-                placeholder: "Seçiniz...",
-                index: -1
-            });
-    },
-    onShowHelp: function () {
-        var wnd = $("#userManagementHelpWindow").kendoWindow({
-            title: "Yardım",
-            modal: true,
-            visible: false,
-            resizable: false,
-            width: 500
-        }).data("kendoWindow");
+        function onShowHelp() {
+            var wnd = $("#userManagementHelpWindow").kendoWindow({
+                title: "Yardım",
+                modal: true,
+                visible: false,
+                resizable: false,
+                width: 500
+            }).data("kendoWindow");
 
-        wnd.center().open();
-    }
+            wnd.center().open();
+        };
+    };
 
-    });
     return UserManagementView;
 });
 
