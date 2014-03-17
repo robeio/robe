@@ -5,7 +5,8 @@ define([
     'text!html/QuartzJobManagement.html',
     'admin/data/DataSources',
 
-    'kendo/kendo.grid.min'
+    'kendo/kendo.grid.min',
+    'robe/view/Page'
 ], function (view) {
 
     UserManagementView = new RobeView("UserManagementView", view, "container");

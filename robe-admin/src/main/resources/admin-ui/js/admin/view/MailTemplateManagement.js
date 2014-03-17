@@ -9,7 +9,8 @@ define([
     'kendo/kendo.grid.min',
     'kendo/kendo.editor.min',
     'kendo/kendo.dropdownlist.min',
-    'robe/AlertDialog'
+    'robe/AlertDialog',
+    'robe/view/Page'
 ], function (view) {
 
     MailTemplateManagement = new RobeView("MailTemplateManagement", view, "container");
