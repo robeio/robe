@@ -43,9 +43,7 @@ define([
             showProfileDialog(null, "Profil Bilgileri");
             kendo.destroy($('#dialogMessage'));
             $('#dialogMessage').html('');
-            var profileView = new ProfileManagementView();
-            profileView.parentPage = this;
-            profileView.render();
+            ProfileManagementView.render();
         });
 
         $("#logout").click(function () {
