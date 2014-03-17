@@ -45,8 +45,7 @@ define([
             moduleId: 'admin/view/QuartzJobManagement'
         }
     }).on('routeload',function (View, routeArguments) {
-        var view = new View(routeArguments);
-        view.render();
+        View.render();
     }).init();
 
     var href = window.location.href;
