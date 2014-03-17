@@ -6,20 +6,12 @@ function SingletonDataSource(name, parameters) {
 
     Robe.call(this, name);
 
-//    function SingletonDataSource() {
-//        console.log("naber len !");
-//    }
-
     SingletonDataSource.prototype.initialize = function () {
         this.data = new kendo.data.DataSource(this.parameters);
         this.data.bind("error", this.requestError);
         this.data.bind("requestEnd", this.requestEnd);
         this.data.read();
     };
-
-    SingletonDataSource.prototype.setParameters = function (parameters) {
-        this.parameters = parameters;
-    }
 
     SingletonDataSource.prototype.read = function () {
         console.log("Refreshing " + this.name);
