@@ -6,8 +6,8 @@ define([
 
     'kendo/kendo.grid.min',
     'kendo/kendo.window.min',
-    'kendo/kendo.treeview.min'
-
+    'kendo/kendo.treeview.min',
+    'robe/view/Page'
 ], function (view) {
 
     MenuManagementView = new RobeView("MenuManagementView", view, "container");

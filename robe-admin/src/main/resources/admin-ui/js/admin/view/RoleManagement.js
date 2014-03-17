@@ -7,12 +7,12 @@ define([
     'kendo/kendo.grid.min',
     'kendo/kendo.window.min',
     'kendo/kendo.listview.min',
-    'kendo/kendo.tabstrip.min'
-
+    'kendo/kendo.tabstrip.min',
+    'robe/view/Page'
 ], function (view) {
 
     RoleManagementView = new RobeView("RoleManagementView", view, "container");
-    
+
     RoleManagementView.render = function () {
         $('#container').append(view);
         RoleManagementView.initialize();

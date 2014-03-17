@@ -8,8 +8,8 @@ define([
     'kendo/kendo.window.min',
     'kendo/kendo.grid.min',
     'kendo/kendo.dropdownlist.min',
-    'kendo/kendo.treeview.min'
-
+    'kendo/kendo.treeview.min',
+    'robe/view/Page'
 ], function (view) {
 
     PermissionManagement = new RobeView("PermissionManagement", view, "container");
