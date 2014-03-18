@@ -6,7 +6,7 @@ define([
     'admin/data/DataSources',
 
     'kendo/kendo.grid.min',
-    'robe/view/Page'
+    'robe/view/RobeView'
 ], function (view) {
 
     QuartzJobManagement = new RobeView("QuartzJobManagement", view, "container");

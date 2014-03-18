@@ -6,7 +6,7 @@ define([
 
     'kendo/kendo.grid.min',
     'kendo/kendo.window.min',
-    'robe/view/Page'
+    'robe/view/RobeView'
 ], function (view) {
     UserManagementView = new RobeView("UserManagementView", view, "container");
     UserManagementView.render = function () {
