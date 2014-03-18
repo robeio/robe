@@ -59,7 +59,7 @@ define([
                     width: "80px"
                 }
             ],
-            edit: this.onEdit
+            edit: onEdit
 
         });
 
