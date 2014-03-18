@@ -1,5 +1,5 @@
 //@ sourceURL=QuartzJobManagement.js
-var UserManagementView;
+var QuartzJobManagement;
 
 define([
     'text!html/QuartzJobManagement.html',
@@ -9,14 +9,14 @@ define([
     'robe/view/Page'
 ], function (view) {
 
-    UserManagementView = new RobeView("UserManagementView", view, "container");
+    QuartzJobManagement = new RobeView("QuartzJobManagement", view, "container");
 
-    UserManagementView.render = function () {
+    QuartzJobManagement.render = function () {
         $('#container').append(view);
-        UserManagementView.initialize();
+        QuartzJobManagement.initialize();
     };
 
-    UserManagementView.initialize = function () {
+    QuartzJobManagement.initialize = function () {
         $("#gridJobs").kendoGrid({
             dataSource: QuartzJobDataSource.get(),
             sortable: true,
@@ -62,7 +62,6 @@ define([
             edit: this.onEdit
 
         });
-
 
         function fire(e) {
             $.ajax({
@@ -319,7 +318,7 @@ define([
         }
     };
 
-    return UserManagementView;
+    return QuartzJobManagement;
 });
 
 
