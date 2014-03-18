@@ -41,7 +41,7 @@ define([
                 {
                     field: "roleOid",
                     title: "Rol",
-                    editor: this.userRoleDropDownEditor,
+                    editor: userRoleDropDownEditor,
                     hidden: true
                 },
                 {
@@ -82,7 +82,7 @@ define([
 
 
         $("#btnUserManagementHelp").kendoButton({
-            click: this.onShowHelp
+            click: onShowHelp
         });
 
         function userRoleDropDownEditor(container, options) {
