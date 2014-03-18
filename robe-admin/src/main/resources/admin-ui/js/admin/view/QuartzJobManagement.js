@@ -58,9 +58,7 @@ define([
                     title: "&nbsp;",
                     width: "80px"
                 }
-            ],
-            edit: onEdit
-
+            ]
         });
 
         function fire(e) {
