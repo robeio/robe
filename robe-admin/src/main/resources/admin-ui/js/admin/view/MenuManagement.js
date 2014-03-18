@@ -104,7 +104,7 @@ define([
         });
 
         $("#btnMenuManagementHelp").kendoButton({
-            click: this.onShowHelp
+            click: onShowHelp
         });
 
         function onShowHelp() {

@@ -149,7 +149,15 @@ define([
                 });
         };
         function onBtnMailTemplateManagementHelp() {
-            showToast("success", "YARDIM EKLENECEK ;)");
+            var wnd = $("#mailTemplateManagementHelpWindow").kendoWindow({
+                title: "Yardım",
+                modal: true,
+                visible: false,
+                resizable: false,
+                width: 500
+            }).data("kendoWindow");
+
+            wnd.center().open();
         };
     };
 
