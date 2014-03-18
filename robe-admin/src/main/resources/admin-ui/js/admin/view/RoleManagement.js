@@ -126,7 +126,7 @@ define([
         });
 
         $("#btnRoleManagementHelp").kendoButton({
-            click: this.onShowHelp
+            click: onShowHelp
         });
 
         function onListChange(e) {

@@ -61,6 +61,22 @@ define([
             ]
         });
 
+        $("#btnQuartzJobManagementHelp").kendoButton({
+            click: onBtnQuartzJobManagementHelp
+        });
+
+        function onBtnQuartzJobManagementHelp() {
+            var wnd = $("#quartzJobManagementHelpWindow").kendoWindow({
+                title: "Yardım",
+                modal: true,
+                visible: false,
+                resizable: false,
+                width: 500
+            }).data("kendoWindow");
+
+            wnd.center().open();
+        }
+
         function fire(e) {
             $.ajax({
                 type: "POST",

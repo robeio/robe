@@ -182,7 +182,6 @@ define([
             }).data("kendoWindow");
 
             wnd.center().open();
-
         };
 
         //on click of the checkbox:

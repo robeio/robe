@@ -80,7 +80,6 @@ define([
             }
         });
 
-
         $("#btnUserManagementHelp").kendoButton({
             click: onShowHelp
         });
