@@ -8,7 +8,7 @@ define([
     'cryptojs/core-min',
     'cryptojs/enc-base64-min',
     'cryptojs/sha256',
-    'robe/view/Page'
+    'robe/view/RobeView'
 ], function (view) {
 
     LoginView = new RobeView("LoginView", view, "container");

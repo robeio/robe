@@ -6,7 +6,7 @@ define([
 
     'kendo/kendo.button.min',
     'robe/AlertDialog',
-    'robe/view/Page'
+    'robe/view/RobeView'
 ], function (view) {
 
     ProfileManagementView = new RobeView("ProfileManagementView", view, "container");

@@ -13,7 +13,7 @@ define([
     'kendo/kendo.button.min',
     'kendo/kendo.window.min',
     'kendo/kendo.panelbar.min',
-    'robe/view/Page'
+    'robe/view/RobeView'
 ], function (view, LoginView, ProfileManagementView) {
 
     WorkspaceView = new RobeView("WorkspaceView", view, "container");

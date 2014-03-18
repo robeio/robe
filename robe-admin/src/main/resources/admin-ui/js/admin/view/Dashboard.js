@@ -10,7 +10,7 @@ define([
     'highcharts/highcharts-more',
     'highcharts/exporting',
     'robe/Charts',
-    'robe/view/Page'
+    'robe/view/RobeView'
 ], function (view) {
 
     Dashboard = new RobeView("Dashboard", view, "container");
