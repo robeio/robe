@@ -10,6 +10,7 @@ public interface Credentials  {
 
     public Set<String> getPermissions();
 
+
     String getUsername();
 }
 
