@@ -1,4 +1,4 @@
-package io.robe.auth.impl.tokenbased;
+package io.robe.auth.tokenbased.injectable;
 
 import com.google.common.base.Optional;
 import com.sun.jersey.api.core.HttpContext;
@@ -8,6 +8,7 @@ import com.sun.jersey.server.impl.inject.AbstractHttpContextInjectable;
 import com.yammer.dropwizard.auth.AuthenticationException;
 import com.yammer.dropwizard.auth.Authenticator;
 import io.robe.auth.IsToken;
+import io.robe.auth.tokenbased.configuration.TokenBasedAuthConfiguration;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -29,13 +30,16 @@ public class TokenBasedAuthInjectable<T extends IsToken> extends AbstractHttpCon
 
 	private final Authenticator<String, T> authenticator;
 
+    private final  String tokenKey;
+
 	/**
 	 * {@inheritDoc}
 	 *
 	 * @param authenticator The authenticator which will be used with Authenticate controls.
 	 */
-	protected TokenBasedAuthInjectable(Authenticator<String, T> authenticator) {
+	protected TokenBasedAuthInjectable(Authenticator<String, T> authenticator,TokenBasedAuthConfiguration configuration) {
 		this.authenticator = authenticator;
+        this.tokenKey = configuration.getTokenKey();
 	}
 
 	/**
@@ -48,8 +52,7 @@ public class TokenBasedAuthInjectable<T extends IsToken> extends AbstractHttpCon
 	@Override
 	public T getValue(HttpContext c) {
 
-        //TODO: take token key  form properties.
-		Cookie tokenList = c.getRequest().getCookies().get("auth-token");
+		Cookie tokenList = c.getRequest().getCookies().get(tokenKey);
 		if (tokenList == null || tokenList.getValue().length() == 0) {
 			throw new WebApplicationException(Response.Status.UNAUTHORIZED);
 		}

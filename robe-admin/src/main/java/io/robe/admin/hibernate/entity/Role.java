@@ -1,7 +1,7 @@
 package io.robe.admin.hibernate.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import io.robe.auth.entry.RoleEntry;
+import io.robe.auth.data.entry.RoleEntry;
 import io.robe.hibernate.entity.BaseEntity;
 
 import javax.persistence.*;
