@@ -13,7 +13,7 @@ define([
     'kendo/kendo.button.min',
     'kendo/kendo.window.min',
     'kendo/kendo.panelbar.min',
-    'robe/view/Page'
+    'robe/view/RobeView'
 ], function (view, LoginView, ProfileManagementView) {
 
     WorkspaceView = new RobeView("WorkspaceView", view, "container");
@@ -40,7 +40,7 @@ define([
         $("#container").html("");
         $("#profile").click(function () {
 
-            showProfileDialog(null, "Profil Bilgileri");
+            showDialog(null, "Profil Bilgileri");
             kendo.destroy($('#dialogMessage'));
             $('#dialogMessage').html('');
             ProfileManagementView.render();
@@ -55,13 +55,11 @@ define([
             click: onClickSettingsButton
         });
 
-
         $('#dialog').kendoWindow({
             actions: ["Close"],
             modal: true,
             visible: false
         });
-
 
         $(document).ajaxStart(function () {
             showIndicator(true);
@@ -71,16 +69,6 @@ define([
         });
 
         loadLogin();
-
-        function showProfileDialog(message, title) {
-            if (message != null)
-                $('#dialogMessage').html(message);
-            if (title == null)
-                title = "";
-            $('#dialog').data("kendoWindow").title(title);
-            $('#dialog').data("kendoWindow").center();
-            $('#dialog').data("kendoWindow").open();
-        }
 
         function onClickSettingsButton(e) {
             $("#dropdownMenu").toggle("slow");

@@ -9,7 +9,7 @@ define([
     'kendo/kendo.grid.min',
     'kendo/kendo.dropdownlist.min',
     'kendo/kendo.treeview.min',
-    'robe/view/Page'
+    'robe/view/RobeView'
 ], function (view) {
 
     PermissionManagement = new RobeView("PermissionManagement", view, "container");
@@ -182,7 +182,6 @@ define([
             }).data("kendoWindow");
 
             wnd.center().open();
-
         };
 
         //on click of the checkbox:

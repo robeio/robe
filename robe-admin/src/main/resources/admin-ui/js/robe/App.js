@@ -52,7 +52,7 @@ robe.App = {
                     "./js/highcharts/exporting.js",
                     "./js/highcharts/highcharts-more.js"]
             },
-            "./js/robe/core/Class.js",
+            "./js/robe/core/Robe.js",
             "./js/robe/core/Singleton.js",
             {
                 1: "./js/robe/Charts.js",

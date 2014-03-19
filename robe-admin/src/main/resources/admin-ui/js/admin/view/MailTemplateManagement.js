@@ -10,7 +10,7 @@ define([
     'kendo/kendo.editor.min',
     'kendo/kendo.dropdownlist.min',
     'robe/AlertDialog',
-    'robe/view/Page'
+    'robe/view/RobeView'
 ], function (view) {
 
     MailTemplateManagement = new RobeView("MailTemplateManagement", view, "container");
@@ -149,7 +149,15 @@ define([
                 });
         };
         function onBtnMailTemplateManagementHelp() {
-            showToast("success", "YARDIM EKLENECEK ;)");
+            var wnd = $("#mailTemplateManagementHelpWindow").kendoWindow({
+                title: "Yardım",
+                modal: true,
+                visible: false,
+                resizable: false,
+                width: 500
+            }).data("kendoWindow");
+
+            wnd.center().open();
         };
     };
 
