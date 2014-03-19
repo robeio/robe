@@ -8,7 +8,7 @@ define([
     'kendo/kendo.window.min',
     'kendo/kendo.listview.min',
     'kendo/kendo.tabstrip.min',
-    'robe/view/Page'
+    'robe/view/RobeView'
 ], function (view) {
 
     RoleManagementView = new RobeView("RoleManagementView", view, "container");
@@ -126,7 +126,7 @@ define([
         });
 
         $("#btnRoleManagementHelp").kendoButton({
-            click: this.onShowHelp
+            click: onShowHelp
         });
 
         function onListChange(e) {

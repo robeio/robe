@@ -21,10 +21,10 @@ require.config({
             deps: ['cryptojs/enc-base64-min']
         },
         'robe/core/Singleton': {
-            deps: ['robe/core/Class', 'robe/data/DataSource']
+            deps: ['robe/core/Robe', 'robe/data/DataSource']
         },
         'robe/data/DataSource': {
-            deps: ['robe/core/Class']
+            deps: ['robe/core/Robe']
         },
         'admin/data/SingletonDataSource': {
             deps: ['robe/core/Singleton']

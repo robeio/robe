@@ -1,22 +1,22 @@
 //@ sourceURL=QuartzJobManagement.js
-var UserManagementView;
+var QuartzJobManagement;
 
 define([
     'text!html/QuartzJobManagement.html',
     'admin/data/DataSources',
 
     'kendo/kendo.grid.min',
-    'robe/view/Page'
+    'robe/view/RobeView'
 ], function (view) {
 
-    UserManagementView = new RobeView("UserManagementView", view, "container");
+    QuartzJobManagement = new RobeView("QuartzJobManagement", view, "container");
 
-    UserManagementView.render = function () {
+    QuartzJobManagement.render = function () {
         $('#container').append(view);
-        UserManagementView.initialize();
+        QuartzJobManagement.initialize();
     };
 
-    UserManagementView.initialize = function () {
+    QuartzJobManagement.initialize = function () {
         $("#gridJobs").kendoGrid({
             dataSource: QuartzJobDataSource.get(),
             sortable: true,
@@ -58,11 +58,24 @@ define([
                     title: "&nbsp;",
                     width: "80px"
                 }
-            ],
-            edit: this.onEdit
-
+            ]
         });
 
+        $("#btnQuartzJobManagementHelp").kendoButton({
+            click: onBtnQuartzJobManagementHelp
+        });
+
+        function onBtnQuartzJobManagementHelp() {
+            var wnd = $("#quartzJobManagementHelpWindow").kendoWindow({
+                title: "Yardım",
+                modal: true,
+                visible: false,
+                resizable: false,
+                width: 500
+            }).data("kendoWindow");
+
+            wnd.center().open();
+        }
 
         function fire(e) {
             $.ajax({
@@ -319,7 +332,7 @@ define([
         }
     };
 
-    return UserManagementView;
+    return QuartzJobManagement;
 });
 
 

@@ -7,7 +7,7 @@ define([
     'kendo/kendo.grid.min',
     'kendo/kendo.window.min',
     'kendo/kendo.treeview.min',
-    'robe/view/Page'
+    'robe/view/RobeView'
 ], function (view) {
 
     MenuManagementView = new RobeView("MenuManagementView", view, "container");
@@ -98,13 +98,13 @@ define([
         $("#treeMenus").kendoTreeView({
             dragAndDrop: true,
             dataTextField: "name",
-            drop: this.onTreeMenuDrop,
-            drag: this.onTreeMenuDrag
+            drop: onTreeMenuDrop,
+            drag: onTreeMenuDrag
 
         });
 
         $("#btnMenuManagementHelp").kendoButton({
-            click: this.onShowHelp
+            click: onShowHelp
         });
 
         function onShowHelp() {
