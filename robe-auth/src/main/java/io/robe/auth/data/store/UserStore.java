@@ -1,7 +1,7 @@
-package io.robe.auth.store;
+package io.robe.auth.data.store;
 
 import com.google.common.base.Optional;
-import io.robe.auth.entry.UserEntry;
+import io.robe.auth.data.entry.UserEntry;
 
 public interface UserStore {
     Optional<? extends UserEntry> findByUsername(String username);
