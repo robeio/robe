@@ -1,4 +1,4 @@
-package io.robe.admin.auth;
+package io.robe.admin;
 
 import io.robe.auth.Credentials;
 import io.robe.auth.IsToken;

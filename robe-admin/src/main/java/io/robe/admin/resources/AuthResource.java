@@ -9,6 +9,8 @@ import edu.vt.middleware.password.*;
 import io.robe.admin.hibernate.dao.UserDao;
 import io.robe.admin.hibernate.entity.User;
 import io.robe.auth.Credentials;
+import io.robe.auth.IsToken;
+import io.robe.auth.TokenWrapper;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -36,26 +38,27 @@ public class AuthResource {
     UserDao userDao;
 
 
-//    @Inject
-//    MailSender mailSender;
-
-
     @POST
     @UnitOfWork
     @Timed
     @Path("login")
-    public Map<String,String> login(@Context HttpServletRequest request, @Context HttpServletResponse response, Map<String,String> credentials) {
+    public Response login(@Context HttpServletRequest request, @Context HttpServletResponse response, Map<String, String> credentials) throws Exception {
 
         Optional<User> user = userDao.findByUsername(credentials.get("username"));
-        String token;
         if (!user.isPresent()) {
             throw new WebApplicationException(Response.Status.UNAUTHORIZED);
-        }
-        else if (user.get().getPassword().equals(credentials.get("password"))) {
+        } else if (user.get().getPassword().equals(credentials.get("password"))) {
+            IsToken token = TokenWrapper.createToken(user.get().getEmail(), null);
+
+//            try {
+//                ESAPI.authenticator().login(request, response);
+//            } catch (Exception e) {
+//                throw new WebApplicationException(e,Response.Status.UNAUTHORIZED);
+//            }
             credentials.remove("password");
-            return credentials;
-        }
-        else {
+            return Response.ok().header("Set-Cookie", "auth-token" + "=" + token.getToken() + ";path=/;domain=" + request.getRemoteHost() + ";").entity(credentials).build();
+
+        } else {
             throw new WebApplicationException(Response.Status.UNAUTHORIZED);
         }
 
