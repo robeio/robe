@@ -11,6 +11,7 @@ import io.robe.admin.hibernate.entity.User;
 import io.robe.auth.Credentials;
 import io.robe.auth.IsToken;
 import io.robe.auth.TokenWrapper;
+import org.owasp.esapi.ESAPI;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -27,7 +28,7 @@ import java.util.Map;
 /**
  * Authentication Resource to provide standard Authentication services like login,change password....
  */
-//TODO: Replace this resorce with ESAPI
+//TODO: Take it to auth module and convert to a common interface
 @Path("authentication")
 @Produces(MediaType.APPLICATION_JSON)
 @Consumes(MediaType.APPLICATION_JSON)
@@ -50,11 +51,11 @@ public class AuthResource {
         } else if (user.get().getPassword().equals(credentials.get("password"))) {
             IsToken token = TokenWrapper.createToken(user.get().getEmail(), null);
 
-//            try {
-//                ESAPI.authenticator().login(request, response);
-//            } catch (Exception e) {
-//                throw new WebApplicationException(e,Response.Status.UNAUTHORIZED);
-//            }
+            try {
+                ESAPI.authenticator().login(request, response);
+            } catch (Exception e) {
+                throw new WebApplicationException(e,Response.Status.UNAUTHORIZED);
+            }
             credentials.remove("password");
             return Response.ok().header("Set-Cookie", "auth-token" + "=" + token.getToken() + ";path=/;domain=" + request.getRemoteHost() + ";").entity(credentials).build();
 
