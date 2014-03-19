@@ -57,3 +57,7 @@ quartz:
 messageQueue:
   host: mq.example.com
   port: 5673
+
+
+auth:
+  tokenKey: auth-token

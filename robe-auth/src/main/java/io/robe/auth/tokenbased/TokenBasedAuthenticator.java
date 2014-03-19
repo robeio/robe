@@ -1,16 +1,16 @@
-package io.robe.auth.impl.tokenbased;
+package io.robe.auth.tokenbased;
 
 import com.google.common.base.Optional;
 import com.yammer.dropwizard.auth.AuthenticationException;
 import com.yammer.dropwizard.auth.Authenticator;
 import io.robe.auth.IsToken;
 import io.robe.auth.TokenWrapper;
-import io.robe.auth.entry.PermissionEntry;
-import io.robe.auth.entry.RoleEntry;
-import io.robe.auth.entry.ServiceEntry;
-import io.robe.auth.entry.UserEntry;
-import io.robe.auth.store.ServiceStore;
-import io.robe.auth.store.UserStore;
+import io.robe.auth.data.entry.PermissionEntry;
+import io.robe.auth.data.entry.RoleEntry;
+import io.robe.auth.data.entry.ServiceEntry;
+import io.robe.auth.data.entry.UserEntry;
+import io.robe.auth.data.store.ServiceStore;
+import io.robe.auth.data.store.UserStore;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

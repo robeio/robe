@@ -2,7 +2,7 @@ package io.robe.admin.hibernate.entity;
 
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import io.robe.auth.entry.UserEntry;
+import io.robe.auth.data.entry.UserEntry;
 import io.robe.hibernate.entity.BaseEntity;
 
 import javax.persistence.*;
