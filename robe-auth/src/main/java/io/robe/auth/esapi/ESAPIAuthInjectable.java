@@ -3,7 +3,6 @@ package io.robe.auth.esapi;
 import com.sun.jersey.api.core.HttpContext;
 import com.sun.jersey.api.uri.UriTemplate;
 import com.sun.jersey.server.impl.inject.AbstractHttpContextInjectable;
-import com.yammer.dropwizard.auth.Authenticator;
 import io.robe.auth.IsToken;
 import org.owasp.esapi.ESAPI;
 import org.slf4j.Logger;
@@ -26,15 +25,11 @@ public class ESAPIAuthInjectable<T extends IsToken> extends AbstractHttpContextI
 
 	private static final Logger LOGGER = LoggerFactory.getLogger(ESAPIAuthInjectable.class);
 
-	private final Authenticator<String, T> authenticator;
-
     /**
 	 * {@inheritDoc}
 	 *
-	 * @param authenticator The authenticator which will be used with Authenticate controls.
 	 */
-	protected ESAPIAuthInjectable(Authenticator<String, T> authenticator) {
-		this.authenticator = authenticator;
+	protected ESAPIAuthInjectable() {
         String path = "";
         if ( path != null ) {
             ESAPI.securityConfiguration().setResourceDirectory( path );
@@ -55,69 +50,26 @@ public class ESAPIAuthInjectable<T extends IsToken> extends AbstractHttpContextI
         HttpServletResponse response = (HttpServletResponse) c.getResponse();
         ESAPI.httpUtilities().setCurrentHTTP(request, response);
 
-        try {
             // figure out who the current user is
             try {
                 ESAPI.authenticator().login(request, response);
             } catch( org.owasp.esapi.errors.AuthenticationException e ) {
+                ESAPI.clearCurrent();
                 throw new WebApplicationException(e,Response.Status.UNAUTHORIZED);
-
             }
 
             // check access to this URL
             if ( !ESAPI.accessController().isAuthorizedForURL(request.getRequestURI()) ) {
+                ESAPI.clearCurrent();
                 throw new WebApplicationException(Response.Status.FORBIDDEN);
             }
-
-            // check for CSRF attacks
-            // ESAPI.httpUtilities().checkCSRFToken();
 
             // forward this request on to the web application
 
             // set up response with content type
-//            ESAPI.httpUtilities().setContentType( response );
+            ESAPI.httpUtilities().setContentType( response );
 
-            // set no-cache headers on every response
-            // only do this if the entire site should not be cached
-            // otherwise you should do this strategically in your controller or actions
-//            ESAPI.httpUtilities().setNoCacheHeaders( response );
 
-        } catch (Exception e) {
-            LOGGER.error("Error in ESAPI security filter: " + e.getMessage(), e );
-        } finally {
-            // VERY IMPORTANT
-            // clear out the ThreadLocal variables in the authenticator
-            // some containers could possibly reuse this thread without clearing the User
-            ESAPI.clearCurrent();
-        }
-
-//        //TODO: take token key  form properties.
-//		Cookie tokenList = c.getRequest().getCookies().get("auth-token");
-//		if (tokenList == null || tokenList.getValue().length() == 0) {
-//			throw new WebApplicationException(Response.Status.UNAUTHORIZED);
-//		}
-//
-//		String token = tokenList.getValue();
-//		if (token == null || token.length() == 0) {
-//			throw new WebApplicationException(Response.Status.UNAUTHORIZED);
-//		}
-//		//Validate old token for auth token
-//		try {
-//			Optional<T> result = authenticator.authenticate(token);
-//			if (!result.isPresent())
-//				throw new WebApplicationException(Response.Status.UNAUTHORIZED);
-//
-//			if (!isAuthorized(result.get(), ((WebApplicationContext) c).getMatchedTemplates(), c.getRequest().getMethod()))
-//				throw new WebApplicationException(Response.Status.FORBIDDEN);
-//
-//			return result.get();
-//		} catch (IllegalArgumentException e) {
-//			LOGGER.debug("BasicPair decoding credentials", e);
-//			throw new WebApplicationException(Response.Status.PRECONDITION_FAILED);
-//		} catch (AuthenticationException e) {
-//			LOGGER.warn("BasicPair authenticating credentials", e);
-//			throw new WebApplicationException(Response.Status.PRECONDITION_FAILED);
-//		}
         return null;
 	}
 

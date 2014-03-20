@@ -1,6 +1,7 @@
 package io.robe.admin.resources;
 
 import com.google.common.base.Preconditions;
+import com.google.common.hash.Hashing;
 import com.google.inject.Inject;
 import com.yammer.dropwizard.hibernate.UnitOfWork;
 import io.robe.admin.hibernate.dao.RoleDao;
@@ -9,7 +10,6 @@ import io.robe.admin.hibernate.entity.Ticket;
 import io.robe.admin.hibernate.entity.User;
 import io.robe.admin.view.ChangePasswordView;
 import io.robe.common.exception.RobeRuntimeException;
-import io.robe.common.utils.HashingUtils;
 
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
@@ -39,16 +39,16 @@ public class TicketResource {
 
         User user = ticket.getUser();
 
-        newPassword = HashingUtils.hashSHA2(newPassword);
-        newPasswordConfirm = HashingUtils.hashSHA2(newPasswordConfirm);
+        newPassword = Hashing.sha256().hashString(newPassword).toString();
+        newPasswordConfirm = Hashing.sha256().hashString(newPasswordConfirm).toString();
         String oldPassword = user.getPassword();
 
         if (newPassword.equals(newPasswordConfirm)) {
             //TODO if equal newPassword to oldpassword, password mustn't change
             if (newPassword.equals(oldPassword)) {
-
+                throw new RobeRuntimeException("EE", "Eski iş şifre doğrulanamadı.");
             } else {
-                user.setPassword(HashingUtils.hashSHA2(newPassword));
+                user.setPassword(Hashing.sha256().hashString(newPassword).toString());
             }
             return Response.seeOther(URI.create("http://127.0.0.1:8080/admin-ui/html/Workspace.html")).build();
         } else {
