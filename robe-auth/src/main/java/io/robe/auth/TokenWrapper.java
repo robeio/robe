@@ -32,8 +32,9 @@ public class TokenWrapper<T extends IsToken> {
         token.setUserAccountName(username);
         //TODO: get expiration from properties.
         token.setExpiration(600);
-        if (attributes != null && attributes.isEmpty())
+        if (attributes != null && attributes.isEmpty()){
             token.addAttributes(attributes);
+        }
         return token;
     }
 }
