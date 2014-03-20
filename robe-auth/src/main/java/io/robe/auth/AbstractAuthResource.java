@@ -72,8 +72,7 @@ public abstract class AbstractAuthResource<T extends UserEntry> {
         do {
             newPassword = generateStrongPassword();
             // Continue until new password does not contain user info or same with old password
-        }
-        while (newPassword.contains(user.getUsername()) || oldPassword.equals(Hashing.sha256().hashString(newPassword).toString()));
+        } while (newPassword.contains(user.getUsername()) || oldPassword.equals(Hashing.sha256().hashString(newPassword).toString()));
         return newPassword;
     }
 
@@ -92,16 +91,17 @@ public abstract class AbstractAuthResource<T extends UserEntry> {
 
         verifyPassword(user, currentPassword);
 
-        if (!newPassword.equals(newPassword2))
+        if (!newPassword.equals(newPassword2)){
             throw new AuthenticationException( user.getUsername() + ": New password and re-type password must be same");
-        if (newPassword.equals(currentPassword))
+        }else if (newPassword.equals(currentPassword)){
             throw new AuthenticationException(user.getUsername() + ": New password and old password must be different");
-
+        }
         verifyPasswordStrength(currentPassword, newPassword, user);
 
         Optional<? extends UserEntry> optional = userStore.changePassword(user.getUsername(), newPassword);
-        if (!optional.isPresent())
+        if (!optional.isPresent()){
             throw new AuthenticationException(user.getUsername() + ": Can't update UserEntry Password");
+        }
     }
 
     /**
@@ -113,10 +113,11 @@ public abstract class AbstractAuthResource<T extends UserEntry> {
      */
     public T getUser(String accountName) {
         Optional<T> optional = (Optional<T>) userStore.findByUsername(accountName);
-        if (optional.isPresent())
+        if (optional.isPresent()){
             return  optional.get();
-        else
+        }else {
             return null;
+        }
     }
 
     /**
@@ -144,8 +145,9 @@ public abstract class AbstractAuthResource<T extends UserEntry> {
      */
     public void verifyAccountNameStrength(String accountName) throws AuthenticationException {
         Matcher matcher = PATTERN.matcher(accountName);
-        if (!matcher.matches())
+        if (!matcher.matches()){
             throw new AuthenticationException(accountName + " is not a valid email");
+        }
     }
 
 
