@@ -8,9 +8,11 @@ import com.yammer.metrics.annotation.Timed;
 import edu.vt.middleware.password.*;
 import io.robe.admin.hibernate.dao.UserDao;
 import io.robe.admin.hibernate.entity.User;
+import io.robe.auth.AbstractAuthResource;
 import io.robe.auth.Credentials;
 import io.robe.auth.IsToken;
 import io.robe.auth.TokenWrapper;
+import io.robe.auth.data.entry.UserEntry;
 import org.owasp.esapi.ESAPI;
 
 import javax.servlet.http.HttpServletRequest;
@@ -33,7 +35,7 @@ import java.util.Map;
 @Produces(MediaType.APPLICATION_JSON)
 @Consumes(MediaType.APPLICATION_JSON)
 
-public class AuthResource {
+public class AuthResource extends AbstractAuthResource<User> {
 
     @Inject
     UserDao userDao;
@@ -155,5 +157,17 @@ public class AuthResource {
         ruleList.add(qwertySeqRule);
         ruleList.add(repeatRule);
         return ruleList;
+    }
+
+
+    /**
+     * An abstract method for login operation.
+     *
+     * @param user desired object to login
+     * @return User object
+     */
+    @Override
+    protected UserEntry login(User user) {
+        return null;
     }
 }
