@@ -8,6 +8,9 @@ public class TokenWrapper<T extends IsToken> {
 
     private static Class<? extends IsToken> type;
 
+    private TokenWrapper(){
+    }
+
     public static <I extends  IsToken> void  initialize(Class<I> clazz) {
         type = clazz;
     }
