@@ -1,6 +1,7 @@
 package io.robe.admin.resources;
 
 import com.google.common.base.Optional;
+import com.google.common.hash.Hashing;
 import com.google.inject.Inject;
 import com.yammer.dropwizard.auth.Auth;
 import com.yammer.dropwizard.hibernate.UnitOfWork;
@@ -12,7 +13,6 @@ import io.robe.admin.hibernate.entity.Role;
 import io.robe.admin.hibernate.entity.User;
 import io.robe.auth.Credentials;
 import io.robe.common.exception.RobeRuntimeException;
-import io.robe.common.utils.HashingUtils;
 
 import javax.validation.Valid;
 import javax.ws.rs.*;
@@ -77,7 +77,7 @@ public class UserResource {
             throw new RobeRuntimeException("Role", user.getEmail() + " cannot be null.");
         }
         entity.setRole(role);
-        entity.setPassword(HashingUtils.hashSHA2(user.getName()));
+        entity.setPassword(Hashing.sha256().hashString(user.getName()).toString());
 
 //        if (MailSender.isSupported()) {
 //            Ticket ticket = new Ticket();
