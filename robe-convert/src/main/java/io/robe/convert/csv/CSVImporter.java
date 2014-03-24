@@ -1,5 +1,7 @@
-package io.robe.convert;
+package io.robe.convert.csv;
 
+import io.robe.convert.AbstractImporter;
+import io.robe.convert.MappingProperty;
 import org.supercsv.cellprocessor.*;
 import org.supercsv.cellprocessor.constraint.NotNull;
 import org.supercsv.cellprocessor.ift.CellProcessor;
@@ -28,7 +30,7 @@ public class CSVImporter extends AbstractImporter {
 
         Reader reader = new InputStreamReader(inputStream);
 
-        CellProcessor[] processors = convertFieldsToCellProvessors(fields,fieldNames);
+        CellProcessor[] processors = convertFieldsToCellProcessors(fields, fieldNames);
 
         List<T> list = new ArrayList<T>();
         ICsvBeanReader csvBeanReader = new CsvBeanReader(reader, CsvPreference.STANDARD_PREFERENCE);
@@ -39,24 +41,22 @@ public class CSVImporter extends AbstractImporter {
         return list;
     }
 
-
-
-    private CellProcessor[] convertFieldsToCellProvessors(Collection<Field> fields,String[] fieldNames){
+    private CellProcessor[] convertFieldsToCellProcessors(Collection<Field> fields, String[] fieldNames) {
         CellProcessor[] processors = new CellProcessor[fields.size()];
         int i = 0;
-        for(Field field : fields){
+        for (Field field : fields) {
             MappingProperty an = field.getAnnotation(MappingProperty.class);
 
             CellProcessorAdaptor a = decideAdaptor(field);
             CellProcessor p = null;
-            if(an.optional()){
-                if(a != null){
+            if (an.optional()) {
+                if (a != null) {
                     p = new Optional(a);
                 } else {
                     p = new Optional();
                 }
             } else {
-                if(a != null){
+                if (a != null) {
                     p = new NotNull(a);
                 } else {
                     p = new NotNull();
@@ -65,24 +65,24 @@ public class CSVImporter extends AbstractImporter {
             fieldNames[i] = field.getName();
             processors[i++] = p;
         }
-        return  processors;
+        return processors;
     }
 
-    private CellProcessorAdaptor decideAdaptor (Field field){
+    private CellProcessorAdaptor decideAdaptor(Field field) {
         String fieldType = field.getType().toString();
-        if(fieldType.equals("int") ){
+        if (fieldType.equals("int")) {
             return new ParseInt();
-        } else if (fieldType.equals("long") ){
+        } else if (fieldType.equals("long")) {
             return new ParseLong();
-        } else if (fieldType.equals("double") ){
+        } else if (fieldType.equals("double")) {
             return new ParseDouble();
-        } else if (fieldType.equals(BigDecimal.class.toString()) ){
+        } else if (fieldType.equals(BigDecimal.class.toString())) {
             return new ParseBigDecimal();
-        } else if (fieldType.equals(Date.class.toString()) ){
+        } else if (fieldType.equals(Date.class.toString())) {
             return new ParseDate("");
-        } else if (fieldType.equals("char") ){
+        } else if (fieldType.equals("char")) {
             return new ParseChar();
-        } else{
+        } else {
             return null;
         }
     }
