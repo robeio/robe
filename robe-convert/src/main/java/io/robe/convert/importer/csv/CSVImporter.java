@@ -1,7 +1,7 @@
-package io.robe.convert.csv;
+package io.robe.convert.importer.csv;
 
-import io.robe.convert.AbstractImporter;
 import io.robe.convert.MappingProperty;
+import io.robe.convert.importer.AbstractImporter;
 import org.supercsv.cellprocessor.*;
 import org.supercsv.cellprocessor.constraint.NotNull;
 import org.supercsv.cellprocessor.ift.CellProcessor;
