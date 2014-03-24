@@ -8,7 +8,11 @@ import java.lang.annotation.RetentionPolicy;
  */
 @Retention(RetentionPolicy.RUNTIME)
 public @interface MappingProperty {
-    int order();
+    int order() default 0;
 
-    String name();
+    String name() default "";
+
+    boolean unique() default false;
+
+    boolean optional() default true;
 }
