@@ -2,6 +2,7 @@
 var LoginView;
 define([
     'text!html/Login.html',
+    'view/ForgotPassword',
 
     'kendo/kendo.button.min',
     'zebra_cookie',
@@ -9,7 +10,7 @@ define([
     'cryptojs/enc-base64-min',
     'cryptojs/sha256',
     'robe/view/RobeView'
-], function (view) {
+], function (view, ForgotPassword) {
 
     LoginView = new RobeView("LoginView", view, "container");
     LoginView.render = function () {
@@ -63,6 +64,13 @@ define([
                 $("#login-button")[0].focus();
             }
         });
+
+        $("#forgotPassword").click(function () {
+            kendo.destroy($('#dialogMessage'));
+            $('#dialogMessage').html('');
+            ForgotPassword.render();
+        });
+
     };
 
     return LoginView;
