@@ -1,20 +1,18 @@
 package io.robe.convert;
 
-import org.supercsv.cellprocessor.ift.CellProcessor;
-
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Field;
 import java.util.*;
 
 public class Converter {
 
+    /**
+     * Returns an ordered list of the fields which belongs to the given class.
+     * @param clazz class to get types.
+     * @return ordered list of fields.
+     */
     protected final Collection<Field> getFields(Class clazz) {
-
         Map<Integer, Field> fieldList = new HashMap<Integer, Field>();
-
-        String[] fieldNames = new String[clazz.getFields().length];
-
-        CellProcessor[] cellProcessors = new CellProcessor[clazz.getFields().length];
         for (Field field : clazz.getDeclaredFields()) {
             Annotation fieldAnnotation = field.getAnnotation(MappingProperty.class);
             MappingProperty fieldMappingProperties = (MappingProperty) fieldAnnotation;

@@ -1,6 +1,8 @@
 package io.robe.convert;
 
 
+import io.robe.convert.csv.CSVImporter;
+
 import java.io.IOException;
 import java.util.List;
 
@@ -10,10 +12,10 @@ public class CSVImporterTest {
 
         CSVImporter CSVImporter = new CSVImporter();
         try {
-            List<CSVPojo> l = CSVImporter.importStream(CSVImporterTest.class.getClassLoader().getResourceAsStream("csvMapping.csv"), CSVPojo.class);
+            List<CSVPojo> l = CSVImporter.importStream( CSVPojo.class,CSVImporterTest.class.getClassLoader().getResourceAsStream("csvMapping.csv"));
 
             for(CSVPojo pojo : l){
-                System.out.println(pojo.getName());
+                System.out.println(pojo.getDate2());
             }
 
         } catch (IOException e) {

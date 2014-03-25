@@ -1,52 +1,26 @@
-package io.robe.convert.importer.csv;
+package io.robe.convert.csv;
 
 import io.robe.convert.MappingProperty;
-import io.robe.convert.importer.AbstractImporter;
+import io.robe.convert.SimpleDateFormat;
 import org.supercsv.cellprocessor.*;
 import org.supercsv.cellprocessor.constraint.NotNull;
 import org.supercsv.cellprocessor.ift.CellProcessor;
-import org.supercsv.io.CsvBeanReader;
-import org.supercsv.io.ICsvBeanReader;
-import org.supercsv.prefs.CsvPreference;
 
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.io.Reader;
 import java.lang.reflect.Field;
 import java.math.BigDecimal;
-import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
-import java.util.List;
 
-public class CSVImporter extends AbstractImporter {
-    @Override
-    public <T> List<T> importStream(InputStream inputStream, Class clazz) throws IOException, ClassNotFoundException, IllegalAccessException, InstantiationException {
+public class CSVUtil {
 
-
-        Collection<Field> fields = getFields(clazz);
-        String[] fieldNames = new String[fields.size()];
-
-        Reader reader = new InputStreamReader(inputStream);
-
-        CellProcessor[] processors = convertFieldsToCellProcessors(fields, fieldNames);
-
-        List<T> list = new ArrayList<T>();
-        ICsvBeanReader csvBeanReader = new CsvBeanReader(reader, CsvPreference.STANDARD_PREFERENCE);
-        Object obj;
-        while ((obj = csvBeanReader.read(clazz, fieldNames, processors)) != null) {
-            list.add((T) obj);
-        }
-        return list;
-    }
-
-    private CellProcessor[] convertFieldsToCellProcessors(Collection<Field> fields, String[] fieldNames) {
+    static CellProcessor[] convertFieldsToCellProcessors(Collection<Field> fields, String[] fieldNames) {
         CellProcessor[] processors = new CellProcessor[fields.size()];
         int i = 0;
         for (Field field : fields) {
             MappingProperty an = field.getAnnotation(MappingProperty.class);
-
+            if(an == null){
+                continue;
+            }
             CellProcessorAdaptor a = decideAdaptor(field);
             CellProcessor p = null;
             if (an.optional()) {
@@ -68,7 +42,7 @@ public class CSVImporter extends AbstractImporter {
         return processors;
     }
 
-    private CellProcessorAdaptor decideAdaptor(Field field) {
+    static CellProcessorAdaptor decideAdaptor(Field field) {
         String fieldType = field.getType().toString();
         if (fieldType.equals("int")) {
             return new ParseInt();
@@ -77,9 +51,14 @@ public class CSVImporter extends AbstractImporter {
         } else if (fieldType.equals("double")) {
             return new ParseDouble();
         } else if (fieldType.equals(BigDecimal.class.toString())) {
-            return new ParseBigDecimal();
+            return new ParseBigDecimalFix();
         } else if (fieldType.equals(Date.class.toString())) {
-            return new ParseDate("");
+            if(field.getAnnotation(SimpleDateFormat.class) != null){
+                String format = field.getAnnotation(SimpleDateFormat.class).format();
+                return new ParseDateFix(format);
+            }else{
+                throw  new RuntimeException("Date type must have SimpleDateFormat annotation with a valid format.");
+            }
         } else if (fieldType.equals("char")) {
             return new ParseChar();
         } else {

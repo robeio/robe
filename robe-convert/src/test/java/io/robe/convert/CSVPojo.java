@@ -1,6 +1,7 @@
 package io.robe.convert;
 
 import java.math.BigDecimal;
+import java.util.Date;
 
 public class CSVPojo {
     @MappingProperty(order = 0, optional = false, unique = true, name = "id")
@@ -13,11 +14,26 @@ public class CSVPojo {
     private long longid;
     @MappingProperty(order = 3)
     private double doubleid;
+
     @MappingProperty(order = 5)
     private BigDecimal big = BigDecimal.ONE;
 
+    @MappingProperty(order = 6)
+    @SimpleDateFormat(format="dd.MM.yyyy")
+    private Date date2 = new Date();
+
     public CSVPojo() {
 
+    }
+
+    public CSVPojo(int id, String name, String surname, long longid, double doubleid, BigDecimal big,Date date2) {
+        this.id = id;
+        this.name = name;
+        this.surname = surname;
+        this.longid = longid;
+        this.doubleid = doubleid;
+        this.big = big;
+        this.date2 = date2;
     }
 
     public int getId() {
@@ -66,5 +82,13 @@ public class CSVPojo {
 
     public void setBig(BigDecimal big) {
         this.big = big;
+    }
+
+    public Date getDate2() {
+        return date2;
+    }
+
+    public void setDate2(Date date2) {
+        this.date2 = date2;
     }
 }
