@@ -1,9 +1,11 @@
 package io.robe.convert;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+
 import java.math.BigDecimal;
 import java.util.Date;
 
-public class CSVPojo {
+public class SamplePojo {
     @MappingProperty(order = 0, optional = false, unique = true, name = "id")
     private int id;
     @MappingProperty(order = 1)
@@ -19,14 +21,14 @@ public class CSVPojo {
     private BigDecimal big = BigDecimal.ONE;
 
     @MappingProperty(order = 6)
-    @SimpleDateFormat(format="dd.MM.yyyy")
+    @JsonFormat(shape=JsonFormat.Shape.STRING, pattern="dd.MM.yyyy", timezone="CET")
     private Date date2 = new Date();
 
-    public CSVPojo() {
+    public SamplePojo() {
 
     }
 
-    public CSVPojo(int id, String name, String surname, long longid, double doubleid, BigDecimal big,Date date2) {
+    public SamplePojo(int id, String name, String surname, long longid, double doubleid, BigDecimal big, Date date2) {
         this.id = id;
         this.name = name;
         this.surname = surname;
@@ -90,5 +92,18 @@ public class CSVPojo {
 
     public void setDate2(Date date2) {
         this.date2 = date2;
+    }
+
+    @Override
+    public String toString() {
+        return "SamplePojo{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", surname='" + surname + '\'' +
+                ", longid=" + longid +
+                ", doubleid=" + doubleid +
+                ", big=" + big +
+                ", date2=" + date2 +
+                '}';
     }
 }

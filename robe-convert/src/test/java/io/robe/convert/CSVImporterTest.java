@@ -12,10 +12,10 @@ public class CSVImporterTest {
 
         CSVImporter CSVImporter = new CSVImporter();
         try {
-            List<CSVPojo> l = CSVImporter.importStream( CSVPojo.class,CSVImporterTest.class.getClassLoader().getResourceAsStream("csvMapping.csv"));
+            List<SamplePojo> list = CSVImporter.importStream( SamplePojo.class,CSVImporterTest.class.getClassLoader().getResourceAsStream("sample.csv"));
 
-            for(CSVPojo pojo : l){
-                System.out.println(pojo.getDate2());
+            for(SamplePojo pojo : list){
+                System.out.println(pojo.toString());
             }
 
         } catch (IOException e) {

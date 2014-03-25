@@ -1,7 +1,7 @@
 package io.robe.convert.csv;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import io.robe.convert.MappingProperty;
-import io.robe.convert.SimpleDateFormat;
 import io.robe.convert.csv.supercsv.ParseBigDecimalFix;
 import io.robe.convert.csv.supercsv.ParseDateFix;
 import org.supercsv.cellprocessor.*;
@@ -55,8 +55,8 @@ public class CSVUtil {
         } else if (fieldType.equals(BigDecimal.class.toString())) {
             return new ParseBigDecimalFix();
         } else if (fieldType.equals(Date.class.toString())) {
-            if(field.getAnnotation(SimpleDateFormat.class) != null){
-                String format = field.getAnnotation(SimpleDateFormat.class).format();
+            if(field.getAnnotation(JsonFormat.class) != null){
+                String format = field.getAnnotation(JsonFormat.class).pattern();
                 return new ParseDateFix(format);
             }else{
                 throw  new RuntimeException("Date type must have SimpleDateFormat annotation with a valid format.");
