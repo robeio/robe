@@ -1,14 +1,14 @@
-package io.robe.convert.importer.excel.parsers;
+package io.robe.convert.excel.parsers;
 
 import java.lang.reflect.Field;
 
-public class ByteParser implements IsParser {
+public class BoolParser implements IsParser {
     @Override
     public Object parse(Object o,Field field) {
-        Byte b = null;
+        Boolean b = null;
 
         if (o instanceof String) {
-            b = Byte.valueOf(o.toString());
+            b = Boolean.valueOf(o.toString());
         }
 
         return b;
