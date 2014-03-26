@@ -29,15 +29,12 @@ public class CSVExporter extends IsExporter {
         CellProcessor[] processors = CSVUtil.convertFieldsToCellProcessors(fields, fieldNames);
 
         ICsvBeanWriter csvBeanWriter = new CsvBeanWriter(writer, CsvPreference.STANDARD_PREFERENCE);
-        int i = 0;
 
         for (T entry : list)
             csvBeanWriter.write(entry, fieldNames, processors);
         csvBeanWriter.flush();
         csvBeanWriter.close();
-        writer.flush();
         writer.close();
-
     }
 }
 
