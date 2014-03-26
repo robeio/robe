@@ -6,6 +6,7 @@ import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.Workbook;
+import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -24,8 +25,6 @@ public class ExcelImporter extends IsExcelImporter {
         Iterator<Row> rowIterator = sheet.iterator();
 
         List<T> entries = new LinkedList<T>();
-
-        // Parserların hazır olsun, rowları dolaşırken kolon indexine göre aynı indexteki parserın parse methodunu çağır döndüğü değeri set et.
 
         while (rowIterator.hasNext()) {
             T entry = (T) clazz.newInstance();
@@ -53,10 +52,40 @@ public class ExcelImporter extends IsExcelImporter {
         return entries;
     }
 
-
     @Override
     public <T> List<T> importXSLXStream(Class clazz, InputStream inputStream) throws IOException, ClassNotFoundException, IllegalAccessException, InstantiationException {
-        return null;
+        Collection<Field> fields = getFields(clazz);
+
+        Workbook workbook = new XSSFWorkbook(inputStream);
+        Sheet sheet = workbook.getSheetAt(0);
+        Iterator<Row> rowIterator = sheet.iterator();
+
+        List<T> entries = new LinkedList<T>();
+
+        while (rowIterator.hasNext()) {
+            T entry = (T) clazz.newInstance();
+            fields.iterator().next();
+            Row row = rowIterator.next();
+
+            int cellCount = 0;
+            for (Field field : fields) {
+                Cell cell = row.getCell(cellCount++);
+                try {
+                    if (cell != null || cell.toString().trim().equals("")) {
+                        Object cellData = ExcelUtils.cellProcessor(field, cell);
+                        boolean acc = field.isAccessible();
+                        field.setAccessible(true);
+                        field.set(entry, cellData);
+                        field.setAccessible(acc);
+                    }
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+            entries.add((T) entry);
+        }
+
+        return entries;
     }
 
     @Override
