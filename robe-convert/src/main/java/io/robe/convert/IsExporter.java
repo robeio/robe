@@ -5,6 +5,5 @@ import java.io.OutputStream;
 import java.util.List;
 
 public abstract class IsExporter extends Converter {
-    public abstract <T> void exportStream(Class clazz,OutputStream outputStream, List<T> list) throws IOException, ClassNotFoundException, IllegalAccessException, InstantiationException;
-
+    public abstract <T> void exportStream(Class clazz, OutputStream outputStream, List<T> list) throws IOException, ClassNotFoundException, IllegalAccessException, InstantiationException;
 }
