@@ -12,6 +12,7 @@
         <module>robe-common</module>
         <module>robe-quartz</module>
         <module>robe-mq</module>
+        <module>robe-crud</module>
     </modules>
 
     <properties>
