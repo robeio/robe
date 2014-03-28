@@ -1,5 +1,7 @@
 package io.robe.convert.excel.parsers;
 
+import org.apache.poi.ss.usermodel.Cell;
+
 import java.lang.reflect.Field;
 
 public class ByteParser implements IsParser {
@@ -12,5 +14,11 @@ public class ByteParser implements IsParser {
         }
 
         return b;
+    }
+
+    @Override
+    public void setCell(Object o, Cell cell, Field field) {
+        Byte aByte = (Byte)o;
+        cell.setCellErrorValue(aByte);
     }
 }
