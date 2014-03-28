@@ -9,7 +9,7 @@ import java.util.List;
 public class XLSImporterTest {
     @org.junit.Test
     public void testImportStream() {
-        XLSImporter xlsImporter = new XLSImporter();
+        XLSImporter xlsImporter = new XLSImporter(false);
         try {
             List<SamplePojo> samplePojos = xlsImporter.importStream(SamplePojo.class, XLSImporterTest.class.getClassLoader().getResourceAsStream("sample.xls"));
 

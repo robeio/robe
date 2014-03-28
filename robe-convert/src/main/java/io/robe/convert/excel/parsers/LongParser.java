@@ -1,5 +1,7 @@
 package io.robe.convert.excel.parsers;
 
+import org.apache.poi.ss.usermodel.Cell;
+
 import java.lang.reflect.Field;
 
 public class LongParser implements IsParser {
@@ -16,5 +18,11 @@ public class LongParser implements IsParser {
         l = Long.valueOf(o.toString());
 
         return l;
+    }
+
+    @Override
+    public void setCell(Object o, Cell cell, Field field) {
+        Long aLong = (Long) o;
+        cell.setCellValue(aLong);
     }
 }
