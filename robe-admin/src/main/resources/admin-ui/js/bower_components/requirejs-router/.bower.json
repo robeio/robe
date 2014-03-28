@@ -1,0 +1,37 @@
+{
+  "name": "requirejs-router",
+  "version": "0.7.3",
+  "homepage": "https://github.com/erikringsmuth/requirejs-router",
+  "authors": [
+    "Erik Ringsmuth <erik.ringsmuth@gmail.com>"
+  ],
+  "description": "A scalable, lazy loading, AMD router.",
+  "main": "router.js",
+  "keywords": [
+    "router",
+    "RequireJS",
+    "AMD"
+  ],
+  "license": "MIT",
+  "ignore": [
+    "**/.*",
+    "bower_components",
+    "node_modules",
+    "tests",
+    "bower.json",
+    "package.json",
+    "gulpfile.js",
+    "license.md",
+    "readme.md"
+  ],
+  "_release": "0.7.3",
+  "_resolution": {
+    "type": "version",
+    "tag": "v0.7.3",
+    "commit": "ced6da42d3395be3081c6d8f43393e470de34c43"
+  },
+  "_source": "git://github.com/erikringsmuth/requirejs-router.git",
+  "_target": "~0.7.3",
+  "_originalSource": "requirejs-router",
+  "_direct": true
+}
