@@ -1,0 +1,20 @@
+<xml>
+    <CSVPojo>
+        <id>1</id>
+        <name>Guner Kaan ALKIM</name>
+        <surname>Computer Engineer</surname>
+        <longid>1</longid>
+        <doubleid>2</doubleid>
+        <big>3</big>
+        <date2>12.12.2312</date2>
+    </CSVPojo>
+    <CSVPojo>
+        <id>2</id>
+        <name>Sinan Selimoğlu</name>
+        <surname>Computer</surname>
+        <longid>4</longid>
+        <doubleid>3</doubleid>
+        <big>4</big>
+        <date2>16.12.2312</date2>
+    </CSVPojo>
+</xml>

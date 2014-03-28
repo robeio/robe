@@ -82,7 +82,7 @@ public class QuartzBundle<T extends Configuration & HasQuartzConfiguration & Has
         } catch (SchedulerException e) {
             e.printStackTrace();
         }
-        String[] jobPackage = quartzConfiguration.getJobPackage().split(",");
+        String[] jobPackage = quartzConfiguration.getScanPackages();
         Set<Class<? extends Job>> jobClasses;
         for (String myPackage : jobPackage) {
             Reflections reflections = new Reflections(myPackage);

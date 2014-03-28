@@ -1,6 +1,6 @@
 package io.robe.admin.hibernate.entity;
 
-import io.robe.auth.ServiceEntry;
+import io.robe.auth.data.entry.ServiceEntry;
 import io.robe.hibernate.entity.BaseEntity;
 
 import javax.persistence.Column;

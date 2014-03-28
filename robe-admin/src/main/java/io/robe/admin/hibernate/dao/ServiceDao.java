@@ -3,7 +3,7 @@ package io.robe.admin.hibernate.dao;
 import com.google.common.base.Optional;
 import com.google.inject.Inject;
 import io.robe.admin.hibernate.entity.Service;
-import io.robe.auth.ServiceStore;
+import io.robe.auth.data.store.ServiceStore;
 import io.robe.hibernate.dao.BaseDao;
 import org.hibernate.Criteria;
 import org.hibernate.SessionFactory;
@@ -14,6 +14,10 @@ public class ServiceDao extends BaseDao<Service> implements ServiceStore {
     @Inject
     public ServiceDao(SessionFactory sessionFactory) {
         super(sessionFactory);
+    }
+
+    public Optional<Service> findByCode(String code){
+        return Optional.fromNullable(findById(code));
     }
 
     public Optional<Service> findByPathAndMethod(String path, Service.Method method) {

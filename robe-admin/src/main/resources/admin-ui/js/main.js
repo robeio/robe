@@ -14,14 +14,6 @@ require.config({
         'bower_components/underscore/underscore': {
             exports: '_'
         },
-        'bower_components/backbone/backbone': {
-            //These script dependencies should be loaded before loading
-            //backbone.js
-            deps: ['bower_components/underscore/underscore', 'bower_components/jquery/dist/jquery.min'],
-            //Once loaded, use the global 'Backbone' as the
-            //module value.
-            exports: 'Backbone'
-        },
         'cryptojs/enc-base64-min': {
             deps: ['cryptojs/core-min']
         },
@@ -29,7 +21,13 @@ require.config({
             deps: ['cryptojs/enc-base64-min']
         },
         'robe/core/Singleton': {
-            deps: ['robe/core/Class']
+            deps: ['robe/core/Robe', 'robe/data/DataSource']
+        },
+        'robe/data/DataSource': {
+            deps: ['robe/core/Robe']
+        },
+        'admin/data/SingletonDataSource': {
+            deps: ['robe/core/Singleton']
         },
         'robe/Charts': {
             deps: ['highcharts/highcharts']
@@ -58,7 +56,6 @@ define([
     'admin/AdminUIApp',
     'bower_components/jquery/dist/jquery.min',
     'bower_components/underscore/underscore',
-    'bower_components/backbone/backbone',
     'highcharts/highcharts'
 ], function (App) {
     App.initialize();

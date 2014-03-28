@@ -27,7 +27,7 @@ public class HeapDump {
     public static File dump(boolean live) {
         initHotspotMBean();
         try {
-            String tempName = FileOperations.TEMPDIR + UUID.randomUUID().toString().replaceAll("-", "");
+            String tempName = FileOperations.TEMP_DIR + UUID.randomUUID().toString().replaceAll("-", "");
             hotspotMBean.dumpHeap(tempName, live);
             return new File(tempName);
         } catch (Exception e) {

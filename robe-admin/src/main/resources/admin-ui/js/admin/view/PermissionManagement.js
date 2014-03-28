@@ -1,3 +1,5 @@
+var PermissionManagement;
+
 define([
     'text!html/PermissionManagement.html',
     'admin/data/DataSources',
@@ -6,165 +8,155 @@ define([
     'kendo/kendo.window.min',
     'kendo/kendo.grid.min',
     'kendo/kendo.dropdownlist.min',
-    'kendo/kendo.treeview.min'
-
+    'kendo/kendo.treeview.min',
+    'robe/view/RobeView'
 ], function (view) {
-    return Backbone.View.extend({
-        render: function () {
-            $('#container').append(view);
-            this.initial();
-        },
 
-        me: "",
+    PermissionManagement = new RobeView("PermissionManagement", view, "container");
 
-        initial: function () {
-            me = this;
-            var me = this;
+    PermissionManagement.render = function () {
+        console.log("PermissionManagement");
+        $('#container').append(view);
+        PermissionManagement.initialize();
+    };
 
-            $("#horizontalTabStrips").kendoSplitter({
-                panes: [
-                    { collapsible: false, size: "20%", resizable: false },
-                    { collapsible: false, size: "20%", resizable: false  },
-                    { collapsible: false, size: "60%", scrollable: true}
-                ]
-            });
+    PermissionManagement.initialize = function () {
+        var me = this;
 
-            $("#gridServices").kendoGrid({
-                dataSource: ServiceDataSource.get(),
-                width: 75,
-                columns: [
-                    {
-                        template: "<input type='checkbox'/>",
-                        field: "selected",
-                        title: "&nbsp;",
-                        width: 5
-                    },
-                    {
-                        field: "method",
-                        title: "Method",
-                        width: 15
-                    },
-                    {
-                        field: "path",
-                        title: "Servis",
-                        width: 50
+        $("#horizontalTabStrips").kendoSplitter({
+            panes: [
+                { collapsible: false, size: "20%", resizable: false },
+                { collapsible: false, size: "20%", resizable: false  },
+                { collapsible: false, size: "60%", scrollable: true}
+            ]
+        });
+
+        $("#gridServices").kendoGrid({
+            dataSource: ServiceDataSource.get(),
+            width: 75,
+            columns: [
+                {
+                    template: '<input type="checkbox"/>',
+                    field: "selected",
+                    title: "&nbsp;",
+                    width: 5
+                },
+                {
+                    field: "method",
+                    title: "Method",
+                    width: 15
+                },
+                {
+                    field: "path",
+                    title: "Servis",
+                    width: 50
+                }
+            ]
+        });
+
+        $("#gridServices").data("kendoGrid").table.on("click", "input[type=checkbox]", selectRow);
+
+        $("#cmbRoles").kendoDropDownList({
+            dataTextField: "name",
+            dataValueField: "oid",
+            dataSource: RoleDataSource.get(),
+            change: function () {
+                var roleOid = $("#cmbRoles").val();
+                $.ajax({
+                    type: "GET",
+                    url: AdminApp.getBackendURL() + "permission/" + roleOid + "/menu",
+                    dataType: "json",
+                    contentType: "application/json; charset=utf-8",
+                    success: function (response) {
+                        var tree = $("#treeMenus").data("kendoTreeView");
+                        tree.expand(".k-item");
+                        checkByNodeIds(tree.dataSource.data(), response);
                     }
-                ]
-            });
+                });
+                $.ajax({
+                    type: "GET",
+                    url: AdminApp.getBackendURL() + "permission/" + roleOid + "/service",
+                    dataType: "json",
+                    contentType: "application/json; charset=utf-8",
+                    success: function (response) {
+                        checkRows(response);
+                    }
+                });
+            },
+            autoBind: false,
+            text: "Seçiniz...",
+            index: -1
+        });
 
-            $("#gridServices").data("kendoGrid").table.on("click", "input[type=checkbox]", this.selectRow);
+        $.ajax({
+            type: "GET",
+            url: AdminApp.getBackendURL() + "menu/roots",
+            dataType: "json",
+            contentType: "application/json; charset=utf-8",
+            success: function (response) {
+                var dataSource = new kendo.data.HierarchicalDataSource({
+                    data: response,
+                    schema: MenuTreeModel
+                });
+                $("#treeMenus").data("kendoTreeView").setDataSource(dataSource);
+            }
+        });
 
+        $("#treeMenus").kendoTreeView({
+            checkboxes: {
+                checkChildren: true
+            },
+            dataTextField: "name"
+        });
 
-            $("#cmbRoles").kendoDropDownList({
-                dataTextField: "name",
-                dataValueField: "oid",
-                dataSource: RoleDataSource.get(),
-                change: function () {
-                    var roleOid = $("#cmbRoles").val();
-                    $.ajax({
-                        type: "GET",
-                        url: AdminApp.getBackendURL() + "permission/" + roleOid + "/menu",
-                        dataType: "json",
-                        contentType: "application/json; charset=utf-8",
-                        success: function (response) {
-                            var tree = $("#treeMenus").data("kendoTreeView");
-                            tree.expand(".k-item");
-                            me.checkByNodeIds(tree.dataSource.data(), response);
-                        }
-                    });
-                    $.ajax({
-                        type: "GET",
-                        url: AdminApp.getBackendURL() + "permission/" + roleOid + "/service",
-                        dataType: "json",
-                        contentType: "application/json; charset=utf-8",
-                        success: function (response) {
-                            me.checkRows(response);
-                        }
-                    });
-                },
-                autoBind: false,
-                text: "Seçiniz...",
-                index: -1
-            });
+        $("#btnSavePermission").kendoButton({
+            click: function () {
+                var roleOid = $("#cmbRoles").val();
+                var checkedNodes = [];
+                var treeMenus = $("#treeMenus").data("kendoTreeView");
 
-            $.ajax({
-                type: "GET",
-                url: AdminApp.getBackendURL() + "menu/roots",
-                dataType: "json",
-                contentType: "application/json; charset=utf-8",
-                success: function (response) {
-                    var dataSource = new kendo.data.HierarchicalDataSource({
-                        data: response,
-                        schema: MenuTreeModel
-                    });
-                    $("#treeMenus").data("kendoTreeView").setDataSource(dataSource);
-                }
-            });
-
-            $("#treeMenus").kendoTreeView({
-                checkboxes: {
-                    checkChildren: true
-                },
-                dataTextField: "name"
-            });
-
-            var me = this;
-
-            $("#btnSavePermission").kendoButton({
-                click: function () {
-                    var roleOid = $("#cmbRoles").val();
-                    var checkedNodes = [];
-                    var treeMenus = $("#treeMenus").data("kendoTreeView");
-
-                    me.checkedNodeIds(me,treeMenus.dataSource.view(), checkedNodes);
-                    $.ajax({
-                        type: "PUT",
-                        url: AdminApp.getBackendURL() + "permission/" + roleOid + "/menu",
-                        dataType: "json",
-                        data: kendo.stringify(checkedNodes),
-                        contentType: "application/json; charset=utf-8",
-                        success: function () {
-                        }
-                    });
+                checkedNodeIds(me, treeMenus.dataSource.view(), checkedNodes);
+                $.ajax({
+                    type: "PUT",
+                    url: AdminApp.getBackendURL() + "permission/" + roleOid + "/menu",
+                    dataType: "json",
+                    data: kendo.stringify(checkedNodes),
+                    contentType: "application/json; charset=utf-8",
+                    success: function () {
+                    }
+                });
 
 
-                    $.ajax({
-                        type: "PUT",
-                        url: AdminApp.getBackendURL() + "permission/" + roleOid + "/service",
-                        dataType: "json",
-                        data: kendo.stringify(me.getCheckedRows()),
-                        contentType: "application/json; charset=utf-8",
-                        success: function (result) {
-                        }
-                    });
+                $.ajax({
+                    type: "PUT",
+                    url: AdminApp.getBackendURL() + "permission/" + roleOid + "/service",
+                    dataType: "json",
+                    data: kendo.stringify(getCheckedRows()),
+                    contentType: "application/json; charset=utf-8",
+                    success: function (result) {
+                    }
+                });
+            }
+        });
 
-
-                }
-            });
-
-
-            $("#btnMenuManagementHelp").kendoButton({
-                click: me.onShowHelp
-            });
-
-
-        },
-
+        $("#btnMenuManagementHelp").kendoButton({
+            click: onShowHelp
+        });
         // function that gathers IDs of checked nodes
-        checkedNodeIds: function (me, nodes, checkedNodes) {
+        function checkedNodeIds(me, nodes, checkedNodes) {
             for (var i = 0; i < nodes.length; i++) {
                 if (nodes[i].checked) {
                     checkedNodes.push(nodes[i].id);
                 }
 
                 if (nodes[i].hasChildren) {
-                    me.checkedNodeIds(me, nodes[i].children.view(), checkedNodes);
+                    checkedNodeIds(me, nodes[i].children.view(), checkedNodes);
                 }
             }
-        },
+        };
 
         // function that gathers IDs of checked nodes
-        checkByNodeIds: function (nodes, targetNodes) {
+        function checkByNodeIds(nodes, targetNodes) {
             var tree = $("#treeMenus").data("kendoTreeView");
             var nodeUid;
             var nodeOid;
@@ -175,13 +167,13 @@ define([
                 tree.findByUid(nodeUid).find("input[type=checkbox]").prop("checked", isChecked);
                 nodes[i].set("checked", isChecked);
                 if (nodes[i].hasChildren) {
-                    this.checkByNodeIds(nodes[i].children.data(), targetNodes);
+                    checkByNodeIds(nodes[i].children.data(), targetNodes);
                 }
             }
-        },
+        };
 
-        onShowHelp: function () {
-            wnd = $("#permissionManagementHelpWindow").kendoWindow({
+        function onShowHelp() {
+            var wnd = $("#permissionManagementHelpWindow").kendoWindow({
                 title: "Yardım",
                 modal: true,
                 visible: false,
@@ -190,11 +182,10 @@ define([
             }).data("kendoWindow");
 
             wnd.center().open();
+        };
 
-        },
-
-//on click of the checkbox:
-        selectRow: function () {
+        //on click of the checkbox:
+        function selectRow() {
             var checked = this.checked,
                 row = $(this).closest("tr");
             if (checked) {
@@ -204,10 +195,10 @@ define([
                 //-remove selection
                 row.removeClass("k-state-selected");
             }
-        },
+        };
 
-//on dataBound event restore previous selected rows:
-        checkRows: function (checkedServiceOids) {
+        //on dataBound event restore previous selected rows:
+        function checkRows(checkedServiceOids) {
             var grid = $("#gridServices").data("kendoGrid");
             var gridTbody = grid.tbody;
             var view = grid.dataSource.view();
@@ -221,9 +212,9 @@ define([
                     row.removeClass("k-state-selected");
                 }
             }
-        },
+        };
 
-        getCheckedRows: function () {
+        function getCheckedRows() {
             var grid = $("#gridServices").data("kendoGrid");
             var gridTbody = grid.tbody;
             var view = grid.dataSource.view();
@@ -236,5 +227,8 @@ define([
             }
             return checkedServiceOids;
         }
-    });
+
+    };
+
+    return PermissionManagement;
 });

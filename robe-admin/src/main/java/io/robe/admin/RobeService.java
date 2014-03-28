@@ -12,7 +12,7 @@ import io.robe.admin.guice.module.AuthenticatorModule;
 import io.robe.admin.guice.module.HibernateModule;
 import io.robe.admin.guice.module.MailModule;
 import io.robe.admin.guice.module.QuartzModule;
-import io.robe.auth.AuthTokenResponseFilter;
+import io.robe.auth.tokenbased.TokenBasedAuthBundle;
 import io.robe.common.cli.ControllableServerCommand;
 import io.robe.common.exception.RobeExceptionMapper;
 import io.robe.guice.GuiceBundle;
@@ -62,8 +62,10 @@ public class RobeService extends Service<RobeServiceConfiguration> {
         HibernateBundle<RobeServiceConfiguration> hibernateBundle = new HibernateBundle<RobeServiceConfiguration>();
         HibernateManagableQuartzBundle<RobeServiceConfiguration> quartzBundle = new HibernateManagableQuartzBundle<RobeServiceConfiguration>(hibernateBundle);
         MailBundle<RobeServiceConfiguration> mailBundle = new MailBundle<RobeServiceConfiguration>();
+        TokenBasedAuthBundle<RobeServiceConfiguration> authBundle = new TokenBasedAuthBundle<RobeServiceConfiguration>();
 
         bootstrap.addBundle(hibernateBundle);
+        bootstrap.addBundle(authBundle);
         bootstrap.addBundle(quartzBundle);
         bootstrap.addBundle(new ViewBundle());
         bootstrap.addBundle(mailBundle);
@@ -72,7 +74,7 @@ public class RobeService extends Service<RobeServiceConfiguration> {
 
         List<Module> modules = new LinkedList<Module>();
         modules.add(new HibernateModule(hibernateBundle));
-        modules.add(new AuthenticatorModule());
+        modules.add(new AuthenticatorModule(authBundle));
         modules.add(new QuartzModule(quartzBundle));
         modules.add(new MailModule(mailBundle));
 
@@ -94,7 +96,6 @@ public class RobeService extends Service<RobeServiceConfiguration> {
     @Override
     public void run(RobeServiceConfiguration configuration, Environment environment) throws Exception {
         addExceptionMappers(environment);
-        environment.getJerseyResourceConfig().getContainerResponseFilters().add(new AuthTokenResponseFilter());
         environment.start();
     }
 

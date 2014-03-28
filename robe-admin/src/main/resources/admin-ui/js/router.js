@@ -12,6 +12,10 @@ define([
             path: '/Login',
             moduleId: 'admin/view/Login'
         },
+        ForgotPassword: {
+            path: '/ForgotPassword',
+            moduleId: 'admin/view/ForgotPassword'
+        },
         ProfileManagement: {
             path: '/ProfileManagement',
             moduleId: 'admin/view/ProfileManagemen'
@@ -45,12 +49,11 @@ define([
             moduleId: 'admin/view/QuartzJobManagement'
         }
     }).on('routeload',function (View, routeArguments) {
-        var view = new View(routeArguments);
-        view.render();
+        View.render();
     }).init();
 
     var href = window.location.href;
-    if (href.indexOf("#/Workspace", href.length - "#/Workspace".length) == -1){
+    if (href.indexOf("#/Workspace", href.length - "#/Workspace".length) == -1) {
         $('#body').html('');
         window.location.href = "#/Workspace";
     }

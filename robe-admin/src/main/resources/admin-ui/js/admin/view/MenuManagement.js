@@ -1,113 +1,113 @@
 //@ sourceURL=MenuManagement.js
-
+var MenuManagementView;
 define([
     'text!html/MenuManagement.html',
     'admin/data/DataSources',
 
     'kendo/kendo.grid.min',
     'kendo/kendo.window.min',
-    'kendo/kendo.treeview.min'
-
+    'kendo/kendo.treeview.min',
+    'robe/view/RobeView'
 ], function (view) {
-    var MenuManagementView = Backbone.View.extend({
-        render: function () {
-            $('#container').append(view);
-            this.initial();
-        },
 
-        initial: function () {
-            $("#gridMenus").kendoGrid({
-                dataSource: MenuDataSource.get(),
-                sortable: true,
-                resizable: true,
-                pageable: {
-                    refresh: true
+    MenuManagementView = new RobeView("MenuManagementView", view, "container");
+    MenuManagementView.render = function () {
+        $('#container').append(view);
+        MenuManagementView.initialize();
+    };
+
+    MenuManagementView.initialize = function () {
+        $("#gridMenus").kendoGrid({
+            dataSource: MenuDataSource.get(),
+            sortable: true,
+            resizable: true,
+            pageable: {
+                refresh: true
+            },
+            toolbar: [
+                {
+                    name: "create",
+                    text: "Yeni Menü"
+                }
+            ],
+            columns: [
+                {
+                    field: "name",
+                    title: "Ad",
+                    width: "110px"
                 },
-                toolbar: [
-                    {
-                        name: "create",
-                        text: "Yeni Menü"
-                    }
-                ],
-                columns: [
-                    {
-                        field: "name",
-                        title: "Ad",
-                        width: "110px"
-                    },
-                    {
-                        field: "code",
-                        title: "Kod",
-                        width: "110px"
-                    },
-                    {
-                        command: [
-                            {
-                                name: "edit",
-                                text: {
-                                    edit: "",
-                                    update: "Güncelle",
-                                    cancel: "İptal"
-                                },
-                                className: "grid-command-iconfix"
-                            },
-                            {
-                                name: "destroy",
-                                text: "",
-                                className: "grid-command-iconfix"
-                            }
-                        ],
-                        title: "&nbsp;",
-                        width: "80px"
-                    }
-                ],
-                group: {
-                    field: "parentOid",
-                    aggregates: [
+                {
+                    field: "code",
+                    title: "Kod",
+                    width: "110px"
+                },
+                {
+                    command: [
                         {
-                            field: "oid",
-                            aggregate: "count"
+                            name: "edit",
+                            text: {
+                                edit: "",
+                                update: "Güncelle",
+                                cancel: "İptal"
+                            },
+                            className: "grid-command-iconfix"
+                        },
+                        {
+                            name: "destroy",
+                            text: "",
+                            className: "grid-command-iconfix"
                         }
-                    ]
+                    ],
+                    title: "&nbsp;",
+                    width: "80px"
+                }
+            ],
+            group: {
+                field: "parentOid",
+                aggregates: [
+                    {
+                        field: "oid",
+                        aggregate: "count"
+                    }
+                ]
+            },
+            editable: {
+                mode: "popup",
+                window: {
+                    title: "Kayıt"
                 },
-                editable: {
-                    mode: "popup",
-                    window: {
-                        title: "Kayıt"
-                    },
-                    confirmation: "Silmek istediğinizden emin misiniz?",
-                    confirmDelete: "Yes"
-                }
-            });
+                confirmation: "Silmek istediğinizden emin misiniz?",
+                confirmDelete: "Yes"
+            }
+        });
 
-            $.ajax({
-                type: "GET",
-                url: AdminApp.getBackendURL() + "menu/roots",
-                dataType: "json",
-                contentType: "application/json; charset=utf-8",
-                success: function (response) {
-                    var dataSource = new kendo.data.HierarchicalDataSource({
-                        data: response,
-                        schema: MenuTreeModel
-                    });
-                    $("#treeMenus").data("kendoTreeView").setDataSource(dataSource);
-                }
-            });
+        $.ajax({
+            type: "GET",
+            url: AdminApp.getBackendURL() + "menu/roots",
+            dataType: "json",
+            contentType: "application/json; charset=utf-8",
+            success: function (response) {
+                var dataSource = new kendo.data.HierarchicalDataSource({
+                    data: response,
+                    schema: MenuTreeModel
+                });
+                $("#treeMenus").data("kendoTreeView").setDataSource(dataSource);
+            }
+        });
 
-            $("#treeMenus").kendoTreeView({
-                dragAndDrop: true,
-                dataTextField: "name",
-                drop: this.onTreeMenuDrop,
-                drag: this.onTreeMenuDrag
+        $("#treeMenus").kendoTreeView({
+            dragAndDrop: true,
+            dataTextField: "name",
+            drop: onTreeMenuDrop,
+            drag: onTreeMenuDrag
 
-            });
+        });
 
-            $("#btnMenuManagementHelp").kendoButton({
-                click: this.onShowHelp
-            });
-        },
+        $("#btnMenuManagementHelp").kendoButton({
+            click: onShowHelp
+        });
 
-        onShowHelp: function () {
+        function onShowHelp() {
             wnd = $("#menuManagementHelpWindow").kendoWindow({
                 title: "Yardım",
                 modal: true,
@@ -118,18 +118,18 @@ define([
 
             wnd.center().open();
 
-        },
+        };
 
-        onTreeMenuDrag: function (e) {
+        function onTreeMenuDrag(e) {
             // if the current status is "insert-top/middle/bottom"
             if (e.statusClass.indexOf("insert") >= 0) {
                 // deny the operation
                 e.setStatusClass("k-denied");
                 return;
             }
-        },
+        };
 
-        onTreeMenuDrop: function (e) {
+        function onTreeMenuDrop(e) {
 
             if (!e.valid) {
                 return;
@@ -150,7 +150,8 @@ define([
                 }
             });
 
-        }
-    });
+        };
+    };
+
     return MenuManagementView;
 });
