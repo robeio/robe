@@ -12,7 +12,7 @@ public class XLSXImporterTest {
     public void testImportStream() {
         XLSXImporter xlsxImporter = new XLSXImporter();
         try {
-            List<SamplePojo> samplePojos = xlsxImporter.importStream(SamplePojo.class, XLSXImporterTest.class.getClassLoader().getResourceAsStream("excelMapping.xlsx"));
+            List<SamplePojo> samplePojos = xlsxImporter.importStream(SamplePojo.class, XLSXImporterTest.class.getClassLoader().getResourceAsStream("sample.xlsx"));
 
             for (SamplePojo samplePojo : samplePojos) {
                 System.out.println("-------------------------------------------");

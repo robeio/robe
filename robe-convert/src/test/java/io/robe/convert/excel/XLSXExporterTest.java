@@ -1,7 +1,6 @@
 package io.robe.convert.excel;
 
 import io.robe.convert.SamplePojo;
-import io.robe.convert.excel.exporter.XLSExporter;
 import io.robe.convert.excel.exporter.XLSXExporter;
 import io.robe.convert.excel.importer.XLSXImporter;
 import org.junit.Test;
@@ -17,7 +16,7 @@ public class XLSXExporterTest {
 
         List<ArrayList> pojos = null;
         try {
-            pojos = xlsxImporter.importStream(SamplePojo.class, XLSImporterTest.class.getClassLoader().getResourceAsStream("excelMapping.xlsx"));
+            pojos = xlsxImporter.importStream(SamplePojo.class, XLSImporterTest.class.getClassLoader().getResourceAsStream("sample.xlsx"));
         } catch (IOException e) {
             e.printStackTrace();
         } catch (ClassNotFoundException e) {
@@ -28,7 +27,7 @@ public class XLSXExporterTest {
             e.printStackTrace();
         }
 
-        String yourPath = "/Users/kaanalkim/Desktop/excelDownload2222.xls";
+        String yourPath = "";
 
         OutputStream outputStream = null;
         try {

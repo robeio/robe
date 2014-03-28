@@ -3,7 +3,7 @@ package io.robe.convert.excel;
 
 import io.robe.convert.SamplePojo;
 import io.robe.convert.excel.exporter.XLSExporter;
-import io.robe.convert.excel.importer.XLSXImporter;
+import io.robe.convert.excel.importer.XLSImporter;
 import org.junit.Test;
 
 import java.io.*;
@@ -13,11 +13,11 @@ import java.util.List;
 public class XLSExporterTest {
     @Test
     public void exportStream() {
-        XLSXImporter xlsxImporter = new XLSXImporter();
+        XLSImporter xlsImporter = new XLSImporter();
 
         List<ArrayList> pojos = null;
         try {
-            pojos = xlsxImporter.importStream(SamplePojo.class, XLSImporterTest.class.getClassLoader().getResourceAsStream("excelMapping.xlsx"));
+            pojos = xlsImporter.importStream(SamplePojo.class, XLSImporterTest.class.getClassLoader().getResourceAsStream("sample.xls"));
         } catch (IOException e) {
             e.printStackTrace();
         } catch (ClassNotFoundException e) {
@@ -28,7 +28,7 @@ public class XLSExporterTest {
             e.printStackTrace();
         }
 
-        String yourPath = "/Users/kaanalkim/Desktop/excelDownload.xls";
+        String yourPath = "";
 
         OutputStream outputStream = null;
         try {
