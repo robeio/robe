@@ -1,7 +1,6 @@
 package io.robe.guice;
 
 import com.google.common.base.Preconditions;
-import com.google.inject.AbstractModule;
 import com.google.inject.Guice;
 import com.google.inject.Injector;
 import com.google.inject.Module;
@@ -49,25 +48,23 @@ public class GuiceBundle<T extends Configuration & HasGuiceConfiguration > imple
      *
      * @param configuration the configuration object
      * @param environment   the io.robe.admin's {@link com.yammer.dropwizard.config.Environment}
-     * @throws Exception if something goes wrong
      */
     @Override
-    public void run(T configuration, Environment environment) throws Exception {
+    public void run(T configuration, Environment environment) {
         try {
             if (configuration.getGuiceConfiguration() == null) {
                 LOGGER.error("GuiceBundle can not work without and configuration!");
             }
             createReflections(configuration.getGuiceConfiguration().getScanPackages());
-//            addModules(environment);
             createInjector(configuration, environment);
-            addProviders(environment, injector);
+            addProviders(environment);
             addHealthChecks(environment, injector);
-            addInjectableProviders(environment, injector);
-            addResources(environment, injector);
+            addInjectableProviders(environment);
+            addResources(environment);
             addTasks(environment, injector);
             addManaged(environment, injector);
         } catch (Exception e) {
-            e.printStackTrace();
+            LOGGER.error(e.getMessage(), e);
             System.exit(1);
         }
 
@@ -94,9 +91,9 @@ public class GuiceBundle<T extends Configuration & HasGuiceConfiguration > imple
         }
         ConfigurationBuilder configurationBuilder = new ConfigurationBuilder();
         FilterBuilder filterBuilder = new FilterBuilder();
-        for (String package_ : scanPackages) {
-            configurationBuilder.addUrls(ClasspathHelper.forPackage(package_));
-            filterBuilder.include(FilterBuilder.prefix(package_));
+        for (String packageName : scanPackages) {
+            configurationBuilder.addUrls(ClasspathHelper.forPackage(packageName));
+            filterBuilder.include(FilterBuilder.prefix(packageName));
         }
 
         configurationBuilder.filterInputsBy(filterBuilder).setScanners(new SubTypesScanner(), new TypeAnnotationsScanner());
@@ -111,25 +108,7 @@ public class GuiceBundle<T extends Configuration & HasGuiceConfiguration > imple
      */
     @Override
     public void initialize(Bootstrap<?> bootstrap) {
-    }
-
-    private void addModules(Environment environment) throws IllegalAccessException, InstantiationException {
-        //TODO<seray>: change to Module interface for query.
-        Set<Class<? extends AbstractModule>> moduleClasses = reflections.getSubTypesOf(AbstractModule.class);
-        moduleClasses.remove(DropwizardEnvironmentModule.class);
-        moduleClasses.remove(JerseyContainerModule.class);
-        for (Class<? extends AbstractModule> module : moduleClasses) {
-            try {
-                modules.add(module.newInstance());
-            } catch (InstantiationException e) {
-                LOGGER.error("Can not create instance of module: " + module, e);
-                throw e;
-            } catch (IllegalAccessException e) {
-                LOGGER.error("Can not create instance of module: " + module, e.getMessage());
-                throw e;
-            }
-            LOGGER.info("Added module: " + module);
-        }
+        LOGGER.trace("This is an empty method.");
     }
 
     private void addTasks(Environment environment, Injector injector) {
@@ -149,7 +128,7 @@ public class GuiceBundle<T extends Configuration & HasGuiceConfiguration > imple
     }
 
     @SuppressWarnings("rawtypes")
-    private void addInjectableProviders(Environment environment, Injector injector) {
+    private void addInjectableProviders(Environment environment) {
         Set<Class<? extends InjectableProvider>> injectableProviders = reflections.getSubTypesOf(InjectableProvider.class);
         for (Class<? extends InjectableProvider> injectableProvider : injectableProviders) {
             environment.addProvider(injectableProvider);
@@ -157,7 +136,7 @@ public class GuiceBundle<T extends Configuration & HasGuiceConfiguration > imple
         }
     }
 
-    private void addProviders(Environment environment, Injector injector) {
+    private void addProviders(Environment environment) {
         Set<Class<?>> providerClasses = reflections.getTypesAnnotatedWith(Provider.class);
         for (Class<?> provider : providerClasses) {
             environment.addProvider(provider);
@@ -165,7 +144,7 @@ public class GuiceBundle<T extends Configuration & HasGuiceConfiguration > imple
         }
     }
 
-    private void addResources(Environment environment, Injector injector) {
+    private void addResources(Environment environment) {
         Set<Class<?>> resourceClasses = reflections.getTypesAnnotatedWith(Path.class);
         for (Class<?> resource : resourceClasses) {
             environment.addResource(resource);
