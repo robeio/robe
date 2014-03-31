@@ -2,6 +2,8 @@ package io.robe.hibernate;
 
 import com.yammer.dropwizard.db.DatabaseConfiguration;
 
+import java.util.Arrays;
+
 public class HibernateConfiguration extends DatabaseConfiguration {
     private String[] scanPackages;
     private String[] entities;
@@ -11,7 +13,7 @@ public class HibernateConfiguration extends DatabaseConfiguration {
     }
 
     public void setScanPackages(String[] scanPackages) {
-        this.scanPackages = scanPackages;
+        this.scanPackages = Arrays.copyOf(scanPackages, scanPackages.length);
     }
 
     public String[] getEntities() {
@@ -19,6 +21,6 @@ public class HibernateConfiguration extends DatabaseConfiguration {
     }
 
     public void setEntities(String[] entities) {
-        this.entities = entities;
+        this.entities = Arrays.copyOf(entities, entities.length);
     }
 }
