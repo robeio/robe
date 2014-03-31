@@ -43,13 +43,15 @@ public class TokenBasedAuthResponseFilter implements ContainerResponseFilter {
 	}
 
 	private String extractAuthTokenFromCookieList(String cookieList) {
-		if (cookieList == null || cookieList.length() == 0)
-			return null;
-		String[] cookies = cookieList.split(";");
+        if (cookieList == null || cookieList.length() == 0) {
+            return null;
+        }
+        String[] cookies = cookieList.split(";");
 		for (String cookie : cookies) {
-			if (cookie.startsWith(tokenKey))
-				return cookie.substring(11);
-		}
+            if (cookie.startsWith(tokenKey)) {
+                return cookie.substring(11);
+            }
+        }
 		return null;
 	}
 }
