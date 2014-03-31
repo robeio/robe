@@ -7,20 +7,16 @@ import com.yammer.dropwizard.auth.Auth;
 import io.robe.auth.tokenbased.configuration.TokenBasedAuthConfiguration;
 
 import java.lang.annotation.Annotation;
+import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
 
-/**
- * Created by serayuzgur on 18/03/14.
- */
 public class TokenBasedAuthResourceFilterFactory implements ResourceFilterFactory{
 
-    private final TokenBasedAuthConfiguration configuration;
     private final List<ResourceFilter> filterList;
 
     public TokenBasedAuthResourceFilterFactory(TokenBasedAuthConfiguration configuration){
-        this.configuration = configuration;
-        filterList = new LinkedList();
+        filterList = new LinkedList<ResourceFilter>();
         filterList.add(new TokenBasedAuthResourceFilter(configuration));
     }
 
@@ -34,8 +30,8 @@ public class TokenBasedAuthResourceFilterFactory implements ResourceFilterFactor
      * is applied, in reverse order, from the last to first entry in the list.
      *
      * @param am the abstract method. This may be an instance
-     *           of the following: {@link AbstractResourceMethod},
-     *           {@link AbstractSubResourceMethod} or {@link AbstractSubResourceLocator}.
+     *           of the following: {@link com.sun.jersey.api.model.AbstractResourceMethod},
+     *           {@link com.sun.jersey.api.model.AbstractSubResourceMethod} or {@link com.sun.jersey.api.model.AbstractSubResourceLocator}.
      * @return the list of resource filter, otherwise an empty list or null if
      * no resource filters are associated with the method.
      */
@@ -48,6 +44,6 @@ public class TokenBasedAuthResourceFilterFactory implements ResourceFilterFactor
                 }
             }
         }
-        return null;
+        return Collections.emptyList();
     }
 }
