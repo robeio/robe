@@ -33,8 +33,8 @@ public class AuditedMethodDispatchProvider implements ResourceMethodDispatchProv
 		final RequestDispatcher dispatcher = provider.create(abstractResourceMethod);
 		final Audited audited = abstractResourceMethod.getAnnotation(Audited.class);
 		if (audited != null) {
-			return new AuditedMethodRequestDispatcher(dispatcher, LOGGER);
-		}
+            return new AuditedMethodRequestDispatcher(dispatcher);
+        }
 		return dispatcher;
 	}
 
