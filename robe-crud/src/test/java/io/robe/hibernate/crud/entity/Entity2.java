@@ -1,4 +1,4 @@
-package test.com.robe.hibernate.crud.entity;
+package io.robe.hibernate.crud.entity;
 
 import javax.persistence.Entity;
 

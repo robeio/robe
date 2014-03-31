@@ -1,4 +1,4 @@
-package com.robe.hibernate.crud;
+package io.robe.hibernate.crud;
 
 import japa.parser.ASTHelper;
 import japa.parser.ast.ImportDeclaration;
@@ -6,14 +6,7 @@ import japa.parser.ast.PackageDeclaration;
 import japa.parser.ast.body.Parameter;
 import japa.parser.ast.body.VariableDeclarator;
 import japa.parser.ast.body.VariableDeclaratorId;
-import japa.parser.ast.expr.AnnotationExpr;
-import japa.parser.ast.expr.Expression;
-import japa.parser.ast.expr.FieldAccessExpr;
-import japa.parser.ast.expr.MarkerAnnotationExpr;
-import japa.parser.ast.expr.MethodCallExpr;
-import japa.parser.ast.expr.NameExpr;
-import japa.parser.ast.expr.SingleMemberAnnotationExpr;
-import japa.parser.ast.expr.StringLiteralExpr;
+import japa.parser.ast.expr.*;
 
 import java.util.Arrays;
 import java.util.LinkedList;

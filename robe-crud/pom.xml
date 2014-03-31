@@ -13,6 +13,10 @@
     <version>${project.version}</version>
     <dependencies>
         <dependency>
+            <groupId>com.yammer.dropwizard</groupId>
+            <artifactId>dropwizard-testing</artifactId>
+        </dependency>
+        <dependency>
             <groupId>com.google.code.javaparser</groupId>
             <artifactId>javaparser</artifactId>
             <version>1.0.11</version>

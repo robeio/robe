@@ -1,14 +1,12 @@
-package com.robe.hibernate.crud;
+package io.robe.hibernate.crud;
 
-import static org.reflections.ReflectionUtils.getAllFields;
-import static org.reflections.ReflectionUtils.getAllMethods;
-import static org.reflections.ReflectionUtils.withAnnotation;
-import static org.reflections.ReflectionUtils.withModifier;
-import static org.reflections.ReflectionUtils.withParametersCount;
-import static org.reflections.ReflectionUtils.withPrefix;
+import japa.parser.ast.ImportDeclaration;
+import japa.parser.ast.body.BodyDeclaration;
+import japa.parser.ast.expr.NameExpr;
+import org.reflections.Reflections;
 
-
-
+import javax.persistence.Column;
+import javax.persistence.Entity;
 import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileWriter;
@@ -16,19 +14,9 @@ import java.io.IOException;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Properties;
-import java.util.Set;
+import java.util.*;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-
-import japa.parser.ast.ImportDeclaration;
-import japa.parser.ast.body.BodyDeclaration;
-import japa.parser.ast.expr.NameExpr;
-import org.reflections.Reflections;
+import static org.reflections.ReflectionUtils.*;
 
 public class HibernateCrud {
 

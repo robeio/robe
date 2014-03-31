@@ -1,28 +1,12 @@
-package com.robe.hibernate.crud;
+package io.robe.hibernate.crud;
 
 import japa.parser.ASTHelper;
 import japa.parser.ast.CompilationUnit;
 import japa.parser.ast.ImportDeclaration;
-import japa.parser.ast.body.BodyDeclaration;
-import japa.parser.ast.body.ClassOrInterfaceDeclaration;
-import japa.parser.ast.body.FieldDeclaration;
-import japa.parser.ast.body.MethodDeclaration;
-import japa.parser.ast.body.ModifierSet;
-import japa.parser.ast.expr.AnnotationExpr;
-import japa.parser.ast.expr.AssignExpr;
-import japa.parser.ast.expr.BinaryExpr;
+import japa.parser.ast.body.*;
+import japa.parser.ast.expr.*;
 import japa.parser.ast.expr.BinaryExpr.Operator;
-import japa.parser.ast.expr.FieldAccessExpr;
-import japa.parser.ast.expr.MarkerAnnotationExpr;
-import japa.parser.ast.expr.MethodCallExpr;
-import japa.parser.ast.expr.NameExpr;
-import japa.parser.ast.expr.StringLiteralExpr;
-import japa.parser.ast.expr.VariableDeclarationExpr;
-import japa.parser.ast.stmt.BlockStmt;
-import japa.parser.ast.stmt.IfStmt;
-import japa.parser.ast.stmt.ReturnStmt;
-import japa.parser.ast.stmt.Statement;
-import japa.parser.ast.stmt.ThrowStmt;
+import japa.parser.ast.stmt.*;
 import japa.parser.ast.type.ClassOrInterfaceType;
 
 import java.util.ArrayList;
