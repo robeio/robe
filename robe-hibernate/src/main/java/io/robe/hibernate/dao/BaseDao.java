@@ -59,11 +59,6 @@ public class BaseDao<T extends BaseEntity> extends AbstractDAO<T> {
 	 * @return updated version of the instance.
 	 */
 	public T update(T entity) {
-
-//		T entity2 = findById(entity.getOid());
-//		BeanUtils.copyProperties(entity2, entity);
-//		entity2 = persist(entity2);
-//		flush();
 		entity = persist(entity);
 		return entity;
 

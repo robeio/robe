@@ -7,9 +7,12 @@ import com.yammer.dropwizard.config.Environment;
 import io.robe.hibernate.HasHibernateConfiguration;
 import io.robe.hibernate.HibernateBundle;
 import io.robe.hibernate.HibernateConfiguration;
+import io.robe.quartz.annotations.OnApplicationStart;
+import io.robe.quartz.annotations.OnApplicationStop;
+import io.robe.quartz.annotations.Scheduled;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
-import org.hibernate.criterion.Property;
+import org.hibernate.criterion.Restrictions;
 import org.quartz.*;
 import org.quartz.impl.StdSchedulerFactory;
 import org.reflections.Reflections;
@@ -39,13 +42,13 @@ public class HibernateManagableQuartzBundle<T extends Configuration & HasQuartzC
 
 
     @Override
-    public void run(T configuration, Environment environment) throws Exception {
+    public void run(T configuration, Environment environment) throws SchedulerException {
         this.configuration = configuration;
         initializeScheduler(hibernateBundle);
     }
 
 
-    public void initializeScheduler(HibernateBundle hibernateBundle) throws Exception {
+    public void initializeScheduler(HibernateBundle hibernateBundle) throws SchedulerException {
         SessionFactory sessionFactory = hibernateBundle.getSessionFactory();
         Session session = sessionFactory.openSession();
 
@@ -79,20 +82,18 @@ public class HibernateManagableQuartzBundle<T extends Configuration & HasQuartzC
         String[] jobPackage = quartzConfiguration.getScanPackages();
         Set<Class<? extends Job>> jobClasses;
         for (String myPackage : jobPackage) {
-            LOGGER.info("Job class packages : "+myPackage);
+            LOGGER.info("Job class packages : " + myPackage);
             Reflections reflections = new Reflections(myPackage);
             jobClasses = reflections.getSubTypesOf(Job.class);
 
             onStartJobs = new HashSet<Class<? extends Job>>();
             onStopJobs = new HashSet<Class<? extends Job>>();
 
-
             for (Class<? extends Job> clazz : jobClasses) {
                 if (clazz.isAnnotationPresent(OnApplicationStart.class))
                     onStartJobs.add(clazz);
                 if (clazz.isAnnotationPresent(OnApplicationStop.class))
                     onStopJobs.add(clazz);
-
             }
             scheduleJob(jobClasses, scheduler, session);
         }
@@ -107,10 +108,12 @@ public class HibernateManagableQuartzBundle<T extends Configuration & HasQuartzC
 
     /**
      * Schedule all classes with @quartz annotation
+     * If @Sheduled.Manager is RUN_TIME, it will schedule jobs with specified cron at run time
+     * If @Sheduled.Manager is REMOTE_EXTERNAL, it will schedule durable job; after ROBE start, user could create CRON expression on admin panel
      *
-     * @param jobClassses
-     * @param scheduler
-     * @param session
+     * @param jobClassses Classes which implements job interface
+     * @param scheduler   Quartz Job Scheduler
+     * @param session     Hibernate session
      * @return
      * @throws SchedulerException
      */
@@ -120,31 +123,47 @@ public class HibernateManagableQuartzBundle<T extends Configuration & HasQuartzC
             Scheduled scheduledAnnotation = jobClass.getAnnotation(Scheduled.class);
             if (scheduledAnnotation != null) {
                 String jobName = jobClass.getName();
-                if (scheduledAnnotation.manager().equals(Scheduled.Manager.ANNOTATION)) {
+                if (scheduledAnnotation.manager().equals(Scheduled.Manager.RUN_TIME)) {
+                    JobKey jobKey = JobKey.jobKey(jobName, Scheduled.STATIC_GROUP);
                     JobDetail job = newJob(jobClass).
-                            withIdentity(jobName).
+                            withIdentity(jobKey).
                             build();
+                    //TODO: DevGuy may add multiple cron expression inside of annotation
                     Trigger trigger = buildTrigger(scheduledAnnotation);
                     Set<Trigger> triggers = new LinkedHashSet<Trigger>();
                     triggers.add(trigger);
                     scheduler.scheduleJob(job, triggers, true);
-                    LOGGER.info("Scheduled job : " + job.toString() + " with trigger : " + trigger.toString());
-                } else if (scheduledAnnotation.manager().equals(Scheduled.Manager.DB)) {
-                    List<QuartzJob> jobList = session.createCriteria(QuartzJob.class).
-                            add(Property.forName("jobClassName").eq(jobName)).list();
-                    if (jobList.size() < 1) {
-                        QuartzJob quartzJob = new QuartzJob();
+                    LOGGER.info("Scheduled job : " + job.toString() + " with trigger : " + trigger.toString() + " started at : " + new Date());
+                } else if (scheduledAnnotation.manager().equals(Scheduled.Manager.REMOTE_EXTERNAL)) {
+                    QuartzJob quartzJob;
+                    if ((quartzJob = getOldJob(jobName, session)) != null) {
+                        /*
+                            ! - Quartz Job Configuration Dependency - !
+                            If DevGuy selects Ram job store, jobs will be deactive when server restarts,
+                            If DevGuy selects DB job store, jobs which are already active stays in active state when server starts
+                        */
+                        if (configuration.getQuartzConfiguration().getJobStoreClass().equals("org.quartz.simpl.RAMJobStore"))
+                            deactivateAllTriggers(quartzJob, session);
+                        LOGGER.info(jobName + " named job recovered from REMOTE_EXTERNAL ");
+                    } else {
+                        quartzJob = new QuartzJob();
                         quartzJob.setJobClassName(jobName);
-                        quartzJob.setCronExpression(scheduledAnnotation.cron());
                         quartzJob.setSchedulerName(scheduler.getSchedulerName());
-                        quartzJob.setActive(false);
-
-                        JobKey jobKey = JobKey.jobKey(jobName, "DynamicCronJob");
-                        JobDetail jobDetail = newJob(jobClass).storeDurably().withIdentity(jobKey).build();
-                        scheduler.addJob(jobDetail, true);
+                        quartzJob.setDescription(scheduledAnnotation.description());
                         session.persist(quartzJob);
+
+                        QuartzTrigger quartzTrigger = new QuartzTrigger();
+                        quartzTrigger.setCronExpression(scheduledAnnotation.cron());
+                        quartzTrigger.setJobId(quartzJob.getOid());
+                        quartzTrigger.setFireTime(scheduledAnnotation.startTime());
+                        session.persist(quartzTrigger);
+
                         LOGGER.info(jobName + " Job saved to database");
                     }
+
+                    JobKey jobKey = JobKey.jobKey(quartzJob.getOid(), Scheduled.DYNAMIC_GROUP);
+                    JobDetail jobDetail = newJob(jobClass).storeDurably().withIdentity(jobKey).build();
+                    scheduler.addJob(jobDetail, true);
                 }
             }
         }
@@ -153,20 +172,53 @@ public class HibernateManagableQuartzBundle<T extends Configuration & HasQuartzC
     }
 
     /**
+     * Make all triggers 'active' status to false
+     *
+     * @param quartzJob QuartzJob which has triggers
+     * @param session Hibernate session
+     */
+    private void deactivateAllTriggers(QuartzJob quartzJob, Session session) {
+        List<QuartzTrigger> quartzTriggerList = session.createCriteria(QuartzTrigger.class)
+                .add(Restrictions.eq("jobId", quartzJob.getOid()))
+                .add(Restrictions.eq("active", true)).list();
+        if (!quartzTriggerList.isEmpty()) {
+            for (QuartzTrigger quartTrigger : quartzTriggerList) {
+                quartTrigger.setActive(false);
+                session.persist(quartTrigger);
+            }
+        }
+        LOGGER.info("All triggers belongs to : " + quartzJob.getJobClassName() + " deactivated..!");
+    }
+
+    /**
      * Builds cron trigger with parameters of @quartz annotation
      *
-     * @param scheduledAnnotation
+     * @param scheduledAnnotation Annotation which has cron expression
      * @return trigger
      */
     private Trigger buildTrigger(Scheduled scheduledAnnotation) {
         TriggerBuilder<Trigger> trigger = newTrigger();
         if (scheduledAnnotation.cron() != null && scheduledAnnotation.cron().trim().length() > 0) {
-            trigger.withSchedule(CronScheduleBuilder.cronSchedule(scheduledAnnotation.cron()));
-            LOGGER.info("Trigger set to start now");
+            trigger.startAt(new Date(scheduledAnnotation.startTime())).withSchedule(CronScheduleBuilder.cronSchedule(scheduledAnnotation.cron()));
+            LOGGER.info("Trigger set to start at" + new Date(scheduledAnnotation.startTime()) + " with this cron definition : " + scheduledAnnotation.cron());
         } else
-            throw new IllegalArgumentException("You need cron definition for the @Scheduled annotation");
+            throw new IllegalArgumentException("You need to define cron expression if you want to set cron expression from admin panel, choose manager REMOTE_EXTERNAL");
 
         return trigger.build();
+    }
+
+    /**
+     * If that job parameter exist in database gets old job
+     *
+     * @param jobClassName Quartz Job class name
+     * @param session   Hibernate session
+     * @return
+     */
+    private QuartzJob getOldJob(String jobClassName, Session session) {
+        List list = session.createCriteria(QuartzJob.class).add(Restrictions.eq("jobClassName", jobClassName)).list();
+        if (list.size() < 1)
+            return null;
+        return (QuartzJob) list.get(0);
     }
 
     public Scheduler getScheduler() {

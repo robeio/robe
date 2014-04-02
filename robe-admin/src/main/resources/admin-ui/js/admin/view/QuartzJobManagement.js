@@ -4,9 +4,10 @@ var QuartzJobManagement;
 define([
     'text!html/QuartzJobManagement.html',
     'admin/data/DataSources',
-
+    'admin/Models',
     'kendo/kendo.grid.min',
-    'robe/view/RobeView'
+    'robe/view/RobeView',
+    'kendo/kendo.multiselect.min'
 ], function (view) {
 
     QuartzJobManagement = new RobeView("QuartzJobManagement", view, "container");
@@ -21,7 +22,18 @@ define([
             dataSource: QuartzJobDataSource.get(),
             sortable: true,
             editable: "popup",
+            pageable: true,
+            detailInit: detailInit,
+            dataBound: function() {
+                this.expandRow(this.tbody.find("tr.k-master-row").first());
+            },
+            type: "odata",
             columns: [
+                {
+                    field: "oid",
+                    title: "OID",
+                    hidden: true
+                },
                 {
                     field: "schedulerName",
                     title: "Scheduler Name"
@@ -31,32 +43,21 @@ define([
                     title: "Job Name"
                 },
                 {
-                    field: "cronExpression",
-                    title: "Cron Expression",
+                    field: "description",
+                    title: "Description",
                     editor: cronExpressionEditor
                 },
                 {
-                    field: "active",
-                    title: " Active"
-                },
-                {
-                    command: [
-                        {
-                            name: "edit",
-                            text: {
-                                edit: "&nbsp;"
-                            },
-                            className: "grid-command-iconfix"
-                        },
-                        {
-                            name: "fire",
-                            text: "R",
-                            className: "grid-command-iconfix",
-                            click: fire
-                        }
+                    command:[
+                     {
+                          name: "add",
+                          text: "",
+                          className: "grid-command-iconfix",
+                          imageClass: "k-icon k-si-plus",
+                          click: addTrigger
+                     },
                     ],
-                    title: "&nbsp;",
-                    width: "80px"
+                     width: "90px"
                 }
             ]
         });
@@ -64,6 +65,84 @@ define([
         $("#btnQuartzJobManagementHelp").kendoButton({
             click: onBtnQuartzJobManagementHelp
         });
+
+        function detailInit(e) {
+            $("<div class='gridTriggers'/>").appendTo(e.detailCell).kendoGrid({
+                editable: "popup",
+                dataSource:{
+                    transport: {
+                        read: {
+                            type: "GET",
+                            url: AdminApp.getBackendURL() + "trigger",
+                            dataType: "json",
+                            contentType: "application/json"
+                        },
+                        update: {
+                            type: "POST",
+                            url: AdminApp.getBackendURL() + "trigger/update",
+                            dataType: "json",
+                            contentType: "application/json"
+                        },
+                        destroy: {
+                            type: "DELETE",
+                            url: AdminApp.getBackendURL() + "trigger",
+                            dataType: "json",
+                            contentType: "application/json"
+                        },
+                        parameterMap: function (options, operation) {
+                            if (operation !== "read") {
+                                return kendo.stringify(options);
+                            }
+                        }
+                    },
+                    schema: {
+                        model: TriggerModel
+                    },
+                    pageSize: 5,
+                    filter: { field: "jobId", operator: "eq", value: e.data.oid }
+                },
+                scrollable: false,
+                sortable: true,
+                pageable: false,
+                columns: [
+                   {
+                        command: [
+                          {
+                              name: "destroy",
+                              text: "",
+                              className: "grid-command-iconfix",
+                          },
+                          {
+                              name: "edit",
+                              text: {
+                                  edit: ""
+                              },
+                              className: "grid-command-iconfix"
+                          },
+                          {
+                              name: "run",
+                              text: "",
+                              imageClass:"k-icon k-i-arrow-e",
+                              className: "k-link k-pager-nav",
+                              click: fire
+                          },
+                          {
+                              name: "stop",
+                              text: "",
+                              className: "grid-command-iconfix",
+                              imageClass:"k-icon k-i-seek-e",
+                              click: stop
+                          }
+                        ],
+                        title: "&nbsp;",
+                        width: "90px"
+                   },
+                   {   field: "cronExpression", title: "Cron Expression", editor: cronExpressionEditor },
+                   {   field: "fireTime", title:"Fire Time", template :"#=(fireTime==-1)?'Start Immediately': fireTime #"  },
+                   {   field: "active", title:"Is Active" }
+                ]
+            });
+        }
 
         function onBtnQuartzJobManagementHelp() {
             var wnd = $("#quartzJobManagementHelpWindow").kendoWindow({
@@ -80,11 +159,44 @@ define([
         function fire(e) {
             $.ajax({
                 type: "POST",
-                url: AdminApp.getBackendURL() + "quartzJob/fire",
+                url: AdminApp.getBackendURL() + "trigger/run",
                 dataType: "json",
                 data: kendo.stringify(this.dataItem($(e.currentTarget).closest("tr"))),
-                contentType: "application/json; charset=utf-8"
+                contentType: "application/json; charset=utf-8",
+                success: function (response) {
+                    $('#gridJobs').data('kendoGrid').dataSource.read();
+                    $('#gridJobs').data('kendoGrid').refresh();
+                }
+            });
+        }
 
+        function stop(e) {
+            $.ajax({
+                type: "POST",
+                url: AdminApp.getBackendURL() + "trigger/stop",
+                dataType: "json",
+                data: kendo.stringify(this.dataItem($(e.currentTarget).closest("tr"))),
+                contentType: "application/json; charset=utf-8",
+                 success: function (response) {
+                    console.log(response);
+                    $('#gridJobs').data('kendoGrid').dataSource.read();
+                    $('#gridJobs').data('kendoGrid').refresh();
+                }
+            });
+        }
+
+        function addTrigger(e) {
+            $.ajax({
+                type: "POST",
+                url: AdminApp.getBackendURL() + "trigger/add",
+                dataType: "json",
+                data: kendo.stringify(this.dataItem($(e.currentTarget).closest("tr"))),
+                contentType: "application/json; charset=utf-8",
+                 success: function (response) {
+                    console.log(response);
+                    $('#gridJobs').data('kendoGrid').dataSource.read();
+                    $('#gridJobs').data('kendoGrid').refresh();
+                }
             });
         }
 
@@ -323,7 +435,7 @@ define([
                 enable: false
             })
 
-            if (options.model.cronExpression != "") {
+            if (options.model.cronExpression != "" && options.model.cronExpression !=null) {
                 setDefaultValues(options.model.cronExpression);
             } else {
                 setDefaultValues("0 0 0 0 0 ?");

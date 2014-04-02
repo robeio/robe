@@ -14,7 +14,7 @@ hibernate:
    # the JDBC URL
    url: jdbc:mysql://localhost:3306/robe
    # Hibernate ScanPackages. Accepts multiple package names separated with comma ',' with a trailing  space ' '
-   scanPackages: [io.robe.admin.hibernate.entity]
+   scanPackages: [io.robe.admin.hibernate.entity,io.robe.quartz]
    # Entities to be included. Accepts multiple class names separated with comma ',' with a trailing  space ' '
    # entities: [io.robe.hibernate.entity.User]
    # Properties
@@ -44,10 +44,10 @@ mail:
 quartz:
   instanceName: QuartzScheduler
   threadPoolClass: org.quartz.simpl.SimpleThreadPool
-  threadCount: 5
-  threadPriority: 5
-  jobStoreClass: org.quartz.simpl.RAMJobStore # org.quartz.impl.jdbcjobstore.JobStoreTX
-  scanPackages: [io.robe.timely]
+  threadCount: 10
+  threadPriority: 8
+  jobStoreClass: org.quartz.simpl.RAMJobStore #org.quartz.impl.jdbcjobstore.JobStoreTX
+  scanPackages: [io.robe.admin.timely]
   driverDelegateClass: org.quartz.impl.jdbcjobstore.StdJDBCDelegate
   tablePrefix: QRTZ_
   maxConnections: 30

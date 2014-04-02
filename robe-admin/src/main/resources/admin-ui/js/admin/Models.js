@@ -1,5 +1,5 @@
 //@ sourceURL=Models.js
-var UserModel,RoleModel,MenuModel,MenuTreeModel,ServiceModel,MailManagementModel,SystemLanguageModel,QuartzJobModel;
+var UserModel,RoleModel,MenuModel,MenuTreeModel,ServiceModel,MailManagementModel,SystemLanguageModel,QuartzJobModel,TriggerModel;
 require([
     'kendo/kendo.data.min','robe/Validations'], function(){
 
@@ -201,7 +201,8 @@ require([
             oid: {
                 editable: false,
                 nullable: true,
-                type:"string"
+                type:"string",
+                hidden: true
             },
             schedulerName: {
                 editable: false,
@@ -213,20 +214,43 @@ require([
                 nullable: true,
                 type:"string"
             },
+            description: {
+                editable: false,
+                nullable: true,
+                type:"string"
+            }
+        }
+    });
+
+    TriggerModel = kendo.data.Model.define({
+        id: "oid",
+        fields: {
+            oid: {
+                editable: false,
+                nullable: false,
+                type: "string",
+                hidden: true
+            },
+            jobId: {
+                editable: true,
+                nullable: true,
+                type: "string",
+                hidden: true
+            },
             cronExpression: {
                 editable: true,
                 nullable: true,
-                type:"string"
+                type: "string"
             },
             active: {
-                editable: false,
+                editable: true,
                 nullable: true,
-                type:"boolean"
+                type: "boolean"
             },
             fireTime: {
-                editable: false,
+                editable: true,
                 nullable: true,
-                type:"string"
+                type: "string"
             }
         }
     });

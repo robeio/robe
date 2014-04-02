@@ -1,5 +1,5 @@
 //@ sourceURL=Datasources.js
-var UserDataSource, RoleDataSource, GroupedRoleDataSource, UnGroupedRoleDataSource, MenuDataSource, ServiceDataSource, MailManagementDataSource, SystemLanguageDatasource, QuartzJobDataSource;
+var UserDataSource, RoleDataSource, GroupedRoleDataSource, UnGroupedRoleDataSource, MenuDataSource, ServiceDataSource, MailManagementDataSource, SystemLanguageDatasource, QuartzJobDataSource,TriggerDataSource;
 define([
     'admin/data/SingletonDataSource', 'admin/Models'], function (S, HDS) {
     console.log("Loading : Datasources");
@@ -234,6 +234,44 @@ define([
             model: QuartzJobModel
         }
     });
+
+//
+//    TriggerDataSource = new SingletonDataSource("TriggerDataSource", {
+//        transport: {
+//            read: {
+//                type: "GET",
+//                url: AdminApp.getBackendURL() + "trigger",
+//                dataType: "json",
+//                contentType: "application/json"
+//            },
+//            update: {
+//                type: "POST",
+//                url: AdminApp.getBackendURL() + "trigger/update",
+//                dataType: "json",
+//                contentType: "application/json"
+//            },
+//            create: {
+//                type: "PUT",
+//                url: AdminApp.getBackendURL() + "trigger",
+//                dataType:"json",
+//                contentType: "application/json"
+//            },
+//            parameterMap: function (options, operation) {
+//                if (operation !== "read") {
+//                    return kendo.stringify(options);
+//                }
+//            }
+//        },
+//        batch: false,
+//        schema: {
+//            model: TriggerModel
+//        },
+//        serverPaging: true,
+//        serverSorting: true,
+//        serverFiltering: true,
+//        pageSize: 5,
+//        filter: { field: "jobId", operator: "eq", value: e.data.oid }
+//    });
 
     console.log("Finished : Datasources");
 });

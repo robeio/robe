@@ -41,7 +41,7 @@ public class RobeService extends Service<RobeServiceConfiguration> {
 
     /**
      * Adds
-     * Hibernate bundle for DB connection
+     * Hibernate bundle for REMOTE_EXTERNAL connection
      * Asset bundle for io.robe.admin screens and
      * Class scanners for
      * <ul>
