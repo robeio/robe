@@ -25,15 +25,20 @@ public class HibernateCrud {
         String packageScan = (String)properties.get("packageScan");
         String packageResource = (String)properties.get("packageResource");
         String packageDao=(String)properties.get("packageDao");
-        Reflections reflections = new Reflections(packageScan);
+        Set<Class<?>> scanClasses = getEntityClasses(packageScan);
 
-        Set<Class<?>> scanClasses = new HashSet<Class<?>>();
+        if (scanClasses.isEmpty()) {
+            System.out.println("Exiting: No entity found!");
+            return;
+        }
 
-        scanClasses.addAll(reflections.getTypesAnnotatedWith(Entity.class));
-        String fileDaoLocation="./robe-crud/src/main/java/"+packageDao.replace('.', '/');
+        String fileDaoLocation = properties.getProperty("projectPath", "./") + "/src/main/java/" + packageDao.replace('.', '/');
+        System.out.println("DAO: " + fileDaoLocation);
         new File(fileDaoLocation).mkdirs();
 
-        String fileResourceLocation="./robe-crud/src/main/java/"+packageResource.replace('.', '/');
+        String fileResourceLocation = properties.getProperty("projectPath", ".") + "/src/main/java/" + packageResource.replace('.', '/');
+        System.out.println("RESOURCES: " + fileResourceLocation);
+
         new File(fileResourceLocation).mkdirs();
 
         for (Class<?> classes : scanClasses) {
@@ -108,7 +113,16 @@ public class HibernateCrud {
         }
     }
 
-	public static void main(String[] args) throws IOException {
+    public static Set<Class<?>> getEntityClasses(String packageScan) {
+        Reflections reflections = new Reflections(packageScan);
+
+        Set<Class<?>> scanClasses = new HashSet<Class<?>>();
+
+        scanClasses.addAll(reflections.getTypesAnnotatedWith(Entity.class));
+        return scanClasses;
+    }
+
+    public static void main(String[] args) throws IOException {
 
 
 
