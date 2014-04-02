@@ -59,10 +59,8 @@ public class BaseDao<T extends BaseEntity> extends AbstractDAO<T> {
 	 * @return updated version of the instance.
 	 */
 	public T update(T entity) {
-		entity = persist(entity);
-		return entity;
-
-	}
+        return persist(entity);
+    }
 
 	/**
 	 * Delete a record for the given entity instance.

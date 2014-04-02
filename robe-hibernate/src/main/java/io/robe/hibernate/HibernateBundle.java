@@ -43,11 +43,11 @@ public class HibernateBundle<T extends Configuration & HasHibernateConfiguration
 	 *
 	 * @param configuration configuration to read
 	 * @param environment   environment to add
-	 * @throws Exception
-	 */
+     * @throws ClassNotFoundException
+     */
 	@Override
-	public final void run(T configuration, Environment environment) throws Exception {
-		final HibernateConfiguration databaseConfiguration = getDatabaseConfiguration(configuration);
+    public final void run(T configuration, Environment environment) throws ClassNotFoundException {
+        final HibernateConfiguration databaseConfiguration = getDatabaseConfiguration(configuration);
 		this.sessionFactory = sessionFactoryFactory.build(environment, databaseConfiguration,
                 getEntities(databaseConfiguration.getScanPackages(),
                 databaseConfiguration.getEntities()));
@@ -59,8 +59,8 @@ public class HibernateBundle<T extends Configuration & HasHibernateConfiguration
 
 		Set<Class<?>> classes = new HashSet<Class<?>>();
         if(packages != null){
-            for(String package_ : packages){
-                Reflections reflections = new Reflections(package_);
+            for (String packageName : packages) {
+                Reflections reflections = new Reflections(packageName);
                 classes.addAll(reflections.getTypesAnnotatedWith(Entity.class));
             }
         }
@@ -68,10 +68,11 @@ public class HibernateBundle<T extends Configuration & HasHibernateConfiguration
             for(String entity : entities){
                 try {
                     Class entityClass = Class.forName(entity);
-                    if ((entityClass.isAnnotationPresent(Entity.class)))
+                    if (entityClass.isAnnotationPresent(Entity.class)) {
                         classes.add(entityClass);
-                    else
-                        LOGGER.warn("Class is not annotated with Entity: " + entity );
+                    } else {
+                        LOGGER.warn("Class is not annotated with Entity: " + entity);
+                    }
                 } catch (ClassNotFoundException e) {
                     LOGGER.warn("Can't load class: " + entity , e);
                 }

@@ -20,17 +20,16 @@ public class AuditedMethodRequestDispatcher implements RequestDispatcher {
 
 	private static final Set<String> REDACTED_HEADERS = ImmutableSet.of(HttpHeaders.AUTHORIZATION);
 	private final RequestDispatcher dispatcher;
-	private final Logger LOGGER;
+    private static final Logger LOGGER = Logger.getLogger(AuditedMethodDispatchProvider.class.getName());
 
-	/**
-	 * {@inheritDoc}
+
+    /**
+     * {@inheritDoc}
 	 *
 	 * @param dispatcher Request dispatcher
-	 * @param LOGGER     Logger that will be used for extra logging.
 	 */
-	public AuditedMethodRequestDispatcher(RequestDispatcher dispatcher, Logger LOGGER) {
-		this.dispatcher = Preconditions.checkNotNull(dispatcher);
-		this.LOGGER = Preconditions.checkNotNull(LOGGER);
+    public AuditedMethodRequestDispatcher(RequestDispatcher dispatcher) {
+        this.dispatcher = Preconditions.checkNotNull(dispatcher);
 	}
 
 	/**

@@ -2,16 +2,15 @@ package io.robe.convert.csv;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import io.robe.convert.MappingProperty;
-import io.robe.convert.csv.supercsv.ParseBigDecimalFix;
 import io.robe.convert.csv.supercsv.ParseDateFix;
-import org.supercsv.cellprocessor.*;
+import org.supercsv.cellprocessor.CellProcessorAdaptor;
+import org.supercsv.cellprocessor.Optional;
 import org.supercsv.cellprocessor.constraint.NotNull;
 import org.supercsv.cellprocessor.ift.CellProcessor;
 
 import java.lang.reflect.Field;
-import java.math.BigDecimal;
 import java.util.Collection;
-import java.util.Date;
+import java.util.Locale;
 
 public class CSVUtil {
 
@@ -45,26 +44,21 @@ public class CSVUtil {
     }
 
     static CellProcessorAdaptor decideAdaptor(Field field) {
-        String fieldType = field.getType().toString();
-        if (fieldType.equals("int")) {
-            return new ParseInt();
-        } else if (fieldType.equals("long")) {
-            return new ParseLong();
-        } else if (fieldType.equals("double")) {
-            return new ParseDouble();
-        } else if (fieldType.equals(BigDecimal.class.toString())) {
-            return new ParseBigDecimalFix();
-        } else if (fieldType.equals(Date.class.toString())) {
+        String fieldType = field.getType().getSimpleName().toUpperCase(Locale.ENGLISH);
+        if(fieldType.equals("DATE")){
             if(field.getAnnotation(JsonFormat.class) != null){
                 String format = field.getAnnotation(JsonFormat.class).pattern();
                 return new ParseDateFix(format);
             }else{
                 throw  new RuntimeException("Date type must have SimpleDateFormat annotation with a valid format.");
             }
-        } else if (fieldType.equals("char")) {
-            return new ParseChar();
-        } else {
-            return null;
+        }else{
+            return Parsers.valueOf(fieldType).getParser();
         }
+
+
+
+
+
     }
 }

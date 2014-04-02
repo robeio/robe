@@ -26,79 +26,82 @@ import java.util.List;
  */
 public class TokenBasedAuthInjectable<T extends IsToken> extends AbstractHttpContextInjectable<T> {
 
-	private static final Logger LOGGER = LoggerFactory.getLogger(TokenBasedAuthInjectable.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(TokenBasedAuthInjectable.class);
 
-	private final Authenticator<String, T> authenticator;
+    private final Authenticator<String, T> authenticator;
 
-    private final  String tokenKey;
+    private final String tokenKey;
 
-	/**
-	 * {@inheritDoc}
-	 *
-	 * @param authenticator The authenticator which will be used with Authenticate controls.
-	 */
-	protected TokenBasedAuthInjectable(Authenticator<String, T> authenticator,TokenBasedAuthConfiguration configuration) {
-		this.authenticator = authenticator;
+    /**
+     * {@inheritDoc}
+     *
+     * @param authenticator The authenticator which will be used with Authenticate controls.
+     */
+    protected TokenBasedAuthInjectable(Authenticator<String, T> authenticator, TokenBasedAuthConfiguration configuration) {
+        this.authenticator = authenticator;
         this.tokenKey = configuration.getTokenKey();
-	}
+    }
 
-	/**
-	 * This method gets the context and does all necessary controls.
-	 * Returns injectable or throws {@link javax.ws.rs.WebApplicationException} with response type {@link Response.Status} UNAUTHORIZED
-	 *
-	 * @param c The http context of the inject request.
-	 * @return Returns the desired injectable.
-	 */
-	@Override
-	public T getValue(HttpContext c) {
+    /**
+     * This method gets the context and does all necessary controls.
+     * Returns injectable or throws {@link javax.ws.rs.WebApplicationException} with response type {@link Response.Status} UNAUTHORIZED
+     *
+     * @param c The http context of the inject request.
+     * @return Returns the desired injectable.
+     */
+    @Override
+    public T getValue(HttpContext c) {
 
-		Cookie tokenList = c.getRequest().getCookies().get(tokenKey);
-		if (tokenList == null || tokenList.getValue().length() == 0) {
-			throw new WebApplicationException(Response.Status.UNAUTHORIZED);
-		}
+        Cookie tokenList = c.getRequest().getCookies().get(tokenKey);
+        if (tokenList == null || tokenList.getValue().length() == 0) {
+            throw new WebApplicationException(Response.Status.UNAUTHORIZED);
+        } else if (nullOrEmpty(tokenList.getValue())) {
+            throw new WebApplicationException(Response.Status.UNAUTHORIZED);
+        } else {
+            //Validate old token for auth token
+            try {
+                Optional<T> result = authenticator.authenticate(tokenList.getValue());
+                if (!result.isPresent()) {
+                    throw new WebApplicationException(Response.Status.UNAUTHORIZED);
+                } else if (!isAuthorized(result.get(), ((WebApplicationContext) c).getMatchedTemplates(), c.getRequest().getMethod())) {
+                    throw new WebApplicationException(Response.Status.FORBIDDEN);
+                } else {
+                    return result.get();
+                }
+            } catch (IllegalArgumentException e) {
+                LOGGER.debug("BasicPair decoding credentials", e);
+                throw new WebApplicationException(Response.Status.PRECONDITION_FAILED);
+            } catch (AuthenticationException e) {
+                LOGGER.warn("BasicPair authenticating credentials", e);
+                throw new WebApplicationException(Response.Status.PRECONDITION_FAILED);
+            }
+        }
+    }
 
-		String token = tokenList.getValue();
-		if (token == null || token.length() == 0) {
-			throw new WebApplicationException(Response.Status.UNAUTHORIZED);
-		}
-		//Validate old token for auth token
-		try {
-			Optional<T> result = authenticator.authenticate(token);
-			if (!result.isPresent())
-				throw new WebApplicationException(Response.Status.UNAUTHORIZED);
-
-			if (!isAuthorized(result.get(), ((WebApplicationContext) c).getMatchedTemplates(), c.getRequest().getMethod()))
-				throw new WebApplicationException(Response.Status.FORBIDDEN);
-
-			return result.get();
-		} catch (IllegalArgumentException e) {
-			LOGGER.debug("BasicPair decoding credentials", e);
-			throw new WebApplicationException(Response.Status.PRECONDITION_FAILED);
-		} catch (AuthenticationException e) {
-			LOGGER.warn("BasicPair authenticating credentials", e);
-			throw new WebApplicationException(Response.Status.PRECONDITION_FAILED);
-		}
-	}
+    private boolean nullOrEmpty(String token) {
+        return token == null || token.length() == 0;
+    }
 
 
-	/**
-	 * Merges all path patterns and and creates a single string value which will be equal with service methods path
+    /**
+     * Merges all path patterns and and creates a single string value which will be equal with service methods path
      * annotation value and HTTP method type. Generated string will be used for permission checks.
-	 *
-	 * @param token      for checking permission list
-	 * @param matchedTemplates matched templates of context. They will be merged with reverse order
-	 * @param method           HTTP Method of the request. Will be merged with
-	 * @return true if user is Authorized.
-	 */
-	private boolean isAuthorized(IsToken token, List<UriTemplate> matchedTemplates, String method) {
-		StringBuilder path = new StringBuilder();
+     *
+     * @param token            for checking permission list
+     * @param matchedTemplates matched templates of context. They will be merged with reverse order
+     * @param method           HTTP Method of the request. Will be merged with
+     * @return true if user is Authorized.
+     */
+    private boolean isAuthorized(IsToken token, List<UriTemplate> matchedTemplates, String method) {
+        StringBuilder path = new StringBuilder();
         // Merge all path templates and generate a path.
-		for (UriTemplate template : matchedTemplates)
-			path.insert(0, template.getTemplate());
-		path.append(":").append(method);
+        for (UriTemplate template : matchedTemplates) {
+            path.insert(0, template.getTemplate());
+        }
+        path.append(":").append(method);
 
         //Look at user permissions to see if the service is permitted.
-		return token.getPermissions().contains(path.toString());
-	}
+        return token.getPermissions().contains(path.toString());
+    }
 
 }

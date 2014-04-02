@@ -2,7 +2,10 @@ package io.robe.convert.excel.exporter;
 
 
 import io.robe.convert.IsExporter;
+import io.robe.convert.excel.Parsers;
+import io.robe.convert.excel.parsers.IsParser;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
+import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.Workbook;
@@ -12,8 +15,15 @@ import java.io.OutputStream;
 import java.lang.reflect.Field;
 import java.util.Collection;
 import java.util.List;
+import java.util.Locale;
 
 public class XLSExporter extends IsExporter {
+    boolean isFirstRowHeader = false;
+
+    public XLSExporter(boolean isFirstRowHeader) {
+        this.isFirstRowHeader = isFirstRowHeader;
+    }
+
     @Override
     public <T> void exportStream(Class clazz, OutputStream outputStream, List<T> list) throws IOException, ClassNotFoundException, IllegalAccessException, InstantiationException {
         if (list == null) {
@@ -29,23 +39,28 @@ public class XLSExporter extends IsExporter {
         }
 
         Workbook workbook = new HSSFWorkbook();
-        //TODO sheet name maybe must be pojo Name
-        Sheet sheet = workbook.createSheet("Sheet 1");
 
-        Row row = sheet.createRow(0);
+        Sheet sheet = workbook.createSheet(clazz.getSimpleName());
 
-        for (int sheetHeaderRow = 0; sheetHeaderRow < fieldNames.length; sheetHeaderRow++) {
-            row.createCell(sheetHeaderRow).setCellValue(fieldNames[sheetHeaderRow]);
+        int startIndex = 0;
+        if(isFirstRowHeader) {
+            Row row = sheet.createRow(0);
+            for (int sheetHeaderRow = 0; sheetHeaderRow < fieldNames.length; sheetHeaderRow++) {
+                row.createCell(sheetHeaderRow).setCellValue(fieldNames[sheetHeaderRow]);
+            }
+            startIndex++;
         }
 
         for (int entry = 0; entry < list.size(); entry++) {
-            Field[] fieldsOfEntry = list.get(entry).getClass().getDeclaredFields();
-            Row entryRow = sheet.createRow(entry + 1);
-
+            Object instanceOfEntry = list.get(entry);
+            Field[] fieldsOfEntry = instanceOfEntry.getClass().getDeclaredFields();
+            Row entryRow = sheet.createRow(entry + startIndex);
             for (int field = 0; field < fieldsOfEntry.length; field++) {
                 boolean acc = fieldsOfEntry[field].isAccessible();
                 fieldsOfEntry[field].setAccessible(true);
-                entryRow.createCell(field).setCellValue(String.valueOf(fieldsOfEntry[field].get(list.get(entry))));
+                Cell cell = entryRow.createCell(field);
+                IsParser parser = Parsers.valueOf(fieldsOfEntry[field].getType().getSimpleName().toUpperCase(Locale.ENGLISH)).getParser();
+                parser.setCell(fieldsOfEntry[field].get(instanceOfEntry), cell,fieldsOfEntry[field] );
                 fieldsOfEntry[field].setAccessible(acc);
             }
         }

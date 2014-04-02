@@ -10,7 +10,8 @@ public enum Parsers {
     INT("int",new IntParser()),
     INTEGER("java.lang.Integer",new IntParser()),
     LONG("java.lang.Long", new LongParser()),
-    STRING("java.lang.String",new StringParser());
+    STRING("java.lang.String",new StringParser()),
+    DATE("java.util.Date",new DateParser());
 
 
     private final String type;

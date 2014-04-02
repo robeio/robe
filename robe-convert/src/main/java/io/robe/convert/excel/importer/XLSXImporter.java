@@ -42,6 +42,7 @@ public class XLSXImporter extends IsImporter {
                         field.setAccessible(true);
                         field.set(entry, cellData);
                         field.setAccessible(acc);
+
                     }
                 } catch (Exception e) {
                     e.printStackTrace();

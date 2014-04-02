@@ -17,6 +17,11 @@ import java.util.LinkedList;
 import java.util.List;
 
 public class XLSImporter extends IsImporter {
+    boolean isFirstRowHeader = false;
+    public XLSImporter(boolean isFirstRowHeader) {
+        this.isFirstRowHeader = isFirstRowHeader;
+    }
+
     @Override
     public <T> List<T> importStream(Class clazz, InputStream inputStream) throws IOException, ClassNotFoundException, IllegalAccessException, InstantiationException {
         Collection<Field> fields = getFields(clazz);
@@ -26,6 +31,9 @@ public class XLSImporter extends IsImporter {
         Iterator<Row> rowIterator = sheet.iterator();
 
         List<T> entries = new LinkedList<T>();
+
+        if(isFirstRowHeader)
+            rowIterator.next();
 
         while (rowIterator.hasNext()) {
             T entry = (T) clazz.newInstance();
