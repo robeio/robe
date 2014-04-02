@@ -22,21 +22,23 @@ public class HibernateCrud {
 
     public static void generateDaoAndResource(Properties properties) throws IOException{
 
-        String packageScan = (String)properties.get("packageScan");
-        String packageResource = (String)properties.get("packageResource");
-        String packageDao=(String)properties.get("packageDao");
-        Set<Class<?>> scanClasses = getEntityClasses(packageScan);
+        String scan = (String)properties.get("scan");
+        String resource = (String)properties.get("resource");
+        String dao=(String)properties.get("dao");
+        Boolean auth=Boolean.getBoolean((String)properties.get("auth"));
+        Boolean inject=Boolean.getBoolean((String)properties.get("inject"));
+        Set<Class<?>> scanClasses = getEntityClasses(scan);
 
         if (scanClasses.isEmpty()) {
             System.out.println("Exiting: No entity found!");
             return;
         }
 
-        String fileDaoLocation = properties.getProperty("projectPath", "./") + "/src/main/java/" + packageDao.replace('.', '/');
+        String fileDaoLocation = properties.getProperty("projectPath", "./") + "/src/main/java/" + dao.replace('.', '/');
         System.out.println("DAO: " + fileDaoLocation);
         new File(fileDaoLocation).mkdirs();
 
-        String fileResourceLocation = properties.getProperty("projectPath", ".") + "/src/main/java/" + packageResource.replace('.', '/');
+        String fileResourceLocation = properties.getProperty("projectPath", ".") + "/src/main/java/" + resource.replace('.', '/');
         System.out.println("RESOURCES: " + fileResourceLocation);
 
         new File(fileResourceLocation).mkdirs();
@@ -92,7 +94,7 @@ public class HibernateCrud {
 
             List<ImportDeclaration> importDeclarations = new ArrayList<ImportDeclaration>();
             importDeclarations.add(new ImportDeclaration(new NameExpr(classes.getName().toString()), false, false));
-            bwDao.write(DaoCrud.createDao(entityName, packageDao, importDeclarations, uniqueFields,findBy));
+            bwDao.write(DaoCrud.createDao(entityName, dao, importDeclarations, uniqueFields,findBy));
             bwDao.close();
             System.err.println("Dao Created!");
 
@@ -100,13 +102,13 @@ public class HibernateCrud {
             List<BodyDeclaration> bodyDeclarations = new ArrayList<BodyDeclaration>();
 
             bodyDeclarations.add(ResourceCrud.getAll(entityName, daoName, "findAll"));
-            bodyDeclarations.add(ResourceCrud.get(entityName, daoName,findBy, "get"+entityName+"s"));
-            bodyDeclarations.add(ResourceCrud.create(entityName, daoName, uniqueFields, findBy, "create"));
+            bodyDeclarations.add(ResourceCrud.get(entityName, daoName,findBy));
+            bodyDeclarations.add(ResourceCrud.create(entityName, daoName, uniqueFields, "create"));
             bodyDeclarations.add(ResourceCrud.update(entityName, daoName,fieldGet, "getOid",findBy, "update", "detach"));
             bodyDeclarations.add(ResourceCrud.delete(entityName, daoName, "getOid", findBy, "delete"));
             List<ImportDeclaration> importDeclarationsResource = new ArrayList<ImportDeclaration>();
             importDeclarationsResource.addAll(CrudUtility.getImports("com.google.inject.Inject","com.yammer.dropwizard.auth.Auth","com.yammer.dropwizard.hibernate.UnitOfWork"));
-            bwResource.write(ResourceCrud.ResourceGenerate(entityName+"Resource",entityName,daoName,bodyDeclarations,importDeclarationsResource,packageResource));
+            bwResource.write(ResourceCrud.ResourceGenerate(entityName+"Resource",entityName,daoName,bodyDeclarations,importDeclarationsResource,resource,inject));
             bwResource.close();
             System.err.println("Resource Created");
 

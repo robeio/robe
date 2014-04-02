@@ -15,29 +15,46 @@ import java.util.List;
 
 public class ResourceCrud {
 
-	public static String ResourceGenerate(String name,String entityName,String daoName,List<BodyDeclaration> bodyDeclarationsList,List<ImportDeclaration> importDeclarations,String packageName){
+    public static String ResourceGenerate(String name,String entityName,String daoName,List<BodyDeclaration> bodyDeclarationsList,List<ImportDeclaration> importDeclarations,String packageName,Boolean inject){
 
-		CompilationUnit compilationUnit = new CompilationUnit();
-		compilationUnit.setImports(importDeclarations);
+        CompilationUnit compilationUnit = new CompilationUnit();
+        compilationUnit.setImports(importDeclarations);
 
-		compilationUnit.setPackage(CrudUtility.getPackage(packageName));
+        compilationUnit.setPackage(CrudUtility.getPackage(packageName));
 
-		List<BodyDeclaration> bodyDeclarations = new ArrayList<BodyDeclaration>();
-		 
-		FieldDeclaration injectFieldDeclaration = ASTHelper.createFieldDeclaration(0,new ClassOrInterfaceType(daoName), CrudUtility.createVariableDeclarator(CrudUtility.capitalizeToLower(daoName), null));
-		List<AnnotationExpr> fieldAnnotationExprs= new ArrayList<AnnotationExpr>();
-		  	
-		fieldAnnotationExprs.add(new MarkerAnnotationExpr(ASTHelper.createNameExpr("Inject")));
-		injectFieldDeclaration.setAnnotations(fieldAnnotationExprs);
-		  	
-		bodyDeclarations.add(injectFieldDeclaration);
-		bodyDeclarations.addAll(bodyDeclarationsList);
-		
-		ClassOrInterfaceDeclaration type = new ClassOrInterfaceDeclaration(1,Arrays.asList(CrudUtility.generateAnnotation("PATH", entityName, null),CrudUtility.generateAnnotation("Consumes", "MediaType", "APPLICATION_JSON"),CrudUtility.generateAnnotation("Produces", "MediaType", "APPLICATION_JSON")), false, name, null,null , null, bodyDeclarations);
-	    ASTHelper.addTypeDeclaration(compilationUnit, type);
-		
-		return compilationUnit.toString();
-	}
+        List<BodyDeclaration> bodyDeclarations = new ArrayList<BodyDeclaration>();
+
+        FieldDeclaration injectFieldDeclaration = ASTHelper.createFieldDeclaration(0,new ClassOrInterfaceType(daoName), CrudUtility.createVariableDeclarator(CrudUtility.capitalizeToLower(daoName), null));
+
+        bodyDeclarations.add(injectFieldDeclaration);
+
+        if(inject){
+            List<AnnotationExpr> fieldAnnotationExprs= new ArrayList<AnnotationExpr>();
+            fieldAnnotationExprs.add(new MarkerAnnotationExpr(ASTHelper.createNameExpr("Inject")));
+            injectFieldDeclaration.setAnnotations(fieldAnnotationExprs);
+
+
+        }else{
+            ConstructorDeclaration constructorDeclaration = new ConstructorDeclaration(ModifierSet.PUBLIC,entityName+"Resource");
+            BlockStmt conBlock = new BlockStmt();
+
+            ThisExpr thisExpr = new ThisExpr();
+            FieldAccessExpr accessExpr = new FieldAccessExpr(thisExpr, CrudUtility.capitalizeToLower(daoName));
+            AssignExpr assignExpr = new AssignExpr(accessExpr, new NameExpr(CrudUtility.capitalizeToLower(daoName)), AssignExpr.Operator.assign);
+            ASTHelper.addStmt(conBlock, assignExpr);
+
+            constructorDeclaration.setParameters(Arrays.asList(CrudUtility.generateParameter(daoName, null, null, null, null)));
+            constructorDeclaration.setBlock(conBlock);
+            bodyDeclarations.add(constructorDeclaration);
+        }
+
+        bodyDeclarations.addAll(bodyDeclarationsList);
+
+        ClassOrInterfaceDeclaration type = new ClassOrInterfaceDeclaration(1,Arrays.asList(CrudUtility.generateAnnotation("PATH", entityName, null),CrudUtility.generateAnnotation("Consumes", "MediaType", "APPLICATION_JSON"),CrudUtility.generateAnnotation("Produces", "MediaType", "APPLICATION_JSON")), false, name, null,null , null, bodyDeclarations);
+        ASTHelper.addTypeDeclaration(compilationUnit, type);
+
+        return compilationUnit.toString();
+    }
 	
 	public static MethodDeclaration delete(String entityName,String daoName,String idGetFunction,String findByFunction,String deleteFunction){
 		
@@ -109,7 +126,7 @@ public class ResourceCrud {
 	    
 	}
 	
-	public static MethodDeclaration create(String entityName,String daoName,List<String> idGetFunction,String findByFunction,String createFunction){
+	public static MethodDeclaration create(String entityName,String daoName,List<String> idGetFunction,String createFunction){
 		
 		String entityVariableName=CrudUtility.capitalizeToLower(entityName);
 		daoName=CrudUtility.capitalizeToLower(daoName);
@@ -158,34 +175,30 @@ public class ResourceCrud {
 		
 	}
 	
-	public static MethodDeclaration get(String entityName,String daoName,String idGetFunction,String findByFunction){
-		
-		String entityVariableName=CrudUtility.capitalizeToLower(entityName);
-		String pathParamName=entityVariableName+"Id";
-		daoName=CrudUtility.capitalizeToLower(daoName);
-		
-		MethodDeclaration method = new MethodDeclaration(ModifierSet.PUBLIC, ASTHelper.createReferenceType(entityName, 0), "get");
-		
-	    method.setParameters(Arrays.asList(CrudUtility.generateParameter("Credentials", "Auth", null,null,null),CrudUtility.generateParameter("String", "PathParam", "{"+pathParamName+"}",pathParamName,null)));
-	    method.setAnnotations(Arrays.asList(CrudUtility.generateAnnotation("PATH", "{"+pathParamName+"}",null),CrudUtility.generateAnnotation("GET", null,null),CrudUtility.generateAnnotation("UnitOfWork", null,null)));
-	    
-	    BlockStmt body = new BlockStmt();
-	    
-	    MethodCallExpr callIdGetFunction = new MethodCallExpr(new NameExpr(daoName), idGetFunction);
-	    ASTHelper.addArgument(callIdGetFunction,new NameExpr(pathParamName));
+	public static MethodDeclaration get(String entityName,String daoName,String idGetFunction){
 
-	    VariableDeclarationExpr variableDeclarationExpr = new VariableDeclarationExpr(ASTHelper.createReferenceType(entityName, 0), Arrays.asList(CrudUtility.createVariableDeclarator(entityVariableName, callIdGetFunction)));
+        String entityVariableName=CrudUtility.capitalizeToLower(entityName);
+        String pathParamName=entityVariableName+"Id";
+        daoName=CrudUtility.capitalizeToLower(daoName);
 
-        MethodCallExpr callHibernate = new MethodCallExpr(new NameExpr("Hibernate"), "initialize");
-        ASTHelper.addArgument(callHibernate,new MethodCallExpr(new NameExpr(entityVariableName),findByFunction));
-        
-        ASTHelper.addStmt(body, variableDeclarationExpr);
-        ASTHelper.addStmt(body, callHibernate);
-	    ASTHelper.addStmt(body, new ReturnStmt(ASTHelper.createNameExpr(entityVariableName)));
-	    
-	    method.setBody(body);
-		
-		return method;
+        MethodDeclaration method = new MethodDeclaration(ModifierSet.PUBLIC, ASTHelper.createReferenceType(entityName, 0), "get");
+
+        method.setParameters(Arrays.asList(CrudUtility.generateParameter("Credentials", "Auth", null,null,null),CrudUtility.generateParameter("String", "PathParam", "{"+pathParamName+"}",pathParamName,null)));
+        method.setAnnotations(Arrays.asList(CrudUtility.generateAnnotation("PATH", "{"+pathParamName+"}",null),CrudUtility.generateAnnotation("GET", null,null),CrudUtility.generateAnnotation("UnitOfWork", null,null)));
+
+        BlockStmt body = new BlockStmt();
+
+
+        MethodCallExpr callFindAll = new MethodCallExpr(new NameExpr(daoName), idGetFunction);
+        ASTHelper.addArgument(callFindAll,new NameExpr(pathParamName));
+        ReturnStmt returnStmt = new ReturnStmt(callFindAll);
+
+        ASTHelper.addStmt(body, returnStmt);
+
+
+        method.setBody(body);
+
+        return method;
 		
 	}
 	
@@ -194,23 +207,19 @@ public class ResourceCrud {
 		String name="get"+entityName+"s";
 		daoName=CrudUtility.capitalizeToLower(daoName);
 
-	    List<Statement> statements = new ArrayList<Statement>();
-		
 	    MethodDeclaration method = new MethodDeclaration(ModifierSet.PUBLIC, ASTHelper.createReferenceType("List<"+entityName+">", 0),name);
 	    
 		method.setParameters(Arrays.asList(CrudUtility.generateParameter("Credentials", "Auth", null, null,null)));
 	    method.setAnnotations(Arrays.asList(CrudUtility.generateAnnotation("PATH", "all",null),CrudUtility.generateAnnotation("GET", null,null),CrudUtility.generateAnnotation("UnitOfWork",null,null)));
 	    BlockStmt body = new BlockStmt();
 	    
-
 	    FieldAccessExpr field = new FieldAccessExpr(new NameExpr(entityName), "class");
 	    MethodCallExpr callFindAll = new MethodCallExpr(new NameExpr(daoName), findAllFunction);
 	    ASTHelper.addArgument(callFindAll,field);
 	        
 	    ReturnStmt returnStmt = new ReturnStmt(callFindAll);
-	    statements.add(returnStmt);
-	    body.setStmts(statements);
-	    
+
+        ASTHelper.addStmt(body, returnStmt);
 	    method.setBody(body);
 	    
 	    return method;
