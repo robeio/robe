@@ -64,14 +64,14 @@ public class RobeCrudGUI extends javax.swing.JFrame {
 
         jTable1.setModel(new javax.swing.table.DefaultTableModel(
                 new Object[][]{
-                        {"Empty", false, false},
+                        {"Empty", false, false, false, false},
                 },
                 new String[]{
-                        "Entitiy", "Dao", "Resource"
+                        "Entitiy", "Dao", "Resource", "Inject", "Auth"
                 }
         ) {
             Class[] types = new Class[]{
-                    java.lang.String.class, java.lang.Boolean.class, java.lang.Boolean.class
+                    java.lang.String.class, java.lang.Boolean.class, java.lang.Boolean.class, java.lang.Boolean.class, java.lang.Boolean.class
             };
 
             public Class getColumnClass(int columnIndex) {
@@ -173,23 +173,26 @@ public class RobeCrudGUI extends javax.swing.JFrame {
 //            e.printStackTrace();
 //        }
         Set<Class<?>> entityClasses = HibernateCrud.getEntityClasses("io.robe.hibernate.crud.entity");
-        Object[][] list = new Object[entityClasses.size()][3];
+        Object[][] list = new Object[entityClasses.size()][5];
         int i = 0;
         for (Class entityClass : entityClasses) {
             list[i][0] = entityClass.getName();
             list[i][1] = true;
-            list[i++][2] = true;
+            list[i][2] = true;
+            list[i][3] = true;
+            list[i++][4] = true;
+
 
         }
 
         jTable1.setModel(new javax.swing.table.DefaultTableModel(
                 list,
                 new String[]{
-                        "Entitiy", "Dao", "Resource"
+                        "Entitiy", "Dao", "Resource", "Inject", "Auth"
                 }
         ) {
             Class[] types = new Class[]{
-                    java.lang.String.class, java.lang.Boolean.class, java.lang.Boolean.class
+                    java.lang.String.class, java.lang.Boolean.class, java.lang.Boolean.class, java.lang.Boolean.class, java.lang.Boolean.class
             };
 
             public Class getColumnClass(int columnIndex) {
