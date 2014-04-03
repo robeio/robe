@@ -16,6 +16,15 @@ import java.util.Collection;
 import java.util.List;
 
 public class CSVImporter extends IsImporter {
+    CsvPreference preference = CsvPreference.EXCEL_PREFERENCE.STANDARD_PREFERENCE;
+
+    public CSVImporter() {
+    }
+
+    public CSVImporter(CsvPreference preference) {
+        this.preference = preference;
+    }
+
     @Override
     public <T> List<T> importStream(Class clazz,InputStream inputStream) throws IOException, ClassNotFoundException, IllegalAccessException, InstantiationException {
 
@@ -27,7 +36,7 @@ public class CSVImporter extends IsImporter {
         CellProcessor[] processors = CSVUtil.convertFieldsToCellProcessors(fields, fieldNames);
 
         List<T> list = new ArrayList<T>();
-        ICsvBeanReader csvBeanReader = new CsvBeanReader(reader, CsvPreference.STANDARD_PREFERENCE);
+        ICsvBeanReader csvBeanReader = new CsvBeanReader(reader, preference);
         Object obj;
         while ((obj = csvBeanReader.read(clazz, fieldNames, processors)) != null) {
             list.add((T) obj);

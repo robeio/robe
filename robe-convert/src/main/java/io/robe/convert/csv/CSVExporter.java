@@ -15,6 +15,14 @@ import java.util.Collection;
 import java.util.List;
 
 public class CSVExporter extends IsExporter {
+    CsvPreference preference = CsvPreference.EXCEL_PREFERENCE.STANDARD_PREFERENCE;
+
+    public CSVExporter() {
+    }
+
+    public CSVExporter(CsvPreference preference) {
+        this.preference = preference;
+    }
     @Override
     public <T> void exportStream(Class clazz, OutputStream outputStream, List<T> list) throws IOException, ClassNotFoundException, IllegalAccessException, InstantiationException {
 
@@ -28,7 +36,8 @@ public class CSVExporter extends IsExporter {
 
         CellProcessor[] processors = CSVUtil.convertFieldsToCellProcessors(fields, fieldNames);
 
-        ICsvBeanWriter csvBeanWriter = new CsvBeanWriter(writer, CsvPreference.STANDARD_PREFERENCE);
+        ICsvBeanWriter csvBeanWriter = new CsvBeanWriter(writer, preference);
+
 
         for (T entry : list)
             csvBeanWriter.write(entry, fieldNames, processors);
