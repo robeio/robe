@@ -1,0 +1,20 @@
+[
+    {
+        "id": 1,
+        "name": "Guner Kaan ALKIM",
+        "surname": "Computer Engineer",
+        "longid": 1,
+        "doubleid": 2,
+        "big": 3,
+        "date2": "12.12.2312"
+    },
+    {
+        "id": 2,
+        "name": "Sinan Selimoğlu",
+        "surname": "Computer",
+        "longid": 4,
+        "doubleid": 3,
+        "big": 4,
+        "date2": "16.12.2312"
+    }
+]
