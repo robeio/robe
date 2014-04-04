@@ -17,7 +17,7 @@ import java.util.List;
 
 public class DaoCrud {
 	
-	public static String createDao(String entityName,String packageName,List<ImportDeclaration> importDeclarations,List<String> fields,String findBy)
+	public static String createDao(String entityName,String packageName,List<ImportDeclaration> importDeclarations,List<String> uniqueFields,String findBy)
 	{
 	    CompilationUnit compilationUnit = new CompilationUnit();
 	    compilationUnit.setPackage(new PackageDeclaration(ASTHelper.createNameExpr(packageName)));
@@ -41,7 +41,7 @@ public class DaoCrud {
 	    constructorDeclaration.setBlock(conBlock);
 	    members.add(constructorDeclaration);
 
-	    members.add(findby(entityName, fields,findBy));
+	    members.add(findby(entityName, uniqueFields,findBy));
 	    
 	    ClassOrInterfaceDeclaration type = new ClassOrInterfaceDeclaration(1,null, false, entityName+"Dao", null,extedsList , null, members);
 	    ASTHelper.addTypeDeclaration(compilationUnit, type);
