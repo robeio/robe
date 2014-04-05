@@ -1,6 +1,7 @@
 package io.robe.convert.excel.importer;
 
 import io.robe.convert.IsImporter;
+import io.robe.convert.OnItemHandler;
 import io.robe.convert.excel.ExcelUtils;
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.Row;
@@ -52,5 +53,10 @@ public class XLSXImporter extends IsImporter {
         }
 
         return entries;
+    }
+
+    @Override
+    public <T> void importStream(Class clazz, InputStream inputStream, OnItemHandler handler) throws IOException, ClassNotFoundException, IllegalAccessException, InstantiationException {
+
     }
 }

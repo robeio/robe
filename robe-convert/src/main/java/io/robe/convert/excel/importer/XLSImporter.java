@@ -1,6 +1,7 @@
 package io.robe.convert.excel.importer;
 
 import io.robe.convert.IsImporter;
+import io.robe.convert.OnItemHandler;
 import io.robe.convert.excel.ExcelUtils;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.apache.poi.ss.usermodel.Cell;
@@ -18,6 +19,7 @@ import java.util.List;
 
 public class XLSImporter extends IsImporter {
     boolean isFirstRowHeader = false;
+
     public XLSImporter(boolean isFirstRowHeader) {
         this.isFirstRowHeader = isFirstRowHeader;
     }
@@ -32,7 +34,7 @@ public class XLSImporter extends IsImporter {
 
         List<T> entries = new LinkedList<T>();
 
-        if(isFirstRowHeader)
+        if (isFirstRowHeader)
             rowIterator.next();
 
         while (rowIterator.hasNext()) {
@@ -59,5 +61,10 @@ public class XLSImporter extends IsImporter {
         }
 
         return entries;
+    }
+
+    @Override
+    public <T> void importStream(Class clazz, InputStream inputStream, OnItemHandler handler) throws IOException, ClassNotFoundException, IllegalAccessException, InstantiationException {
+
     }
 }

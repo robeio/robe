@@ -1,6 +1,7 @@
 package io.robe.convert.csv;
 
 import io.robe.convert.IsImporter;
+import io.robe.convert.OnItemHandler;
 import org.supercsv.cellprocessor.ift.CellProcessor;
 import org.supercsv.io.CsvBeanReader;
 import org.supercsv.io.ICsvBeanReader;
@@ -26,7 +27,22 @@ public class CSVImporter extends IsImporter {
     }
 
     @Override
-    public <T> List<T> importStream(Class clazz,InputStream inputStream) throws IOException, ClassNotFoundException, IllegalAccessException, InstantiationException {
+    public <T> List<T> importStream(Class clazz, InputStream inputStream) throws IOException, ClassNotFoundException, IllegalAccessException, InstantiationException {
+
+        final List<T> list = new ArrayList<T>();
+
+        OnItemHandler<T> handler = new OnItemHandler<T>() {
+            @Override
+            public void onItem(T item) {
+                list.add(item);
+            }
+        };
+        this.<T>importStream(clazz, inputStream, handler);
+        return list;
+    }
+
+    @Override
+    public <T> void importStream(Class clazz, InputStream inputStream, OnItemHandler handler) throws IOException, ClassNotFoundException, IllegalAccessException, InstantiationException {
 
         Collection<Field> fields = getFields(clazz);
         String[] fieldNames = new String[fields.size()];
@@ -35,13 +51,11 @@ public class CSVImporter extends IsImporter {
 
         CellProcessor[] processors = CSVUtil.convertFieldsToCellProcessors(fields, fieldNames);
 
-        List<T> list = new ArrayList<T>();
         ICsvBeanReader csvBeanReader = new CsvBeanReader(reader, preference);
         Object obj;
         while ((obj = csvBeanReader.read(clazz, fieldNames, processors)) != null) {
-            list.add((T) obj);
+            handler.onItem((T) obj);
         }
-        return list;
     }
 
 }

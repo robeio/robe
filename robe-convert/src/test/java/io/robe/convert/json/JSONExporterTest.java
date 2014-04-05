@@ -8,9 +8,6 @@ import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Date;
 
-/**
- * Created by serayuzgur on 03/04/14.
- */
 public class JSONExporterTest {
     @Test
     public void testExportStream() throws Exception {
