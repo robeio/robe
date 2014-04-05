@@ -6,9 +6,25 @@
 
 package io.robe.hibernate.crud;
 
+
+import japa.parser.ast.ImportDeclaration;
+import japa.parser.ast.body.BodyDeclaration;
+import japa.parser.ast.expr.NameExpr;
+
+import javax.persistence.Column;
 import javax.swing.*;
+import java.io.BufferedWriter;
 import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.lang.reflect.Field;
+import java.lang.reflect.Method;
+import java.lang.reflect.Modifier;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Set;
+
+import static org.reflections.ReflectionUtils.*;
 
 /**
  * @author serayuzgur
@@ -158,6 +174,114 @@ public class RobeCrudGUI extends javax.swing.JFrame {
 
     private void btnGenerateActionPerformed(java.awt.event.ActionEvent evt) {
 
+     Object[][] data= getTableData(jTable1);
+        int i = 0;
+        for (Object[] data1 : data) {
+            String entity=(String)data1[0];
+            Boolean dao=(Boolean)data1[1];
+            Boolean resource=(Boolean)data1[2];
+            Boolean inject=(Boolean)data1[3];
+            Boolean auth=(Boolean)data1[4];
+            System.out.println(entity);
+            System.out.println(inject);
+
+            String fileDaoLocation = "robe-crud" + "/src/main/java/" + "test.com.robe.hibernate.generated.dao".replace('.', '/');
+            System.out.println("DAO: " + fileDaoLocation);
+            new File(fileDaoLocation).mkdirs();
+
+            String fileResourceLocation = "robe-crud" + "/src/main/java/" + "test.com.robe.hibernate.generated.resource".replace('.', '/');
+            System.out.println("RESOURCES: " + fileResourceLocation);
+            new File(fileResourceLocation).mkdirs();
+
+            try {
+                Class<?> classes= Class.forName(entity);
+
+                String newDaoClassName=fileDaoLocation+"/"+classes.getSimpleName()+"Dao.java";
+
+                Set<Field> fields = getAllFields(classes, withAnnotation(Column.class));
+                List<String> fieldGet = new ArrayList<String>();
+                List<String> uniqueFields= new ArrayList<String>();
+                for (Field field : fields) {
+                    if (!field.getAnnotation(Column.class).unique()) {
+                        Set<Method> getters = getAllMethods(classes,
+                                withModifier(Modifier.PUBLIC), withPrefix("get"+CrudUtility.capitalizeToUpper(field.getName())), withParametersCount(0));
+                        if(getters.iterator().hasNext()){
+                            fieldGet.add(CrudUtility.capitalizeToUpper(field.getName()));
+                        }
+                    }else if(field.getAnnotation(Column.class).unique()){
+                        Set<Method> checks = getAllMethods(classes,
+                                withModifier(Modifier.PUBLIC), withPrefix("get"+CrudUtility.capitalizeToUpper(field.getName())), withParametersCount(0));
+                        if(checks.iterator().hasNext()){
+                            uniqueFields.add(CrudUtility.capitalizeToUpper(field.getName()));
+                            fieldGet.add(CrudUtility.capitalizeToUpper(field.getName()));
+                        }
+                    }
+                }
+
+                String entityName=classes.getSimpleName();
+                String daoName=classes.getSimpleName()+"Dao";
+
+                String findBy="findById";
+                for (String string : uniqueFields) {
+                    findBy+="Or"+CrudUtility.capitalizeToUpper(string);
+                }
+                if(dao) {
+                    List<ImportDeclaration> importDeclarations = new ArrayList<ImportDeclaration>();
+                    importDeclarations.add(new ImportDeclaration(new NameExpr(classes.getName().toString()), false, false));
+
+
+                    File fileDao = new File(newDaoClassName);
+                    if (!fileDao.exists()) {
+                        fileDao.createNewFile();
+                    }
+                    FileWriter fwDao = null;
+                    fwDao = new FileWriter(fileDao.getAbsoluteFile());
+                    BufferedWriter bwDao = new BufferedWriter(fwDao);
+                    bwDao.write(DaoCrud.createDao(entityName, "test.com.robe.hibernate.generated.dao", importDeclarations, uniqueFields, findBy));
+                    bwDao.close();
+                    System.out.println("DAO CREATED SUCCESSFUL FOR " +entity);
+
+                }
+                if(resource) {
+
+                    String newResourceClassName = fileResourceLocation + "/" + classes.getSimpleName() + "Resource.java";
+                    File fileResource = new File(newResourceClassName);
+                    if (!fileResource.exists()) {
+                        fileResource.createNewFile();
+                    }
+                    FileWriter fwResource = new FileWriter(fileResource.getAbsoluteFile());
+                    BufferedWriter bwResource = new BufferedWriter(fwResource);
+                    List<BodyDeclaration> bodyDeclarations = new ArrayList<BodyDeclaration>();
+
+                    bodyDeclarations.add(ResourceCrud.getAll(entityName, daoName, "findAll"));
+                    bodyDeclarations.add(ResourceCrud.get(entityName, daoName, findBy));
+                    bodyDeclarations.add(ResourceCrud.create(entityName, daoName, uniqueFields, "create"));
+                    bodyDeclarations.add(ResourceCrud.update(entityName, daoName, fieldGet, "getOid", findBy, "update", "detach"));
+                    bodyDeclarations.add(ResourceCrud.delete(entityName, daoName, "getOid", findBy, "delete"));
+                    List<ImportDeclaration> importDeclarationsResource = new ArrayList<ImportDeclaration>();
+                    importDeclarationsResource.addAll(CrudUtility.getImports("com.google.inject.Inject", "com.yammer.dropwizard.auth.Auth", "com.yammer.dropwizard.hibernate.UnitOfWork"));
+                    bwResource.write(ResourceCrud.ResourceGenerate(entityName + "Resource", entityName, daoName, bodyDeclarations, importDeclarationsResource, "test.com.robe.hibernate.generated.resource", inject));
+                    bwResource.close();
+                    System.out.println("RESOURCE CREATED SUCCESSFUL FOR " +entity);
+                }
+
+            } catch (ClassNotFoundException e) {
+                e.printStackTrace();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+
+
+    }
+    public Object[][] getTableData (JTable table) {
+        javax.swing.table.DefaultTableModel dtm = (javax.swing.table.DefaultTableModel) table.getModel();
+        int nRow = dtm.getRowCount(), nCol = dtm.getColumnCount();
+        Object[][] tableData = new Object[nRow][nCol];
+        for (int i = 0 ; i < nRow ; i++)
+            for (int j = 0 ; j < nCol ; j++)
+                tableData[i][j] = dtm.getValueAt(i,j);
+        return tableData;
     }
 
     private void fillEntityList(String absolutePath) {
