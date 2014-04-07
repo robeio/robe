@@ -22,11 +22,9 @@ public class ResourceCrud {
 
         compilationUnit.setPackage(CrudUtility.getPackage(packageName));
 
-        List<BodyDeclaration> bodyDeclarations = new ArrayList<BodyDeclaration>();
 
         FieldDeclaration injectFieldDeclaration = ASTHelper.createFieldDeclaration(0,new ClassOrInterfaceType(daoName), CrudUtility.createVariableDeclarator(CrudUtility.capitalizeToLower(daoName), null));
-
-        bodyDeclarations.add(injectFieldDeclaration);
+        bodyDeclarationsList.add(0,injectFieldDeclaration);
 
         if(inject){
             List<AnnotationExpr> fieldAnnotationExprs= new ArrayList<AnnotationExpr>();
@@ -45,25 +43,30 @@ public class ResourceCrud {
 
             constructorDeclaration.setParameters(Arrays.asList(CrudUtility.generateParameter(daoName, null, null, null, null)));
             constructorDeclaration.setBlock(conBlock);
-            bodyDeclarations.add(constructorDeclaration);
+            bodyDeclarationsList.add(1,constructorDeclaration);
         }
 
-        bodyDeclarations.addAll(bodyDeclarationsList);
 
-        ClassOrInterfaceDeclaration type = new ClassOrInterfaceDeclaration(1,Arrays.asList(CrudUtility.generateAnnotation("PATH", entityName, null),CrudUtility.generateAnnotation("Consumes", "MediaType", "APPLICATION_JSON"),CrudUtility.generateAnnotation("Produces", "MediaType", "APPLICATION_JSON")), false, name, null,null , null, bodyDeclarations);
+        ClassOrInterfaceDeclaration type = new ClassOrInterfaceDeclaration(1,Arrays.asList(CrudUtility.generateAnnotation("PATH", entityName, null),CrudUtility.generateAnnotation("Consumes", "MediaType", "APPLICATION_JSON"),CrudUtility.generateAnnotation("Produces", "MediaType", "APPLICATION_JSON")), false, name, null,null , null, bodyDeclarationsList);
         ASTHelper.addTypeDeclaration(compilationUnit, type);
 
         return compilationUnit.toString();
     }
 	
-	public static MethodDeclaration delete(String entityName,String daoName,String idGetFunction,String findByFunction,String deleteFunction){
+	public static MethodDeclaration delete(String entityName,String daoName,String idGetFunction,String findByFunction,String deleteFunction,Boolean auth){
 		
 		String entityVariableName=CrudUtility.capitalizeToLower(entityName);
 		daoName=CrudUtility.capitalizeToLower(daoName);
 	
 		MethodDeclaration method = new MethodDeclaration(ModifierSet.PUBLIC, ASTHelper.createReferenceType(entityName, 0), "delete");
-		
-	    method.setParameters(Arrays.asList(CrudUtility.generateParameter("Credentials", "Auth", null,null,null),CrudUtility.generateParameter(entityName, null, null,null,null)));
+
+        List<Parameter> parameterList = new ArrayList<Parameter>();
+        parameterList.add(CrudUtility.generateParameter(entityName, null, null,null,null));
+        if(auth){
+            parameterList.add(CrudUtility.generateParameter("Credentials", "Auth", null,null,null));
+        }
+        method.setParameters(parameterList);
+
 	    method.setAnnotations(Arrays.asList(CrudUtility.generateAnnotation("DELETE", null,null),CrudUtility.generateAnnotation("UnitOfWork", null,null)));
 	    
 	    BlockStmt body = new BlockStmt();
@@ -87,13 +90,20 @@ public class ResourceCrud {
 		
 	}
 
-	public static MethodDeclaration update(String entityName,String daoName,List<String> fields,String idGetFunction,String findByFunction,String updateFunction,String detachFunction){
+	public static MethodDeclaration update(String entityName,String daoName,List<String> fields,String idGetFunction,String findByFunction,String updateFunction,String detachFunction,Boolean auth){
 		
 		String entityVariableName=CrudUtility.capitalizeToLower(entityName);
 		daoName=CrudUtility.capitalizeToLower(daoName);
 		MethodDeclaration method = new MethodDeclaration(ModifierSet.PUBLIC, ASTHelper.createReferenceType(entityName, 0), "update");
-		
-	    method.setParameters(Arrays.asList(CrudUtility.generateParameter("Credentials", "Auth", null,null,null),CrudUtility.generateParameter(entityName, null, null,null,null)));
+
+
+        List<Parameter> parameterList = new ArrayList<Parameter>();
+        parameterList.add(CrudUtility.generateParameter(entityName, null, null,null,null));
+        if(auth){
+            parameterList.add(CrudUtility.generateParameter("Credentials", "Auth", null,null,null));
+        }
+        method.setParameters(parameterList);
+
 	    method.setAnnotations(Arrays.asList(CrudUtility.generateAnnotation("PUT", null,null),CrudUtility.generateAnnotation("UnitOfWork", null,null)));
 	    
 	    BlockStmt body = new BlockStmt();
@@ -126,13 +136,19 @@ public class ResourceCrud {
 	    
 	}
 	
-	public static MethodDeclaration create(String entityName,String daoName,List<String> idGetFunction,String createFunction){
+	public static MethodDeclaration create(String entityName,String daoName,List<String> idGetFunction,String createFunction,Boolean auth){
 		
 		String entityVariableName=CrudUtility.capitalizeToLower(entityName);
 		daoName=CrudUtility.capitalizeToLower(daoName);
 		MethodDeclaration method = new MethodDeclaration(ModifierSet.PUBLIC, ASTHelper.createReferenceType(entityName, 0), "create");
-		
-	    method.setParameters(Arrays.asList(CrudUtility.generateParameter("Credentials","Auth",null,null,null),CrudUtility.generateParameter(entityName, "Valid",null,null,null)));
+
+        List<Parameter> parameterList = new ArrayList<Parameter>();
+        parameterList.add(CrudUtility.generateParameter(entityName, "Valid",null,null,null));
+        if(auth){
+            parameterList.add(CrudUtility.generateParameter("Credentials", "Auth", null,null,null));
+        }
+        method.setParameters(parameterList);
+
 	    method.setAnnotations(Arrays.asList(CrudUtility.generateAnnotation("POST", null,null),CrudUtility.generateAnnotation("UnitOfWork", null,null)));
 	    
 	    BlockStmt body = new BlockStmt();
@@ -175,7 +191,7 @@ public class ResourceCrud {
 		
 	}
 	
-	public static MethodDeclaration get(String entityName,String daoName,String idGetFunction){
+	public static MethodDeclaration get(String entityName,String daoName,String idGetFunction,Boolean auth){
 
         String entityVariableName=CrudUtility.capitalizeToLower(entityName);
         String pathParamName=entityVariableName+"Id";
@@ -183,7 +199,12 @@ public class ResourceCrud {
 
         MethodDeclaration method = new MethodDeclaration(ModifierSet.PUBLIC, ASTHelper.createReferenceType(entityName, 0), "get");
 
-        method.setParameters(Arrays.asList(CrudUtility.generateParameter("Credentials", "Auth", null,null,null),CrudUtility.generateParameter("String", "PathParam", "{"+pathParamName+"}",pathParamName,null)));
+        List<Parameter> parameterList = new ArrayList<Parameter>();
+        parameterList.add(CrudUtility.generateParameter("String", "PathParam", "{"+pathParamName+"}",pathParamName,null));
+        if(auth){
+            parameterList.add(CrudUtility.generateParameter("Credentials", "Auth", null,null,null));
+        }
+        method.setParameters(parameterList);
         method.setAnnotations(Arrays.asList(CrudUtility.generateAnnotation("PATH", "{"+pathParamName+"}",null),CrudUtility.generateAnnotation("GET", null,null),CrudUtility.generateAnnotation("UnitOfWork", null,null)));
 
         BlockStmt body = new BlockStmt();
@@ -202,14 +223,15 @@ public class ResourceCrud {
 		
 	}
 	
-	public static MethodDeclaration getAll(String entityName,String daoName,String findAllFunction) {
+	public static MethodDeclaration getAll(String entityName,String daoName,String findAllFunction,Boolean auth) {
 		
 		String name="get"+entityName+"s";
 		daoName=CrudUtility.capitalizeToLower(daoName);
 
 	    MethodDeclaration method = new MethodDeclaration(ModifierSet.PUBLIC, ASTHelper.createReferenceType("List<"+entityName+">", 0),name);
-	    
-		method.setParameters(Arrays.asList(CrudUtility.generateParameter("Credentials", "Auth", null, null,null)));
+	    if (auth) {
+            method.setParameters(Arrays.asList(CrudUtility.generateParameter("Credentials", "Auth", null, null, null)));
+        }
 	    method.setAnnotations(Arrays.asList(CrudUtility.generateAnnotation("PATH", "all",null),CrudUtility.generateAnnotation("GET", null,null),CrudUtility.generateAnnotation("UnitOfWork",null,null)));
 	    BlockStmt body = new BlockStmt();
 	    
