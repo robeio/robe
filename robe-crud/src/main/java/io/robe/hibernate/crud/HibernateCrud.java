@@ -20,13 +20,6 @@ import static org.reflections.ReflectionUtils.*;
 
 public class HibernateCrud {
 
-    public static void generateDao(){
-
-    }
-
-    public static void generateResource(){
-
-    }
     public static void generateDaoAndResource(Properties properties) throws IOException{
 
         String scan = (String)properties.get("scan");
