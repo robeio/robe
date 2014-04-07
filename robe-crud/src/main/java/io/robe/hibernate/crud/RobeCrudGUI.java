@@ -174,14 +174,14 @@ public class RobeCrudGUI extends javax.swing.JFrame {
 
     private void btnGenerateActionPerformed(java.awt.event.ActionEvent evt) {
 
-     Object[][] data= getTableData(jTable1);
+     Object[][] tableData= getTableData(jTable1);
         int i = 0;
-        for (Object[] data1 : data) {
-            String entity=(String)data1[0];
-            Boolean dao=(Boolean)data1[1];
-            Boolean resource=(Boolean)data1[2];
-            Boolean inject=(Boolean)data1[3];
-            Boolean auth=(Boolean)data1[4];
+        for (Object[] data : tableData) {
+            String entity=(String)data[0];
+            Boolean dao=(Boolean)data[1];
+            Boolean resource=(Boolean)data[2];
+            Boolean inject=(Boolean)data[3];
+            Boolean auth=(Boolean)data[4];
             System.out.println(entity);
             System.out.println(inject);
 
