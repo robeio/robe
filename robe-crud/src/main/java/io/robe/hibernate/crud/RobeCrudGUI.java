@@ -80,7 +80,7 @@ public class RobeCrudGUI extends javax.swing.JFrame {
 
         jTable1.setModel(new javax.swing.table.DefaultTableModel(
                 new Object[][]{
-                        {"Empty", false, false, false, false},
+                        //{"Empty", false, false, false, false},
                 },
                 new String[]{
                         "Entitiy", "Dao", "Resource", "Inject", "Auth"
