@@ -2,59 +2,74 @@ package io.robe.convert.xml;
 
 import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.core.JsonToken;
-import com.fasterxml.jackson.databind.type.TypeFactory;
 import com.fasterxml.jackson.dataformat.xml.XmlFactory;
-import com.fasterxml.jackson.dataformat.xml.XmlMapper;
 import io.robe.convert.IsImporter;
 import io.robe.convert.OnItemHandler;
+import io.robe.convert.xml.parsers.Parsers;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.lang.reflect.Field;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Locale;
+import java.util.Map;
 
-public class XMLImporter  extends IsImporter{
+public class XMLImporter extends IsImporter {
     @Override
     public <T> List<T> importStream(Class clazz, InputStream inputStream) throws IOException, ClassNotFoundException, IllegalAccessException, InstantiationException {
 
-        XmlMapper xmlMapper = new XmlMapper();
-        List<T> list ;
-        TypeFactory t = TypeFactory.defaultInstance();
-        list = xmlMapper.readValue(inputStream, t.constructCollectionType(LinkedList.class,clazz));
+        final List<T> list = new LinkedList<T>();
+        OnItemHandler<T> handler = new OnItemHandler<T>() {
+            @Override
+            public void onItem(T item) {
+                list.add(item);
+            }
+        };
         return list;
     }
 
     @Override
     public <T> void importStream(Class clazz, InputStream inputStream, OnItemHandler handler) throws IOException, ClassNotFoundException, IllegalAccessException, InstantiationException {
-
-        XmlMapper xmlMapper = new XmlMapper();
         XmlFactory factory = new XmlFactory();
-
         JsonParser parser = factory.createParser(inputStream);
-
-        TypeFactory t = TypeFactory.defaultInstance();
-//        MappingIterator<T> iterator = xmlMapper.readValues(parser, t.constructCollectionType(LinkedList.class,clazz));
         JsonToken current;
-//        while (iterator.hasNext()){
-//            iterator.nextValue();
-//        }
 
-//        Collection<Field> fields = getFields(clazz);
-//
+        Map<String, Field> fields = getFieldMap(clazz);
+
         current = parser.nextToken();
-        if (current != JsonToken.START_OBJECT) {
-            throw new RuntimeException("Error: root should be object or array.");
+        while (current != JsonToken.START_OBJECT) {
+            throw new RuntimeException("Error: root should be object.");
+
         }
-        parser.setCodec(xmlMapper);
 
         while (parser.nextToken() != JsonToken.END_OBJECT) {
-            if (parser.getCurrentName() == null)
+            try {
+                parser.getCurrentName();
+            } catch (Exception e) {
                 continue;
-            T item = (T) xmlMapper.readValue(parser, t.constructType(clazz));
-            System.out.println(parser.getValueAsString());
-            handler.onItem(item);
+            }
+            if (clazz.getSimpleName().equals(parser.getValueAsString())) {
+                T item = (T) clazz.newInstance();
+                while (parser.nextToken() != JsonToken.END_OBJECT) {
+                    if (parser.getValueAsString() == null || parser.getCurrentToken() == JsonToken.FIELD_NAME)
+                        continue;
+                    Field field = fields.get(parser.getCurrentName());
+                    setField(parser, item, field);
+                }
+                handler.onItem(item);
+            }
 
         }
 
     }
+
+    private <T> void setField(JsonParser parser, T item, Field field) throws IllegalAccessException, IOException {
+        boolean acc = field.isAccessible();
+        field.setAccessible(true);
+        field.set(item, Parsers.valueOf(field.getType().getSimpleName().toUpperCase(Locale.ENGLISH)).getParser().parse(parser, field));
+        field.setAccessible(acc);
+    }
+
+
 }

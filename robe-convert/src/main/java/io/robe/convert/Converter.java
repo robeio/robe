@@ -8,6 +8,7 @@ public class Converter {
 
     /**
      * Returns an ordered list of the fields which belongs to the given class.
+     *
      * @param clazz class to get types.
      * @return ordered list of fields.
      */
@@ -23,6 +24,27 @@ public class Converter {
         fieldList = sortByKeys(fieldList);
 
         return fieldList.values();
+
+
+    }
+
+    /**
+     * Returns a map of the fields which belongs to the given class with field name as key.
+     *
+     * @param clazz class to get types.
+     * @return ordered list of fields.
+     */
+    protected final Map<String, Field> getFieldMap(Class clazz) {
+        Map<String, Field> fieldList = new HashMap<String, Field>();
+        for (Field field : clazz.getDeclaredFields()) {
+            Annotation fieldAnnotation = field.getAnnotation(MappingProperty.class);
+            MappingProperty fieldMappingProperties = (MappingProperty) fieldAnnotation;
+            if (fieldMappingProperties != null) {
+                fieldList.put(field.getName(), field);
+            }
+        }
+
+        return fieldList;
 
 
     }
