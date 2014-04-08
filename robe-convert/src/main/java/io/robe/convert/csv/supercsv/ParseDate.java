@@ -1,6 +1,5 @@
 package io.robe.convert.csv.supercsv;
 
-import org.supercsv.cellprocessor.ParseDate;
 import org.supercsv.cellprocessor.ift.DateCellProcessor;
 import org.supercsv.util.CsvContext;
 
@@ -10,7 +9,7 @@ import java.util.Locale;
 /**
  * Provides a parser for Date. This is a kind of fix for {@link org.supercsv.cellprocessor.ParseDate}.
  */
-public class ParseDateFix extends ParseDate {
+public class ParseDate extends org.supercsv.cellprocessor.ParseDate {
 
     /**
      * Constructs a new <tt>ParseDate</tt> processor which converts a String to a Date using the supplied date format.
@@ -19,7 +18,7 @@ public class ParseDateFix extends ParseDate {
      * @param dateFormat the date format to use
      * @throws NullPointerException if dateFormat is null
      */
-    public ParseDateFix(String dateFormat) {
+    public ParseDate(String dateFormat) {
         super(dateFormat);
     }
 
@@ -30,7 +29,7 @@ public class ParseDateFix extends ParseDate {
      * @param lenient    whether date interpretation is lenient
      * @throws NullPointerException if dateFormat is null
      */
-    public ParseDateFix(String dateFormat, boolean lenient) {
+    public ParseDate(String dateFormat, boolean lenient) {
         super(dateFormat, lenient);
     }
 
@@ -43,7 +42,7 @@ public class ParseDateFix extends ParseDate {
      * @param locale     the Locale used to parse the date
      * @throws NullPointerException if dateFormat or locale is null
      */
-    public ParseDateFix(String dateFormat, boolean lenient, Locale locale) {
+    public ParseDate(String dateFormat, boolean lenient, Locale locale) {
         super(dateFormat, lenient, locale);
     }
 
@@ -55,7 +54,7 @@ public class ParseDateFix extends ParseDate {
      * @param next       the next processor in the chain
      * @throws NullPointerException if dateFormat or next is null
      */
-    public ParseDateFix(String dateFormat, DateCellProcessor next) {
+    public ParseDate(String dateFormat, DateCellProcessor next) {
         super(dateFormat, next);
     }
 
@@ -68,7 +67,7 @@ public class ParseDateFix extends ParseDate {
      * @param next       the next processor in the chain
      * @throws NullPointerException if dateFormat or next is null
      */
-    public ParseDateFix(String dateFormat, boolean lenient, DateCellProcessor next) {
+    public ParseDate(String dateFormat, boolean lenient, DateCellProcessor next) {
         super(dateFormat, lenient, next);
     }
 
@@ -82,7 +81,7 @@ public class ParseDateFix extends ParseDate {
      * @param next       the next processor in the chain
      * @throws NullPointerException if dateFormat, locale, or next is null
      */
-    public ParseDateFix(String dateFormat, boolean lenient, Locale locale, DateCellProcessor next) {
+    public ParseDate(String dateFormat, boolean lenient, Locale locale, DateCellProcessor next) {
         super(dateFormat, lenient, locale, next);
     }
 

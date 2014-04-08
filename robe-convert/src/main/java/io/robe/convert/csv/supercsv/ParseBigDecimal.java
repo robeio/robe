@@ -1,6 +1,5 @@
 package io.robe.convert.csv.supercsv;
 
-import org.supercsv.cellprocessor.ParseBigDecimal;
 import org.supercsv.cellprocessor.ift.CellProcessor;
 import org.supercsv.util.CsvContext;
 
@@ -10,11 +9,11 @@ import java.text.DecimalFormatSymbols;
 /**
  * Provides a parser for BigDecimal. This is a kind of fix for {@link org.supercsv.cellprocessor.ParseBigDecimal}.
  */
-public class ParseBigDecimalFix extends ParseBigDecimal {
+public class ParseBigDecimal extends org.supercsv.cellprocessor.ParseBigDecimal {
     /**
      * Constructs a new <tt>ParseBigDecimal</tt> processor, which converts a String to a BigDecimal.
      */
-    public ParseBigDecimalFix() {
+    public ParseBigDecimal() {
     }
 
     /**
@@ -24,7 +23,7 @@ public class ParseBigDecimalFix extends ParseBigDecimal {
      * @param symbols the decimal format symbols, containing the decimal separator
      * @throws NullPointerException if symbols is null
      */
-    public ParseBigDecimalFix(DecimalFormatSymbols symbols) {
+    public ParseBigDecimal(DecimalFormatSymbols symbols) {
         super(symbols);
     }
 
@@ -35,7 +34,7 @@ public class ParseBigDecimalFix extends ParseBigDecimal {
      * @param next the next processor in the chain
      * @throws NullPointerException if next is null
      */
-    public ParseBigDecimalFix(CellProcessor next) {
+    public ParseBigDecimal(CellProcessor next) {
         super(next);
     }
 
@@ -48,7 +47,7 @@ public class ParseBigDecimalFix extends ParseBigDecimal {
      * @param next    the next processor in the chain
      * @throws NullPointerException if symbols or next is null
      */
-    public ParseBigDecimalFix(DecimalFormatSymbols symbols, CellProcessor next) {
+    public ParseBigDecimal(DecimalFormatSymbols symbols, CellProcessor next) {
         super(symbols, next);
     }
 

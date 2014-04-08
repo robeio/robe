@@ -1,10 +1,9 @@
 package io.robe.convert.csv;
 
-import io.robe.convert.csv.supercsv.ParseBigDecimalFix;
 import org.supercsv.cellprocessor.*;
 
 public enum Parsers {
-    BIGDECIMAL("java.math.BigDecimal", new ParseBigDecimalFix()),
+    BIGDECIMAL("java.math.BigDecimal", new io.robe.convert.csv.supercsv.ParseBigDecimal()),
     BOOLEAN("java.lang.Boolean",new ParseBool()),
     BYTE("java.lang.Byte",new ParseChar()),
     DOUBLE("java.lang.Double",new ParseDouble()),
