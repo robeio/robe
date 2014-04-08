@@ -8,9 +8,9 @@ import java.math.BigDecimal;
 /**
  * Created by kaanalkim on 26/03/14.
  */
-public class BigDecimalParser implements IsParser {
+public class ParseBigDecimal implements IsParser {
     @Override
-    public Object parse(Object o,Field field) {
+    public Object parse(Object o, Field field) {
         BigDecimal bd = BigDecimal.valueOf(Double.valueOf(o.toString()));
 
         return bd;

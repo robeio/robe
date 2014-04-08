@@ -8,7 +8,7 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
-public class DateParser implements IsParser {
+public class ParseDate implements IsParser {
     @Override
     public Object parse(Object o, Field field) {
         String format = field.getAnnotation(JsonFormat.class).pattern();

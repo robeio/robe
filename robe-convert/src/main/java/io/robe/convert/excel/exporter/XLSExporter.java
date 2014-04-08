@@ -2,8 +2,8 @@ package io.robe.convert.excel.exporter;
 
 
 import io.robe.convert.IsExporter;
-import io.robe.convert.excel.Parsers;
 import io.robe.convert.excel.parsers.IsParser;
+import io.robe.convert.excel.parsers.Parsers;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.Row;
@@ -43,7 +43,7 @@ public class XLSExporter extends IsExporter {
         Sheet sheet = workbook.createSheet(clazz.getSimpleName());
 
         int startIndex = 0;
-        if(isFirstRowHeader) {
+        if (isFirstRowHeader) {
             Row row = sheet.createRow(0);
             for (int sheetHeaderRow = 0; sheetHeaderRow < fieldNames.length; sheetHeaderRow++) {
                 row.createCell(sheetHeaderRow).setCellValue(fieldNames[sheetHeaderRow]);
@@ -60,7 +60,7 @@ public class XLSExporter extends IsExporter {
                 fieldsOfEntry[field].setAccessible(true);
                 Cell cell = entryRow.createCell(field);
                 IsParser parser = Parsers.valueOf(fieldsOfEntry[field].getType().getSimpleName().toUpperCase(Locale.ENGLISH)).getParser();
-                parser.setCell(fieldsOfEntry[field].get(instanceOfEntry), cell,fieldsOfEntry[field] );
+                parser.setCell(fieldsOfEntry[field].get(instanceOfEntry), cell, fieldsOfEntry[field]);
                 fieldsOfEntry[field].setAccessible(acc);
             }
         }

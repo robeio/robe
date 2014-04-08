@@ -6,7 +6,7 @@ import java.io.IOException;
 import java.lang.reflect.Field;
 
 
-public interface Parser {
+public interface IsParser {
 
     public Object parse(JsonParser parser, Field field) throws IOException;
 }

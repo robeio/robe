@@ -1,28 +1,27 @@
-package io.robe.convert.xml.parsers;
+package io.robe.convert.excel.parsers;
 
 public enum Parsers {
     BIGDECIMAL("java.math.BigDecimal", new ParseBigDecimal()),
     BOOLEAN("java.lang.Boolean", new ParseBool()),
-    BYTE("java.lang.Byte", new ParseChar()),
+    BYTE("java.lang.Byte", new ParseByte()),
     DOUBLE("java.lang.Double", new ParseDouble()),
     INT("int", new ParseInt()),
     INTEGER("java.lang.Integer", new ParseInt()),
     LONG("java.lang.Long", new ParseLong()),
     STRING("java.lang.String", new ParseString()),
-    CHAR("java.lang.String", new ParseChar()),
     DATE("java.util.Date", new ParseDate());
 
 
     private final String type;
-    private final IsParser isParser;
+    private final IsParser parser;
 
     public IsParser getParser() {
-        return isParser;
+        return parser;
     }
 
     private Parsers(String type, IsParser parser) {
         this.type = type;
-        this.isParser = parser;
+        this.parser = parser;
     }
 
     @Override

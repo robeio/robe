@@ -2,7 +2,7 @@ package io.robe.convert.excel.importer;
 
 import io.robe.convert.IsImporter;
 import io.robe.convert.OnItemHandler;
-import io.robe.convert.excel.ExcelUtils;
+import io.robe.convert.excel.parsers.Parsers;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.Row;
@@ -12,10 +12,7 @@ import org.apache.poi.ss.usermodel.Workbook;
 import java.io.IOException;
 import java.io.InputStream;
 import java.lang.reflect.Field;
-import java.util.Collection;
-import java.util.Iterator;
-import java.util.LinkedList;
-import java.util.List;
+import java.util.*;
 
 public class XLSImporter extends IsImporter {
     boolean isFirstRowHeader = false;
@@ -61,7 +58,7 @@ public class XLSImporter extends IsImporter {
                 Cell cell = row.getCell(cellCount++);
                 try {
                     if (cell != null || cell.toString().trim().equals("")) {
-                        Object cellData = ExcelUtils.cellProcessor(field, cell);
+                        Object cellData = Parsers.valueOf(field.getType().getSimpleName().toUpperCase(Locale.ENGLISH)).getParser().parse(cell.toString(), field);
                         boolean acc = field.isAccessible();
                         field.setAccessible(true);
                         field.set(entry, cellData);

@@ -5,7 +5,7 @@ import com.fasterxml.jackson.core.JsonParser;
 import java.io.IOException;
 import java.lang.reflect.Field;
 
-public class ParseInt implements Parser {
+public class ParseInt implements IsParser {
     @Override
     public Object parse(JsonParser parser, Field field) throws IOException {
         return new Integer(parser.getValueAsInt());

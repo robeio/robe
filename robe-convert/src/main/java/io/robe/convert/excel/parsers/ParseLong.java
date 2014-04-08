@@ -4,10 +4,10 @@ import org.apache.poi.ss.usermodel.Cell;
 
 import java.lang.reflect.Field;
 
-public class IntParser implements IsParser {
+public class ParseLong implements IsParser {
     @Override
     public Object parse(Object o, Field field) {
-        Integer i = null;
+        Long l = null;
 
         int ind = ((String) o).indexOf(".");
 
@@ -15,14 +15,14 @@ public class IntParser implements IsParser {
             o = ((String) o).substring(0, ind);
         }
 
-        i = Integer.valueOf(o.toString());
+        l = Long.valueOf(o.toString());
 
-        return i;
+        return l;
     }
 
     @Override
     public void setCell(Object o, Cell cell, Field field) {
-        Integer integer = (Integer) o;
-        cell.setCellValue(integer);
+        Long aLong = (Long) o;
+        cell.setCellValue(aLong);
     }
 }
