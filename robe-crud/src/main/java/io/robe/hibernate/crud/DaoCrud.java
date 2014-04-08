@@ -30,8 +30,10 @@ public class DaoCrud {
 	    List<BodyDeclaration> members= new ArrayList<BodyDeclaration>();
 	  
 	    ConstructorDeclaration constructorDeclaration = new ConstructorDeclaration(ModifierSet.PUBLIC,entityName);
+
 	    constructorDeclaration.setAnnotations(Arrays.asList(CrudUtility.generateAnnotation("Inject",null,null)));
-	    BlockStmt conBlock = new BlockStmt();
+
+        BlockStmt conBlock = new BlockStmt();
 	    List<Expression> args = new LinkedList<Expression>();
 	  	args.add(ASTHelper.createNameExpr("sessionFactory"));
 	  	

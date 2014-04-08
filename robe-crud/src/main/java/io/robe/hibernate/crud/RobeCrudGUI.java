@@ -253,11 +253,11 @@ public class RobeCrudGUI extends javax.swing.JFrame {
                     BufferedWriter bwResource = new BufferedWriter(fwResource);
                     List<BodyDeclaration> bodyDeclarations = new ArrayList<BodyDeclaration>();
 
-                    bodyDeclarations.add(ResourceCrud.getAll(entityName, daoName, "findAll"));
-                    bodyDeclarations.add(ResourceCrud.get(entityName, daoName, findBy));
-                    bodyDeclarations.add(ResourceCrud.create(entityName, daoName, uniqueFields, "create"));
-                    bodyDeclarations.add(ResourceCrud.update(entityName, daoName, fieldGet, "getOid", findBy, "update", "detach"));
-                    bodyDeclarations.add(ResourceCrud.delete(entityName, daoName, "getOid", findBy, "delete"));
+                    bodyDeclarations.add(ResourceCrud.getAll(entityName, daoName, "findAll",auth));
+                    bodyDeclarations.add(ResourceCrud.get(entityName, daoName, findBy,auth));
+                    bodyDeclarations.add(ResourceCrud.create(entityName, daoName, uniqueFields, "create",auth));
+                    bodyDeclarations.add(ResourceCrud.update(entityName, daoName, fieldGet, "getOid", findBy, "update", "detach",auth));
+                    bodyDeclarations.add(ResourceCrud.delete(entityName, daoName, "getOid", findBy, "delete",auth));
                     List<ImportDeclaration> importDeclarationsResource = new ArrayList<ImportDeclaration>();
                     importDeclarationsResource.addAll(CrudUtility.getImports("com.google.inject.Inject", "com.yammer.dropwizard.auth.Auth", "com.yammer.dropwizard.hibernate.UnitOfWork"));
                     bwResource.write(ResourceCrud.ResourceGenerate(entityName + "Resource", entityName, daoName, bodyDeclarations, importDeclarationsResource, "test.com.robe.hibernate.generated.resource", inject));

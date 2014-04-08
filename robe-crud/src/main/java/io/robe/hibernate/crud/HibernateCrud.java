@@ -25,8 +25,9 @@ public class HibernateCrud {
         String scan = (String)properties.get("scan");
         String resource = (String)properties.get("resource");
         String dao=(String)properties.get("dao");
-        Boolean auth=Boolean.getBoolean((String)properties.get("auth"));
-        Boolean inject=Boolean.getBoolean((String)properties.get("inject"));
+        Boolean auth=properties.get("auth").equals("true");
+        Boolean inject=properties.get("inject").equals("true");
+
         Set<Class<?>> scanClasses = getEntityClasses(scan);
 
         if (scanClasses.isEmpty()) {
@@ -101,11 +102,11 @@ public class HibernateCrud {
 
             List<BodyDeclaration> bodyDeclarations = new ArrayList<BodyDeclaration>();
 
-            bodyDeclarations.add(ResourceCrud.getAll(entityName, daoName, "findAll"));
-            bodyDeclarations.add(ResourceCrud.get(entityName, daoName,findBy));
-            bodyDeclarations.add(ResourceCrud.create(entityName, daoName, uniqueFields, "create"));
-            bodyDeclarations.add(ResourceCrud.update(entityName, daoName,fieldGet, "getOid",findBy, "update", "detach"));
-            bodyDeclarations.add(ResourceCrud.delete(entityName, daoName, "getOid", findBy, "delete"));
+            bodyDeclarations.add(ResourceCrud.getAll(entityName, daoName, "findAll",auth));
+            bodyDeclarations.add(ResourceCrud.get(entityName, daoName,findBy,auth));
+            bodyDeclarations.add(ResourceCrud.create(entityName, daoName, uniqueFields, "create",auth));
+            bodyDeclarations.add(ResourceCrud.update(entityName, daoName,fieldGet, "getOid",findBy, "update", "detach",auth));
+            bodyDeclarations.add(ResourceCrud.delete(entityName, daoName, "getOid", findBy, "delete",auth));
             List<ImportDeclaration> importDeclarationsResource = new ArrayList<ImportDeclaration>();
             importDeclarationsResource.addAll(CrudUtility.getImports("com.google.inject.Inject","com.yammer.dropwizard.auth.Auth","com.yammer.dropwizard.hibernate.UnitOfWork"));
             bwResource.write(ResourceCrud.ResourceGenerate(entityName+"Resource",entityName,daoName,bodyDeclarations,importDeclarationsResource,resource,inject));
