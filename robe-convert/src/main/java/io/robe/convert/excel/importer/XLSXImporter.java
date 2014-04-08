@@ -20,13 +20,26 @@ import java.util.List;
 public class XLSXImporter extends IsImporter {
     @Override
     public <T> List<T> importStream(Class clazz, InputStream inputStream) throws IOException, ClassNotFoundException, IllegalAccessException, InstantiationException {
+        final List<T> list = new LinkedList<T>();
+        OnItemHandler<T> handler = new OnItemHandler<T>() {
+            @Override
+            public void onItem(T t) {
+                list.add(t);
+            }
+        };
+        importStream(clazz, inputStream, handler);
+
+        return list;
+    }
+
+    @Override
+    public <T> void importStream(Class clazz, InputStream inputStream, OnItemHandler handler) throws IOException, ClassNotFoundException, IllegalAccessException, InstantiationException {
+
         Collection<Field> fields = getFields(clazz);
 
         Workbook workbook = new XSSFWorkbook(inputStream);
         Sheet sheet = workbook.getSheetAt(0);
         Iterator<Row> rowIterator = sheet.iterator();
-
-        List<T> entries = new LinkedList<T>();
 
         while (rowIterator.hasNext()) {
             T entry = (T) clazz.newInstance();
@@ -49,14 +62,7 @@ public class XLSXImporter extends IsImporter {
                     e.printStackTrace();
                 }
             }
-            entries.add((T) entry);
+            handler.onItem(entry);
         }
-
-        return entries;
-    }
-
-    @Override
-    public <T> void importStream(Class clazz, InputStream inputStream, OnItemHandler handler) throws IOException, ClassNotFoundException, IllegalAccessException, InstantiationException {
-
     }
 }
