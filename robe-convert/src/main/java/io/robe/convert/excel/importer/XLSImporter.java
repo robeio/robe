@@ -33,6 +33,8 @@ public class XLSImporter extends IsImporter {
             }
         };
 
+        importStream(clazz, inputStream, handler);
+
         return entries;
     }
 
