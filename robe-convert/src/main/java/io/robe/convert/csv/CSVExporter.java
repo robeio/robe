@@ -12,7 +12,7 @@ import java.io.OutputStreamWriter;
 import java.io.Writer;
 import java.lang.reflect.Field;
 import java.util.Collection;
-import java.util.List;
+import java.util.Iterator;
 
 public class CSVExporter extends IsExporter {
     CsvPreference preference = CsvPreference.EXCEL_PREFERENCE.STANDARD_PREFERENCE;
@@ -23,10 +23,11 @@ public class CSVExporter extends IsExporter {
     public CSVExporter(CsvPreference preference) {
         this.preference = preference;
     }
-    @Override
-    public <T> void exportStream(Class clazz, OutputStream outputStream, List<T> list) throws IOException, ClassNotFoundException, IllegalAccessException, InstantiationException {
 
-        if (list == null)
+    @Override
+    public <T> void exportStream(Class clazz, OutputStream outputStream, Iterator<T> iterator) throws IOException, ClassNotFoundException, IllegalAccessException {
+
+        if (iterator == null)
             throw new NullPointerException("List can not be null or empty.");
 
         Collection<Field> fields = getFields(clazz);
@@ -39,11 +40,11 @@ public class CSVExporter extends IsExporter {
         ICsvBeanWriter csvBeanWriter = new CsvBeanWriter(writer, preference);
 
 
-        for (T entry : list)
+        while (iterator.hasNext()) {
+            T entry = iterator.next();
             csvBeanWriter.write(entry, fieldNames, processors);
-        csvBeanWriter.flush();
-        csvBeanWriter.close();
-        writer.close();
+        }
     }
+
 }
 

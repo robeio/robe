@@ -10,7 +10,7 @@ import java.util.List;
 public class XLSXImporterTest {
     @Test
     public void testImportStream() throws Exception {
-        XLSXImporter importer = new XLSXImporter();
+        XLSXImporter importer = new XLSXImporter(false);
         List<SamplePojo> samplePojos = importer.importStream(SamplePojo.class, XLSXImporterTest.class.getClassLoader().getResourceAsStream("sample.xlsx"));
 
         for (SamplePojo samplePojo : samplePojos) {
@@ -20,7 +20,7 @@ public class XLSXImporterTest {
 
     @Test
     public void testImportStreamByItem() throws Exception {
-        XLSXImporter importer = new XLSXImporter();
+        XLSXImporter importer = new XLSXImporter(false);
         OnItemHandler<SamplePojo> handler = new OnItemHandler<SamplePojo>() {
             @Override
             public void onItem(SamplePojo samplePojo) {

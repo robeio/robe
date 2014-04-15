@@ -5,13 +5,13 @@ import io.robe.convert.IsExporter;
 
 import java.io.IOException;
 import java.io.OutputStream;
-import java.util.List;
+import java.util.Iterator;
 
 
 public class JSONExporter extends IsExporter {
     @Override
-    public <T> void exportStream(Class clazz, OutputStream outputStream, List<T> list) throws IOException, ClassNotFoundException, IllegalAccessException, InstantiationException {
+    public <T> void exportStream(Class clazz, OutputStream outputStream, Iterator<T> iterator) throws IOException, ClassNotFoundException, IllegalAccessException {
         ObjectMapper mapper = new ObjectMapper();
-        mapper.writeValue(outputStream, list);
+        mapper.writeValue(outputStream, iterator);
     }
 }
