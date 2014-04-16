@@ -5,7 +5,7 @@ import com.yammer.dropwizard.auth.Auth;
 import com.yammer.dropwizard.hibernate.UnitOfWork;
 import io.robe.admin.hibernate.dao.QuartzJobDao;
 import io.robe.auth.Credentials;
-import io.robe.quartz.QuartzJob;
+import io.robe.quartz.hibernate.JobEntity;
 import org.apache.log4j.Logger;
 
 import javax.ws.rs.*;
@@ -22,15 +22,15 @@ public class QuartzJobResource {
 
     @GET
     @UnitOfWork
-    public List<QuartzJob> getAll(@Auth Credentials credentials) {
-        List<QuartzJob> list = quartzJobDao.findAll(QuartzJob.class);
+    public List<JobEntity> getAll(@Auth Credentials credentials) {
+        List<JobEntity> list = quartzJobDao.findAll(JobEntity.class);
         return list;
     }
 
     @POST
     @Path("/update")
     @UnitOfWork
-    public QuartzJob setCron(QuartzJob quartzJob) {
+    public JobEntity setCron(JobEntity quartzJob) {
         quartzJobDao.update(quartzJob);
         return quartzJob;
     }

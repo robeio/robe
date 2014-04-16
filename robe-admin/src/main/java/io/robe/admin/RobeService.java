@@ -18,7 +18,8 @@ import io.robe.common.exception.RobeExceptionMapper;
 import io.robe.guice.GuiceBundle;
 import io.robe.hibernate.HibernateBundle;
 import io.robe.mail.MailBundle;
-import io.robe.quartz.HibernateManagableQuartzBundle;
+import io.robe.quartz.QuartzBundle;
+import io.robe.quartz.hibernate.ByHibernate;
 
 import javax.ws.rs.ext.ExceptionMapper;
 import java.util.ArrayList;
@@ -41,7 +42,7 @@ public class RobeService extends Service<RobeServiceConfiguration> {
 
     /**
      * Adds
-     * Hibernate bundle for REMOTE_EXTERNAL connection
+     * Hibernate bundle for PROVIDER connection
      * Asset bundle for io.robe.admin screens and
      * Class scanners for
      * <ul>
@@ -60,7 +61,7 @@ public class RobeService extends Service<RobeServiceConfiguration> {
     public void initialize(Bootstrap<RobeServiceConfiguration> bootstrap) {
         bootstrap.addCommand(new ControllableServerCommand<RobeServiceConfiguration>(this));
         HibernateBundle<RobeServiceConfiguration> hibernateBundle = new HibernateBundle<RobeServiceConfiguration>();
-        HibernateManagableQuartzBundle<RobeServiceConfiguration> quartzBundle = new HibernateManagableQuartzBundle<RobeServiceConfiguration>(hibernateBundle);
+        QuartzBundle<RobeServiceConfiguration> quartzBundle = new QuartzBundle<RobeServiceConfiguration>();
         MailBundle<RobeServiceConfiguration> mailBundle = new MailBundle<RobeServiceConfiguration>();
         TokenBasedAuthBundle<RobeServiceConfiguration> authBundle = new TokenBasedAuthBundle<RobeServiceConfiguration>();
 
@@ -80,6 +81,10 @@ public class RobeService extends Service<RobeServiceConfiguration> {
 
         bootstrap.addBundle(new GuiceBundle<RobeServiceConfiguration>(modules));
         bootstrap.addCommand(new InitializeCommand(this, hibernateBundle));
+
+
+        //TODO: Bad way to get it. Will change it later.
+        ByHibernate.setHibernateBundle(hibernateBundle);
 
     }
 

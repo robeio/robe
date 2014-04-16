@@ -23,4 +23,6 @@ public @interface Scheduled {
      */
     String startTime() default "";
 
+    boolean autoStart() default true;
+
 }

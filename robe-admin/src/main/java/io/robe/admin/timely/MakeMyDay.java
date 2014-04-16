@@ -1,13 +1,13 @@
 package io.robe.admin.timely;
 
-import io.robe.quartz.CronProvider;
 import io.robe.quartz.annotations.ScheduledBy;
+import io.robe.quartz.hibernate.ByHibernate;
 import org.apache.log4j.Logger;
 import org.quartz.Job;
 import org.quartz.JobExecutionContext;
 import org.quartz.JobExecutionException;
 
-@ScheduledBy(provider = CronProvider.class)
+@ScheduledBy(provider = ByHibernate.class)
 public class MakeMyDay implements Job {
 
     private static Logger LOGGER = Logger.getLogger(MakeMyDay.class);

@@ -46,12 +46,21 @@ quartz:
   threadPoolClass: org.quartz.simpl.SimpleThreadPool
   threadCount: 10
   threadPriority: 8
-  jobStoreClass: org.quartz.simpl.RAMJobStore #org.quartz.impl.jdbcjobstore.JobStoreTX
   scanPackages: [io.robe.admin.timely]
-  driverDelegateClass: org.quartz.impl.jdbcjobstore.StdJDBCDelegate
-  tablePrefix: QRTZ_
-  maxConnections: 30
   skipUpdateCheck: false
+  jobStore:
+    className: org.quartz.simpl.RAMJobStore
+#    className: org.quartz.impl.jdbcjobstore.JobStoreTX
+#    properties:
+#      org.quartz.jobStore.dataSource: QuarztDS
+#      org.quartz.dataSource.myDS.driver: com.mysql.jdbc.Driver
+#      org.quartz.dataSource.myDS.URL: jdbc:mysql://localhost:3306/robe
+#      org.quartz.dataSource.myDS.user: root
+#      org.quartz.dataSource.myDS.password:
+#      org.quartz.dataSource.myDS.maxConnections: 10
+#      org.quartz.jobStore.tablePrefix: QRTZ_
+#      org.quartz.jobStore.driverDelegateClass: org.quartz.impl.jdbcjobstore.StdJDBCDelegate
+
 
 # Message queue configuration
 messageQueue:

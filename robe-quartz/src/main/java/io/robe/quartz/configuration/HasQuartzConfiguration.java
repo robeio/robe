@@ -1,6 +1,4 @@
-package io.robe.quartz;
-
-import io.robe.quartz.QuartzConfiguration;
+package io.robe.quartz.configuration;
 
 public interface HasQuartzConfiguration {
 

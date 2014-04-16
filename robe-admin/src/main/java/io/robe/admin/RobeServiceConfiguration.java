@@ -12,8 +12,8 @@ import io.robe.mail.HasMailConfiguration;
 import io.robe.mail.MailConfiguration;
 import io.robe.mq.HasMessageQueueConfiguration;
 import io.robe.mq.MessageQueueConfiguration;
-import io.robe.quartz.HasQuartzConfiguration;
-import io.robe.quartz.QuartzConfiguration;
+import io.robe.quartz.configuration.HasQuartzConfiguration;
+import io.robe.quartz.configuration.QuartzConfiguration;
 
 import javax.validation.Valid;
 import javax.validation.constraints.NotNull;

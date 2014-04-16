@@ -1,16 +1,39 @@
-package io.robe.quartz;
+package io.robe.quartz.configuration;
+
+import com.fasterxml.jackson.annotation.JsonProperty;
+import io.robe.quartz.configuration.jobstore.JobStoreConfiguration;
+
+import javax.validation.constraints.NotNull;
 
 public class QuartzConfiguration {
+    @NotNull
+    @JsonProperty
     private String instanceName;
-    private String threadPoolClass;
-    private int threadCount;
-    private int threadPriority;
-    private String jobStoreClass;
+    @JsonProperty
+    private String threadPoolClass = "org.quartz.simpl.SimpleThreadPool";
+    @JsonProperty
+    private int threadCount = 5;
+    @JsonProperty
+    private int threadPriority = 8;
+
+    @NotNull
+    @JsonProperty
     private String[] scanPackages;
-    private String driverDelegateClass;
-    private String tablePrefix;
-    private int maxConnections;
-    private String skipUpdateCheck;
+
+    @JsonProperty
+    private String skipUpdateCheck = "true";
+
+    @NotNull
+    @JsonProperty
+    private JobStoreConfiguration jobStore;
+
+    public JobStoreConfiguration getJobStore() {
+        return jobStore;
+    }
+
+    public void setJobStore(JobStoreConfiguration jobStore) {
+        this.jobStore = jobStore;
+    }
 
     public String getInstanceName() {
         return instanceName;
@@ -44,44 +67,12 @@ public class QuartzConfiguration {
         this.threadPriority = threadPriority;
     }
 
-    public String getJobStoreClass() {
-        return jobStoreClass;
-    }
-
-    public void setJobStoreClass(String jobStoreClass) {
-        this.jobStoreClass = jobStoreClass;
-    }
-
     public String[] getScanPackages() {
         return scanPackages;
     }
 
     public void setScanPackages(String[] scanPackages) {
         this.scanPackages = scanPackages;
-    }
-
-    public String getDriverDelegateClass() {
-        return driverDelegateClass;
-    }
-
-    public void setDriverDelegateClass(String driverDelegateClass) {
-        this.driverDelegateClass = driverDelegateClass;
-    }
-
-    public String getTablePrefix() {
-        return tablePrefix;
-    }
-
-    public void setTablePrefix(String tablePrefix) {
-        this.tablePrefix = tablePrefix;
-    }
-
-    public int getMaxConnections() {
-        return maxConnections;
-    }
-
-    public void setMaxConnections(int maxConnections) {
-        this.maxConnections = maxConnections;
     }
 
     public String getSkipUpdateCheck() {
@@ -91,4 +82,5 @@ public class QuartzConfiguration {
     public void setSkipUpdateCheck(String skipUpdateCheck) {
         this.skipUpdateCheck = skipUpdateCheck;
     }
+
 }

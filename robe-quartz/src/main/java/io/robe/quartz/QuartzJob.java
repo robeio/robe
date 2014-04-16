@@ -1,51 +1,19 @@
 package io.robe.quartz;
 
-import io.robe.hibernate.entity.BaseEntity;
+import org.quartz.Job;
 
-import javax.persistence.Entity;
-import javax.persistence.OneToMany;
-import javax.persistence.Table;
 import java.util.List;
 
-@Entity
-@Table
-public class QuartzJob extends BaseEntity {
-    private String schedulerName;
-    private String jobClassName;
-    private String description;
+public interface QuartzJob {
 
-    @OneToMany(mappedBy = "oid")
-    private List<QuartzTrigger> triggers;
+    public String getOid();
 
-    public String getSchedulerName() {
-        return schedulerName;
-    }
+    public String getSchedulerName();
 
-    public void setSchedulerName(String schedulerName) {
-        this.schedulerName = schedulerName;
-    }
+    public String getDescription();
 
-    public String getJobClassName() {
-        return jobClassName;
-    }
+    public List<QuartzTrigger> getTriggers();
 
-    public void setJobClassName(String jobClassName) {
-        this.jobClassName = jobClassName;
-    }
+    public Class<? extends Job> getClazz();
 
-    public String getDescription() {
-        return description;
-    }
-
-    public void setDescription(String description) {
-        this.description = description;
-    }
-
-    public List<QuartzTrigger> getTriggers() {
-        return triggers;
-    }
-
-    public void setTriggers(List<QuartzTrigger> triggers) {
-        this.triggers = triggers;
-    }
 }

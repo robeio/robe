@@ -12,7 +12,7 @@ import java.util.Date;
 /**
  * Created by sinanselimoglu on 28/03/14.
  */
-@Scheduled(cron = "* * * * * ?", startTime = "12.21.1985 12:21:11")
+@Scheduled(cron = "* * * * 1 ?", startTime = "12.21.1985 12:21:11")
 public class SendMail implements Job {
 
     private static Logger LOGGER = Logger.getLogger(SendMail.class);
