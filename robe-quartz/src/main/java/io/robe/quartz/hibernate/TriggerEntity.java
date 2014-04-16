@@ -1,6 +1,7 @@
 package io.robe.quartz.hibernate;
 
 import io.robe.hibernate.entity.BaseEntity;
+import io.robe.quartz.QuartzTrigger;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -9,7 +10,7 @@ import javax.persistence.Table;
 
 @Entity
 @Table
-public class TriggerEntity extends BaseEntity {
+public class TriggerEntity extends BaseEntity implements QuartzTrigger {
 
     private String cronExpression;
 
@@ -38,6 +39,11 @@ public class TriggerEntity extends BaseEntity {
 
     public long getFireTime() {
         return fireTime;
+    }
+
+    @Override
+    public String getJobId() {
+        return getJob().getOid();
     }
 
     public void setFireTime(long fireTime) {
