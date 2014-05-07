@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import io.robe.quartz.configuration.jobstore.JobStoreConfiguration;
 
 import javax.validation.constraints.NotNull;
+import java.util.Arrays;
 
 public class QuartzConfiguration {
     @NotNull
@@ -72,7 +73,7 @@ public class QuartzConfiguration {
     }
 
     public void setScanPackages(String[] scanPackages) {
-        this.scanPackages = scanPackages;
+        this.scanPackages = Arrays.copyOf(scanPackages, scanPackages.length);
     }
 
     public String getSkipUpdateCheck() {
