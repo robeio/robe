@@ -33,9 +33,12 @@
     </properties>
 
     <groupId>io.robe</groupId>
-    <artifactId>robe-all</artifactId>
+    <artifactId>robe-parent</artifactId>
     <version>0.3</version>
     <packaging>pom</packaging>
+    <name>Robe Project</name>
+    <url>www.robe.io</url>
+    <description>A Brand new ROBE for Dropwizard. www.dropwizard.io</description>
 
     <dependencyManagement>
         <dependencies>
