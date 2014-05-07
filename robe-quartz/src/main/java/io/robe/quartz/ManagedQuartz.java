@@ -11,7 +11,7 @@ import static com.google.common.base.Preconditions.checkNotNull;
 
 
 public class ManagedQuartz implements Managed {
-    private static final Logger log = LoggerFactory.getLogger(ManagedQuartz.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(ManagedQuartz.class);
     private Set<Class<? extends Job>> onStartJobs;
     private Set<Class<? extends Job>> onStopJobs;
     private Scheduler scheduler;
@@ -24,19 +24,19 @@ public class ManagedQuartz implements Managed {
     }
 
     @Override
-    public void start() throws Exception {
+    public void start() throws SchedulerException {
         scheduler.start();
         scheduleAllJobsOnApplicationStart();
     }
 
     @Override
-    public void stop() throws Exception {
+    public void stop() throws SchedulerException {
         scheduleAllJobsOnApplicationStop();
 
         try {
             Thread.sleep(100);
         } catch (InterruptedException e) {
-
+            LOGGER.info("Finished onStop Jobs Shutting down the application.");
         }
         scheduler.shutdown(true);
     }
@@ -50,7 +50,7 @@ public class ManagedQuartz implements Managed {
 
 
     private void scheduleAllJobsOnApplicationStart() throws SchedulerException {
-        log.info("Jobs to run on application start: " + onStartJobs);
+        LOGGER.info("Jobs to run on application start: " + onStartJobs);
         for (Class<? extends org.quartz.Job> clazz : onStartJobs) {
             JobBuilder jobBuilder = JobBuilder.newJob(clazz);
             scheduler.scheduleJob(jobBuilder.build(), executeNowTrigger());
