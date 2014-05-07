@@ -10,7 +10,7 @@ import java.util.Set;
 
 @Entity
 @Table
-public class Role extends BaseEntity<Role> implements RoleEntry {
+public class Role extends BaseEntity implements RoleEntry {
 
     @Column(length = 20)
     private String code;
