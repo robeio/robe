@@ -44,33 +44,6 @@
             <artifactId>javax.inject</artifactId>
             <version>1</version>
         </dependency>
-
-        <dependency>
-            <groupId>org.apache.shiro</groupId>
-            <artifactId>shiro-web</artifactId>
-            <version>1.2.2</version>
-        </dependency>
-
-        <dependency>
-            <groupId>io.ifar</groupId>
-            <artifactId>dw-shiro-bundle</artifactId>
-            <version>0.0.1-SNAPSHOT</version>
-        </dependency>
-
-        <dependency>
-            <groupId>org.secnod.shiro</groupId>
-            <artifactId>shiro-jersey</artifactId>
-            <version>0.0.1-SNAPSHOT</version>
-        </dependency>
-        <dependency>
-            <groupId>org.secnod.shiro</groupId>
-            <artifactId>shiro-jersey</artifactId>
-            <version>0.0.1-SNAPSHOT</version>
-            <type>test-jar</type>
-            <scope>test</scope>
-        </dependency>
-
-
     </dependencies>
 
 
