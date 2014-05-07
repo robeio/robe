@@ -30,6 +30,8 @@
         <cglib.version>2.2.2</cglib.version>
         <guice.version>3.0</guice.version>
         <reflections.version>0.9.8</reflections.version>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
     </properties>
 
     <groupId>io.robe</groupId>
@@ -39,6 +41,15 @@
     <name>Robe Project</name>
     <url>www.robe.io</url>
     <description>A Brand new ROBE for Dropwizard. www.dropwizard.io</description>
+
+    <licenses>
+        <license>
+            <name>Apache License 2.0</name>
+            <url>http://www.apache.org/licenses/LICENSE-2.0.html</url>
+            <distribution>repo</distribution>
+        </license>
+    </licenses>
+
 
     <dependencyManagement>
         <dependencies>
@@ -154,7 +165,7 @@
     <dependencies>
 
 
-       <!-- Timed Operations - Quartz -->
+        <!-- Timed Operations - Quartz -->
         <dependency>
             <groupId>org.quartz-scheduler</groupId>
             <artifactId>quartz</artifactId>

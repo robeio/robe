@@ -58,8 +58,7 @@ public class ByHibernate implements CronProvider {
      * @return
      */
     private JobEntity dbLookup(String jobClassName, Session session) {
-        JobEntity entity = (JobEntity) session.createCriteria(JobEntity.class).add(Restrictions.eq("jobClassName", jobClassName)).uniqueResult();
-        return entity;
+        return (JobEntity) session.createCriteria(JobEntity.class).add(Restrictions.eq("jobClassName", jobClassName)).uniqueResult();
     }
 
 
