@@ -17,6 +17,6 @@ public class CSVExporterTest {
 
         exporter.exportStream(SamplePojo.class, outputStream, TestData.getData().iterator());
 
-        outputStream.flush();
+//        outputStream.flush();
     }
 }

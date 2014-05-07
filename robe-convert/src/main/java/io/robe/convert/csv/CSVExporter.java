@@ -44,6 +44,7 @@ public class CSVExporter extends IsExporter {
             T entry = iterator.next();
             csvBeanWriter.write(entry, fieldNames, processors);
         }
+        csvBeanWriter.flush();
     }
 
 }
