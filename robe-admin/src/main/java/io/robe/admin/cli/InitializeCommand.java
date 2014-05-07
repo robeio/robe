@@ -22,6 +22,8 @@ import java.util.Set;
 
 public class InitializeCommand<T extends RobeServiceConfiguration> extends EnvironmentCommand<T> {
 
+    private static final Logger LOGGER = LoggerFactory.getLogger(InitializeCommand.class);
+
     private HibernateBundle hibernateBundle;
 
 
@@ -34,10 +36,9 @@ public class InitializeCommand<T extends RobeServiceConfiguration> extends Envir
     @Override
     @UnitOfWork
     protected void run(Environment environment, Namespace namespace, T configuration) throws Exception {
-        final Logger logger = LoggerFactory.getLogger(InitializeCommand.class);
+        LOGGER.info("Initialize Starting...");
+        LOGGER.info("Starting to create initial data.");
         execute();
-
-
     }
 
 
@@ -46,11 +47,13 @@ public class InitializeCommand<T extends RobeServiceConfiguration> extends Envir
         final Session session = hibernateBundle.getSessionFactory().openSession();
 
         Role role = (Role) session.createCriteria(Role.class).add(Restrictions.eq("name", "Admin")).uniqueResult();
+        LOGGER.info("Creating Roles.");
         if (role == null) {
             role = new Role();
             role.setCode("io/robe/admin");
             role.setName("Admin");
             session.persist(role);
+
 
             Role user = new Role();
             user.setCode("user");
@@ -65,6 +68,8 @@ public class InitializeCommand<T extends RobeServiceConfiguration> extends Envir
             all.getRoles().add(role);
             session.persist(all);
         }
+
+        LOGGER.info("Scanning Services.");
 
         Reflections reflections = new Reflections("io", this.getClass().getClassLoader());
         Set<Class<?>> services = reflections.getTypesAnnotatedWith(Path.class);
@@ -93,12 +98,14 @@ public class InitializeCommand<T extends RobeServiceConfiguration> extends Envir
                         entity.setMethod(io.robe.admin.hibernate.entity.Service.Method.valueOf(httpMethod));
                         session.persist(entity);
                         session.persist(createPermission(false, entity.getOid(), role));
+                        LOGGER.info("Service data and permission created: " + entity.getPath() + "-" + entity.getMethod());
                     }
 
                 }
             }
         }
 
+        LOGGER.info("Creating admin user. U:admin@robe.io P: 123123");
         User user = (User) session.createCriteria(User.class).add(Restrictions.eq("email", "admin@robe.io")).uniqueResult();
         if (user == null) {
             user = new User();
@@ -109,8 +116,10 @@ public class InitializeCommand<T extends RobeServiceConfiguration> extends Envir
             user.setPassword("96cae35ce8a9b0244178bf28e4966c2ce1b8385723a96a6b838858cdd6ca0a1e");
             user.setRole(role);
             session.persist(user);
+
         }
 
+        LOGGER.info("Creating languages : TR & EN");
         Language systemLanguageTR = new Language();
         systemLanguageTR.setCode(Language.Type.TR);
         systemLanguageTR.setName("Türkçe");
@@ -120,6 +129,7 @@ public class InitializeCommand<T extends RobeServiceConfiguration> extends Envir
         systemLanguageEN.setName("İngilizce");
         session.persist(systemLanguageEN);
 
+        LOGGER.info("Createting Menu and permissions");
         Menu root = new Menu();
         root.setCode("root");
         root.setItemOrder(1);
@@ -192,6 +202,10 @@ public class InitializeCommand<T extends RobeServiceConfiguration> extends Envir
 
         session.flush();
         session.close();
+
+        LOGGER.info("Initialize finished.");
+        System.exit(0);
+
 
     }
 
