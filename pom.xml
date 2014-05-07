@@ -13,6 +13,7 @@
         <module>robe-quartz</module>
         <module>robe-mq</module>
         <module>robe-crud</module>
+        <module>robe-convert</module>
     </modules>
 
     <properties>
@@ -33,7 +34,7 @@
 
     <groupId>io.robe</groupId>
     <artifactId>robe-all</artifactId>
-    <version>${project.version}</version>
+    <version>0.3</version>
     <packaging>pom</packaging>
 
     <dependencyManagement>
