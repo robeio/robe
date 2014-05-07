@@ -162,7 +162,7 @@ public class QuartzBundle<T extends Configuration & HasQuartzConfiguration & Has
             try {
                 scheduler.addJob(jobDetail, true);
             } catch (SchedulerException e) {
-                e.printStackTrace();
+                LOGGER.error("Can't schedule " + job.getClazz(), e);
             }
 
         }
