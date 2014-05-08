@@ -32,7 +32,6 @@ public class RoleResource {
     @GET
     @UnitOfWork
     public List<Role> getRoles(@Auth Credentials credentials) {
-
         return roleDao.findAll(Role.class);
     }
 
@@ -49,10 +48,10 @@ public class RoleResource {
     @UnitOfWork
     public Role create(@Auth Credentials credentials, @Valid Role role) {
         Optional<Role> checkUser = roleDao.findByName(role.getCode());
-        if (checkUser.isPresent())
+        if (checkUser.isPresent()) {
             throw new RobeRuntimeException("Code", role.getCode() + " already used by another role. Please use different code.");
-        role = roleDao.create(role);
-        return role;
+        }
+        return roleDao.create(role);
     }
 
     @POST
@@ -71,9 +70,11 @@ public class RoleResource {
     @DELETE
     @UnitOfWork
     public Role delete(@Auth Credentials credentials, Role role) {
-        role = roleDao.findById(role.getOid());
-        roleDao.delete(role);
-        return role;
+        Role roleCheck = roleDao.findById(role.getOid());
+        if (roleCheck != null) {
+            roleDao.delete(role);
+        }
+        return roleCheck;
     }
 
     @PUT
@@ -87,9 +88,9 @@ public class RoleResource {
 
         boolean included = isRoleIncludedAsSubRole(role, groupOid);
 
-        if (included)
-            throw new RobeRuntimeException("", "aaa");
-
+        if (included) {
+            throw new RobeRuntimeException("Circular Dependency", "Operation failed.");
+        }
         if (group.getRoles() == null) {
             group.setRoles(new HashSet<Role>());
         }
@@ -102,11 +103,13 @@ public class RoleResource {
     }
 
     private boolean isRoleIncludedAsSubRole(Role role, String groupOid) {
-        if (role.getOid().equals(groupOid))
+        if (role.getOid().equals(groupOid)) {
             return true;
+        }
         for (Role child : role.getRoles()) {
-            if (isRoleIncludedAsSubRole(child, groupOid))
+            if (isRoleIncludedAsSubRole(child, groupOid)) {
                 return true;
+            }
         }
         return false;
     }
@@ -120,10 +123,8 @@ public class RoleResource {
 
         if (group.getRoles() != null && group.getRoles().contains(role)) {
             group.getRoles().remove(role);
-               roleDao.update(group);
-
+            roleDao.update(group);
         }
-
         return group;
     }
 }

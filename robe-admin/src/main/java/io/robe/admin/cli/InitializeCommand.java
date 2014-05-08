@@ -23,6 +23,8 @@ import java.util.Set;
 public class InitializeCommand<T extends RobeServiceConfiguration> extends EnvironmentCommand<T> {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(InitializeCommand.class);
+    public static final String IO_ROBE_ADMIN = "io/robe/admin";
+    public static final String ADMIN = "Admin";
 
     private HibernateBundle hibernateBundle;
 
@@ -50,8 +52,8 @@ public class InitializeCommand<T extends RobeServiceConfiguration> extends Envir
         LOGGER.info("Creating Roles.");
         if (role == null) {
             role = new Role();
-            role.setCode("io/robe/admin");
-            role.setName("Admin");
+            role.setCode(IO_ROBE_ADMIN);
+            role.setName(ADMIN);
             session.persist(role);
 
 
@@ -111,8 +113,8 @@ public class InitializeCommand<T extends RobeServiceConfiguration> extends Envir
             user = new User();
             user.setEmail("admin@robe.io");
             user.setActive(true);
-            user.setName("io/robe/admin");
-            user.setSurname("io/robe/admin");
+            user.setName(IO_ROBE_ADMIN);
+            user.setSurname(IO_ROBE_ADMIN);
             user.setPassword("96cae35ce8a9b0244178bf28e4966c2ce1b8385723a96a6b838858cdd6ca0a1e");
             user.setRole(role);
             session.persist(user);

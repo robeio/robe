@@ -9,14 +9,11 @@ import io.robe.auth.Credentials;
 
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
-import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import static com.google.common.base.Preconditions.checkNotNull;
 
-/**
- * Created by kaanalkim on 11/02/14.
- */
 @Path("mailtemplate")
 @Consumes(MediaType.APPLICATION_JSON)
 @Produces(MediaType.APPLICATION_JSON)
@@ -28,13 +25,12 @@ public class MailTemplateResource {
     @Path("/all")
     @UnitOfWork
     public List<MailTemplate> getAll() {
-        List<MailTemplate> list = mailTemplateDao.findAll(MailTemplate.class);
-        return list;
+        return mailTemplateDao.findAll(MailTemplate.class);
     }
 
     @PUT
     @UnitOfWork
-    public MailTemplate createTemplate(@Auth Credentials credentials, HashMap<String, String> data) {
+    public MailTemplate createTemplate(@Auth Credentials credentials, Map<String, String> data) {
         String language = data.get("lang");
         String code = data.get("code");
         String template = data.get("template");
@@ -44,11 +40,8 @@ public class MailTemplateResource {
         checkNotNull(code, "tCode mustn't be null or empty");
 
         MailTemplate entity = new MailTemplate();
-        if (language.equals("TR")) {
-            entity.setLang(MailTemplate.Type.TR);
-        } else if (language.equals("EN")) {
-            entity.setLang(MailTemplate.Type.EN);
-        }
+        entity.setLang(MailTemplate.Type.valueOf(language));
+
 
         entity.setCode(code);
         entity.setTemplate(template);
@@ -56,23 +49,4 @@ public class MailTemplateResource {
 
         return entity;
     }
-
-//    @POST
-//    @UnitOfWork
-//    public HashMap updateTemplate(@Auth Credentials credentials, HashMap<String, String> data) {
-//        String tLang = data.get("tLang");
-//        String template = data.get("template");
-//        String tCode = data.get("tCode");
-//
-//        checkNotNull(tLang, "tLang mustn't be null or empty");
-//        checkNotNull(template, "template mustn't be null or empty");
-//        checkNotNull(tCode, "tCode mustn't be null or empty");
-//
-//        MailTemplate mailTemplate = new MailTemplate();
-//
-//
-//
-//
-//    }
-
 }

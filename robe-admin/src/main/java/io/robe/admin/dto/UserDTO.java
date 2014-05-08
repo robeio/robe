@@ -30,8 +30,9 @@ public class UserDTO extends User {
         setSurname(entity.getSurname());
         setPassword(entity.getPassword());
         setActive(entity.isActive());
-        if (entity.getRole() != null)
-            setRoleOid(entity.getRole().getOid());
+        if (entity.getRole() != null) {
+            roleOid = entity.getRole().getOid();
+        }
     }
 
     /**

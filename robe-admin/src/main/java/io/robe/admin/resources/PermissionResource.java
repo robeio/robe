@@ -42,8 +42,9 @@ public class PermissionResource {
         Set<Permission> permissions = role.getPermissions();
         List<String> menuOids = new LinkedList<String>();
         for (Permission permission : permissions) {
-            if (permission.getType().equals(Permission.Type.MENU))
+            if (permission.getType().equals(Permission.Type.MENU)) {
                 menuOids.add(permission.getRestrictedItemOid());
+            }
         }
         return menuOids;
     }
@@ -58,8 +59,9 @@ public class PermissionResource {
         for (String itemOid : items) {
             Menu menu = menuDao.findById(itemOid);
             Permission permission = permissionDao.findByRoleAndItem(role, menu);
-            if (permission == null)
+            if (permission == null) {
                 permission = new Permission();
+            }
             permission.setRole(role);
             permission.setType(Permission.Type.MENU);
             permission.setpLevel((short) 7);
@@ -78,8 +80,9 @@ public class PermissionResource {
         Set<Permission> permissions = role.getPermissions();
         List<String> serviceOids = new LinkedList<String>();
         for (Permission permission : permissions) {
-            if (permission.getType().equals(Permission.Type.SERVICE))
+            if (permission.getType().equals(Permission.Type.SERVICE)) {
                 serviceOids.add(permission.getRestrictedItemOid());
+            }
         }
         return serviceOids;
     }
@@ -94,8 +97,9 @@ public class PermissionResource {
         for (String itemOid : items) {
             Service service = serviceDao.findById(itemOid);
             Permission permission = permissionDao.findByRoleAndItem(role, service);
-            if (permission == null)
+            if (permission == null) {
                 permission = new Permission();
+            }
             permission.setRole(role);
             permission.setType(Permission.Type.SERVICE);
             permission.setpLevel((short) 7);

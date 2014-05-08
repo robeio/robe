@@ -18,13 +18,12 @@ import java.util.List;
 public class QuartzJobResource {
     @Inject
     QuartzJobDao quartzJobDao;
-    private static Logger LOGGER = Logger.getLogger(QuartzJobResource.class);
+    private static final Logger LOGGER = Logger.getLogger(QuartzJobResource.class);
 
     @GET
     @UnitOfWork
     public List<JobEntity> getAll(@Auth Credentials credentials) {
-        List<JobEntity> list = quartzJobDao.findAll(JobEntity.class);
-        return list;
+        return quartzJobDao.findAll(JobEntity.class);
     }
 
     @POST

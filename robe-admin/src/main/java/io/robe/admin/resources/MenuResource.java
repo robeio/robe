@@ -59,7 +59,7 @@ public class MenuResource {
         Optional<User> user = userDao.findByUsername(credentials.getUsername());
         Set<Permission> permissions = new HashSet<Permission>();
         getAllRolePermissions(user.get().getRole(), permissions);
-        HashSet<String> menuOids = new HashSet<String>();
+        Set<String> menuOids = new HashSet<String>();
         List<Menu> items = menuDao.findHierarchicalMenu();
         for (Permission permission : permissions) {
             if (permission.getType().equals(Permission.Type.MENU)) {
@@ -73,7 +73,7 @@ public class MenuResource {
         return permittedItems;
     }
 
-    private void createMenuWithPermissions(HashSet<String> permissions, List<Menu> items, List<MenuItem> permittedItems) {
+    private void createMenuWithPermissions(Set<String> permissions, List<Menu> items, List<MenuItem> permittedItems) {
         for (Menu item : items) {
             MenuItem permittedItem = new MenuItem(item.getName(), item.getCode());
             if (permissions.contains(item.getOid())) {
@@ -81,9 +81,9 @@ public class MenuResource {
             }
             createMenuWithPermissions(permissions, item.getItems(), permittedItem.getItems());
             //If any sub menu permitted add parent menu also.
-            if (permittedItem.getItems().size() > 0 && !permittedItems.contains(permittedItem))
+            if (permittedItem.getItems().size() > 0 && !permittedItems.contains(permittedItem)) {
                 permittedItems.add(permittedItem);
-
+            }
         }
     }
 
@@ -109,15 +109,16 @@ public class MenuResource {
     public Menu move(@Auth Credentials credentials, @PathParam("item") String itemOid, @PathParam("destination") String parentOid) {
         Menu item = menuDao.findById(itemOid);
         Menu parent = menuDao.findById(parentOid);
-        if (parent == null)
-            throw new InvalidEntityException("destination", Arrays.asList(parentOid + " is not valid."));
-        if (item == null)
-            throw new InvalidEntityException("item", Arrays.asList(itemOid + " is not valid."));
-
-        if (itemOid.equals(parentOid))
+        String notValid = " is not valid.";
+        if (parent == null) {
+            throw new InvalidEntityException("destination", Arrays.asList(parentOid + notValid));
+        } else if (item == null) {
+            throw new InvalidEntityException("item", Arrays.asList(itemOid + notValid));
+        } else if (itemOid.equals(parentOid)) {
             item.setParentOid(null);
-        else
+        } else {
             item.setParentOid(parentOid);
+        }
         item = menuDao.update(item);
         return item;
 
@@ -129,8 +130,9 @@ public class MenuResource {
     @UnitOfWork
     public Menu create(@Auth Credentials credentials, @Valid Menu menu) {
         Optional<Menu> checkMenu = menuDao.findByCode(menu.getCode());
-        if (checkMenu.isPresent())
+        if (checkMenu.isPresent()) {
             throw new InvalidEntityException("Code", Arrays.asList(menu.getCode() + " already used by another menu. Please use different code."));
+        }
         return menuDao.create(menu);
     }
 

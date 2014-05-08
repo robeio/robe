@@ -63,10 +63,6 @@ public class Role extends BaseEntity implements RoleEntry {
         return roles;
     }
 
-    public void setRoles(HashSet<Role> roles) {
-        this.roles = roles;
-    }
-
     public Set<Role> getGroups() {
         return groups;
     }

@@ -12,9 +12,6 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 import java.util.List;
 
-/**
- * Created by kaanalkim on 13/02/14.
- */
 @Path("language")
 @Consumes(MediaType.APPLICATION_JSON)
 @Produces(MediaType.APPLICATION_JSON)
@@ -27,8 +24,7 @@ public class LanguageResource {
     @Path("/all")
     @UnitOfWork
     public List<Language> getAll() {
-        List<Language> list = languageDao.findAll(Language.class);
-        return list;
+        return languageDao.findAll(Language.class);
     }
 
 
