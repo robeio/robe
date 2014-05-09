@@ -4,6 +4,6 @@ import org.quartz.Job;
 
 public interface CronProvider {
 
-    public QuartzJob getQuartzJob(Class<? extends Job> clazz);
+    QuartzJob getQuartzJob(Class<? extends Job> clazz);
 
 }

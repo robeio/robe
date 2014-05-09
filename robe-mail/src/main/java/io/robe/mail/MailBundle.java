@@ -24,10 +24,11 @@ public class MailBundle<T extends Configuration & HasMailConfiguration> implemen
      */
     @Override
     public void run(T configuration, Environment environment) throws Exception {
-        if (configuration.getMailConfiguration() != null)
+        if (configuration.getMailConfiguration() != null) {
             mailSender = new MailSender(configuration.getMailConfiguration());
-        else
+        } else {
             LOGGER.warn("Bundle included but no configuration (mail) found at yml.");
+        }
     }
 
     /**
@@ -37,7 +38,7 @@ public class MailBundle<T extends Configuration & HasMailConfiguration> implemen
      */
     @Override
     public void initialize(Bootstrap<?> bootstrap) {
-
+        LOGGER.info("Initialize MailBundle");
     }
 
     public static MailSender getMailSender() {

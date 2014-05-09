@@ -8,7 +8,8 @@ public interface ServiceEntry {
         DELETE,
         OPTIONS;
     }
-    public String getPath();
 
-    public Method getMethod();
+    String getPath();
+
+    Method getMethod();
 }
