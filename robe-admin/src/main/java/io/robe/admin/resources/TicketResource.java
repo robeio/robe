@@ -11,7 +11,9 @@ import io.robe.admin.hibernate.entity.User;
 import io.robe.admin.view.ChangePasswordView;
 import io.robe.common.exception.RobeRuntimeException;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.ws.rs.*;
+import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import java.net.URI;
@@ -29,7 +31,7 @@ public class TicketResource {
     @POST
     @UnitOfWork
     @Consumes(MediaType.APPLICATION_FORM_URLENCODED)
-    public Response consumeTicket(@FormParam("ticketOid") String tickedOid, @FormParam("newPassword") String newPassword, @FormParam("newPasswordConfirm") String newPasswordConfirm) {
+    public Response consumeTicket(@Context HttpServletRequest request, @FormParam("ticketOid") String tickedOid, @FormParam("newPassword") String newPassword, @FormParam("newPasswordConfirm") String newPasswordConfirm) {
         //TODO HTML form must give @FormParam as Array and then we have to do change password according to ticketOid
         Preconditions.checkNotNull(tickedOid);
         Ticket ticket = ticketDao.findById(tickedOid);
@@ -50,7 +52,7 @@ public class TicketResource {
             } else {
                 user.setPassword(Hashing.sha256().hashString(newPassword).toString());
             }
-            return Response.seeOther(URI.create("http://127.0.0.1:8080/admin-ui/html/Workspace.html")).build();
+            return Response.seeOther(URI.create("./admin-ui/html/Workspace.html")).build();
         } else {
             throw new RobeRuntimeException("EE", "Yeni şifre doğrulanamadı.");
         }

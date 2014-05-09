@@ -12,7 +12,7 @@ import org.slf4j.Logger;
 public class MailBundle<T extends Configuration & HasMailConfiguration> implements ConfiguredBundle<T> {
     private static final Logger LOGGER = org.slf4j.LoggerFactory.getLogger(MailBundle.class);
 
-    private MailSender mailSender = null;
+    private static MailSender mailSender = null;
 
 
     /**
@@ -40,7 +40,7 @@ public class MailBundle<T extends Configuration & HasMailConfiguration> implemen
 
     }
 
-    public MailSender getMailSender() {
+    public static MailSender getMailSender() {
         return mailSender;
     }
 }

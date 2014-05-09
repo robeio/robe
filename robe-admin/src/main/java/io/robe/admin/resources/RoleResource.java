@@ -75,6 +75,7 @@ public class RoleResource {
             roleDao.delete(role);
         }
         return roleCheck;
+
     }
 
     @PUT

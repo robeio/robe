@@ -10,10 +10,15 @@ import io.robe.admin.hibernate.dao.RoleDao;
 import io.robe.admin.hibernate.dao.TicketDao;
 import io.robe.admin.hibernate.dao.UserDao;
 import io.robe.admin.hibernate.entity.Role;
+import io.robe.admin.hibernate.entity.Ticket;
 import io.robe.admin.hibernate.entity.User;
+import io.robe.admin.util.ExceptionMessages;
 import io.robe.auth.Credentials;
 import io.robe.common.exception.RobeRuntimeException;
+import io.robe.mail.MailBundle;
+import org.joda.time.DateTime;
 
+import javax.mail.MessagingException;
 import javax.validation.Valid;
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
@@ -65,8 +70,9 @@ public class UserResource {
     @UnitOfWork
     public UserDTO create(@Auth Credentials credentials, @Valid UserDTO user) {
         Optional<User> checkUser = userDao.findByUsername(user.getEmail());
-        if (checkUser.isPresent())
+        if (checkUser.isPresent()) {
             throw new RobeRuntimeException("E-mail", user.getEmail() + " already used by another user. Please use different e-mail.");
+        }
         User entity = new User();
         entity.setEmail(user.getEmail());
         entity.setName(user.getName());
@@ -74,29 +80,30 @@ public class UserResource {
         entity.setActive(user.isActive());
         Role role = roleDao.findById(user.getRoleOid());
         if (role == null) {
-            throw new RobeRuntimeException("Role", user.getEmail() + " cannot be null.");
+            throw new RobeRuntimeException("Role", user.getEmail() + ExceptionMessages.CantBeNull.toString());
         }
         entity.setRole(role);
         entity.setPassword(Hashing.sha256().hashString(user.getName()).toString());
 
-//        if (MailSender.isSupported()) {
-//            Ticket ticket = new Ticket();
-//            ticket.setType(Ticket.Type.ACTIVATE);
-//            DateTime expire = DateTime.now().plusDays(1);
-//            ticket.setExpirationDate(expire.toDate());
-//            ticket.setUser(entity);
-//            ticketDao.create(ticket);
-//            try {
-//                //TODO: Template support will be used.
-//                MailSender.send("serayuzgur@gmail.com", new String[]{entity.getUsername()}, "Activation", ticket.getOid(), null);
-//            } catch (MessagingException e) {
-//                new RobeRuntimeException(e);
-//            }
-//        } else {
-        entity.setActive(true);
-//        }
+        sendActivationMail(entity);
+
         return new UserDTO(userDao.create(entity));
 
+    }
+
+    private void sendActivationMail(User entity) {
+        Ticket ticket = new Ticket();
+        ticket.setType(Ticket.Type.ACTIVATE);
+        DateTime expire = DateTime.now().plusDays(1);
+        ticket.setExpirationDate(expire.toDate());
+        ticket.setUser(entity);
+        ticketDao.create(ticket);
+        try {
+            //TODO: Template support will be used.
+            MailBundle.getMailSender().sendMessage("Activation", ticket.getOid(), null, "serayuzgur@gmail.com", entity.getUsername());
+        } catch (MessagingException e) {
+            new RobeRuntimeException(e);
+        }
     }
 
     @POST
@@ -104,12 +111,13 @@ public class UserResource {
     public UserDTO update(@Auth Credentials credentials, @Valid UserDTO user) {
         // Get and check user
         User entity = userDao.findById(user.getOid());
-        if (entity == null)
-            throw new RobeRuntimeException("User", user.getOid() + " not exists.");
+        if (entity == null) {
+            throw new RobeRuntimeException("User", user.getOid() + ExceptionMessages.NotExists.toString());
+        }
         //Get role and firm and check for null
         Role role = roleDao.findById(user.getRoleOid());
         if (role == null) {
-            throw new RobeRuntimeException("Role", user.getEmail() + " cannot be null.");
+            throw new RobeRuntimeException("Role", user.getEmail() + ExceptionMessages.CantBeNull.toString());
         }
         entity.setOid(user.getOid());
         entity.setEmail(user.getEmail());
@@ -129,7 +137,6 @@ public class UserResource {
     @UnitOfWork
     public UserDTO delete(@Auth Credentials credentials, UserDTO user) {
         User entity = userDao.findById(user.getOid());
-
         userDao.delete(entity);
         return user;
     }

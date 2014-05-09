@@ -81,7 +81,8 @@ public class HibernateBundle<T extends Configuration & HasHibernateConfiguration
 		return  ImmutableList.<Class<?>>builder().add(BaseEntity.class).addAll(classes).build();
 	}
 
-	/**
+
+    /**
 	 *
 	 * @return current session factory
 	 */
