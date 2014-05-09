@@ -4,6 +4,12 @@ import io.robe.quartz.QuartzTrigger;
 
 public class QuartzTriggerPojo implements QuartzTrigger {
 
+    private String oid;
+    private String cronExpression;
+    private boolean active;
+    private long fireTime;
+    private String jobId;
+
     public String getOid() {
         return oid;
     }
@@ -11,13 +17,6 @@ public class QuartzTriggerPojo implements QuartzTrigger {
     public void setOid(String oid) {
         this.oid = oid;
     }
-
-    private String oid;
-    private String cronExpression;
-
-    private boolean active;
-    private long fireTime;
-    private String jobId;
 
     public String getCronExpression() {
         return cronExpression;

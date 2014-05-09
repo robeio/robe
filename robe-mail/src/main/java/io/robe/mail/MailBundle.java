@@ -38,7 +38,7 @@ public class MailBundle<T extends Configuration & HasMailConfiguration> implemen
      */
     @Override
     public void initialize(Bootstrap<?> bootstrap) {
-        LOGGER.info("Initialize MailBundle");
+        LOGGER.info("Initializing MailBundle");
     }
 
     public static MailSender getMailSender() {

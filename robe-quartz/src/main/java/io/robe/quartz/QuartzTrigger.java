@@ -1,13 +1,13 @@
 package io.robe.quartz;
 
 public interface QuartzTrigger {
-    public String getOid();
+    String getOid();
 
-    public String getCronExpression();
+    String getCronExpression();
 
-    public boolean isActive();
+    boolean isActive();
 
-    public long getFireTime();
+    long getFireTime();
 
-    public String getJobId();
+    String getJobId();
 }

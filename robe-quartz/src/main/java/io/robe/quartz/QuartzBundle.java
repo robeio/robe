@@ -18,7 +18,6 @@ import org.reflections.Reflections;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.text.SimpleDateFormat;
 import java.util.*;
 
 import static org.quartz.JobBuilder.newJob;
@@ -29,7 +28,6 @@ public class QuartzBundle<T extends Configuration & HasQuartzConfiguration & Has
     public static final String DYNAMIC_GROUP = "DynamicCronJob";
     public static final String STATIC_GROUP = "StaticCronJob";
 
-    private static final SimpleDateFormat FORMAT = new SimpleDateFormat("dd.MM.yyyy hh:mm:ss");
     Scheduler scheduler = null;
     Set<Class<? extends Job>> onStartJobs = null;
     Set<Class<? extends Job>> onStopJobs = null;
@@ -180,7 +178,7 @@ public class QuartzBundle<T extends Configuration & HasQuartzConfiguration & Has
      */
     @Override
     public void initialize(Bootstrap<?> bootstrap) {
-
+        LOGGER.info("Initializing QuartzBundle");
     }
 
     public Scheduler getScheduler() {
