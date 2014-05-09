@@ -35,7 +35,8 @@ public class BaseDao<T extends BaseEntity> extends AbstractDAO<T> {
 		return list(criteria);
 	}
 
-	/**
+
+    /**
 	 * {@inheritDoc}
 	 * @param oid  id of the desired Entity
 	 * @return returns the result.

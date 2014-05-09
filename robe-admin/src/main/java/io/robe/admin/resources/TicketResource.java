@@ -41,16 +41,16 @@ public class TicketResource {
 
         User user = ticket.getUser();
 
-        newPassword = Hashing.sha256().hashString(newPassword).toString();
-        newPasswordConfirm = Hashing.sha256().hashString(newPasswordConfirm).toString();
+        String newPasswordHashed = Hashing.sha256().hashString(newPassword).toString();
+        String newPasswordConfirmHashed = Hashing.sha256().hashString(newPasswordConfirm).toString();
         String oldPassword = user.getPassword();
 
-        if (newPassword.equals(newPasswordConfirm)) {
+        if (newPasswordHashed.equals(newPasswordConfirmHashed)) {
             //TODO if equal newPassword to oldpassword, password mustn't change
-            if (newPassword.equals(oldPassword)) {
+            if (newPasswordHashed.equals(oldPassword)) {
                 throw new RobeRuntimeException("EE", "Eski iş şifre doğrulanamadı.");
             } else {
-                user.setPassword(Hashing.sha256().hashString(newPassword).toString());
+                user.setPassword(Hashing.sha256().hashString(newPasswordHashed).toString());
             }
             return Response.seeOther(URI.create("./admin-ui/html/Workspace.html")).build();
         } else {
