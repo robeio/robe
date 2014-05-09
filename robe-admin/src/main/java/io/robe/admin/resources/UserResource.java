@@ -80,7 +80,7 @@ public class UserResource {
         entity.setActive(user.isActive());
         Role role = roleDao.findById(user.getRoleOid());
         if (role == null) {
-            throw new RobeRuntimeException("Role", user.getEmail() + ExceptionMessages.CantBeNull.toString());
+            throw new RobeRuntimeException("Role", user.getEmail() + ExceptionMessages.CANT_BE_NULL.toString());
         }
         entity.setRole(role);
         entity.setPassword(Hashing.sha256().hashString(user.getName()).toString());
@@ -112,12 +112,12 @@ public class UserResource {
         // Get and check user
         User entity = userDao.findById(user.getOid());
         if (entity == null) {
-            throw new RobeRuntimeException("User", user.getOid() + ExceptionMessages.NotExists.toString());
+            throw new RobeRuntimeException("User", user.getOid() + ExceptionMessages.NOT_EXISTS.toString());
         }
         //Get role and firm and check for null
         Role role = roleDao.findById(user.getRoleOid());
         if (role == null) {
-            throw new RobeRuntimeException("Role", user.getEmail() + ExceptionMessages.CantBeNull.toString());
+            throw new RobeRuntimeException("Role", user.getEmail() + ExceptionMessages.CANT_BE_NULL.toString());
         }
         entity.setOid(user.getOid());
         entity.setEmail(user.getEmail());

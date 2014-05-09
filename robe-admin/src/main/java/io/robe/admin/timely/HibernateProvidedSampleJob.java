@@ -10,7 +10,7 @@ import org.quartz.JobExecutionException;
 @ScheduledBy(provider = ByHibernate.class)
 public class HibernateProvidedSampleJob implements Job {
 
-    private static Logger LOGGER = Logger.getLogger(HibernateProvidedSampleJob.class);
+    private static final Logger LOGGER = Logger.getLogger(HibernateProvidedSampleJob.class);
 
     @Override
     public void execute(JobExecutionContext context) throws JobExecutionException {

@@ -1,8 +1,8 @@
 package io.robe.admin.util;
 
 public enum ExceptionMessages {
-    CantBeNull(" cannot be null."),
-    NotExists(" not exists.");
+    CANT_BE_NULL(" cannot be null."),
+    NOT_EXISTS(" not exists.");
 
 
     private final String msg;
