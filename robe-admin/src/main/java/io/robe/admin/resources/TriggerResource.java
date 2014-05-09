@@ -38,8 +38,7 @@ public class TriggerResource {
     @GET
     @UnitOfWork
     public List<TriggerEntity> getAll(@Auth Credentials credentials) {
-        List<TriggerEntity> triggerList = quartzTriggerDao.findAll(TriggerEntity.class);
-        return triggerList;
+        return quartzTriggerDao.findAll(TriggerEntity.class);
     }
 
     @DELETE
@@ -64,16 +63,14 @@ public class TriggerResource {
     @Path("/run")
     @UnitOfWork
     public TriggerEntity fireTrigger(TriggerEntity triggerEntity) throws SchedulerException {
-        TriggerEntity firedQuartzJob = scheduleJob(triggerEntity);
-        return firedQuartzJob;
+        return scheduleJob(triggerEntity);
     }
 
     @POST
     @Path("/stop")
     @UnitOfWork
     public TriggerEntity stopTrigger(TriggerEntity triggerEntity) throws SchedulerException {
-        TriggerEntity stoppedQuarztTrigger = unScheduleJobTrigger(triggerEntity);
-        return stoppedQuarztTrigger;
+        return unScheduleJobTrigger(triggerEntity);
 
     }
 

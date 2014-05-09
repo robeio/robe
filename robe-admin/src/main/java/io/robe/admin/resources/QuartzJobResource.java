@@ -6,7 +6,6 @@ import com.yammer.dropwizard.hibernate.UnitOfWork;
 import io.robe.admin.hibernate.dao.QuartzJobDao;
 import io.robe.auth.Credentials;
 import io.robe.quartz.hibernate.JobEntity;
-import org.apache.log4j.Logger;
 
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
@@ -18,7 +17,6 @@ import java.util.List;
 public class QuartzJobResource {
     @Inject
     QuartzJobDao quartzJobDao;
-    private static final Logger LOGGER = Logger.getLogger(QuartzJobResource.class);
 
     @GET
     @UnitOfWork
