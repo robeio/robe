@@ -6,14 +6,14 @@ import java.util.List;
 
 public interface QuartzJob {
 
-    public String getOid();
+    String getOid();
 
-    public String getSchedulerName();
+    String getSchedulerName();
 
-    public String getDescription();
+    String getDescription();
 
-    public List<QuartzTrigger> getTriggers();
+    List<QuartzTrigger> getTriggers();
 
-    public Class<? extends Job> getClazz();
+    Class<? extends Job> getClazz();
 
 }
