@@ -85,10 +85,12 @@ public class QuartzBundle<T extends Configuration & HasQuartzConfiguration & Has
             Reflections reflections = new Reflections(scanPackage);
             quartzJobs = reflections.getSubTypesOf(Job.class);
             for (Class<? extends Job> clazz : quartzJobs) {
-                if (clazz.isAnnotationPresent(OnApplicationStart.class))
+                if (clazz.isAnnotationPresent(OnApplicationStart.class)) {
                     onStartJobs.add(clazz);
-                if (clazz.isAnnotationPresent(OnApplicationStop.class))
+                }
+                if (clazz.isAnnotationPresent(OnApplicationStop.class)) {
                     onStopJobs.add(clazz);
+                }
             }
             jobsFound += quartzJobs.size();
             startSchedulingJobs(quartzJobs, scheduler);
@@ -145,9 +147,9 @@ public class QuartzBundle<T extends Configuration & HasQuartzConfiguration & Has
             if (cron != null && cron.trim().length() > 0) {
                 trigger.startAt(new Date(quartzTrigger.getFireTime())).withSchedule(CronScheduleBuilder.cronSchedule(cron));
                 LOGGER.info(job.getClazz().getSimpleName() + " Trigger set to start at" + new Date(quartzTrigger.getFireTime()) + " with this cron definition : " + cron);
-            } else
+            } else {
                 LOGGER.warn(job.getClazz().getSimpleName() + " Trigger error at " + job.getOid() + " with this cron definition : " + cron);
-
+            }
             triggers.add(trigger.build());
         }
         if (!triggers.isEmpty()) {
