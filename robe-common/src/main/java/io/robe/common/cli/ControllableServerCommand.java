@@ -76,9 +76,9 @@ public class ControllableServerCommand<T extends Configuration> extends Environm
             logger.info("Starting {}\n{}", name, banner);
         } catch (IllegalArgumentException ignored) {
             // don't display the banner if there isn't one
-            logger.info("Starting {}", name);
+            logger.info("Starting {} and ignored exception {}", name,ignored);
         } catch (IOException ignored) {
-            logger.info("Starting {}", name);
+            logger.info("Starting {} and ignored exception {}", name,ignored);
         }
     }
 }
