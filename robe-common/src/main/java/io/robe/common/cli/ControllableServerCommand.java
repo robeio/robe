@@ -5,6 +5,7 @@ import com.google.common.io.Resources;
 import com.yammer.dropwizard.Service;
 import com.yammer.dropwizard.cli.EnvironmentCommand;
 import com.yammer.dropwizard.config.Configuration;
+import com.yammer.dropwizard.config.ConfigurationException;
 import com.yammer.dropwizard.config.Environment;
 import com.yammer.dropwizard.config.ServerFactory;
 import com.yammer.dropwizard.lifecycle.ServerLifecycleListener;
@@ -41,20 +42,32 @@ public class ControllableServerCommand<T extends Configuration> extends Environm
     }
 
     @Override
-    protected void run(Environment environment, Namespace namespace, T configuration) throws Exception {
-        final Server server = new ServerFactory(configuration.getHttpConfiguration(), environment.getName()).buildServer(environment);
+    protected void run(Environment environment, Namespace namespace, T configuration){
+        Server server=null;
+        try {
+            server = new ServerFactory(configuration.getHttpConfiguration(), environment.getName()).buildServer(environment);
+        } catch (ConfigurationException e) {
+            LOGGER.error("ConfigurationException :",e);
+        }
 
         logBanner(environment.getName(), LOGGER);
-        try {
             addShutdownHandler(server);
+        try {
+            assert server != null;
             server.start();
-            for (ServerLifecycleListener listener : environment.getServerListeners()) {
-                listener.serverStarted(server);
-            }
         } catch (Exception e) {
             LOGGER.error("Unable to start server, shutting down", e);
-            server.stop();
+            assert server != null;
+            try {
+                server.stop();
+            } catch (Exception e1) {
+                LOGGER.error("Unable to stop server", e1);
+            }
         }
+        for (ServerLifecycleListener listener : environment.getServerListeners()) {
+                listener.serverStarted(server);
+            }
+
     }
 
     private void logBanner(String name, Logger logger) {
@@ -63,9 +76,9 @@ public class ControllableServerCommand<T extends Configuration> extends Environm
             logger.info("Starting {}\n{}", name, banner);
         } catch (IllegalArgumentException ignored) {
             // don't display the banner if there isn't one
-            logger.info("Starting {}", name);
+            logger.info("Starting {} and ignored exception {}", name,ignored);
         } catch (IOException ignored) {
-            logger.info("Starting {}", name);
+            logger.info("Starting {} and ignored exception {}", name,ignored);
         }
     }
 }

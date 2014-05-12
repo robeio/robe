@@ -87,8 +87,9 @@ public class MailSender {
         textPart.setContent(body, "text/html; charset=UTF-8");
         Multipart mp = new MimeMultipart();
         mp.addBodyPart(textPart);
-        if (attachFilePart.getLineCount() > 0)
+        if (attachFilePart.getLineCount() > 0) {
             mp.addBodyPart(attachFilePart);
+        }
 
         msg.setContent(mp);
         Transport.send(msg);

@@ -132,8 +132,9 @@ public class ESAPIAuthenticator extends AbstractAuthenticator implements Authent
         verifyPasswordStrength(currentPassword,newPassword,user);
 
         Optional<? extends UserEntry > optional = userStore.changePassword(user.getAccountName(),newPassword);
-        if(!optional.isPresent())
+        if(!optional.isPresent()){
             throw new AuthenticationException("Can't update User Password",user.getAccountName() +": Can't update User Password");
+        }
     }
 
     /**

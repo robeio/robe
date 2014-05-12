@@ -12,14 +12,12 @@ import io.robe.auth.AbstractAuthResource;
 import io.robe.auth.Credentials;
 import io.robe.auth.IsToken;
 import io.robe.auth.TokenWrapper;
-import io.robe.auth.data.entry.UserEntry;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.ws.rs.*;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
-import javax.ws.rs.core.UriInfo;
 import java.util.Map;
 
 
@@ -69,7 +67,7 @@ public class AuthResource extends AbstractAuthResource<User> {
             changePassword(user, oldPassword, newPassword, newPassword2);
         } catch (AuthenticationException e) {
             e.printStackTrace();
-            return Response.serverError().entity(e.getMessage()).build();
+            return Response.serverError().entity("exception:"+e.getMessage()).build();
         }
 
         return Response.ok().build();
