@@ -12,6 +12,8 @@ import io.robe.auth.AbstractAuthResource;
 import io.robe.auth.Credentials;
 import io.robe.auth.IsToken;
 import io.robe.auth.TokenWrapper;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.ws.rs.*;
@@ -30,6 +32,7 @@ import java.util.Map;
 
 public class AuthResource extends AbstractAuthResource<User> {
 
+    private static final Logger LOGGER = LoggerFactory.getLogger(AuthResource.class);
     UserDao userDao;
 
     @Inject
@@ -66,8 +69,8 @@ public class AuthResource extends AbstractAuthResource<User> {
         try {
             changePassword(user, oldPassword, newPassword, newPassword2);
         } catch (AuthenticationException e) {
-            e.printStackTrace();
-            return Response.serverError().entity("exception:"+e.getMessage()).build();
+            LOGGER.error("AuthenticationException:",e);
+            return Response.serverError().entity("exception:" + e.getMessage()).build();
         }
 
         return Response.ok().build();
