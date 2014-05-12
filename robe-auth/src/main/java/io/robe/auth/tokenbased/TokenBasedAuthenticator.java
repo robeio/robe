@@ -59,9 +59,9 @@ public class TokenBasedAuthenticator implements Authenticator<String, IsToken> {
             IsToken token = TokenWrapper.createToken(tokenString);
 
             Optional<UserEntry> user = (Optional<UserEntry>) userStore.findByUsername(token.getUserAccountName());
-            if (!user.isPresent())
+            if (!user.isPresent()) {
                 return Optional.absent();
-
+            }
             // If user exists and active than check Service Permissions for authorization controls
             if (user.get().isActive()) {
                 Set<String> permissions = new HashSet<String>();
