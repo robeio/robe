@@ -72,12 +72,13 @@ public class TokenBasedAuthenticator implements Authenticator<String, IsToken> {
                 for (PermissionEntry permission : rolePermissions) {
                     if (permission.getType().equals(PermissionEntry.Type.SERVICE)) {
                         Optional<? extends ServiceEntry> service = serviceStore.findByCode(permission.getRestrictedItemId());
-                        if (service.isPresent())
+                        if (service.isPresent()) {
                             permissions.add(service.get().getPath() + ":" + service.get().getMethod());
+                        }
                     }
                 }
                 // Create credentials with user info and permission list
-              token.setPermissions(Collections.unmodifiableSet(permissions));
+                token.setPermissions(Collections.unmodifiableSet(permissions));
                 return Optional.fromNullable(token);
             }
         } catch (InvocationTargetException e) {
