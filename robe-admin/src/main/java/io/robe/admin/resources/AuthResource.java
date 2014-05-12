@@ -12,14 +12,12 @@ import io.robe.auth.AbstractAuthResource;
 import io.robe.auth.Credentials;
 import io.robe.auth.IsToken;
 import io.robe.auth.TokenWrapper;
-import io.robe.auth.data.entry.UserEntry;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.ws.rs.*;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
-import javax.ws.rs.core.UriInfo;
 import java.util.Map;
 
 
