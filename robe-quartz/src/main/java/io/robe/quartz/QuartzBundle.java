@@ -147,7 +147,7 @@ public class QuartzBundle<T extends Configuration & HasQuartzConfiguration & Has
                 trigger.startAt(new Date(quartzTrigger.getFireTime())).withSchedule(CronScheduleBuilder.cronSchedule(cron));
                 LOGGER.info(job.getClazz().getSimpleName() + " Trigger set to start at" + new Date(quartzTrigger.getFireTime()) + " with this cron definition : " + cron);
             } else {
-                LOGGER.warn(job.getClazz().getSimpleName() + " Trigger error at " + job.getOid() + " with this cron definition : " + cron);
+                LOGGER.warn(job.getClazz().getSimpleName() + " Trigger error at " + job.getOid() + " with this cron definition.Cron: " + cron);
             }
             triggers.add(trigger.build());
         }
