@@ -64,7 +64,7 @@ public class TokenBasedAuthenticator implements Authenticator<String, IsToken> {
 
             // If user exists and active than check Service Permissions for authorization controls
             if (user.get().isActive()) {
-                HashSet<String> permissions = new HashSet<String>();
+                Set<String> permissions = new HashSet<String>();
                 Set<PermissionEntry> rolePermissions = new HashSet<PermissionEntry>();
                 //If user role is a group than add sub role permissions to group
                 getAllRolePermissions(user.get().getRole(), rolePermissions);
