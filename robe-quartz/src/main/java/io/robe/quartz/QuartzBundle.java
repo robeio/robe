@@ -43,9 +43,13 @@ public class QuartzBundle<T extends Configuration & HasQuartzConfiguration & Has
      * @throws Exception if something goes wrong
      */
     @Override
-    public void run(T configuration, Environment environment) throws Exception {
+    public void run(T configuration, Environment environment) {
         this.configuration = configuration;
-        initializeScheduler();
+        try {
+            initializeScheduler();
+        } catch (SchedulerException e) {
+            LOGGER.error("SchedulerException:",e);
+        }
     }
 
     public void initializeScheduler() throws SchedulerException {
