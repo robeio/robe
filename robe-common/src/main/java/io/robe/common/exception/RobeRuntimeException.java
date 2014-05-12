@@ -12,7 +12,7 @@ import javax.ws.rs.core.Response;
  */
 public class RobeRuntimeException extends WebApplicationException {
 
-    private Response response;
+    private final Response response;
 
     private final BasicPair entity;
 
