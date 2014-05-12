@@ -62,5 +62,8 @@ public class HeapDump {
             throw new RuntimeException(exp);
         }
     }
+    private HeapDump(){
+
+    }
 
 }
