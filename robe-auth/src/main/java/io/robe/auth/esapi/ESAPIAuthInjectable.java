@@ -86,8 +86,9 @@ public class ESAPIAuthInjectable<T extends IsToken> extends AbstractHttpContextI
 	private boolean isAuthorized(IsToken token, List<UriTemplate> matchedTemplates, String method) {
 		StringBuilder path = new StringBuilder();
         // Merge all path templates and generate a path.
-		for (UriTemplate template : matchedTemplates)
-			path.insert(0, template.getTemplate());
+		for (UriTemplate template : matchedTemplates) {
+            path.insert(0, template.getTemplate());
+        }
 		path.append(":").append(method);
 
         //Look at user permissions to see if the service is permitted.
