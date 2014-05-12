@@ -102,7 +102,7 @@ public class UserResource {
             //TODO: Template support will be used.
             MailBundle.getMailSender().sendMessage("Activation", ticket.getOid(), null, "serayuzgur@gmail.com", entity.getUsername());
         } catch (MessagingException e) {
-            new RobeRuntimeException(e);
+            new RobeRuntimeException("send failed",e);
         }
     }
 
