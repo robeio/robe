@@ -67,7 +67,7 @@ public class AuthResource extends AbstractAuthResource<User> {
             changePassword(user, oldPassword, newPassword, newPassword2);
         } catch (AuthenticationException e) {
             e.printStackTrace();
-            return Response.serverError().entity(e.getMessage()).build();
+            return Response.serverError().entity("exception:"+e.getMessage()).build();
         }
 
         return Response.ok().build();
