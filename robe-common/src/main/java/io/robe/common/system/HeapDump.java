@@ -31,7 +31,7 @@ public class HeapDump {
             hotspotMBean.dumpHeap(tempName, live);
             return new File(tempName);
         } catch (Exception e) {
-            throw new RuntimeException(e);
+            throw new RuntimeException("exception:"+e);
         }
     }
 
@@ -59,7 +59,7 @@ public class HeapDump {
         } catch (RuntimeException re) {
             throw re;
         } catch (Exception exp) {
-            throw new RuntimeException(exp);
+            throw new RuntimeException("exception:"+exp);
         }
     }
     private HeapDump(){
