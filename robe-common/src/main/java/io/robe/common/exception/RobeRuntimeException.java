@@ -14,7 +14,7 @@ public class RobeRuntimeException extends WebApplicationException {
 
     private Response response;
 
-    private BasicPair entity;
+    private final BasicPair entity;
 
     /**
      * Construct with the help of an exception.
