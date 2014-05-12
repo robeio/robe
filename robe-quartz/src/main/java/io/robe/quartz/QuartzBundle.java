@@ -27,7 +27,7 @@ public class QuartzBundle<T extends Configuration & HasQuartzConfiguration & Has
     private static final Logger LOGGER = LoggerFactory.getLogger(QuartzBundle.class);
     public static final String DYNAMIC_GROUP = "DynamicCronJob";
     public static final String STATIC_GROUP = "StaticCronJob";
-
+    private static final  String ERROR="Cron Job Provider is not proper. %s : provider: %s";
     Scheduler scheduler = null;
     Set<Class<? extends Job>> onStartJobs = null;
     Set<Class<? extends Job>> onStopJobs = null;
@@ -118,6 +118,7 @@ public class QuartzBundle<T extends Configuration & HasQuartzConfiguration & Has
                 schedule(job);
             }
             ScheduledBy scheduledByAnnotation = clazz.getAnnotation(ScheduledBy.class);
+
             if (scheduledByAnnotation != null) {
                 try {
                     job = scheduledByAnnotation.provider().newInstance().getQuartzJob(clazz);
@@ -127,9 +128,9 @@ public class QuartzBundle<T extends Configuration & HasQuartzConfiguration & Has
                         schedule(job);
                     }
                 } catch (InstantiationException e) {
-                    LOGGER.error("Cron Job Provider is not proper." + clazz.getName() + " : provider: " + scheduledByAnnotation.provider(), e);
+                    LOGGER.error(String.format(ERROR,clazz.getName(),scheduledByAnnotation.provider()),e);
                 } catch (IllegalAccessException e) {
-                    LOGGER.error("Cron Job Provider is not proper." + clazz.getName() + " : provider: " + scheduledByAnnotation.provider(), e);
+                    LOGGER.error(String.format(ERROR,clazz.getName(),scheduledByAnnotation.provider()),e);
                 }
             }
         }
