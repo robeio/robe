@@ -6,6 +6,7 @@ import com.yammer.dropwizard.config.Environment;
 import com.yammer.dropwizard.hibernate.UnitOfWork;
 import io.robe.admin.RobeServiceConfiguration;
 import io.robe.admin.hibernate.entity.*;
+import io.robe.guice.GuiceConfiguration;
 import io.robe.hibernate.HibernateBundle;
 import net.sourceforge.argparse4j.inf.Namespace;
 import org.hibernate.Session;
@@ -40,12 +41,12 @@ public class InitializeCommand<T extends RobeServiceConfiguration> extends Envir
     protected void run(Environment environment, Namespace namespace, T configuration) throws Exception {
         LOGGER.info("Initialize Starting...");
         LOGGER.info("Starting to create initial data.");
-        execute();
+        execute(configuration);
     }
 
 
     @UnitOfWork
-    public void execute() {
+    public void execute(T configuration) {
         final Session session = hibernateBundle.getSessionFactory().openSession();
 
         Role role = (Role) session.createCriteria(Role.class).add(Restrictions.eq("name", "Admin")).uniqueResult();
@@ -73,7 +74,9 @@ public class InitializeCommand<T extends RobeServiceConfiguration> extends Envir
 
         LOGGER.info("Scanning Services.");
 
-        Reflections reflections = new Reflections("io", this.getClass().getClassLoader());
+        GuiceConfiguration guiceConfiguration = configuration.getGuiceConfiguration();
+
+        Reflections reflections = new Reflections(guiceConfiguration.getScanPackages(), this.getClass().getClassLoader());
         Set<Class<?>> services = reflections.getTypesAnnotatedWith(Path.class);
         for (Class service : services) {
             String parentPath = "/" + ((Path) service.getAnnotation(Path.class)).value();
