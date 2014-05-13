@@ -29,7 +29,7 @@ public class DaoCrud {
 	    
 	    List<BodyDeclaration> members= new ArrayList<BodyDeclaration>();
 	  
-	    ConstructorDeclaration constructorDeclaration = new ConstructorDeclaration(ModifierSet.PUBLIC,entityName);
+	    ConstructorDeclaration constructorDeclaration = new ConstructorDeclaration(ModifierSet.PUBLIC,entityName+"Dao");
 
 	    constructorDeclaration.setAnnotations(Arrays.asList(CrudUtility.generateAnnotation("Inject",null,null)));
 
@@ -42,9 +42,9 @@ public class DaoCrud {
 	    constructorDeclaration.setParameters(Arrays.asList(CrudUtility.generateParameter("SessionFactory", null, null, null, null)));
 	    constructorDeclaration.setBlock(conBlock);
 	    members.add(constructorDeclaration);
-
-	    members.add(findby(entityName, uniqueFields,findBy));
-	    
+        if(!findBy.equals("findById")) {
+            members.add(findby(entityName, uniqueFields, findBy));
+        }
 	    ClassOrInterfaceDeclaration type = new ClassOrInterfaceDeclaration(1,null, false, entityName+"Dao", null,extedsList , null, members);
 	    ASTHelper.addTypeDeclaration(compilationUnit, type);
 

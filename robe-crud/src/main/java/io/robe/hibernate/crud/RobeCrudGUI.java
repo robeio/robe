@@ -255,31 +255,42 @@ public class RobeCrudGUI extends javax.swing.JFrame {
             Boolean inject=(Boolean)data[3];
             Boolean auth=(Boolean)data[4];
 
-            String fileDaoLocation = OUTPUT_PATH+"\\dao";
+            String fileDaoLocation = OUTPUT_PATH+File.separator+"dao";
             new File(fileDaoLocation).mkdirs();
 
-            String fileResourceLocation = OUTPUT_PATH+"\\resource";
+            String fileResourceLocation = OUTPUT_PATH+File.separator+"resource";
             new File(fileResourceLocation).mkdirs();
 
             try {
 
             	String daoName=entity+"Dao";
-                String newDaoClassName=fileDaoLocation+"/"+daoName+".java";
+                String newDaoClassName=fileDaoLocation+File.separator+daoName+".java";
 
                 List<String> fieldGet=ClassVisitor.allColumns.get(entity);
                 List<String> uniqueFields=ClassVisitor.uniqueColumns.get(entity);
                 
                 String findBy="findById";
-                for (String string : uniqueFields) {
-                    findBy+="Or"+CrudUtility.capitalizeToUpper(string);
+                if (uniqueFields!=null) {
+                    for (String string : uniqueFields) {
+                        findBy += "Or" + CrudUtility.capitalizeToUpper(string);
+                    }
                 }
-                
                 String importEntity=imports.get(entity);
                 String packageName=txtPackageName.getText();
                 
                 if(dao) {
                     List<ImportDeclaration> importDeclarations = new ArrayList<ImportDeclaration>();
+
+                    String []imports={
+                            "com.google.common.base.Optional",
+                            "com.google.inject.Inject",
+                            "org.hibernate.Criteria",
+                            "org.hibernate.SessionFactory",
+                            "org.hibernate.criterion.Restrictions",
+                            "io.robe.hibernate.dao.BaseDao"
+                    };
                     importDeclarations.add(new ImportDeclaration(new NameExpr(importEntity), false, false));
+                    importDeclarations.addAll(CrudUtility.getImports(imports));
 
                     File fileDao = new File(newDaoClassName);
                     if (!fileDao.exists()) {
@@ -296,7 +307,7 @@ public class RobeCrudGUI extends javax.swing.JFrame {
                 if(resource) {
 
                 	String resourceName=entity+"Resource";
-                    String newResourceClassName = fileResourceLocation + "/" + resourceName + ".java";
+                    String newResourceClassName = fileResourceLocation + File.separator + resourceName + ".java";
                     File fileResource = new File(newResourceClassName);
                     if (!fileResource.exists()) {
                         fileResource.createNewFile();
@@ -312,7 +323,19 @@ public class RobeCrudGUI extends javax.swing.JFrame {
                     bodyDeclarations.add(ResourceCrud.update(entity, daoName, fieldGet, "getOid", findBy, "update", "detach",auth));
                     bodyDeclarations.add(ResourceCrud.delete(entity, daoName, "getOid", findBy, "delete",auth));
                     List<ImportDeclaration> importDeclarationsResource = new ArrayList<ImportDeclaration>();
-                    importDeclarationsResource.addAll(CrudUtility.getImports("com.google.inject.Inject", "com.yammer.dropwizard.auth.Auth", "com.yammer.dropwizard.hibernate.UnitOfWork",importEntity));
+                    String []imports={
+                            "com.google.common.base.Optional",
+                            "com.google.inject.Inject",
+                            "com.yammer.dropwizard.auth.Auth",
+                            "com.yammer.dropwizard.hibernate.UnitOfWork",
+                            packageName+".dao."+entity+"Dao",
+                            "io.robe.auth.Credentials",
+                            "io.robe.common.exception.RobeRuntimeException",
+                            "org.hibernate.Hibernate",
+                            "javax.validation.Valid",
+                            importEntity
+                    };
+                    importDeclarationsResource.addAll(CrudUtility.getImports(imports));
                     bwResource.write(ResourceCrud.ResourceGenerate(resourceName, entity, daoName, bodyDeclarations, importDeclarationsResource, packageName+".resource", inject));
                     bwResource.close();
                 }
