@@ -8,9 +8,9 @@ public class HibernateCrudTest {
 
     public void testMain() throws Exception {
 
-        Properties properties = new Properties();
-        properties.load(HibernateCrudTest.class.getClassLoader().getResourceAsStream("robe.properties"));
-        HibernateCrud.generateDaoAndResource(properties);
+        //Properties properties = new Properties();
+        //properties.load(HibernateCrudTest.class.getClassLoader().getResourceAsStream("robe.properties"));
+        //HibernateCrud.generateDaoAndResource(properties);
     }
 
 

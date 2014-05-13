@@ -18,7 +18,7 @@ import freemarker.template.TemplateException;
 public class HtmlCrudTest {
 
 
-    public static void main(String[] args) {
+    public static void main5(String[] args) {
 		
 		Configuration cfg = new Configuration();
         try {
