@@ -287,9 +287,9 @@ public class RobeCrudGUI extends javax.swing.JFrame {
                             "org.hibernate.Criteria",
                             "org.hibernate.SessionFactory",
                             "org.hibernate.criterion.Restrictions",
-                            "io.robe.hibernate.dao.BaseDao"
+                            "io.robe.hibernate.dao.BaseDao",
+                            importEntity+"."+entity
                     };
-                    importDeclarations.add(new ImportDeclaration(new NameExpr(importEntity), false, false));
                     importDeclarations.addAll(CrudUtility.getImports(imports));
 
                     File fileDao = new File(newDaoClassName);
@@ -333,7 +333,7 @@ public class RobeCrudGUI extends javax.swing.JFrame {
                             "io.robe.common.exception.RobeRuntimeException",
                             "org.hibernate.Hibernate",
                             "javax.validation.Valid",
-                            importEntity
+                            importEntity+"."+entity
                     };
                     importDeclarationsResource.addAll(CrudUtility.getImports(imports));
                     bwResource.write(ResourceCrud.ResourceGenerate(resourceName, entity, daoName, bodyDeclarations, importDeclarationsResource, packageName+".resource", inject));
