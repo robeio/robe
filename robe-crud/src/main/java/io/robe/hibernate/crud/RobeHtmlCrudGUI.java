@@ -38,7 +38,6 @@ public class RobeHtmlCrudGUI extends javax.swing.JFrame {
     public static final String JAVA_IO_TMP_DIR = "user.home";
     public static String OUTPUT_PATH;
     private static String TEMPLATE_PATH="src/main/resource/";
-    public static Map<String,String> imports= new HashMap<String, String>();
     public static Map<String,List<Model>> model= new HashMap<String, List<Model>>();
     public static CompilationUnit compilationUnit;
     /**
@@ -357,7 +356,7 @@ public class RobeHtmlCrudGUI extends javax.swing.JFrame {
     	ClassVisitor.classes.clear();
     	for (String string : files) {
 				try {
-					compilationUnit = JavaParser.parse(new File(absolutePath+"\\"+string));
+					compilationUnit = JavaParser.parse(new File(absolutePath+File.separator+string));
 				} catch (ParseException e) {
 
 					e.printStackTrace();
@@ -398,8 +397,6 @@ public class RobeHtmlCrudGUI extends javax.swing.JFrame {
     private static class ClassVisitor extends VoidVisitorAdapter {
 
     	public static List<String> classes= new ArrayList<String>();
-    	public static Map<String, List<String>> allColumns = new HashMap<String, List<String>>();
-    	public static Map<String, List<String>> uniqueColumns = new HashMap<String, List<String>>();
         public static Map<String,List<Model>> models = new HashMap<String, List<Model>>();
 
     	@Override
@@ -411,7 +408,6 @@ public class RobeHtmlCrudGUI extends javax.swing.JFrame {
 	        	for (AnnotationExpr annotationExpr : list) {
 					if(annotationExpr.toString().equals("@Entity")){
 
-						RobeHtmlCrudGUI.imports.put(n.getName(), RobeHtmlCrudGUI.compilationUnit.getPackage().getName().toString());
 						List<BodyDeclaration> body=n.getMembers();
 
 						List<String> allList = new ArrayList<String>();
@@ -451,8 +447,6 @@ public class RobeHtmlCrudGUI extends javax.swing.JFrame {
 										}
 									}
                                     models.put(n.getName(),model);
-									allColumns.put(n.getName(), allList);
-									uniqueColumns.put(n.getName(), uniqueList);
 								}
 							}
 						}
