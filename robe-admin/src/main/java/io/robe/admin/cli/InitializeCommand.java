@@ -29,6 +29,7 @@ public class InitializeCommand<T extends RobeServiceConfiguration> extends Envir
     public static final String IO_ROBE_ADMIN = "io/robe/admin";
     public static final String ADMIN = "Admin";
     private List<Menu> menus = new LinkedList<Menu>();
+    private Menu root = new Menu();
 
 
     private HibernateBundle hibernateBundle;
@@ -36,7 +37,7 @@ public class InitializeCommand<T extends RobeServiceConfiguration> extends Envir
     public InitializeCommand(Service<T> service, String name, String description, HibernateBundle hibernateBundle) {
         super(service, name, description);
         this.hibernateBundle = hibernateBundle;
-        fillMenuList();
+
     }
 
     @Override
@@ -140,10 +141,7 @@ public class InitializeCommand<T extends RobeServiceConfiguration> extends Envir
         LOGGER.info("Createting Menu and permissions");
 
 
-        for(Menu menu : getMenus()){
-            session.persist(menu);
-            session.persist(createPermission(true, menu.getOid(), role));
-        }
+        fillMenuList(session, role);
 
         session.flush();
         session.close();
@@ -154,7 +152,7 @@ public class InitializeCommand<T extends RobeServiceConfiguration> extends Envir
 
     }
 
-    private Permission createPermission(boolean b, String oid, Role role) {
+    protected Permission createPermission(boolean b, String oid, Role role) {
         Permission permission = new Permission();
         permission.setpLevel((short) 7);
         permission.setType(b ? Permission.Type.MENU : Permission.Type.SERVICE);
@@ -171,12 +169,14 @@ public class InitializeCommand<T extends RobeServiceConfiguration> extends Envir
         return menus;
     }
 
-    protected void fillMenuList() {
-        Menu root = new Menu();
+    protected void fillMenuList(Session session, Role role) {
+        root = new Menu();
         root.setCode("root");
         root.setItemOrder(1);
         root.setName("Menü");
         menus.add(root);
+        session.persist(root);
+        session.persist(createPermission(true, root.getOid(), role));
 
         Menu manager = new Menu();
         manager.setCode("Manager");

@@ -62,12 +62,12 @@ public class RobeService extends Service<RobeServiceConfiguration> {
     @Override
     public void initialize(Bootstrap<RobeServiceConfiguration> bootstrap) {
         bootstrap.addCommand(new ControllableServerCommand<RobeServiceConfiguration>(this));
-        hibernateBundle = new HibernateBundle<RobeServiceConfiguration>();
+        HibernateBundle<RobeServiceConfiguration> hibernateBundle = new HibernateBundle<RobeServiceConfiguration>();
         QuartzBundle<RobeServiceConfiguration> quartzBundle = new QuartzBundle<RobeServiceConfiguration>();
         MailBundle<RobeServiceConfiguration> mailBundle = new MailBundle<RobeServiceConfiguration>();
         TokenBasedAuthBundle<RobeServiceConfiguration> authBundle = new TokenBasedAuthBundle<RobeServiceConfiguration>();
 
-        bootstrap.addBundle(getHibernateBundle());
+        bootstrap.addBundle(hibernateBundle);
         bootstrap.addBundle(authBundle);
         bootstrap.addBundle(quartzBundle);
         bootstrap.addBundle(new ViewBundle());
@@ -82,7 +82,7 @@ public class RobeService extends Service<RobeServiceConfiguration> {
         modules.add(new MailModule(mailBundle));
 
         bootstrap.addBundle(new GuiceBundle<RobeServiceConfiguration>(modules));
-        bootstrap.addCommand(new InitializeCommand(this, "initialize", "Runs Hibernate and initialize required columns", getHibernateBundle()));
+        bootstrap.addCommand(new InitializeCommand(this, "initialize", "Runs Hibernate and initialize required columns", hibernateBundle));
 
 
         //TODO: Bad way to get it. Will change it later.
@@ -123,7 +123,4 @@ public class RobeService extends Service<RobeServiceConfiguration> {
 
     }
 
-    public HibernateBundle<RobeServiceConfiguration> getHibernateBundle() {
-        return hibernateBundle;
-    }
 }
