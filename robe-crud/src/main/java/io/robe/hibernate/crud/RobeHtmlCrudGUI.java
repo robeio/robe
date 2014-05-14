@@ -250,6 +250,7 @@ public class RobeHtmlCrudGUI extends javax.swing.JFrame {
      Object[][] tableData= getTableData(jTable1);
      progressBar.setIndeterminate(true);
      String js=OUTPUT_PATH+File.separator+"js"+File.separator+txtProjectName.getText()+File.separator;
+     new File(OUTPUT_PATH+File.separator+"js").mkdir();
      String html=OUTPUT_PATH+File.separator+"html"+File.separator;
      new File(OUTPUT_PATH+File.separator+"js"+File.separator+txtProjectName.getText()).mkdir();
      new File(js+"Model").mkdir();
