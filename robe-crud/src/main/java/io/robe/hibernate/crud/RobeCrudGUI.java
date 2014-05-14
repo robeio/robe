@@ -378,7 +378,7 @@ public class RobeCrudGUI extends javax.swing.JFrame {
     	ClassVisitor.classes.clear();
     	for (String string : files) {
 				try {
-					compilationUnit = JavaParser.parse(new File(absolutePath+"\\"+string));
+					compilationUnit = JavaParser.parse(new File(absolutePath+File.separator+string));
 				} catch (ParseException e) {
 					
 					e.printStackTrace();
