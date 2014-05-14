@@ -152,28 +152,30 @@ public class ResourceCrud {
 	    method.setAnnotations(Arrays.asList(CrudUtility.generateAnnotation("POST", null,null),CrudUtility.generateAnnotation("UnitOfWork", null,null)));
 	    
 	    BlockStmt body = new BlockStmt();
+        if (idGetFunction!=null){
+            for (String string : idGetFunction) {
 
-	    for (String string : idGetFunction) {
+                MethodCallExpr callFindBy = new MethodCallExpr(new NameExpr(daoName), "findBy"+string);
+                ASTHelper.addArgument(callFindBy,new MethodCallExpr(new NameExpr(entityVariableName),"get"+string));
 
-	    	 MethodCallExpr callFindBy = new MethodCallExpr(new NameExpr(daoName), "findBy"+string);
-	         ASTHelper.addArgument(callFindBy,new MethodCallExpr(new NameExpr(entityVariableName),"get"+string));
-	         
-	         VariableDeclarationExpr variableDeclarationExpr = new VariableDeclarationExpr(ASTHelper.createReferenceType("Optional<"+entityName+">", 0), Arrays.asList(CrudUtility.createVariableDeclarator(CrudUtility.capitalizeToLower(string), callFindBy)));
-	         ASTHelper.addStmt(body, variableDeclarationExpr);
-	         
-	         
-	         BinaryExpr binaryExpr = new BinaryExpr(new MethodCallExpr(new NameExpr(entityVariableName),"get"+string), new StringLiteralExpr("already used by another "+ entityVariableName +". Please use different code.") ,Operator.plus);
-	         
-	         MethodCallExpr callException = new MethodCallExpr(null, "RobeRuntimeException", Arrays.asList(new StringLiteralExpr("Error"),binaryExpr));
-	         
-	         List<Statement> ifStatements =new ArrayList<Statement>();
-	         
-	         ThrowStmt throwStmt = new ThrowStmt(callException);
-	         ifStatements.add(throwStmt);
+                VariableDeclarationExpr variableDeclarationExpr = new VariableDeclarationExpr(ASTHelper.createReferenceType("Optional<"+entityName+">", 0), Arrays.asList(CrudUtility.createVariableDeclarator(CrudUtility.capitalizeToLower(string), callFindBy)));
+                ASTHelper.addStmt(body, variableDeclarationExpr);
 
-	         IfStmt ifStmt = new IfStmt(new MethodCallExpr(new NameExpr(CrudUtility.capitalizeToLower(string)),"isPresent"),new BlockStmt(ifStatements) , null);
-	         ASTHelper.addStmt(body, ifStmt);
-		}
+
+                BinaryExpr binaryExpr = new BinaryExpr(new MethodCallExpr(new NameExpr(entityVariableName),"get"+string), new StringLiteralExpr("already used by another "+ entityVariableName +". Please use different code.") ,Operator.plus);
+
+                MethodCallExpr callException = new MethodCallExpr(null, "RobeRuntimeException", Arrays.asList(new StringLiteralExpr("Error"),binaryExpr));
+
+                List<Statement> ifStatements =new ArrayList<Statement>();
+
+                ThrowStmt throwStmt = new ThrowStmt(callException);
+                ifStatements.add(throwStmt);
+
+                IfStmt ifStmt = new IfStmt(new MethodCallExpr(new NameExpr(CrudUtility.capitalizeToLower(string)),"isPresent"),new BlockStmt(ifStatements) , null);
+                ASTHelper.addStmt(body, ifStmt);
+            }
+        }
+
 	 
         MethodCallExpr callCreateFunction = new MethodCallExpr(new  NameExpr(daoName), createFunction);
         ASTHelper.addArgument(callCreateFunction,new NameExpr(entityVariableName));
