@@ -18,6 +18,8 @@ import org.slf4j.LoggerFactory;
 import javax.ws.rs.*;
 import java.lang.reflect.Method;
 import java.util.HashSet;
+import java.util.LinkedList;
+import java.util.List;
 import java.util.Set;
 
 
@@ -26,12 +28,15 @@ public class InitializeCommand<T extends RobeServiceConfiguration> extends Envir
     private static final Logger LOGGER = LoggerFactory.getLogger(InitializeCommand.class);
     public static final String IO_ROBE_ADMIN = "io/robe/admin";
     public static final String ADMIN = "Admin";
+    private List<Menu> menus = new LinkedList<Menu>();
+
 
     private HibernateBundle hibernateBundle;
 
     public InitializeCommand(Service<T> service, String name, String description, HibernateBundle hibernateBundle) {
         super(service, name, description);
         this.hibernateBundle = hibernateBundle;
+        fillMenuList();
     }
 
     @Override
@@ -133,75 +138,12 @@ public class InitializeCommand<T extends RobeServiceConfiguration> extends Envir
         session.persist(systemLanguageEN);
 
         LOGGER.info("Createting Menu and permissions");
-        Menu root = new Menu();
-        root.setCode("root");
-        root.setItemOrder(1);
-        root.setName("Menü");
-        session.persist(root);
-        session.persist(createPermission(true, root.getOid(), role));
-        Menu manager = new Menu();
-        manager.setCode("Manager");
-        manager.setItemOrder(1);
-        manager.setName("Yönetici");
-        manager.setParentOid(root.getOid());
-        session.persist(manager);
-        session.persist(createPermission(true, manager.getOid(), role));
 
-        Menu usermanagement = new Menu();
-        usermanagement.setCode("UserManagement");
-        usermanagement.setItemOrder(1);
-        usermanagement.setName("Kullanıcı Yönetimi");
-        usermanagement.setParentOid(manager.getOid());
-        session.persist(usermanagement);
-        session.persist(createPermission(true, usermanagement.getOid(), role));
 
-        Menu rolemanagement = new Menu();
-        rolemanagement.setCode("RoleManagement");
-        rolemanagement.setItemOrder(1);
-        rolemanagement.setName("Rol Yönetimi");
-        rolemanagement.setParentOid(manager.getOid());
-        session.persist(rolemanagement);
-        session.persist(createPermission(true, rolemanagement.getOid(), role));
-
-        Menu menumanagement = new Menu();
-        menumanagement.setCode("MenuManagement");
-        menumanagement.setItemOrder(1);
-        menumanagement.setName("Menü Yönetimi");
-        menumanagement.setParentOid(manager.getOid());
-        session.persist(menumanagement);
-        session.persist(createPermission(true, menumanagement.getOid(), role));
-
-        Menu permissionManagement = new Menu();
-        permissionManagement.setCode("PermissionManagement");
-        permissionManagement.setItemOrder(1);
-        permissionManagement.setName("İzin Atama");
-        permissionManagement.setParentOid(manager.getOid());
-        session.persist(permissionManagement);
-        session.persist(createPermission(true, permissionManagement.getOid(), role));
-
-        Menu dash = new Menu();
-        dash.setCode("Dashboard");
-        dash.setItemOrder(0);
-        dash.setName("Dash");
-        dash.setParentOid(manager.getOid());
-        session.persist(dash);
-        session.persist(createPermission(true, dash.getOid(), role));
-
-        Menu mailTemplate = new Menu();
-        mailTemplate.setCode("MailTemplateManagement");
-        mailTemplate.setItemOrder(0);
-        mailTemplate.setName("Mail Template Yönetimi");
-        mailTemplate.setParentOid(manager.getOid());
-        session.persist(mailTemplate);
-        session.persist(createPermission(true, mailTemplate.getOid(), role));
-
-        Menu quartzJob = new Menu();
-        quartzJob.setCode("QuartzJobManagement");
-        quartzJob.setItemOrder(0);
-        quartzJob.setName("Quartz Job Manager");
-        quartzJob.setParentOid(manager.getOid());
-        session.persist(quartzJob);
-        session.persist(createPermission(true, quartzJob.getOid(), role));
+        for(Menu menu : getMenus()){
+            session.persist(menu);
+            session.persist(createPermission(true, menu.getOid(), role));
+        }
 
         session.flush();
         session.close();
@@ -223,5 +165,73 @@ public class InitializeCommand<T extends RobeServiceConfiguration> extends Envir
 
     private boolean isItService(Method method) {
         return method.getAnnotation(GET.class) != null || method.getAnnotation(PUT.class) != null || method.getAnnotation(POST.class) != null || method.getAnnotation(DELETE.class) != null || method.getAnnotation(OPTIONS.class) != null;
+    }
+
+    public List<Menu> getMenus() {
+        return menus;
+    }
+
+    protected void fillMenuList() {
+        Menu root = new Menu();
+        root.setCode("root");
+        root.setItemOrder(1);
+        root.setName("Menü");
+        menus.add(root);
+
+        Menu manager = new Menu();
+        manager.setCode("Manager");
+        manager.setItemOrder(1);
+        manager.setName("Yönetici");
+        manager.setParentOid(root.getOid());
+        menus.add(manager);
+
+        Menu usermanagement = new Menu();
+        usermanagement.setCode("UserManagement");
+        usermanagement.setItemOrder(1);
+        usermanagement.setName("Kullanıcı Yönetimi");
+        usermanagement.setParentOid(manager.getOid());
+        menus.add(usermanagement);
+
+        Menu rolemanagement = new Menu();
+        rolemanagement.setCode("RoleManagement");
+        rolemanagement.setItemOrder(1);
+        rolemanagement.setName("Rol Yönetimi");
+        rolemanagement.setParentOid(manager.getOid());
+        menus.add(rolemanagement);
+
+        Menu menumanagement = new Menu();
+        menumanagement.setCode("MenuManagement");
+        menumanagement.setItemOrder(1);
+        menumanagement.setName("Menü Yönetimi");
+        menumanagement.setParentOid(manager.getOid());
+        menus.add(menumanagement);
+
+        Menu permissionManagement = new Menu();
+        permissionManagement.setCode("PermissionManagement");
+        permissionManagement.setItemOrder(1);
+        permissionManagement.setName("İzin Atama");
+        permissionManagement.setParentOid(manager.getOid());
+        menus.add(permissionManagement);
+
+        Menu dash = new Menu();
+        dash.setCode("Dashboard");
+        dash.setItemOrder(0);
+        dash.setName("Dash");
+        dash.setParentOid(manager.getOid());
+        menus.add(dash);
+
+        Menu mailTemplate = new Menu();
+        mailTemplate.setCode("MailTemplateManagement");
+        mailTemplate.setItemOrder(0);
+        mailTemplate.setName("Mail Template Yönetimi");
+        mailTemplate.setParentOid(manager.getOid());
+        menus.add(mailTemplate);
+
+        Menu quartzJob = new Menu();
+        quartzJob.setCode("QuartzJobManagement");
+        quartzJob.setItemOrder(0);
+        quartzJob.setName("Quartz Job Manager");
+        quartzJob.setParentOid(manager.getOid());
+        menus.add(quartzJob);
     }
 }
