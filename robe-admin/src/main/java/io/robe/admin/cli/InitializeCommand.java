@@ -184,6 +184,8 @@ public class InitializeCommand<T extends RobeServiceConfiguration> extends Envir
         manager.setName("Yönetici");
         manager.setParentOid(root.getOid());
         menus.add(manager);
+        session.persist(manager);
+        session.persist(createPermission(true, manager.getOid(), role));
 
         Menu usermanagement = new Menu();
         usermanagement.setCode("UserManagement");
@@ -191,6 +193,8 @@ public class InitializeCommand<T extends RobeServiceConfiguration> extends Envir
         usermanagement.setName("Kullanıcı Yönetimi");
         usermanagement.setParentOid(manager.getOid());
         menus.add(usermanagement);
+        session.persist(usermanagement);
+        session.persist(createPermission(true, usermanagement.getOid(), role));
 
         Menu rolemanagement = new Menu();
         rolemanagement.setCode("RoleManagement");
@@ -198,6 +202,8 @@ public class InitializeCommand<T extends RobeServiceConfiguration> extends Envir
         rolemanagement.setName("Rol Yönetimi");
         rolemanagement.setParentOid(manager.getOid());
         menus.add(rolemanagement);
+        session.persist(rolemanagement);
+        session.persist(createPermission(true, rolemanagement.getOid(), role));
 
         Menu menumanagement = new Menu();
         menumanagement.setCode("MenuManagement");
@@ -205,6 +211,8 @@ public class InitializeCommand<T extends RobeServiceConfiguration> extends Envir
         menumanagement.setName("Menü Yönetimi");
         menumanagement.setParentOid(manager.getOid());
         menus.add(menumanagement);
+        session.persist(menumanagement);
+        session.persist(createPermission(true, menumanagement.getOid(), role));
 
         Menu permissionManagement = new Menu();
         permissionManagement.setCode("PermissionManagement");
@@ -212,6 +220,8 @@ public class InitializeCommand<T extends RobeServiceConfiguration> extends Envir
         permissionManagement.setName("İzin Atama");
         permissionManagement.setParentOid(manager.getOid());
         menus.add(permissionManagement);
+        session.persist(permissionManagement);
+        session.persist(createPermission(true, permissionManagement.getOid(), role));
 
         Menu dash = new Menu();
         dash.setCode("Dashboard");
@@ -219,6 +229,8 @@ public class InitializeCommand<T extends RobeServiceConfiguration> extends Envir
         dash.setName("Dash");
         dash.setParentOid(manager.getOid());
         menus.add(dash);
+        session.persist(dash);
+        session.persist(createPermission(true, dash.getOid(), role));
 
         Menu mailTemplate = new Menu();
         mailTemplate.setCode("MailTemplateManagement");
@@ -226,6 +238,8 @@ public class InitializeCommand<T extends RobeServiceConfiguration> extends Envir
         mailTemplate.setName("Mail Template Yönetimi");
         mailTemplate.setParentOid(manager.getOid());
         menus.add(mailTemplate);
+        session.persist(mailTemplate);
+        session.persist(createPermission(true, mailTemplate.getOid(), role));
 
         Menu quartzJob = new Menu();
         quartzJob.setCode("QuartzJobManagement");
@@ -233,5 +247,7 @@ public class InitializeCommand<T extends RobeServiceConfiguration> extends Envir
         quartzJob.setName("Quartz Job Manager");
         quartzJob.setParentOid(manager.getOid());
         menus.add(quartzJob);
+        session.persist(quartzJob);
+        session.persist(createPermission(true, quartzJob.getOid(), role));
     }
 }
