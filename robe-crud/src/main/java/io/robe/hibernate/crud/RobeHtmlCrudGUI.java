@@ -37,7 +37,7 @@ import java.util.Map;
 public class RobeHtmlCrudGUI extends javax.swing.JFrame {
     public static final String JAVA_IO_TMP_DIR = "user.home";
     public static String OUTPUT_PATH;
-    private static String TEMPLATE_PATH="src/main/resource/";
+    private static String TEMPLATE_PATH="/robe-crud/src/main/resource/";
     public static Map<String,List<Model>> model= new HashMap<String, List<Model>>();
     public static CompilationUnit compilationUnit;
     /**
@@ -410,8 +410,6 @@ public class RobeHtmlCrudGUI extends javax.swing.JFrame {
 
 						List<BodyDeclaration> body=n.getMembers();
 
-						List<String> allList = new ArrayList<String>();
-						List<String> uniqueList = new ArrayList<String>();
                         List<Model> model = new ArrayList<Model>();
 						for (BodyDeclaration bodyDeclaration : body) {
 
@@ -433,17 +431,6 @@ public class RobeHtmlCrudGUI extends javax.swing.JFrame {
                                             m.setNullable(false);
                                             m.setValidation(false);
                                             model.add(m);
-											allList.add(variableDeclarator.getId().toString());
-											List<Node> nodes = expr.getChildrenNodes();
-											if(nodes!=null){
-												for (Node node : nodes) {
-													if(node.toString().contains("unique")){
-														if(node.toString().contains("true")){
-															uniqueList.add(variableDeclarator.getId().toString());
-														}
-													}
-												}
-											}
 										}
 									}
                                     models.put(n.getName(),model);
