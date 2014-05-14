@@ -29,13 +29,8 @@ public class InitializeCommand<T extends RobeServiceConfiguration> extends Envir
 
     private HibernateBundle hibernateBundle;
 
-
-    public InitializeCommand(Service<T> service, HibernateBundle hibernateBundle) {
-        super(service, "initialize", "Runs Hibernate and initialize required columns");
-        this.hibernateBundle = hibernateBundle;
-    }
-    protected InitializeCommand(Service<T> service, HibernateBundle hibernateBundle,String init) {
-        super(service, init, "Runs Hibernate and initialize required columns");
+    public InitializeCommand(Service<T> service, String name, String description, HibernateBundle hibernateBundle) {
+        super(service, name, description);
         this.hibernateBundle = hibernateBundle;
     }
 

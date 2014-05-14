@@ -80,7 +80,7 @@ public class RobeService extends Service<RobeServiceConfiguration> {
         modules.add(new MailModule(mailBundle));
 
         bootstrap.addBundle(new GuiceBundle<RobeServiceConfiguration>(modules));
-        bootstrap.addCommand(new InitializeCommand(this, hibernateBundle));
+        bootstrap.addCommand(new InitializeCommand(this, "initialize", "Runs Hibernate and initialize required columns", hibernateBundle));
 
 
         //TODO: Bad way to get it. Will change it later.
