@@ -37,7 +37,7 @@ import java.util.Map;
 public class RobeHtmlCrudGUI extends javax.swing.JFrame {
     public static final String JAVA_IO_TMP_DIR = "user.home";
     public static String OUTPUT_PATH;
-    private static String TEMPLATE_PATH="src/main/java/resources/";
+    private static String TEMPLATE_PATH="src/main/resource/";
     public static Map<String,String> imports= new HashMap<String, String>();
     public static Map<String,List<Model>> model= new HashMap<String, List<Model>>();
     public static CompilationUnit compilationUnit;
