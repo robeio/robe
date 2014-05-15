@@ -47,7 +47,7 @@ public class ResourceCrud {
         }
 
 
-        ClassOrInterfaceDeclaration type = new ClassOrInterfaceDeclaration(1,Arrays.asList(CrudUtility.generateAnnotation("Path", entityName, null),CrudUtility.generateAnnotation("Consumes", "MediaType", "APPLICATION_JSON"),CrudUtility.generateAnnotation("Produces", "MediaType", "APPLICATION_JSON")), false, name, null,null , null, bodyDeclarationsList);
+        ClassOrInterfaceDeclaration type = new ClassOrInterfaceDeclaration(1,Arrays.asList(CrudUtility.generateAnnotation("Path", CrudUtility.capitalizeToLower(entityName), null),CrudUtility.generateAnnotation("Consumes", "MediaType", "APPLICATION_JSON"),CrudUtility.generateAnnotation("Produces", "MediaType", "APPLICATION_JSON")), false, name, null,null , null, bodyDeclarationsList);
         ASTHelper.addTypeDeclaration(compilationUnit, type);
 
         return compilationUnit.toString();
