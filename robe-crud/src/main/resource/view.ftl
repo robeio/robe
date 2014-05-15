@@ -21,7 +21,7 @@ define([
             toolbar: [
                 {
                     name: "create",
-                    text: "Yeni ${view}"
+                    text: "New ${view}"
                 }
             ],
             columns: [
@@ -29,21 +29,16 @@ define([
     			{
     					field : "${field.name}",
     					title : "${field.name}"
-    			},
+    			}<#if field_has_next>,</#if>
 			</#list>
-                {
-                    field: "active",
-                    title: "Aktif mi?",
-                    template: "#= (active)? 'Evet':'HayÄ±r'#"
-                },
                 {
                     command: [
                         {
                             name: "edit",
                             text: {
                                 edit: "",
-                                update: "GÃ¼ncelle",
-                                cancel: "Ä°ptal"
+                                update: "Update",
+                                cancel: "Cancel"
                             },
                             className: "grid-command-iconfix"
                         },
@@ -60,9 +55,9 @@ define([
             editable: {
                 mode: "popup",
                 window: {
-                    title: "KayÄ±t"
+                    title: "Save"
                 },
-                confirmation: "Silmek istediÄŸinizden emin misiniz?",
+                confirmation: "Are you sure you want to delete?",
                 confirmDelete: "Yes"
             }
         });
@@ -72,8 +67,8 @@ define([
         });
 
         function onShowHelp() {
-            var wnd = $("${view?uncap_first}HelpWindow").kendoWindow({
-                title: "YardÄ±m",
+            var wnd = $("#${view?uncap_first}HelpWindow").kendoWindow({
+                title: "Help",
                 modal: true,
                 visible: false,
                 resizable: false,

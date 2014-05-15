@@ -36,3 +36,4 @@ ${dataSourceName} = new SingletonDataSource("${dataSourceName}", {
             model: ${modelName}
         }
     });
+

@@ -18,10 +18,7 @@ import japa.parser.ast.visitor.VoidVisitorAdapter;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.io.File;
-import java.io.FileWriter;
-import java.io.IOException;
-import java.io.Writer;
+import java.io.*;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -257,6 +254,34 @@ public class RobeHtmlCrudGUI extends javax.swing.JFrame {
      new File(js+"data").mkdir();
      new File(js+"view").mkdir();
      new File(html).mkdir();
+
+        String dataSources="var ";
+        String model="var ";
+
+        int l=0;
+        for (Object[] data:tableData){
+            String entity=(String)data[0];
+            Boolean create=(Boolean)data[1];
+            if(create){
+                dataSources+=entity+"DataSource,";
+                model+=entity+"Model,";
+                l++;
+            }
+
+        }
+        if(dataSources.endsWith(","))
+        {
+            dataSources = dataSources.substring(0,dataSources.length() - 1);
+        }
+        dataSources+=";";
+
+
+        if(model.endsWith(","))
+        {
+            model = model.substring(0,model.length() - 1);
+        }
+        model+=";";
+        int i=0;
         for (Object[] data : tableData) {
             String entity=(String)data[0];
             Boolean create=(Boolean)data[1];
@@ -274,8 +299,27 @@ public class RobeHtmlCrudGUI extends javax.swing.JFrame {
 
 
                     String modelLocation=js+"Model"+File.separator+"Models.js";
-                    Writer modelFile = new FileWriter (new File(modelLocation),true);
+                    Writer modelFile = new BufferedWriter(new OutputStreamWriter(
+                            new FileOutputStream(modelLocation,true), "UTF-8"));
+
+                    if (i==0){
+                        modelFile.write(model);
+                        modelFile.write("\r\n");
+                        modelFile.write("\r\n");
+                        modelFile.write("require([\n" +
+                                "    'kendo/kendo.data.min','robe/Validations'], function(){\n" +
+                                "    console.log(\"Loading : Models\");");
+
+                        modelFile.write("\r\n");
+                        modelFile.write("\r\n");
+                    }
+
                     modelTemplate.process(datamodel, modelFile);
+
+                    if (i==l-1){
+                        modelFile.write(" console.log(\"Finished : Models\");\n" +
+                                "});");
+                    }
                     modelFile.flush();
                     modelFile.close();
 
@@ -288,11 +332,27 @@ public class RobeHtmlCrudGUI extends javax.swing.JFrame {
                     dataDataSource.put("entity", entity);
                     dataDataSource.put("modelName", entity+"Model");
 
-                    String dataSourceLocation=js+"data"+File.separator+"DataSource.js";
-                    Writer dataSourceFile = new FileWriter (new File(dataSourceLocation),true);
+                    String dataSourceLocation=js+"data"+File.separator+"DataSources.js";
+                    Writer dataSourceFile = new BufferedWriter(new OutputStreamWriter(
+                            new FileOutputStream(dataSourceLocation,true), "UTF-8"));
+                    if (i==0){
+                        dataSourceFile.write(dataSources);
+                        dataSourceFile.write("\r\n");
+                        dataSourceFile.write("\r\n");
+                        dataSourceFile.write("define([\n" +
+                                "    'admin/data/SingletonDataSource', 'admin/Models'], function (S, HDS) {\n" +
+                                "    console.log(\"Loading : Datasources\");");
+                        dataSourceFile.write("\r\n");
+                        dataSourceFile.write("\r\n");
+                    }
                     templateDataSource.process(dataDataSource, dataSourceFile);
+                    if (i==l-1){
+                        dataSourceFile.write(" console.log(\"Finished : Datasources\");\n" +
+                                "});");
+                    }
                     dataSourceFile.flush();
                     dataSourceFile.close();
+
 
 
                     //View
@@ -303,8 +363,11 @@ public class RobeHtmlCrudGUI extends javax.swing.JFrame {
                     dataView.put("fields", models);
                     dataView.put("dataSource", entity+"DataSource");
 
+
+
                     String viewLocation=js+"view"+File.separator+entity+"Management.js";
-                    Writer fileView = new FileWriter (new File(viewLocation),false);
+                    Writer fileView = new BufferedWriter(new OutputStreamWriter(
+                            new FileOutputStream(viewLocation,false), "UTF-8"));
                     templateView.process(dataView, fileView);
                     fileView.flush();
                     fileView.close();
@@ -317,11 +380,14 @@ public class RobeHtmlCrudGUI extends javax.swing.JFrame {
                     Map<String, Object> dataHtml = new HashMap<String, Object>();
                     dataHtml.put("view", entity);
 
-                    String htmlLocation=html+entity+".html";
-                    Writer fileHtml = new FileWriter (new File(htmlLocation),false);
+                    String htmlLocation=html+entity+"Management.html";
+                    Writer fileHtml = new BufferedWriter(new OutputStreamWriter(
+                            new FileOutputStream(htmlLocation,false), "UTF-8"));
                     templateHtml.process(dataHtml, fileHtml);
                     fileHtml.flush();
                     fileHtml.close();
+
+                    i++;
 
 
 
