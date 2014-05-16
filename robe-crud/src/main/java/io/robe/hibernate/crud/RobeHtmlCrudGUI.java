@@ -214,7 +214,7 @@ public class RobeHtmlCrudGUI extends javax.swing.JFrame {
 
     private void btnProjectPathActionPerformed(ActionEvent evt) {
 
-        JFileChooser dialog = new JFileChooser("C:\\Users\\acedemand\\git\\crm\\src");
+        JFileChooser dialog = new JFileChooser("/Users");
 
         dialog.setMultiSelectionEnabled(false);
         dialog.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
@@ -229,7 +229,7 @@ public class RobeHtmlCrudGUI extends javax.swing.JFrame {
 
     private void btnProjectOutputPathActionPerformed(ActionEvent evt) {
 
-        JFileChooser dialog = new JFileChooser("C:\\Users\\acedemand\\git\\crm\\src\\main\\resources");
+        JFileChooser dialog = new JFileChooser("/Users");
 
         dialog.setMultiSelectionEnabled(false);
         dialog.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
