@@ -73,7 +73,7 @@ public class InitializeCommand<T extends RobeServiceConfiguration> extends Envir
 
         LOGGER.info("Scanning Services.");
 
-        Reflections reflections = new Reflections("io", this.getClass().getClassLoader());
+        Reflections reflections = new Reflections(new String[] {"io"}, this.getClass().getClassLoader());
         Set<Class<?>> services = reflections.getTypesAnnotatedWith(Path.class);
         for (Class service : services) {
             String parentPath = "/" + ((Path) service.getAnnotation(Path.class)).value();

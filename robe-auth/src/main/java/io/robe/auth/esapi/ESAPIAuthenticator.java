@@ -50,10 +50,12 @@ public class ESAPIAuthenticator extends AbstractAuthenticator implements Authent
     @Override
     public boolean verifyPassword(User user, String password) {
         Optional<UserEntry> entry = (Optional<UserEntry>) userStore.findByUsername(user.getAccountName());
-        if (entry.isPresent())
+        if (entry.isPresent()) {
             return entry.get().getPassword().equals(Hashing.sha256().hashString(password).toString());
-        else
+        }
+        else {
             return false;
+        }
     }
 
     /**
@@ -124,10 +126,12 @@ public class ESAPIAuthenticator extends AbstractAuthenticator implements Authent
 
         verifyPassword(user,currentPassword);
 
-        if(!newPassword.equals(newPassword2))
-            throw new AuthenticationException("New password and re-type password must be same",user.getAccountName() +": New password and re-type password must be same");
-        if(newPassword.equals(currentPassword))
-            throw new AuthenticationException("New password and old password must be different",user.getAccountName() +": New password and old password must be different");
+        if(!newPassword.equals(newPassword2)) {
+            throw new AuthenticationException("New password and re-type password must be same", user.getAccountName() + ": New password and re-type password must be same");
+        }
+        if(newPassword.equals(currentPassword)) {
+            throw new AuthenticationException("New password and old password must be different", user.getAccountName() + ": New password and old password must be different");
+        }
 
         verifyPasswordStrength(currentPassword,newPassword,user);
 
@@ -158,10 +162,12 @@ public class ESAPIAuthenticator extends AbstractAuthenticator implements Authent
     @Override
     public User getUser(String accountName) {
         Optional<? extends UserEntry> optional = userStore.findByUsername(accountName);
-        if(optional.isPresent())
+        if(optional.isPresent()) {
             return (User) optional.get();
-        else
+        }
+        else {
             return User.ANONYMOUS;
+        }
     }
 
     /**
@@ -214,8 +220,9 @@ public class ESAPIAuthenticator extends AbstractAuthenticator implements Authent
     @Override
     public void verifyAccountNameStrength(String accountName) throws AuthenticationException {
         Matcher matcher = PATTERN.matcher(accountName);
-        if(!matcher.matches())
-            throw new AuthenticationException("Account name must be a valid email address",accountName + " is not a valid email");
+        if(!matcher.matches()) {
+            throw new AuthenticationException("Account name must be a valid email address", accountName + " is not a valid email");
+        }
 
     }
 
@@ -273,10 +280,12 @@ public class ESAPIAuthenticator extends AbstractAuthenticator implements Authent
         User user = null;
         try {
             // If array has 2 objects and they are at correct types
-            if (requestResponse.length == 2 || requestResponse[0] instanceof HttpServletRequest &&requestResponse[1] instanceof HttpServletResponse)
-                user = login((HttpServletRequest)requestResponse[0], (HttpServletResponse)requestResponse[1]);
-            else
+            if (requestResponse.length == 2 || requestResponse[0] instanceof HttpServletRequest &&requestResponse[1] instanceof HttpServletResponse) {
+                user = login((HttpServletRequest) requestResponse[0], (HttpServletResponse) requestResponse[1]);
+            }
+            else {
                 throw new RuntimeException("Parameter requestResponse array is not suitable for this method. Use as Object[HttpServletRequest,HttpServletResponse]");
+            }
         } catch (AuthenticationException e) {
             throw new com.yammer.dropwizard.auth.AuthenticationException(e);
         }

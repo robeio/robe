@@ -40,10 +40,12 @@ public class RobeExceptionMapper implements ExceptionMapper<Exception> {
             for (String error : exception.getErrors()) {
                 String[] parts = error.split("\\.");
                 // TODO Find a good way for showing InvalidEntityExceptions
-                if (parts.length > 1)
+                if (parts.length > 1) {
                     errors[i++] = new BasicPair(parts[0], parts[1].split("\\(")[0]);
-                else
+                }
+                else {
                     errors[i++] = new BasicPair(exception.getMessage(), error);
+                }
             }
             return Response.status(422).entity(errors).type(MediaType.APPLICATION_JSON).build();
         } else if (e instanceof WebApplicationException) {

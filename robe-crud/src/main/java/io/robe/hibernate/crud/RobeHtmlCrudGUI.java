@@ -9,22 +9,16 @@ package io.robe.hibernate.crud;
 import japa.parser.JavaParser;
 import japa.parser.ParseException;
 import japa.parser.ast.CompilationUnit;
-import japa.parser.ast.ImportDeclaration;
-import japa.parser.ast.Node;
 import japa.parser.ast.body.BodyDeclaration;
 import japa.parser.ast.body.ClassOrInterfaceDeclaration;
 import japa.parser.ast.body.FieldDeclaration;
 import japa.parser.ast.body.VariableDeclarator;
 import japa.parser.ast.expr.AnnotationExpr;
-import japa.parser.ast.expr.NameExpr;
 import japa.parser.ast.visitor.VoidVisitorAdapter;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.io.BufferedWriter;
-import java.io.File;
-import java.io.FileWriter;
-import java.io.IOException;
+import java.io.*;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -39,15 +33,20 @@ import javax.swing.JTable;
 
 import org.apache.tools.ant.DirectoryScanner;
 
-public class RobeCrudGUI extends javax.swing.JFrame {
-    public static final String JAVA_IO_TMP_DIR = "user.home";
+import freemarker.template.Configuration;
+import freemarker.template.Template;
+import freemarker.template.TemplateException;
+
+public class RobeHtmlCrudGUI extends javax.swing.JFrame {
+
     public static String OUTPUT_PATH;
-    public static Map<String,String> imports= new HashMap<String, String>();
+    private static String TEMPLATE_PATH="/robe-crud/src/main/resource/";
+    public static Map<String,List<Model>> model= new HashMap<String, List<Model>>();
     public static CompilationUnit compilationUnit;
     /**
      * Creates new form RobeCrudGUI
      */
-    public RobeCrudGUI() {
+    public RobeHtmlCrudGUI() {
     	setResizable(false);
         initComponents();
     }
@@ -60,16 +59,16 @@ public class RobeCrudGUI extends javax.swing.JFrame {
     @SuppressWarnings("unchecked")
     private void initComponents() {
 
-        jLabel1 = new javax.swing.JLabel();
+        jLabel1 = new JLabel();
         tfProjectPath = new javax.swing.JTextField();
         tfProjectOutputPath = new javax.swing.JTextField();
         tfProjectOutputPath.setText("None");
-        btnProjectPath = new javax.swing.JButton();
-        jLabel2 = new javax.swing.JLabel();
-        jLabel3 = new javax.swing.JLabel();
+        btnProjectPath = new JButton();
+        jLabel2 = new JLabel();
+        jLabel3 = new JLabel();
         jScrollPane1 = new javax.swing.JScrollPane();
-        jTable1 = new javax.swing.JTable();
-        btnGenerate = new javax.swing.JButton();
+        jTable1 = new JTable();
+        btnGenerate = new JButton();
         progressBar = new javax.swing.JProgressBar();
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -78,8 +77,8 @@ public class RobeCrudGUI extends javax.swing.JFrame {
         tfProjectPath.setText("None");
 
         btnProjectPath.setText("Select");
-        btnProjectPath.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
+        btnProjectPath.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent evt) {
                 btnProjectPathActionPerformed(evt);
             }
         });
@@ -94,11 +93,11 @@ public class RobeCrudGUI extends javax.swing.JFrame {
                         //{"Empty", false, false, false, false},
                 },
                 new String[]{
-                        "Entitiy", "Dao", "Resource", "Inject", "Auth"
+                        "Entitiy", "Create"
                 }
         ) {
             Class[] types = new Class[]{
-                    java.lang.String.class, java.lang.Boolean.class, java.lang.Boolean.class, java.lang.Boolean.class, java.lang.Boolean.class
+                    String.class, Boolean.class
             };
 
             public Class getColumnClass(int columnIndex) {
@@ -110,32 +109,32 @@ public class RobeCrudGUI extends javax.swing.JFrame {
         jScrollPane1.setViewportView(jTable1);
 
         btnGenerate.setText("Generate");
-        btnGenerate.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
+        btnGenerate.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent evt) {
                 btnGenerateActionPerformed(evt);
             }
         });
-        
+
         JLabel lblSelectOutput = new JLabel();
         lblSelectOutput.setText("Select Output:");
-        
+
         JButton btnOutputPath = new JButton();
         btnOutputPath.addActionListener(new ActionListener() {
         	public void actionPerformed(ActionEvent evt) {
-        		
+
         		btnProjectOutputPathActionPerformed(evt);
-        		
+
         	}
         });
         btnOutputPath.setText("Select");
-        
-        
-        
-        txtPackageName = new javax.swing.JTextField();
-        txtPackageName.setColumns(10);
-        
+
+
+
+        txtProjectName = new javax.swing.JTextField();
+        txtProjectName.setColumns(10);
+
         JLabel lblPackage = new JLabel();
-        lblPackage.setText("Package:");
+        lblPackage.setText("Project Name:");
         GroupLayout groupLayout = new GroupLayout(getContentPane());
         groupLayout.setHorizontalGroup(
         	groupLayout.createParallelGroup(Alignment.LEADING)
@@ -157,7 +156,7 @@ public class RobeCrudGUI extends javax.swing.JFrame {
         				.addGroup(groupLayout.createSequentialGroup()
         					.addComponent(lblPackage, GroupLayout.PREFERRED_SIZE, 78, GroupLayout.PREFERRED_SIZE)
         					.addGap(11)
-        					.addComponent(txtPackageName, GroupLayout.PREFERRED_SIZE, 436, GroupLayout.PREFERRED_SIZE))
+        					.addComponent(txtProjectName, GroupLayout.PREFERRED_SIZE, 436, GroupLayout.PREFERRED_SIZE))
         				.addGroup(groupLayout.createSequentialGroup()
         					.addComponent(jLabel2)
         					.addGap(50)
@@ -194,7 +193,7 @@ public class RobeCrudGUI extends javax.swing.JFrame {
         				.addGroup(groupLayout.createSequentialGroup()
         					.addGap(3)
         					.addComponent(lblPackage))
-        				.addComponent(txtPackageName, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
+        				.addComponent(txtProjectName, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
         			.addGap(23)
         			.addGroup(groupLayout.createParallelGroup(Alignment.LEADING)
         				.addComponent(jLabel2)
@@ -211,12 +210,12 @@ public class RobeCrudGUI extends javax.swing.JFrame {
         getContentPane().setLayout(groupLayout);
 
         pack();
-    }// </editor-fold>                        
+    }// </editor-fold>
 
-    private void btnProjectPathActionPerformed(java.awt.event.ActionEvent evt) {
+    private void btnProjectPathActionPerformed(ActionEvent evt) {
 
-        JFileChooser dialog = new JFileChooser("D:\\mebitech\\robe\\robe-crud");
-        
+        JFileChooser dialog = new JFileChooser("/Users");
+
         dialog.setMultiSelectionEnabled(false);
         dialog.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
         int retval = dialog.showOpenDialog(this);
@@ -228,10 +227,10 @@ public class RobeCrudGUI extends javax.swing.JFrame {
         }
     }
 
-    private void btnProjectOutputPathActionPerformed(java.awt.event.ActionEvent evt) {
+    private void btnProjectOutputPathActionPerformed(ActionEvent evt) {
 
-        JFileChooser dialog = new JFileChooser("C:\\Users\\acedemand\\Desktop\temp");
-        
+        JFileChooser dialog = new JFileChooser("/Users");
+
         dialog.setMultiSelectionEnabled(false);
         dialog.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
         int retval = dialog.showSaveDialog(this);
@@ -241,121 +240,173 @@ public class RobeCrudGUI extends javax.swing.JFrame {
             OUTPUT_PATH=file.getAbsolutePath();
         }
     }
-    
-    private void btnGenerateActionPerformed(java.awt.event.ActionEvent evt) {
 
-   
+    private void btnGenerateActionPerformed(ActionEvent evt) {
+
+
      Object[][] tableData= getTableData(jTable1);
      progressBar.setIndeterminate(true);
-     
+     String js=OUTPUT_PATH+File.separator+"js"+File.separator+txtProjectName.getText()+File.separator;
+     new File(OUTPUT_PATH+File.separator+"js").mkdir();
+     String html=OUTPUT_PATH+File.separator+"html"+File.separator;
+     new File(OUTPUT_PATH+File.separator+"js"+File.separator+txtProjectName.getText()).mkdir();
+     new File(js+"Model").mkdir();
+     new File(js+"data").mkdir();
+     new File(js+"view").mkdir();
+     new File(html).mkdir();
+
+        String dataSources="var ";
+        String model="var ";
+
+        int l=0;
+        for (Object[] data:tableData){
+            String entity=(String)data[0];
+            Boolean create=(Boolean)data[1];
+            if(create){
+                dataSources+=entity+"DataSource,";
+                model+=entity+"Model,";
+                l++;
+            }
+
+        }
+        if(dataSources.endsWith(","))
+        {
+            dataSources = dataSources.substring(0,dataSources.length() - 1);
+        }
+        dataSources+=";";
+
+
+        if(model.endsWith(","))
+        {
+            model = model.substring(0,model.length() - 1);
+        }
+        model+=";";
+        int i=0;
         for (Object[] data : tableData) {
             String entity=(String)data[0];
-            Boolean dao=(Boolean)data[1];
-            Boolean resource=(Boolean)data[2];
-            Boolean inject=(Boolean)data[3];
-            Boolean auth=(Boolean)data[4];
+            Boolean create=(Boolean)data[1];
+            Configuration cfg = new Configuration();
+            if(create){
+                try {
 
-            String fileDaoLocation = OUTPUT_PATH+File.separator+txtPackageName.getText().replace(".",File.separator)+File.separator+"dao";
-            new File(fileDaoLocation).mkdirs();
+                    List<Model>  models=ClassVisitor.models.get(entity);
+                    //Models
+                    Template modelTemplate = cfg.getTemplate(TEMPLATE_PATH+"model.ftl");
 
-            String fileResourceLocation = OUTPUT_PATH+File.separator+txtPackageName.getText().replace(".",File.separator)+File.separator+"resource";
-            new File(fileResourceLocation).mkdirs();
+                    Map<String, Object> datamodel = new HashMap<String, Object>();
+                    datamodel.put("modelName", entity+"Model");
+                    datamodel.put("fields", models);
 
-            try {
 
-            	String daoName=entity+"Dao";
-                String newDaoClassName=fileDaoLocation+File.separator+daoName+".java";
+                    String modelLocation=js+"Model"+File.separator+"Models.js";
+                    Writer modelFile = new BufferedWriter(new OutputStreamWriter(
+                            new FileOutputStream(modelLocation,true), "UTF-8"));
 
-                List<String> fieldGet=ClassVisitor.allColumns.get(entity);
-                List<String> uniqueFields=ClassVisitor.uniqueColumns.get(entity);
-                
-                String findBy="findById";
-                if (uniqueFields!=null) {
-                    for (String string : uniqueFields) {
-                        findBy += "Or" + CrudUtility.capitalizeToUpper(string);
+                    if (i==0){
+                        modelFile.write(model);
+                        modelFile.write("\r\n");
+                        modelFile.write("\r\n");
+                        modelFile.write("require([\n" +
+                                "    'kendo/kendo.data.min','robe/Validations'], function(){\n" +
+                                "    console.log(\"Loading : Models\");");
+
+                        modelFile.write("\r\n");
+                        modelFile.write("\r\n");
                     }
+
+                    modelTemplate.process(datamodel, modelFile);
+
+                    if (i==l-1){
+                        modelFile.write(" console.log(\"Finished : Models\");\n" +
+                                "});");
+                    }
+                    modelFile.flush();
+                    modelFile.close();
+
+
+                    //DataSource
+                    Template templateDataSource = cfg.getTemplate(TEMPLATE_PATH+"datasource.ftl");
+
+                    Map<String, Object> dataDataSource = new HashMap<String, Object>();
+                    dataDataSource.put("dataSourceName", entity+"DataSource");
+                    dataDataSource.put("entity", entity);
+                    dataDataSource.put("modelName", entity+"Model");
+
+                    String dataSourceLocation=js+"data"+File.separator+"DataSources.js";
+                    Writer dataSourceFile = new BufferedWriter(new OutputStreamWriter(
+                            new FileOutputStream(dataSourceLocation,true), "UTF-8"));
+                    if (i==0){
+                        dataSourceFile.write(dataSources);
+                        dataSourceFile.write("\r\n");
+                        dataSourceFile.write("\r\n");
+                        dataSourceFile.write("define([\n" +
+                                "    'admin/data/SingletonDataSource', 'admin/Models'], function (S, HDS) {\n" +
+                                "    console.log(\"Loading : Datasources\");");
+                        dataSourceFile.write("\r\n");
+                        dataSourceFile.write("\r\n");
+                    }
+                    templateDataSource.process(dataDataSource, dataSourceFile);
+                    if (i==l-1){
+                        dataSourceFile.write(" console.log(\"Finished : Datasources\");\n" +
+                                "});");
+                    }
+                    dataSourceFile.flush();
+                    dataSourceFile.close();
+
+
+
+                    //View
+
+                    Template templateView = cfg.getTemplate(TEMPLATE_PATH+"view.ftl");
+                    Map<String, Object> dataView = new HashMap<String, Object>();
+                    dataView.put("view", entity+"Management");
+                    dataView.put("fields", models);
+                    dataView.put("dataSource", entity+"DataSource");
+
+
+
+                    String viewLocation=js+"view"+File.separator+entity+"Management.js";
+                    Writer fileView = new BufferedWriter(new OutputStreamWriter(
+                            new FileOutputStream(viewLocation,false), "UTF-8"));
+                    templateView.process(dataView, fileView);
+                    fileView.flush();
+                    fileView.close();
+
+
+                    //html
+
+                    Template templateHtml = cfg.getTemplate(TEMPLATE_PATH+"html.ftl");
+
+                    Map<String, Object> dataHtml = new HashMap<String, Object>();
+                    dataHtml.put("view", entity);
+
+                    String htmlLocation=html+entity+"Management.html";
+                    Writer fileHtml = new BufferedWriter(new OutputStreamWriter(
+                            new FileOutputStream(htmlLocation,false), "UTF-8"));
+                    templateHtml.process(dataHtml, fileHtml);
+                    fileHtml.flush();
+                    fileHtml.close();
+
+                    i++;
+
+
+
+                } catch (IOException e) {
+                    e.printStackTrace();
+                } catch (TemplateException e) {
+                    e.printStackTrace();
                 }
-                String importEntity=imports.get(entity);
-                String packageName=txtPackageName.getText();
-                
-                if(dao) {
-                    List<ImportDeclaration> importDeclarations = new ArrayList<ImportDeclaration>();
 
-                    String []imports={
-                            "com.google.inject.Inject",
-                            "org.hibernate.SessionFactory",
-                            "io.robe.hibernate.dao.BaseDao",
-                            importEntity+"."+entity
-                    };
-                    importDeclarations.addAll(CrudUtility.getImports(imports));
-                    if(!findBy.equals("findById")){
-                        importDeclarations.addAll(CrudUtility.getImports("com.google.common.base.Optional","org.hibernate.Criteria","org.hibernate.criterion.Restrictions"));
-                    }
-                    File fileDao = new File(newDaoClassName);
-                    if (!fileDao.exists()) {
-                        fileDao.createNewFile();
-                    }
-                 
-                    FileWriter fwDao = null;
-                    fwDao = new FileWriter(fileDao.getAbsoluteFile());
-                    BufferedWriter bwDao = new BufferedWriter(fwDao);
-                    bwDao.write(DaoCrud.createDao(entity, packageName+".dao", importDeclarations, uniqueFields, findBy));
-                    bwDao.close();
 
-                }
-                if(resource) {
-
-                	String resourceName=entity+"Resource";
-                    String newResourceClassName = fileResourceLocation + File.separator + resourceName + ".java";
-                    File fileResource = new File(newResourceClassName);
-                    if (!fileResource.exists()) {
-                        fileResource.createNewFile();
-                    }
-                    
-                    FileWriter fwResource = new FileWriter(fileResource.getAbsoluteFile());
-                    BufferedWriter bwResource = new BufferedWriter(fwResource);
-                    List<BodyDeclaration> bodyDeclarations = new ArrayList<BodyDeclaration>();
-
-                    bodyDeclarations.add(ResourceCrud.getAll(entity, daoName, "findAll",auth));
-                    bodyDeclarations.add(ResourceCrud.get(entity, daoName, findBy,auth));
-                    bodyDeclarations.add(ResourceCrud.create(entity, daoName, uniqueFields, "create",auth));
-                    bodyDeclarations.add(ResourceCrud.update(entity, daoName, fieldGet, "getOid", findBy, "update", "detach",auth));
-                    bodyDeclarations.add(ResourceCrud.delete(entity, daoName, "getOid", findBy, "delete",auth));
-                    List<ImportDeclaration> importDeclarationsResource = new ArrayList<ImportDeclaration>();
-                    String []imports={
-                            "com.google.inject.Inject",
-                            "com.yammer.dropwizard.auth.Auth",
-                            "com.yammer.dropwizard.hibernate.UnitOfWork",
-                            "io.robe.auth.Credentials",
-                            "javax.validation.Valid",
-                            "javax.ws.rs.Consumes",
-                            "javax.ws.rs.DELETE",
-                            "javax.ws.rs.GET",
-                            "javax.ws.rs.POST",
-                            "javax.ws.rs.PUT",
-                            "javax.ws.rs.Path",
-                            "javax.ws.rs.PathParam",
-                            "javax.ws.rs.Produces",
-                            "javax.ws.rs.core.MediaType",
-                            "java.util.List",
-                            packageName+".dao."+entity+"Dao",
-                            importEntity+"."+entity,
-
-                    };
-                    importDeclarationsResource.addAll(CrudUtility.getImports(imports));
-                    bwResource.write(ResourceCrud.ResourceGenerate(resourceName, entity, daoName, bodyDeclarations, importDeclarationsResource, packageName+".resource", inject));
-                    bwResource.close();
-                }
-
-            } catch (IOException e) {
-                e.printStackTrace();
             }
         }
+
+
         progressBar.setIndeterminate(false);
         javax.swing.JOptionPane.showMessageDialog(this, "created successfull!");
 
     }
-    
+
     public Object[][] getTableData (JTable table) {
         javax.swing.table.DefaultTableModel dtm = (javax.swing.table.DefaultTableModel) table.getModel();
         int nRow = dtm.getRowCount(), nCol = dtm.getColumnCount();
@@ -367,7 +418,7 @@ public class RobeCrudGUI extends javax.swing.JFrame {
     }
 
     private void fillEntityList(String absolutePath) {
-    			
+
     	DirectoryScanner scanner = new DirectoryScanner();
     	scanner.setIncludes(new String[]{"**/*.java"});
     	scanner.setBasedir(absolutePath);
@@ -380,37 +431,34 @@ public class RobeCrudGUI extends javax.swing.JFrame {
 				try {
 					compilationUnit = JavaParser.parse(new File(absolutePath+File.separator+string));
 				} catch (ParseException e) {
-					
+
 					e.printStackTrace();
 				} catch (IOException e) {
-					
+
 					e.printStackTrace();
 				}
 				new ClassVisitor().visit(compilationUnit, null);
-				
+
 		}
-    	
+
         Object[][] list = null;
         list=new Object[ClassVisitor.classes.size()][5];
-        
-        
+
+
         int i = 0;
         for (String entityClass : ClassVisitor.classes) {
             list[i][0] = entityClass;
-            list[i][1] = true;
-            list[i][2] = true;
-            list[i][3] = true;
-            list[i++][4] = true;
+            list[i++][1] = true;
         }
-       
+
         jTable1.setModel(new javax.swing.table.DefaultTableModel(
                 list,
                 new String[]{
-                        "Entitiy", "Dao", "Resource", "Inject", "Auth"
+                        "Entitiy","Create"
                 }
         ) {
             Class[] types = new Class[]{
-                    java.lang.String.class, java.lang.Boolean.class, java.lang.Boolean.class, java.lang.Boolean.class, java.lang.Boolean.class
+                    String.class, Boolean.class
             };
 
             public Class getColumnClass(int columnIndex) {
@@ -418,56 +466,47 @@ public class RobeCrudGUI extends javax.swing.JFrame {
             }
         });
     }
-    
+
     private static class ClassVisitor extends VoidVisitorAdapter {
 
-    	public static List<String> classes= new ArrayList<String>();    	
-    	public static Map<String, List<String>> allColumns = new HashMap<String, List<String>>();
-    	public static Map<String, List<String>> uniqueColumns = new HashMap<String, List<String>>();    	
-    	
+    	public static List<String> classes= new ArrayList<String>();
+        public static Map<String,List<Model>> models = new HashMap<String, List<Model>>();
+
     	@Override
         public void visit(ClassOrInterfaceDeclaration n, Object arg) {
-     	
+
         	List<AnnotationExpr> list=n.getAnnotations();
-        	
+
         	if(list!=null){
 	        	for (AnnotationExpr annotationExpr : list) {
 					if(annotationExpr.toString().equals("@Entity")){
-						
-						RobeCrudGUI.imports.put(n.getName(), RobeCrudGUI.compilationUnit.getPackage().getName().toString());
+
 						List<BodyDeclaration> body=n.getMembers();
-						
-						List<String> allList = new ArrayList<String>();
-						List<String> uniqueList = new ArrayList<String>();
-						
+
+                        List<Model> model = new ArrayList<Model>();
 						for (BodyDeclaration bodyDeclaration : body) {
-							
+
 							if(bodyDeclaration instanceof FieldDeclaration)
 							{
 								FieldDeclaration fieldDeclaration =(FieldDeclaration)bodyDeclaration;
 								List<AnnotationExpr> fieldExp=fieldDeclaration.getAnnotations();
-								
+
 								if(fieldExp!=null){
-						
+
 									VariableDeclarator variableDeclarator = fieldDeclaration.getVariables().get(0);
-									
+
 									for (AnnotationExpr expr : fieldExp) {
 										if(expr.getName().toString().equals("Column")){
-											allList.add(variableDeclarator.getId().toString());
-											List<Node> nodes = expr.getChildrenNodes();
-											if(nodes!=null){
-												for (Node node : nodes) {
-													if(node.toString().contains("unique")){
-														if(node.toString().contains("true")){															
-															uniqueList.add(variableDeclarator.getId().toString());															
-														}
-													}
-												}
-											}
+                                            Model m = new Model();
+                                            m.setName(variableDeclarator.getId().toString());
+
+                                            m.setEditable(false);
+                                            m.setNullable(false);
+                                            m.setValidation(false);
+                                            model.add(m);
 										}
 									}
-									allColumns.put(n.getName(), allList);
-									uniqueColumns.put(n.getName(), uniqueList);
+                                    models.put(n.getName(),model);
 								}
 							}
 						}
@@ -491,34 +530,34 @@ public class RobeCrudGUI extends javax.swing.JFrame {
                 }
             }
         } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(RobeCrudGUI.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(RobeHtmlCrudGUI.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(RobeCrudGUI.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(RobeHtmlCrudGUI.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(RobeCrudGUI.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(RobeHtmlCrudGUI.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(RobeCrudGUI.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(RobeHtmlCrudGUI.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
         //</editor-fold>
 
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new RobeCrudGUI().setVisible(true);
+                new RobeHtmlCrudGUI().setVisible(true);
             }
         });
     }
 
-    // Variables declaration - do not modify                     
-    private javax.swing.JButton btnProjectPath;
-    private javax.swing.JButton btnGenerate;
-    private javax.swing.JLabel jLabel1;
-    private javax.swing.JLabel jLabel2;
-    private javax.swing.JLabel jLabel3;
+    // Variables declaration - do not modify
+    private JButton btnProjectPath;
+    private JButton btnGenerate;
+    private JLabel jLabel1;
+    private JLabel jLabel2;
+    private JLabel jLabel3;
     private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JTable jTable1;
+    private JTable jTable1;
     private javax.swing.JTextField tfProjectPath;
     private javax.swing.JTextField tfProjectOutputPath;
-    private javax.swing.JTextField txtPackageName;
+    private javax.swing.JTextField txtProjectName;
     private javax.swing.JProgressBar progressBar;
 }
