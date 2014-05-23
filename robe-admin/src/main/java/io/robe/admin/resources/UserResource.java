@@ -85,7 +85,7 @@ public class UserResource {
         entity.setRole(role);
         entity.setPassword(Hashing.sha256().hashString(user.getName()).toString());
 
-        sendActivationMail(entity);
+//        sendActivationMail(entity);
 
         return new UserDTO(userDao.create(entity));
 
