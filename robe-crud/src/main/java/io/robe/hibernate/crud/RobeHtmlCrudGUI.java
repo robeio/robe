@@ -38,7 +38,7 @@ import freemarker.template.Template;
 import freemarker.template.TemplateException;
 
 public class RobeHtmlCrudGUI extends javax.swing.JFrame {
-    public static final String JAVA_IO_TMP_DIR = "user.home";
+
     public static String OUTPUT_PATH;
     private static String TEMPLATE_PATH="/robe-crud/src/main/resource/";
     public static Map<String,List<Model>> model= new HashMap<String, List<Model>>();
@@ -214,7 +214,7 @@ public class RobeHtmlCrudGUI extends javax.swing.JFrame {
 
     private void btnProjectPathActionPerformed(ActionEvent evt) {
 
-        JFileChooser dialog = new JFileChooser("C:\\Users\\acedemand\\git\\crm\\src");
+        JFileChooser dialog = new JFileChooser("/Users");
 
         dialog.setMultiSelectionEnabled(false);
         dialog.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
@@ -229,7 +229,7 @@ public class RobeHtmlCrudGUI extends javax.swing.JFrame {
 
     private void btnProjectOutputPathActionPerformed(ActionEvent evt) {
 
-        JFileChooser dialog = new JFileChooser("C:\\Users\\acedemand\\git\\crm\\src\\main\\resources");
+        JFileChooser dialog = new JFileChooser("/Users");
 
         dialog.setMultiSelectionEnabled(false);
         dialog.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);

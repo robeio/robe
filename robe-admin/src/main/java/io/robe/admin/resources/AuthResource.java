@@ -55,7 +55,7 @@ public class AuthResource extends AbstractAuthResource<User> {
             IsToken token = TokenWrapper.createToken(user.get().getEmail(), null);
             credentials.remove("password");
 
-            return Response.ok().header("Set-Cookie", "auth-token" + "=" + token.getToken() + ";path=/;domain=" + request.getRemoteHost() + ";").entity(credentials).build();
+            return Response.ok().header("Set-Cookie", "auth-token" + "=" + token.getToken() + ";path=/;").entity(credentials).build();
         } else {
             throw new WebApplicationException(Response.Status.UNAUTHORIZED);
         }

@@ -36,8 +36,9 @@ public class TokenBasedAuthResponseFilter implements ContainerResponseFilter {
 				LOGGER.error("Token re-creation failed", e);
 			}
 
-			response.getHttpHeaders().putSingle("Set-Cookie", tokenKey +"=" + authToken + ";path=/;domain=" + request.getBaseUri().getHost() + ";");
-		}
+
+            response.getHttpHeaders().putSingle("Set-Cookie", tokenKey + "=" + authToken + ";path=/;");
+        }
 		return response;
 
 	}
