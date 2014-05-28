@@ -1,4 +1,3 @@
-//@ sourceURL=Datasources.js
 var UserDataSource, RoleDataSource, GroupedRoleDataSource, UnGroupedRoleDataSource, MenuDataSource, ServiceDataSource, MailManagementDataSource, SystemLanguageDatasource, QuartzJobDataSource,TriggerDataSource;
 define([
     'admin/data/SingletonDataSource', 'admin/Models'], function (S, HDS) {

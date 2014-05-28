@@ -1,4 +1,3 @@
-//@ sourceURL=SingletonDataSource.js
 function SingletonDataSource(name, parameters) {
     this.name = name;
     this.data = null;

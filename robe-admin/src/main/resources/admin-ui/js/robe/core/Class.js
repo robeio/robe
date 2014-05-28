@@ -1,4 +1,3 @@
-// @ sourceURL = robe/core/Class.js
 var robe = robe || {
     util: {
         inherit: function (parent, child) {

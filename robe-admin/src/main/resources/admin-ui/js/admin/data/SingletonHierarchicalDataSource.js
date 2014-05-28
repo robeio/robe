@@ -1,4 +1,3 @@
-//@ sourceURL=SingletonHierarchicalDataSource.js
 admin.data = admin.data || {};
 admin.data.SingletonHierarchicalDataSource = {};
 define(['admin/Models', 'robe/AlertDialog'], function () {

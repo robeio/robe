@@ -1,4 +1,3 @@
-//@ sourceURL=Workspace.js
 var WorkspaceView;
 define([
     'text!html/Workspace.html',

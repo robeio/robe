@@ -1,4 +1,3 @@
-//@ sourceURL=QuartzJobManagement.js
 var QuartzJobManagement;
 
 define([

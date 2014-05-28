@@ -1,4 +1,3 @@
-//@ sourceURL=Dashboard.js
 var Dashboard;
 
 define([

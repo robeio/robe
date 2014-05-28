@@ -1,4 +1,3 @@
-// @ sourceURL = robe/core/Class.js
 var Robe = (function () {
     this.name;
 

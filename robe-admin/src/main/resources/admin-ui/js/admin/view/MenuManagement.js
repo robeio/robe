@@ -1,4 +1,3 @@
-//@ sourceURL=MenuManagement.js
 var MenuManagementView;
 define([
     'text!html/MenuManagement.html',
