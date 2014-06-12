@@ -355,7 +355,7 @@ define([
         }
 
         function cronExpressionEditor(container, options) {
-            var seconds = ["Every Second"]
+            var seconds = ["Every Second"];
             var minutes = ["Every Minute"];
             var hours = ["Every Hour"];
             var days = ["Every Day", "?", "Last Day of Month"];
