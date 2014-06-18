@@ -7,10 +7,10 @@
         <groupId>io.robe</groupId>
         <version>0.3.2</version>
     </parent>
+
     <modelVersion>4.0.0</modelVersion>
-
     <artifactId>robe-convert</artifactId>
-
+    <version>${project.version}</version>
 
     <dependencies>
         <dependency>
