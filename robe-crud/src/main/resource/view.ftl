@@ -21,7 +21,7 @@ define([
             toolbar: [
                 {
                     name: "create",
-                    text: "New ${view}"
+text: "New"
                 }
             ],
             columns: [
