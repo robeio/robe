@@ -14,6 +14,12 @@ public class MailBundle<T extends Configuration & HasMailConfiguration> implemen
 
     private static MailSender mailSender = null;
 
+    public static boolean isIsActive() {
+        return isActive;
+    }
+
+    private static boolean isActive = false;
+
 
     /**
      * Initializes the environment.
@@ -26,8 +32,10 @@ public class MailBundle<T extends Configuration & HasMailConfiguration> implemen
     public void run(T configuration, Environment environment) throws Exception {
         if (configuration.getMailConfiguration() != null) {
             mailSender = new MailSender(configuration.getMailConfiguration());
+            isActive = true;
         } else {
             LOGGER.warn("Bundle included but no configuration (mail) found at yml.");
+            isActive = false;
         }
     }
 

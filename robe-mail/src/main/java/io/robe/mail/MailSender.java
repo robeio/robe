@@ -58,7 +58,6 @@ public class MailSender {
      * @throws MessagingException in case of any problem.
      */
     public void sendMessage(String title, String body, DataSource attachment, String sender, String... receivers) throws MessagingException {
-        checkNotNull(sender);
         checkNotNull(receivers);
         checkNotNull(receivers[0]);
         checkNotNull(title);

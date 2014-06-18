@@ -92,17 +92,19 @@ public class UserResource {
     }
 
     private void sendActivationMail(User entity) {
-        Ticket ticket = new Ticket();
-        ticket.setType(Ticket.Type.ACTIVATE);
-        DateTime expire = DateTime.now().plusDays(1);
-        ticket.setExpirationDate(expire.toDate());
-        ticket.setUser(entity);
-        ticketDao.create(ticket);
-        try {
-            //TODO: Template support will be used.
-            MailBundle.getMailSender().sendMessage("Activation", ticket.getOid(), null, "serayuzgur@gmail.com", entity.getUsername());
-        } catch (MessagingException e) {
-            new RobeRuntimeException("send failed",e);
+        if (MailBundle.isIsActive()) {
+            Ticket ticket = new Ticket();
+            ticket.setType(Ticket.Type.ACTIVATE);
+            DateTime expire = DateTime.now().plusDays(1);
+            ticket.setExpirationDate(expire.toDate());
+            ticket.setUser(entity);
+            ticketDao.create(ticket);
+            try {
+                //TODO: Template support will be used.
+                MailBundle.getMailSender().sendMessage("Activation", ticket.getOid(), null, null, entity.getUsername());
+            } catch (MessagingException e) {
+                new RobeRuntimeException("send failed", e);
+            }
         }
     }
 
