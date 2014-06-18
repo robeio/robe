@@ -13,12 +13,24 @@ public class MailBundle<T extends Configuration & HasMailConfiguration> implemen
     private static final Logger LOGGER = org.slf4j.LoggerFactory.getLogger(MailBundle.class);
 
     private static MailSender mailSender = null;
+    private static boolean isActive = false;
 
     public static boolean isIsActive() {
         return isActive;
     }
 
-    private static boolean isActive = false;
+    private static synchronized void setIsActive(boolean isActive) {
+        MailBundle.isActive = isActive;
+    }
+
+    public static MailSender getMailSender() {
+        return mailSender;
+    }
+
+    public static synchronized void setMailSender(MailSender mailSender) {
+        MailBundle.mailSender = mailSender;
+    }
+
 
 
     /**
@@ -30,12 +42,12 @@ public class MailBundle<T extends Configuration & HasMailConfiguration> implemen
      */
     @Override
     public void run(T configuration, Environment environment) throws Exception {
-        if (configuration.getMailConfiguration() != null) {
-            mailSender = new MailSender(configuration.getMailConfiguration());
-            isActive = true;
+        if (configuration.getMailConfiguration() != null && configuration instanceof HasMailConfiguration && configuration instanceof Configuration) {
+            setMailSender(new MailSender(configuration.getMailConfiguration()));
+            setIsActive(true);
         } else {
             LOGGER.warn("Bundle included but no configuration (mail) found at yml.");
-            isActive = false;
+            setIsActive(false);
         }
     }
 
@@ -49,7 +61,4 @@ public class MailBundle<T extends Configuration & HasMailConfiguration> implemen
         LOGGER.info("Initializing MailBundle");
     }
 
-    public static MailSender getMailSender() {
-        return mailSender;
-    }
 }
