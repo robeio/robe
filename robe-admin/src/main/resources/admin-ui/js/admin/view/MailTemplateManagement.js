@@ -1,4 +1,3 @@
-//@ sourceURL=MailTemplateManagement.js
 var MailTemplateManagement;
 
 define([

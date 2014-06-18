@@ -1,4 +1,3 @@
-//@ sourceURL=Login.js
 var LoginView;
 define([
     'text!html/Login.html',

@@ -1,4 +1,3 @@
-//@ sourceURL = AdminUIApp.js
 var admin = admin || {};
 var AdminApp;
 

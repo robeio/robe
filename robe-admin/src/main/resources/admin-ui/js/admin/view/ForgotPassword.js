@@ -1,4 +1,3 @@
-//@ sourceURL=Login.js
 var ForgotPassword;
 define([
     'text!html/ForgotPassword.html',

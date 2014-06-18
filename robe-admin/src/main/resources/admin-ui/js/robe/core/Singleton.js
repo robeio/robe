@@ -1,4 +1,3 @@
-// @ sourceURL = robe/core/Singleton.js
 function Singleton() {
     this.data = null;
 

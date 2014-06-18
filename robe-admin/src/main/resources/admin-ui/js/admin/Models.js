@@ -1,4 +1,3 @@
-//@ sourceURL=Models.js
 var UserModel,RoleModel,MenuModel,MenuTreeModel,ServiceModel,MailManagementModel,SystemLanguageModel,QuartzJobModel,TriggerModel;
 require([
     'kendo/kendo.data.min','robe/Validations'], function(){

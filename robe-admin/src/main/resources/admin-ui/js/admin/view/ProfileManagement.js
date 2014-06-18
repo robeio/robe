@@ -1,4 +1,3 @@
-//@ sourceURL=ProfileManagement.js
 var ProfileManagementView;
 
 define([

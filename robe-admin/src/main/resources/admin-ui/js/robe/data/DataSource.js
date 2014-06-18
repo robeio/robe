@@ -1,4 +1,3 @@
-//robe.data = robe.data || {};
 function Datasource() {
     this.name;
 

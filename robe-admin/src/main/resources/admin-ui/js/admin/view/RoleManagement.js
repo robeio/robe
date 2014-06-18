@@ -1,4 +1,3 @@
-//@ sourceURL=RoleManagement.js
 var RoleManagementView;
 define([
     'text!html/RoleManagement.html',

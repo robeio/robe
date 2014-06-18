@@ -1,4 +1,3 @@
-//@ sourceURL=UserManagement.js
 var UserManagementView;
 define([
     'text!html/UserManagement.html',

@@ -1,4 +1,3 @@
-//@ sourceURL=robe/view/Page.js
 robe.view = robe.view || {};
 
 robe.view.Page = robe.view.Page || {};
