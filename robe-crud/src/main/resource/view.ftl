@@ -29,7 +29,7 @@ define([
     			{
     					field : "${field.name}",
     					title : "${field.name}"
-    			}<#if field_has_next>,</#if>
+            },
 			</#list>
                 {
                     command: [
