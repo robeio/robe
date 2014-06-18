@@ -1,4 +1,3 @@
-//@ sourceURL=${view}.js
 var ${view}View;
 define([
     'text!html/${view}.html',
