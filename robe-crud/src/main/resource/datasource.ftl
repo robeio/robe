@@ -7,7 +7,7 @@ ${dataSourceName} = new SingletonDataSource("${dataSourceName}", {
                 contentType: "application/json"
             },
             update: {
-                type: "PUT",
+type: "POST",
                 url: AdminApp.getBackendURL() + "${entity?uncap_first}",
                 dataType: "json",
                 contentType: "application/json"
@@ -19,7 +19,7 @@ ${dataSourceName} = new SingletonDataSource("${dataSourceName}", {
                 contentType: "application/json"
             },
             create: {
-                type: "POST",
+type: "PUT",
                 url: AdminApp.getBackendURL() + "${entity?uncap_first}",
                 dataType: "json",
                 contentType: "application/json"
