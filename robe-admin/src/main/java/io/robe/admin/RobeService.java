@@ -83,7 +83,7 @@ public class RobeService<T extends RobeServiceConfiguration> extends Service<T> 
         modules.add(new QuartzModule(quartzBundle));
         modules.add(new MailModule(mailBundle));
 
-        bootstrap.addBundle(new GuiceBundle<RobeServiceConfiguration>(modules));
+        bootstrap.addBundle(new GuiceBundle<T>(modules));
         bootstrap.addCommand(new InitializeCommand(this, hibernateBundle));
 
 
