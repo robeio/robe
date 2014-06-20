@@ -13,7 +13,6 @@ import io.robe.admin.guice.module.HibernateModule;
 import io.robe.admin.guice.module.MailModule;
 import io.robe.admin.guice.module.QuartzModule;
 import io.robe.auth.tokenbased.TokenBasedAuthBundle;
-import io.robe.common.cli.ControllableServerCommand;
 import io.robe.common.exception.RobeExceptionMapper;
 import io.robe.guice.GuiceBundle;
 import io.robe.hibernate.HibernateBundle;
@@ -33,7 +32,7 @@ import java.util.Set;
  * If you extend this class on your applications io.robe.admin class and call super methods at
  * overridden methods you will still benefit of robe souse.
  */
-public class RobeService extends Service<RobeServiceConfiguration> {
+public class RobeService<T extends RobeServiceConfiguration> extends Service<T> {
 
 
     public static void main(String[] args) throws Exception {
@@ -58,8 +57,7 @@ public class RobeService extends Service<RobeServiceConfiguration> {
      * @param bootstrap
      */
     @Override
-    public void initialize(Bootstrap<RobeServiceConfiguration> bootstrap) {
-        bootstrap.addCommand(new ControllableServerCommand<RobeServiceConfiguration>(this));
+    public void initialize(Bootstrap<T> bootstrap) {
         HibernateBundle<RobeServiceConfiguration> hibernateBundle = new HibernateBundle<RobeServiceConfiguration>();
         QuartzBundle<RobeServiceConfiguration> quartzBundle = new QuartzBundle<RobeServiceConfiguration>();
         MailBundle<RobeServiceConfiguration> mailBundle = new MailBundle<RobeServiceConfiguration>();
@@ -99,7 +97,7 @@ public class RobeService extends Service<RobeServiceConfiguration> {
      */
     @UnitOfWork
     @Override
-    public void run(RobeServiceConfiguration configuration, Environment environment) throws Exception {
+    public void run(T configuration, Environment environment) throws Exception {
         addExceptionMappers(environment);
         environment.start();
     }
