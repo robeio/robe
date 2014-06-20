@@ -20,10 +20,10 @@ import io.robe.hibernate.HibernateBundle;
 /**
  * Default Guice bindings are done at this class.
  */
-public class AuthenticatorModule extends AbstractModule {
+public class AuthenticatorModule<T extends RobeServiceConfiguration> extends AbstractModule {
     private final TokenBasedAuthBundle bundle;
 
-    public AuthenticatorModule(TokenBasedAuthBundle<RobeServiceConfiguration> bundle){
+    public AuthenticatorModule(TokenBasedAuthBundle<T> bundle) {
         this.bundle = bundle;
     }
 

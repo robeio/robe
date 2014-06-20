@@ -39,6 +39,12 @@ public class RobeService<T extends RobeServiceConfiguration> extends Service<T> 
         new RobeService().run(args);
     }
 
+    private HibernateBundle<T> hibernateBundle = null;
+
+    public HibernateBundle getHibernateBundle() {
+        return hibernateBundle;
+    }
+
     /**
      * Adds
      * Hibernate bundle for PROVIDER connection
@@ -58,10 +64,10 @@ public class RobeService<T extends RobeServiceConfiguration> extends Service<T> 
      */
     @Override
     public void initialize(Bootstrap<T> bootstrap) {
-        HibernateBundle<RobeServiceConfiguration> hibernateBundle = new HibernateBundle<RobeServiceConfiguration>();
-        QuartzBundle<RobeServiceConfiguration> quartzBundle = new QuartzBundle<RobeServiceConfiguration>();
-        MailBundle<RobeServiceConfiguration> mailBundle = new MailBundle<RobeServiceConfiguration>();
-        TokenBasedAuthBundle<RobeServiceConfiguration> authBundle = new TokenBasedAuthBundle<RobeServiceConfiguration>();
+        hibernateBundle = new HibernateBundle<T>();
+        QuartzBundle<T> quartzBundle = new QuartzBundle<T>();
+        MailBundle<T> mailBundle = new MailBundle<T>();
+        TokenBasedAuthBundle<T> authBundle = new TokenBasedAuthBundle<T>();
 
         bootstrap.addBundle(hibernateBundle);
         bootstrap.addBundle(authBundle);
