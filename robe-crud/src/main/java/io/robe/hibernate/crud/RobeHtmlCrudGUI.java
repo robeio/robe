@@ -6,6 +6,9 @@
 
 package io.robe.hibernate.crud;
 
+import freemarker.template.Configuration;
+import freemarker.template.Template;
+import freemarker.template.TemplateException;
 import japa.parser.JavaParser;
 import japa.parser.ParseException;
 import japa.parser.ast.CompilationUnit;
@@ -15,7 +18,10 @@ import japa.parser.ast.body.FieldDeclaration;
 import japa.parser.ast.body.VariableDeclarator;
 import japa.parser.ast.expr.AnnotationExpr;
 import japa.parser.ast.visitor.VoidVisitorAdapter;
+import org.apache.tools.ant.DirectoryScanner;
 
+import javax.swing.*;
+import javax.swing.GroupLayout.Alignment;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.*;
@@ -23,19 +29,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
-import javax.swing.GroupLayout;
-import javax.swing.GroupLayout.Alignment;
-import javax.swing.JButton;
-import javax.swing.JFileChooser;
-import javax.swing.JLabel;
-import javax.swing.JTable;
-
-import org.apache.tools.ant.DirectoryScanner;
-
-import freemarker.template.Configuration;
-import freemarker.template.Template;
-import freemarker.template.TemplateException;
 
 public class RobeHtmlCrudGUI extends javax.swing.JFrame {
 
@@ -500,7 +493,7 @@ public class RobeHtmlCrudGUI extends javax.swing.JFrame {
                                             Model m = new Model();
                                             m.setName(variableDeclarator.getId().toString());
 
-                                            m.setEditable(false);
+                                            m.setEditable(true);
                                             m.setNullable(false);
                                             m.setValidation(false);
                                             model.add(m);
