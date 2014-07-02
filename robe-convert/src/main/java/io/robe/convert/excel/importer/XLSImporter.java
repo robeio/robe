@@ -8,23 +8,27 @@ import java.io.InputStream;
 import java.util.List;
 
 public class XLSImporter extends ExcelImporter {
-    boolean isFirstRowHeader = false;
+    private boolean hasTitleRow = false;
 
-    public XLSImporter(boolean isFirstRowHeader) {
-        this.isFirstRowHeader = isFirstRowHeader;
+    public XLSImporter(boolean hasTitleRow) {
+        this.hasTitleRow = hasTitleRow;
     }
 
     @Override
     public <T> List<T> importStream(Class clazz, InputStream inputStream) throws IOException, ClassNotFoundException, IllegalAccessException, InstantiationException {
-
-        return importStream(clazz, inputStream, isFirstRowHeader, new HSSFWorkbook(inputStream));
+        return importStream(clazz, inputStream, hasTitleRow, new HSSFWorkbook(inputStream));
     }
 
     @Override
     public <T> void importStream(Class clazz, InputStream inputStream, OnItemHandler handler) throws IOException, ClassNotFoundException, IllegalAccessException, InstantiationException {
+        importStream(clazz, inputStream, hasTitleRow, new HSSFWorkbook(inputStream), handler);
+    }
 
-        importStream(clazz, inputStream, isFirstRowHeader, new HSSFWorkbook(inputStream), handler);
+    public boolean hasTitleRow() {
+        return hasTitleRow;
+    }
 
-
+    public void setHasTitleRow(boolean hasTitleRow) {
+        this.hasTitleRow = hasTitleRow;
     }
 }
