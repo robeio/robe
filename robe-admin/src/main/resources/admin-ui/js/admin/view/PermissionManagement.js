@@ -1,4 +1,5 @@
 var PermissionManagement;
+var checkAllFlag = true;
 
 define([
     'text!html/PermissionManagement.html',
@@ -36,7 +37,8 @@ define([
             width: 75,
             columns: [
                 {
-                    template: '<input type="checkbox"/>',
+                    template: '<input type="checkbox" class="checkRow"/>',
+                    headerTemplate: '<input type="checkbox" id="checkAll"/>',
                     field: "selected",
                     title: "&nbsp;",
                     width: 5
@@ -54,7 +56,27 @@ define([
             ]
         });
 
+
+        $("#checkAll").click(function () {
+            if (checkAllFlag) {
+                for (var i = 0; i < $(".checkRow").length; i++) {
+                    var row = $(".checkRow")[i];
+                    row.setAttribute("checked", true);
+                    row.parentElement.parentElement.setAttribute("class", "k-state-selected");
+                }
+                checkAllFlag = false;
+            } else {
+                for (var i = 0; i < $(".checkRow").length; i++) {
+                    var row = $(".checkRow")[i];
+                    row.removeAttribute("checked");
+                    row.parentElement.parentElement.removeAttribute("class", "k-state-selected");
+                }
+                checkAllFlag = true;
+            }
+        });
+
         $("#gridServices").data("kendoGrid").table.on("click", "input[type=checkbox]", selectRow);
+
 
         $("#cmbRoles").kendoDropDownList({
             dataTextField: "name",
