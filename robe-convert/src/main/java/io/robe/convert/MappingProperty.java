@@ -15,4 +15,10 @@ public @interface MappingProperty {
     boolean unique() default false;
 
     boolean optional() default true;
+
+    int length() default -1;
+
+    int max() default -1;
+
+    int min() default -1;
 }
