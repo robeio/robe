@@ -20,9 +20,6 @@ define([
 
     LoginView.initialize = function () {
         var token = $.cookie.read("auth-token");
-        $("#username").val("admin@robe.io");
-        $("#password").val("123123");
-
         $('#loginError').hide();
         var me = this;
         $('#login-button').kendoButton({
