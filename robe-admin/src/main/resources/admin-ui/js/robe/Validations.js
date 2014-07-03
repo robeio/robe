@@ -37,6 +37,5 @@ function getValidations(field, label, isRequired, isEmail, minlength, maxlength,
             }
             return true;
         };
-    console.log(validations);
     return validations;
 }
