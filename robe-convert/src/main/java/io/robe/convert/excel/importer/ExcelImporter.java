@@ -1,5 +1,6 @@
 package io.robe.convert.excel.importer;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import io.robe.convert.IsImporter;
 import io.robe.convert.MappingProperty;
 import io.robe.convert.OnItemHandler;
@@ -52,7 +53,10 @@ public abstract class ExcelImporter extends IsImporter {
             for (Field field : fields) {
                 Cell cell = row.getCell(cellCount++);
                 Annotation fieldAnnotation = field.getAnnotation(MappingProperty.class);
+                Annotation dateAnnotation = field.getAnnotation(JsonFormat.class);
+
                 MappingProperty fieldMappingProperties = (MappingProperty) fieldAnnotation;
+
                 try {
                     if (fieldMappingProperties.optional()) {
                         Object cellData = Parsers.valueOf(field.getType().getSimpleName().toUpperCase(Locale.ENGLISH)).getParser().parse(cell.toString(), field);
