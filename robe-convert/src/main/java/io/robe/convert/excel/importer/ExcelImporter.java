@@ -18,7 +18,7 @@ import java.util.*;
 
 public abstract class ExcelImporter extends IsImporter {
 
-    public <T> List<T> importStream(Class clazz, InputStream inputStream, boolean isFirstRowHeader, Workbook workbook) throws IOException, ClassNotFoundException, IllegalAccessException, InstantiationException {
+    public <T> List<T> importStream(Class clazz, InputStream inputStream, boolean isFirstRowHeader, Workbook workbook) throws Exception {
 
         final List<T> entries = new LinkedList<T>();
 
@@ -34,7 +34,7 @@ public abstract class ExcelImporter extends IsImporter {
         return entries;
     }
 
-    public <T> void importStream(Class clazz, InputStream inputStream, boolean isFirstRowHeader, Workbook workbook, OnItemHandler handler) throws IOException, ClassNotFoundException, IllegalAccessException, InstantiationException {
+    public <T> void importStream(Class clazz, InputStream inputStream, boolean isFirstRowHeader, Workbook workbook, OnItemHandler handler) throws Exception {
 
         Collection<Field> fields = getFields(clazz);
 

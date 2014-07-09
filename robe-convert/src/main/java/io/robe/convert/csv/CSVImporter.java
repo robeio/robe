@@ -7,7 +7,6 @@ import org.supercsv.io.CsvBeanReader;
 import org.supercsv.io.ICsvBeanReader;
 import org.supercsv.prefs.CsvPreference;
 
-import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.Reader;
@@ -27,7 +26,7 @@ public class CSVImporter extends IsImporter {
     }
 
     @Override
-    public <T> List<T> importStream(Class clazz, InputStream inputStream) throws IOException, ClassNotFoundException, IllegalAccessException, InstantiationException {
+    public <T> List<T> importStream(Class clazz, InputStream inputStream) throws Exception {
 
         final List<T> list = new ArrayList<T>();
 
@@ -37,12 +36,16 @@ public class CSVImporter extends IsImporter {
                 list.add(item);
             }
         };
-        this.<T>importStream(clazz, inputStream, handler);
+        try {
+            this.<T>importStream(clazz, inputStream, handler);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
         return list;
     }
 
     @Override
-    public <T> void importStream(Class clazz, InputStream inputStream, OnItemHandler handler) throws IOException, ClassNotFoundException, IllegalAccessException, InstantiationException {
+    public <T> void importStream(Class clazz, InputStream inputStream, OnItemHandler handler) throws Exception {
 
         Collection<Field> fields = getFields(clazz);
         String[] fieldNames = new String[fields.size()];

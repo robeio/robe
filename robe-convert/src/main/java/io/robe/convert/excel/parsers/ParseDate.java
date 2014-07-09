@@ -37,6 +37,8 @@ public class ParseDate implements IsParser {
         Date formattedDate = null;
         try {
             LinkedList<String> dateFormats = new LinkedList();
+            dateFormats.add("dd.MM.yyyy");
+            dateFormats.add("ddd MMM dd hh:mm:ss zzzz yyyy");
             dateFormats.add("yyyy/MM/dd");
             dateFormats.add("dd/MM/yy");
             dateFormats.add("dd/MM/yyyy");
@@ -45,6 +47,7 @@ public class ParseDate implements IsParser {
             dateFormats.add("ddMMyy");
             dateFormats.add("ddMMyyyy");
             dateFormats.add("dd-MMM-yyyy");
+
             Date date = DateUtil.parseDate(columnValue, dateFormats);
             SimpleDateFormat simpleDateFormat = new SimpleDateFormat(dateFormat);
             formattedDate = simpleDateFormat.parse(simpleDateFormat.format(date));
