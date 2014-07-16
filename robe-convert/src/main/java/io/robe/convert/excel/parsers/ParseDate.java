@@ -35,9 +35,9 @@ public class ParseDate implements IsParser {
      * if it is, parses with given format, if there is a exception while
      * parsing with given format catches and tries with default values,
      * If there is no given format, tries with static values
-     * @param o
-     * @param field
-     * @return
+     * @param o Object from cell value
+     * @param field Field from given pojo
+     * @return Valid date after parsing with pattern
      */
     @Override
     public Object parse(Object o, Field field) {
@@ -68,9 +68,9 @@ public class ParseDate implements IsParser {
 
     /**
      * Tries to parse with annotated pattern
-     * @param columnValue
-     * @param format
-     * @return
+     * @param columnValue Date column value
+     * @param format Given patter
+     * @return Valid date object
      * @throws ParseException
      */
     private Date formatWithGivenPattern(String columnValue, String format) throws ParseException {
@@ -82,13 +82,13 @@ public class ParseDate implements IsParser {
      * Uses Java's @DateUtil.class for parsing operation,
      * It may not be efficient , because it tries to parse with
      * all known patterns
-     * @param columnValue
-     * @return
+     * @param columnValue Date column value
+     * @return Valid date object
      */
     private Date formatWithDefaults(String columnValue) {
         Date formattedDate;
         try {
-            LinkedList<String> dateFormats = new LinkedList();
+            LinkedList<String> dateFormats = new LinkedList<String>();
             dateFormats.add(DEFAULT_DATE_FORMAT1);
             dateFormats.add(DEFAULT_DATE_FORMAT2);
             dateFormats.add(DEFAULT_DATE_FORMAT3);
