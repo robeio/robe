@@ -17,7 +17,7 @@ import java.util.Map;
 
 public class XMLImporter extends IsImporter {
     @Override
-    public <T> List<T> importStream(Class clazz, InputStream inputStream) throws IOException, ClassNotFoundException, IllegalAccessException, InstantiationException {
+    public <T> List<T> importStream(Class clazz, InputStream inputStream) throws Exception {
 
         final List<T> list = new LinkedList<T>();
         OnItemHandler<T> handler = new OnItemHandler<T>() {
@@ -30,7 +30,7 @@ public class XMLImporter extends IsImporter {
     }
 
     @Override
-    public <T> void importStream(Class clazz, InputStream inputStream, OnItemHandler handler) throws IOException, ClassNotFoundException, IllegalAccessException, InstantiationException {
+    public <T> void importStream(Class clazz, InputStream inputStream, OnItemHandler handler) throws Exception {
         XmlFactory factory = new XmlFactory();
         JsonParser parser = factory.createParser(inputStream);
         JsonToken current;

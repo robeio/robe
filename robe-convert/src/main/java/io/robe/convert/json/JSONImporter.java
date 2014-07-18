@@ -9,7 +9,6 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import io.robe.convert.IsImporter;
 import io.robe.convert.OnItemHandler;
 
-import java.io.IOException;
 import java.io.InputStream;
 import java.lang.reflect.Field;
 import java.util.Collection;
@@ -19,7 +18,7 @@ import java.util.List;
 
 public class JSONImporter extends IsImporter {
     @Override
-    public <T> List<T> importStream(Class clazz, InputStream inputStream) throws IOException, ClassNotFoundException, IllegalAccessException, InstantiationException {
+    public <T> List<T> importStream(Class clazz, InputStream inputStream) throws Exception {
         ObjectMapper mapper = new ObjectMapper();
         JavaType javaType = mapper.getTypeFactory().constructParametricType(LinkedList.class, clazz);
         List<T> list = mapper.readValue(inputStream, javaType);
@@ -27,7 +26,7 @@ public class JSONImporter extends IsImporter {
     }
 
     @Override
-    public <T> void importStream(Class clazz, InputStream inputStream, OnItemHandler handler) throws IOException, ClassNotFoundException, IllegalAccessException, InstantiationException {
+    public <T> void importStream(Class clazz, InputStream inputStream, OnItemHandler handler) throws Exception {
 
         JsonFactory factory = new MappingJsonFactory();
 
