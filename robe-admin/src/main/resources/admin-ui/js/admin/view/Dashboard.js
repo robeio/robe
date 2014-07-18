@@ -23,7 +23,7 @@ define([
         $("#btnHeapDump").kendoButton({
             click: function (e) {
                 e.preventDefault();
-                window.open(getBackendURL() + "system/heapdump");
+                window.open(AdminApp.getBackendURL() + "system/heapdump");
                 return false;
             }
         });
