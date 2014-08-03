@@ -25,6 +25,23 @@ define([
     };
 
     WorkspaceView.initialize = function () {
+
+        $(document).ajaxError(function (event, request, settings) {
+            var response;
+            try {
+                response = JSON.parse(request.responseText);
+                if ($.isArray(response)) {
+                    response = response[0];
+                }
+                showDialog("Hata Detayı : " + response.value, "Hata : " + response.name);
+            }
+            catch (err) {
+                console.log("Unparsable response data :" + request.responseText);
+                showDialog(request.responseText, request.statusText);
+
+            }
+        });
+
         var me = this;
         $("#progressBar").kendoProgressBar({
             min: 0,
@@ -57,7 +74,9 @@ define([
         $('#dialog').kendoWindow({
             actions: ["Close"],
             modal: true,
-            visible: false
+            visible: false,
+            minHeight: 100,
+            minWidth: 300
         });
 
         $(document).ajaxStart(function () {
