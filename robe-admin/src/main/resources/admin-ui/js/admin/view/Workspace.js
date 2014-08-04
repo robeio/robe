@@ -28,6 +28,7 @@ define([
 
         $(document).ajaxError(function (event, request, settings) {
             var response;
+            $("#btnDialogClose").css('display', '');
             try {
                 response = JSON.parse(request.responseText);
                 if ($.isArray(response)) {
@@ -42,6 +43,16 @@ define([
             }
         });
 
+        $("#btnDialogClose").kendoButton({
+            icon: "close",
+            click: onCloseClick
+        });
+
+        $("#btnDialogClose").css('display', 'none');
+
+        function onCloseClick(e) {
+            $('#dialog').data("kendoWindow").close();
+        }
         var me = this;
         $("#progressBar").kendoProgressBar({
             min: 0,
