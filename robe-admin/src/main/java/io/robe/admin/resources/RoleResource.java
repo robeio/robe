@@ -72,7 +72,7 @@ public class RoleResource {
     public Role delete(@Auth Credentials credentials, Role role) {
         Role roleCheck = roleDao.findById(role.getOid());
         if (roleCheck != null) {
-            roleDao.delete(role);
+            roleDao.delete(roleCheck);
         }
         return roleCheck;
 
