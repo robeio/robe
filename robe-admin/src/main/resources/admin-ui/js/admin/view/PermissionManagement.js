@@ -145,6 +145,7 @@ define([
                     data: kendo.stringify(checkedNodes),
                     contentType: "application/json; charset=utf-8",
                     success: function () {
+                        showToast("success", "Başarılı")
                     }
                 });
 

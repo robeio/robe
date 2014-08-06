@@ -51,7 +51,7 @@ function SingletonDataSource(name, parameters) {
             message = "Başarı ile oluşturuldu";
         }
         if (message != "")
-            showToast("info", message);
+            showToast("success", message);
     };
     this.initialize();
 };
