@@ -29,7 +29,7 @@ define([
         });
         $.ajax({
             type: "GET",
-            url: "http://127.0.0.1:8080/admin/metrics",
+            url: AdminApp.getBackendURL() + "../admin/metrics",
             dataType: "json",
             crossDomain: true,
 
