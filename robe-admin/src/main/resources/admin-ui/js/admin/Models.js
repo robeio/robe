@@ -1,5 +1,5 @@
 var UserModel,RoleModel,MenuModel,MenuTreeModel,ServiceModel,MailManagementModel,SystemLanguageModel,QuartzJobModel,TriggerModel;
-require([
+define([
     'kendo/kendo.data.min','robe/Validations'], function(){
 
     UserModel = kendo.data.Model.define({
