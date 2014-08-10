@@ -69,7 +69,8 @@ define([
             }
         });
         kendo.destroy($("#container"));
-        $("#container").html("");
+//        Welcome page created again.Why did we give blank html content ?
+//        $("#container").html("");
         $("#profile").click(function () {
 
             showDialog(null, "Profil Bilgileri");
@@ -125,8 +126,8 @@ define([
             if (title == null)
                 title = "";
             $('#dialog').data("kendoWindow").title(title);
-            $('#dialog').data("kendoWindow").center();
             $('#dialog').data("kendoWindow").open();
+            $('#dialog').data("kendoWindow").center();
         };
 
         function loadLogin() {
