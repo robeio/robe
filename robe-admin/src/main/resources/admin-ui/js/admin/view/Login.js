@@ -18,10 +18,12 @@ define([
     };
     LoginView.parentPage = null;
 
+
     LoginView.initialize = function () {
         var token = $.cookie.read("auth-token");
         $('#loginError').hide();
         var me = this;
+
         $('#login-button').kendoButton({
             click: function (token) {
                 $.ajax({

@@ -14,7 +14,6 @@ define([
     'kendo/kendo.panelbar.min',
     'robe/view/RobeView'
 ], function (view, LoginView, ProfileManagementView) {
-
     WorkspaceView = new RobeView("WorkspaceView", view, "container");
 
     WorkspaceView.render = function () {
@@ -30,11 +29,17 @@ define([
             var response;
             $("#btnDialogClose").css('display', '');
             try {
-                response = JSON.parse(request.responseText);
-                if ($.isArray(response)) {
-                    response = response[0];
+                if (request.status == 401) {
+                    loadLogin();
+                    $("#btnDialogClose").css('display', 'none');
                 }
-                showDialog("Hata Detayı : " + response.value, "Hata : " + response.name);
+                else {
+                    response = JSON.parse(request.responseText);
+                    if ($.isArray(response)) {
+                        response = response[0];
+                    }
+                    showDialog("Hata Detayı : " + response.value, "Hata : " + response.name);
+                }
             }
             catch (err) {
                 console.log("Unparsable response data :" + request.responseText);
@@ -53,6 +58,7 @@ define([
         function onCloseClick(e) {
             $('#dialog').data("kendoWindow").close();
         }
+
         var me = this;
         $("#progressBar").kendoProgressBar({
             min: 0,
@@ -83,7 +89,7 @@ define([
         });
 
         $('#dialog').kendoWindow({
-            actions: ["Close"],
+            actions: {},
             modal: true,
             visible: false,
             minHeight: 100,
@@ -97,7 +103,11 @@ define([
             showIndicator(false);
         });
 
-        loadLogin();
+        if ($.cookie.read("auth-token") == null) {
+            loadLogin();
+        } else {
+            this.loadMenu();
+        }
 
         function onClickSettingsButton(e) {
             $("#dropdownMenu").toggle("slow");
