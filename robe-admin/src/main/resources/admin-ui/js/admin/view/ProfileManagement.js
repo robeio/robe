@@ -32,6 +32,7 @@ define([
         });
 
         $("#btnProfileManagement").kendoButton({
+            icon: "tick",
             click: function () {
                 me.data.email = $("#userEmail").val();
                 me.data.name = $("#userName").val();
@@ -55,6 +56,12 @@ define([
                         showToast("error", "Güncelleme esnasında bir hata oluştu.");
                     }
                 });
+            }
+        });
+        $("#btnProfileManagementClose").kendoButton({
+            icon: "close",
+            click: function () {
+                $('#dialog').data("kendoWindow").close();
             }
         });
     };
