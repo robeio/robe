@@ -11,7 +11,7 @@ import java.io.OutputStream;
 
 public class XLSXExporterTest {
 
-    private String SAMPLE = "/Users/hasanmumin/Desktop/temp/1.xls";
+    private String SAMPLE = XLSXExporterTest.class.getClassLoader().getResource("sample.xlsx").getFile();
 
     @Test
     public void exportStream() throws Exception {
