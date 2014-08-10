@@ -8,13 +8,14 @@ public class ParseDouble implements IsParser {
     @Override
     public Object parse(Object o, Field field) {
         Double d = Double.valueOf(o.toString());
-
         return d;
     }
 
     @Override
     public void setCell(Object o, Cell cell, Field field) {
         Double aDouble = (Double) o;
-        cell.setCellValue(aDouble);
+        if (aDouble != null) {
+            cell.setCellValue(aDouble);
+        }
     }
 }

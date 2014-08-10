@@ -8,7 +8,6 @@ public class ParseByte implements IsParser {
     @Override
     public Object parse(Object o, Field field) {
         Byte b = null;
-
         if (o instanceof String) {
             b = Byte.valueOf(o.toString());
         }
@@ -19,6 +18,8 @@ public class ParseByte implements IsParser {
     @Override
     public void setCell(Object o, Cell cell, Field field) {
         Byte aByte = (Byte) o;
-        cell.setCellErrorValue(aByte);
+        if (aByte != null) {
+            cell.setCellValue(aByte);
+        }
     }
 }

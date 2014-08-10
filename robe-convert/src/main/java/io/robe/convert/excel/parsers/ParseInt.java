@@ -23,6 +23,8 @@ public class ParseInt implements IsParser {
     @Override
     public void setCell(Object o, Cell cell, Field field) {
         Integer integer = (Integer) o;
-        cell.setCellValue(integer);
+        if (integer != null) {
+            cell.setCellValue(integer);
+        }
     }
 }

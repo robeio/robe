@@ -14,6 +14,8 @@ public class ParseString implements IsParser {
 
     @Override
     public void setCell(Object o, Cell cell, Field field) {
-        cell.setCellValue(o.toString());
+        if (o != null) {
+            cell.setCellValue(o.toString());
+        }
     }
 }

@@ -1,6 +1,7 @@
 package io.robe.convert.excel.exporter;
 
 import io.robe.convert.IsExporter;
+import io.robe.convert.MappingProperty;
 import io.robe.convert.excel.parsers.IsParser;
 import io.robe.convert.excel.parsers.Parsers;
 import org.apache.poi.ss.usermodel.Cell;
@@ -10,6 +11,7 @@ import org.apache.poi.ss.usermodel.Workbook;
 
 import java.io.IOException;
 import java.io.OutputStream;
+import java.lang.annotation.Annotation;
 import java.lang.reflect.Field;
 import java.util.Collection;
 import java.util.Iterator;
@@ -28,7 +30,15 @@ public abstract class ExcelExporter extends IsExporter {
 
         int fieldNameCount = 0;
         for (Field field : fields) {
-            fieldNames[fieldNameCount++] = field.getName();
+            Annotation fieldAnnotation = field.getAnnotation(MappingProperty.class);
+            MappingProperty fieldMappingProperties = (MappingProperty) fieldAnnotation;
+            if (!fieldMappingProperties.hidden()) {
+                if (!fieldMappingProperties.name().equals("")) {
+                    fieldNames[fieldNameCount++] = fieldMappingProperties.name();
+                } else {
+                    fieldNames[fieldNameCount++] = field.getName();
+                }
+            }
         }
 
         Sheet sheet = workbook.createSheet(clazz.getSimpleName());
@@ -51,12 +61,24 @@ public abstract class ExcelExporter extends IsExporter {
 
             int fieldIndex = 0;
             for (Field field : fields) {
-                boolean acc = field.isAccessible();
-                field.setAccessible(true);
-                Cell cell = entryRow.createCell(fieldIndex++);
-                IsParser parser = Parsers.valueOf(field.getType().getSimpleName().toUpperCase(Locale.ENGLISH)).getParser();
-                parser.setCell(field.get(item), cell, field);
-                field.setAccessible(acc);
+
+                Annotation fieldAnnotation = field.getAnnotation(MappingProperty.class);
+                MappingProperty fieldMappingProperties = (MappingProperty) fieldAnnotation;
+                if (!fieldMappingProperties.hidden()) {
+
+                    boolean acc = field.isAccessible();
+                    field.setAccessible(true);
+                    Cell cell = entryRow.createCell(fieldIndex++);
+                    IsParser parser = null;
+                    if (!(field.getType() instanceof Class && (field.getType()).isEnum())) {
+                        parser = Parsers.valueOf(field.getType().getSimpleName().toUpperCase(Locale.ENGLISH)).getParser();
+                    } else {
+                        parser = Parsers.valueOf("ENUMTYPES").getParser();
+                    }
+                    parser.setCell(field.get(item), cell, field);
+                    field.setAccessible(acc);
+
+                }
             }
         }
 

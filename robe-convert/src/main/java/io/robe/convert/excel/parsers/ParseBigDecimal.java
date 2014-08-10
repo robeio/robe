@@ -19,6 +19,8 @@ public class ParseBigDecimal implements IsParser {
     @Override
     public void setCell(Object o, Cell cell, Field field) {
         BigDecimal bigDecimal = (BigDecimal) o;
-        cell.setCellValue(bigDecimal.doubleValue());
+        if (bigDecimal != null) {
+            cell.setCellValue(bigDecimal.doubleValue());
+        }
     }
 }

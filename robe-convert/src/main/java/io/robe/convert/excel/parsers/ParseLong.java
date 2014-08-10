@@ -23,6 +23,8 @@ public class ParseLong implements IsParser {
     @Override
     public void setCell(Object o, Cell cell, Field field) {
         Long aLong = (Long) o;
-        cell.setCellValue(aLong);
+        if (aLong != null) {
+            cell.setCellValue(aLong);
+        }
     }
 }

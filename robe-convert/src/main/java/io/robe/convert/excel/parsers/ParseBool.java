@@ -19,6 +19,8 @@ public class ParseBool implements IsParser {
     @Override
     public void setCell(Object o, Cell cell, Field field) {
         Boolean bool = (Boolean) o;
-        cell.setCellValue(bool);
+        if (bool != null) {
+            cell.setCellValue(bool);
+        }
     }
 }
