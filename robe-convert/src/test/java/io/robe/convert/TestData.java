@@ -24,7 +24,6 @@ public class TestData {
         } catch (ParseException e) {
             e.printStackTrace();
         }
-
     }
 
     public static List<SamplePojo> getData() {
