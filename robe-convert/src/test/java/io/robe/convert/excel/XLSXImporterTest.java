@@ -13,7 +13,7 @@ import java.util.List;
 public class XLSXImporterTest {
 
 
-    private String SAMPLE = XLSXExporterTest.class.getResource("sample.xls").getFile();
+    private String SAMPLE = XLSXExporterTest.class.getClassLoader().getResource("sample.xlsx").getFile();
 
     @Test
     public void testImportStream() throws Exception {
