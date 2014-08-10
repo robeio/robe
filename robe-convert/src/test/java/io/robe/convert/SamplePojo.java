@@ -10,7 +10,7 @@ import java.util.Date;
 public class SamplePojo {
     @MappingProperty(order = 0, unique = true, name = "Kullanıcı Id")
     private int id;
-    @MappingProperty(order = 1, optional = false)
+    @MappingProperty(order = 1, optional = true)
     private String name;
     @MappingProperty(order = 2, name = "Soyad")
     private String surname;
@@ -133,6 +133,8 @@ public class SamplePojo {
                 ", doubleid=" + doubleid +
                 ", big=" + big +
                 ", date2=" + date2 +
+                ", sampleEnum=" + sampleEnum +
+                ", sample2Enum=" + sample2Enum +
                 '}';
     }
 }
