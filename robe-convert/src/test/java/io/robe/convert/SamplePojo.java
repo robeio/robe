@@ -8,7 +8,7 @@ import java.util.Date;
 public class SamplePojo {
     @MappingProperty(order = 0, unique = true, name = "Kullanıcı Id")
     private int id;
-    @MappingProperty(order = 1, optional = true)
+    @MappingProperty(order = 1)
     private String name;
     @MappingProperty(order = 2, name = "Soyad")
     private String surname;
@@ -22,7 +22,7 @@ public class SamplePojo {
 
     @MappingProperty(order = 6, name = "Date Format")
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd.MM.yyyy", timezone = "CET")
-    private Date date2 = new Date();
+    private Date date2;
 
     public SamplePojo() {
 
