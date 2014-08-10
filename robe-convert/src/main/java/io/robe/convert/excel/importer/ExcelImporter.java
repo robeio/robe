@@ -58,25 +58,26 @@ public abstract class ExcelImporter extends IsImporter {
                 try {
                     if (fieldMappingProperties.optional()) {
 
-                        Object cellData = null;
-                        if (!(field.getType() instanceof Class && (field.getType()).isEnum())) {
-                            cellData = Parsers.valueOf(field.getType().getSimpleName().toUpperCase(Locale.ENGLISH)).getParser().parse(cell.toString(), field);
+                        Object cellData;
+                        if (cell != null) {
+                            if (!(field.getType() instanceof Class && (field.getType()).isEnum())) {
+                                cellData = Parsers.valueOf(field.getType().getSimpleName().toUpperCase(Locale.ENGLISH)).getParser().parse(cell.toString(), field);
 
-                        } else {
-                            cellData = Parsers.valueOf("ENUMTYPES").getParser().parse(cell, field);
+                            } else {
+                                cellData = Parsers.valueOf("ENUMTYPES").getParser().parse(cell, field);
+                            }
+
+                            checkFieldLength(fieldMappingProperties, cell, field, row);
+
+                            boolean acc = field.isAccessible();
+                            field.setAccessible(true);
+                            field.set(entry, cellData);
+                            field.setAccessible(acc);
                         }
-
-
-                        checkFieldLength(fieldMappingProperties, cell, field, row);
-
-                        boolean acc = field.isAccessible();
-                        field.setAccessible(true);
-                        field.set(entry, cellData);
-                        field.setAccessible(acc);
                     } else {
                         if (cell != null && !cell.toString().trim().equals("")) {
 
-                            Object cellData = null;
+                            Object cellData;
 
                             if (!(field.getType() instanceof Class && (field.getType()).isEnum())) {
                                 cellData = Parsers.valueOf(field.getType().getSimpleName().toUpperCase(Locale.ENGLISH)).getParser().parse(cell.toString(), field);
@@ -92,7 +93,7 @@ public abstract class ExcelImporter extends IsImporter {
                             field.set(entry, cellData);
                             field.setAccessible(acc);
                         } else {
-                            throw new Exception("At : " + row.getRowNum() + ". row ; " + field.getName() + " property can't be  null or empty " + "(" + cell.getColumnIndex() + ")");
+                            throw new Exception("Exception at :" + row.getRowNum() + ". row and " + cellCount + ". cell ; " + field.getName() + " property can't be  null or empty ");
                         }
                     }
                 } catch (Exception e) {
