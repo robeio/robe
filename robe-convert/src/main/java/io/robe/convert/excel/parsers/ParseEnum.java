@@ -10,10 +10,7 @@ import java.lang.reflect.Field;
 public class ParseEnum implements IsParser {
     @Override
     public Object parse(Object o, Field field) {
-        if (o != null) {
-            return o.toString();
-        }
-        return "";
+        return null;
     }
 
     @Override
