@@ -5,8 +5,6 @@ define([
     'view/ProfileManagement',
     'admin/data/SingletonDataSource',
     'admin/data/SingletonHierarchicalDataSource',
-    'admin/Models',
-
     'kendo/kendo.fx.min',
     'kendo/kendo.progressbar.min',
     'kendo/kendo.button.min',
@@ -31,6 +29,7 @@ define([
             try {
                 if (request.status == 401) {
                     loadLogin();
+                    $('#loginError').show();
                     $("#btnDialogClose").css('display', 'none');
                 }
                 else {
