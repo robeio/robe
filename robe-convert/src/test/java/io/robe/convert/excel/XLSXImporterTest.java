@@ -5,13 +5,22 @@ import io.robe.convert.SamplePojo;
 import io.robe.convert.excel.importer.XLSXImporter;
 import org.junit.Test;
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.InputStream;
 import java.util.List;
 
 public class XLSXImporterTest {
+
+
+    private String SAMPLE = XLSXExporterTest.class.getResource("sample.xls").getFile();
+
     @Test
     public void testImportStream() throws Exception {
-        XLSXImporter importer = new XLSXImporter(false);
-        List<SamplePojo> samplePojos = importer.importStream(SamplePojo.class, XLSXImporterTest.class.getClassLoader().getResourceAsStream("sample.xlsx"));
+        XLSXImporter importer = new XLSXImporter(true);
+
+        InputStream inputStream = new FileInputStream(new File(SAMPLE));
+        List<SamplePojo> samplePojos = importer.importStream(SamplePojo.class, inputStream);
 
         for (SamplePojo samplePojo : samplePojos) {
             System.out.println(samplePojo.toString());
