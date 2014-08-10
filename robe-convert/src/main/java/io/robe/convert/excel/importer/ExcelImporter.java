@@ -10,7 +10,6 @@ import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.Workbook;
 
-import java.io.IOException;
 import java.io.InputStream;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Field;
@@ -59,7 +58,15 @@ public abstract class ExcelImporter extends IsImporter {
 
                 try {
                     if (fieldMappingProperties.optional()) {
-                        Object cellData = Parsers.valueOf(field.getType().getSimpleName().toUpperCase(Locale.ENGLISH)).getParser().parse(cell.toString(), field);
+
+                        Object cellData = null;
+                        if (!(field.getType() instanceof Class && (field.getType()).isEnum())) {
+                            cellData = Parsers.valueOf(field.getType().getSimpleName().toUpperCase(Locale.ENGLISH)).getParser().parse(cell.toString(), field);
+
+                        } else {
+                            cellData = Parsers.valueOf("ENUMTYPES").getParser().parse(cell, field);
+                        }
+
 
                         if (fieldMappingProperties.length() > -1) {
                             if (cell.toString().length() > fieldMappingProperties.length()) {
@@ -84,7 +91,15 @@ public abstract class ExcelImporter extends IsImporter {
                         field.setAccessible(acc);
                     } else {
                         if (cell != null && !cell.toString().trim().equals("")) {
-                            Object cellData = Parsers.valueOf(field.getType().getSimpleName().toUpperCase(Locale.ENGLISH)).getParser().parse(cell.toString(), field);
+
+                            Object cellData = null;
+
+                            if (!(field.getType() instanceof Class && (field.getType()).isEnum())) {
+                                cellData = Parsers.valueOf(field.getType().getSimpleName().toUpperCase(Locale.ENGLISH)).getParser().parse(cell.toString(), field);
+
+                            } else {
+                                cellData = Parsers.valueOf("ENUMTYPES").getParser().parse(cell, field);
+                            }
 
                             if (fieldMappingProperties.length() > -1) {
                                 if (cell.toString().length() > fieldMappingProperties.length()) {
