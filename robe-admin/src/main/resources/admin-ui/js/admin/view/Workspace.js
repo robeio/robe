@@ -69,7 +69,7 @@ define([
             }
         });
         kendo.destroy($("#container"));
-//        Welcome page created again.Why did we give blank html content ?
+//        Welcome page created again.Why did we give blank html content ??
 //        $("#container").html("");
         $("#profile").click(function () {
 
