@@ -52,7 +52,6 @@ public abstract class ExcelImporter extends IsImporter {
             for (Field field : fields) {
                 Cell cell = row.getCell(cellCount++);
                 Annotation fieldAnnotation = field.getAnnotation(MappingProperty.class);
-                Annotation dateAnnotation = field.getAnnotation(JsonFormat.class);
 
                 MappingProperty fieldMappingProperties = (MappingProperty) fieldAnnotation;
 
@@ -68,22 +67,7 @@ public abstract class ExcelImporter extends IsImporter {
                         }
 
 
-                        if (fieldMappingProperties.length() > -1) {
-                            if (cell.toString().length() > fieldMappingProperties.length()) {
-                                throw new Exception(field.getName() + " too long " + "(" + cell.toString() + ")" + " max length : " + fieldMappingProperties.length());
-                            }
-                        }
-                        if (fieldMappingProperties.min() > -1) {
-                            if ((int) cell.getNumericCellValue() < fieldMappingProperties.min()) {
-                                throw new Exception("in row " + row.getRowNum() + ", " + field.getName() + " field too short " + "(" + (int) cell.getNumericCellValue() + ")" + " min length : " + fieldMappingProperties.min());
-                            }
-                        }
-
-                        if (fieldMappingProperties.max() > -1) {
-                            if ((int) cell.getNumericCellValue() > fieldMappingProperties.max()) {
-                                throw new Exception("in row " + row.getRowNum() + " " + field.getName() + " too long " + "(" + (int) cell.getNumericCellValue() + ")" + " max length : " + fieldMappingProperties.max());
-                            }
-                        }
+                        checkFieldLength(fieldMappingProperties, cell, field, row);
 
                         boolean acc = field.isAccessible();
                         field.setAccessible(true);
@@ -101,28 +85,14 @@ public abstract class ExcelImporter extends IsImporter {
                                 cellData = Parsers.valueOf("ENUMTYPES").getParser().parse(cell, field);
                             }
 
-                            if (fieldMappingProperties.length() > -1) {
-                                if (cell.toString().length() > fieldMappingProperties.length()) {
-                                    throw new Exception(field.getName() + " too long " + "(" + cell.toString() + ")" + " max length : " + fieldMappingProperties.length());
-                                }
-                            }
-                            if (fieldMappingProperties.min() > -1) {
-                                if ((int) cell.getNumericCellValue() < fieldMappingProperties.min()) {
-                                    throw new Exception("in row " + row.getRowNum() + ", " + field.getName() + " field too short " + "(" + (int) cell.getNumericCellValue() + ")" + " min length : " + fieldMappingProperties.min());
-                                }
-                            }
-                            if (fieldMappingProperties.max() > -1) {
-                                if ((int) cell.getNumericCellValue() > fieldMappingProperties.max()) {
-                                    throw new Exception("in row " + row.getRowNum() + " " + field.getName() + " too long " + "(" + (int) cell.getNumericCellValue() + ")" + " max length : " + fieldMappingProperties.max());
-                                }
-                            }
+                            checkFieldLength(fieldMappingProperties, cell, field, row);
 
                             boolean acc = field.isAccessible();
                             field.setAccessible(true);
                             field.set(entry, cellData);
                             field.setAccessible(acc);
                         } else {
-                            throw new Exception("in row " + row.getRowNum() + " " + field.getName() + " mustn't null or empty " + "(" + (int) cell.getNumericCellValue() + ")");
+                            throw new Exception("At : " + row.getRowNum() + ". row ; " + field.getName() + " property can't be  null or empty " + "(" + cell.getColumnIndex() + ")");
                         }
                     }
                 } catch (Exception e) {
@@ -133,4 +103,24 @@ public abstract class ExcelImporter extends IsImporter {
             handler.onItem(entry);
         }
     }
+
+    private void checkFieldLength(MappingProperty fieldMappingProperties, Cell cell, Field field, Row row) throws Exception {
+
+        if (fieldMappingProperties.length() > -1) {
+            if (cell.toString().length() > fieldMappingProperties.length()) {
+                throw new Exception(field.getName() + " too long " + "(" + cell.toString() + ")" + " max length : " + fieldMappingProperties.length());
+            }
+        }
+        if (fieldMappingProperties.min() > -1) {
+            if ((int) cell.getNumericCellValue() < fieldMappingProperties.min()) {
+                throw new Exception("in row " + row.getRowNum() + ", " + field.getName() + " field too short " + "(" + (int) cell.getNumericCellValue() + ")" + " min length : " + fieldMappingProperties.min());
+            }
+        }
+        if (fieldMappingProperties.max() > -1) {
+            if ((int) cell.getNumericCellValue() > fieldMappingProperties.max()) {
+                throw new Exception("in row " + row.getRowNum() + " " + field.getName() + " too long " + "(" + (int) cell.getNumericCellValue() + ")" + " max length : " + fieldMappingProperties.max());
+            }
+        }
+    }
+
 }
