@@ -29,7 +29,7 @@ public class XLSXImporterTest {
 
     @Test
     public void testImportStreamByItem() throws Exception {
-        XLSXImporter importer = new XLSXImporter(false);
+        XLSXImporter importer = new XLSXImporter(true);
         OnItemHandler<SamplePojo> handler = new OnItemHandler<SamplePojo>() {
             @Override
             public void onItem(SamplePojo samplePojo) {
