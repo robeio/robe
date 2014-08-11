@@ -1,5 +1,6 @@
 package io.robe.hibernate.crud;
 
+import io.robe.hibernate.helper.CrudUtility;
 import japa.parser.ASTHelper;
 import japa.parser.ast.CompilationUnit;
 import japa.parser.ast.ImportDeclaration;
