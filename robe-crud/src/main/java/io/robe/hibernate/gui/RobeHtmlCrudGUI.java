@@ -301,7 +301,7 @@ public class RobeHtmlCrudGUI extends javax.swing.JFrame {
                         modelFile.write(model);
                         modelFile.write("\r\n");
                         modelFile.write("\r\n");
-                        modelFile.write("require([\n" +
+                        modelFile.write("define([\n" +
                                 "    'kendo/kendo.data.min','robe/Validations'], function(){\n" +
                                 "    console.log(\"Loading : Models\");");
 
