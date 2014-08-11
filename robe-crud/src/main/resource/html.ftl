@@ -19,10 +19,10 @@
 
 <!-- HELP WINDOW START-->
 <div id="#${view?uncap_first}HelpWindow" hidden="true">
-    <p>Yeni kullanıcı eklemek için, tablonun "Yeni Kullanıcı" butonuna tıkladıktan sonra form verilerin doldurup,
+    <p>Yeni veri eklemek için, tablonun "Yeni Ekle" butonuna tıkladıktan sonra form verilerin doldurup,
         "Güncelle" butonuna tıklamalısınız.</p>
 
-    <p>Düzenlemek ya da silmek istediğiniz kullanıcıyı, satırdaki "Düzenle" ve "Sil" butonlarını kullanarak
+    <p>Düzenlemek ya da silmek istediğiniz veriyi, satırdaki "Düzenle" ve "Sil" butonlarını kullanarak
         güncelleyebilirsiniz.</p>
 
 </div>

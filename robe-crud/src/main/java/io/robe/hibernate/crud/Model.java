@@ -2,41 +2,49 @@ package io.robe.hibernate.crud;
 
 public class Model {
 
-	private String name;
-	private boolean editable;
-	private boolean nullable;
-	private boolean validation;
+    private String name;
+    private boolean nullable;
+    private String length;
+    private String type;
+    private String definition;
 
-	public String getName() {
-		return name;
-	}
+    public String getName() {
+        return name;
+    }
 
-	public void setName(String name) {
-		this.name = name;
-	}
+    public void setName(String name) {
+        this.name = name;
+    }
 
-	public boolean isEditable() {
-		return editable;
-	}
+    public boolean isNullable() {
+        return nullable;
+    }
 
-	public void setEditable(boolean editable) {
-		this.editable = editable;
-	}
+    public void setNullable(boolean nullable) {
+        this.nullable = nullable;
+    }
 
-	public boolean isNullable() {
-		return nullable;
-	}
+    public String getLength() {
+        return length;
+    }
 
-	public void setNullable(boolean nullable) {
-		this.nullable = nullable;
-	}
+    public void setLength(String length) {
+        this.length = length;
+    }
 
-	public boolean isValidation() {
-		return validation;
-	}
+    public String getType() {
+        return type;
+    }
 
-	public void setValidation(boolean validation) {
-		this.validation = validation;
-	}
+    public void setType(String type) {
+        this.type = type;
+    }
 
+    public String getDefinition() {
+        return definition;
+    }
+
+    public void setDefinition(String definition) {
+        this.definition = definition;
+    }
 }
