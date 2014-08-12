@@ -41,8 +41,8 @@ public class AuthenticatorModule<T extends RobeServiceConfiguration> extends Abs
                         new TokenBasedAuthenticator(
                                 new UserDao(hibernateBundle.getSessionFactory()),
                                 new ServiceDao(hibernateBundle.getSessionFactory()));
-                return CachingAuthenticator.wrap(tokenBasedAuthenticator, CacheBuilderSpec.parse("maximumSize=10000, expireAfterAccess=1m"));
-//                return tokenBasedAuthenticator;
+                String expires = bundle.getConfiguration().getMaxage() + "s";
+                return CachingAuthenticator.wrap(tokenBasedAuthenticator, CacheBuilderSpec.parse("maximumSize=10000, expireAfterAccess=" + expires));
             }
         });
         bind(TokenBasedAuthConfiguration.class).toProvider(new Provider<TokenBasedAuthConfiguration>() {
