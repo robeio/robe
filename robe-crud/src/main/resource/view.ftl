@@ -1,16 +1,15 @@
 var ${view}View;
 define([
     'text!html/${view}.html',
-    'admin/data/DataSources',
-
+    '${projectName}/data/DataSources',
     'kendo/kendo.grid.min',
     'kendo/kendo.window.min',
     'robe/view/RobeView'
 ], function (view) {
     ${view}View = new RobeView("${view}View", view, "container");
     ${view}View.render = function () {
-        $('#container').append(view);
-        ${view}View.initialize();
+    $('#container').append(view);
+    ${view}View.initialize();
     };
 
     ${view}View.initialize = function () {
@@ -20,17 +19,17 @@ define([
             toolbar: [
                 {
                     name: "create",
-text: "New"
+                    text: "Yeni Ekle"
                 }
             ],
             columns: [
             <#list fields as field>
-    			{
-    					field : "${field.name}",
-    					title : "${field.name}"
-            },
-			</#list>
                 {
+                        field : "${field.name}",
+                        title : "${field.definition}"
+             },
+            </#list>
+                 {
                     command: [
                         {
                             name: "edit",
