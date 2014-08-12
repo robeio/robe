@@ -17,7 +17,7 @@ public class BasicToken implements IsToken<BasicToken>, Credentials {
 
     static {
         ENCRYPTOR.setPoolSize(4);          // This would be a good value for a 4-core system
-        ENCRYPTOR.setPassword("jasypt");
+        ENCRYPTOR.setPassword(UUID.randomUUID().toString());
         ENCRYPTOR.setAlgorithm("PBEWithMD5AndTripleDES");
         ENCRYPTOR.initialize();
     }
