@@ -32,10 +32,6 @@
             <artifactId>dropwizard-auth</artifactId>
         </dependency>
         <dependency>
-            <groupId>org.owasp.esapi</groupId>
-            <artifactId>esapi</artifactId>
-        </dependency>
-        <dependency>
             <groupId>edu.vt.middleware</groupId>
             <artifactId>vt-password</artifactId>
         </dependency>
@@ -43,6 +39,14 @@
             <groupId>javax.inject</groupId>
             <artifactId>javax.inject</artifactId>
             <version>1</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.jasypt</groupId>
+            <artifactId>jasypt</artifactId>
+            <version>1.9.1</version>
+            <classifier>lite</classifier>
+            <scope>compile</scope>
         </dependency>
     </dependencies>
 
