@@ -7,6 +7,7 @@ import java.util.Map;
 public class TokenWrapper<T extends IsToken> {
 
     private static Class<? extends IsToken> type;
+    private static int maxage = 0;
 
     private TokenWrapper() {
     }
@@ -31,10 +32,14 @@ public class TokenWrapper<T extends IsToken> {
         IsToken token = type.newInstance();
         token.setUserAccountName(username);
         //TODO: get expiration from properties.
-        token.setExpiration(600);
-        if (attributes != null && attributes.isEmpty()){
+        token.setExpiration(maxage);
+        if (attributes != null && attributes.isEmpty()) {
             token.addAttributes(attributes);
         }
         return token;
+    }
+
+    public static void setMaxage(int maxage) {
+        TokenWrapper.maxage = maxage;
     }
 }

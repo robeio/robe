@@ -6,12 +6,12 @@ import com.google.inject.Inject;
 import com.google.inject.Provider;
 import com.yammer.dropwizard.auth.Authenticator;
 import com.yammer.dropwizard.auth.CachingAuthenticator;
-import io.robe.admin.ESAPIToken;
 import io.robe.admin.RobeServiceConfiguration;
 import io.robe.admin.hibernate.dao.ServiceDao;
 import io.robe.admin.hibernate.dao.UserDao;
 import io.robe.auth.Credentials;
 import io.robe.auth.TokenWrapper;
+import io.robe.auth.tokenbased.BasicToken;
 import io.robe.auth.tokenbased.TokenBasedAuthBundle;
 import io.robe.auth.tokenbased.TokenBasedAuthenticator;
 import io.robe.auth.tokenbased.configuration.TokenBasedAuthConfiguration;
@@ -36,12 +36,13 @@ public class AuthenticatorModule<T extends RobeServiceConfiguration> extends Abs
 
             @Override
             public Authenticator get() {
-                TokenWrapper.initialize(ESAPIToken.class);
+                TokenWrapper.initialize(BasicToken.class);
                 TokenBasedAuthenticator tokenBasedAuthenticator =
                         new TokenBasedAuthenticator(
                                 new UserDao(hibernateBundle.getSessionFactory()),
                                 new ServiceDao(hibernateBundle.getSessionFactory()));
                 return CachingAuthenticator.wrap(tokenBasedAuthenticator, CacheBuilderSpec.parse("maximumSize=10000, expireAfterAccess=1m"));
+//                return tokenBasedAuthenticator;
             }
         });
         bind(TokenBasedAuthConfiguration.class).toProvider(new Provider<TokenBasedAuthConfiguration>() {

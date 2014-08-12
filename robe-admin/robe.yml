@@ -70,3 +70,7 @@ messageQueue:
 
 auth:
   tokenKey: auth-token
+  domain: 127.0.0.1
+  path: /
+  maxage: 10 #s
+  secure: false

@@ -4,11 +4,12 @@ import com.yammer.dropwizard.ConfiguredBundle;
 import com.yammer.dropwizard.config.Bootstrap;
 import com.yammer.dropwizard.config.Configuration;
 import com.yammer.dropwizard.config.Environment;
+import io.robe.auth.TokenWrapper;
 import io.robe.auth.tokenbased.configuration.HasTokenBasedAuthConfiguration;
 import io.robe.auth.tokenbased.configuration.TokenBasedAuthConfiguration;
 import io.robe.auth.tokenbased.filter.TokenBasedAuthResourceFilterFactory;
 
-public class TokenBasedAuthBundle <T extends Configuration & HasTokenBasedAuthConfiguration> implements ConfiguredBundle<T> {
+public class TokenBasedAuthBundle<T extends Configuration & HasTokenBasedAuthConfiguration> implements ConfiguredBundle<T> {
     private TokenBasedAuthConfiguration configuration;
 
     /**
@@ -22,6 +23,7 @@ public class TokenBasedAuthBundle <T extends Configuration & HasTokenBasedAuthCo
     public void run(T configuration, Environment environment) throws Exception {
         this.configuration = configuration.getTokenBasedAuthConfiguration();
         environment.getJerseyResourceConfig().getResourceFilterFactories().add(new TokenBasedAuthResourceFilterFactory(configuration.getTokenBasedAuthConfiguration()));
+        TokenWrapper.setMaxage(configuration.getTokenBasedAuthConfiguration().getMaxage());
     }
 
     /**

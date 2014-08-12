@@ -12,6 +12,7 @@ import io.robe.auth.AbstractAuthResource;
 import io.robe.auth.Credentials;
 import io.robe.auth.IsToken;
 import io.robe.auth.TokenWrapper;
+import io.robe.auth.tokenbased.filter.TokenBasedAuthResponseFilter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -55,7 +56,7 @@ public class AuthResource extends AbstractAuthResource<User> {
             IsToken token = TokenWrapper.createToken(user.get().getEmail(), null);
             credentials.remove("password");
 
-            return Response.ok().header("Set-Cookie", "auth-token" + "=" + token.getToken() + ";path=/;").entity(credentials).build();
+            return Response.ok().header("Set-Cookie", TokenBasedAuthResponseFilter.getTokenSentence(token.getToken())).entity(credentials).build();
         } else {
             throw new WebApplicationException(Response.Status.UNAUTHORIZED);
         }
