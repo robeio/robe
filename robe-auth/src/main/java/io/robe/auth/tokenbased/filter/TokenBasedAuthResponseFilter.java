@@ -63,7 +63,7 @@ public class TokenBasedAuthResponseFilter implements ContainerResponseFilter {
         String[] cookies = cookieList.split(";");
         for (String cookie : cookies) {
             if (cookie.trim().startsWith(tokenKey)) {
-                return cookie.substring(tokenKey.length() + 2);
+                return cookie.trim().substring(tokenKey.length() + 1);
             }
         }
         return null;

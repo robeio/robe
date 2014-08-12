@@ -2,6 +2,8 @@ package io.robe.auth.tokenbased;
 
 import io.robe.auth.Credentials;
 import io.robe.auth.IsToken;
+import org.apache.commons.codec.DecoderException;
+import org.apache.commons.codec.binary.Hex;
 import org.jasypt.encryption.pbe.PooledPBEStringEncryptor;
 import org.joda.time.DateTime;
 
@@ -24,6 +26,11 @@ public class BasicToken implements IsToken<BasicToken>, Credentials {
 
 
     public BasicToken(String token) {
+        try {
+            token = new String(Hex.decodeHex(token.toCharArray()));
+        } catch (DecoderException e) {
+            e.printStackTrace();
+        }
         String[] dec = ENCRYPTOR.decrypt(token).split(SEPARATOR);
         username = dec[0];
         expireAt = new DateTime(Long.valueOf(dec[1]));
@@ -82,7 +89,9 @@ public class BasicToken implements IsToken<BasicToken>, Credentials {
     @Override
     public String getToken() throws Exception {
         setExpiration(maxage);
-        return ENCRYPTOR.encrypt(getUsername() + SEPARATOR + getExpirationDate().getTime());
+        String token = ENCRYPTOR.encrypt(getUsername() + SEPARATOR + getExpirationDate().getTime());
+        token = Hex.encodeHexString(token.getBytes());
+        return token;
     }
 
     @Override

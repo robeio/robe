@@ -31,7 +31,7 @@ public class TokenWrapper<T extends IsToken> {
     public static IsToken createToken(String username, Map<String, String> attributes) throws IllegalAccessException, InstantiationException {
         IsToken token = type.newInstance();
         token.setUserAccountName(username);
-        //TODO: get expiration from properties.
+
         token.setExpiration(maxage);
         if (attributes != null && attributes.isEmpty()) {
             token.addAttributes(attributes);
