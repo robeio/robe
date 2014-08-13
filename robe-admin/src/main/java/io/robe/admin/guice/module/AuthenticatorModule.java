@@ -36,7 +36,7 @@ public class AuthenticatorModule<T extends RobeServiceConfiguration> extends Abs
 
             @Override
             public Authenticator get() {
-                TokenWrapper.initialize(BasicToken.class);
+                TokenWrapper.initialize(BasicToken.class, bundle.getConfiguration());
                 TokenBasedAuthenticator tokenBasedAuthenticator =
                         new TokenBasedAuthenticator(
                                 new UserDao(hibernateBundle.getSessionFactory()),

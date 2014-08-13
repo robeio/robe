@@ -12,6 +12,12 @@ public class TokenBasedAuthConfiguration {
 
     private boolean secure = false;
 
+    private int poolSize = 4;
+
+    private String algorithm;
+
+    private String serverPassword;
+
 
     public String getTokenKey() {
         return tokenKey;
@@ -31,5 +37,17 @@ public class TokenBasedAuthConfiguration {
 
     public boolean isSecure() {
         return secure;
+    }
+
+    public int getPoolSize() {
+        return poolSize;
+    }
+
+    public String getAlgorithm() {
+        return algorithm;
+    }
+
+    public String getServerPassword() {
+        return serverPassword;
     }
 }

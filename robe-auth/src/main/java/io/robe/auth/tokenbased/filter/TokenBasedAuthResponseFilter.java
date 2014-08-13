@@ -16,7 +16,7 @@ import org.slf4j.LoggerFactory;
 public class TokenBasedAuthResponseFilter implements ContainerResponseFilter {
     private static final Logger LOGGER = LoggerFactory.getLogger(TokenBasedAuthResponseFilter.class);
     private static String tokenKey;
-    private static String cookieSentence = ";path=%s;domain%s";
+    private static String cookieSentence;
 
 
     TokenBasedAuthResponseFilter(TokenBasedAuthConfiguration configuration) {
@@ -44,7 +44,7 @@ public class TokenBasedAuthResponseFilter implements ContainerResponseFilter {
                     authToken = cryptoToken.getToken();
                 }
             } catch (Exception e) {
-                LOGGER.error("Token re-creation failed", e);
+                LOGGER.error("Token re-creation failed", e.getMessage());
             }
             response.getHttpHeaders().putSingle("Set-Cookie", getTokenSentence(authToken));
         }

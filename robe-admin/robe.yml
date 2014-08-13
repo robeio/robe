@@ -74,3 +74,6 @@ auth:
   path: /
   maxage: 3600 #s
   secure: false
+  poolSize: 4 # parallel with cpu cores
+  algorithm: PBEWithMD5AndTripleDES
+  serverPassword: auto # auto for uuid, if it is cluster use custom password

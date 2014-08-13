@@ -1,6 +1,9 @@
 package io.robe.auth;
 
+import io.robe.auth.tokenbased.configuration.TokenBasedAuthConfiguration;
+
 import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
 import java.util.Map;
 
 
@@ -12,8 +15,19 @@ public class TokenWrapper<T extends IsToken> {
     private TokenWrapper() {
     }
 
-    public static <I extends IsToken> void initialize(Class<I> clazz) {
+    public static <I extends IsToken> void initialize(Class<I> clazz, TokenBasedAuthConfiguration configuration) {
         type = clazz;
+        Method method = null;
+        try {
+            method = type.getMethod("initialize", TokenBasedAuthConfiguration.class);
+            Object o = method.invoke(null, configuration);
+        } catch (NoSuchMethodException e) {
+            e.printStackTrace();
+        } catch (InvocationTargetException e) {
+            e.printStackTrace();
+        } catch (IllegalAccessException e) {
+            e.printStackTrace();
+        }
     }
 
     public static IsToken createToken(String token) throws NoSuchMethodException, IllegalAccessException, InvocationTargetException, InstantiationException {
