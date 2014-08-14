@@ -8,8 +8,8 @@ define([
 ], function (view) {
     ${view}View = new RobeView("${view}View", view, "container");
     ${view}View.render = function () {
-    $('#container').append(view);
-    ${view}View.initialize();
+        $('#container').append(view);
+        ${view}View.initialize();
     };
 
     ${view}View.initialize = function () {
