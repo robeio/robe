@@ -5,7 +5,7 @@
                     url: AdminApp.getBackendURL() + "${entity?uncap_first}/all",
                     dataType: "json",
                     contentType: "application/json"
-                 },
+                },
                 update: {
                     type: "POST",
                     url: AdminApp.getBackendURL() + "${entity?uncap_first}",
@@ -29,6 +29,9 @@
                         return kendo.stringify(options);
                     }
                 }
+            },
+            error: function (e) {
+                this.cancelChanges();
             },
             batch: false,
             pageSize: 20,
