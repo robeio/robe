@@ -73,6 +73,11 @@ public class DaoCrud {
         ASTHelper.addStmt(body, variableDeclarationExpr1);
 
 
+        MethodCallExpr calloid = new MethodCallExpr(new NameExpr("disjunction"), "add");
+        MethodCallExpr callEqOid = new MethodCallExpr(new NameExpr("Restrictions"), "eq", Arrays.asList(new StringLiteralExpr("oid"), new NameExpr("code")));
+        ASTHelper.addArgument(calloid, callEqOid);
+        ASTHelper.addStmt(body, calloid);
+
         for (String string : fields) {
 
             MethodCallExpr callAdd = new MethodCallExpr(new NameExpr("disjunction"), "add");

@@ -135,7 +135,7 @@ public class ResourceCrud {
 
     }
 
-    public static MethodDeclaration create(String entityName, String daoName, List<String> idGetFunction, String createFunction, Boolean auth) {
+    public static MethodDeclaration create(String entityName, String daoName, List<String> idGetFunction, String createFunction, Boolean auth, String findByFunction) {
 
         String entityVariableName = CrudUtility.capitalizeToLower(entityName);
         daoName = CrudUtility.capitalizeToLower(daoName);
@@ -154,7 +154,7 @@ public class ResourceCrud {
         if (idGetFunction != null) {
             for (String string : idGetFunction) {
 
-                MethodCallExpr callFindBy = new MethodCallExpr(new NameExpr(daoName), "findBy" + string);
+                MethodCallExpr callFindBy = new MethodCallExpr(new NameExpr(daoName), findByFunction);
                 ASTHelper.addArgument(callFindBy, new MethodCallExpr(new NameExpr(entityVariableName), "get" + string));
 
                 VariableDeclarationExpr variableDeclarationExpr = new VariableDeclarationExpr(ASTHelper.createReferenceType("Optional<" + entityName + ">", 0), Arrays.asList(CrudUtility.createVariableDeclarator(CrudUtility.capitalizeToLower(string), callFindBy)));
