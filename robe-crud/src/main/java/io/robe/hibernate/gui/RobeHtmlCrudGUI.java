@@ -494,11 +494,11 @@ public class RobeHtmlCrudGUI extends javax.swing.JFrame {
                                             m.setNullable(true);
                                             m.setLength("255");
                                             m.setType("string");
-                                            String fieldType = fieldDeclaration.getType().toString().toLowerCase();
+                                            String fieldType = fieldDeclaration.getType().toString().toLowerCase().replaceAll("\"", "");
 
                                             if (fieldType.equals("boolean")) {
                                                 m.setType("boolean");
-                                            } else if (fieldType.equals("integer") && fieldType.equals("int") && fieldType.equals("bigdecimal") && fieldType.equals("double") && fieldType.equals("long")) {
+                                            } else if (fieldType.equals("integer") || fieldType.equals("int") || fieldType.equals("bigdecimal") || fieldType.equals("double") || fieldType.equals("long")) {
                                                 m.setType("number");
                                             }
                                             for (Node node : nodes) {
