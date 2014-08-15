@@ -1,6 +1,6 @@
 package io.robe.quartz;
 
-import com.yammer.dropwizard.lifecycle.Managed;
+import io.dropwizard.lifecycle.Managed;
 import org.quartz.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -16,7 +16,7 @@ public class ManagedQuartz implements Managed {
     private Set<Class<? extends Job>> onStopJobs;
     private Scheduler scheduler;
 
-    public ManagedQuartz(Scheduler scheduler,Set<Class<? extends Job>> onStartJobs, Set<Class<? extends Job>> onStopJobs) {
+    public ManagedQuartz(Scheduler scheduler, Set<Class<? extends Job>> onStartJobs, Set<Class<? extends Job>> onStopJobs) {
         checkNotNull(scheduler);
         this.scheduler = scheduler;
         this.onStartJobs = onStartJobs;

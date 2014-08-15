@@ -2,10 +2,8 @@ package io.robe.admin.resources;
 
 import com.google.common.base.Optional;
 import com.google.inject.Inject;
-import com.yammer.dropwizard.auth.Auth;
-import com.yammer.dropwizard.hibernate.UnitOfWork;
-import com.yammer.dropwizard.validation.InvalidEntityException;
-import com.yammer.metrics.annotation.Timed;
+import io.dropwizard.auth.Auth;
+import io.dropwizard.hibernate.UnitOfWork;
 import io.robe.admin.dto.MenuItem;
 import io.robe.admin.hibernate.dao.MenuDao;
 import io.robe.admin.hibernate.dao.PermissionDao;
@@ -17,11 +15,15 @@ import io.robe.admin.hibernate.entity.Role;
 import io.robe.admin.hibernate.entity.User;
 import io.robe.auth.Credentials;
 import io.robe.common.audit.Audited;
+import io.robe.common.exception.RobeRuntimeException;
 
 import javax.validation.Valid;
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
-import java.util.*;
+import java.util.HashSet;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Set;
 
 @Path("menu")
 @Consumes(MediaType.APPLICATION_JSON)
@@ -40,7 +42,6 @@ public class MenuResource {
     @Path("all")
     @GET
     @UnitOfWork
-    @Timed
     public List<Menu> getMenus(@Auth Credentials credentials) {
         return menuDao.findAll(Menu.class);
     }
@@ -104,16 +105,15 @@ public class MenuResource {
 
     @POST
     @UnitOfWork
-    @Timed
     @Path("movenode/{item}/{destination}")
     public Menu move(@Auth Credentials credentials, @PathParam("item") String itemOid, @PathParam("destination") String parentOid) {
         Menu item = menuDao.findById(itemOid);
         Menu parent = menuDao.findById(parentOid);
         String notValid = " is not valid.";
         if (parent == null) {
-            throw new InvalidEntityException("destination", Arrays.asList(parentOid + notValid));
+            throw new RobeRuntimeException("destination", parentOid + notValid);
         } else if (item == null) {
-            throw new InvalidEntityException("item", Arrays.asList(itemOid + notValid));
+            throw new RobeRuntimeException("item", itemOid + notValid);
         } else if (itemOid.equals(parentOid)) {
             item.setParentOid(null);
         } else {
@@ -125,19 +125,16 @@ public class MenuResource {
     }
 
     @PUT
-    @Timed
-
     @UnitOfWork
     public Menu create(@Auth Credentials credentials, @Valid Menu menu) {
         Optional<Menu> checkMenu = menuDao.findByCode(menu.getCode());
         if (checkMenu.isPresent()) {
-            throw new InvalidEntityException("Code", Arrays.asList(menu.getCode() + " already used by another menu. Please use different code."));
+            throw new RobeRuntimeException("Code", menu.getCode() + " already used by another menu. Please use different code.");
         }
         return menuDao.create(menu);
     }
 
     @POST
-    @Timed
     @UnitOfWork
     @Audited
     public Menu update(@Auth Credentials credentials, Menu menu) {
@@ -147,7 +144,6 @@ public class MenuResource {
 
 
     @DELETE
-    @Timed
     @UnitOfWork
     public Menu delete(@Auth Credentials credentials, Menu menu) {
         menuDao.delete(menu);

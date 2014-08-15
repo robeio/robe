@@ -3,7 +3,7 @@ package io.robe.admin.resources;
 import com.google.common.base.Preconditions;
 import com.google.common.hash.Hashing;
 import com.google.inject.Inject;
-import com.yammer.dropwizard.hibernate.UnitOfWork;
+import io.dropwizard.hibernate.UnitOfWork;
 import io.robe.admin.hibernate.dao.RoleDao;
 import io.robe.admin.hibernate.dao.TicketDao;
 import io.robe.admin.hibernate.entity.Ticket;
@@ -17,6 +17,7 @@ import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import java.net.URI;
+import java.nio.charset.Charset;
 
 @Path("ticket")
 @Consumes(MediaType.TEXT_HTML)
@@ -41,8 +42,8 @@ public class TicketResource {
 
         User user = ticket.getUser();
 
-        String newPasswordHashed = Hashing.sha256().hashString(newPassword).toString();
-        String newPasswordConfirmHashed = Hashing.sha256().hashString(newPasswordConfirm).toString();
+        String newPasswordHashed = Hashing.sha256().hashString(newPassword, Charset.forName("UTF-8")).toString();
+        String newPasswordConfirmHashed = Hashing.sha256().hashString(newPasswordConfirm, Charset.forName("UTF-8")).toString();
         String oldPassword = user.getPassword();
 
         if (newPasswordHashed.equals(newPasswordConfirmHashed)) {
@@ -50,7 +51,7 @@ public class TicketResource {
             if (newPasswordHashed.equals(oldPassword)) {
                 throw new RobeRuntimeException("EE", "Eski iş şifre doğrulanamadı.");
             } else {
-                user.setPassword(Hashing.sha256().hashString(newPasswordHashed).toString());
+                user.setPassword(Hashing.sha256().hashString(newPasswordHashed, Charset.forName("UTF-8")).toString());
             }
             return Response.seeOther(URI.create("./admin-ui/html/Workspace.html")).build();
         } else {

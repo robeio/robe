@@ -1,8 +1,8 @@
 package io.robe.admin.resources;
 
 import com.google.inject.Inject;
-import com.yammer.dropwizard.auth.Auth;
-import com.yammer.dropwizard.hibernate.UnitOfWork;
+import io.dropwizard.auth.Auth;
+import io.dropwizard.hibernate.UnitOfWork;
 import io.robe.admin.hibernate.dao.MenuDao;
 import io.robe.admin.hibernate.dao.PermissionDao;
 import io.robe.admin.hibernate.dao.RoleDao;

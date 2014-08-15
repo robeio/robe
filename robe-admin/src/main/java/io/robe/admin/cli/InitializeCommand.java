@@ -1,9 +1,9 @@
 package io.robe.admin.cli;
 
-import com.yammer.dropwizard.Service;
-import com.yammer.dropwizard.cli.EnvironmentCommand;
-import com.yammer.dropwizard.config.Environment;
-import com.yammer.dropwizard.hibernate.UnitOfWork;
+import io.dropwizard.Application;
+import io.dropwizard.cli.EnvironmentCommand;
+import io.dropwizard.hibernate.UnitOfWork;
+import io.dropwizard.setup.Environment;
 import io.robe.admin.RobeServiceConfiguration;
 import io.robe.admin.hibernate.entity.*;
 import io.robe.hibernate.HibernateBundle;
@@ -29,7 +29,7 @@ public class InitializeCommand<T extends RobeServiceConfiguration> extends Envir
     private HibernateBundle hibernateBundle;
 
 
-    public InitializeCommand(Service<T> service, HibernateBundle hibernateBundle) {
+    public InitializeCommand(Application<T> service, HibernateBundle hibernateBundle) {
         super(service, "initialize", "Runs Hibernate and initialize required columns");
         this.hibernateBundle = hibernateBundle;
     }
@@ -73,7 +73,7 @@ public class InitializeCommand<T extends RobeServiceConfiguration> extends Envir
 
         LOGGER.info("Scanning Services.");
 
-        Reflections reflections = new Reflections(new String[] {"io"}, this.getClass().getClassLoader());
+        Reflections reflections = new Reflections(new String[]{"io"}, this.getClass().getClassLoader());
         Set<Class<?>> services = reflections.getTypesAnnotatedWith(Path.class);
         for (Class service : services) {
             String parentPath = "/" + ((Path) service.getAnnotation(Path.class)).value();

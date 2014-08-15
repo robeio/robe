@@ -1,8 +1,6 @@
 package io.robe.convert.excel.parsers;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
-import org.apache.commons.httpclient.util.DateParseException;
-import org.apache.commons.httpclient.util.DateUtil;
 import org.apache.poi.ss.usermodel.Cell;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -35,7 +33,8 @@ public class ParseDate implements IsParser {
      * if it is, parses with given format, if there is a exception while
      * parsing with given format catches and tries with default values,
      * If there is no given format, tries with static values
-     * @param o Object from cell value
+     *
+     * @param o     Object from cell value
      * @param field Field from given pojo
      * @return Valid date after parsing with pattern
      */
@@ -70,8 +69,9 @@ public class ParseDate implements IsParser {
 
     /**
      * Tries to parse with annotated pattern
+     *
      * @param columnValue Date column value
-     * @param format Given patter
+     * @param format      Given patter
      * @return Valid date object
      * @throws ParseException
      */
@@ -84,6 +84,7 @@ public class ParseDate implements IsParser {
      * Uses Java's @DateUtil.class for parsing operation,
      * It may not be efficient , because it tries to parse with
      * all known patterns
+     *
      * @param columnValue Date column value
      * @return Valid date object
      */
@@ -103,8 +104,8 @@ public class ParseDate implements IsParser {
             dateFormats.add(DEFAULT_DATE_FORMAT10);
             dateFormats.add(DEFAULT_DATE_FORMAT11);
             dateFormats.add(DEFAULT_DATE_FOMRAT12);
-            formattedDate = DateUtil.parseDate(columnValue, dateFormats);
-        } catch (DateParseException e) {
+            formattedDate = new Date();
+        } catch (Exception e) {
             LOGGER.error("Couldn't determine the date format of the field" + columnValue + "   error message : " + e.getMessage());
             throw new RuntimeException("Unknown date format " + columnValue, e);
         }

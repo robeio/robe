@@ -1,7 +1,7 @@
 package io.robe.admin;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.yammer.dropwizard.config.Configuration;
+import io.dropwizard.Configuration;
 import io.robe.auth.tokenbased.configuration.HasTokenBasedAuthConfiguration;
 import io.robe.auth.tokenbased.configuration.TokenBasedAuthConfiguration;
 import io.robe.guice.GuiceConfiguration;
@@ -81,4 +81,5 @@ public class RobeServiceConfiguration extends Configuration implements
     public TokenBasedAuthConfiguration getTokenBasedAuthConfiguration() {
         return auth;
     }
+
 }

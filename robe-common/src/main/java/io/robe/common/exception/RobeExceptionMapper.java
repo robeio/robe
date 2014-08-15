@@ -1,10 +1,11 @@
 package io.robe.common.exception;
 
-import com.yammer.dropwizard.validation.InvalidEntityException;
 import io.robe.common.dto.BasicPair;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import javax.validation.ConstraintViolation;
+import javax.validation.ConstraintViolationException;
 import javax.ws.rs.Produces;
 import javax.ws.rs.WebApplicationException;
 import javax.ws.rs.core.MediaType;
@@ -33,19 +34,13 @@ public class RobeExceptionMapper implements ExceptionMapper<Exception> {
         if (e instanceof RobeRuntimeException) {
             LOGGER.error("RobeRuntimeException", e);
             return ((RobeRuntimeException) e).getResponse();
-        } else if (e instanceof InvalidEntityException) {
+        } else if (e instanceof ConstraintViolationException) {
             LOGGER.error("InvalidEntityException", e);
-            InvalidEntityException exception = (InvalidEntityException) e;
-            BasicPair[] errors = new BasicPair[exception.getErrors().size()];
+            ConstraintViolationException exception = (ConstraintViolationException) e;
+            BasicPair[] errors = new BasicPair[exception.getConstraintViolations().size()];
             int i = 0;
-            for (String error : exception.getErrors()) {
-                String[] parts = error.split("\\.");
-                // TODO Find a good way for showing InvalidEntityExceptions
-                if (parts.length > 1) {
-                    errors[i++] = new BasicPair(parts[0], parts[1].split("\\(")[0]);
-                } else {
-                    errors[i++] = new BasicPair(exception.getMessage(), error);
-                }
+            for (ConstraintViolation error : exception.getConstraintViolations()) {
+                errors[i++] = new BasicPair(error.getConstraintDescriptor().getValidationAppliesTo().name(), error.getMessage());
             }
             return Response.status(422).entity(errors).type(MediaType.APPLICATION_JSON).build();
         } else if (e instanceof WebApplicationException) {

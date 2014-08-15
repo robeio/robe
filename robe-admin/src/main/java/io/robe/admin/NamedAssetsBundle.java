@@ -1,16 +1,15 @@
 package io.robe.admin;
 
-import com.yammer.dropwizard.Bundle;
-import com.yammer.dropwizard.assets.AssetServlet;
-import com.yammer.dropwizard.assets.AssetsBundle;
-import com.yammer.dropwizard.config.Bootstrap;
-import com.yammer.dropwizard.config.Environment;
+import io.dropwizard.Bundle;
+import io.dropwizard.assets.AssetsBundle;
+import io.dropwizard.setup.Bootstrap;
+import io.dropwizard.setup.Environment;
 
 import static com.google.common.base.Preconditions.checkArgument;
 
 /**
  * A bundle for serving static asset files from the classpath.
- * Extended from {@link com.yammer.dropwizard.assets.AssetsBundle} and only
+ * Extended from {@link io.dropwizard.assets.AssetsBundle} and only
  * difference is a name parameter as extra.
  */
 public class NamedAssetsBundle extends AssetsBundle implements Bundle {
@@ -103,12 +102,12 @@ public class NamedAssetsBundle extends AssetsBundle implements Bundle {
 
     @Override
     public void run(Environment environment) {
-        environment.addServlet(createServlet(), uriPath + '*').setName(assetsName);
+//        environment.servlets()..addServlet(createServlet(), uriPath + '*').setName(assetsName);
     }
 
-    private AssetServlet createServlet() {
-        return new AssetServlet(resourcePath, uriPath, indexFile);
-    }
+//    private AssetServlet createServlet() {
+//        return new AssetServlet(resourcePath, uriPath, indexFile);
+//    }
 
 
 }

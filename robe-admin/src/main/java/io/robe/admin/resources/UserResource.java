@@ -3,8 +3,8 @@ package io.robe.admin.resources;
 import com.google.common.base.Optional;
 import com.google.common.hash.Hashing;
 import com.google.inject.Inject;
-import com.yammer.dropwizard.auth.Auth;
-import com.yammer.dropwizard.hibernate.UnitOfWork;
+import io.dropwizard.auth.Auth;
+import io.dropwizard.hibernate.UnitOfWork;
 import io.robe.admin.dto.UserDTO;
 import io.robe.admin.hibernate.dao.RoleDao;
 import io.robe.admin.hibernate.dao.TicketDao;
@@ -22,6 +22,7 @@ import javax.mail.MessagingException;
 import javax.validation.Valid;
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
+import java.nio.charset.Charset;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -83,7 +84,7 @@ public class UserResource {
             throw new RobeRuntimeException("Role", user.getEmail() + ExceptionMessages.CANT_BE_NULL.toString());
         }
         entity.setRole(role);
-        entity.setPassword(Hashing.sha256().hashString(user.getName()).toString());
+        entity.setPassword(Hashing.sha256().hashString(user.getName(), Charset.forName("UTF-8")).toString());
 
 //        sendActivationMail(entity);
 

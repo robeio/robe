@@ -1,9 +1,9 @@
 package io.robe.mail;
 
-import com.yammer.dropwizard.ConfiguredBundle;
-import com.yammer.dropwizard.config.Bootstrap;
-import com.yammer.dropwizard.config.Configuration;
-import com.yammer.dropwizard.config.Environment;
+import io.dropwizard.Configuration;
+import io.dropwizard.ConfiguredBundle;
+import io.dropwizard.setup.Bootstrap;
+import io.dropwizard.setup.Environment;
 import org.slf4j.Logger;
 
 /**
@@ -32,12 +32,11 @@ public class MailBundle<T extends Configuration & HasMailConfiguration> implemen
     }
 
 
-
     /**
      * Initializes the environment.
      *
      * @param configuration the configuration object
-     * @param environment   the io.robe.admin's {@link com.yammer.dropwizard.config.Environment}
+     * @param environment   the io.robe.admin's {@link io.dropwizard.setup.Environment}
      * @throws Exception if something goes wrong
      */
     @Override
@@ -50,6 +49,7 @@ public class MailBundle<T extends Configuration & HasMailConfiguration> implemen
             setIsActive(false);
         }
     }
+
 
     /**
      * Initializes the io.robe.admin bootstrap.

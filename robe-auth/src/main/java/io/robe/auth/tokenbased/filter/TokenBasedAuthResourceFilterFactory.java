@@ -3,7 +3,7 @@ package io.robe.auth.tokenbased.filter;
 import com.sun.jersey.api.model.AbstractMethod;
 import com.sun.jersey.spi.container.ResourceFilter;
 import com.sun.jersey.spi.container.ResourceFilterFactory;
-import com.yammer.dropwizard.auth.Auth;
+import io.dropwizard.auth.Auth;
 import io.robe.auth.tokenbased.configuration.TokenBasedAuthConfiguration;
 
 import java.lang.annotation.Annotation;
@@ -11,11 +11,11 @@ import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
 
-public class TokenBasedAuthResourceFilterFactory implements ResourceFilterFactory{
+public class TokenBasedAuthResourceFilterFactory implements ResourceFilterFactory {
 
     private final List<ResourceFilter> filterList;
 
-    public TokenBasedAuthResourceFilterFactory(TokenBasedAuthConfiguration configuration){
+    public TokenBasedAuthResourceFilterFactory(TokenBasedAuthConfiguration configuration) {
         filterList = new LinkedList<ResourceFilter>();
         filterList.add(new TokenBasedAuthResourceFilter(configuration));
     }
@@ -37,9 +37,9 @@ public class TokenBasedAuthResourceFilterFactory implements ResourceFilterFactor
      */
     @Override
     public List<ResourceFilter> create(AbstractMethod am) {
-        for(Annotation[] annotations  :am.getMethod().getParameterAnnotations()){
-            for(Annotation annotation : annotations){
-                if (annotation instanceof Auth){
+        for (Annotation[] annotations : am.getMethod().getParameterAnnotations()) {
+            for (Annotation annotation : annotations) {
+                if (annotation instanceof Auth) {
                     return filterList;
                 }
             }

@@ -17,10 +17,9 @@
     </modules>
 
     <properties>
-        <dropwizard.version>0.6.2</dropwizard.version>
-        <project.version>0.3.2</project.version>
+        <dropwizard.version>0.7.1</dropwizard.version>
+        <project.version>0.4.0</project.version>
         <mysql.version>5.1.26</mysql.version>
-        <esapi.version>2.1.0</esapi.version>
         <beanutils.version>1.9.0</beanutils.version>
         <commons.version>1.9</commons.version>
         <vt.version>3.1.1</vt.version>
@@ -36,7 +35,7 @@
 
     <groupId>io.robe</groupId>
     <artifactId>robe-parent</artifactId>
-    <version>0.3.2</version>
+    <version>0.4.0</version>
     <packaging>pom</packaging>
     <name>Robe Project</name>
     <url>www.robe.io</url>
@@ -54,33 +53,42 @@
     <dependencyManagement>
         <dependencies>
             <dependency>
-                <groupId>com.yammer.dropwizard</groupId>
+                <groupId>io.dropwizard</groupId>
                 <artifactId>dropwizard-core</artifactId>
                 <version>${dropwizard.version}</version>
             </dependency>
             <dependency>
-                <groupId>com.yammer.dropwizard</groupId>
+                <groupId>io.dropwizard</groupId>
                 <artifactId>dropwizard-hibernate</artifactId>
                 <version>${dropwizard.version}</version>
             </dependency>
             <dependency>
-                <groupId>com.yammer.dropwizard</groupId>
+                <groupId>io.dropwizard</groupId>
                 <artifactId>dropwizard-testing</artifactId>
                 <version>${dropwizard.version}</version>
                 <scope>test</scope>
             </dependency>
             <dependency>
-                <groupId>com.yammer.dropwizard</groupId>
+                <groupId>io.dropwizard</groupId>
                 <artifactId>dropwizard-auth</artifactId>
                 <version>${dropwizard.version}</version>
             </dependency>
 
             <dependency>
-                <groupId>com.yammer.dropwizard</groupId>
+                <groupId>io.dropwizard</groupId>
                 <artifactId>dropwizard-views</artifactId>
                 <version>${dropwizard.version}</version>
             </dependency>
-
+            <dependency>
+                <groupId>io.dropwizard</groupId>
+                <artifactId>dropwizard-assets</artifactId>
+                <version>${dropwizard.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>io.dropwizard</groupId>
+                <artifactId>dropwizard-validation</artifactId>
+                <version>${dropwizard.version}</version>
+            </dependency>
             <!--Database drivers-->
             <dependency>
                 <groupId>mysql</groupId>
@@ -98,13 +106,6 @@
                 <groupId>commons-codec</groupId>
                 <artifactId>commons-codec</artifactId>
                 <version>${commons.version}</version>
-            </dependency>
-
-            <!--Crypto-->
-            <dependency>
-                <groupId>org.owasp.esapi</groupId>
-                <artifactId>esapi</artifactId>
-                <version>${esapi.version}</version>
             </dependency>
 
             <!--Password policy-->
@@ -163,35 +164,46 @@
                 <version>1.9.1</version>
                 <classifier>lite</classifier>
             </dependency>
-
+            <dependency>
+                <groupId>com.google.guava</groupId>
+                <artifactId>guava</artifactId>
+                <version>17.0</version>
+            </dependency>
         </dependencies>
     </dependencyManagement>
 
     <dependencies>
 
         <dependency>
-            <groupId>com.yammer.dropwizard</groupId>
+            <groupId>io.dropwizard</groupId>
             <artifactId>dropwizard-core</artifactId>
         </dependency>
         <dependency>
-            <groupId>com.yammer.dropwizard</groupId>
+            <groupId>io.dropwizard</groupId>
             <artifactId>dropwizard-hibernate</artifactId>
         </dependency>
         <dependency>
-            <groupId>com.yammer.dropwizard</groupId>
+            <groupId>io.dropwizard</groupId>
             <artifactId>dropwizard-testing</artifactId>
             <scope>test</scope>
         </dependency>
         <dependency>
-            <groupId>com.yammer.dropwizard</groupId>
+            <groupId>io.dropwizard</groupId>
             <artifactId>dropwizard-auth</artifactId>
         </dependency>
 
         <dependency>
-            <groupId>com.yammer.dropwizard</groupId>
+            <groupId>io.dropwizard</groupId>
             <artifactId>dropwizard-views</artifactId>
         </dependency>
-
+        <dependency>
+            <groupId>io.dropwizard</groupId>
+            <artifactId>dropwizard-assets</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>io.dropwizard</groupId>
+            <artifactId>dropwizard-validation</artifactId>
+        </dependency>
         <!--Database drivers-->
         <dependency>
             <groupId>mysql</groupId>
@@ -208,12 +220,6 @@
             <artifactId>commons-codec</artifactId>
         </dependency>
 
-        <!--Crypto-->
-        <dependency>
-            <groupId>org.owasp.esapi</groupId>
-            <artifactId>esapi</artifactId>
-        </dependency>
-
         <!--Password policy-->
         <dependency>
             <groupId>edu.vt.middleware</groupId>
@@ -222,7 +228,6 @@
         <dependency>
             <groupId>javax.mail</groupId>
             <artifactId>mail</artifactId>
-            <version>${mail.version}</version>
         </dependency>
 
         <!-- Timed Operations - Quartz -->
@@ -260,6 +265,10 @@
             <groupId>org.jasypt</groupId>
             <artifactId>jasypt</artifactId>
             <classifier>lite</classifier>
+        </dependency>
+        <dependency>
+            <groupId>com.google.guava</groupId>
+            <artifactId>guava</artifactId>
         </dependency>
     </dependencies>
 

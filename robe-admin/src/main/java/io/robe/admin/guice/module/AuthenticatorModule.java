@@ -1,11 +1,11 @@
 package io.robe.admin.guice.module;
 
-import com.google.common.cache.CacheBuilderSpec;
+import com.google.common.cache.CacheBuilder;
 import com.google.inject.AbstractModule;
 import com.google.inject.Inject;
 import com.google.inject.Provider;
-import com.yammer.dropwizard.auth.Authenticator;
-import com.yammer.dropwizard.auth.CachingAuthenticator;
+import io.dropwizard.auth.Authenticator;
+import io.dropwizard.auth.CachingAuthenticator;
 import io.robe.admin.RobeServiceConfiguration;
 import io.robe.admin.hibernate.dao.ServiceDao;
 import io.robe.admin.hibernate.dao.UserDao;
@@ -16,6 +16,8 @@ import io.robe.auth.tokenbased.TokenBasedAuthBundle;
 import io.robe.auth.tokenbased.TokenBasedAuthenticator;
 import io.robe.auth.tokenbased.configuration.TokenBasedAuthConfiguration;
 import io.robe.hibernate.HibernateBundle;
+
+import java.util.concurrent.TimeUnit;
 
 /**
  * Default Guice bindings are done at this class.
@@ -41,15 +43,15 @@ public class AuthenticatorModule<T extends RobeServiceConfiguration> extends Abs
                         new TokenBasedAuthenticator(
                                 new UserDao(hibernateBundle.getSessionFactory()),
                                 new ServiceDao(hibernateBundle.getSessionFactory()));
-                String expires = bundle.getConfiguration().getMaxage() + "s";
-                return CachingAuthenticator.wrap(tokenBasedAuthenticator, CacheBuilderSpec.parse("maximumSize=10000, expireAfterAccess=" + expires));
+                return new CachingAuthenticator(null,
+                        tokenBasedAuthenticator,
+                        CacheBuilder.newBuilder().expireAfterAccess(bundle.getConfiguration().getMaxage(), TimeUnit.SECONDS).maximumSize(10000));
             }
         });
         bind(TokenBasedAuthConfiguration.class).toProvider(new Provider<TokenBasedAuthConfiguration>() {
 
             @Override
             public TokenBasedAuthConfiguration get() {
-
                 return bundle.getConfiguration();
             }
         });

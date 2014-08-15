@@ -1,7 +1,7 @@
 package io.robe.admin.resources;
 
 import com.google.inject.Inject;
-import com.yammer.dropwizard.hibernate.UnitOfWork;
+import io.dropwizard.hibernate.UnitOfWork;
 import io.robe.admin.hibernate.dao.LanguageDao;
 import io.robe.admin.hibernate.entity.Language;
 

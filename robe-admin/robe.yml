@@ -1,27 +1,42 @@
 # HTTP-specific options.
-http:
- port: 8080
- adminPort: 8080
- rootPath: /robe/*  # Default is /*
+#server:
+# port: 8080
+# adminPort: 8080
+# rootPath: /robe/*  # Default is /*
+#server:
+#  type: simple
+#  applicationContextPath: /robe/*
+#  adminContextPath: /admin/*
+#  connector:
+#    type: http
+#    port: 8080
+server:
+  applicationConnectors:
+    - type: http
+      port: 8080
+  adminConnectors:
+    - type: http
+      port: 8081
 
 hibernate:
-   # the name of your JDBC driver
-   driverClass:  com.mysql.jdbc.Driver
-   # the username
-   user: root
-   # the password
-   password:
-   # the JDBC URL
-   url: jdbc:mysql://localhost:3306/robe
    # Hibernate ScanPackages. Accepts multiple package names separated with comma ',' with a trailing  space ' '
    scanPackages: [io.robe.admin.hibernate.entity,io.robe.quartz]
    # Entities to be included. Accepts multiple class names separated with comma ',' with a trailing  space ' '
    # entities: [io.robe.hibernate.entity.User]
-   # Properties
-   properties:
-     charSet: UTF-8
-     dialect: org.hibernate.dialect.MySQL5InnoDBDialect
-     hibernate.hbm2ddl.auto: update
+   database:
+     # the name of your JDBC driver
+     driverClass:  com.mysql.jdbc.Driver
+     # the username
+     user: root
+     # the password
+     password:
+     # the JDBC URL
+     url: jdbc:mysql://localhost:3306/robe
+     # Properties
+     properties:
+       charSet: UTF-8
+       dialect: org.hibernate.dialect.MySQL5InnoDBDialect
+       hibernate.hbm2ddl.auto: update
 
 logging:
      # The default level of all loggers. Can be OFF, ERROR, WARN, INFO, DEBUG, TRACE, or ALL.
