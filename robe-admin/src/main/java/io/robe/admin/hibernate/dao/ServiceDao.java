@@ -20,11 +20,10 @@ public class ServiceDao extends BaseDao<Service> implements ServiceStore {
         return Optional.fromNullable(findById(code));
     }
 
-    public Optional<Service> findByPathAndMethod(String path, Service.Method method) {
+    public Service findByPathAndMethod(String path, Service.Method method) {
         Criteria criteria = currentSession().createCriteria(Service.class);
         criteria.add(Restrictions.eq("path", path));
         criteria.add(Restrictions.eq("method", method));
-        return Optional.fromNullable(uniqueResult(criteria));
+        return uniqueResult(criteria);
     }
-
 }

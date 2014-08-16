@@ -16,7 +16,6 @@ define([
     PermissionManagement = new RobeView("PermissionManagement", view, "container");
 
     PermissionManagement.render = function () {
-        console.log("PermissionManagement");
         $('#container').append(view);
         PermissionManagement.initialize();
     };
@@ -129,6 +128,21 @@ define([
                 checkChildren: true
             },
             dataTextField: "name"
+        });
+
+        $("#btnRefreshServices").kendoButton({
+            click: function () {
+                $.ajax({
+                    type: "GET",
+                    url: AdminApp.getBackendURL() + "service/refresh",
+                    dataType: "json",
+                    contentType: "application/json; charset=utf-8",
+                    success: function (response) {
+                        showToast("success", "Başarılı. Bulunan Yeni Servis Sayısı :"+response);
+                        ServiceDataSource.read();
+                    }
+                });
+            }
         });
 
         $("#btnSavePermission").kendoButton({
