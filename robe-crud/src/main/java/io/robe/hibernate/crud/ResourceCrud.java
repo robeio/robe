@@ -155,13 +155,13 @@ public class ResourceCrud {
             for (String string : idGetFunction) {
 
                 MethodCallExpr callFindBy = new MethodCallExpr(new NameExpr(daoName), findByFunction);
-                ASTHelper.addArgument(callFindBy, new MethodCallExpr(new NameExpr(entityVariableName), "get" + string));
+                ASTHelper.addArgument(callFindBy, new MethodCallExpr(new NameExpr(entityVariableName), "get" + CrudUtility.capitalizeToUpper(string)));
 
                 VariableDeclarationExpr variableDeclarationExpr = new VariableDeclarationExpr(ASTHelper.createReferenceType("Optional<" + entityName + ">", 0), Arrays.asList(CrudUtility.createVariableDeclarator(CrudUtility.capitalizeToLower(string), callFindBy)));
                 ASTHelper.addStmt(body, variableDeclarationExpr);
 
 
-                BinaryExpr binaryExpr = new BinaryExpr(new MethodCallExpr(new NameExpr(entityVariableName), "get" + string), new StringLiteralExpr("already used by another " + entityVariableName + ". Please use different code."), Operator.plus);
+                BinaryExpr binaryExpr = new BinaryExpr(new MethodCallExpr(new NameExpr(entityVariableName), "get" + CrudUtility.capitalizeToUpper(string)), new StringLiteralExpr("already used by another " + entityVariableName + ". Please use different code."), Operator.plus);
 
                 MethodCallExpr callException = new MethodCallExpr(null, "RobeRuntimeException", Arrays.asList(new StringLiteralExpr("Error"), binaryExpr));
 
