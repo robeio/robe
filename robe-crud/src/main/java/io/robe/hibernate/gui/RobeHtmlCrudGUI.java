@@ -490,7 +490,6 @@ public class RobeHtmlCrudGUI extends javax.swing.JFrame {
                                             List<Node> nodes = expr.getChildrenNodes();
                                             Model m = new Model();
                                             m.setName(variableDeclarator.getId().toString());
-                                            m.setDefinition(variableDeclarator.getId().toString());
                                             m.setNullable(true);
                                             m.setLength("255");
                                             m.setType("string");
@@ -509,10 +508,6 @@ public class RobeHtmlCrudGUI extends javax.swing.JFrame {
                                                         m.setNullable(nullable);
                                                     } else if ((memberValuePair.getName().equals("length"))) {
                                                         m.setLength(memberValuePair.getValue().toString());
-                                                    } else if (memberValuePair.getName().equals("columnDefinition")) {
-                                                        if (!memberValuePair.getValue().toString().equals("")) {
-                                                            m.setDefinition(memberValuePair.getValue().toString().replaceAll("\"", ""));
-                                                        }
                                                     }
                                                 }
                                             }

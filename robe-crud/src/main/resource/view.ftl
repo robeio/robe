@@ -26,7 +26,7 @@ define([
             <#list fields as field>
                 {
                         field : "${field.name}",
-                        title : "${field.definition}"
+                        title : "${field.name}"
              },
             </#list>
                  {
