@@ -1,4 +1,5 @@
 var RoleManagementView;
+var selectedGroup = null;
 define([
     'text!html/RoleManagement.html',
     'admin/data/DataSources',
@@ -18,7 +19,6 @@ define([
     };
 
     RoleManagementView.initialize = function () {
-        var selectedGroup = null;
 
         $("#gridRoles").kendoGrid({
             dataSource: RoleDataSource.get(),
@@ -70,15 +70,16 @@ define([
         });
 
         $("#listAllRoles").kendoListView({
-            dataSource: RoleDataSource.get(),
+            dataSource: RoleDataSource.get(false),
             template: "<div class='tags k-block'>#:name#</div>",
             selectable: "single",
-            change: onListChange
+            change: onListChange,
+            autoBind:false
         });
 
         $("#listGroupedRoles").kendoListView({
             dataSource: GroupedRoleDataSource.get(),
-            template: "<div class='tags move  k-block'>#:name#</div><a href='javascript:' class='tagitemcls' onclick=\"removeItem(this,'#:uid#')\"><span class='k-icon k-i-close'></span></a>",
+            template: "<div class='tags move  k-block'>#:name#</div><a href='javascript:' class='tagitemcls' onclick=\"removeItem(this,'#:uid#',selectedGroup)\"><span class='k-icon k-i-close'></span></a>",
         });
 
         $("#listUnGroupedRoles").kendoListView({
@@ -102,10 +103,10 @@ define([
             },
             drop: function (e) {
 
-                var data = RoleDataSource.get().view();
+                var data = RoleDataSource.get(false).view();
                 var groupOid = selectedGroup;
 
-                var item = UnGroupedRoleDataSource.get().getByUid(e.draggable.hint.data().uid);
+                var item = UnGroupedRoleDataSource.get(false).getByUid(e.draggable.hint.data().uid);
                 if (groupOid === item.oid) {
                     return;
                 }
@@ -116,8 +117,8 @@ define([
                         dataType: "json",
                         contentType: "application/json; charset=utf-8",
                         success: function () {
-                            GroupedRoleDataSource.get().add(item);
-                            UnGroupedRoleDataSource.get().remove(item);
+                            GroupedRoleDataSource.get(false).add(item);
+                            UnGroupedRoleDataSource.get(false).remove(item);
                         }
                     });
                 }
@@ -129,9 +130,10 @@ define([
         });
 
         function onListChange(e) {
-            var data = RoleDataSource.get().view(), selected = $.map(this.select(), function (item) {
-                selectedGroup = data[$(item).index()].oid;
-                return selectedGroup;
+
+            var data = RoleDataSource.get(false).view(), selected = $.map(this.select(), function (item) {
+                    selectedGroup = data[$(item).index()].oid;
+                    return selectedGroup;
             });
 
             $.ajax({
@@ -146,7 +148,7 @@ define([
                         oids.push(response.roles[i].oid);
                     }
                     oids.push(selectedGroup);
-                    var unGrouped = RoleDataSource.get().data().filter(function (elem) {
+                    var unGrouped = RoleDataSource.get(false).data().filter(function (elem) {
                         return oids.indexOf(elem.oid) === -1;
                     });
                     UnGroupedRoleDataSource.get().data(unGrouped);
@@ -155,7 +157,7 @@ define([
         };
 
         function onShowHelp() {
-            wnd = $("#roleManagementHelpWindow").kendoWindow({
+            var wnd = $("#roleManagementHelpWindow").kendoWindow({
                 title: "Yardım",
                 modal: true,
                 visible: false,
@@ -165,32 +167,34 @@ define([
             wnd.center().open();
 
         };
-
-        function removeItem(e, id) {
-            var item = GroupedRoleDataSource.get().getByUid(id);
-
-            $.ajax({
-                type: "DELETE",
-                url: AdminApp.getBackendURL() + "role/destroyRoleGroup/" + selectedGroup + "/" + item.oid,
-                dataType: "json",
-                contentType: "application/json; charset=utf-8",
-                success: function (response) {
-                    UnGroupedRoleDataSource.get().add(item);
-                    GroupedRoleDataSource.get().remove(item);
-                    $(e).parent().remove();
-                },
-                error: function (e) {
-                    $.pnotify({
-                        text: "Bir hata oluştu",
-                        type: 'error'
-                    });
-                }
-            });
-        }
-
         $("#tabstrip").kendoTabStrip();
     };
-
     return RoleManagementView;
 });
+
+function removeItem(e, id,selectedGroup) {
+    var item = GroupedRoleDataSource.get(false).getByUid(id);
+
+    $.ajax({
+        type: "DELETE",
+        url: AdminApp.getBackendURL() + "role/destroyRoleGroup/" + selectedGroup + "/" + item.oid,
+        dataType: "json",
+        contentType: "application/json; charset=utf-8",
+        success: function (response) {
+            UnGroupedRoleDataSource.get(false).add(item);
+            GroupedRoleDataSource.get(false).remove(item);
+            $(e).parent().remove();
+        },
+        error: function (e) {
+            $.pnotify({
+                text: "Bir hata oluştu",
+                type: 'error'
+            });
+        }
+    });
+}
+
+
+
+
 
