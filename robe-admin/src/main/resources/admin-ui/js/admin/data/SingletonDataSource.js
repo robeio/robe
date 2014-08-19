@@ -9,11 +9,9 @@ function SingletonDataSource(name, parameters) {
         this.data = new kendo.data.DataSource(this.parameters);
         this.data.bind("error", this.requestError);
         this.data.bind("requestEnd", this.requestEnd);
-        this.data.read();
     };
 
     SingletonDataSource.prototype.read = function () {
-        console.log("Refreshing " + this.name);
         this.data.read();
     };
 
