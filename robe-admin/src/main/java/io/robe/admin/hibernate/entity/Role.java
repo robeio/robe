@@ -12,7 +12,7 @@ import java.util.Set;
 @Table
 public class Role extends BaseEntity implements RoleEntry {
 
-    @Column(length = 20)
+    @Column(length = 20,unique = true)
     private String code;
 
     @Column(length = 50)

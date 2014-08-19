@@ -20,4 +20,12 @@ public class RoleDao extends BaseDao<Role> {
         criteria.add(Restrictions.eq("code", code));
         return Optional.fromNullable(uniqueResult(criteria));
     }
+
+    public Optional<Role> findByNameAndNotEqualMe(String code,String oid) {
+        Criteria criteria = currentSession().createCriteria(Role.class);
+        criteria.add(Restrictions.eq("code", code));
+        criteria.add(Restrictions.not(Restrictions.eq("oid", oid)));
+
+        return Optional.fromNullable(uniqueResult(criteria));
+    }
 }
