@@ -4,7 +4,7 @@ Robe.io
 A brand new robe for dropwizard.
 -------------------------------
 
-Robe,supported by **Atlassian** , **IntelliJ** and **BrowserStack**.
+Robe, supported by **Atlassian**, **IntelliJ** and **BrowserStack**.
 
 Robe Admin Browser Compatibility (tested on  [BrowserStack](http://www.browserstack.com) )
                                   
