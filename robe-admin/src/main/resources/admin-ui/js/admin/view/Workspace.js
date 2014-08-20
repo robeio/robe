@@ -26,6 +26,7 @@ define([
         $(document).ajaxError(function (event, request, settings) {
             var response;
             $("#btnDialogClose").css('display', '');
+            $('#dialogMessage').html('');
             try {
                 if (request.status == 401) {
                     loadLogin();
@@ -73,9 +74,11 @@ define([
 //        $("#container").html("");
         $("#profile").click(function () {
 
+            $('#dialogMessage').html('');
             showDialog(null, "Profil Bilgileri");
             kendo.destroy($('#dialogMessage'));
-            $('#dialogMessage').html('');
+
+
             ProfileManagementView.render();
         });
 
@@ -125,9 +128,13 @@ define([
                 $('#dialogMessage').html(message);
             if (title == null)
                 title = "";
+            $('#dialog').data("kendoWindow").setOptions({
+                width:500
+            });
             $('#dialog').data("kendoWindow").title(title);
             $('#dialog').data("kendoWindow").open();
             $('#dialog').data("kendoWindow").center();
+
         };
 
         function loadLogin() {
@@ -150,9 +157,11 @@ define([
                 $('#menu').kendoPanelBar({
                     dataSource: response[0].items,
                     select: function (e) {
+                        var items = $(e.item).attr("class");
+                        var arr = items.split(' ');
                         var selection = "k-";
-                        for (var i = 0; i < e.item.classList.length; i++) {
-                            var css = e.item.classList[i];
+                        for (var i = 0; i < arr.length; i++) {
+                            var css = arr[i];
                             if (css.indexOf("command:") == 0) {
                                 selection = css.substring(8);
                                 break;

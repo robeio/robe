@@ -28,6 +28,7 @@ define([
                 $("#userName").val(response.name);
                 $("#userSurname").val(response.surname);
                 me.data = response;
+                $("#btnDialogClose").css('display', 'none');
             }
         });
 
