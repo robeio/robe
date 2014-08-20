@@ -12,14 +12,12 @@ define(['router'], function () {
             getBackendURL: function () {
                 return this.backendURL;
             }
-        }
-        var response = JSON.parse($.ajax({
-            dataType: "json",
-            url: "./config.json",
-            async: false
-        }).responseText);
-        AdminApp.backendURL = response.backendURL;
-        console.debug(response);
+        };
+
+        $.getJSON("./config.json", function(response){
+            AdminApp.backendURL = response.backendURL;
+        });
+
     }
 
     return {

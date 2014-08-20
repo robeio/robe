@@ -23,6 +23,7 @@ define([
         $("#templateGrid").kendoGrid({
             dataSource: MailManagementDataSource.get(),
             sortable: true,
+            autoBind:false,
             toolbar: [
                 {
                     name: "create",
