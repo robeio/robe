@@ -16,10 +16,6 @@ define([
             path: '/ForgotPassword',
             moduleId: 'admin/view/ForgotPassword'
         },
-        ProfileManagement: {
-            path: '/ProfileManagement',
-            moduleId: 'admin/view/ProfileManagemen'
-        },
         UserManagement: {
             path: '/UserManagement',
             moduleId: 'admin/view/UserManagement'
@@ -47,8 +43,12 @@ define([
         QuartzJobManagement: {
             path: '/QuartzJobManagement',
             moduleId: 'admin/view/QuartzJobManagement'
+        },
+        UserProfileManagement: {
+            path: '/UserProfileManagement',
+            moduleId: 'admin/view/UserProfileManagement'
         }
-    }).on('routeload',function (View, routeArguments) {
+    }).on('routeload', function (View, routeArguments) {
         View.render();
     }).init();
 

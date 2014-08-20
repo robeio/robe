@@ -1,0 +1,63 @@
+<script type="text/javascript" src="./js/admin/view/UserProfileManagement.js"></script>
+
+
+<div class="userProfileManagement">
+    <form id="userProfileManagementForm" data-role="validator" novalidate="novalidate">
+        <h4>Profil Yönetimi</h4>
+
+        <table>
+
+            <tr>
+                <label for="firstAndLastName">
+                    <td>İsim ve Soy İsim:</td>
+                    <td><input type="text" class="k-textbox" name="firstAndLastName" id="firstAndLastName" disabled/></td>
+                </label>
+            </tr>
+
+            <tr>
+                <label for="emailAddress">
+                    <td>E-Posta Adresi:</td>
+                    <td><input type="text" class="k-textbox" name="emailAddress" id="emailAddress" disabled/></td>
+                </label>
+            </tr>
+
+            <tr>
+                <td></td>
+            </tr>
+
+            <tr>
+                <label for="oldPassword">
+                    <td>Eski Şifre:</td>
+                    <td><input type="password" class="k-textbox" name="oldPassword" id="oldPassword" required="required"/></td>
+                </label>
+            </tr>
+
+            <tr>
+                <label for="newPassword">
+                    <td>Yeni Şifre:</td>
+                    <td><input type="password" class="k-textbox" name="newPassword" id="newPassword" required="required"
+                               onkeyup="validatePassword(); return false;"/></td>
+                </label>
+            </tr>
+
+            <tr>
+                <label for="reNewPassword">
+                    <td>Yeni Şifre Tekrarı:</td>
+                    <td><input type="password" class="k-textbox" name="reNewPassword" id="reNewPassword" required="required"
+                               onkeyup="validatePassword(); return false;"/></td>
+                    <td><span id="confirmMessage" class="confirmMessage"></span>
+                    </td>
+                </label>
+            </tr>
+
+            <tr>
+                <td>
+                    <button type="button" id="savePassword" data-role="button" data-sprite-css-class="k-icon k-i-tick"
+                            data-click='save'>
+                        Save
+                    </button>
+                </td>
+            </tr>
+        </table>
+    </form>
+</div>

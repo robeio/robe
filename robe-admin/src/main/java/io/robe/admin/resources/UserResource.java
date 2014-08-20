@@ -61,9 +61,10 @@ public class UserResource {
 
     @GET
     @UnitOfWork
-    @Path("email/{email}")
+    @Path("profile/{email}")
     public UserDTO getByEmail(@Auth Credentials credentials, @PathParam("email") String email) {
-        return new UserDTO(userDao.findByUsername(email).get());
+        User user = userDao.findByUsername(email).get();
+        return new UserDTO(user);
     }
 
     @PUT
@@ -133,6 +134,28 @@ public class UserResource {
 
         return new UserDTO(entity);
 
+    }
+
+
+    @POST
+    @Path("updatePassword")
+    @Consumes
+    @UnitOfWork
+    public UserDTO updatePassword(@Auth Credentials credentials,
+                                  @FormParam("newPassword") String newPassword,
+                                  @FormParam("oldPassword") String oldPassword) {
+
+        User user = userDao.findByUsername(credentials.getUsername()).get();
+
+        String oPassword = user.getPassword();
+        if (!(oPassword.equals(oldPassword))) {
+            throw new RobeRuntimeException("Eski Şifre Hatası", "Eski Şifrenizle Girdiğiniz Şifre ile Uyumlu Değildir");
+        }
+
+        user.setPassword(newPassword);
+        userDao.update(user);
+
+        return new UserDTO(user);
     }
 
     @DELETE
