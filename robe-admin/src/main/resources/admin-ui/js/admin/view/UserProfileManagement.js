@@ -47,48 +47,64 @@ define([
             }
         });
 
+        var goodColor = "#66cc66";
+        var badColor = "#ff6666";
+
+        $("#newPassword").focusout(function () {
+            if (validatePassword()) {
+                document.getElementById('newPassword').style.background = goodColor;
+            } else {
+                document.getElementById('newPassword').style.background = badColor;
+            }
+
+        });
+
+        $("#reNewPassword").focusout(function () {
+            if (validatePassword() && isMatch()) {
+                document.getElementById('reNewPassword').style.background = goodColor;
+                document.getElementById('matchMessage').innerHTML = ""
+            } else {
+                document.getElementById('reNewPassword').style.background = badColor;
+            }
+        });
+
+
         function validatePassword() {
             var error = "";
+            var isValid = true;
             var illegalChars = /[\W_]/; // allow only letters and numbers
 
             var newPassword = document.getElementById('newPassword');
-            var reNewPassword = document.getElementById('reNewPassword');
             var message = document.getElementById('confirmMessage');
 
-            var goodColor = "#66cc66";
-            var badColor = "#ff6666";
-
-            if (newPassword.value == "") {
-                newPassword.style.background = badColor;
-                reNewPassword.style.background = badColor;
-                error = "Henüz Şifre Girmediniz.\n";
+            if ((newPassword.value.length < 4) || (newPassword.value.length > 15)) {
+                error += "Şifreniz en az 4 en fazla 15 karakter uzunluğunda olmalı.<br/>";
                 message.innerHTML = error;
-            } else if ((newPassword.value.length < 4) || (newPassword.value.length > 15)) {
-                error = "Şifreniz en az 4 en fazla 15 karakter uzunluğunda olmalı. \n";
-                message.innerHTML = error;
-                newPassword.style.background = badColor;
-                reNewPassword.style.background = badColor;
-            } else if (illegalChars.test(newPassword.value)) {
-                error = "Şifreniz geçersiz karakterler içermektedir.\n";
-                message.innerHTML = error;
-                newPassword.style.background = badColor;
-                reNewPassword.style.background = badColor;
-            } else if (!((newPassword.value.search(/(a-z)+/)) && (newPassword.value.search(/(0-9)+/)))) {
-                error = "Şifrenizde en az bir adet rakam olmalıdır.\n";
-                message.innerHTML = error;
-                newPassword.style.background = badColor;
-                reNewPassword.style.background = badColor;
-            } else if (newPassword.value != reNewPassword.value) {
-                error = "Şifreler Eşleşmiyor.\n";
-                message.innerHTML = error;
-                newPassword.style.background = badColor;
-                reNewPassword.style.background = badColor;
-            } else {
-                newPassword.style.background = goodColor;
-                reNewPassword.style.background = goodColor;
-                message.innerHTML = "";
+                isValid = false;
             }
-            return error;
+            if (illegalChars.test(newPassword.value)) {
+                error += "Şifreniz geçersiz karakterler içermektedir.<br/>";
+                message.innerHTML = error;
+                isValid = false;
+            }
+            if (!((newPassword.value.search(/(a-z)+/)) && (newPassword.value.search(/(0-9)+/)))) {
+                error += "Şifrenizde en az bir adet rakam ve bir adet harf olmalıdır<br/>";
+                message.innerHTML = error;
+                isValid = false;
+            }
+            $("#confirmMessage").val(error);
+            return isValid;
+        }
+
+        function isMatch() {
+            var reNewPassword = document.getElementById('reNewPassword');
+            var newPassword = document.getElementById('newPassword');
+            var matchMessage = document.getElementById('matchMessage');
+            if (newPassword.value != reNewPassword.value) {
+                matchMessage.innerHTML = "Şifreleriniz eşleşmiyor."
+                return false;
+            }
+            return true;
         }
 
 

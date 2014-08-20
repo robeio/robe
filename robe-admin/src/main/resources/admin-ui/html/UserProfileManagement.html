@@ -10,14 +10,14 @@
             <tr>
                 <label for="firstAndLastName">
                     <td>İsim ve Soy İsim:</td>
-                    <td><input type="text" class="k-textbox" name="firstAndLastName" id="firstAndLastName" disabled/></td>
+                    <td><input type="text" class="k-textbox" id="firstAndLastName" disabled/></td>
                 </label>
             </tr>
 
             <tr>
                 <label for="emailAddress">
                     <td>E-Posta Adresi:</td>
-                    <td><input type="text" class="k-textbox" name="emailAddress" id="emailAddress" disabled/></td>
+                    <td><input type="text" class="k-textbox" id="emailAddress" disabled/></td>
                 </label>
             </tr>
 
@@ -28,24 +28,23 @@
             <tr>
                 <label for="oldPassword">
                     <td>Eski Şifre:</td>
-                    <td><input type="password" class="k-textbox" name="oldPassword" id="oldPassword" required="required"/></td>
+                    <td><input type="password" class="k-textbox" id="oldPassword" required="required"/></td>
                 </label>
             </tr>
 
             <tr>
                 <label for="newPassword">
                     <td>Yeni Şifre:</td>
-                    <td><input type="password" class="k-textbox" name="newPassword" id="newPassword" required="required"
-                               onkeyup="validatePassword(); return false;"/></td>
+                    <td><input type="password" class="k-textbox" id="newPassword" required="required"/></td>
+                    <td><span id="confirmMessage" class="confirmMessage"></span>
                 </label>
             </tr>
 
             <tr>
                 <label for="reNewPassword">
                     <td>Yeni Şifre Tekrarı:</td>
-                    <td><input type="password" class="k-textbox" name="reNewPassword" id="reNewPassword" required="required"
-                               onkeyup="validatePassword(); return false;"/></td>
-                    <td><span id="confirmMessage" class="confirmMessage"></span>
+                    <td><input type="password" class="k-textbox" id="reNewPassword" required="required"/></td>
+                    <td><span id="matchMessage" class="confirmMessage"></span>
                     </td>
                 </label>
             </tr>
