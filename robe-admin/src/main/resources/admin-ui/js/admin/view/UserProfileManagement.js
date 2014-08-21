@@ -59,10 +59,11 @@ define([
 
         });
 
-        $("#reNewPassword").focusout(function () {
-            if (validatePassword() && isMatch()) {
+        $("#reNewPassword").keyup(function () {
+            if (isMatch()) {
                 document.getElementById('reNewPassword').style.background = goodColor;
-                document.getElementById('matchMessage').innerHTML = ""
+                document.getElementById('matchMessage').innerHTML = "";
+                document.getElementById('confirmMessage').innerHTML = "";
             } else {
                 document.getElementById('reNewPassword').style.background = badColor;
             }
@@ -87,7 +88,8 @@ define([
                 message.innerHTML = error;
                 isValid = false;
             }
-            if (!((newPassword.value.search(/(a-z)+/)) && (newPassword.value.search(/(0-9)+/)))) {
+            // Accepts Only Alphanumeric Chars
+            if (!(newPassword.value.match(/^(?=.*?[a-z])(?=.*?\d)[a-z\d]+$/i))) {
                 error += "Şifrenizde en az bir adet rakam ve bir adet harf olmalıdır<br/>";
                 message.innerHTML = error;
                 isValid = false;
@@ -97,11 +99,11 @@ define([
         }
 
         function isMatch() {
-            var reNewPassword = document.getElementById('reNewPassword');
             var newPassword = document.getElementById('newPassword');
+            var reNewPassword = document.getElementById('reNewPassword');
             var matchMessage = document.getElementById('matchMessage');
             if (newPassword.value != reNewPassword.value) {
-                matchMessage.innerHTML = "Şifreleriniz eşleşmiyor."
+                matchMessage.innerHTML = "Şifreleriniz eşleşmiyor.";
                 return false;
             }
             return true;
@@ -109,35 +111,46 @@ define([
 
 
         $("#savePassword").kendoButton({
-            click: function () {
-                $.ajax({
-                    type: "POST",
-                    url: AdminApp.getBackendURL() + "user/updatePassword",
-                    data: {
-                        newPassword: CryptoJS.SHA256($("#newPassword").val()).toString(),
-                        oldPassword: CryptoJS.SHA256($("#oldPassword").val()).toString()
-                    },
-                    success: function (response) {
-                        showToast("success", "Şifreniz Başarılı Bir Şekilde Güncellendi");
-                        $("#oldPassword").val("");
-                        $("#newPassword").val("");
-                        $("#reNewPassword").val("");
-                    },
-                    error: function (e) {
-                        showToast("error", "Hata: Şifre Güncellenemedi !");
-                        $("#oldPassword").val("");
-                        $("#newPassword").val("");
-                        $("#reNewPassword").val("");
+                click: function () {
+
+                    if (validatePassword() && isMatch()) {
+                        $.ajax({
+                            type: "POST",
+                            url: AdminApp.getBackendURL() + "user/updatePassword",
+                            data: {
+                                newPassword: CryptoJS.SHA256($("#newPassword").val()).toString(),
+                                oldPassword: CryptoJS.SHA256($("#oldPassword").val()).toString()
+                            },
+                            success: function (response) {
+                                showToast("success", "Şifreniz Başarılı Bir Şekilde Güncellendi");
+                                $("#oldPassword").val("");
+                                $("#newPassword").val("");
+                                $("#reNewPassword").val("");
+
+                                document.getElementById('newPassword').style.background = "White";
+                                document.getElementById('reNewPassword').style.background = "White";
+                            },
+                            error: function (e) {
+                                showToast("error", "Hata: Şifre Güncellenemedi !");
+                                $("#oldPassword").val("");
+                                $("#newPassword").val("");
+                                $("#reNewPassword").val("");
+
+                                document.getElementById('newPassword').style.background = "White";
+                                document.getElementById('reNewPassword').style.background = "White";
+                            }
+                        });
+                    } else {
+                        showToast("error", "Hata: Şifreler Uyumsuz ve Hatalı !");
                     }
-                });
+                }
             }
-        });
-
-
+        );
     };
 
 
     return UserProfileManagementView;
-});
+})
+;
 
 
