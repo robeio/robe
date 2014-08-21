@@ -92,6 +92,7 @@ define([
             if (!(newPassword.value.match(/^(?=.*?[a-z])(?=.*?\d)[a-z\d]+$/i))) {
                 error += "Şifrenizde en az bir adet rakam ve bir adet harf olmalıdır<br/>";
                 message.innerHTML = error;
+
                 isValid = false;
             }
             $("#confirmMessage").val(error);
