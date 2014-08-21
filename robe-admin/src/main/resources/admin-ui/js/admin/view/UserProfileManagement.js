@@ -60,11 +60,13 @@ define([
         });
 
         $("#reNewPassword").keyup(function () {
-            if (isMatch()) {
+            if (validatePassword() && isMatch()) {
+                document.getElementById('newPassword').style.background = goodColor;
                 document.getElementById('reNewPassword').style.background = goodColor;
                 document.getElementById('matchMessage').innerHTML = "";
                 document.getElementById('confirmMessage').innerHTML = "";
             } else {
+                document.getElementById('newPassword').style.background = badColor;
                 document.getElementById('reNewPassword').style.background = badColor;
             }
         });
@@ -73,7 +75,6 @@ define([
         function validatePassword() {
             var error = "";
             var isValid = true;
-            var illegalChars = /[\W_]/; // allow only letters and numbers
 
             var newPassword = document.getElementById('newPassword');
             var message = document.getElementById('confirmMessage');
@@ -83,18 +84,21 @@ define([
                 message.innerHTML = error;
                 isValid = false;
             }
-            if (illegalChars.test(newPassword.value)) {
-                error += "Şifreniz geçersiz karakterler içermektedir.<br/>";
-                message.innerHTML = error;
-                isValid = false;
-            }
             // Accepts Only Alphanumeric Chars
-            if (!(newPassword.value.match(/^(?=.*?[a-z])(?=.*?\d)[a-z\d]+$/i))) {
+            if (!(newPassword.value.match(/^.*(?=.*[a-zA-Z])(?=.*\d).*$/i))) {
                 error += "Şifrenizde en az bir adet rakam ve bir adet harf olmalıdır<br/>";
                 message.innerHTML = error;
 
                 isValid = false;
             }
+
+            if (!(newPassword.value.match(/^\S*$/))) {
+                error += "Şifrenizde boşluk olamaz.<br/>";
+                message.innerHTML = error;
+
+                isValid = false;
+            }
+
             $("#confirmMessage").val(error);
             return isValid;
         }
