@@ -78,7 +78,7 @@ define([
                 confirmation: "Silmek istediğinizden emin misiniz?",
                 confirmDelete: "Yes"
             },
-            edit: this.onEdit
+            edit: onEdit
         });
         $("#btnMailTemplateManagementHelp").kendoButton({
             click: onBtnMailTemplateManagementHelp
@@ -86,7 +86,11 @@ define([
 
         function onEdit(e) {
             var editWindow = this.editable.element.data("kendoWindow");
-            editWindow.wrapper.css({ width: 800 });
+            editWindow.setOptions({
+                width: 800
+            });
+            editWindow.center();
+            $( ".k-edit-buttons" ).css( "width", "780px" );
         };
         function userTemplatePopupEditor(container, options) {
             var exampleTemplate =
@@ -138,7 +142,7 @@ define([
 
         };
         function userTemplateLanguagePopupEditor(container, options) {
-            $('<input id="cmbLanguage" data-text-field="name" data-value-field="code" class="pull-left" style="width: 600px;" data-bind="value:' + options.field + '"/>')
+            $('<input id="cmbLanguage" data-text-field="name" data-value-field="code" class="pull-left" style="width: 175px;" data-bind="value:' + options.field + '"/>')
                 .appendTo(container)
                 .kendoDropDownList({
                     optionLabel: "Dil seçiniz...",
