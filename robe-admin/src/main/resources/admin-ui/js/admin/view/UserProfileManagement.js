@@ -105,6 +105,7 @@ define([
         }
 
         $("#savePassword").kendoButton({
+                icon:'tick',
                 click: function () {
 
                     if (validatePassword() && isMatch()) {
