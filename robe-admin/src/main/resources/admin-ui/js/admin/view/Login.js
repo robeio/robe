@@ -38,6 +38,7 @@ define([
                         $(document.body).unbind("keydown");
                         me.parentPage.loadMenu();
                         $('#dialog').data("kendoWindow").close();
+                        $("#active-user-name").html($("#username").val());
                     },
                     error: function (jqXHR, textStatus, errorThrown) {
                         console.log(errorThrown);

@@ -109,6 +109,7 @@ define([
         if ($.cookie.read("auth-token") == null) {
             loadLogin();
         } else {
+            $("#active-user-name").html($.cookie.read("userEmail"));
             this.loadMenu();
         }
 
