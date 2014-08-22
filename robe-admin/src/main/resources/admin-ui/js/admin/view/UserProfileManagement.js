@@ -25,7 +25,7 @@ define([
         var me = this;
         $.ajax({
             type: "GET",
-            url: AdminApp.getBackendURL() + "user/profile/" + $.cookie.read("userEmail"),
+            url: AdminApp.getBackendURL() + "user/profile",
             contentType: "application/json",
             success: function (response) {
                 $("#emailAddress").val(response.email);

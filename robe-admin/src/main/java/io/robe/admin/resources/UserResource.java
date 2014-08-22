@@ -61,9 +61,9 @@ public class UserResource {
 
     @GET
     @UnitOfWork
-    @Path("profile/{email}")
-    public UserDTO getByEmail(@Auth Credentials credentials, @PathParam("email") String email) {
-        User user = userDao.findByUsername(email).get();
+    @Path("profile")
+    public UserDTO getByEmail(@Auth Credentials credentials) {
+        User user = userDao.findByUsername(credentials.getUsername()).get();
         return new UserDTO(user);
     }
 
