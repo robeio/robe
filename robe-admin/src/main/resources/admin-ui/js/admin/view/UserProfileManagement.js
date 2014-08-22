@@ -104,7 +104,6 @@ define([
             return true;
         }
 
-
         $("#savePassword").kendoButton({
                 click: function () {
 
