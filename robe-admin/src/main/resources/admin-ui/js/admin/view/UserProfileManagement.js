@@ -20,16 +20,6 @@ define([
         UserProfileManagementView.initialize();
     };
 
-    function showDialog(message, title) {
-        if (message != null)
-            $('#dialogMessage').html(message);
-        if (title == null)
-            title = "";
-        $('#dialog').data("kendoWindow").title(title);
-        $('#dialog').data("kendoWindow").center();
-        $('#dialog').data("kendoWindow").open();
-    };
-
     UserProfileManagementView.initialize = function () {
 
         var me = this;
