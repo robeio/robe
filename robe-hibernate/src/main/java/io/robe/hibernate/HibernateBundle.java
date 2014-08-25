@@ -7,9 +7,9 @@ import com.yammer.dropwizard.config.Bootstrap;
 import com.yammer.dropwizard.config.Configuration;
 import com.yammer.dropwizard.config.Environment;
 import com.yammer.dropwizard.db.ConfigurationStrategy;
-import com.yammer.dropwizard.hibernate.SessionFactoryFactory;
 import com.yammer.dropwizard.hibernate.SessionFactoryHealthCheck;
 import com.yammer.dropwizard.hibernate.UnitOfWorkResourceMethodDispatchAdapter;
+import io.robe.hibernate.conf.RobeSessionFactoryFactory;
 import io.robe.hibernate.entity.BaseEntity;
 import org.hibernate.SessionFactory;
 import org.reflections.Reflections;
@@ -30,7 +30,7 @@ public class HibernateBundle<T extends Configuration & HasHibernateConfiguration
     private static final Logger LOGGER = LoggerFactory.getLogger(HibernateBundle.class);
 
     private SessionFactory sessionFactory;
-	private final SessionFactoryFactory sessionFactoryFactory = new SessionFactoryFactory();
+    private final RobeSessionFactoryFactory sessionFactoryFactory = new RobeSessionFactoryFactory();
 
 
 	@Override
