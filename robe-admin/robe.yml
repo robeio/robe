@@ -22,6 +22,7 @@ hibernate:
      charSet: UTF-8
      dialect: org.hibernate.dialect.MySQL5InnoDBDialect
      hibernate.hbm2ddl.auto: update
+     # hibernate.prefix: robe_
 
 logging:
      # The default level of all loggers. Can be OFF, ERROR, WARN, INFO, DEBUG, TRACE, or ALL.
