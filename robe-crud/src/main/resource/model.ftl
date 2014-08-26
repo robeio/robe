@@ -10,7 +10,7 @@
             ${field.name} :{
                     editable : true,
                     nullable : ${field.nullable?string},
-                    validation : getValidations("${field.name}","${field.definition}", ${(!field.nullable)?string}, false, 0, ${field.length}, ""),
+                    validation : getValidations("${field.name}","${field.name}", ${(!field.nullable)?string}, false, 0, ${field.length}, ""),
                     type:"${field.type}"
             }<#if field_has_next>,</#if>
         </#list>

@@ -17,6 +17,7 @@ define([
         $("#gridUsers").kendoGrid({
             dataSource: UserDataSource.get(),
             sortable: true,
+            autoBind:false,
             toolbar: [
                 {
                     name: "create",

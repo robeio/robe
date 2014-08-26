@@ -29,13 +29,16 @@ define([
                 $.ajax({
                     type: "POST",
                     url: AdminApp.getBackendURL() + "authentication/login",
-                    data: JSON.stringify({username: $("#username").val(), password: CryptoJS.SHA256($("#password").val()).toString()}),
+                    data: JSON.stringify({
+                        username: $("#username").val(),
+                        password: CryptoJS.SHA256($("#password").val()).toString()}),
                     contentType: "application/json; charset=utf-8",
                     success: function (response) {
                         $.cookie.write("userEmail", $("#username").val());
                         $(document.body).unbind("keydown");
                         me.parentPage.loadMenu();
                         $('#dialog').data("kendoWindow").close();
+                        $("#active-user-name").html($("#username").val());
                     },
                     error: function (jqXHR, textStatus, errorThrown) {
                         console.log(errorThrown);

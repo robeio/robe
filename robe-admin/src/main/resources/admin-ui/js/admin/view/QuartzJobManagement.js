@@ -54,7 +54,7 @@ define([
                           className: "grid-command-iconfix",
                           imageClass: "k-icon k-si-plus",
                           click: addTrigger
-                     },
+                     }
                     ],
                      width: "90px"
                 }
@@ -109,7 +109,7 @@ define([
                           {
                               name: "destroy",
                               text: "",
-                              className: "grid-command-iconfix",
+                              className: "grid-command-iconfix"
                           },
                           {
                               name: "edit",
@@ -137,7 +137,7 @@ define([
                         width: "90px"
                    },
                    {   field: "cronExpression", title: "Cron Expression", editor: cronExpressionEditor },
-                   {   field: "fireTime", title:"Fire Time", template :"#=(fireTime==-1)?'Start Immediately': fireTime #"  },
+                   {   field: "fireTime", title:"Fire Time", template :"#=(data.fireTime==-1)?'Start Immediately': fireTime #"  },
                    {   field: "active", title:"Is Active" }
                 ]
             });

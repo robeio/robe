@@ -16,7 +16,6 @@ define([
     PermissionManagement = new RobeView("PermissionManagement", view, "container");
 
     PermissionManagement.render = function () {
-        console.log("PermissionManagement");
         $('#container').append(view);
         PermissionManagement.initialize();
     };
@@ -34,24 +33,27 @@ define([
 
         $("#gridServices").kendoGrid({
             dataSource: ServiceDataSource.get(),
-            width: 75,
+            width: 100,
             columns: [
                 {
                     template: '<input type="checkbox" class="checkRow"/>',
                     headerTemplate: '<input type="checkbox" id="checkAll"/>',
                     field: "selected",
                     title: "&nbsp;",
-                    width: 5
+                    width: 8
                 },
                 {
                     field: "method",
                     title: "Method",
-                    width: 15
+                    width: 20
                 },
                 {
                     field: "path",
                     title: "Servis",
                     width: 50
+                },{
+                    headerTemplate: "<button class=\"pull-left\" id=\"btnRefreshServices\"><b class=\"k-icon k-si-refresh\"/>",
+                    width: 10
                 }
             ]
         });
@@ -129,6 +131,21 @@ define([
                 checkChildren: true
             },
             dataTextField: "name"
+        });
+
+        $("#btnRefreshServices").kendoButton({
+            click: function () {
+                $.ajax({
+                    type: "GET",
+                    url: AdminApp.getBackendURL() + "service/refresh",
+                    dataType: "json",
+                    contentType: "application/json; charset=utf-8",
+                    success: function (response) {
+                        showToast("success", "Başarılı. Bulunan Yeni Servis Sayısı :"+response);
+                        ServiceDataSource.read();
+                    }
+                });
+            }
         });
 
         $("#btnSavePermission").kendoButton({

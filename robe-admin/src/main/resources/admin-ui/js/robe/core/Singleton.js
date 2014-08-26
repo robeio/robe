@@ -12,10 +12,12 @@ function Singleton() {
     };
 
     Singleton.prototype.get = function (read) {
+        if(typeof(read)==='undefined') read = true;
+
         if (this.data == null) {
             console.log("Initializing " + this.name);
         } else if (read) {
-            read();
+            this.read();
         }
 
         return this.data;

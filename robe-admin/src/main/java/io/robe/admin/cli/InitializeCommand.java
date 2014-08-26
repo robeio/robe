@@ -74,26 +74,28 @@ public class InitializeCommand<T extends RobeServiceConfiguration> extends Envir
         LOGGER.info("Scanning Services.");
 
         Reflections reflections = new Reflections(new String[]{"io"}, this.getClass().getClassLoader());
+
         Set<Class<?>> services = reflections.getTypesAnnotatedWith(Path.class);
-        for (Class service : services) {
-            String parentPath = "/" + ((Path) service.getAnnotation(Path.class)).value();
+        for (Class<?> service : services) {
+
+            String parentPath = "/" + service.getAnnotation(Path.class).value();
             for (Method method : service.getMethods()) {
+
                 if (isItService(method)) {
-                    String httpMethod = method.getAnnotation(GET.class) != null ? "GET" :
-                            method.getAnnotation(POST.class) != null ? "POST" :
-                                    method.getAnnotation(PUT.class) != null ? "PUT" :
-                                            method.getAnnotation(DELETE.class) != null ? "DELETE" :
-                                                    method.getAnnotation(OPTIONS.class) != null ? "OPTIONS" : "";
+                    String httpMethod = getHttpMethodType(method);
+
                     String path = parentPath;
                     if (method.getAnnotation(Path.class) != null) {
                         path += "/" + method.getAnnotation(Path.class).value();
                         path = path.replaceAll("//", "/");
                     }
+
                     io.robe.admin.hibernate.entity.Service entity =
                             (io.robe.admin.hibernate.entity.Service) session.createCriteria(io.robe.admin.hibernate.entity.Service.class)
                                     .add(Restrictions.eq("path", path))
                                     .add(Restrictions.eq("method", io.robe.admin.hibernate.entity.Service.Method.valueOf(httpMethod)))
                                     .uniqueResult();
+
                     if (entity == null) {
                         entity = new io.robe.admin.hibernate.entity.Service();
                         entity.setPath(path);
@@ -138,6 +140,7 @@ public class InitializeCommand<T extends RobeServiceConfiguration> extends Envir
         root.setName("Menü");
         session.persist(root);
         session.persist(createPermission(true, root.getOid(), role));
+
         Menu manager = new Menu();
         manager.setCode("Manager");
         manager.setItemOrder(1);
@@ -145,6 +148,14 @@ public class InitializeCommand<T extends RobeServiceConfiguration> extends Envir
         manager.setParentOid(root.getOid());
         session.persist(manager);
         session.persist(createPermission(true, manager.getOid(), role));
+
+        Menu userProfileManagement = new Menu();
+        userProfileManagement.setCode("UserProfileManagement");
+        userProfileManagement.setItemOrder(1);
+        userProfileManagement.setName("Profil Yönetimi");
+        userProfileManagement.setParentOid(manager.getOid());
+        session.persist(userProfileManagement);
+        session.persist(createPermission(true, userProfileManagement.getOid(), role));
 
         Menu usermanagement = new Menu();
         usermanagement.setCode("UserManagement");
@@ -207,8 +218,6 @@ public class InitializeCommand<T extends RobeServiceConfiguration> extends Envir
 
         LOGGER.info("Initialize finished.");
         System.exit(0);
-
-
     }
 
     private Permission createPermission(boolean b, String oid, Role role) {
@@ -221,6 +230,18 @@ public class InitializeCommand<T extends RobeServiceConfiguration> extends Envir
     }
 
     private boolean isItService(Method method) {
-        return method.getAnnotation(GET.class) != null || method.getAnnotation(PUT.class) != null || method.getAnnotation(POST.class) != null || method.getAnnotation(DELETE.class) != null || method.getAnnotation(OPTIONS.class) != null;
+        return method.getAnnotation(GET.class) != null ||
+                method.getAnnotation(PUT.class) != null ||
+                method.getAnnotation(POST.class) != null ||
+                method.getAnnotation(DELETE.class) != null ||
+                method.getAnnotation(OPTIONS.class) != null;
+    }
+
+    private String getHttpMethodType(Method method) {
+        return method.getAnnotation(GET.class) != null ? "GET" :
+                method.getAnnotation(POST.class) != null ? "POST" :
+                        method.getAnnotation(PUT.class) != null ? "PUT" :
+                                method.getAnnotation(DELETE.class) != null ? "DELETE" :
+                                        method.getAnnotation(OPTIONS.class) != null ? "OPTIONS" : "";
     }
 }

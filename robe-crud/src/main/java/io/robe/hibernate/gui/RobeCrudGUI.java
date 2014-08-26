@@ -300,7 +300,7 @@ public class RobeCrudGUI extends javax.swing.JFrame {
 
                     bodyDeclarations.add(ResourceCrud.getAll(entity, daoName, "findAll", auth));
                     bodyDeclarations.add(ResourceCrud.get(entity, daoName, findBy, auth));
-                    bodyDeclarations.add(ResourceCrud.create(entity, daoName, uniqueFields, "create", auth));
+                    bodyDeclarations.add(ResourceCrud.create(entity, daoName, uniqueFields, "create", auth,findBy));
                     bodyDeclarations.add(ResourceCrud.update(entity, daoName, fieldGet, "getOid", findBy, "update", "detach", auth));
                     bodyDeclarations.add(ResourceCrud.delete(entity, daoName, "getOid", findBy, "delete", auth));
                     List<ImportDeclaration> importDeclarationsResource = new ArrayList<ImportDeclaration>();

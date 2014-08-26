@@ -490,15 +490,14 @@ public class RobeHtmlCrudGUI extends javax.swing.JFrame {
                                             List<Node> nodes = expr.getChildrenNodes();
                                             Model m = new Model();
                                             m.setName(variableDeclarator.getId().toString());
-                                            m.setDefinition(variableDeclarator.getId().toString());
                                             m.setNullable(true);
                                             m.setLength("255");
                                             m.setType("string");
-                                            String fieldType = fieldDeclaration.getType().toString().toLowerCase();
+                                            String fieldType = fieldDeclaration.getType().toString().toLowerCase().replaceAll("\"", "");
 
                                             if (fieldType.equals("boolean")) {
                                                 m.setType("boolean");
-                                            } else if (fieldType.equals("integer") && fieldType.equals("int") && fieldType.equals("bigdecimal") && fieldType.equals("double") && fieldType.equals("long")) {
+                                            } else if (fieldType.equals("integer") || fieldType.equals("int") || fieldType.equals("bigdecimal") || fieldType.equals("double") || fieldType.equals("long")) {
                                                 m.setType("number");
                                             }
                                             for (Node node : nodes) {
@@ -509,10 +508,6 @@ public class RobeHtmlCrudGUI extends javax.swing.JFrame {
                                                         m.setNullable(nullable);
                                                     } else if ((memberValuePair.getName().equals("length"))) {
                                                         m.setLength(memberValuePair.getValue().toString());
-                                                    } else if (memberValuePair.getName().equals("columnDefinition")) {
-                                                        if (!memberValuePair.getValue().toString().equals("")) {
-                                                            m.setDefinition(memberValuePair.getValue().toString().replaceAll("\"", ""));
-                                                        }
                                                     }
                                                 }
                                             }

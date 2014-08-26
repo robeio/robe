@@ -47,8 +47,8 @@ public class RoleResource {
     @PUT
     @UnitOfWork
     public Role create(@Auth Credentials credentials, @Valid Role role) {
-        Optional<Role> checkUser = roleDao.findByName(role.getCode());
-        if (checkUser.isPresent()) {
+        Optional<Role> checkRole = roleDao.findByName(role.getCode());
+        if (checkRole.isPresent()) {
             throw new RobeRuntimeException("Code", role.getCode() + " already used by another role. Please use different code.");
         }
         return roleDao.create(role);
@@ -57,7 +57,12 @@ public class RoleResource {
     @POST
     @UnitOfWork
     public Role update(@Auth Credentials credentials, Role role) {
+
         roleDao.detach(role);
+        Optional<Role> checkRole = roleDao.findByNameAndNotEqualMe(role.getCode(),role.getOid());
+        if (checkRole.isPresent()) {
+            throw new RobeRuntimeException("Code", role.getCode() + " already used by another role. Please use different code.");
+        }
         Role entity = roleDao.findById(role.getOid());
         entity.setName(role.getName());
         entity.setCode(role.getCode());

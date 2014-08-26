@@ -6,7 +6,6 @@ public class Model {
     private boolean nullable;
     private String length;
     private String type;
-    private String definition;
 
     public String getName() {
         return name;
@@ -38,13 +37,5 @@ public class Model {
 
     public void setType(String type) {
         this.type = type;
-    }
-
-    public String getDefinition() {
-        return definition;
-    }
-
-    public void setDefinition(String definition) {
-        this.definition = definition;
     }
 }

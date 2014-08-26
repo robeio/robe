@@ -21,13 +21,14 @@ define([
         var me = this;
         $.ajax({
             type: "GET",
-            url: AdminApp.getBackendURL() + "user/email/" + $.cookie.read("userEmail"),
+            url: AdminApp.getBackendURL() + "user/profile/" + $.cookie.read("userEmail"),
             contentType: "application/json",
             success: function (response) {
                 $("#userEmail").val(response.email);
                 $("#userName").val(response.name);
                 $("#userSurname").val(response.surname);
                 me.data = response;
+                $("#btnDialogClose").css('display', 'none');
             }
         });
 
