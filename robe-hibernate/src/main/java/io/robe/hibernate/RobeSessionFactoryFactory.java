@@ -5,6 +5,7 @@ import io.dropwizard.db.DataSourceFactory;
 import io.dropwizard.db.ManagedDataSource;
 import io.dropwizard.hibernate.SessionFactoryManager;
 import io.dropwizard.setup.Environment;
+import io.robe.hibernate.conf.RobeHibernateNamingStrategy;
 import org.hibernate.SessionFactory;
 import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
 import org.hibernate.cfg.AvailableSettings;
@@ -71,6 +72,12 @@ public class RobeSessionFactoryFactory {
         configuration.setProperty(AvailableSettings.ORDER_INSERTS, "true");
         configuration.setProperty(AvailableSettings.USE_NEW_ID_GENERATOR_MAPPINGS, "true");
         configuration.setProperty("jadira.usertype.autoRegisterUserTypes", "true");
+
+	    String prefix = properties.get("hibernate.prefix");
+	    if (prefix != null) {
+		    configuration.setNamingStrategy(new RobeHibernateNamingStrategy(prefix));
+		    LOGGER.info("Table Prefix: ", prefix);
+	    }
         for (Map.Entry<String, String> property : properties.entrySet()) {
             configuration.setProperty(property.getKey(), property.getValue());
         }

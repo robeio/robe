@@ -2,11 +2,23 @@ package io.robe.admin;
 
 import com.google.inject.Module;
 import io.dropwizard.Application;
+import io.dropwizard.assets.AssetsBundle;
 import io.dropwizard.hibernate.UnitOfWork;
 import io.dropwizard.setup.Bootstrap;
 import io.dropwizard.setup.Environment;
+import io.dropwizard.views.ViewBundle;
+import io.robe.admin.cli.InitializeCommand;
+import io.robe.admin.guice.module.AuthenticatorModule;
+import io.robe.admin.guice.module.HibernateModule;
+import io.robe.admin.guice.module.MailModule;
+import io.robe.admin.guice.module.QuartzModule;
+import io.robe.auth.tokenbased.TokenBasedAuthBundle;
 import io.robe.common.exception.RobeExceptionMapper;
+import io.robe.guice.GuiceBundle;
 import io.robe.hibernate.HibernateBundle;
+import io.robe.mail.MailBundle;
+import io.robe.quartz.QuartzBundle;
+import io.robe.quartz.hibernate.ByHibernate;
 
 import java.util.LinkedList;
 import java.util.List;
@@ -49,31 +61,31 @@ public class RobeApplication<T extends RobeServiceConfiguration> extends Applica
      */
     @Override
     public void initialize(Bootstrap<T> bootstrap) {
-//        hibernateBundle = new HibernateBundle<T>();
-//        QuartzBundle<T> quartzBundle = new QuartzBundle<T>();
-//        MailBundle<T> mailBundle = new MailBundle<T>();
-//        TokenBasedAuthBundle<T> authBundle = new TokenBasedAuthBundle<T>();
+	    hibernateBundle = new HibernateBundle<T>();
+	    QuartzBundle<T> quartzBundle = new QuartzBundle<T>();
+	    MailBundle<T> mailBundle = new MailBundle<T>();
+	    TokenBasedAuthBundle<T> authBundle = new TokenBasedAuthBundle<T>();
 
-//        bootstrap.addBundle(hibernateBundle);
-//        bootstrap.addBundle(authBundle);
-//        bootstrap.addBundle(quartzBundle);
-//        bootstrap.addBundle(new ViewBundle());
-//        bootstrap.addBundle(mailBundle);
-//        bootstrap.addBundle(new AssetsBundle("/admin-ui/", "/admin-ui", "admin-ui/index.html", "io/robe/admin"));
+	    bootstrap.addBundle(hibernateBundle);
+	    bootstrap.addBundle(authBundle);
+	    bootstrap.addBundle(quartzBundle);
+	    bootstrap.addBundle(new ViewBundle());
+	    bootstrap.addBundle(mailBundle);
+	    bootstrap.addBundle(new AssetsBundle("/admin-ui/", "/admin-ui/", "index.html", "io/robe/admin"));
 
 
         List<Module> modules = new LinkedList<Module>();
-//        modules.add(new HibernateModule(hibernateBundle));
-//        modules.add(new AuthenticatorModule(authBundle));
-//        modules.add(new QuartzModule(quartzBundle));
-//        modules.add(new MailModule(mailBundle));
+	    modules.add(new HibernateModule(hibernateBundle));
+	    modules.add(new AuthenticatorModule(authBundle, bootstrap.getMetricRegistry()));
+	    modules.add(new QuartzModule(quartzBundle));
+	    modules.add(new MailModule(mailBundle));
 
-//        bootstrap.addBundle(new GuiceBundle<T>(modules,RobeServiceConfiguration.class));
-//        bootstrap.addCommand(new InitializeCommand(this, hibernateBundle));
+	    bootstrap.addBundle(new GuiceBundle<T>(modules, bootstrap.getApplication().getConfigurationClass()));
+	    bootstrap.addCommand(new InitializeCommand(this, hibernateBundle));
 
 
         //TODO: Bad way to get it. Will change it later.
-//        ByHibernate.setHibernateBundle(hibernateBundle);
+	    ByHibernate.setHibernateBundle(hibernateBundle);
 
     }
 

@@ -26,84 +26,84 @@ import java.util.Set;
  * Takes scannable paths from configuration yml from entityPackage element as array separated by ','
  */
 public class HibernateBundle<T extends Configuration & HasHibernateConfiguration> implements ConfiguredBundle<T>, DatabaseConfiguration<T> {
-    private static final Logger LOGGER = LoggerFactory.getLogger(HibernateBundle.class);
+	private static final Logger LOGGER = LoggerFactory.getLogger(HibernateBundle.class);
 
-    private SessionFactory sessionFactory;
-    private final RobeSessionFactoryFactory sessionFactoryFactory = new RobeSessionFactoryFactory();
-
-
-    /**
-     * Reads the configuration and builds the session factory, with entities.
-     *
-     * @param configuration configuration to read
-     * @param environment   environment to add
-     * @throws ClassNotFoundException
-     */
-    @Override
-    public final void run(T configuration, Environment environment) throws Exception {
-        final HibernateConfiguration databaseConfiguration = getDatabaseConfiguration(configuration);
-        final DataSourceFactory dbConfig = getDataSourceFactory(configuration);
-
-        this.sessionFactory = sessionFactoryFactory.build(this, environment, dbConfig,
-                getEntities(databaseConfiguration.getScanPackages(), databaseConfiguration.getEntities()));
-        environment.jersey().register(new UnitOfWorkResourceMethodDispatchAdapter(sessionFactory));
-        environment.healthChecks().register("hibernate",
-                new SessionFactoryHealthCheck(sessionFactory,
-                        dbConfig.getValidationQuery()));
-    }
-
-    @Override
-    public void initialize(Bootstrap<?> bootstrap) {
-
-    }
-
-    private List<Class<?>> getEntities(String[] packages, String[] entities) {
-
-        Set<Class<?>> classes = new HashSet<Class<?>>();
-        if (packages != null) {
-            for (String packageName : packages) {
-                Reflections reflections = new Reflections(packageName);
-                classes.addAll(reflections.getTypesAnnotatedWith(Entity.class));
-            }
-        }
-        if (entities != null) {
-            for (String entity : entities) {
-                try {
-                    Class entityClass = Class.forName(entity);
-                    if (entityClass.isAnnotationPresent(Entity.class)) {
-                        classes.add(entityClass);
-                    } else {
-                        LOGGER.warn("Class is not annotated with Entity: " + entity);
-                    }
-                } catch (ClassNotFoundException e) {
-                    LOGGER.warn("Can't load class: " + entity, e);
-                }
-            }
-        }
-        return ImmutableList.<Class<?>>builder().add(BaseEntity.class).addAll(classes).build();
-    }
+	private SessionFactory sessionFactory;
+	private final RobeSessionFactoryFactory sessionFactoryFactory = new RobeSessionFactoryFactory();
 
 
-    /**
-     * @return current session factory
-     */
-    public SessionFactory getSessionFactory() {
-        return sessionFactory;
-    }
+	/**
+	 * Reads the configuration and builds the session factory, with entities.
+	 *
+	 * @param configuration configuration to read
+	 * @param environment   environment to add
+	 * @throws ClassNotFoundException
+	 */
+	@Override
+	public final void run(T configuration, Environment environment) throws Exception {
+		final HibernateConfiguration databaseConfiguration = getDatabaseConfiguration(configuration);
+		final DataSourceFactory dbConfig = getDataSourceFactory(configuration);
+
+		this.sessionFactory = sessionFactoryFactory.build(this, environment, dbConfig,
+				getEntities(databaseConfiguration.getScanPackages(), databaseConfiguration.getEntities()));
+		environment.jersey().register(new UnitOfWorkResourceMethodDispatchAdapter(sessionFactory));
+		environment.healthChecks().register("hibernate",
+				new SessionFactoryHealthCheck(sessionFactory,
+						dbConfig.getValidationQuery()));
+	}
+
+	@Override
+	public void initialize(Bootstrap<?> bootstrap) {
+
+	}
+
+	private List<Class<?>> getEntities(String[] packages, String[] entities) {
+
+		Set<Class<?>> classes = new HashSet<Class<?>>();
+		if (packages != null) {
+			for (String packageName : packages) {
+				Reflections reflections = new Reflections(packageName);
+				classes.addAll(reflections.getTypesAnnotatedWith(Entity.class));
+			}
+		}
+		if (entities != null) {
+			for (String entity : entities) {
+				try {
+					Class entityClass = Class.forName(entity);
+					if (entityClass.isAnnotationPresent(Entity.class)) {
+						classes.add(entityClass);
+					} else {
+						LOGGER.warn("Class is not annotated with Entity: " + entity);
+					}
+				} catch (ClassNotFoundException e) {
+					LOGGER.warn("Can't load class: " + entity, e);
+				}
+			}
+		}
+		return ImmutableList.<Class<?>>builder().add(BaseEntity.class).addAll(classes).build();
+	}
 
 
-    public HibernateConfiguration getDatabaseConfiguration(T configuration) {
-        return configuration.getHibernateConfiguration();
-    }
+	/**
+	 * @return current session factory
+	 */
+	public SessionFactory getSessionFactory() {
+		return sessionFactory;
+	}
 
-    @Override
-    public DataSourceFactory getDataSourceFactory(T configuration) {
-        return configuration.getHibernateConfiguration().getDataSourceFactory(configuration);
-    }
 
-    public void configure(org.hibernate.cfg.Configuration configuration) {
+	public HibernateConfiguration getDatabaseConfiguration(T configuration) {
+		return configuration.getHibernateConfiguration();
+	}
 
-    }
+	@Override
+	public DataSourceFactory getDataSourceFactory(T configuration) {
+		return configuration.getHibernateConfiguration().getDataSourceFactory(configuration);
+	}
+
+	public void configure(org.hibernate.cfg.Configuration configuration) {
+
+	}
 }
 
 

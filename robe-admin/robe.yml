@@ -1,22 +1,12 @@
 # HTTP-specific options.
-#server:
-# port: 8080
-# adminPort: 8080
-# rootPath: /robe/*  # Default is /*
-#server:
-#  type: simple
-#  applicationContextPath: /robe/*
-#  adminContextPath: /admin/*
-#  connector:
-#    type: http
-#    port: 8080
 server:
-  applicationConnectors:
-    - type: http
-      port: 8080
-  adminConnectors:
-    - type: http
-      port: 8081
+  type: simple
+  applicationContextPath: /robe
+  adminContextPath: /admin
+  connector:
+    type: http
+    port: 8080
+
 
 hibernate:
    # Hibernate ScanPackages. Accepts multiple package names separated with comma ',' with a trailing  space ' '

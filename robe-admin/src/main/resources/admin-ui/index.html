@@ -4,6 +4,13 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge" >
 
     <title lang="tr">robe.io</title>
+    <title lang="tr">robe.io</title>
+    <script>
+        //fixes auto directed index.html path problem .
+        if (!window.location.href.indexOf(".html")) {
+            window.location.href = window.location.href + "/";
+        }
+    </script>
     <!--KENDO CSS START-->
     <link href="./js/kendoui/styles/kendo.common.min.css" rel="stylesheet">
     <link href="./js/kendoui/styles/kendo.rtl.min.css" rel="stylesheet">
