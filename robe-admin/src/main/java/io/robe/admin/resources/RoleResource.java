@@ -32,7 +32,11 @@ public class RoleResource {
     @GET
     @UnitOfWork
     public List<Role> getRoles(@Auth Credentials credentials) {
-        return roleDao.findAll(Role.class);
+	    List<Role> roles = roleDao.findAll(Role.class);
+	    for (Role role : roles) {
+		    Hibernate.initialize(role.getRoles());
+	    }
+	    return roles;
     }
 
     @GET

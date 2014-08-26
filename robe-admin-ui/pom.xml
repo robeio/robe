@@ -13,9 +13,8 @@
     <groupId>io.robe</groupId>
     <artifactId>robe-admin-ui</artifactId>
     <version>0.4.0</version>
-    <packaging>js</packaging>
 
-    <name>Robe-Admin-UI</name>
+    <name>robe-admin-ui</name>
     <description>UI project for Robe-Admin module.</description>
 
     <properties>
