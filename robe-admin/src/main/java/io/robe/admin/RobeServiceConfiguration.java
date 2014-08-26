@@ -4,6 +4,8 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import io.dropwizard.Configuration;
 import io.robe.auth.tokenbased.configuration.HasTokenBasedAuthConfiguration;
 import io.robe.auth.tokenbased.configuration.TokenBasedAuthConfiguration;
+import io.robe.common.asset.AssetConfiguration;
+import io.robe.common.asset.HasAssetConfiguration;
 import io.robe.guice.GuiceConfiguration;
 import io.robe.guice.HasGuiceConfiguration;
 import io.robe.hibernate.HasHibernateConfiguration;
@@ -24,7 +26,8 @@ public class RobeServiceConfiguration extends Configuration implements
         HasQuartzConfiguration,
         HasMailConfiguration,
         HasMessageQueueConfiguration,
-        HasTokenBasedAuthConfiguration {
+        HasTokenBasedAuthConfiguration,
+		HasAssetConfiguration{
 
     @Valid
     @NotNull
@@ -51,6 +54,10 @@ public class RobeServiceConfiguration extends Configuration implements
     @Valid
     @JsonProperty
     private TokenBasedAuthConfiguration auth;
+
+	@Valid
+	@JsonProperty
+	private AssetConfiguration asset;
 
 
     public HibernateConfiguration getHibernateConfiguration() {
@@ -82,4 +89,8 @@ public class RobeServiceConfiguration extends Configuration implements
         return auth;
     }
 
+	@Override
+	public AssetConfiguration getAsset() {
+		return asset;
+	}
 }

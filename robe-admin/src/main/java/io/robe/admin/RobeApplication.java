@@ -2,7 +2,6 @@ package io.robe.admin;
 
 import com.google.inject.Module;
 import io.dropwizard.Application;
-import io.dropwizard.assets.AssetsBundle;
 import io.dropwizard.hibernate.UnitOfWork;
 import io.dropwizard.setup.Bootstrap;
 import io.dropwizard.setup.Environment;
@@ -13,6 +12,7 @@ import io.robe.admin.guice.module.HibernateModule;
 import io.robe.admin.guice.module.MailModule;
 import io.robe.admin.guice.module.QuartzModule;
 import io.robe.auth.tokenbased.TokenBasedAuthBundle;
+import io.robe.common.asset.ConfiguredAssetBundle;
 import io.robe.common.exception.RobeExceptionMapper;
 import io.robe.guice.GuiceBundle;
 import io.robe.hibernate.HibernateBundle;
@@ -71,8 +71,7 @@ public class RobeApplication<T extends RobeServiceConfiguration> extends Applica
 	    bootstrap.addBundle(quartzBundle);
 	    bootstrap.addBundle(new ViewBundle());
 	    bootstrap.addBundle(mailBundle);
-	    bootstrap.addBundle(new AssetsBundle("/admin-ui/", "/admin-ui/", "index.html", "io/robe/admin"));
-
+	    bootstrap.addBundle(new ConfiguredAssetBundle<T>());
 
         List<Module> modules = new LinkedList<Module>();
 	    modules.add(new HibernateModule(hibernateBundle));
@@ -102,8 +101,6 @@ public class RobeApplication<T extends RobeServiceConfiguration> extends Applica
     @Override
     public void run(T configuration, Environment environment) throws Exception {
         addExceptionMappers(environment);
-
-
     }
 
     private void addExceptionMappers(Environment environment) {

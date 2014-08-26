@@ -82,3 +82,9 @@ auth:
   poolSize: 4 # parallel with cpu cores
   algorithm: PBEWithMD5AndTripleDES
   serverPassword: auto # auto for uuid, if it is cluster use custom password
+
+asset:
+  resourcePath: /Users/serayuzgur/Development/robe/robe-admin-ui/src/main/js/admin-ui
+  uriPath: /admin-ui/
+  indexFile: index.html
+  assetsName: io.robe.admin.ui
