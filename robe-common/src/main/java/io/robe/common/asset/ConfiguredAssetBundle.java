@@ -18,11 +18,7 @@ public class ConfiguredAssetBundle<T extends Configuration & HasAssetConfigurati
 
 
 	/**
-	 * Creates a new AssetsBundle which will configure the application to serve the static files
-	 * located in {@code src/main/resources/${resourcePath}} as {@code /${uriPath}}. If no file name is
-	 * in ${uriPath}, ${indexFile} is appended before serving. For example, given a
-	 * {@code resourcePath} of {@code "/assets"} and a uriPath of {@code "/js"},
-	 * {@code src/main/resources/assets/example.js} would be served up from {@code /js/example.js}.
+	 * Creates a new ConfiguredAssetBundle which will configure the application to serve the static files
 	 */
 	public ConfiguredAssetBundle() {
 
