@@ -63,7 +63,7 @@ public class FileAssetServlet extends HttpServlet {
 	private final Charset defaultCharset;
 
 	/**
-	 * Creates a new {@code AssetServlet} that serves static assets loaded from {@code resourceURL}
+	 * Creates a new {@code FileAssetServlet} that serves static assets loaded from {@code resourceURL}
 	 * (typically a file: or jar: URL). The assets are served at URIs rooted at {@code uriPath}. For
 	 * example, given a {@code resourceURL} of {@code "file:/data/assets"} and a {@code uriPath} of
 	 * {@code "/js"}, an {@code AssetServlet} would serve the contents of {@code
