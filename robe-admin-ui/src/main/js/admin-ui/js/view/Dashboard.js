@@ -2,12 +2,11 @@ var Dashboard;
 
 define([
     'text!html/Dashboard.html',
-    'admin/data/DataSources',
-
     'kendo/kendo.button.min',
-    'highcharts/highcharts',
-    'highcharts/highcharts-more',
-    'highcharts/exporting',
+    'kendo/kendo.dropdownlist.min',
+    'lib/highcharts/highcharts',
+    'lib/highcharts/highcharts-more',
+    'lib/highcharts/exporting',
     'robe/Charts',
     'robe/view/RobeView'
 ], function (view) {
@@ -35,30 +34,30 @@ define([
 
             contentType: "application/json; charset=utf-8",
             success: function (response) {
-                var data = response["jvm"]["memory"];
-                var servletInfo = response ["org.eclipse.jetty.servlet.ServletContextHandler"];
-                var serverUptime = "Server Uptime : " + response["jvm"]["uptime"] + " seconds";
+                var data = response["gauges"];
+                var servletInfo = response ["meters"];
+                var serverUptime = "Server Uptime : " + response["gauges"]["jvm.gc.PS-Scavenge.time"]["value"] + " seconds";
 
 
                 //Memory data
                 var memoryData = [
-                    ["Unused", (data["totalMax"] - data["totalUsed"])],
-                    ["Used", (data["totalUsed"])]
+                    ["Unused", (data["jvm.memory.total.max"]["value"] - data["jvm.memory.total.used"]["value"])],
+                    ["Used", (data["jvm.memory.total.used"]["value"])]
                 ];
 
                 //Connection Pool Data
-                var connPool = response["org.eclipse.jetty.util.thread.QueuedThreadPool"];
-                var connMax = connPool["active-threads"]["value"] + connPool["idle-threads"]["value"];
-                var connUsed = connPool["active-threads"]["value"];
+
+                var connMax = data["jvm.threads.count"].value + data["jvm.threads.daemon.count"].value;
+                var connUsed = data["jvm.threads.runnable.count"].value;
 
 
                 //Logback Data
-                var logbackAll = response["ch.qos.logback.core.Appender"]["all"]["count"];
-                var logbackDebug = response["ch.qos.logback.core.Appender"]["debug"]["count"];
-                var logbackError = response["ch.qos.logback.core.Appender"]["error"]["count"];
-                var logbackInfo = response["ch.qos.logback.core.Appender"]["info"]["count"];
-                var logbackTrace = response["ch.qos.logback.core.Appender"]["trace"]["count"];
-                var logbackWarn = response["ch.qos.logback.core.Appender"]["warn"]["count"];
+                var logbackAll = response["meters"]["ch.qos.logback.core.Appender.all"]["count"];
+                var logbackDebug = response["meters"]["ch.qos.logback.core.Appender.debug"]["count"];
+                var logbackError = response["meters"]["ch.qos.logback.core.Appender.error"]["count"];
+                var logbackInfo = response["meters"]["ch.qos.logback.core.Appender.info"]["count"];
+                var logbackTrace = response["meters"]["ch.qos.logback.core.Appender.trace"]["count"];
+                var logbackWarn = response["meters"]["ch.qos.logback.core.Appender.warn"]["count"];
                 var logBackData = [
                     ["Debug", (logbackDebug)],
                     ["Error", (logbackError)],
@@ -70,45 +69,63 @@ define([
 
                 //Heap Memory Data
                 var heapMemoryData = [
-                    ["Unused", (data["heapMax"] - data["heapUsed"])],
-                    ["Used", (data["heapUsed"])]
+                    ["Unused", (data["jvm.memory.heap.max"]["value"] - data["jvm.memory.heap.used"]["value"])],
+                    ["Used", (data["jvm.memory.heap.used"]["value"])]
                 ];
-                var heapUsage = data["heap_usage"];
-                var nonHeapUsage = data["non_heap_usage"];
+                var heapUsage = data["jvm.memory.heap.usage"]["value"];
+                var nonHeapUsage = data["jvm.memory.non-heap.usage"]["value"];
 
-                // VM info and HTTP response counts data
-                var vmInfo = response["jvm"]["vm"];
-                var vmName = vmInfo["name"];
-                var vmVersion = vmInfo["version"];
-                var httpResponseCounts = [servletInfo["1xx-responses"]["count"], servletInfo["2xx-responses"]["count"], servletInfo["3xx-responses"]["count"], servletInfo["4xx-responses"]["count"], servletInfo["5xx-responses"]["count"]];
+                var vmName = "";
+                var vmVersion = response["version"];
+                var httpResponseCounts = [servletInfo["io.dropwizard.jetty.MutableServletContextHandler.1xx-responses"]["count"], servletInfo["io.dropwizard.jetty.MutableServletContextHandler.2xx-responses"]["count"], servletInfo["io.dropwizard.jetty.MutableServletContextHandler.3xx-responses"]["count"], servletInfo["io.dropwizard.jetty.MutableServletContextHandler.4xx-responses"]["count"], servletInfo["io.dropwizard.jetty.MutableServletContextHandler.5xx-responses"]["count"]];
                 var categoryList = ['1**', '2**', '3**', '4**', '5**'];
 
-                // Authenticate io.robe.admin counts and response times
-                var authenticateServiceData = response["io.robe.admin.resources.AuthResource"];
-                var loginMin = authenticateServiceData["login"]["duration"]["min"];
-                var loginMax = authenticateServiceData["login"]["duration"]["max"];
-                var loginMean = authenticateServiceData["login"]["duration"]["mean"];
-                var loginCount = authenticateServiceData["login"]["rate"]["count"];
+                var timers = response["timers"];
 
-                // Auth Token io.robe.admin counts and response times
-                var authTokenServiceData = response["io.robe.auth.tokenbased.TokenBasedAuthenticator"];
-                var getTokenMin = authTokenServiceData ["gets"]["duration"]["min"];
-                var getTokenMax = authTokenServiceData ["gets"]["duration"]["max"];
-                var getTokenMean = authTokenServiceData ["gets"]["duration"]["mean"];
-
-                // Menu io.robe.admin counts and response times
-                var menuServiceData = response["io.robe.admin.resources.MenuResource"];
-                var createMenuMean = menuServiceData["create"]["duration"]["mean"];
-                var getMenuMean = menuServiceData["getMenus"]["duration"]["mean"];
-                var deleteMenu = menuServiceData["delete"]["duration"]["mean"];
+                var resourcesNames = [];
+                var resourcesDataCount = [];
+                var resourcesDataMean = [];
+                var resourcesDataMax = [];
+                var resourcesDataMin = [];
+                for (var key in timers) {
+                    if (timers.hasOwnProperty(key))
+                        if (key.match("^io.robe.admin.resources")) {
+                            var names = key.split('.');
+                            resourcesNames.push(names[names.length - 1]);
+                            resourcesDataCount.push(timers[key]["count"]);
+                            resourcesDataMean.push(timers[key]["mean"]);
+                            resourcesDataMax.push(timers[key]["max"]);
+                            resourcesDataMin.push(timers[key]["min"]);
+                        }
+                }
+                var seriesTime = [
+                    {
+                        name: 'Mean',
+                        data: resourcesDataMean
+                    },
+                    {
+                        name: 'Max',
+                        data: resourcesDataMax
+                    },
+                    {
+                        name: 'Min',
+                        data: resourcesDataMin
+                    }
+                ];
+                var seriesCount = [
+                    {
+                        name: 'Count',
+                        data: resourcesDataCount
+                    }
+                ];
 
                 Charts.pie("memory", memoryData, "Ram");
                 Charts.gauge("threads", [connUsed, connMax], "Threads");
                 Charts.pie("allLogback", logBackData, "LOGBACK");
                 Charts.pie("heapMemory", heapMemoryData, "Heap Memory");
                 Charts.column("responseCount", httpResponseCounts, 'Http Response Code', " Response Counts", "HTTP Response Code Counts", serverUptime, categoryList);
-                Charts.column("responseTime", [getMenuMean, getTokenMean, loginMean], "Http Response Time", "Time (miliSeconds) ", "Http Response Time", serverUptime, ["Get Menus", "Get Token", " Post Login"])
-
+                Charts.row("robeAdminResourcesTime", resourcesNames, seriesTime);
+                Charts.row("robeAdminResourcesCount", resourcesNames, seriesCount);
                 document.getElementById("vmName").innerHTML = vmName;
                 document.getElementById("vmVersion").innerHTML = vmVersion;
                 document.getElementById("heapUsage").innerHTML = "%" + parseInt(heapUsage * 100);

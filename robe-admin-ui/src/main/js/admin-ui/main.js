@@ -39,7 +39,7 @@ require.config({
             exports: 'Highcharts'
         },
         'lib/highcharts/highcharts-more': {
-            deps: ['highcharts/highcharts']
+            deps: ['lib/highcharts/highcharts']
         },
         'lib/highcharts/exports': {
             deps: ['lib/highcharts/highcharts']
@@ -50,7 +50,7 @@ require.config({
         'js/router': {
             deps: ['lib/jquery/jquery.min']
         },
-        'lib/requirejs-router/router.min':{
+        'lib/requirejs-router/router.min': {
             exports: 'Router'
         }
     }
