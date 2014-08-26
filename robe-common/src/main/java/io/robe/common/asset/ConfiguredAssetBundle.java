@@ -1,8 +1,8 @@
 package io.robe.common.asset;
 
 import com.google.common.base.Charsets;
+import io.dropwizard.Configuration;
 import io.dropwizard.ConfiguredBundle;
-import io.dropwizard.servlets.assets.AssetServlet;
 import io.dropwizard.setup.Bootstrap;
 import io.dropwizard.setup.Environment;
 import org.slf4j.Logger;
@@ -13,13 +13,8 @@ import static com.google.common.base.Preconditions.checkArgument;
 /**
  * A Configured bundle for serving static asset files from the file system.
  */
-public class ConfiguredAssetBundle implements ConfiguredBundle {
+public class ConfiguredAssetBundle<T extends Configuration & HasAssetConfiguration> implements ConfiguredBundle<T> {
 	private static final Logger LOGGER = LoggerFactory.getLogger(ConfiguredAssetBundle.class);
-
-	private final String resourcePath;
-	private final String uriPath;
-	private final String indexFile;
-	private final String assetsName;
 
 
 	/**
@@ -28,25 +23,27 @@ public class ConfiguredAssetBundle implements ConfiguredBundle {
 	 * in ${uriPath}, ${indexFile} is appended before serving. For example, given a
 	 * {@code resourcePath} of {@code "/assets"} and a uriPath of {@code "/js"},
 	 * {@code src/main/resources/assets/example.js} would be served up from {@code /js/example.js}.
-	 *
-	 * @param resourcePath the resource path (in the classpath) of the static asset files
-	 * @param uriPath      the uri path for the static asset files
-	 * @param indexFile    the name of the index file to use
-	 * @param assetsName   the name of servlet mapping used for this assets bundle
 	 */
-	public ConfiguredAssetBundle(String resourcePath, String uriPath, String indexFile, String assetsName) {
-		checkArgument(resourcePath.startsWith("/"), "%s is not an absolute path", resourcePath);
-		checkArgument(!"/".equals(resourcePath), "%s is the classpath root", resourcePath);
-		this.resourcePath = resourcePath.endsWith("/") ? resourcePath : (resourcePath + '/');
-		this.uriPath = uriPath.endsWith("/") ? uriPath : (uriPath + '/');
-		this.indexFile = indexFile;
-		this.assetsName = assetsName;
+	public ConfiguredAssetBundle() {
+
 	}
 
 	@Override
-	public void run(Object o, Environment environment) throws Exception {
-		LOGGER.info("Registering AssetBundle with name: {} for path {}", assetsName, uriPath + '*');
-		environment.servlets().addServlet(assetsName, createServlet()).addMapping(uriPath + '*');
+	public void run(T configuration, Environment environment) throws Exception {
+		String resourcePath = configuration.getAsset().getResourcePath();
+		checkArgument(resourcePath.startsWith("/"), "%s is not an absolute path", resourcePath);
+		checkArgument(!"/".equals(resourcePath), "%s is the classpath root", resourcePath);
+		resourcePath = resourcePath.endsWith("/") ? resourcePath : (resourcePath + '/');
+		String uriPath = configuration.getAsset().getUriPath();
+		uriPath = uriPath.endsWith("/") ? uriPath : (uriPath + '/');
+		LOGGER.info("Registering AssetBundle with name: {} for path {}", configuration.getAsset().getAssetsName(), uriPath + '*');
+		environment.servlets().addServlet(configuration.getAsset().getAssetsName(),
+				new FileAssetServlet(
+						resourcePath,
+						uriPath,
+						configuration.getAsset().getIndexFile(),
+						Charsets.UTF_8)
+		).addMapping(uriPath + '*');
 	}
 
 	@Override
@@ -54,7 +51,4 @@ public class ConfiguredAssetBundle implements ConfiguredBundle {
 
 	}
 
-	private AssetServlet createServlet() {
-		return new AssetServlet(resourcePath, uriPath, indexFile, Charsets.UTF_8);
-	}
 }
