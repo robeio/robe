@@ -2,17 +2,17 @@ package io.robe.admin.guice.module;
 
 import com.google.inject.AbstractModule;
 import com.google.inject.Provider;
-import io.robe.quartz.HibernateManagableQuartzBundle;
 import io.robe.quartz.ManagedQuartz;
+import io.robe.quartz.QuartzBundle;
 
 /**
  * Default Guice bindings are done at this class.
  */
 public class QuartzModule extends AbstractModule {
 
-    private final HibernateManagableQuartzBundle bundle;
+    private final QuartzBundle bundle;
 
-    public QuartzModule(HibernateManagableQuartzBundle bundle) {
+    public QuartzModule(QuartzBundle bundle) {
         this.bundle = bundle;
     }
 

@@ -1,58 +1,32 @@
 package io.robe.convert.excel;
 
 import io.robe.convert.SamplePojo;
+import io.robe.convert.TestData;
 import io.robe.convert.excel.exporter.XLSXExporter;
-import io.robe.convert.excel.importer.XLSXImporter;
 import org.junit.Test;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
-import java.io.*;
-import java.util.ArrayList;
-import java.util.List;
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.OutputStream;
 
 public class XLSXExporterTest {
+
+    private String SAMPLE = XLSXExporterTest.class.getClassLoader().getResource("sample.xlsx").getFile();
+    private static final Logger LOGGER = LoggerFactory.getLogger(XLSXExporterTest.class);
+
     @Test
-    public void exporStream() {
-        XLSXImporter xlsxImporter = new XLSXImporter();
+    public void exportStream() throws Exception {
+        File exportFile = new File(SAMPLE);
+        OutputStream outputStream = new FileOutputStream(exportFile);
+        LOGGER.info(" New excel file exported to this location : " + exportFile.getCanonicalPath() +
+                " with size : " + exportFile.getTotalSpace() + " bytes");
 
-        List<ArrayList> pojos = null;
-        try {
-            pojos = xlsxImporter.importStream(SamplePojo.class, XLSImporterTest.class.getClassLoader().getResourceAsStream("sample.xlsx"));
-        } catch (IOException e) {
-            e.printStackTrace();
-        } catch (ClassNotFoundException e) {
-            e.printStackTrace();
-        } catch (IllegalAccessException e) {
-            e.printStackTrace();
-        } catch (InstantiationException e) {
-            e.printStackTrace();
-        }
+        XLSXExporter xlsxExporter = new XLSXExporter(true);
+        xlsxExporter.exportStream(SamplePojo.class, outputStream, TestData.getData().iterator());
 
-        String yourPath = "";
+        outputStream.flush();
 
-        OutputStream outputStream = null;
-        try {
-            outputStream = new FileOutputStream(new File(yourPath));
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-        }
-
-        try {
-            XLSXExporter xlsxExporter = new XLSXExporter();
-            xlsxExporter.exportStream(SamplePojo.class, outputStream, pojos);
-        } catch (IOException e) {
-            e.printStackTrace();
-        } catch (ClassNotFoundException e) {
-            e.printStackTrace();
-        } catch (IllegalAccessException e) {
-            e.printStackTrace();
-        } catch (InstantiationException e) {
-            e.printStackTrace();
-        }
-
-        try {
-            outputStream.close();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
     }
 }

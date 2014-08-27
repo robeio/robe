@@ -1,25 +1,26 @@
 package io.robe.admin.resources;
 
+import com.codahale.metrics.annotation.Timed;
 import com.google.common.base.Optional;
 import com.google.inject.Inject;
-import com.yammer.dropwizard.auth.Auth;
-import com.yammer.dropwizard.auth.AuthenticationException;
-import com.yammer.dropwizard.hibernate.UnitOfWork;
-import com.yammer.metrics.annotation.Timed;
+import io.dropwizard.auth.Auth;
+import io.dropwizard.auth.AuthenticationException;
+import io.dropwizard.hibernate.UnitOfWork;
 import io.robe.admin.hibernate.dao.UserDao;
 import io.robe.admin.hibernate.entity.User;
 import io.robe.auth.AbstractAuthResource;
 import io.robe.auth.Credentials;
 import io.robe.auth.IsToken;
 import io.robe.auth.TokenWrapper;
-import io.robe.auth.data.entry.UserEntry;
+import io.robe.auth.tokenbased.filter.TokenBasedAuthResponseFilter;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.ws.rs.*;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
-import javax.ws.rs.core.UriInfo;
 import java.util.Map;
 
 
@@ -32,6 +33,7 @@ import java.util.Map;
 
 public class AuthResource extends AbstractAuthResource<User> {
 
+    private static final Logger LOGGER = LoggerFactory.getLogger(AuthResource.class);
     UserDao userDao;
 
     @Inject
@@ -43,8 +45,8 @@ public class AuthResource extends AbstractAuthResource<User> {
 
     @POST
     @UnitOfWork
-    @Timed
     @Path("login")
+    @Timed
     public Response login(@Context HttpServletRequest request, Map<String, String> credentials) throws Exception {
 
         Optional<User> user = userDao.findByUsername(credentials.get("username"));
@@ -54,7 +56,7 @@ public class AuthResource extends AbstractAuthResource<User> {
             IsToken token = TokenWrapper.createToken(user.get().getEmail(), null);
             credentials.remove("password");
 
-            return Response.ok().header("Set-Cookie", "auth-token" + "=" + token.getToken() + ";path=/;domain=" + request.getRemoteHost() + ";").entity(credentials).build();
+            return Response.ok().header("Set-Cookie", TokenBasedAuthResponseFilter.getTokenSentence(token.getToken())).entity(credentials).build();
         } else {
             throw new WebApplicationException(Response.Status.UNAUTHORIZED);
         }
@@ -68,8 +70,8 @@ public class AuthResource extends AbstractAuthResource<User> {
         try {
             changePassword(user, oldPassword, newPassword, newPassword2);
         } catch (AuthenticationException e) {
-            e.printStackTrace();
-            return Response.serverError().entity(e.getMessage()).build();
+            LOGGER.error("AuthenticationException:", e);
+            return Response.serverError().entity("exception:" + e.getMessage()).build();
         }
 
         return Response.ok().build();

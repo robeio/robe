@@ -1,9 +1,9 @@
 package io.robe.admin.cli;
 
-import com.yammer.dropwizard.Service;
-import com.yammer.dropwizard.cli.EnvironmentCommand;
-import com.yammer.dropwizard.config.Environment;
-import com.yammer.dropwizard.hibernate.UnitOfWork;
+import io.dropwizard.Application;
+import io.dropwizard.cli.EnvironmentCommand;
+import io.dropwizard.hibernate.UnitOfWork;
+import io.dropwizard.setup.Environment;
 import io.robe.admin.RobeServiceConfiguration;
 import io.robe.admin.hibernate.entity.*;
 import io.robe.hibernate.HibernateBundle;
@@ -22,10 +22,14 @@ import java.util.Set;
 
 public class InitializeCommand<T extends RobeServiceConfiguration> extends EnvironmentCommand<T> {
 
+    private static final Logger LOGGER = LoggerFactory.getLogger(InitializeCommand.class);
+    public static final String IO_ROBE_ADMIN = "io/robe/admin";
+    public static final String ADMIN = "Admin";
+
     private HibernateBundle hibernateBundle;
 
 
-    public InitializeCommand(Service<T> service, HibernateBundle hibernateBundle) {
+    public InitializeCommand(Application<T> service, HibernateBundle hibernateBundle) {
         super(service, "initialize", "Runs Hibernate and initialize required columns");
         this.hibernateBundle = hibernateBundle;
     }
@@ -34,10 +38,9 @@ public class InitializeCommand<T extends RobeServiceConfiguration> extends Envir
     @Override
     @UnitOfWork
     protected void run(Environment environment, Namespace namespace, T configuration) throws Exception {
-        final Logger logger = LoggerFactory.getLogger(InitializeCommand.class);
+        LOGGER.info("Initialize Starting...");
+        LOGGER.info("Starting to create initial data.");
         execute();
-
-
     }
 
 
@@ -46,11 +49,13 @@ public class InitializeCommand<T extends RobeServiceConfiguration> extends Envir
         final Session session = hibernateBundle.getSessionFactory().openSession();
 
         Role role = (Role) session.createCriteria(Role.class).add(Restrictions.eq("name", "Admin")).uniqueResult();
+        LOGGER.info("Creating Roles.");
         if (role == null) {
             role = new Role();
-            role.setCode("io/robe/admin");
-            role.setName("Admin");
+            role.setCode(IO_ROBE_ADMIN);
+            role.setName(ADMIN);
             session.persist(role);
+
 
             Role user = new Role();
             user.setCode("user");
@@ -66,51 +71,59 @@ public class InitializeCommand<T extends RobeServiceConfiguration> extends Envir
             session.persist(all);
         }
 
-        Reflections reflections = new Reflections("io", this.getClass().getClassLoader());
+        LOGGER.info("Scanning Services.");
+
+        Reflections reflections = new Reflections(new String[]{"io"}, this.getClass().getClassLoader());
+
         Set<Class<?>> services = reflections.getTypesAnnotatedWith(Path.class);
-        for (Class service : services) {
-            String parentPath = "/" + ((Path) service.getAnnotation(Path.class)).value();
+        for (Class<?> service : services) {
+
+            String parentPath = "/" + service.getAnnotation(Path.class).value();
             for (Method method : service.getMethods()) {
+
                 if (isItService(method)) {
-                    String httpMethod = method.getAnnotation(GET.class) != null ? "GET" :
-                            method.getAnnotation(POST.class) != null ? "POST" :
-                                    method.getAnnotation(PUT.class) != null ? "PUT" :
-                                            method.getAnnotation(DELETE.class) != null ? "DELETE" :
-                                                    method.getAnnotation(OPTIONS.class) != null ? "OPTIONS" : "";
+                    String httpMethod = getHttpMethodType(method);
+
                     String path = parentPath;
                     if (method.getAnnotation(Path.class) != null) {
                         path += "/" + method.getAnnotation(Path.class).value();
                         path = path.replaceAll("//", "/");
                     }
+
                     io.robe.admin.hibernate.entity.Service entity =
                             (io.robe.admin.hibernate.entity.Service) session.createCriteria(io.robe.admin.hibernate.entity.Service.class)
                                     .add(Restrictions.eq("path", path))
                                     .add(Restrictions.eq("method", io.robe.admin.hibernate.entity.Service.Method.valueOf(httpMethod)))
                                     .uniqueResult();
+
                     if (entity == null) {
                         entity = new io.robe.admin.hibernate.entity.Service();
                         entity.setPath(path);
                         entity.setMethod(io.robe.admin.hibernate.entity.Service.Method.valueOf(httpMethod));
                         session.persist(entity);
                         session.persist(createPermission(false, entity.getOid(), role));
+                        LOGGER.info("Service data and permission created: " + entity.getPath() + "-" + entity.getMethod());
                     }
 
                 }
             }
         }
 
+        LOGGER.info("Creating admin user. U:admin@robe.io P: 123123");
         User user = (User) session.createCriteria(User.class).add(Restrictions.eq("email", "admin@robe.io")).uniqueResult();
         if (user == null) {
             user = new User();
             user.setEmail("admin@robe.io");
             user.setActive(true);
-            user.setName("io/robe/admin");
-            user.setSurname("io/robe/admin");
+            user.setName(IO_ROBE_ADMIN);
+            user.setSurname(IO_ROBE_ADMIN);
             user.setPassword("96cae35ce8a9b0244178bf28e4966c2ce1b8385723a96a6b838858cdd6ca0a1e");
             user.setRole(role);
             session.persist(user);
+
         }
 
+        LOGGER.info("Creating languages : TR & EN");
         Language systemLanguageTR = new Language();
         systemLanguageTR.setCode(Language.Type.TR);
         systemLanguageTR.setName("Türkçe");
@@ -120,12 +133,14 @@ public class InitializeCommand<T extends RobeServiceConfiguration> extends Envir
         systemLanguageEN.setName("İngilizce");
         session.persist(systemLanguageEN);
 
+        LOGGER.info("Createting Menu and permissions");
         Menu root = new Menu();
         root.setCode("root");
         root.setItemOrder(1);
         root.setName("Menü");
         session.persist(root);
         session.persist(createPermission(true, root.getOid(), role));
+
         Menu manager = new Menu();
         manager.setCode("Manager");
         manager.setItemOrder(1);
@@ -133,6 +148,14 @@ public class InitializeCommand<T extends RobeServiceConfiguration> extends Envir
         manager.setParentOid(root.getOid());
         session.persist(manager);
         session.persist(createPermission(true, manager.getOid(), role));
+
+        Menu userProfileManagement = new Menu();
+        userProfileManagement.setCode("UserProfileManagement");
+        userProfileManagement.setItemOrder(1);
+        userProfileManagement.setName("Profil Yönetimi");
+        userProfileManagement.setParentOid(manager.getOid());
+        session.persist(userProfileManagement);
+        session.persist(createPermission(true, userProfileManagement.getOid(), role));
 
         Menu usermanagement = new Menu();
         usermanagement.setCode("UserManagement");
@@ -193,6 +216,8 @@ public class InitializeCommand<T extends RobeServiceConfiguration> extends Envir
         session.flush();
         session.close();
 
+        LOGGER.info("Initialize finished.");
+        System.exit(0);
     }
 
     private Permission createPermission(boolean b, String oid, Role role) {
@@ -205,6 +230,18 @@ public class InitializeCommand<T extends RobeServiceConfiguration> extends Envir
     }
 
     private boolean isItService(Method method) {
-        return method.getAnnotation(GET.class) != null || method.getAnnotation(PUT.class) != null || method.getAnnotation(POST.class) != null || method.getAnnotation(DELETE.class) != null || method.getAnnotation(OPTIONS.class) != null;
+        return method.getAnnotation(GET.class) != null ||
+                method.getAnnotation(PUT.class) != null ||
+                method.getAnnotation(POST.class) != null ||
+                method.getAnnotation(DELETE.class) != null ||
+                method.getAnnotation(OPTIONS.class) != null;
+    }
+
+    private String getHttpMethodType(Method method) {
+        return method.getAnnotation(GET.class) != null ? "GET" :
+                method.getAnnotation(POST.class) != null ? "POST" :
+                        method.getAnnotation(PUT.class) != null ? "PUT" :
+                                method.getAnnotation(DELETE.class) != null ? "DELETE" :
+                                        method.getAnnotation(OPTIONS.class) != null ? "OPTIONS" : "";
     }
 }

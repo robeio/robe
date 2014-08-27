@@ -2,7 +2,7 @@ package io.robe.convert.csv;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import io.robe.convert.MappingProperty;
-import io.robe.convert.csv.supercsv.ParseDateFix;
+import io.robe.convert.csv.supercsv.ParseDate;
 import org.supercsv.cellprocessor.CellProcessorAdaptor;
 import org.supercsv.cellprocessor.Optional;
 import org.supercsv.cellprocessor.constraint.NotNull;
@@ -48,7 +48,7 @@ public class CSVUtil {
         if(fieldType.equals("DATE")){
             if(field.getAnnotation(JsonFormat.class) != null){
                 String format = field.getAnnotation(JsonFormat.class).pattern();
-                return new ParseDateFix(format);
+                return new ParseDate(format);
             }else{
                 throw  new RuntimeException("Date type must have SimpleDateFormat annotation with a valid format.");
             }

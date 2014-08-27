@@ -21,7 +21,7 @@ import static com.google.common.base.Preconditions.checkNotNull;
 public class MailSender {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(MailSender.class);
-    private static final Properties props = new Properties();
+    private static final Properties PROPERTIES = new Properties();
     private final MailConfiguration configuration;
     private Session session;
 
@@ -35,11 +35,11 @@ public class MailSender {
     }
 
     private void setProperties() {
-        props.put("mail.smtp.host", configuration.getHost());
-        props.put("mail.smtp.port", configuration.getPort());
-        props.put("mail.smtp.auth", configuration.isAuth());
-        props.put("mail.smtp.starttls.enable", configuration.isTlsssl());
-        session = Session.getDefaultInstance(props, new javax.mail.Authenticator() {
+        PROPERTIES.put("mail.smtp.host", configuration.getHost());
+        PROPERTIES.put("mail.smtp.port", configuration.getPort());
+        PROPERTIES.put("mail.smtp.auth", configuration.isAuth());
+        PROPERTIES.put("mail.smtp.starttls.enable", configuration.isTlsssl());
+        session = Session.getDefaultInstance(PROPERTIES, new javax.mail.Authenticator() {
             protected PasswordAuthentication getPasswordAuthentication() {
                 return new PasswordAuthentication(configuration.getUsername(), configuration.getPassword());
             }
@@ -57,17 +57,16 @@ public class MailSender {
      * @param attachment a document to attach. If not available send null.
      * @throws MessagingException in case of any problem.
      */
-    public void sendMessage(String sender, String[] receivers, String title, String body, DataSource attachment) throws MessagingException {
-        checkNotNull(sender);
+    public void sendMessage(String title, String body, DataSource attachment, String sender, String... receivers) throws MessagingException {
         checkNotNull(receivers);
         checkNotNull(receivers[0]);
         checkNotNull(title);
         checkNotNull(body);
 
         Message msg = new MimeMessage(session);
-        if (sender == null || sender.length() == 0)
+        if (sender == null || sender.length() == 0) {
             sender = configuration.getUsername();
-
+        }
         InternetAddress addressFrom = new InternetAddress(sender);
         msg.setFrom(addressFrom);
 
@@ -87,8 +86,9 @@ public class MailSender {
         textPart.setContent(body, "text/html; charset=UTF-8");
         Multipart mp = new MimeMultipart();
         mp.addBodyPart(textPart);
-        if (attachFilePart.getLineCount() > 0)
+        if (attachFilePart.getLineCount() > 0) {
             mp.addBodyPart(attachFilePart);
+        }
 
         msg.setContent(mp);
         Transport.send(msg);

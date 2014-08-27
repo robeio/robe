@@ -1,5 +1,5 @@
 <xml>
-    <CSVPojo>
+    <SamplePojo>
         <id>1</id>
         <name>Guner Kaan ALKIM</name>
         <surname>Computer Engineer</surname>
@@ -7,8 +7,8 @@
         <doubleid>2</doubleid>
         <big>3</big>
         <date2>12.12.2312</date2>
-    </CSVPojo>
-    <CSVPojo>
+    </SamplePojo>
+    <SamplePojo>
         <id>2</id>
         <name>Sinan Selimoğlu</name>
         <surname>Computer</surname>
@@ -16,5 +16,5 @@
         <doubleid>3</doubleid>
         <big>4</big>
         <date2>16.12.2312</date2>
-    </CSVPojo>
+    </SamplePojo>
 </xml>

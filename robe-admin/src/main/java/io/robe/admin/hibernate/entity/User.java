@@ -13,12 +13,17 @@ public class User extends BaseEntity implements UserEntry {
 
     @Column(unique = true, length = 50)
     private String email;
+
     @Column(length = 50, nullable = false)
     private String name;
+
     @Column(length = 50, nullable = false)
     private String surname;
+
+    @JsonIgnore
     @Column(length = 64, nullable = false)
     private String password;
+
     @Column(nullable = false)
     private boolean active;
 

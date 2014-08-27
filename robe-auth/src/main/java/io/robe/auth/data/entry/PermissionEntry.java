@@ -1,7 +1,7 @@
 package io.robe.auth.data.entry;
 
 public interface PermissionEntry {
-    public String getRestrictedItemId();
+    String getRestrictedItemId();
 
     public enum Type {
         SERVICE,

@@ -10,9 +10,9 @@ import java.util.Set;
 
 @Entity
 @Table
-public class Role extends BaseEntity<Role> implements RoleEntry {
+public class Role extends BaseEntity implements RoleEntry {
 
-    @Column(length = 20)
+    @Column(length = 20,unique = true)
     private String code;
 
     @Column(length = 50)
@@ -61,10 +61,6 @@ public class Role extends BaseEntity<Role> implements RoleEntry {
 
     public Set<Role> getRoles() {
         return roles;
-    }
-
-    public void setRoles(HashSet<Role> roles) {
-        this.roles = roles;
     }
 
     public Set<Role> getGroups() {

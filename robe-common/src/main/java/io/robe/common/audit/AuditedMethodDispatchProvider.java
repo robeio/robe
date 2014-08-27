@@ -15,8 +15,6 @@ import java.util.logging.Logger;
  */
 public class AuditedMethodDispatchProvider implements ResourceMethodDispatchProvider {
 	private final ResourceMethodDispatchProvider provider;
-    private static final Logger LOGGER = Logger.getLogger(AuditedMethodDispatchProvider.class.getName());
-
 
     public AuditedMethodDispatchProvider(ResourceMethodDispatchProvider provider) {
 		this.provider = Preconditions.checkNotNull(provider);

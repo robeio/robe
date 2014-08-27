@@ -2,8 +2,8 @@ package io.robe.admin.resources;
 
 import com.google.common.base.Optional;
 import com.google.inject.Inject;
-import com.yammer.dropwizard.auth.Auth;
-import com.yammer.dropwizard.hibernate.UnitOfWork;
+import io.dropwizard.auth.Auth;
+import io.dropwizard.hibernate.UnitOfWork;
 import io.robe.admin.hibernate.dao.RoleDao;
 import io.robe.admin.hibernate.entity.Role;
 import io.robe.auth.Credentials;
@@ -15,6 +15,7 @@ import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import static com.google.common.base.Preconditions.checkNotNull;
 
@@ -32,8 +33,11 @@ public class RoleResource {
     @GET
     @UnitOfWork
     public List<Role> getRoles(@Auth Credentials credentials) {
-
-        return roleDao.findAll(Role.class);
+        List<Role> roles = roleDao.findAll(Role.class);
+        for (Role role : roles) {
+            Hibernate.initialize(role.getRoles());
+        }
+        return roles;
     }
 
     @GET
@@ -41,24 +45,29 @@ public class RoleResource {
     @Path("{userId}")
     public Role get(@Auth Credentials credentials, @PathParam("userId") String id) {
         Role role = roleDao.findById(id);
-        Hibernate.initialize(role.getRoles());
+        initializeItems(role.getRoles());
         return role;
     }
 
     @PUT
     @UnitOfWork
     public Role create(@Auth Credentials credentials, @Valid Role role) {
-        Optional<Role> checkUser = roleDao.findByName(role.getCode());
-        if (checkUser.isPresent())
+        Optional<Role> checkRole = roleDao.findByName(role.getCode());
+        if (checkRole.isPresent()) {
             throw new RobeRuntimeException("Code", role.getCode() + " already used by another role. Please use different code.");
-        role = roleDao.create(role);
-        return role;
+        }
+        return roleDao.create(role);
     }
 
     @POST
     @UnitOfWork
     public Role update(@Auth Credentials credentials, Role role) {
+
         roleDao.detach(role);
+        Optional<Role> checkRole = roleDao.findByNameAndNotEqualMe(role.getCode(), role.getOid());
+        if (checkRole.isPresent()) {
+            throw new RobeRuntimeException("Code", role.getCode() + " already used by another role. Please use different code.");
+        }
         Role entity = roleDao.findById(role.getOid());
         entity.setName(role.getName());
         entity.setCode(role.getCode());
@@ -71,9 +80,12 @@ public class RoleResource {
     @DELETE
     @UnitOfWork
     public Role delete(@Auth Credentials credentials, Role role) {
-        role = roleDao.findById(role.getOid());
-        roleDao.delete(role);
-        return role;
+        Role roleCheck = roleDao.findById(role.getOid());
+        if (roleCheck != null) {
+            roleDao.delete(roleCheck);
+        }
+        return roleCheck;
+
     }
 
     @PUT
@@ -87,9 +99,9 @@ public class RoleResource {
 
         boolean included = isRoleIncludedAsSubRole(role, groupOid);
 
-        if (included)
-            throw new RobeRuntimeException("", "aaa");
-
+        if (included) {
+            throw new RobeRuntimeException("Circular Dependency", "Operation failed.");
+        }
         if (group.getRoles() == null) {
             group.setRoles(new HashSet<Role>());
         }
@@ -101,12 +113,21 @@ public class RoleResource {
         return group;
     }
 
+    private void initializeItems(Set<Role> roles) {
+        for (Role role : roles) {
+            Hibernate.initialize(role.getRoles());
+            initializeItems(role.getRoles());
+        }
+    }
+
     private boolean isRoleIncludedAsSubRole(Role role, String groupOid) {
-        if (role.getOid().equals(groupOid))
+        if (role.getOid().equals(groupOid)) {
             return true;
+        }
         for (Role child : role.getRoles()) {
-            if (isRoleIncludedAsSubRole(child, groupOid))
+            if (isRoleIncludedAsSubRole(child, groupOid)) {
                 return true;
+            }
         }
         return false;
     }
@@ -120,10 +141,8 @@ public class RoleResource {
 
         if (group.getRoles() != null && group.getRoles().contains(role)) {
             group.getRoles().remove(role);
-               roleDao.update(group);
-
+            roleDao.update(group);
         }
-
         return group;
     }
 }

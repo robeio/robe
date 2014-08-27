@@ -3,20 +3,26 @@ package io.robe.admin.resources;
 import com.google.common.base.Optional;
 import com.google.common.hash.Hashing;
 import com.google.inject.Inject;
-import com.yammer.dropwizard.auth.Auth;
-import com.yammer.dropwizard.hibernate.UnitOfWork;
+import io.dropwizard.auth.Auth;
+import io.dropwizard.hibernate.UnitOfWork;
 import io.robe.admin.dto.UserDTO;
 import io.robe.admin.hibernate.dao.RoleDao;
 import io.robe.admin.hibernate.dao.TicketDao;
 import io.robe.admin.hibernate.dao.UserDao;
 import io.robe.admin.hibernate.entity.Role;
+import io.robe.admin.hibernate.entity.Ticket;
 import io.robe.admin.hibernate.entity.User;
+import io.robe.admin.util.ExceptionMessages;
 import io.robe.auth.Credentials;
 import io.robe.common.exception.RobeRuntimeException;
+import io.robe.mail.MailBundle;
+import org.joda.time.DateTime;
 
+import javax.mail.MessagingException;
 import javax.validation.Valid;
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
+import java.nio.charset.Charset;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -56,17 +62,19 @@ public class UserResource {
 
     @GET
     @UnitOfWork
-    @Path("email/{email}")
-    public UserDTO getByEmail(@Auth Credentials credentials, @PathParam("email") String email) {
-        return new UserDTO(userDao.findByUsername(email).get());
+    @Path("profile")
+    public UserDTO getByEmail(@Auth Credentials credentials) {
+        User user = userDao.findByUsername(credentials.getUsername()).get();
+        return new UserDTO(user);
     }
 
     @PUT
     @UnitOfWork
     public UserDTO create(@Auth Credentials credentials, @Valid UserDTO user) {
         Optional<User> checkUser = userDao.findByUsername(user.getEmail());
-        if (checkUser.isPresent())
+        if (checkUser.isPresent()) {
             throw new RobeRuntimeException("E-mail", user.getEmail() + " already used by another user. Please use different e-mail.");
+        }
         User entity = new User();
         entity.setEmail(user.getEmail());
         entity.setName(user.getName());
@@ -74,29 +82,32 @@ public class UserResource {
         entity.setActive(user.isActive());
         Role role = roleDao.findById(user.getRoleOid());
         if (role == null) {
-            throw new RobeRuntimeException("Role", user.getEmail() + " cannot be null.");
+            throw new RobeRuntimeException("Role", user.getEmail() + ExceptionMessages.CANT_BE_NULL.toString());
         }
         entity.setRole(role);
-        entity.setPassword(Hashing.sha256().hashString(user.getName()).toString());
+        entity.setPassword(Hashing.sha256().hashString(user.getName(), Charset.forName("UTF-8")).toString());
 
-//        if (MailSender.isSupported()) {
-//            Ticket ticket = new Ticket();
-//            ticket.setType(Ticket.Type.ACTIVATE);
-//            DateTime expire = DateTime.now().plusDays(1);
-//            ticket.setExpirationDate(expire.toDate());
-//            ticket.setUser(entity);
-//            ticketDao.create(ticket);
-//            try {
-//                //TODO: Template support will be used.
-//                MailSender.send("serayuzgur@gmail.com", new String[]{entity.getUsername()}, "Activation", ticket.getOid(), null);
-//            } catch (MessagingException e) {
-//                new RobeRuntimeException(e);
-//            }
-//        } else {
-        entity.setActive(true);
-//        }
+//        sendActivationMail(entity);
+
         return new UserDTO(userDao.create(entity));
 
+    }
+
+    private void sendActivationMail(User entity) {
+        if (MailBundle.isIsActive()) {
+            Ticket ticket = new Ticket();
+            ticket.setType(Ticket.Type.ACTIVATE);
+            DateTime expire = DateTime.now().plusDays(1);
+            ticket.setExpirationDate(expire.toDate());
+            ticket.setUser(entity);
+            ticketDao.create(ticket);
+            try {
+                //TODO: Template support will be used.
+                MailBundle.getMailSender().sendMessage("Activation", ticket.getOid(), null, null, entity.getUsername());
+            } catch (MessagingException e) {
+                new RobeRuntimeException("send failed", e);
+            }
+        }
     }
 
     @POST
@@ -104,12 +115,13 @@ public class UserResource {
     public UserDTO update(@Auth Credentials credentials, @Valid UserDTO user) {
         // Get and check user
         User entity = userDao.findById(user.getOid());
-        if (entity == null)
-            throw new RobeRuntimeException("User", user.getOid() + " not exists.");
+        if (entity == null) {
+            throw new RobeRuntimeException("User", user.getOid() + ExceptionMessages.NOT_EXISTS.toString());
+        }
         //Get role and firm and check for null
         Role role = roleDao.findById(user.getRoleOid());
         if (role == null) {
-            throw new RobeRuntimeException("Role", user.getEmail() + " cannot be null.");
+            throw new RobeRuntimeException("Role", user.getEmail() + ExceptionMessages.CANT_BE_NULL.toString());
         }
         entity.setOid(user.getOid());
         entity.setEmail(user.getEmail());
@@ -125,11 +137,32 @@ public class UserResource {
 
     }
 
+
+    @POST
+    @Path("updatePassword")
+    @Consumes
+    @UnitOfWork
+    public UserDTO updatePassword(@Auth Credentials credentials,
+                                  @FormParam("newPassword") String newPassword,
+                                  @FormParam("oldPassword") String oldPassword) {
+
+        User user = userDao.findByUsername(credentials.getUsername()).get();
+
+        String oPassword = user.getPassword();
+        if (!(oPassword.equals(oldPassword))) {
+            throw new RobeRuntimeException("Eski Şifre Hatası", "Eski Şifrenizle Girdiğiniz Şifre ile Uyumlu Değildir");
+        }
+
+        user.setPassword(newPassword);
+        userDao.update(user);
+
+        return new UserDTO(user);
+    }
+
     @DELETE
     @UnitOfWork
     public UserDTO delete(@Auth Credentials credentials, UserDTO user) {
         User entity = userDao.findById(user.getOid());
-
         userDao.delete(entity);
         return user;
     }

@@ -2,11 +2,12 @@ package io.robe.auth;
 
 import com.google.common.base.Optional;
 import com.google.common.hash.Hashing;
-import com.yammer.dropwizard.auth.AuthenticationException;
 import edu.vt.middleware.password.*;
+import io.dropwizard.auth.AuthenticationException;
 import io.robe.auth.data.entry.UserEntry;
 import io.robe.auth.data.store.UserStore;
 
+import java.nio.charset.Charset;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.regex.Matcher;
@@ -15,6 +16,7 @@ import java.util.regex.Pattern;
 /**
  * An Abstract class with necessary implementations of common used methods (Compatible with ESAPI Authenticator)
  * {@inheritDoc}
+ *
  * @param <T>
  */
 public abstract class AbstractAuthResource<T extends UserEntry> {
@@ -42,7 +44,7 @@ public abstract class AbstractAuthResource<T extends UserEntry> {
     public boolean verifyPassword(T user, String password) {
         Optional<T> entry;
         entry = (Optional<T>) userStore.findByUsername(user.getUsername());
-        return entry.isPresent() && entry.get().getPassword().equals(Hashing.sha256().hashString(password).toString());
+        return entry.isPresent() && entry.get().getPassword().equals(Hashing.sha256().hashString(password, Charset.forName("UTF-8")).toString());
     }
 
     /**
@@ -72,7 +74,8 @@ public abstract class AbstractAuthResource<T extends UserEntry> {
         do {
             newPassword = generateStrongPassword();
             // Continue until new password does not contain user info or same with old password
-        } while (newPassword.contains(user.getUsername()) || oldPassword.equals(Hashing.sha256().hashString(newPassword).toString()));
+        }
+        while (newPassword.contains(user.getUsername()) || oldPassword.equals(Hashing.sha256().hashString(newPassword, Charset.forName("UTF-8")).toString()));
         return newPassword;
     }
 
@@ -85,21 +88,21 @@ public abstract class AbstractAuthResource<T extends UserEntry> {
      * @param currentPassword the current password for the specified user
      * @param newPassword     the new password to use
      * @param newPassword2    a verification copy of the new password
-     * @throws com.yammer.dropwizard.auth.AuthenticationException if any errors occur
+     * @throws io.dropwizard.auth.AuthenticationException if any errors occur
      */
     public void changePassword(T user, String currentPassword, String newPassword, String newPassword2) throws AuthenticationException {
 
         verifyPassword(user, currentPassword);
 
-        if (!newPassword.equals(newPassword2)){
-            throw new AuthenticationException( user.getUsername() + ": New password and re-type password must be same");
-        }else if (newPassword.equals(currentPassword)){
+        if (!newPassword.equals(newPassword2)) {
+            throw new AuthenticationException(user.getUsername() + ": New password and re-type password must be same");
+        } else if (newPassword.equals(currentPassword)) {
             throw new AuthenticationException(user.getUsername() + ": New password and old password must be different");
         }
         verifyPasswordStrength(currentPassword, newPassword, user);
 
         Optional<? extends UserEntry> optional = userStore.changePassword(user.getUsername(), newPassword);
-        if (!optional.isPresent()){
+        if (!optional.isPresent()) {
             throw new AuthenticationException(user.getUsername() + ": Can't update UserEntry Password");
         }
     }
@@ -113,9 +116,9 @@ public abstract class AbstractAuthResource<T extends UserEntry> {
      */
     public T getUser(String accountName) {
         Optional<T> optional = (Optional<T>) userStore.findByUsername(accountName);
-        if (optional.isPresent()){
-            return  optional.get();
-        }else {
+        if (optional.isPresent()) {
+            return optional.get();
+        } else {
             return null;
         }
     }
@@ -133,7 +136,7 @@ public abstract class AbstractAuthResource<T extends UserEntry> {
      * @return the hashed password
      */
     public String hashPassword(String password, String accountName) {
-        return Hashing.sha256().hashString(password).toString();
+        return Hashing.sha256().hashString(password, Charset.forName("UTF-8")).toString();
     }
 
 
@@ -141,11 +144,11 @@ public abstract class AbstractAuthResource<T extends UserEntry> {
      * Ensures that the account name passes site-specific complexity requirements, like minimum length.
      *
      * @param accountName the account name
-     * @throws com.yammer.dropwizard.auth.AuthenticationException if account name does not meet complexity requirements
+     * @throws io.dropwizard.auth.AuthenticationException if account name does not meet complexity requirements
      */
     public void verifyAccountNameStrength(String accountName) throws AuthenticationException {
         Matcher matcher = PATTERN.matcher(accountName);
-        if (!matcher.matches()){
+        if (!matcher.matches()) {
             throw new AuthenticationException(accountName + " is not a valid email");
         }
     }
@@ -162,7 +165,7 @@ public abstract class AbstractAuthResource<T extends UserEntry> {
      * @param oldPassword the old password
      * @param newPassword the new password
      * @param user        the user
-     * @throws com.yammer.dropwizard.auth.AuthenticationException if newPassword is too similar to oldPassword or if newPassword does not meet complexity requirements
+     * @throws io.dropwizard.auth.AuthenticationException if newPassword is too similar to oldPassword or if newPassword does not meet complexity requirements
      */
     public void verifyPasswordStrength(String oldPassword, String newPassword, T user) throws AuthenticationException {
         List<Rule> rules = getPasswordRules();

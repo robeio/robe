@@ -1,39 +1,19 @@
 package io.robe.quartz;
 
-import io.robe.hibernate.entity.BaseEntity;
+import org.quartz.Job;
 
-import javax.persistence.Entity;
-import javax.persistence.Table;
+import java.util.List;
 
-@Entity
-@Table
-public class QuartzJob extends BaseEntity {
-    private String schedulerName;
-    private String jobClassName;
-    private String description;
+public interface QuartzJob {
 
-    public String getSchedulerName() {
-        return schedulerName;
-    }
+    String getOid();
 
-    public void setSchedulerName(String schedulerName) {
-        this.schedulerName = schedulerName;
-    }
+    String getSchedulerName();
 
-    public String getJobClassName() {
-        return jobClassName;
-    }
+    String getDescription();
 
-    public void setJobClassName(String jobClassName) {
-        this.jobClassName = jobClassName;
-    }
+    List<QuartzTrigger> getTriggers();
 
-    public String getDescription() {
-        return description;
-    }
-
-    public void setDescription(String description) {
-        this.description = description;
-    }
+    Class<? extends Job> getClazz();
 
 }

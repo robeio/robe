@@ -1,12 +1,11 @@
 package io.robe.admin.resources;
 
 import com.google.inject.Inject;
-import com.yammer.dropwizard.auth.Auth;
-import com.yammer.dropwizard.hibernate.UnitOfWork;
+import io.dropwizard.auth.Auth;
+import io.dropwizard.hibernate.UnitOfWork;
 import io.robe.admin.hibernate.dao.QuartzJobDao;
 import io.robe.auth.Credentials;
-import io.robe.quartz.QuartzJob;
-import org.apache.log4j.Logger;
+import io.robe.quartz.hibernate.JobEntity;
 
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
@@ -18,19 +17,17 @@ import java.util.List;
 public class QuartzJobResource {
     @Inject
     QuartzJobDao quartzJobDao;
-    private static Logger LOGGER = Logger.getLogger(QuartzJobResource.class);
 
     @GET
     @UnitOfWork
-    public List<QuartzJob> getAll(@Auth Credentials credentials) {
-        List<QuartzJob> list = quartzJobDao.findAll(QuartzJob.class);
-        return list;
+    public List<JobEntity> getAll(@Auth Credentials credentials) {
+        return quartzJobDao.findAll(JobEntity.class);
     }
 
     @POST
     @Path("/update")
     @UnitOfWork
-    public QuartzJob setCron(QuartzJob quartzJob) {
+    public JobEntity setCron(JobEntity quartzJob) {
         quartzJobDao.update(quartzJob);
         return quartzJob;
     }

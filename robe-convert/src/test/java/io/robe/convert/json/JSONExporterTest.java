@@ -1,29 +1,26 @@
 package io.robe.convert.json;
 
 import io.robe.convert.SamplePojo;
+import io.robe.convert.TestData;
 import org.junit.Test;
 
+import java.io.File;
+import java.io.FileOutputStream;
 import java.io.OutputStream;
-import java.math.BigDecimal;
-import java.util.ArrayList;
-import java.util.Date;
 
-/**
- * Created by serayuzgur on 03/04/14.
- */
 public class JSONExporterTest {
+
+    private String SAMPLE = JSONExporterTest.class.getClassLoader().getResource("sample.json").getFile();
+
+
     @Test
     public void testExportStream() throws Exception {
         JSONExporter exporter = new JSONExporter();
-        ArrayList<SamplePojo> pojos = new ArrayList<SamplePojo>(3);
-        pojos.add(new SamplePojo(1, "Seray", "DDD", 1, 2, new BigDecimal("12.2"), new Date()));
-        pojos.add(new SamplePojo(1, "Kaan", "BBB", 2, 3, BigDecimal.ONE, new Date()));
-        pojos.add(new SamplePojo(1, "Sinan", "CCC", 3, 4, BigDecimal.ZERO, new Date()));
 
-        OutputStream outputStream = System.out;
+        OutputStream outputStream = new FileOutputStream(new File(SAMPLE));
 
-        exporter.exportStream(SamplePojo.class, outputStream, pojos);
+        exporter.exportStream(SamplePojo.class, outputStream, TestData.getData().iterator());
 
-        outputStream.close();
+        outputStream.flush();
     }
 }

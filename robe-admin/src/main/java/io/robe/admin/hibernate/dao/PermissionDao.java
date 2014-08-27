@@ -30,8 +30,9 @@ public class PermissionDao extends BaseDao<Permission> {
         criteria.add(Restrictions.eq("role", role));
         criteria.add(Restrictions.eq("type", type));
         List<Permission> permissions = list(criteria);
-        for (Permission permission : permissions)
+        for (Permission permission : permissions) {
             delete(permission);
+        }
     }
 
 }

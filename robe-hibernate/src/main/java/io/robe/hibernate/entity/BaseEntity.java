@@ -1,18 +1,16 @@
 package io.robe.hibernate.entity;
 
-import org.apache.commons.beanutils.BeanUtils;
 import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.*;
 import java.io.Serializable;
-import java.lang.reflect.InvocationTargetException;
 
 /**
  * An abstract Entity implementation. All entities have to extend this class.
  * Standard fields (oid,lastupdated) will be added to your entity.
  */
 @MappedSuperclass
-public abstract class BaseEntity<T> implements Serializable {
+public abstract class BaseEntity implements Serializable {
 
 
 	private static final long serialVersionUID = 1914842698571907341L;
@@ -30,9 +28,6 @@ public abstract class BaseEntity<T> implements Serializable {
 	public BaseEntity() {
 	}
 
-	public BaseEntity(T baseEntity) throws InvocationTargetException, IllegalAccessException {
-		BeanUtils.copyProperties(this, baseEntity);
-	}
 
 	public BaseEntity(String oid, long lastUpdated) {
 		this.oid = oid;

@@ -6,23 +6,23 @@ import java.math.BigDecimal;
 import java.util.Date;
 
 public class SamplePojo {
-    @MappingProperty(order = 0, optional = false, unique = true, name = "id")
+    @MappingProperty(order = 0, unique = true, name = "Kullanıcı Id")
     private int id;
     @MappingProperty(order = 1)
     private String name;
-    @MappingProperty(order = 2)
+    @MappingProperty(order = 2, name = "Soyad")
     private String surname;
-    @MappingProperty(order = 4)
+    @MappingProperty(order = 4, name = "Long Id")
     private long longid;
-    @MappingProperty(order = 3)
+    @MappingProperty(order = 3, name = "Double Id")
     private double doubleid;
 
     @MappingProperty(order = 5)
     private BigDecimal big = BigDecimal.ONE;
 
-    @MappingProperty(order = 6)
-    @JsonFormat(shape=JsonFormat.Shape.STRING, pattern="dd.MM.yyyy", timezone="CET")
-    private Date date2 = new Date();
+    @MappingProperty(order = 6, name = "Date Format")
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd.MM.yyyy", timezone = "CET")
+    private Date date2;
 
     public SamplePojo() {
 
