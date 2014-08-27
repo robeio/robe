@@ -1,5 +1,6 @@
 package io.robe.admin.resources;
 
+import com.codahale.metrics.annotation.Timed;
 import com.google.common.base.Optional;
 import com.google.inject.Inject;
 import io.dropwizard.auth.Auth;
@@ -45,6 +46,7 @@ public class AuthResource extends AbstractAuthResource<User> {
     @POST
     @UnitOfWork
     @Path("login")
+    @Timed
     public Response login(@Context HttpServletRequest request, Map<String, String> credentials) throws Exception {
 
         Optional<User> user = userDao.findByUsername(credentials.get("username"));

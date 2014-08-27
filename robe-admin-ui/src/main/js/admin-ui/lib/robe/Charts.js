@@ -192,7 +192,7 @@ var Charts = {
 
         });
     },
-    row: function (id, names, series) {
+    row: function (id, names, series, yAxisText) {
         $('#' + id).highcharts({
             chart: {
                 type: 'bar'
@@ -212,7 +212,7 @@ var Charts = {
             yAxis: {
                 min: 0,
                 title: {
-                    text: 'Second',
+                    text: yAxisText,
                     align: 'high'
                 },
                 labels: {

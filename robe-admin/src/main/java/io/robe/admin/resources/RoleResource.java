@@ -15,6 +15,7 @@ import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import static com.google.common.base.Preconditions.checkNotNull;
 
@@ -32,11 +33,11 @@ public class RoleResource {
     @GET
     @UnitOfWork
     public List<Role> getRoles(@Auth Credentials credentials) {
-	    List<Role> roles = roleDao.findAll(Role.class);
-	    for (Role role : roles) {
-		    Hibernate.initialize(role.getRoles());
-	    }
-	    return roles;
+        List<Role> roles = roleDao.findAll(Role.class);
+        for (Role role : roles) {
+            Hibernate.initialize(role.getRoles());
+        }
+        return roles;
     }
 
     @GET
@@ -44,7 +45,7 @@ public class RoleResource {
     @Path("{userId}")
     public Role get(@Auth Credentials credentials, @PathParam("userId") String id) {
         Role role = roleDao.findById(id);
-        Hibernate.initialize(role.getRoles());
+        initializeItems(role.getRoles());
         return role;
     }
 
@@ -63,7 +64,7 @@ public class RoleResource {
     public Role update(@Auth Credentials credentials, Role role) {
 
         roleDao.detach(role);
-        Optional<Role> checkRole = roleDao.findByNameAndNotEqualMe(role.getCode(),role.getOid());
+        Optional<Role> checkRole = roleDao.findByNameAndNotEqualMe(role.getCode(), role.getOid());
         if (checkRole.isPresent()) {
             throw new RobeRuntimeException("Code", role.getCode() + " already used by another role. Please use different code.");
         }
@@ -110,6 +111,13 @@ public class RoleResource {
         roleDao.update(group);
 
         return group;
+    }
+
+    private void initializeItems(Set<Role> roles) {
+        for (Role role : roles) {
+            Hibernate.initialize(role.getRoles());
+            initializeItems(role.getRoles());
+        }
     }
 
     private boolean isRoleIncludedAsSubRole(Role role, String groupOid) {

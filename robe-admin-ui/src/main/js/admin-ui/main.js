@@ -29,7 +29,7 @@ require.config({
             deps: ['lib/robe/core/Robe']
         },
         'js/data/SingletonDataSource': {
-            deps: ['lib/robe/core/Singleton']
+            deps: ['lib/alertmessage/jquery.toastmessage', 'lib/robe/core/Singleton']
         },
         'lib/robe/Charts': {
             deps: ['lib/highcharts/highcharts']
@@ -44,14 +44,14 @@ require.config({
         'lib/highcharts/exports': {
             deps: ['lib/highcharts/highcharts']
         },
-        'lib/robe/AlertDialog': {
-            deps: ['lib/alertmessage/jquery.toastmessage']
-        },
         'js/router': {
             deps: ['lib/jquery/jquery.min']
         },
         'lib/requirejs-router/router.min': {
             exports: 'Router'
+        },
+        'lib/robe/AlertDialog': {
+            deps: ['lib/alertmessage/jquery.toastmessage']
         }
     }
 });

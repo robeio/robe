@@ -16,14 +16,12 @@ import io.robe.admin.hibernate.entity.User;
 import io.robe.auth.Credentials;
 import io.robe.common.audit.Audited;
 import io.robe.common.exception.RobeRuntimeException;
+import org.hibernate.Hibernate;
 
 import javax.validation.Valid;
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
-import java.util.HashSet;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 @Path("menu")
 @Consumes(MediaType.APPLICATION_JSON)
@@ -43,7 +41,13 @@ public class MenuResource {
     @GET
     @UnitOfWork
     public List<Menu> getMenus(@Auth Credentials credentials) {
-        return menuDao.findAll(Menu.class);
+
+        List<Menu> menus = new ArrayList<>();
+        for (Menu menu : menuDao.findAll(Menu.class)) {
+            initializeItems(menu.getItems());
+            menus.add(menu);
+        }
+        return menus;
     }
 
     private void getAllRolePermissions(Role parent, Set<Permission> rolePermissions) {
@@ -93,12 +97,16 @@ public class MenuResource {
     @UnitOfWork
     public List<Menu> getHierarchicalMenu(@Auth Credentials credentials) {
         List<Menu> menus = menuDao.findHierarchicalMenu();
-        initializeItems(menus);
+        for (Menu menu : menus) {
+            initializeItems(menu.getItems());
+        }
+
         return menus;
     }
 
     private void initializeItems(List<Menu> menus) {
         for (Menu menu : menus) {
+            Hibernate.initialize(menu.getItems());
             initializeItems(menu.getItems());
         }
     }

@@ -124,8 +124,8 @@ define([
                 Charts.pie("allLogback", logBackData, "LOGBACK");
                 Charts.pie("heapMemory", heapMemoryData, "Heap Memory");
                 Charts.column("responseCount", httpResponseCounts, 'Http Response Code', " Response Counts", "HTTP Response Code Counts", serverUptime, categoryList);
-                Charts.row("robeAdminResourcesTime", resourcesNames, seriesTime);
-                Charts.row("robeAdminResourcesCount", resourcesNames, seriesCount);
+                Charts.row("robeAdminResourcesCount", resourcesNames, seriesCount, "Count");
+                Charts.row("robeAdminResourcesTime", resourcesNames, seriesTime, "Second");
                 document.getElementById("vmName").innerHTML = vmName;
                 document.getElementById("vmVersion").innerHTML = vmVersion;
                 document.getElementById("heapUsage").innerHTML = "%" + parseInt(heapUsage * 100);
