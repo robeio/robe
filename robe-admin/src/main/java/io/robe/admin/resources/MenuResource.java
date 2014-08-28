@@ -116,7 +116,9 @@ public class MenuResource {
     @Path("movenode/{item}/{destination}")
     public Menu move(@Auth Credentials credentials, @PathParam("item") String itemOid, @PathParam("destination") String parentOid) {
         Menu item = menuDao.findById(itemOid);
+        Hibernate.initialize(item.getItems());
         Menu parent = menuDao.findById(parentOid);
+        Hibernate.initialize(parent.getItems());
         String notValid = " is not valid.";
         if (parent == null) {
             throw new RobeRuntimeException("destination", parentOid + notValid);
@@ -154,7 +156,14 @@ public class MenuResource {
     @DELETE
     @UnitOfWork
     public Menu delete(@Auth Credentials credentials, Menu menu) {
-        menuDao.delete(menu);
-        return menu;
+        Menu delete = menuDao.findById(menu.getOid());
+        Hibernate.initialize(delete.getItems());
+        menuDao.merge(delete);
+        for (Menu child : delete.getItems()) {
+            Hibernate.initialize(child.getItems());
+            child.setParentOid(null);
+            menuDao.update(child);
+        }
+        return menuDao.delete(delete);
     }
 }

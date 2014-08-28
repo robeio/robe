@@ -23,6 +23,9 @@ define([
         $("#gridRoles").kendoGrid({
             dataSource: RoleDataSource.get(),
             sortable: true,
+            pageable: {
+                refresh: true
+            },
             toolbar: [
                 {
                     name: "create",
@@ -74,12 +77,12 @@ define([
             template: "<div class='tags k-block'>#:name#</div>",
             selectable: "single",
             change: onListChange,
-            autoBind:false
+            autoBind: false
         });
 
         $("#listGroupedRoles").kendoListView({
             dataSource: GroupedRoleDataSource.get(),
-            template: "<div class='tags move  k-block'>#:name#</div><a href='javascript:' class='tagitemcls' onclick=\"removeItem(this,'#:uid#',selectedGroup)\"><span class='k-icon k-i-close'></span></a>",
+            template: "<div class='tags move  k-block'>#:name#</div><a href='javascript:' class='tagitemcls' onclick=\"removeItem(this,'#:uid#',selectedGroup)\"><span class='k-icon k-i-close'></span></a>"
         });
 
         $("#listUnGroupedRoles").kendoListView({
@@ -132,8 +135,8 @@ define([
         function onListChange(e) {
 
             var data = RoleDataSource.get(false).view(), selected = $.map(this.select(), function (item) {
-                    selectedGroup = data[$(item).index()].oid;
-                    return selectedGroup;
+                selectedGroup = data[$(item).index()].oid;
+                return selectedGroup;
             });
 
             $.ajax({
@@ -172,7 +175,7 @@ define([
     return RoleManagementView;
 });
 
-function removeItem(e, id,selectedGroup) {
+function removeItem(e, id, selectedGroup) {
     var item = GroupedRoleDataSource.get(false).getByUid(id);
 
     $.ajax({

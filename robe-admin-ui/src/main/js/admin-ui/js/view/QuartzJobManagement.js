@@ -3,7 +3,6 @@ var QuartzJobManagement;
 define([
     'text!html/QuartzJobManagement.html',
     'admin/data/DataSources',
-    'admin/Models',
     'kendo/kendo.grid.min',
     'robe/view/RobeView',
     'kendo/kendo.multiselect.min'
@@ -20,10 +19,12 @@ define([
         $("#gridJobs").kendoGrid({
             dataSource: QuartzJobDataSource.get(),
             sortable: true,
-            editable: "popup",
-            pageable: true,
+            pageable: {
+                refresh: true
+            },
+            autoBind: false,
             detailInit: detailInit,
-            dataBound: function() {
+            dataBound: function () {
                 this.expandRow(this.tbody.find("tr.k-master-row").first());
             },
             type: "odata",
@@ -47,16 +48,16 @@ define([
                     editor: cronExpressionEditor
                 },
                 {
-                    command:[
-                     {
-                          name: "add",
-                          text: "",
-                          className: "grid-command-iconfix",
-                          imageClass: "k-icon k-si-plus",
-                          click: addTrigger
-                     }
+                    command: [
+                        {
+                            name: "add",
+                            text: "",
+                            className: "grid-command-iconfix",
+                            imageClass: "k-icon k-si-plus",
+                            click: addTrigger
+                        }
                     ],
-                     width: "90px"
+                    width: "90px"
                 }
             ]
         });
@@ -68,7 +69,7 @@ define([
         function detailInit(e) {
             $("<div class='gridTriggers'/>").appendTo(e.detailCell).kendoGrid({
                 editable: "popup",
-                dataSource:{
+                dataSource: {
                     transport: {
                         read: {
                             type: "GET",
@@ -104,41 +105,41 @@ define([
                 sortable: true,
                 pageable: false,
                 columns: [
-                   {
+                    {
                         command: [
-                          {
-                              name: "destroy",
-                              text: "",
-                              className: "grid-command-iconfix"
-                          },
-                          {
-                              name: "edit",
-                              text: {
-                                  edit: ""
-                              },
-                              className: "grid-command-iconfix"
-                          },
-                          {
-                              name: "run",
-                              text: "",
-                              imageClass:"k-icon k-i-arrow-e",
-                              className: "k-link k-pager-nav",
-                              click: fire
-                          },
-                          {
-                              name: "stop",
-                              text: "",
-                              className: "grid-command-iconfix",
-                              imageClass:"k-icon k-i-seek-e",
-                              click: stop
-                          }
+                            {
+                                name: "destroy",
+                                text: "",
+                                className: "grid-command-iconfix"
+                            },
+                            {
+                                name: "edit",
+                                text: {
+                                    edit: ""
+                                },
+                                className: "grid-command-iconfix"
+                            },
+                            {
+                                name: "run",
+                                text: "",
+                                imageClass: "k-icon k-i-arrow-e",
+                                className: "k-link k-pager-nav",
+                                click: fire
+                            },
+                            {
+                                name: "stop",
+                                text: "",
+                                className: "grid-command-iconfix",
+                                imageClass: "k-icon k-i-seek-e",
+                                click: stop
+                            }
                         ],
                         title: "&nbsp;",
                         width: "90px"
-                   },
-                   {   field: "cronExpression", title: "Cron Expression", editor: cronExpressionEditor },
-                   {   field: "fireTime", title:"Fire Time", template :"#=(data.fireTime==-1)?'Start Immediately': fireTime #"  },
-                   {   field: "active", title:"Is Active" }
+                    },
+                    {   field: "cronExpression", title: "Cron Expression", editor: cronExpressionEditor },
+                    {   field: "fireTime", title: "Fire Time", template: "#=(data.fireTime==-1)?'Start Immediately': fireTime #"  },
+                    {   field: "active", title: "Is Active" }
                 ]
             });
         }
@@ -176,7 +177,7 @@ define([
                 dataType: "json",
                 data: kendo.stringify(this.dataItem($(e.currentTarget).closest("tr"))),
                 contentType: "application/json; charset=utf-8",
-                 success: function (response) {
+                success: function (response) {
                     console.log(response);
                     $('#gridJobs').data('kendoGrid').dataSource.read();
                     $('#gridJobs').data('kendoGrid').refresh();
@@ -191,7 +192,7 @@ define([
                 dataType: "json",
                 data: kendo.stringify(this.dataItem($(e.currentTarget).closest("tr"))),
                 contentType: "application/json; charset=utf-8",
-                 success: function (response) {
+                success: function (response) {
                     console.log(response);
                     $('#gridJobs').data('kendoGrid').dataSource.read();
                     $('#gridJobs').data('kendoGrid').refresh();
@@ -434,7 +435,7 @@ define([
                 enable: false
             })
 
-            if (options.model.cronExpression != "" && options.model.cronExpression !=null) {
+            if (options.model.cronExpression != "" && options.model.cronExpression != null) {
                 setDefaultValues(options.model.cronExpression);
             } else {
                 setDefaultValues("0 0 0 0 0 ?");

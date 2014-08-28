@@ -80,19 +80,7 @@ define([
             }
         });
 
-        $.ajax({
-            type: "GET",
-            url: AdminApp.getBackendURL() + "menu/roots",
-            dataType: "json",
-            contentType: "application/json; charset=utf-8",
-            success: function (response) {
-                var dataSource = new kendo.data.HierarchicalDataSource({
-                    data: response,
-                    schema: MenuTreeModel
-                });
-                $("#treeMenus").data("kendoTreeView").setDataSource(dataSource);
-            }
-        });
+        refreshTree(null);
 
         $("#treeMenus").kendoTreeView({
             dragAndDrop: true,
@@ -102,12 +90,16 @@ define([
 
         });
 
+        $("#btnRefreshMenuTree").kendoButton({
+            click: refreshTree
+        });
+
         $("#btnMenuManagementHelp").kendoButton({
             click: onShowHelp
         });
 
         function onShowHelp() {
-            wnd = $("#menuManagementHelpWindow").kendoWindow({
+            var wnd = $("#menuManagementHelpWindow").kendoWindow({
                 title: "Yardım",
                 modal: true,
                 visible: false,
@@ -128,6 +120,25 @@ define([
             }
         };
 
+        function refreshTree(e) {
+            $.ajax({
+                type: "GET",
+                url: AdminApp.getBackendURL() + "menu/roots",
+                dataType: "json",
+                contentType: "application/json; charset=utf-8",
+                success: function (response) {
+                    var dataSource = new kendo.data.HierarchicalDataSource({
+                        data: response,
+                        schema: MenuTreeModel
+                    });
+                    $("#treeMenus").data("kendoTreeView").setDataSource(dataSource);
+                    if (e != null) {
+                        showToast("success", "Yenileme Başarılı");
+                    }
+                }
+            });
+        }
+
         function onTreeMenuDrop(e) {
 
             if (!e.valid) {
@@ -145,7 +156,7 @@ define([
                 dataType: "json",
                 contentType: "application/json; charset=utf-8",
                 success: function () {
-                    var treeview = $("#treeMenus").data("kendoTreeView");
+                    showToast("success", "Başarıyla Güncellendi");
                 }
             });
 

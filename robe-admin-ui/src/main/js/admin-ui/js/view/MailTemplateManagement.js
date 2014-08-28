@@ -23,7 +23,10 @@ define([
         $("#templateGrid").kendoGrid({
             dataSource: MailManagementDataSource.get(),
             sortable: true,
-            autoBind:false,
+            autoBind: false,
+            pageable: {
+                refresh: true
+            },
             toolbar: [
                 {
                     name: "create",
@@ -90,16 +93,16 @@ define([
                 width: 800
             });
             editWindow.center();
-            $( ".k-edit-buttons" ).css( "width", "780px" );
+            $(".k-edit-buttons").css("width", "780px");
         };
         function userTemplatePopupEditor(container, options) {
             var exampleTemplate =
                 "<p>Sayın $name $username,</p>" +
-                    " <p>Kısa süre önce bir şifre sıfırlama isteği aldık. Şifrenizi sıfırlamak istiyorsanız <a>buradan</a> " +
-                    "işleminizi gerçekleştirebilirsiniz.</p>" +
-                    "<p>Eğer isteğin sizin tarafınızdan gönderilmediğini düşünüyorsanız, lütfen bunu bize aşağıdaki linkten" + "bildiriniz.</p>" +
-                    "<p><a>BildirimLinki</a></p>";
-            $('<textarea id="editor" style="width: 600px;" data-bind="value:' + options.field + '"/>')
+                " <p>Kısa süre önce bir şifre sıfırlama isteği aldık. Şifrenizi sıfırlamak istiyorsanız <a>buradan</a> " +
+                "işleminizi gerçekleştirebilirsiniz.</p>" +
+                "<p>Eğer isteğin sizin tarafınızdan gönderilmediğini düşünüyorsanız, lütfen bunu bize aşağıdaki linkten" + "bildiriniz.</p>" +
+                "<p><a>BildirimLinki</a></p>";
+            $('<textarea name="template" required="required" data-required-msg="Template alanı gerekli." style="width: 600px;" data-bind="value:' + options.field + '"/>')
                 .appendTo(container)
                 .kendoEditor({
                     tools: [
@@ -142,7 +145,7 @@ define([
 
         };
         function userTemplateLanguagePopupEditor(container, options) {
-            $('<input id="cmbLanguage" data-text-field="name" data-value-field="code" class="pull-left" style="width: 175px;" data-bind="value:' + options.field + '"/>')
+            $('<input name="lang" required="required" data-required-msg="Dil alanı gerekli." data-text-field="name" data-value-field="code" class="pull-left" style="width: 175px;" data-bind="value:' + options.field + '"/>')
                 .appendTo(container)
                 .kendoDropDownList({
                     optionLabel: "Dil seçiniz...",

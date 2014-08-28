@@ -12,14 +12,14 @@ import java.util.Set;
 @Table
 public class Role extends BaseEntity implements RoleEntry {
 
-    @Column(length = 20,unique = true)
+    @Column(length = 20, unique = true)
     private String code;
 
     @Column(length = 50)
     private String name;
 
     @JsonIgnore
-    @OneToMany(mappedBy = "role")
+    @OneToMany(mappedBy = "role", orphanRemoval = true)
     private Set<Permission> permissions = new HashSet<Permission>();
 
     @ManyToMany(targetEntity = Role.class)
