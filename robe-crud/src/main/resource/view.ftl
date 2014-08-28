@@ -16,9 +16,9 @@ define([
         $("#grid${view}").kendoGrid({
             dataSource: ${dataSource}.get(),
             sortable: true,
-pageable: {
-refresh: true
-},
+            pageable: {
+                refresh: true
+            },
             toolbar: [
                 {
                     name: "create",
