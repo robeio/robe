@@ -10,6 +10,14 @@ Temel anlamda yeni bir projeye başlamak için yaşanılan birçok sorunu aşmak
 
 Projenin ana motivasyonu kolaylık ve anlaşılırlık ilkeleri ile belirlenmiş olup bunun yanında yazılım ektöründe uzun yıllardır standart olarak kabul edilmiş teknolojiler kullanılarak güncelliği ve güvenilirliği sağlamaktır.
 
+Robe Admin Desteklediği Tarayıcılar: ([BrowserStack](http://www.browserstack.com)  üzerinde testleri yapılmıştır.)
+                                  
+* Internet Exporer 8.0 + 
+* Chrome 14.0 + 
+* Firefox 4.0 + 
+* Safari 4.0 + 
+* Opera 15.0 +
+
 ##Başlangıç
 Robe Temel Fonksiyonları:
 * **Robe.Auth :**  Bütün kısıtlamalar ve yetkilendirmeler servis bazında sağlanmakta olup, kullanıcıya ekran kısıtlamanın yanında seçilen servisin yetkisiz kullanılamaması gibi güvenlik opsiyonları getirilmiştir.
