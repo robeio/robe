@@ -1,6 +1,6 @@
 package io.robe.admin.view;
 
-import com.yammer.dropwizard.views.View;
+import io.dropwizard.views.View;
 import io.robe.common.dto.BasicPair;
 
 

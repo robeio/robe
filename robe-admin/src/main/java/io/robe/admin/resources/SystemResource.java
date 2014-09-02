@@ -1,7 +1,7 @@
 package io.robe.admin.resources;
 
-import com.yammer.dropwizard.auth.Auth;
-import com.yammer.dropwizard.hibernate.UnitOfWork;
+import io.dropwizard.auth.Auth;
+import io.dropwizard.hibernate.UnitOfWork;
 import io.robe.auth.Credentials;
 import io.robe.common.exception.RobeRuntimeException;
 import io.robe.common.system.HeapDump;

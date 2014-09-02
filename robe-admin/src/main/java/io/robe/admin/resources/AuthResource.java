@@ -1,11 +1,11 @@
 package io.robe.admin.resources;
 
+import com.codahale.metrics.annotation.Timed;
 import com.google.common.base.Optional;
 import com.google.inject.Inject;
-import com.yammer.dropwizard.auth.Auth;
-import com.yammer.dropwizard.auth.AuthenticationException;
-import com.yammer.dropwizard.hibernate.UnitOfWork;
-import com.yammer.metrics.annotation.Timed;
+import io.dropwizard.auth.Auth;
+import io.dropwizard.auth.AuthenticationException;
+import io.dropwizard.hibernate.UnitOfWork;
 import io.robe.admin.hibernate.dao.UserDao;
 import io.robe.admin.hibernate.entity.User;
 import io.robe.auth.AbstractAuthResource;
@@ -45,8 +45,8 @@ public class AuthResource extends AbstractAuthResource<User> {
 
     @POST
     @UnitOfWork
-    @Timed
     @Path("login")
+    @Timed
     public Response login(@Context HttpServletRequest request, Map<String, String> credentials) throws Exception {
 
         Optional<User> user = userDao.findByUsername(credentials.get("username"));
@@ -70,7 +70,7 @@ public class AuthResource extends AbstractAuthResource<User> {
         try {
             changePassword(user, oldPassword, newPassword, newPassword2);
         } catch (AuthenticationException e) {
-            LOGGER.error("AuthenticationException:",e);
+            LOGGER.error("AuthenticationException:", e);
             return Response.serverError().entity("exception:" + e.getMessage()).build();
         }
 

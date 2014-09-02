@@ -1,11 +1,12 @@
 package io.robe.admin.resources;
 
 import com.google.inject.Inject;
-import com.yammer.dropwizard.auth.Auth;
-import com.yammer.dropwizard.hibernate.UnitOfWork;
+import io.dropwizard.auth.Auth;
+import io.dropwizard.hibernate.UnitOfWork;
 import io.robe.admin.hibernate.dao.QuartzJobDao;
 import io.robe.auth.Credentials;
 import io.robe.quartz.hibernate.JobEntity;
+import org.hibernate.Hibernate;
 
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
@@ -21,7 +22,11 @@ public class QuartzJobResource {
     @GET
     @UnitOfWork
     public List<JobEntity> getAll(@Auth Credentials credentials) {
-        return quartzJobDao.findAll(JobEntity.class);
+        List<JobEntity> jobEntities = quartzJobDao.findAll(JobEntity.class);
+        for (JobEntity jobEntity : jobEntities) {
+            Hibernate.initialize(jobEntity.getTriggers());
+        }
+        return jobEntities;
     }
 
     @POST

@@ -1,9 +1,9 @@
 package io.robe.quartz;
 
-import com.yammer.dropwizard.ConfiguredBundle;
-import com.yammer.dropwizard.config.Bootstrap;
-import com.yammer.dropwizard.config.Configuration;
-import com.yammer.dropwizard.config.Environment;
+import io.dropwizard.Configuration;
+import io.dropwizard.ConfiguredBundle;
+import io.dropwizard.setup.Bootstrap;
+import io.dropwizard.setup.Environment;
 import io.robe.hibernate.HasHibernateConfiguration;
 import io.robe.quartz.annotation.ByAnnotation;
 import io.robe.quartz.annotations.OnApplicationStart;
@@ -27,7 +27,7 @@ public class QuartzBundle<T extends Configuration & HasQuartzConfiguration & Has
     private static final Logger LOGGER = LoggerFactory.getLogger(QuartzBundle.class);
     public static final String DYNAMIC_GROUP = "DynamicCronJob";
     public static final String STATIC_GROUP = "StaticCronJob";
-    private static final  String ERROR="Cron Job Provider is not proper. %s : provider: %s";
+    private static final String ERROR = "Cron Job Provider is not proper. %s : provider: %s";
     Scheduler scheduler = null;
     Set<Class<? extends Job>> onStartJobs = null;
     Set<Class<? extends Job>> onStopJobs = null;
@@ -39,7 +39,7 @@ public class QuartzBundle<T extends Configuration & HasQuartzConfiguration & Has
      * Initializes the environment.
      *
      * @param configuration the configuration object
-     * @param environment   the service's {@link com.yammer.dropwizard.config.Environment}
+     * @param environment   the service's {@link io.dropwizard.setup.Environment}
      * @throws Exception if something goes wrong
      */
     @Override
@@ -48,7 +48,7 @@ public class QuartzBundle<T extends Configuration & HasQuartzConfiguration & Has
         try {
             initializeScheduler();
         } catch (SchedulerException e) {
-            LOGGER.error("SchedulerException:",e);
+            LOGGER.error("SchedulerException:", e);
         }
     }
 
@@ -132,9 +132,9 @@ public class QuartzBundle<T extends Configuration & HasQuartzConfiguration & Has
                         schedule(job);
                     }
                 } catch (InstantiationException e) {
-                    LOGGER.error(String.format(ERROR,clazz.getName(),scheduledByAnnotation.provider()),e);
+                    LOGGER.error(String.format(ERROR, clazz.getName(), scheduledByAnnotation.provider()), e);
                 } catch (IllegalAccessException e) {
-                    LOGGER.error(String.format(ERROR,clazz.getName(),scheduledByAnnotation.provider()),e);
+                    LOGGER.error(String.format(ERROR, clazz.getName(), scheduledByAnnotation.provider()), e);
                 }
             }
         }
@@ -167,7 +167,7 @@ public class QuartzBundle<T extends Configuration & HasQuartzConfiguration & Has
             try {
                 scheduler.addJob(jobDetail, true);
             } catch (SchedulerException e) {
-                LOGGER.error("Can't schedule " + job.getClazz(), e);
+                LOGGER.error("Can't schedule " + job.getClazz() + e.getMessage() );
             }
 
         }

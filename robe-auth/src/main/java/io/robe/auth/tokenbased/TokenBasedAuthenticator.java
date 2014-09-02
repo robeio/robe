@@ -1,8 +1,8 @@
 package io.robe.auth.tokenbased;
 
 import com.google.common.base.Optional;
-import com.yammer.dropwizard.auth.AuthenticationException;
-import com.yammer.dropwizard.auth.Authenticator;
+import io.dropwizard.auth.AuthenticationException;
+import io.dropwizard.auth.Authenticator;
 import io.robe.auth.IsToken;
 import io.robe.auth.TokenWrapper;
 import io.robe.auth.data.entry.PermissionEntry;
@@ -86,15 +86,13 @@ public class TokenBasedAuthenticator implements Authenticator<String, IsToken> {
         } catch (NoSuchMethodException e) {
             LOGGER.error(tokenString, e);
         } catch (InstantiationException e) {
-            LOGGER.error(tokenString,e);
+            LOGGER.error(tokenString, e);
         } catch (IllegalAccessException e) {
             LOGGER.error(tokenString, e);
         }
         return Optional.absent();
 
     }
-
-
 
 
     /**

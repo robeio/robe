@@ -1,27 +1,32 @@
 # HTTP-specific options.
-http:
- port: 8080
- adminPort: 8080
- rootPath: /robe/*  # Default is /*
+server:
+  type: simple
+  applicationContextPath: /robe
+  adminContextPath: /admin
+  connector:
+    type: http
+    port: 8080
+
 
 hibernate:
-   # the name of your JDBC driver
-   driverClass:  com.mysql.jdbc.Driver
-   # the username
-   user: root
-   # the password
-   password:
-   # the JDBC URL
-   url: jdbc:mysql://localhost:3306/robe
    # Hibernate ScanPackages. Accepts multiple package names separated with comma ',' with a trailing  space ' '
    scanPackages: [io.robe.admin.hibernate.entity,io.robe.quartz]
    # Entities to be included. Accepts multiple class names separated with comma ',' with a trailing  space ' '
    # entities: [io.robe.hibernate.entity.User]
-   # Properties
-   properties:
-     charSet: UTF-8
-     dialect: org.hibernate.dialect.MySQL5InnoDBDialect
-     hibernate.hbm2ddl.auto: update
+   database:
+     # the name of your JDBC driver
+     driverClass:  com.mysql.jdbc.Driver
+     # the username
+     user: root
+     # the password
+     password:
+     # the JDBC URL
+     url: jdbc:mysql://localhost:3306/robe
+     # Properties
+     properties:
+       charSet: UTF-8
+       dialect: org.hibernate.dialect.MySQL5InnoDBDialect
+       hibernate.hbm2ddl.auto: update
 
 logging:
      # The default level of all loggers. Can be OFF, ERROR, WARN, INFO, DEBUG, TRACE, or ALL.
@@ -77,3 +82,9 @@ auth:
   poolSize: 4 # parallel with cpu cores
   algorithm: PBEWithMD5AndTripleDES
   serverPassword: auto # auto for uuid, if it is cluster use custom password
+
+asset:
+  resourcePath: /Users/serayuzgur/Development/robe/robe-admin-ui/src/main/js/admin-ui
+  uriPath: /admin-ui/
+  indexFile: index.html
+  assetsName: io.robe.admin.ui

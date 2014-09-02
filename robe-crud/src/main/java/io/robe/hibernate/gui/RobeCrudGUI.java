@@ -306,8 +306,8 @@ public class RobeCrudGUI extends javax.swing.JFrame {
                     List<ImportDeclaration> importDeclarationsResource = new ArrayList<ImportDeclaration>();
                     String[] imports = {
                             "com.google.inject.Inject",
-                            "com.yammer.dropwizard.auth.Auth",
-                            "com.yammer.dropwizard.hibernate.UnitOfWork",
+                            "io.dropwizard.auth.Auth",
+                            "io.dropwizard.hibernate.UnitOfWork",
                             "io.robe.auth.Credentials",
                             "javax.validation.Valid",
                             "javax.ws.rs.Consumes",
