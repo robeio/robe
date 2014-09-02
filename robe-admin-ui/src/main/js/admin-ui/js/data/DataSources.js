@@ -1,7 +1,6 @@
 var UserDataSource, RoleDataSource, GroupedRoleDataSource, UnGroupedRoleDataSource, MenuDataSource, ServiceDataSource, MailManagementDataSource, SystemLanguageDatasource, QuartzJobDataSource, TriggerDataSource;
 define([
     'js/data/SingletonDataSource', 'js/Models'], function (S, HDS) {
-    console.log("Loading : Datasources");
 
     UserDataSource = new SingletonDataSource("UserDataSource", {
         transport: {
@@ -235,7 +234,6 @@ define([
             model: QuartzJobModel
         }
     });
-    console.log("Finished : Datasources");
 });
 
 

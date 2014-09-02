@@ -2,7 +2,6 @@ define([
     'lib/requirejs-router/router.min'
 
 ], function (Router) {
-    console.log("Registering router.");
     Router.registerRoutes({
         Workspace: {
             path: '/Workspace',

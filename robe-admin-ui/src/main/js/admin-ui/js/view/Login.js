@@ -36,6 +36,7 @@ define([
                     success: function (response) {
                         $.cookie.write("userEmail", $("#username").val());
                         $(document.body).unbind("keydown");
+                        console.log(me.parentPage);
                         me.parentPage.loadMenu();
                         $('#dialog').data("kendoWindow").close();
                         $("#active-user-name").html($("#username").val());

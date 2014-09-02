@@ -133,7 +133,6 @@ define([
 
             },
             error: function (jqXHR, textStatus, errorThrown) {
-                console.log(arguments);
                 alert('HTTP Error: ' + errorThrown + ' | Error Message: ' + textStatus);
                 return;
             }

@@ -61,7 +61,8 @@ define([
     'js/AdminUIApp',
     'lib/jquery/jquery.min.js',
     'lib/underscore/underscore',
-    'lib/highcharts/highcharts'
+    'lib/highcharts/highcharts',
+    'lib/support/console.min.js'
 ], function (App) {
     App.initialize();
 });
