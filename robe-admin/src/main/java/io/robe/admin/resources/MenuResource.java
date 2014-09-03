@@ -4,10 +4,9 @@ import com.google.common.base.Optional;
 import com.google.inject.Inject;
 import io.dropwizard.auth.Auth;
 import io.dropwizard.hibernate.UnitOfWork;
+import io.dropwizard.jersey.caching.CacheControl;
 import io.robe.admin.dto.MenuItem;
 import io.robe.admin.hibernate.dao.MenuDao;
-import io.robe.admin.hibernate.dao.PermissionDao;
-import io.robe.admin.hibernate.dao.RoleDao;
 import io.robe.admin.hibernate.dao.UserDao;
 import io.robe.admin.hibernate.entity.Menu;
 import io.robe.admin.hibernate.entity.Permission;
@@ -30,12 +29,9 @@ public class MenuResource {
 
     @Inject
     UserDao userDao;
-    @Inject
-    RoleDao roleDao;
+
     @Inject
     MenuDao menuDao;
-    @Inject
-    PermissionDao permissionDao;
 
     @Path("all")
     @GET
@@ -60,6 +56,7 @@ public class MenuResource {
     @Path("user")
     @GET
     @UnitOfWork
+    @CacheControl(noCache = true)
     public List<MenuItem> getUserHierarchicalMenu(@Auth Credentials credentials) {
         Optional<User> user = userDao.findByUsername(credentials.getUsername());
         Set<Permission> permissions = new HashSet<Permission>();
