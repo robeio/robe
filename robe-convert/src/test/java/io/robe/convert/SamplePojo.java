@@ -8,13 +8,13 @@ import java.util.Date;
 public class SamplePojo {
     @MappingProperty(order = 0, unique = true, name = "Kullanıcı Id")
     private int id;
-    @MappingProperty(order = 1)
+    @MappingProperty(order = 0, hidden = true)
     private String name;
-    @MappingProperty(order = 2, name = "Soyad")
+    @MappingProperty(order = 0, name = "Soyad")
     private String surname;
-    @MappingProperty(order = 4, name = "Long Id")
+    @MappingProperty(order = 0, name = "Long Id")
     private long longid;
-    @MappingProperty(order = 3, name = "Double Id")
+    @MappingProperty(order = 0, name = "Double Id")
     private double doubleid;
 
     @MappingProperty(order = 5)
