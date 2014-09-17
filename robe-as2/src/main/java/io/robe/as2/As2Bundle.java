@@ -9,7 +9,8 @@ public class As2Bundle<T extends Configuration & HasAs2Configuration> implements
 
 	@Override
 	public void run(T t, Environment environment) throws Exception {
-
+		As2Configuration conf = t.getAs2Configuration();
+		environment.getApplicationContext().addServlet(As2Servlet.class, conf.getPath());
 	}
 
 	@Override
