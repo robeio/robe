@@ -1,8 +1,6 @@
-Robe.io
-=======
+# Robe.io
 
-A brand new robe for Dropwizard.
--------------------------------
+### A brand new robe for Dropwizard.
 Motivation
 -------------------------------
 Robe is a perspective which eliminates the complications and problems occurred in a software development chain by following the approach of Dropwizard.
@@ -21,6 +19,13 @@ Robe solves these complication by including various production ready libraries a
 **Robe.Guice :** Guice is the open source Google Java library used for dependency injection. This package also includes all the auto scanning for resources, entities, tasks, managed commands, providers, injectable providers and health checks.
 
 **Robe.Hibernate :**  This module reads the user's configuration file and maps the entity classes within the given packages and specifically stated class names to Dropwizard's hibernate module.
+
+**Robe.Mail :** This module handles mail template creation, mail queue operations and mail authentication etc. These operations are handled in a developer friendly approach.(Not fully implemented yet)
+ 
+**Robe.MQ :** Will be implemented to handle all internal and external MQ operations.
+
+
+**Robe.AdminPanel :** This module handles admin operations which are assigned to the administrators. These operations allows controlling UI, users, roles, permissions, mails and scheduled tasks. AdminPanel is developed with KendoUI and allows the user to observe server metric information. In case of a need in changing the UI, the developer can place their application's menus in this panel. 
 
 To be continued...
 -------------------------------
