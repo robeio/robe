@@ -59,17 +59,11 @@
             <groupId>io.dropwizard</groupId>
             <artifactId>dropwizard-views</artifactId>
         </dependency>
-        <dependency>
-            <groupId>com.google.guava</groupId>
-            <artifactId>guava</artifactId>
-        </dependency>
-
         <!--Database drivers-->
         <dependency>
             <groupId>mysql</groupId>
             <artifactId>mysql-connector-java</artifactId>
         </dependency>
-
     </dependencies>
 
     <pluginRepositories>
