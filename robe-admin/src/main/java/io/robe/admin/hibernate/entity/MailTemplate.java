@@ -23,7 +23,7 @@ public class MailTemplate extends BaseEntity {
     @Column(name = "lang", nullable = false)
     private Type lang;
 
-    @Column(name = "template", nullable = false, columnDefinition = "Text")
+    @Column(name = "mailTemplate", nullable = false, columnDefinition = "Text")
     private String template;
 
     public String getCode() {

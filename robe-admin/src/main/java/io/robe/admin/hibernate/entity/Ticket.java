@@ -24,6 +24,7 @@ public class Ticket extends BaseEntity {
     private Date expirationDate;
 
     @ManyToOne(targetEntity = User.class)
+    @Column(name = "ticketUser")
     private User user;
 
     public User getUser() {
