@@ -7,6 +7,7 @@ import java.lang.reflect.Field;
 public class ParseInt implements IsParser {
     @Override
     public Object parse(Object o, Field field) {
+
         Integer i = null;
 
         int ind = ((String) o).indexOf(".");

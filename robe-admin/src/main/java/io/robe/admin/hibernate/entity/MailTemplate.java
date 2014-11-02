@@ -4,9 +4,7 @@ import io.robe.hibernate.entity.BaseEntity;
 
 import javax.persistence.*;
 
-/**
- * Created by kaanalkim on 11/02/14.
- */
+
 @Entity
 @Table
 public class MailTemplate extends BaseEntity {
