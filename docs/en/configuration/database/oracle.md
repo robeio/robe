@@ -25,3 +25,6 @@ Oracle JDBC driver has to be downloaded from this [link](http://goo.gl/MuC8). Pl
 ### Common Problems
 #####Reserverd Words
 Some words reserved for Oracle Database. Please try not to use those words table and column names. For complete list pleaser refer this [link](http://goo.gl/bcFrfw)
+
+**Solution**:<br/> *For table names;* **hibarnate.prefix** *property will fix this issue. Write a table prefix for avoiding from reserved word conflicts.<br> For column names; please open an issue or send an email to Robe Developer Team.*
+ 
