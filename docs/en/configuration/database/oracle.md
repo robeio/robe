@@ -10,9 +10,9 @@ Oracle JDBC driver has to be downloaded from this [link](http://goo.gl/MuC8). Pl
 
 3. Fill your database `username`,`password` and `url` (database service URL) information e.g:
 
-		user: dbUser1
-		password: password!1
-		url: jdbc:oracle:thin:@192.168.1.185:1521:orcl
+		user: dbUser
+		password: dbPassword
+		url: jdbc:oracle:thin:@IPADDRESS:PORT:SID
 
 4. Important: `ValidationQuery` configuration parameter has to be added under the database parameter and value must be "**select 1 from dual**" .
 
@@ -21,3 +21,7 @@ Oracle JDBC driver has to be downloaded from this [link](http://goo.gl/MuC8). Pl
 5. Find your oracle version and choose related dialect parameter for the hibernate.
 
 		hibernate.dialect: org.hibernate.dialect.Oracle10gDialect
+		
+### Common Problems
+#####Reserverd Words
+Some words reserved for Oracle Database. Please try not to use those words table and column names. For complete list pleaser refer this [link](http://goo.gl/bcFrfw)
