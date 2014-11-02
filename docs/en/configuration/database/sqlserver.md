@@ -23,4 +23,4 @@ MS Sql Server JDBC driver has to be downloaded from [here](http://goo.gl/01Mk9m)
 Some words reserved for SQL server database. Please try not to use those words table and column names. For complete list pleaser refer [here](http://goo.gl/nqdIV7)
 
 **Solution:**<br/>*For table names;* **hibernate.prefix** *property will fix this issue. Write a table prefix avoiding from reserved word conflicts.*<br/>
-*For column names;please open an issue or send an email to Robe Developer Team*
+*For column names;please open an issue on [Github](http://goo.gl/wGvbxr)*
