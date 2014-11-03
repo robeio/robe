@@ -9,22 +9,13 @@ import java.util.Date;
 @Table
 public class Ticket extends BaseEntity {
 
-    public enum Type {
-        CHANGE_PASSWORD,
-        INIT_PASSWORD,
-        ACTIVATE,
-        FORGOT_PASSWORD
-    }
-
     @Column
     @Enumerated(EnumType.STRING)
     private Type type;
-
     @Column
     private Date expirationDate;
-
     @ManyToOne(targetEntity = User.class)
-    @Column(name = "ticketUser")
+    @JoinColumn(name = "ticketUser")
     private User user;
 
     public User getUser() {
@@ -34,7 +25,6 @@ public class Ticket extends BaseEntity {
     public void setUser(User user) {
         this.user = user;
     }
-
 
     public Type getType() {
         return type;
@@ -50,5 +40,12 @@ public class Ticket extends BaseEntity {
 
     public void setExpirationDate(Date expirationDate) {
         this.expirationDate = expirationDate;
+    }
+
+    public enum Type {
+        CHANGE_PASSWORD,
+        INIT_PASSWORD,
+        ACTIVATE,
+        FORGOT_PASSWORD
     }
 }

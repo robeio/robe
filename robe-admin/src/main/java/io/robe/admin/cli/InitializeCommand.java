@@ -6,6 +6,7 @@ import io.dropwizard.hibernate.UnitOfWork;
 import io.dropwizard.setup.Environment;
 import io.robe.admin.RobeServiceConfiguration;
 import io.robe.admin.hibernate.entity.*;
+import io.robe.guice.GuiceConfiguration;
 import io.robe.hibernate.HibernateBundle;
 import net.sourceforge.argparse4j.inf.Namespace;
 import org.hibernate.Session;
@@ -22,11 +23,11 @@ import java.util.Set;
 
 public class InitializeCommand<T extends RobeServiceConfiguration> extends EnvironmentCommand<T> {
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(InitializeCommand.class);
     public static final String IO_ROBE_ADMIN = "io/robe/admin";
     public static final String ADMIN = "Admin";
-
+    private static final Logger LOGGER = LoggerFactory.getLogger(InitializeCommand.class);
     private HibernateBundle hibernateBundle;
+    private GuiceConfiguration guiceConfiguration;
 
 
     public InitializeCommand(Application<T> service, HibernateBundle hibernateBundle) {
@@ -40,6 +41,7 @@ public class InitializeCommand<T extends RobeServiceConfiguration> extends Envir
     protected void run(Environment environment, Namespace namespace, T configuration) throws Exception {
         LOGGER.info("Initialize Starting...");
         LOGGER.info("Starting to create initial data.");
+        guiceConfiguration = configuration.getGuiceConfiguration();
         execute();
     }
 
@@ -73,7 +75,7 @@ public class InitializeCommand<T extends RobeServiceConfiguration> extends Envir
 
         LOGGER.info("Scanning Services.");
 
-        Reflections reflections = new Reflections(new String[]{"io"}, this.getClass().getClassLoader());
+        Reflections reflections = new Reflections(guiceConfiguration.getScanPackages(), this.getClass().getClassLoader());
 
         Set<Class<?>> services = reflections.getTypesAnnotatedWith(Path.class);
         for (Class<?> service : services) {
