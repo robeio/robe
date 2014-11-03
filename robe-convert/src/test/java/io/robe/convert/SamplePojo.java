@@ -6,9 +6,9 @@ import java.math.BigDecimal;
 import java.util.Date;
 
 public class SamplePojo {
-    @MappingProperty(order = 0, unique = true, name = "Kullanıcı Id")
+    @MappingProperty(order = 0, unique = true, name = "Kullanıcı Id", columnWidth = 12)
     private int id;
-    @MappingProperty(order = 0, hidden = true)
+    @MappingProperty(order = 0, hidden = false, columnWidth = 10)
     private String name;
     @MappingProperty(order = 0, name = "Soyad")
     private String surname;
@@ -17,10 +17,10 @@ public class SamplePojo {
     @MappingProperty(order = 0, name = "Double Id")
     private double doubleid;
 
-    @MappingProperty(order = 5)
+    @MappingProperty(order = 0)
     private BigDecimal big = BigDecimal.ONE;
 
-    @MappingProperty(order = 6, name = "Date Format")
+    @MappingProperty(order = 0, name = "Date Format")
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd.MM.yyyy", timezone = "CET")
     private Date date2;
 

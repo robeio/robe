@@ -24,4 +24,6 @@ public @interface MappingProperty {
     int min() default -1;
 
     boolean hidden() default false;
+
+    int columnWidth() default 0;
 }
