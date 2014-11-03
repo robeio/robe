@@ -28,8 +28,6 @@ public class InitializeCommand<T extends RobeServiceConfiguration> extends Envir
     public static final String ADMIN = "Admin";
     private static final Logger LOGGER = LoggerFactory.getLogger(InitializeCommand.class);
     private HibernateBundle hibernateBundle;
-    private GuiceConfiguration guiceConfiguration;
-
 
     public InitializeCommand(Application<T> service, HibernateBundle hibernateBundle) {
         super(service, "initialize", "Runs Hibernate and initialize required columns");
@@ -42,13 +40,12 @@ public class InitializeCommand<T extends RobeServiceConfiguration> extends Envir
     protected void run(Environment environment, Namespace namespace, T configuration) throws Exception {
         LOGGER.info("Initialize Starting...");
         LOGGER.info("Starting to create initial data.");
-        guiceConfiguration = configuration.getGuiceConfiguration();
-        execute();
+        execute(configuration);
     }
 
 
     @UnitOfWork
-    public void execute() {
+    public void execute(T configuration) {
         final Session session = hibernateBundle.getSessionFactory().openSession();
 
         Role role = (Role) session.createCriteria(Role.class).add(Restrictions.eq("name", "Admin")).uniqueResult();
@@ -74,6 +71,7 @@ public class InitializeCommand<T extends RobeServiceConfiguration> extends Envir
             session.persist(all);
         }
 
+        GuiceConfiguration guiceConfiguration = configuration.getGuiceConfiguration();
         LOGGER.info("Scanning Services.Packages :" + Arrays.toString(guiceConfiguration.getScanPackages()));
 
         Reflections reflections = new Reflections(guiceConfiguration.getScanPackages(), this.getClass().getClassLoader());
