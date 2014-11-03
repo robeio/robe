@@ -3,17 +3,20 @@ package io.robe.admin.resources;
 import com.google.inject.Inject;
 import io.dropwizard.auth.Auth;
 import io.dropwizard.hibernate.UnitOfWork;
+import io.robe.admin.configuration.RobeConfigurationManager;
 import io.robe.admin.hibernate.dao.ServiceDao;
 import io.robe.admin.hibernate.entity.Service;
 import io.robe.auth.Credentials;
 import io.robe.auth.data.entry.ServiceEntry;
+import io.robe.guice.GuiceConfiguration;
 import org.reflections.Reflections;
 
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import java.lang.reflect.Method;
-import java.util.*;
+import java.util.List;
+import java.util.Set;
 
 @Path("service")
 @Produces(MediaType.APPLICATION_JSON)
@@ -36,9 +39,11 @@ public class ServiceResource {
     @UnitOfWork
     public Response refreshServices(@Auth Credentials credentials) {
 
-        Reflections reflections = new Reflections(new String[] {"io"}, this.getClass().getClassLoader());
+        GuiceConfiguration configuration = RobeConfigurationManager.getInstance().getGuiceConfiguration();
+
+        Reflections reflections = new Reflections(configuration.getScanPackages(), this.getClass().getClassLoader());
         Set<Class<?>> services = reflections.getTypesAnnotatedWith(Path.class);
-        int count=0;
+        int count = 0;
         for (Class service : services) {
             String parentPath = "/" + ((Path) service.getAnnotation(Path.class)).value();
             for (Method method : service.getMethods()) {
@@ -53,7 +58,7 @@ public class ServiceResource {
                         path += "/" + method.getAnnotation(Path.class).value();
                         path = path.replaceAll("//", "/");
                     }
-                    io.robe.admin.hibernate.entity.Service entity =serviceDao.findByPathAndMethod(path, ServiceEntry.Method.valueOf(httpMethod));
+                    io.robe.admin.hibernate.entity.Service entity = serviceDao.findByPathAndMethod(path, ServiceEntry.Method.valueOf(httpMethod));
                     if (entity == null) {
                         entity = new io.robe.admin.hibernate.entity.Service();
                         entity.setPath(path);

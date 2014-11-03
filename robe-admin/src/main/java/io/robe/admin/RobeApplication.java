@@ -7,6 +7,7 @@ import io.dropwizard.setup.Bootstrap;
 import io.dropwizard.setup.Environment;
 import io.dropwizard.views.ViewBundle;
 import io.robe.admin.cli.InitializeCommand;
+import io.robe.admin.configuration.RobeConfigurationManager;
 import io.robe.admin.guice.module.AuthenticatorModule;
 import io.robe.admin.guice.module.HibernateModule;
 import io.robe.admin.guice.module.MailModule;
@@ -32,11 +33,11 @@ import java.util.List;
 public class RobeApplication<T extends RobeServiceConfiguration> extends Application<T> {
 
 
+    private HibernateBundle<T> hibernateBundle = null;
+
     public static void main(String[] args) throws Exception {
         new RobeApplication().run(args);
     }
-
-    private HibernateBundle<T> hibernateBundle = null;
 
     public HibernateBundle getHibernateBundle() {
         return hibernateBundle;
@@ -61,30 +62,30 @@ public class RobeApplication<T extends RobeServiceConfiguration> extends Applica
      */
     @Override
     public void initialize(Bootstrap<T> bootstrap) {
-	    hibernateBundle = new HibernateBundle<T>();
-	    QuartzBundle<T> quartzBundle = new QuartzBundle<T>();
-	    MailBundle<T> mailBundle = new MailBundle<T>();
-	    TokenBasedAuthBundle<T> authBundle = new TokenBasedAuthBundle<T>();
+        hibernateBundle = new HibernateBundle<T>();
+        QuartzBundle<T> quartzBundle = new QuartzBundle<T>();
+        MailBundle<T> mailBundle = new MailBundle<T>();
+        TokenBasedAuthBundle<T> authBundle = new TokenBasedAuthBundle<T>();
 
-	    bootstrap.addBundle(hibernateBundle);
-	    bootstrap.addBundle(authBundle);
-	    bootstrap.addBundle(quartzBundle);
-	    bootstrap.addBundle(new ViewBundle());
-	    bootstrap.addBundle(mailBundle);
-	    bootstrap.addBundle(new ConfiguredAssetBundle<T>());
+        bootstrap.addBundle(hibernateBundle);
+        bootstrap.addBundle(authBundle);
+        bootstrap.addBundle(quartzBundle);
+        bootstrap.addBundle(new ViewBundle());
+        bootstrap.addBundle(mailBundle);
+        bootstrap.addBundle(new ConfiguredAssetBundle<T>());
 
         List<Module> modules = new LinkedList<Module>();
-	    modules.add(new HibernateModule(hibernateBundle));
-	    modules.add(new AuthenticatorModule(authBundle, bootstrap.getMetricRegistry()));
-	    modules.add(new QuartzModule(quartzBundle));
-	    modules.add(new MailModule(mailBundle));
+        modules.add(new HibernateModule(hibernateBundle));
+        modules.add(new AuthenticatorModule(authBundle, bootstrap.getMetricRegistry()));
+        modules.add(new QuartzModule(quartzBundle));
+        modules.add(new MailModule(mailBundle));
 
-	    bootstrap.addBundle(new GuiceBundle<T>(modules, bootstrap.getApplication().getConfigurationClass()));
-	    bootstrap.addCommand(new InitializeCommand(this, hibernateBundle));
+        bootstrap.addBundle(new GuiceBundle<T>(modules, bootstrap.getApplication().getConfigurationClass()));
+        bootstrap.addCommand(new InitializeCommand(this, hibernateBundle));
 
 
         //TODO: Bad way to get it. Will change it later.
-	    ByHibernate.setHibernateBundle(hibernateBundle);
+        ByHibernate.setHibernateBundle(hibernateBundle);
 
     }
 
@@ -101,6 +102,7 @@ public class RobeApplication<T extends RobeServiceConfiguration> extends Applica
     @Override
     public void run(T configuration, Environment environment) throws Exception {
         addExceptionMappers(environment);
+        RobeConfigurationManager.getInstance().setGuiceConfiguration(configuration.getGuiceConfiguration());
     }
 
     private void addExceptionMappers(Environment environment) {
