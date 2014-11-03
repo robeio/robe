@@ -4,10 +4,9 @@ import com.google.common.base.Optional;
 import com.google.inject.Inject;
 import io.dropwizard.auth.Auth;
 import io.dropwizard.hibernate.UnitOfWork;
+import io.dropwizard.jersey.caching.CacheControl;
 import io.robe.admin.dto.MenuItem;
 import io.robe.admin.hibernate.dao.MenuDao;
-import io.robe.admin.hibernate.dao.PermissionDao;
-import io.robe.admin.hibernate.dao.RoleDao;
 import io.robe.admin.hibernate.dao.UserDao;
 import io.robe.admin.hibernate.entity.Menu;
 import io.robe.admin.hibernate.entity.Permission;
@@ -30,12 +29,9 @@ public class MenuResource {
 
     @Inject
     UserDao userDao;
-    @Inject
-    RoleDao roleDao;
+
     @Inject
     MenuDao menuDao;
-    @Inject
-    PermissionDao permissionDao;
 
     @Path("all")
     @GET
@@ -60,6 +56,7 @@ public class MenuResource {
     @Path("user")
     @GET
     @UnitOfWork
+    @CacheControl(noCache = true)
     public List<MenuItem> getUserHierarchicalMenu(@Auth Credentials credentials) {
         Optional<User> user = userDao.findByUsername(credentials.getUsername());
         Set<Permission> permissions = new HashSet<Permission>();
@@ -116,7 +113,9 @@ public class MenuResource {
     @Path("movenode/{item}/{destination}")
     public Menu move(@Auth Credentials credentials, @PathParam("item") String itemOid, @PathParam("destination") String parentOid) {
         Menu item = menuDao.findById(itemOid);
+        Hibernate.initialize(item.getItems());
         Menu parent = menuDao.findById(parentOid);
+        Hibernate.initialize(parent.getItems());
         String notValid = " is not valid.";
         if (parent == null) {
             throw new RobeRuntimeException("destination", parentOid + notValid);
@@ -154,7 +153,14 @@ public class MenuResource {
     @DELETE
     @UnitOfWork
     public Menu delete(@Auth Credentials credentials, Menu menu) {
-        menuDao.delete(menu);
-        return menu;
+        Menu delete = menuDao.findById(menu.getOid());
+        Hibernate.initialize(delete.getItems());
+        menuDao.merge(delete);
+        for (Menu child : delete.getItems()) {
+            Hibernate.initialize(child.getItems());
+            child.setParentOid(null);
+            menuDao.update(child);
+        }
+        return menuDao.delete(delete);
     }
 }

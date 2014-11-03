@@ -82,10 +82,10 @@ public class RoleResource {
     public Role delete(@Auth Credentials credentials, Role role) {
         Role roleCheck = roleDao.findById(role.getOid());
         if (roleCheck != null) {
+            initializeItems(roleCheck.getRoles());
             roleDao.delete(roleCheck);
         }
         return roleCheck;
-
     }
 
     @PUT
@@ -96,6 +96,8 @@ public class RoleResource {
         checkNotNull(group, "groupOid mustn't be null");
         Role role = roleDao.findById(roleOid);
         checkNotNull(role, "roleOid mustn't be null");
+        initializeItems(role.getRoles());
+        initializeItems(group.getRoles());
 
         boolean included = isRoleIncludedAsSubRole(role, groupOid);
 
@@ -138,7 +140,7 @@ public class RoleResource {
     public Role destroyRoleGroup(@Auth Credentials credentials, @PathParam("groupOid") String groupOid, @PathParam("roleOid") String roleOid) {
         Role group = roleDao.findById(groupOid);
         Role role = roleDao.findById(roleOid);
-
+        initializeItems(group.getRoles());
         if (group.getRoles() != null && group.getRoles().contains(role)) {
             group.getRoles().remove(role);
             roleDao.update(group);

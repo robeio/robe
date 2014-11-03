@@ -6,6 +6,7 @@ import io.dropwizard.hibernate.UnitOfWork;
 import io.robe.admin.hibernate.dao.QuartzJobDao;
 import io.robe.auth.Credentials;
 import io.robe.quartz.hibernate.JobEntity;
+import org.hibernate.Hibernate;
 
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
@@ -21,7 +22,11 @@ public class QuartzJobResource {
     @GET
     @UnitOfWork
     public List<JobEntity> getAll(@Auth Credentials credentials) {
-        return quartzJobDao.findAll(JobEntity.class);
+        List<JobEntity> jobEntities = quartzJobDao.findAll(JobEntity.class);
+        for (JobEntity jobEntity : jobEntities) {
+            Hibernate.initialize(jobEntity.getTriggers());
+        }
+        return jobEntities;
     }
 
     @POST

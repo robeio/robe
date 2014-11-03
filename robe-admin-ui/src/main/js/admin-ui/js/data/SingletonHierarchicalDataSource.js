@@ -7,7 +7,6 @@ define(['js/Models', 'robe/AlertDialog'], function () {
         this.parameters = parameters;
         this.get = function () {
             if (this.data == null) {
-                console.log("Initializing " + name);
                 this.data = new kendo.data.HierarchicalDataSource(this.parameters);
                 this.data.bind("error", this.requestError);
                 this.data.bind("requestEnd", this.requestEnd);

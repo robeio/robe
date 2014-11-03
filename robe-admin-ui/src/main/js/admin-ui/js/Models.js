@@ -1,6 +1,6 @@
-var UserModel,RoleModel,MenuModel,MenuTreeModel,ServiceModel,MailManagementModel,SystemLanguageModel,QuartzJobModel,TriggerModel;
+var UserModel, RoleModel, MenuModel, MenuTreeModel, ServiceModel, MailManagementModel, SystemLanguageModel, QuartzJobModel, TriggerModel;
 define([
-    'kendo/kendo.data.min','robe/Validations'], function(){
+    'kendo/kendo.data.min', 'robe/Validations'], function () {
 
     UserModel = kendo.data.Model.define({
         id: "oid",
@@ -153,17 +153,14 @@ define([
                 editable: false,
                 nullable: true
             },
-            lastUpdated: {
-                editable: false,
-                nullable: true
-            },
             lang: {
                 editable: true,
                 nullable: false
             },
             code: {
                 editable: true,
-                nullable: false
+                nullable: false,
+                validation: getValidations("code", "Kod", true, false, 0, 500, "[A-Za-z]+")
             },
             template: {
                 editable: true,
@@ -200,23 +197,23 @@ define([
             oid: {
                 editable: false,
                 nullable: true,
-                type:"string",
+                type: "string",
                 hidden: true
             },
             schedulerName: {
                 editable: false,
                 nullable: true,
-                type:"string"
+                type: "string"
             },
             jobClassName: {
                 editable: false,
                 nullable: true,
-                type:"string"
+                type: "string"
             },
             description: {
                 editable: false,
                 nullable: true,
-                type:"string"
+                type: "string"
             }
         }
     });

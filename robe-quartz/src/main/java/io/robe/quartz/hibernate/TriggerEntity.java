@@ -3,16 +3,16 @@ package io.robe.quartz.hibernate;
 import io.robe.hibernate.entity.BaseEntity;
 import io.robe.quartz.QuartzTrigger;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.ManyToOne;
-import javax.persistence.Table;
+import javax.persistence.*;
 
 @Entity
 @Table
 public class TriggerEntity extends BaseEntity implements QuartzTrigger {
 
     private String cronExpression;
+
+    @Transient
+    private String jobId;
 
     @Column(columnDefinition = "boolean default true", nullable = false)
     private boolean active;

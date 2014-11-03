@@ -51,8 +51,9 @@ define([
                     field: "path",
                     title: "Servis",
                     width: 50
-                },{
-                    headerTemplate: "<button class=\"pull-left\" id=\"btnRefreshServices\"><b class=\"k-icon k-si-refresh\"/>",
+                },
+                {
+                    headerTemplate: "<button class=\"pull-left\" id=\"btnRefreshServices\"><span class=\"k-icon k-si-refresh\"/></button>",
                     width: 10
                 }
             ]
@@ -141,7 +142,7 @@ define([
                     dataType: "json",
                     contentType: "application/json; charset=utf-8",
                     success: function (response) {
-                        showToast("success", "Başarılı. Bulunan Yeni Servis Sayısı :"+response);
+                        showToast("success", "Başarılı. Bulunan Yeni Servis Sayısı :" + response);
                         ServiceDataSource.read();
                     }
                 });

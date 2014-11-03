@@ -65,12 +65,15 @@ public abstract class ExcelExporter extends IsExporter {
                 Annotation fieldAnnotation = field.getAnnotation(MappingProperty.class);
                 MappingProperty fieldMappingProperties = (MappingProperty) fieldAnnotation;
                 if (!fieldMappingProperties.hidden()) {
-
+                    int columnWidth = fieldMappingProperties.columnWidth();
+                    if (columnWidth > 0) {
+                        sheet.setColumnWidth(fieldIndex, fieldMappingProperties.columnWidth() * 256);
+                    }
                     boolean acc = field.isAccessible();
                     field.setAccessible(true);
                     Cell cell = entryRow.createCell(fieldIndex++);
-                    IsParser parser = null;
-                    if (!(field.getType() instanceof Class && (field.getType()).isEnum())) {
+                    IsParser parser;
+                    if (!(field.getType() != null && (field.getType()).isEnum())) {
                         parser = Parsers.valueOf(field.getType().getSimpleName().toUpperCase(Locale.ENGLISH)).getParser();
                     } else {
                         parser = Parsers.valueOf("ENUMTYPES").getParser();

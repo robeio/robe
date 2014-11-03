@@ -6,6 +6,7 @@ import io.dropwizard.hibernate.UnitOfWork;
 import io.dropwizard.setup.Environment;
 import io.robe.admin.RobeServiceConfiguration;
 import io.robe.admin.hibernate.entity.*;
+import io.robe.guice.GuiceConfiguration;
 import io.robe.hibernate.HibernateBundle;
 import net.sourceforge.argparse4j.inf.Namespace;
 import org.hibernate.Session;
@@ -16,18 +17,17 @@ import org.slf4j.LoggerFactory;
 
 import javax.ws.rs.*;
 import java.lang.reflect.Method;
+import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Set;
 
 
 public class InitializeCommand<T extends RobeServiceConfiguration> extends EnvironmentCommand<T> {
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(InitializeCommand.class);
     public static final String IO_ROBE_ADMIN = "io/robe/admin";
     public static final String ADMIN = "Admin";
-
+    private static final Logger LOGGER = LoggerFactory.getLogger(InitializeCommand.class);
     private HibernateBundle hibernateBundle;
-
 
     public InitializeCommand(Application<T> service, HibernateBundle hibernateBundle) {
         super(service, "initialize", "Runs Hibernate and initialize required columns");
@@ -40,12 +40,12 @@ public class InitializeCommand<T extends RobeServiceConfiguration> extends Envir
     protected void run(Environment environment, Namespace namespace, T configuration) throws Exception {
         LOGGER.info("Initialize Starting...");
         LOGGER.info("Starting to create initial data.");
-        execute();
+        execute(configuration);
     }
 
 
     @UnitOfWork
-    public void execute() {
+    public void execute(T configuration) {
         final Session session = hibernateBundle.getSessionFactory().openSession();
 
         Role role = (Role) session.createCriteria(Role.class).add(Restrictions.eq("name", "Admin")).uniqueResult();
@@ -71,9 +71,10 @@ public class InitializeCommand<T extends RobeServiceConfiguration> extends Envir
             session.persist(all);
         }
 
-        LOGGER.info("Scanning Services.");
+        GuiceConfiguration guiceConfiguration = configuration.getGuiceConfiguration();
+        LOGGER.info("Scanning Services.Packages :" + Arrays.toString(guiceConfiguration.getScanPackages()));
 
-        Reflections reflections = new Reflections(new String[]{"io"}, this.getClass().getClassLoader());
+        Reflections reflections = new Reflections(guiceConfiguration.getScanPackages(), this.getClass().getClassLoader());
 
         Set<Class<?>> services = reflections.getTypesAnnotatedWith(Path.class);
         for (Class<?> service : services) {

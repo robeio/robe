@@ -3,8 +3,6 @@ var AdminApp;
 
 define(['js/router'], function () {
 
-    console.info("Loading configuration.");
-
     var initialize = function () {
         AdminApp = {
             backendURL: "",

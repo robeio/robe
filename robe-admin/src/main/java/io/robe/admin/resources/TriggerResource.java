@@ -3,7 +3,6 @@ package io.robe.admin.resources;
 import com.google.inject.Inject;
 import io.dropwizard.auth.Auth;
 import io.dropwizard.hibernate.UnitOfWork;
-import io.robe.admin.hibernate.dao.QuartzJobDao;
 import io.robe.admin.hibernate.dao.QuartzTriggerDao;
 import io.robe.auth.Credentials;
 import io.robe.quartz.ManagedQuartz;
@@ -11,6 +10,7 @@ import io.robe.quartz.QuartzBundle;
 import io.robe.quartz.QuartzJob;
 import io.robe.quartz.hibernate.JobEntity;
 import io.robe.quartz.hibernate.TriggerEntity;
+import org.hibernate.Hibernate;
 import org.quartz.*;
 
 import javax.ws.rs.*;
@@ -32,13 +32,15 @@ public class TriggerResource {
     QuartzTriggerDao quartzTriggerDao;
     @Inject
     ManagedQuartz managedQuartz;
-    @Inject
-    QuartzJobDao quartzJobDao;
 
     @GET
     @UnitOfWork
     public List<TriggerEntity> getAll(@Auth Credentials credentials) {
-        return quartzTriggerDao.findAll(TriggerEntity.class);
+        List<TriggerEntity> triggerEntities = quartzTriggerDao.findAll(TriggerEntity.class);
+        for (TriggerEntity triggerEntity : triggerEntities) {
+            Hibernate.initialize(triggerEntity.getJob().getTriggers());
+        }
+        return triggerEntities;
     }
 
     @DELETE
