@@ -17,6 +17,7 @@ import org.slf4j.LoggerFactory;
 
 import javax.ws.rs.*;
 import java.lang.reflect.Method;
+import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -73,7 +74,7 @@ public class InitializeCommand<T extends RobeServiceConfiguration> extends Envir
             session.persist(all);
         }
 
-        LOGGER.info("Scanning Services.");
+        LOGGER.info("Scanning Services.Packages :" + Arrays.toString(guiceConfiguration.getScanPackages()));
 
         Reflections reflections = new Reflections(guiceConfiguration.getScanPackages(), this.getClass().getClassLoader());
 
