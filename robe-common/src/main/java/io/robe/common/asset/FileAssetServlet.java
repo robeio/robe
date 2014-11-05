@@ -108,6 +108,11 @@ public class FileAssetServlet extends HttpServlet {
 			final StringBuilder builder = new StringBuilder(req.getServletPath());
 			if (req.getPathInfo() != null) {
 				builder.append(req.getPathInfo());
+			} else {
+				builder.insert(0, req.getContextPath());
+				builder.append("/").append(getIndexFile());
+				resp.sendRedirect(builder.toString());
+				return;
 			}
 			final CachedAsset cachedAsset = loadAsset(builder.toString());
 			if (cachedAsset == null) {
