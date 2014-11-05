@@ -5,4 +5,5 @@ public class Validations {
         return pattern == null || pattern.trim().equals("");
     }
 
+
 }
