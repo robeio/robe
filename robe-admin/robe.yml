@@ -84,7 +84,12 @@ auth:
   serverPassword: auto # auto for uuid, if it is cluster use custom password
 
 asset:
-  resourcePath: /Users/serayuzgur/Development/robe/robe-admin-ui/src/main/js/admin-ui
+  resourcePath: /Users/serayuzgur/Development/robe-admin-ui/src/robe-admin-ui
   uriPath: /admin-ui/
   indexFile: index.html
   assetsName: io.robe.admin.ui
+
+as2:
+  name: as2
+  path: /as2
+  contentType: application/octet-stream
