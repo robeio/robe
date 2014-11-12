@@ -7,7 +7,6 @@ import io.dropwizard.setup.Bootstrap;
 import io.dropwizard.setup.Environment;
 import io.dropwizard.views.ViewBundle;
 import io.robe.admin.cli.InitializeCommand;
-import io.robe.admin.configuration.RobeConfigurationManager;
 import io.robe.admin.guice.module.AuthenticatorModule;
 import io.robe.admin.guice.module.HibernateModule;
 import io.robe.admin.guice.module.MailModule;
@@ -102,7 +101,6 @@ public class RobeApplication<T extends RobeServiceConfiguration> extends Applica
     @Override
     public void run(T configuration, Environment environment) throws Exception {
         addExceptionMappers(environment);
-        RobeConfigurationManager.getInstance().setGuiceConfiguration(configuration.getGuiceConfiguration());
     }
 
     private void addExceptionMappers(Environment environment) {

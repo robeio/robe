@@ -24,9 +24,9 @@ import static org.quartz.JobBuilder.newJob;
 import static org.quartz.TriggerBuilder.newTrigger;
 
 public class QuartzBundle<T extends Configuration & HasQuartzConfiguration & HasHibernateConfiguration> implements ConfiguredBundle<T> {
-    private static final Logger LOGGER = LoggerFactory.getLogger(QuartzBundle.class);
     public static final String DYNAMIC_GROUP = "DynamicCronJob";
     public static final String STATIC_GROUP = "StaticCronJob";
+    private static final Logger LOGGER = LoggerFactory.getLogger(QuartzBundle.class);
     private static final String ERROR = "Cron Job Provider is not proper. %s : provider: %s";
     Scheduler scheduler = null;
     Set<Class<? extends Job>> onStartJobs = null;
@@ -167,7 +167,7 @@ public class QuartzBundle<T extends Configuration & HasQuartzConfiguration & Has
             try {
                 scheduler.addJob(jobDetail, true);
             } catch (SchedulerException e) {
-                LOGGER.error("Can't schedule " + job.getClazz() + e.getMessage() );
+                LOGGER.error("Can't schedule " + job.getClazz() + e.getMessage());
             }
 
         }

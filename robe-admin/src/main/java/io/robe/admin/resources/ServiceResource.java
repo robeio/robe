@@ -3,7 +3,7 @@ package io.robe.admin.resources;
 import com.google.inject.Inject;
 import io.dropwizard.auth.Auth;
 import io.dropwizard.hibernate.UnitOfWork;
-import io.robe.admin.configuration.RobeConfigurationManager;
+import io.robe.admin.RobeServiceConfiguration;
 import io.robe.admin.hibernate.dao.ServiceDao;
 import io.robe.admin.hibernate.entity.Service;
 import io.robe.auth.Credentials;
@@ -24,6 +24,8 @@ import java.util.Set;
 public class ServiceResource {
 
     @Inject
+    RobeServiceConfiguration robeServiceConfiguration;
+    @Inject
     private ServiceDao serviceDao;
 
     @Path("/all")
@@ -39,7 +41,8 @@ public class ServiceResource {
     @UnitOfWork
     public Response refreshServices(@Auth Credentials credentials) {
 
-        GuiceConfiguration configuration = RobeConfigurationManager.getInstance().getGuiceConfiguration();
+
+        GuiceConfiguration configuration = robeServiceConfiguration.getGuiceConfiguration();
 
         Reflections reflections = new Reflections(configuration.getScanPackages(), this.getClass().getClassLoader());
         Set<Class<?>> services = reflections.getTypesAnnotatedWith(Path.class);
