@@ -14,7 +14,6 @@
         <module>robe-mq</module>
         <module>robe-crud</module>
         <module>robe-convert</module>
-        <module>robe-admin-ui</module>
         <module>robe-as2</module>
     </modules>
 
