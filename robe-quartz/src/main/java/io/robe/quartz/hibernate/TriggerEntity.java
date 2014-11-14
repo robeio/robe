@@ -1,5 +1,6 @@
 package io.robe.quartz.hibernate;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import io.robe.hibernate.entity.BaseEntity;
 import io.robe.quartz.QuartzTrigger;
 
@@ -18,7 +19,9 @@ public class TriggerEntity extends BaseEntity implements QuartzTrigger {
     private boolean active;
     private long fireTime;
 
-    @ManyToOne(targetEntity = JobEntity.class)
+    @JsonBackReference("job")
+    @ManyToOne(cascade = CascadeType.REFRESH, targetEntity = JobEntity.class)
+    @JoinColumn(name = "PARENTOID")
     private JobEntity job;
 
     public String getCronExpression() {
@@ -41,13 +44,17 @@ public class TriggerEntity extends BaseEntity implements QuartzTrigger {
         return fireTime;
     }
 
-    @Override
-    public String getJobId() {
-        return getJob().getOid();
-    }
-
     public void setFireTime(long fireTime) {
         this.fireTime = fireTime;
+    }
+
+    @Override
+    public String getJobId() {
+        return this.getJob().getOid();
+    }
+
+    public void setJobId(String jobId) {
+        this.jobId = jobId;
     }
 
     public JobEntity getJob() {

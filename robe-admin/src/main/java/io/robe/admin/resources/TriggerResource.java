@@ -3,6 +3,7 @@ package io.robe.admin.resources;
 import com.google.inject.Inject;
 import io.dropwizard.auth.Auth;
 import io.dropwizard.hibernate.UnitOfWork;
+import io.robe.admin.hibernate.dao.QuartzJobDao;
 import io.robe.admin.hibernate.dao.QuartzTriggerDao;
 import io.robe.auth.Credentials;
 import io.robe.quartz.ManagedQuartz;
@@ -10,7 +11,6 @@ import io.robe.quartz.QuartzBundle;
 import io.robe.quartz.QuartzJob;
 import io.robe.quartz.hibernate.JobEntity;
 import io.robe.quartz.hibernate.TriggerEntity;
-import org.hibernate.Hibernate;
 import org.quartz.*;
 
 import javax.ws.rs.*;
@@ -33,31 +33,33 @@ public class TriggerResource {
     @Inject
     ManagedQuartz managedQuartz;
 
+    @Inject
+    QuartzJobDao quartzJobDao;
+
     @GET
     @UnitOfWork
     public List<TriggerEntity> getAll(@Auth Credentials credentials) {
-        List<TriggerEntity> triggerEntities = quartzTriggerDao.findAll(TriggerEntity.class);
-        for (TriggerEntity triggerEntity : triggerEntities) {
-            Hibernate.initialize(triggerEntity.getJob().getTriggers());
-        }
-        return triggerEntities;
+        return quartzTriggerDao.findAll(TriggerEntity.class);
     }
 
     @DELETE
     @UnitOfWork
     public TriggerEntity delete(@Auth Credentials credentials, TriggerEntity triggerEntity) throws SchedulerException {
+        triggerEntity = quartzTriggerDao.findById(triggerEntity.getOid());
         unScheduleJobTrigger(triggerEntity);
-        quartzTriggerDao.delete(triggerEntity);
-        return triggerEntity;
+        return quartzTriggerDao.delete(triggerEntity);
     }
 
     @POST
     @Path("/update")
     @UnitOfWork
     public TriggerEntity setCron(TriggerEntity triggerEntity) {
-        triggerEntity.setActive(false);
-        quartzTriggerDao.update(triggerEntity);
-        return triggerEntity;
+        TriggerEntity entity = quartzTriggerDao.findById(triggerEntity.getOid());
+        entity.setActive(triggerEntity.isActive());
+        entity.setCronExpression(triggerEntity.getCronExpression());
+        entity.setFireTime(triggerEntity.getFireTime());
+        quartzTriggerDao.update(entity);
+        return entity;
     }
 
 
@@ -65,6 +67,7 @@ public class TriggerResource {
     @Path("/run")
     @UnitOfWork
     public TriggerEntity fireTrigger(TriggerEntity triggerEntity) throws SchedulerException {
+        triggerEntity = quartzTriggerDao.findById(triggerEntity.getOid());
         return scheduleJob(triggerEntity);
     }
 
@@ -72,6 +75,7 @@ public class TriggerResource {
     @Path("/stop")
     @UnitOfWork
     public TriggerEntity stopTrigger(TriggerEntity triggerEntity) throws SchedulerException {
+        triggerEntity = quartzTriggerDao.findById(triggerEntity.getOid());
         return unScheduleJobTrigger(triggerEntity);
 
     }
@@ -80,8 +84,14 @@ public class TriggerResource {
     @Path("/add")
     @UnitOfWork
     public TriggerEntity addTrigger(JobEntity quartzJob) throws SchedulerException {
-        TriggerEntity newTriggerEntity = createQuartzTrigger(quartzJob);
-        return newTriggerEntity;
+
+        TriggerEntity entity = new TriggerEntity();
+        entity.setJob(quartzJob);
+        entity = quartzTriggerDao.create(entity);
+        quartzTriggerDao.flush();
+        quartzJob.getTriggers().add(entity);
+        quartzJobDao.update(quartzJob);
+        return entity;
 
     }
 
@@ -126,7 +136,7 @@ public class TriggerResource {
         String cronExpression = triggerEntity.getCronExpression();
         QuartzJob quartzJob = triggerEntity.getJob();
         Scheduler scheduler = managedQuartz.getScheduler();
-        JobDetail jobDetail = scheduler.getJobDetail(new JobKey(quartzJob.getOid(), QuartzBundle.DYNAMIC_GROUP));
+        JobDetail jobDetail = scheduler.getJobDetail(new JobKey(quartzJob.getOid(), QuartzBundle.STATIC_GROUP));
         if (cronExpression != null) {
             TriggerKey triggerKey = new TriggerKey(triggerEntity.getOid(), quartzJob.getOid());
             TriggerBuilder<Trigger> trigger = newTrigger().startAt(new Date(triggerEntity.getFireTime())).withIdentity(triggerKey);
@@ -134,7 +144,7 @@ public class TriggerResource {
             triggers.add(trigger.withSchedule(CronScheduleBuilder.cronSchedule(cronExpression)).build());
             scheduler.scheduleJob(jobDetail, triggers, true);
             triggerEntity.setActive(true);
-            quartzTriggerDao.update(triggerEntity);
+            triggerEntity = quartzTriggerDao.update(triggerEntity);
         }
         return triggerEntity;
     }
