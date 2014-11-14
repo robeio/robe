@@ -4,7 +4,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import javax.activation.DataHandler;
-import javax.activation.DataSource;
 import javax.mail.*;
 import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeBodyPart;
@@ -18,7 +17,7 @@ import static com.google.common.base.Preconditions.checkNotNull;
 /**
  * A mail sender class.
  */
-public class MailSender {
+class MailSender {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(MailSender.class);
     private static final Properties PROPERTIES = new Properties();
@@ -35,7 +34,9 @@ public class MailSender {
     }
 
     private void setProperties() {
-        PROPERTIES.put("mail.smtp.host", configuration.getHost());
+	    LOGGER.debug("Setting configuration.");
+	    LOGGER.debug(configuration.toString());
+	    PROPERTIES.put("mail.smtp.host", configuration.getHost());
         PROPERTIES.put("mail.smtp.port", configuration.getPort());
         PROPERTIES.put("mail.smtp.auth", configuration.isAuth());
         PROPERTIES.put("mail.smtp.starttls.enable", configuration.isTlsssl());
@@ -48,51 +49,47 @@ public class MailSender {
 
 
     /**
-     * Sends a mail with the given parameters.
-     *
-     * @param sender     sender mail address
-     * @param receivers  an array of receiver mail addresses
-     * @param title      title of mail
-     * @param body       body of mail
-     * @param attachment a document to attach. If not available send null.
-     * @throws MessagingException in case of any problem.
+     * Sends a mail with the given item.
+     * @param item MailItem to be send.
      */
-    public void sendMessage(String title, String body, DataSource attachment, String sender, String... receivers) throws MessagingException {
-        checkNotNull(receivers);
-        checkNotNull(receivers[0]);
-        checkNotNull(title);
-        checkNotNull(body);
+    public void sendMessage(MailItem item) throws MessagingException {
+	    checkNotNull(item.getReceivers());
+	    checkNotNull(item.getReceivers().getFirst());
+	    checkNotNull(item.getTitle());
+	    checkNotNull(item.getBody());
 
-        Message msg = new MimeMessage(session);
-        if (sender == null || sender.length() == 0) {
-            sender = configuration.getUsername();
-        }
-        InternetAddress addressFrom = new InternetAddress(sender);
-        msg.setFrom(addressFrom);
+	    //If sender is empty send with the account sender.
+	    Message msg = new MimeMessage(session);
+	    if (item.getSender() == null || item.getSender().length() == 0) {
+		    item.setSender(configuration.getUsername());
+	    }
+	    InternetAddress from = new InternetAddress(item.getSender());
+	    msg.setFrom(from);
 
         MimeBodyPart attachFilePart = new MimeBodyPart();
-        if (attachment != null) {
-            attachFilePart.setDataHandler(new DataHandler(attachment));
-            attachFilePart.setFileName(attachment.getName());
-        }
+	    if (item.getAttachment() != null) {
+		    attachFilePart.setDataHandler(new DataHandler(item.getAttachment()));
+		    attachFilePart.setFileName(item.getAttachment().getName());
+	    }
 
-        InternetAddress[] addressTo = new InternetAddress[receivers.length];
-        for (int i = 0; i < receivers.length; i++) {
-            addressTo[i] = new InternetAddress(receivers[i]);
-        }
-        msg.setRecipients(Message.RecipientType.TO, addressTo);
-        msg.setSubject(title);
-        MimeBodyPart textPart = new MimeBodyPart();
-        textPart.setContent(body, "text/html; charset=UTF-8");
-        Multipart mp = new MimeMultipart();
-        mp.addBodyPart(textPart);
-        if (attachFilePart.getLineCount() > 0) {
-            mp.addBodyPart(attachFilePart);
-        }
+	    InternetAddress[] to = new InternetAddress[item.getReceivers().size()];
+	    for (int i = 0; i < item.getReceivers().size(); i++) {
+		    to[i] = new InternetAddress(item.getReceivers().get(i));
+	    }
+	    msg.setRecipients(Message.RecipientType.TO, to);
 
-        msg.setContent(mp);
-        Transport.send(msg);
-        LOGGER.info("Mail sent to :", receivers);
+	    msg.setSubject(item.getTitle());
+
+	    MimeBodyPart body = new MimeBodyPart();
+	    body.setContent(item.getBody(), "text/html; charset=UTF-8");
+	    Multipart content = new MimeMultipart();
+	    content.addBodyPart(body);
+	    if (attachFilePart.getLineCount() > 0) {
+	        content.addBodyPart(attachFilePart);
+	    }
+
+	    msg.setContent(content);
+	    Transport.send(msg);
     }
 
 
