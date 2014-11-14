@@ -9,7 +9,6 @@ import io.dropwizard.views.ViewBundle;
 import io.robe.admin.cli.InitializeCommand;
 import io.robe.admin.guice.module.AuthenticatorModule;
 import io.robe.admin.guice.module.HibernateModule;
-import io.robe.admin.guice.module.MailModule;
 import io.robe.admin.guice.module.QuartzModule;
 import io.robe.auth.tokenbased.TokenBasedAuthBundle;
 import io.robe.common.asset.ConfiguredAssetBundle;
@@ -32,80 +31,79 @@ import java.util.List;
 public class RobeApplication<T extends RobeServiceConfiguration> extends Application<T> {
 
 
-    private HibernateBundle<T> hibernateBundle = null;
+	private HibernateBundle<T> hibernateBundle = null;
 
-    public static void main(String[] args) throws Exception {
-        new RobeApplication().run(args);
-    }
+	public static void main(String[] args) throws Exception {
+		new RobeApplication().run(args);
+	}
 
-    public HibernateBundle getHibernateBundle() {
-        return hibernateBundle;
-    }
+	public HibernateBundle getHibernateBundle() {
+		return hibernateBundle;
+	}
 
-    /**
-     * Adds
-     * Hibernate bundle for PROVIDER connection
-     * Asset bundle for io.robe.admin screens and
-     * Class scanners for
-     * <ul>
-     * <li>Entities</li>
-     * <li>HealthChecks</li>
-     * <li>Providers</li>
-     * <li>InjectableProviders</li>
-     * <li>Resources</li>
-     * <li>Tasks</li>
-     * <li>Managed objects</li>
-     * </ul>
-     *
-     * @param bootstrap
-     */
-    @Override
-    public void initialize(Bootstrap<T> bootstrap) {
-        hibernateBundle = new HibernateBundle<T>();
-        QuartzBundle<T> quartzBundle = new QuartzBundle<T>();
-        MailBundle<T> mailBundle = new MailBundle<T>();
-        TokenBasedAuthBundle<T> authBundle = new TokenBasedAuthBundle<T>();
+	/**
+	 * Adds
+	 * Hibernate bundle for PROVIDER connection
+	 * Asset bundle for io.robe.admin screens and
+	 * Class scanners for
+	 * <ul>
+	 * <li>Entities</li>
+	 * <li>HealthChecks</li>
+	 * <li>Providers</li>
+	 * <li>InjectableProviders</li>
+	 * <li>Resources</li>
+	 * <li>Tasks</li>
+	 * <li>Managed objects</li>
+	 * </ul>
+	 *
+	 * @param bootstrap
+	 */
+	@Override
+	public void initialize(Bootstrap<T> bootstrap) {
+		hibernateBundle = new HibernateBundle<T>();
+		QuartzBundle<T> quartzBundle = new QuartzBundle<T>();
+		MailBundle<T> mailBundle = new MailBundle<T>();
+		TokenBasedAuthBundle<T> authBundle = new TokenBasedAuthBundle<T>();
 
-        bootstrap.addBundle(hibernateBundle);
-        bootstrap.addBundle(authBundle);
-        bootstrap.addBundle(quartzBundle);
-        bootstrap.addBundle(new ViewBundle());
-        bootstrap.addBundle(mailBundle);
-        bootstrap.addBundle(new ConfiguredAssetBundle<T>());
+		bootstrap.addBundle(hibernateBundle);
+		bootstrap.addBundle(authBundle);
+		bootstrap.addBundle(quartzBundle);
+		bootstrap.addBundle(new ViewBundle());
+		bootstrap.addBundle(mailBundle);
+		bootstrap.addBundle(new ConfiguredAssetBundle<T>());
 
-        List<Module> modules = new LinkedList<Module>();
-        modules.add(new HibernateModule(hibernateBundle));
-        modules.add(new AuthenticatorModule(authBundle, bootstrap.getMetricRegistry()));
-        modules.add(new QuartzModule(quartzBundle));
-        modules.add(new MailModule(mailBundle));
+		List<Module> modules = new LinkedList<Module>();
+		modules.add(new HibernateModule(hibernateBundle));
+		modules.add(new AuthenticatorModule(authBundle, bootstrap.getMetricRegistry()));
+		modules.add(new QuartzModule(quartzBundle));
 
-        bootstrap.addBundle(new GuiceBundle<T>(modules, bootstrap.getApplication().getConfigurationClass()));
-        bootstrap.addCommand(new InitializeCommand(this, hibernateBundle));
-
-
-        //TODO: Bad way to get it. Will change it later.
-        ByHibernate.setHibernateBundle(hibernateBundle);
-
-    }
+		bootstrap.addBundle(new GuiceBundle<T>(modules, bootstrap.getApplication().getConfigurationClass()));
+		bootstrap.addCommand(new InitializeCommand(this, hibernateBundle));
 
 
-    /**
-     * {@inheritDoc}
-     * In addition adds exception mapper.
-     *
-     * @param configuration
-     * @param environment
-     * @throws Exception
-     */
-    @UnitOfWork
-    @Override
-    public void run(T configuration, Environment environment) throws Exception {
-        addExceptionMappers(environment);
-    }
+		//TODO: Bad way to get it. Will change it later.
+		ByHibernate.setHibernateBundle(hibernateBundle);
 
-    private void addExceptionMappers(Environment environment) {
-        environment.jersey().register(new RobeExceptionMapper());
+	}
 
-    }
+
+	/**
+	 * {@inheritDoc}
+	 * In addition adds exception mapper.
+	 *
+	 * @param configuration
+	 * @param environment
+	 * @throws Exception
+	 */
+	@UnitOfWork
+	@Override
+	public void run(T configuration, Environment environment) throws Exception {
+		addExceptionMappers(environment);
+	}
+
+	private void addExceptionMappers(Environment environment) {
+		environment.jersey().register(new RobeExceptionMapper());
+
+	}
 
 }
