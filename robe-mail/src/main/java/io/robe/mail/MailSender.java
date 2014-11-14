@@ -54,7 +54,7 @@ class MailSender {
      */
     public void sendMessage(MailItem item) throws MessagingException {
 	    checkNotNull(item.getReceivers());
-	    checkNotNull(item.getReceivers().getFirst());
+	    checkNotNull(item.getReceivers().get(0));
 	    checkNotNull(item.getTitle());
 	    checkNotNull(item.getBody());
 
