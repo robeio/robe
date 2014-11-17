@@ -4,21 +4,17 @@ import io.dropwizard.views.View;
 import io.robe.common.dto.BasicPair;
 
 
-public class ChangePasswordView extends View {
+public class RegisterView extends View {
 
-    private BasicPair ticket;
     private BasicPair mail;
+    private BasicPair ticket;
     private BasicPair url;
 
-    public ChangePasswordView(String tickedOid, String mail, String url) {
-        super("ChangePassword.ftl");
-        this.ticket = new BasicPair("tickedOid", tickedOid);
+    public RegisterView(String mail, String ticketOid, String url) {
+        super("Register.ftl");
         this.mail = new BasicPair("mail", mail);
+        this.ticket = new BasicPair("ticket", ticketOid);
         this.url = new BasicPair("url", url);
-    }
-
-    public BasicPair getUrl() {
-        return url;
     }
 
     public BasicPair getTicket() {
@@ -27,5 +23,9 @@ public class ChangePasswordView extends View {
 
     public BasicPair getMail() {
         return mail;
+    }
+
+    public BasicPair getUrl() {
+        return url;
     }
 }

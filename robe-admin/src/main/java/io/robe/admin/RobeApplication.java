@@ -1,11 +1,14 @@
 package io.robe.admin;
 
+import com.google.common.collect.ImmutableList;
 import com.google.inject.Module;
 import io.dropwizard.Application;
 import io.dropwizard.hibernate.UnitOfWork;
 import io.dropwizard.setup.Bootstrap;
 import io.dropwizard.setup.Environment;
 import io.dropwizard.views.ViewBundle;
+import io.dropwizard.views.ViewRenderer;
+import io.dropwizard.views.freemarker.FreemarkerViewRenderer;
 import io.robe.admin.cli.InitializeCommand;
 import io.robe.admin.guice.module.AuthenticatorModule;
 import io.robe.admin.guice.module.HibernateModule;
@@ -69,6 +72,7 @@ public class RobeApplication<T extends RobeServiceConfiguration> extends Applica
 		bootstrap.addBundle(authBundle);
 		bootstrap.addBundle(quartzBundle);
 		bootstrap.addBundle(new ViewBundle());
+		bootstrap.addBundle(new ViewBundle(ImmutableList.<ViewRenderer>of(new FreemarkerViewRenderer())));
 		bootstrap.addBundle(mailBundle);
 		bootstrap.addBundle(new ConfiguredAssetBundle<T>());
 

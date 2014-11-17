@@ -10,14 +10,8 @@ public class UserDTO extends User {
 
     private String roleOid;
     private String username;
-
-    public String getUsername() {
-        return username;
-    }
-
-    public void setUsername(String username) {
-        this.username = username;
-    }
+    private String ticket;
+    private String newPassword;
 
     /**
      * Default constructor.
@@ -42,6 +36,30 @@ public class UserDTO extends User {
         if (entity.getRole() != null) {
             setRoleOid(entity.getRole().getOid());
         }
+    }
+
+    public String getNewPassword() {
+        return newPassword;
+    }
+
+    public void setNewPassword(String newPassword) {
+        this.newPassword = newPassword;
+    }
+
+    public String getTicket() {
+        return ticket;
+    }
+
+    public void setTicket(String ticket) {
+        this.ticket = ticket;
+    }
+
+    public String getUsername() {
+        return username;
+    }
+
+    public void setUsername(String username) {
+        this.username = username;
     }
 
     /**

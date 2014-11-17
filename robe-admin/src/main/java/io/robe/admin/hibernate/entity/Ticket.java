@@ -46,6 +46,7 @@ public class Ticket extends BaseEntity {
         CHANGE_PASSWORD,
         INIT_PASSWORD,
         ACTIVATE,
-        FORGOT_PASSWORD
+        FORGOT_PASSWORD,
+        REGISTER
     }
 }
