@@ -1,17 +1,18 @@
-package io.robe.quartz.hibernate;
+package io.robe.quartz.job.hibernate;
 
 import io.robe.hibernate.HibernateBundle;
-import io.robe.quartz.CronProvider;
 import io.robe.quartz.QuartzBundle;
-import io.robe.quartz.QuartzJob;
-import io.robe.quartz.QuartzTrigger;
-import org.apache.log4j.Logger;
+import io.robe.quartz.job.CronProvider;
+import io.robe.quartz.job.QuartzJob;
+import io.robe.quartz.job.QuartzTrigger;
 import org.hibernate.Session;
 import org.hibernate.criterion.Restrictions;
 import org.quartz.Job;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class ByHibernate implements CronProvider {
-    private static final Logger LOGGER = Logger.getLogger(ByHibernate.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(ByHibernate.class);
     private static HibernateBundle hibernateBundle;
 
     public static void setHibernateBundle(HibernateBundle hibernateBundle) {

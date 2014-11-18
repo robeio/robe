@@ -1,12 +1,12 @@
-package io.robe.quartz.annotation;
+package io.robe.quartz.job.annotation;
 
 
 import com.google.common.collect.Lists;
-import io.robe.quartz.CronProvider;
 import io.robe.quartz.QuartzBundle;
-import io.robe.quartz.QuartzJob;
-import io.robe.quartz.QuartzTrigger;
-import io.robe.quartz.annotations.Scheduled;
+import io.robe.quartz.job.CronProvider;
+import io.robe.quartz.job.QuartzJob;
+import io.robe.quartz.job.QuartzTrigger;
+import io.robe.quartz.job.schedule.Scheduled;
 import org.quartz.Job;
 
 import java.text.ParseException;

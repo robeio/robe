@@ -1,16 +1,17 @@
 package io.robe.admin.timely;
 
-import io.robe.quartz.annotations.ScheduledBy;
-import io.robe.quartz.hibernate.ByHibernate;
-import org.apache.log4j.Logger;
+import io.robe.quartz.job.hibernate.ByHibernate;
+import io.robe.quartz.job.schedule.ScheduledBy;
 import org.quartz.Job;
 import org.quartz.JobExecutionContext;
 import org.quartz.JobExecutionException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 @ScheduledBy(provider = ByHibernate.class)
 public class HibernateProvidedSampleJob implements Job {
 
-    private static final Logger LOGGER = Logger.getLogger(HibernateProvidedSampleJob.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(HibernateProvidedSampleJob.class);
 
     @Override
     public void execute(JobExecutionContext context) throws JobExecutionException {

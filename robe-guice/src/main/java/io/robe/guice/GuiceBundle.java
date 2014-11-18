@@ -70,6 +70,9 @@ public class GuiceBundle<T extends Configuration & HasGuiceConfiguration> implem
      */
     @Override
     public void run(T configuration, Environment environment) {
+        LOGGER.info("------------------------");
+        LOGGER.info("------Guice Bundle------");
+        LOGGER.info("------------------------");
         try {
             if (configuration.getGuiceConfiguration() == null) {
                 LOGGER.error("GuiceBundle can not work without and configuration!");
@@ -86,11 +89,16 @@ public class GuiceBundle<T extends Configuration & HasGuiceConfiguration> implem
 
         } catch (Exception e) {
             LOGGER.error(e.getMessage(), e);
-//            System.exit(1);
         }
 
     }
 
+    /**
+     * Prepares a guice servlet container for jersey
+     *
+     * @param configuration
+     * @param environment   target environment.
+     */
     private void prepareContainer(T configuration, Environment environment) {
 
         container.setResourceConfig(environment.jersey().getResourceConfig());
@@ -101,15 +109,16 @@ public class GuiceBundle<T extends Configuration & HasGuiceConfiguration> implem
                 return container;
             }
         });
-//        environment.getJerseyServletContainer().getServletContext().addServlet("GuiceC",container);
-//        environment.servlets().addServlet("GuiceContainer",container);
         environment.servlets().addFilter("GuiceFilter", GuiceFilter.class)
                 .addMappingForUrlPatterns(EnumSet.allOf(DispatcherType.class), true, environment.getApplicationContext().getContextPath() + "*");
-//                .addMappingForUrlPatterns(null, false, environment.getApplicationContext().getContextPath() + "*");
         deModule.setEnvironmentData(configuration, environment);
 
     }
 
+    /**
+     * Creates a {@link org.reflections.Reflections} with the given packages (configuration)
+     * @param scanPackages
+     */
     private void createReflections(String[] scanPackages) {
         if (scanPackages.length < 1) {
             LOGGER.warn("No package defined in configuration (scanPackages)!");
@@ -127,6 +136,10 @@ public class GuiceBundle<T extends Configuration & HasGuiceConfiguration> implem
 
     }
 
+    /**
+     * Collects all classes extended {@link io.dropwizard.servlets.tasks.Task} and adds them to admin servlet
+     * @param environment target environment
+     */
     private void addTasks(Environment environment, Injector injector) {
         Set<Class<? extends Task>> taskClasses = reflections.getSubTypesOf(Task.class);
         for (Class<? extends Task> task : taskClasses) {
@@ -135,6 +148,10 @@ public class GuiceBundle<T extends Configuration & HasGuiceConfiguration> implem
         }
     }
 
+    /**
+     * Collects all classes extended {@link com.codahale.metrics.health.HealthCheck} and registers them to jersey
+     * @param environment target environment
+     */
     private void addHealthChecks(Environment environment, Injector injector) {
         Set<Class<? extends HealthCheck>> healthCheckClasses = reflections.getSubTypesOf(HealthCheck.class);
         for (Class<? extends HealthCheck> healthCheck : healthCheckClasses) {
@@ -143,6 +160,10 @@ public class GuiceBundle<T extends Configuration & HasGuiceConfiguration> implem
         }
     }
 
+    /**
+     * Collects all classes extended {@link com.sun.jersey.spi.inject.InjectableProvider} and registers them to jersey
+     * @param environment target environment
+     */
     @SuppressWarnings("rawtypes")
     private void addInjectableProviders(Environment environment) {
         Set<Class<? extends InjectableProvider>> injectableProviders = reflections.getSubTypesOf(InjectableProvider.class);
@@ -152,15 +173,22 @@ public class GuiceBundle<T extends Configuration & HasGuiceConfiguration> implem
         }
     }
 
+    /**
+     * Collects all classes annotated by {@link javax.ws.rs.ext.Provider} and registers them to jersey
+     * @param environment target environment
+     */
     private void addProviders(Environment environment) {
         Set<Class<?>> providerClasses = reflections.getTypesAnnotatedWith(Provider.class);
         for (Class<?> provider : providerClasses) {
-            //TODO: check provider API
             environment.jersey().register(provider);
             LOGGER.info("Added provider class: " + provider);
         }
     }
 
+    /**
+     * Collects all classes annotated by {@link javax.ws.rs.Path} and registers them to jersey.
+     * @param environment target environment
+     */
     private void addResources(Environment environment) {
         Set<Class<?>> resourceClasses = reflections.getTypesAnnotatedWith(Path.class);
         for (Class<?> resource : resourceClasses) {
@@ -169,6 +197,11 @@ public class GuiceBundle<T extends Configuration & HasGuiceConfiguration> implem
         }
     }
 
+    /**
+     * Collects all classes extended {@link io.dropwizard.lifecycle.Managed} and adds them to environment
+     * @param environment target environment
+     * @param injector guice injector to create instances.
+     */
     private void addManaged(Environment environment, Injector injector) {
         Set<Class<? extends Managed>> managedClasses = reflections.getSubTypesOf(Managed.class);
         for (Class<? extends Managed> managed : managedClasses) {

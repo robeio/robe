@@ -1,6 +1,6 @@
-package io.robe.quartz.annotations;
+package io.robe.quartz.job.schedule;
 
-import io.robe.quartz.CronProvider;
+import io.robe.quartz.job.CronProvider;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;

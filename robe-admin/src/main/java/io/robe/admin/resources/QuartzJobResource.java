@@ -5,7 +5,7 @@ import io.dropwizard.auth.Auth;
 import io.dropwizard.hibernate.UnitOfWork;
 import io.robe.admin.hibernate.dao.QuartzJobDao;
 import io.robe.auth.Credentials;
-import io.robe.quartz.hibernate.JobEntity;
+import io.robe.quartz.job.hibernate.JobEntity;
 import org.hibernate.Hibernate;
 
 import javax.ws.rs.*;

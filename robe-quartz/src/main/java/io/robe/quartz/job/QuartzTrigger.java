@@ -1,4 +1,4 @@
-package io.robe.quartz;
+package io.robe.quartz.job;
 
 public interface QuartzTrigger {
     String getOid();

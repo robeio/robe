@@ -1,4 +1,4 @@
-package io.robe.quartz.annotations;
+package io.robe.quartz.job.schedule;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;

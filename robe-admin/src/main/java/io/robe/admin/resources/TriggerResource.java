@@ -8,9 +8,9 @@ import io.robe.admin.hibernate.dao.QuartzTriggerDao;
 import io.robe.auth.Credentials;
 import io.robe.quartz.ManagedQuartz;
 import io.robe.quartz.QuartzBundle;
-import io.robe.quartz.QuartzJob;
-import io.robe.quartz.hibernate.JobEntity;
-import io.robe.quartz.hibernate.TriggerEntity;
+import io.robe.quartz.job.QuartzJob;
+import io.robe.quartz.job.hibernate.JobEntity;
+import io.robe.quartz.job.hibernate.TriggerEntity;
 import org.quartz.*;
 
 import javax.ws.rs.*;

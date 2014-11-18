@@ -1,8 +1,5 @@
 package io.robe.common.utils.file;
 
-/**
- * Created by kamilbukum on 01/03/14.
- */
 import io.robe.common.utils.Validations;
 
 import java.io.File;

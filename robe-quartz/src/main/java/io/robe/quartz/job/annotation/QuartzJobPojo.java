@@ -1,7 +1,7 @@
-package io.robe.quartz.annotation;
+package io.robe.quartz.job.annotation;
 
-import io.robe.quartz.QuartzJob;
-import io.robe.quartz.QuartzTrigger;
+import io.robe.quartz.job.QuartzJob;
+import io.robe.quartz.job.QuartzTrigger;
 import org.quartz.Job;
 
 import java.util.List;

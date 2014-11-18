@@ -2,9 +2,6 @@ package io.robe.common.utils.file;
 
 import java.io.File;
 
-/**
- * Created by kamilbukum on 02/03/14.
- */
 public abstract  class TreeData {
 
     private final File file;

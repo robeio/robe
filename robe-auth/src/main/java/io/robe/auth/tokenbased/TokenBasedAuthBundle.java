@@ -8,8 +8,11 @@ import io.robe.auth.TokenWrapper;
 import io.robe.auth.tokenbased.configuration.HasTokenBasedAuthConfiguration;
 import io.robe.auth.tokenbased.configuration.TokenBasedAuthConfiguration;
 import io.robe.auth.tokenbased.filter.TokenBasedAuthResourceFilterFactory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class TokenBasedAuthBundle<T extends Configuration & HasTokenBasedAuthConfiguration> implements ConfiguredBundle<T> {
+    private static final Logger LOGGER = LoggerFactory.getLogger(TokenBasedAuthBundle.class);
     private TokenBasedAuthConfiguration configuration;
 
     /**
@@ -21,6 +24,9 @@ public class TokenBasedAuthBundle<T extends Configuration & HasTokenBasedAuthCon
      */
     @Override
     public void run(T configuration, Environment environment) throws Exception {
+        LOGGER.info("------------------------");
+        LOGGER.info("-------Auth Bundle------");
+        LOGGER.info("------------------------");
         this.configuration = configuration.getTokenBasedAuthConfiguration();
         environment.jersey().register(new TokenBasedAuthResourceFilterFactory(configuration.getTokenBasedAuthConfiguration()));
         TokenWrapper.setMaxage(configuration.getTokenBasedAuthConfiguration().getMaxage());

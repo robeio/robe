@@ -2,7 +2,7 @@ package io.robe.admin.hibernate.dao;
 
 import com.google.inject.Inject;
 import io.robe.hibernate.dao.BaseDao;
-import io.robe.quartz.hibernate.TriggerEntity;
+import io.robe.quartz.job.hibernate.TriggerEntity;
 import org.hibernate.SessionFactory;
 
 /**

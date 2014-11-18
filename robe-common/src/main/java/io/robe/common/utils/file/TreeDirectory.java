@@ -4,9 +4,6 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * Created by kamilbukum on 02/03/14.
- */
 public class TreeDirectory extends  TreeData {
 
     private List<TreeData> childList=new ArrayList<TreeData>();

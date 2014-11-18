@@ -5,13 +5,15 @@ import io.dropwizard.ConfiguredBundle;
 import io.dropwizard.setup.Bootstrap;
 import io.dropwizard.setup.Environment;
 import io.robe.hibernate.HasHibernateConfiguration;
-import io.robe.quartz.annotation.ByAnnotation;
-import io.robe.quartz.annotations.OnApplicationStart;
-import io.robe.quartz.annotations.OnApplicationStop;
-import io.robe.quartz.annotations.Scheduled;
-import io.robe.quartz.annotations.ScheduledBy;
 import io.robe.quartz.configuration.HasQuartzConfiguration;
 import io.robe.quartz.configuration.QuartzConfiguration;
+import io.robe.quartz.job.QuartzJob;
+import io.robe.quartz.job.QuartzTrigger;
+import io.robe.quartz.job.annotation.ByAnnotation;
+import io.robe.quartz.job.schedule.OnApplicationStart;
+import io.robe.quartz.job.schedule.OnApplicationStop;
+import io.robe.quartz.job.schedule.Scheduled;
+import io.robe.quartz.job.schedule.ScheduledBy;
 import org.quartz.*;
 import org.quartz.impl.StdSchedulerFactory;
 import org.reflections.Reflections;
@@ -44,6 +46,9 @@ public class QuartzBundle<T extends Configuration & HasQuartzConfiguration & Has
      */
     @Override
     public void run(T configuration, Environment environment) {
+        LOGGER.info("------------------------");
+        LOGGER.info("-----Quartz Bundle------");
+        LOGGER.info("------------------------");
         this.configuration = configuration;
         try {
             initializeScheduler();

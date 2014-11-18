@@ -20,7 +20,9 @@ import io.robe.guice.GuiceBundle;
 import io.robe.hibernate.HibernateBundle;
 import io.robe.mail.MailBundle;
 import io.robe.quartz.QuartzBundle;
-import io.robe.quartz.hibernate.ByHibernate;
+import io.robe.quartz.job.hibernate.ByHibernate;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.LinkedList;
 import java.util.List;
@@ -35,6 +37,7 @@ public class RobeApplication<T extends RobeServiceConfiguration> extends Applica
 
 
 	private HibernateBundle<T> hibernateBundle = null;
+	private static final Logger LOGGER = LoggerFactory.getLogger(RobeApplication.class);
 
 	public static void main(String[] args) throws Exception {
 		new RobeApplication().run(args);
@@ -63,6 +66,7 @@ public class RobeApplication<T extends RobeServiceConfiguration> extends Applica
 	 */
 	@Override
 	public void initialize(Bootstrap<T> bootstrap) {
+		LOGGER.info("Robe Admin is Starting...");
 		hibernateBundle = new HibernateBundle<T>();
 		QuartzBundle<T> quartzBundle = new QuartzBundle<T>();
 		MailBundle<T> mailBundle = new MailBundle<T>();

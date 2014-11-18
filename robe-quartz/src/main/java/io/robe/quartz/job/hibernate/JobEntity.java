@@ -1,10 +1,10 @@
-package io.robe.quartz.hibernate;
+package io.robe.quartz.job.hibernate;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import io.robe.hibernate.entity.BaseEntity;
-import io.robe.quartz.QuartzJob;
-import io.robe.quartz.QuartzTrigger;
+import io.robe.quartz.job.QuartzJob;
+import io.robe.quartz.job.QuartzTrigger;
 import org.quartz.Job;
 
 import javax.persistence.*;

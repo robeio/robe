@@ -1,6 +1,6 @@
-package io.robe.quartz.annotation;
+package io.robe.quartz.job.annotation;
 
-import io.robe.quartz.QuartzTrigger;
+import io.robe.quartz.job.QuartzTrigger;
 
 public class QuartzTriggerPojo implements QuartzTrigger {
 
