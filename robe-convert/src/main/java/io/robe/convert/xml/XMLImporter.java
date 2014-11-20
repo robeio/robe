@@ -32,6 +32,7 @@ public class XMLImporter<T> extends Importer<T> {
                 list.add(item);
             }
         };
+        importStream(inputStream, handler);
         return list;
     }
 

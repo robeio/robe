@@ -1,20 +1,47 @@
 <xml>
     <SamplePojo>
         <id>1</id>
-        <name>Guner Kaan ALKIM</name>
-        <surname>Computer Engineer</surname>
-        <longid>1</longid>
-        <doubleid>2</doubleid>
-        <big>3</big>
-        <date2>12.12.2312</date2>
+        <name>Seray</name>
+        <surname>Uzgur</surname>
+        <longid>11</longid>
+        <doubleid>111.0</doubleid>
+        <big>1111</big>
+        <date2>01.01.2014</date2>
     </SamplePojo>
     <SamplePojo>
         <id>2</id>
-        <name>Sinan Selimoğlu</name>
-        <surname>Computer</surname>
-        <longid>4</longid>
-        <doubleid>3</doubleid>
-        <big>4</big>
-        <date2>16.12.2312</date2>
+        <name>Kaan</name>
+        <surname>Alkim</surname>
+        <longid>12</longid>
+        <doubleid>112.0</doubleid>
+        <big>1112</big>
+        <date2>02.01.2014</date2>
+    </SamplePojo>
+    <SamplePojo>
+        <id>3</id>
+        <name>Sinan</name>
+        <surname>Selimogli</surname>
+        <longid>13</longid>
+        <doubleid>113.0</doubleid>
+        <big>1113</big>
+        <date2>03.01.2014</date2>
+    </SamplePojo>
+    <SamplePojo>
+        <id>4</id>
+        <name>Kamil</name>
+        <surname>Bukum</surname>
+        <longid>14</longid>
+        <doubleid>114.0</doubleid>
+        <big>1114</big>
+        <date2>04.01.2014</date2>
+    </SamplePojo>
+    <SamplePojo>
+        <id>5</id>
+        <name>Hasan</name>
+        <surname>Mumin</surname>
+        <longid>15</longid>
+        <doubleid>115.0</doubleid>
+        <big>1115</big>
+        <date2>05.01.2014</date2>
     </SamplePojo>
 </xml>
