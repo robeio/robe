@@ -1,43 +1,39 @@
 package io.robe.convert.excel;
 
 import io.robe.convert.SamplePojo;
-import io.robe.convert.common.OnItemHandler;
+import io.robe.convert.TestData;
 import io.robe.convert.excel.importer.XLSXImporter;
-import org.junit.Test;
 
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.InputStream;
 import java.util.List;
 
 public class XLSXImporterTest {
 
 
-    private String SAMPLE = XLSXExporterTest.class.getClassLoader().getResource("sample.xlsx").getFile();
-
-    @Test
+    @org.junit.Test
     public void testImportStream() throws Exception {
-        XLSXImporter importer = new XLSXImporter(SamplePojo.class, true);
+        XLSXImporter<SamplePojo> xlsImporter = new XLSXImporter(SamplePojo.class, false);
+        List<SamplePojo> samplePojos = xlsImporter.importStream(XLSImporterTest.class.getClassLoader().getResourceAsStream("sample.xlsx"));
+        assert samplePojos.size() == TestData.getData().size();
 
-        InputStream inputStream = new FileInputStream(new File(SAMPLE));
-        List<SamplePojo> samplePojos = importer.importStream(inputStream);
-
-        for (SamplePojo samplePojo : samplePojos) {
-            System.out.println(samplePojo.toString());
+        int index = 0;
+        for (SamplePojo importedPojo : samplePojos) {
+            SamplePojo ref = TestData.getData().get(index++);
+            assert importedPojo.equals(ref);
+            System.out.println(ref);
         }
     }
 
-    @Test
-    public void testImportStreamByItem() throws Exception {
-        XLSXImporter importer = new XLSXImporter(SamplePojo.class, true);
-        OnItemHandler<SamplePojo> handler = new OnItemHandler<SamplePojo>() {
-            @Override
-            public void onItem(SamplePojo samplePojo) {
-                System.out.println(samplePojo.toString());
-            }
-        };
+    @org.junit.Test
+    public void testImportStreamWithTitle() throws Exception {
+        XLSXImporter<SamplePojo> xlsImporter = new XLSXImporter(SamplePojo.class, true);
+        List<SamplePojo> samplePojos = xlsImporter.importStream(XLSImporterTest.class.getClassLoader().getResourceAsStream("sampleWithTitle.xlsx"));
+        assert samplePojos.size() == TestData.getData().size();
 
-        importer.importStream(XLSXImporterTest.class.getClassLoader().getResourceAsStream("sample.xlsx"), handler);
-
+        int index = 0;
+        for (SamplePojo importedPojo : samplePojos) {
+            SamplePojo ref = TestData.getData().get(index++);
+            assert importedPojo.equals(ref);
+            System.out.println(ref);
+        }
     }
 }
