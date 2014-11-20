@@ -53,7 +53,7 @@ public class CSVImporter<T> extends Importer<T> {
         Reader reader = new InputStreamReader(inputStream);
 
         ICsvBeanReader csvBeanReader = new CsvBeanReader(reader, this.preference);
-        T obj;
+        Object obj;
         while ((obj = csvBeanReader.<T>read(getDataClass(), this.fieldNames, this.processors)) != null) {
             handler.onItem(obj);
         }
