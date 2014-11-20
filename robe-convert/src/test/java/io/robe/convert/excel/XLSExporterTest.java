@@ -39,6 +39,7 @@ public class XLSExporterTest {
             System.out.println(ref);
         }
 
+        outputFile.delete();
     }
 
     @Test
@@ -61,6 +62,8 @@ public class XLSExporterTest {
             assert item.equals(ref);
             System.out.println(ref);
         }
+
+        outputFile.delete();
 
     }
 }

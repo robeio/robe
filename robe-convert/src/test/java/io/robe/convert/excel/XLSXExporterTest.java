@@ -37,6 +37,7 @@ public class XLSXExporterTest {
             System.out.println(ref);
         }
 
+        outputFile.delete();
     }
 
     @Test
@@ -59,6 +60,6 @@ public class XLSXExporterTest {
             assert importedPojo.equals(ref);
             System.out.println(ref);
         }
-
+        outputFile.delete();
     }
 }
