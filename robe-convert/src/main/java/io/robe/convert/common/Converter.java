@@ -1,6 +1,6 @@
 package io.robe.convert.common;
 
-import io.robe.convert.common.annotation.ConvertField;
+import io.robe.convert.common.annotation.Convert;
 
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Field;
@@ -31,7 +31,7 @@ public abstract class Converter {
     }
 
 
-    protected final boolean isSuitable(ConvertField ann) {
+    protected final boolean isSuitable(Convert ann) {
         return ((ann != null) && !ann.ignore());
     }
 
@@ -44,7 +44,7 @@ public abstract class Converter {
     protected final Collection<FieldEntry> getFields(Class clazz) {
         LinkedList<FieldEntry> fieldList = new LinkedList<>();
         for (Field field : clazz.getDeclaredFields()) {
-            ConvertField cfAnn = field.getAnnotation(ConvertField.class);
+            Convert cfAnn = field.getAnnotation(Convert.class);
             if (isSuitable(cfAnn)) {
                 fieldList.add(new FieldEntry(cfAnn.order(), field));
             }
@@ -66,8 +66,8 @@ public abstract class Converter {
     protected final Map<String, Field> getFieldMap(Class clazz) {
         Map<String, Field> fieldList = new HashMap<String, Field>();
         for (Field field : clazz.getDeclaredFields()) {
-            Annotation fieldAnnotation = field.getAnnotation(ConvertField.class);
-            ConvertField fieldMappingProperties = (ConvertField) fieldAnnotation;
+            Annotation fieldAnnotation = field.getAnnotation(Convert.class);
+            Convert fieldMappingProperties = (Convert) fieldAnnotation;
             if (fieldMappingProperties != null) {
                 fieldList.put(field.getName(), field);
             }

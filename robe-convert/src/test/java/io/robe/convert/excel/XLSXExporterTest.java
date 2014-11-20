@@ -27,13 +27,13 @@ public class XLSXExporterTest {
         outputStream.close();
 
         XLSXImporter<SamplePojo> xlsImporter = new XLSXImporter(SamplePojo.class, false);
-        List<SamplePojo> samplePojos = xlsImporter.importStream(new FileInputStream(outputFile.getPath()));
-        assert samplePojos.size() == TestData.getData().size();
+        List<SamplePojo> list = xlsImporter.importStream(new FileInputStream(outputFile.getPath()));
+        assert list.size() == TestData.getData().size();
         int index = 0;
 
-        for (SamplePojo importedPojo : samplePojos) {
+        for (SamplePojo item : list) {
             SamplePojo ref = TestData.getData().get(index++);
-            assert importedPojo.equals(ref);
+            assert item.equals(ref);
             System.out.println(ref);
         }
 

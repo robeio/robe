@@ -1,8 +1,7 @@
 package io.robe.convert.excel.exporter;
 
 import io.robe.convert.common.Exporter;
-import io.robe.convert.common.annotation.ConvertField;
-import io.robe.convert.common.annotation.ConvertFieldExport;
+import io.robe.convert.common.annotation.Convert;
 import io.robe.convert.excel.parsers.IsParser;
 import io.robe.convert.excel.parsers.Parsers;
 import org.apache.poi.ss.usermodel.Cell;
@@ -51,10 +50,9 @@ public abstract class ExcelExporter<T> extends Exporter<T> {
         int fnIndex = 0;
         for (FieldEntry fieldEntry : fields) {
             Field field = fieldEntry.getValue();
-            ConvertField cfAnn = field.getAnnotation(ConvertField.class);
-            ConvertFieldExport cfeAnn = field.getAnnotation(ConvertFieldExport.class);
-            if (isSuitable(cfAnn) && isSuitable(cfeAnn)) {
-                fieldNames[fnIndex++] = cfeAnn.columnTitle().equals("") ? field.getName() : cfeAnn.columnTitle();
+            Convert cfAnn = field.getAnnotation(Convert.class);
+            if (isSuitable(cfAnn)) {
+                fieldNames[fnIndex++] = cfAnn.title().equals("") ? field.getName() : cfAnn.title();
             }
         }
 
@@ -80,13 +78,8 @@ public abstract class ExcelExporter<T> extends Exporter<T> {
             int fieldIndex = 0;
             for (FieldEntry fieldEntry : fields) {
                 Field field = fieldEntry.getValue();
-                ConvertField cfAnn = field.getAnnotation(ConvertField.class);
-                ConvertFieldExport cfeAnn = field.getAnnotation(ConvertFieldExport.class);
-                if (isSuitable(cfAnn) && isSuitable(cfeAnn)) {
-                    int columnWidth = cfeAnn.columnWidth();
-                    if (columnWidth > 0) {
-                        sheet.setColumnWidth(fieldIndex, cfeAnn.columnWidth() * 256);
-                    }
+                Convert cfAnn = field.getAnnotation(Convert.class);
+                if (isSuitable(cfAnn)) {
                     boolean initialAccessible = field.isAccessible();
                     field.setAccessible(true);
                     Cell cell = entryRow.createCell(fieldIndex++);

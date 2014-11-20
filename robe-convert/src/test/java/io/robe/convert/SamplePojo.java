@@ -1,40 +1,32 @@
 package io.robe.convert;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
-import io.robe.convert.common.annotation.ConvertField;
-import io.robe.convert.common.annotation.ConvertFieldExport;
+import io.robe.convert.common.annotation.Convert;
 
 import java.math.BigDecimal;
 import java.util.Date;
 
 public class SamplePojo {
 
-    @ConvertField(order = 0, unique = true)
-    @ConvertFieldExport(columnTitle = "Kullanıcı Id", columnWidth = 12)
+    @Convert(order = 0, unique = true, title = "Kullanıcı Id")
     private int id;
 
-    @ConvertField(order = 0)
-    @ConvertFieldExport(columnWidth = 10)
+    @Convert(order = 0)
     private String name;
 
-    @ConvertField
-    @ConvertFieldExport(columnTitle = "Soyadı")
+    @Convert(title = "Soyadı")
     private String surname;
 
-    @ConvertField
-    @ConvertFieldExport(columnTitle = "Long Id")
+    @Convert(title = "Long Id")
     private long longid;
 
-    @ConvertField
-    @ConvertFieldExport(columnTitle = "Double Id")
+    @Convert(title = "Double Id")
     private double doubleid;
 
-    @ConvertField
-    @ConvertFieldExport(columnTitle = "Big Id")
+    @Convert(title = "Big Id")
     private BigDecimal big = BigDecimal.ONE;
 
-    @ConvertField
-    @ConvertFieldExport(columnTitle = "")
+    @Convert
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd.MM.yyyy", timezone = "CET")
     private Date date2;
 

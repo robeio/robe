@@ -2,8 +2,7 @@ package io.robe.convert.excel.importer;
 
 import io.robe.convert.common.Importer;
 import io.robe.convert.common.OnItemHandler;
-import io.robe.convert.common.annotation.ConvertField;
-import io.robe.convert.common.annotation.ConvertFieldImport;
+import io.robe.convert.common.annotation.Convert;
 import io.robe.convert.excel.parsers.Parsers;
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.Row;
@@ -62,8 +61,7 @@ public abstract class ExcelImporter<T> extends Importer<T> {
             for (FieldEntry fieldEntry : fields) {
                 Field field = fieldEntry.getValue();
                 Cell cell = row.getCell(cellCount++);
-                ConvertField cfAnn = field.getAnnotation(ConvertField.class);
-                ConvertFieldImport cfiAnn = field.getAnnotation(ConvertFieldImport.class);
+                Convert cfAnn = field.getAnnotation(Convert.class);
                 try {
                     if (cfAnn.optional()) {
 
@@ -114,7 +112,7 @@ public abstract class ExcelImporter<T> extends Importer<T> {
         }
     }
 
-    private void checkFieldLength(ConvertField cfAnn, Cell cell, Field field, Row row) throws Exception {
+    private void checkFieldLength(Convert cfAnn, Cell cell, Field field, Row row) throws Exception {
 
         if (cfAnn.minLength() > -1) {
             if ((int) cell.getNumericCellValue() < cfAnn.minLength()) {

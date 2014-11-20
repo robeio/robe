@@ -2,31 +2,13 @@ package io.robe.convert.excel.parsers;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import org.apache.poi.ss.usermodel.Cell;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import java.lang.reflect.Field;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
-import java.util.LinkedList;
 
 public class ParseDate implements IsParser {
-    // Default values with 
-    private static final String DEFAULT_DATE_FORMAT1 = "dd.MM.yyyy";
-    private static final String DEFAULT_DATE_FORMAT2 = "dd.MM.yy";
-    private static final String DEFAULT_DATE_FORMAT3 = "yyyy/MM/dd";
-    private static final String DEFAULT_DATE_FORMAT4 = "yy/MM/dd";
-    private static final String DEFAULT_DATE_FORMAT5 = "dd/MM/yy";
-    private static final String DEFAULT_DATE_FORMAT6 = "dd/MM/yyyy";
-    private static final String DEFAULT_DATE_FORMAT7 = "yyyy-MM-dd";
-    private static final String DEFAULT_DATE_FORMAT8 = "yy-MM-dd";
-    private static final String DEFAULT_DATE_FORMAT9 = "ddMMyy";
-    private static final String DEFAULT_DATE_FORMAT10 = "ddMMyyyy";
-    private static final String DEFAULT_DATE_FORMAT11 = "dd-MMM-yyyy";
-    private static final String DEFAULT_DATE_FOMRAT12 = "ddd MMM dd hh:mm:ss zzzz yyyy";
-    private static final Logger LOGGER = LoggerFactory.getLogger(ParseDate.class);
-
 
     /**
      * First it checks is there any annotation class for parsing operations,
@@ -48,10 +30,10 @@ public class ParseDate implements IsParser {
                 try {
                     date = formatWithGivenPattern(columnValue, jsonFormat.pattern());
                 } catch (ParseException e) {
-                    date = formatWithDefaults(columnValue);
+                    throw new RuntimeException(e);
                 }
             } else {
-                date = formatWithDefaults(columnValue);
+                throw new RuntimeException("JsonFormat with pattern needed for: " + field.getName());
             }
         }
         return date;
@@ -78,37 +60,5 @@ public class ParseDate implements IsParser {
     private Date formatWithGivenPattern(String columnValue, String format) throws ParseException {
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat(format);
         return simpleDateFormat.parse(columnValue);
-    }
-
-    /**
-     * Uses Java's @DateUtil.class for parsing operation,
-     * It may not be efficient , because it tries to parse with
-     * all known patterns
-     *
-     * @param columnValue Date column value
-     * @return Valid date object
-     */
-    private Date formatWithDefaults(String columnValue) {
-        Date formattedDate;
-        try {
-            LinkedList<String> dateFormats = new LinkedList<String>();
-            dateFormats.add(DEFAULT_DATE_FORMAT1);
-            dateFormats.add(DEFAULT_DATE_FORMAT2);
-            dateFormats.add(DEFAULT_DATE_FORMAT3);
-            dateFormats.add(DEFAULT_DATE_FORMAT4);
-            dateFormats.add(DEFAULT_DATE_FORMAT5);
-            dateFormats.add(DEFAULT_DATE_FORMAT6);
-            dateFormats.add(DEFAULT_DATE_FORMAT7);
-            dateFormats.add(DEFAULT_DATE_FORMAT8);
-            dateFormats.add(DEFAULT_DATE_FORMAT9);
-            dateFormats.add(DEFAULT_DATE_FORMAT10);
-            dateFormats.add(DEFAULT_DATE_FORMAT11);
-            dateFormats.add(DEFAULT_DATE_FOMRAT12);
-            formattedDate = new Date();
-        } catch (Exception e) {
-            LOGGER.error("Couldn't determine the date format of the field" + columnValue + "   error message : " + e.getMessage());
-            throw new RuntimeException("Unknown date format " + columnValue, e);
-        }
-        return formattedDate;
     }
 }

@@ -7,7 +7,24 @@ import java.lang.annotation.RetentionPolicy;
  * Annotation to define convert properties of the field.
  */
 @Retention(RetentionPolicy.RUNTIME)
-public @interface ConvertField {
+public @interface Convert {
+
+    public enum Operation {
+        ALL,
+        IMPORT,
+        EXPORT
+    }
+
+    public enum Type {
+        NONE,
+        BOOL,
+        BYTE,
+        INT,
+        LONG,
+        DOUBLE,
+        BIGDECIMAL,
+        DATE
+    }
 
     /**
      * Position of the field
@@ -45,10 +62,33 @@ public @interface ConvertField {
     int minLength() default -1;
 
     /**
-     * Decides to ignore the field at export operations.
+     * Decides to ignore the field at  operations.
      *
      * @return
      */
     boolean ignore() default false;
+
+
+    /**
+     * Decides to default type of field for import and export .
+     *
+     * @return
+     */
+    Type type() default Type.NONE;
+
+    /**
+     * Column title for the field for exporting.
+     *
+     * @return
+     */
+    String title() default "";
+
+    /**
+     * Operation type. Default is {@link Convert.Operation.ALL}
+     *
+     * @return
+     */
+    Operation operation() default Operation.ALL;
+
 
 }

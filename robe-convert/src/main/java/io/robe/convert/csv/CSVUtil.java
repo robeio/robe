@@ -2,7 +2,7 @@ package io.robe.convert.csv;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import io.robe.convert.common.Converter;
-import io.robe.convert.common.annotation.ConvertField;
+import io.robe.convert.common.annotation.Convert;
 import io.robe.convert.csv.supercsv.ParseDate;
 import org.supercsv.cellprocessor.CellProcessorAdaptor;
 import org.supercsv.cellprocessor.Optional;
@@ -20,7 +20,7 @@ public class CSVUtil {
         int i = 0;
         for (Converter.FieldEntry fieldEntry : fields) {
             Field field = fieldEntry.getValue();
-            ConvertField an = field.getAnnotation(ConvertField.class);
+            Convert an = field.getAnnotation(Convert.class);
             if(an == null){
                 continue;
             }

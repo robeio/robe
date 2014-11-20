@@ -1,6 +1,5 @@
 package io.robe.convert.common;
 
-import io.robe.convert.common.annotation.ConvertFieldImport;
 
 import java.io.InputStream;
 import java.util.List;
@@ -25,12 +24,5 @@ public abstract class Importer<T> extends Converter {
         public void onItem(T item) throws Exception {
             list.add(item);
         }
-
     }
-
-
-    protected final boolean isSuitable(ConvertFieldImport ann) {
-        return ((ann != null) && !ann.ignore());
-    }
-
 }

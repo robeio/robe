@@ -3,6 +3,7 @@ package io.robe.convert.csv.supercsv;
 import org.supercsv.cellprocessor.ift.DateCellProcessor;
 import org.supercsv.util.CsvContext;
 
+import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Locale;
 
@@ -10,6 +11,7 @@ import java.util.Locale;
  * Provides a parser for Date. This is a kind of fix for {@link org.supercsv.cellprocessor.ParseDate}.
  */
 public class ParseDate extends org.supercsv.cellprocessor.ParseDate {
+    private SimpleDateFormat dateFormat;
 
     /**
      * Constructs a new <tt>ParseDate</tt> processor which converts a String to a Date using the supplied date format.
@@ -20,6 +22,7 @@ public class ParseDate extends org.supercsv.cellprocessor.ParseDate {
      */
     public ParseDate(String dateFormat) {
         super(dateFormat);
+        this.dateFormat = new SimpleDateFormat(dateFormat);
     }
 
     /**
@@ -31,6 +34,7 @@ public class ParseDate extends org.supercsv.cellprocessor.ParseDate {
      */
     public ParseDate(String dateFormat, boolean lenient) {
         super(dateFormat, lenient);
+        this.dateFormat = new SimpleDateFormat(dateFormat);
     }
 
     /**
@@ -44,6 +48,8 @@ public class ParseDate extends org.supercsv.cellprocessor.ParseDate {
      */
     public ParseDate(String dateFormat, boolean lenient, Locale locale) {
         super(dateFormat, lenient, locale);
+        this.dateFormat = new SimpleDateFormat(dateFormat);
+
     }
 
     /**
@@ -56,6 +62,8 @@ public class ParseDate extends org.supercsv.cellprocessor.ParseDate {
      */
     public ParseDate(String dateFormat, DateCellProcessor next) {
         super(dateFormat, next);
+        this.dateFormat = new SimpleDateFormat(dateFormat);
+
     }
 
     /**
@@ -69,6 +77,8 @@ public class ParseDate extends org.supercsv.cellprocessor.ParseDate {
      */
     public ParseDate(String dateFormat, boolean lenient, DateCellProcessor next) {
         super(dateFormat, lenient, next);
+        this.dateFormat = new SimpleDateFormat(dateFormat);
+
     }
 
     /**
@@ -83,6 +93,8 @@ public class ParseDate extends org.supercsv.cellprocessor.ParseDate {
      */
     public ParseDate(String dateFormat, boolean lenient, Locale locale, DateCellProcessor next) {
         super(dateFormat, lenient, locale, next);
+        this.dateFormat = new SimpleDateFormat(dateFormat);
+
     }
 
     @Override
@@ -90,9 +102,9 @@ public class ParseDate extends org.supercsv.cellprocessor.ParseDate {
         validateInputNotNull(value, context);
 
         // FIX: If it is already Date forward it.
-        final Date result;
+        final String result;
         if (value instanceof Date) {
-            result = (Date) value;
+            result = this.dateFormat.format(value);
             return next.execute(result, context);
         } else {
             return super.execute(value, context);

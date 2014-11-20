@@ -10,13 +10,13 @@ public class XLSImporterTest {
     @org.junit.Test
     public void testImportStream() throws Exception {
         XLSImporter<SamplePojo> xlsImporter = new XLSImporter(SamplePojo.class, false);
-        List<SamplePojo> samplePojos = xlsImporter.importStream(XLSImporterTest.class.getClassLoader().getResourceAsStream("sample.xls"));
-        assert samplePojos.size() == TestData.getData().size();
+        List<SamplePojo> list = xlsImporter.importStream(XLSImporterTest.class.getClassLoader().getResourceAsStream("sample.xls"));
+        assert list.size() == TestData.getData().size();
 
         int index = 0;
-        for (SamplePojo importedPojo : samplePojos) {
+        for (SamplePojo item : list) {
             SamplePojo ref = TestData.getData().get(index++);
-            assert importedPojo.equals(ref);
+            assert item.equals(ref);
             System.out.println(ref);
         }
     }
@@ -24,13 +24,13 @@ public class XLSImporterTest {
     @org.junit.Test
     public void testImportStreamWithTitle() throws Exception {
         XLSImporter<SamplePojo> xlsImporter = new XLSImporter(SamplePojo.class, true);
-        List<SamplePojo> samplePojos = xlsImporter.importStream(XLSImporterTest.class.getClassLoader().getResourceAsStream("sampleWithTitle.xls"));
-        assert samplePojos.size() == TestData.getData().size();
+        List<SamplePojo> list = xlsImporter.importStream(XLSImporterTest.class.getClassLoader().getResourceAsStream("sampleWithTitle.xls"));
+        assert list.size() == TestData.getData().size();
 
         int index = 0;
-        for (SamplePojo importedPojo : samplePojos) {
+        for (SamplePojo item : list) {
             SamplePojo ref = TestData.getData().get(index++);
-            assert importedPojo.equals(ref);
+            assert item.equals(ref);
             System.out.println(ref);
         }
     }
