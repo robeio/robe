@@ -27,7 +27,7 @@ public class SamplePojo {
     private BigDecimal big = BigDecimal.ONE;
 
     @Convert
-    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd.MM.yyyy", timezone = "CET")
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd.MM.yyyy", timezone = "EET")
     private Date date2;
 
     public SamplePojo() {
