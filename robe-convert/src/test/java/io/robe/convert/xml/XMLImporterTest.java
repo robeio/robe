@@ -1,7 +1,7 @@
 package io.robe.convert.xml;
 
-import io.robe.convert.OnItemHandler;
 import io.robe.convert.SamplePojo;
+import io.robe.convert.common.OnItemHandler;
 import org.junit.Test;
 
 import java.util.List;
@@ -9,9 +9,9 @@ import java.util.List;
 public class XMLImporterTest {
     @Test
     public void testImportStream() throws Exception {
-        XMLImporter xmlImporter = new XMLImporter();
+        XMLImporter<SamplePojo> xmlImporter = new XMLImporter<>(SamplePojo.class);
 
-        List<SamplePojo> list = xmlImporter.<SamplePojo>importStream( SamplePojo.class,XMLImporterTest.class.getClassLoader().getResourceAsStream("sample.xml"));
+        List<SamplePojo> list = xmlImporter.importStream(XMLImporterTest.class.getClassLoader().getResourceAsStream("sample.xml"));
 
         for(SamplePojo pojo: list){
             System.out.println(pojo);
@@ -21,14 +21,14 @@ public class XMLImporterTest {
 
     @Test
     public void testImportStreamByItem() throws Exception {
-        XMLImporter importer = new XMLImporter();
+        XMLImporter<SamplePojo> importer = new XMLImporter<>(SamplePojo.class);
         OnItemHandler<SamplePojo> handler = new OnItemHandler<SamplePojo>() {
             @Override
             public void onItem(SamplePojo samplePojo) {
                 System.out.println(samplePojo.toString());
             }
         };
-        importer.<SamplePojo>importStream(SamplePojo.class, XMLImporterTest.class.getClassLoader().getResourceAsStream("sample.xml"), handler);
+        importer.importStream(XMLImporterTest.class.getClassLoader().getResourceAsStream("sample.xml"), handler);
 
     }
 }

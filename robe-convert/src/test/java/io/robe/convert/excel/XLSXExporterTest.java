@@ -23,8 +23,8 @@ public class XLSXExporterTest {
         LOGGER.info(" New excel file exported to this location : " + exportFile.getCanonicalPath() +
                 " with size : " + exportFile.getTotalSpace() + " bytes");
 
-        XLSXExporter xlsxExporter = new XLSXExporter(true);
-        xlsxExporter.exportStream(SamplePojo.class, outputStream, TestData.getData().iterator());
+        XLSXExporter<SamplePojo> xlsxExporter = new XLSXExporter(SamplePojo.class, true);
+        xlsxExporter.exportStream(outputStream, TestData.getData().iterator());
 
         outputStream.flush();
 

@@ -1,26 +1,40 @@
 package io.robe.convert;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import io.robe.convert.common.annotation.ConvertField;
+import io.robe.convert.common.annotation.ConvertFieldExport;
 
 import java.math.BigDecimal;
 import java.util.Date;
 
 public class SamplePojo {
-    @MappingProperty(order = 0, unique = true, name = "Kullanıcı Id", columnWidth = 12)
+
+    @ConvertField(order = 0, unique = true)
+    @ConvertFieldExport(columnTitle = "Kullanıcı Id", columnWidth = 12)
     private int id;
-    @MappingProperty(order = 0, hidden = false, columnWidth = 10)
+
+    @ConvertField(order = 0)
+    @ConvertFieldExport(columnWidth = 10)
     private String name;
-    @MappingProperty(order = 0, name = "Soyad")
+
+    @ConvertField
+    @ConvertFieldExport(columnTitle = "Soyadı")
     private String surname;
-    @MappingProperty(order = 0, name = "Long Id")
+
+    @ConvertField
+    @ConvertFieldExport(columnTitle = "Long Id")
     private long longid;
-    @MappingProperty(order = 0, name = "Double Id")
+
+    @ConvertField
+    @ConvertFieldExport(columnTitle = "Double Id")
     private double doubleid;
 
-    @MappingProperty(order = 0)
+    @ConvertField
+    @ConvertFieldExport(columnTitle = "Big Id")
     private BigDecimal big = BigDecimal.ONE;
 
-    @MappingProperty(order = 0, name = "Date Format")
+    @ConvertField
+    @ConvertFieldExport(columnTitle = "")
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd.MM.yyyy", timezone = "CET")
     private Date date2;
 
@@ -105,5 +119,38 @@ public class SamplePojo {
                 ", big=" + big +
                 ", date2=" + date2 +
                 '}';
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        SamplePojo that = (SamplePojo) o;
+
+        if (Double.compare(that.doubleid, doubleid) != 0) return false;
+        if (id != that.id) return false;
+        if (longid != that.longid) return false;
+        if (big != null ? big.compareTo(that.big) != 0 : that.big != null) return false;
+        if (date2 != null ? !date2.equals(that.date2) : that.date2 != null) return false;
+        if (name != null ? !name.equals(that.name) : that.name != null) return false;
+        if (surname != null ? !surname.equals(that.surname) : that.surname != null) return false;
+
+        return true;
+    }
+
+    @Override
+    public int hashCode() {
+        int result;
+        long temp;
+        result = id;
+        result = 31 * result + (name != null ? name.hashCode() : 0);
+        result = 31 * result + (surname != null ? surname.hashCode() : 0);
+        result = 31 * result + (int) (longid ^ (longid >>> 32));
+        temp = Double.doubleToLongBits(doubleid);
+        result = 31 * result + (int) (temp ^ (temp >>> 32));
+        result = 31 * result + (big != null ? big.hashCode() : 0);
+        result = 31 * result + (date2 != null ? date2.hashCode() : 0);
+        return result;
     }
 }

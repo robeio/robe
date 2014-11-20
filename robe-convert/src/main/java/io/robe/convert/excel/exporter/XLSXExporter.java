@@ -7,18 +7,20 @@ import java.io.IOException;
 import java.io.OutputStream;
 import java.util.Iterator;
 
-public class XLSXExporter extends ExcelExporter {
+public class XLSXExporter<T> extends ExcelExporter<T> {
 
-    private final boolean isFirstRowHeader;
 
-    public XLSXExporter(boolean isFirstRowHeader) {
-        this.isFirstRowHeader = isFirstRowHeader;
+    public XLSXExporter(Class dataClass) {
+        super(dataClass);
     }
 
+    public XLSXExporter(Class dataClass, boolean hasTitleRow) {
+        super(dataClass, hasTitleRow);
+    }
 
     @Override
-    public <T> void exportStream(Class clazz, OutputStream outputStream, Iterator<T> iterator) throws IOException, ClassNotFoundException, IllegalAccessException {
+    public void exportStream(OutputStream outputStream, Iterator<T> iterator) throws IOException, ClassNotFoundException, IllegalAccessException {
         Workbook workbook = new XSSFWorkbook();
-        exportStream(clazz, outputStream, iterator, isFirstRowHeader, workbook);
+        exportStream(outputStream, iterator, workbook);
     }
 }

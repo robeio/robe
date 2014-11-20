@@ -3,9 +3,10 @@ package io.robe.convert.tsv;
 import io.robe.convert.csv.CSVImporter;
 import org.supercsv.prefs.CsvPreference;
 
-public class TSVImporter extends CSVImporter {
+public class TSVImporter<T> extends CSVImporter<T> {
 
-    public TSVImporter() {
-        super(CsvPreference.TAB_PREFERENCE);
+    public TSVImporter(Class dataClass) {
+        super(dataClass, CsvPreference.TAB_PREFERENCE);
     }
+
 }

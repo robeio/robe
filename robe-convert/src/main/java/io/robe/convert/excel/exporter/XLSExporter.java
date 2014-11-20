@@ -8,16 +8,21 @@ import java.io.IOException;
 import java.io.OutputStream;
 import java.util.Iterator;
 
-public class XLSExporter extends ExcelExporter {
+public class XLSExporter<T> extends ExcelExporter<T> {
     boolean isFirstRowHeader = false;
 
-    public XLSExporter(boolean isFirstRowHeader) {
-        this.isFirstRowHeader = isFirstRowHeader;
+    public XLSExporter(Class dataClass) {
+        this(dataClass, false);
     }
 
+    public XLSExporter(Class dataClass, boolean hasTitleRow) {
+        super(dataClass, hasTitleRow);
+    }
+
+
     @Override
-    public <T> void exportStream(Class clazz, OutputStream outputStream, Iterator<T> iterator) throws IOException, ClassNotFoundException, IllegalAccessException {
+    public void exportStream(OutputStream outputStream, Iterator<T> iterator) throws IOException, ClassNotFoundException, IllegalAccessException {
         Workbook workbook = new HSSFWorkbook();
-        exportStream(clazz, outputStream, iterator, isFirstRowHeader, workbook);
+        exportStream(outputStream, iterator, workbook);
     }
 }

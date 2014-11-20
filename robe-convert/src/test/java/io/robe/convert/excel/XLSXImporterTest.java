@@ -1,7 +1,7 @@
 package io.robe.convert.excel;
 
-import io.robe.convert.OnItemHandler;
 import io.robe.convert.SamplePojo;
+import io.robe.convert.common.OnItemHandler;
 import io.robe.convert.excel.importer.XLSXImporter;
 import org.junit.Test;
 
@@ -17,10 +17,10 @@ public class XLSXImporterTest {
 
     @Test
     public void testImportStream() throws Exception {
-        XLSXImporter importer = new XLSXImporter(true);
+        XLSXImporter importer = new XLSXImporter(SamplePojo.class, true);
 
         InputStream inputStream = new FileInputStream(new File(SAMPLE));
-        List<SamplePojo> samplePojos = importer.importStream(SamplePojo.class, inputStream);
+        List<SamplePojo> samplePojos = importer.importStream(inputStream);
 
         for (SamplePojo samplePojo : samplePojos) {
             System.out.println(samplePojo.toString());
@@ -29,7 +29,7 @@ public class XLSXImporterTest {
 
     @Test
     public void testImportStreamByItem() throws Exception {
-        XLSXImporter importer = new XLSXImporter(true);
+        XLSXImporter importer = new XLSXImporter(SamplePojo.class, true);
         OnItemHandler<SamplePojo> handler = new OnItemHandler<SamplePojo>() {
             @Override
             public void onItem(SamplePojo samplePojo) {
@@ -37,7 +37,7 @@ public class XLSXImporterTest {
             }
         };
 
-        importer.importStream(SamplePojo.class, XLSXImporterTest.class.getClassLoader().getResourceAsStream("sample.xlsx"), handler);
+        importer.importStream(XLSXImporterTest.class.getClassLoader().getResourceAsStream("sample.xlsx"), handler);
 
     }
 }

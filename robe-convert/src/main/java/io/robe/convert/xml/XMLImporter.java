@@ -3,8 +3,8 @@ package io.robe.convert.xml;
 import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.core.JsonToken;
 import com.fasterxml.jackson.dataformat.xml.XmlFactory;
-import io.robe.convert.IsImporter;
-import io.robe.convert.OnItemHandler;
+import io.robe.convert.common.Importer;
+import io.robe.convert.common.OnItemHandler;
 import io.robe.convert.xml.parsers.Parsers;
 
 import java.io.IOException;
@@ -15,9 +15,15 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 
-public class XMLImporter extends IsImporter {
+public class XMLImporter<T> extends Importer<T> {
+
+
+    public XMLImporter(Class dataClass) {
+        super(dataClass);
+    }
+
     @Override
-    public <T> List<T> importStream(Class clazz, InputStream inputStream) throws Exception {
+    public List<T> importStream(InputStream inputStream) throws Exception {
 
         final List<T> list = new LinkedList<T>();
         OnItemHandler<T> handler = new OnItemHandler<T>() {
@@ -30,12 +36,12 @@ public class XMLImporter extends IsImporter {
     }
 
     @Override
-    public <T> void importStream(Class clazz, InputStream inputStream, OnItemHandler handler) throws Exception {
+    public void importStream(InputStream inputStream, OnItemHandler handler) throws Exception {
         XmlFactory factory = new XmlFactory();
         JsonParser parser = factory.createParser(inputStream);
         JsonToken current;
 
-        Map<String, Field> fields = getFieldMap(clazz);
+        Map<String, Field> fields = getFieldMap(getDataClass());
 
         current = parser.nextToken();
         while (current != JsonToken.START_OBJECT) {
@@ -49,8 +55,8 @@ public class XMLImporter extends IsImporter {
             } catch (Exception e) {
                 continue;
             }
-            if (clazz.getSimpleName().equals(parser.getValueAsString())) {
-                T item = (T) clazz.newInstance();
+            if (getDataClass().getSimpleName().equals(parser.getValueAsString())) {
+                T item = (T) getDataClass().newInstance();
                 while (parser.nextToken() != JsonToken.END_OBJECT) {
                     if (parser.getValueAsString() == null || parser.getCurrentToken() == JsonToken.FIELD_NAME)
                         continue;

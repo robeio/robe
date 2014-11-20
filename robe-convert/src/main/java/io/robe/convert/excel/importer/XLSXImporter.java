@@ -1,34 +1,28 @@
 package io.robe.convert.excel.importer;
 
-import io.robe.convert.OnItemHandler;
+import io.robe.convert.common.OnItemHandler;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 
 import java.io.InputStream;
 import java.util.List;
 
-public class XLSXImporter extends ExcelImporter {
+public class XLSXImporter<T> extends ExcelImporter<T> {
 
-    private boolean hasTitleRow = false;
+    public XLSXImporter(Class dataClass) {
+        super(dataClass);
+    }
 
-    public XLSXImporter(boolean hasTitleRow) {
-        this.hasTitleRow = hasTitleRow;
+    public XLSXImporter(Class dataClass, boolean hasTitleRow) {
+        super(dataClass, hasTitleRow);
     }
 
     @Override
-    public <T> List<T> importStream(Class clazz, InputStream inputStream) throws Exception {
-        return importStream(clazz, inputStream, hasTitleRow(), new XSSFWorkbook(inputStream));
+    public List<T> importStream(InputStream inputStream) throws Exception {
+        return importStream(inputStream, new XSSFWorkbook(inputStream));
     }
 
     @Override
-    public <T> void importStream(Class clazz, InputStream inputStream, OnItemHandler handler) throws Exception {
-        importStream(clazz, inputStream, hasTitleRow(), new XSSFWorkbook(inputStream), handler);
-    }
-
-    public boolean hasTitleRow() {
-        return hasTitleRow;
-    }
-
-    public void setHasTitleRow(boolean hasTitleRow) {
-        this.hasTitleRow = hasTitleRow;
+    public void importStream(InputStream inputStream, OnItemHandler handler) throws Exception {
+        importStream(inputStream, new XSSFWorkbook(inputStream), handler);
     }
 }

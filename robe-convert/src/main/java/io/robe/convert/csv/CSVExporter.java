@@ -1,6 +1,6 @@
 package io.robe.convert.csv;
 
-import io.robe.convert.IsExporter;
+import io.robe.convert.common.Exporter;
 import org.supercsv.cellprocessor.ift.CellProcessor;
 import org.supercsv.io.CsvBeanWriter;
 import org.supercsv.io.ICsvBeanWriter;
@@ -10,42 +10,41 @@ import java.io.IOException;
 import java.io.OutputStream;
 import java.io.OutputStreamWriter;
 import java.io.Writer;
-import java.lang.reflect.Field;
 import java.util.Collection;
 import java.util.Iterator;
 
-public class CSVExporter extends IsExporter {
-    CsvPreference preference = CsvPreference.EXCEL_PREFERENCE.STANDARD_PREFERENCE;
+public class CSVExporter<T> extends Exporter<T> {
+    private CsvPreference preference = null;
+    private Collection<FieldEntry> fields = null;
+    private String[] fieldNames = null;
+    private CellProcessor[] processors = null;
 
-    public CSVExporter() {
+    public CSVExporter(Class clazz) {
+        this(clazz, CsvPreference.EXCEL_PREFERENCE.STANDARD_PREFERENCE);
     }
 
-    public CSVExporter(CsvPreference preference) {
+    public CSVExporter(Class clazz, CsvPreference preference) {
+        super(clazz);
         this.preference = preference;
+        this.fields = getFields(clazz);
+        this.fieldNames = new String[fields.size()];
+        this.processors = CSVUtil.convertFieldsToCellProcessors(this.fields, this.fieldNames);
     }
 
     @Override
-    public <T> void exportStream(Class clazz, OutputStream outputStream, Iterator<T> iterator) throws IOException, ClassNotFoundException, IllegalAccessException {
-
+    public void exportStream(OutputStream outputStream, Iterator<T> iterator) throws IOException, ClassNotFoundException, IllegalAccessException {
         if (iterator == null)
             throw new NullPointerException("List can not be null or empty.");
 
-        Collection<Field> fields = getFields(clazz);
-        String[] fieldNames = new String[fields.size()];
-
         Writer writer = new OutputStreamWriter(outputStream, "UTF-8");
 
-        CellProcessor[] processors = CSVUtil.convertFieldsToCellProcessors(fields, fieldNames);
-
-        ICsvBeanWriter csvBeanWriter = new CsvBeanWriter(writer, preference);
-
+        ICsvBeanWriter beanWriter = new CsvBeanWriter(writer, preference);
 
         while (iterator.hasNext()) {
             T entry = iterator.next();
-            csvBeanWriter.write(entry, fieldNames, processors);
+            beanWriter.write(entry, fieldNames, processors);
         }
-        csvBeanWriter.flush();
+        beanWriter.flush();
     }
-
 }
 

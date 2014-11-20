@@ -15,11 +15,11 @@ public class JSONExporterTest {
 
     @Test
     public void testExportStream() throws Exception {
-        JSONExporter exporter = new JSONExporter();
+        JSONExporter<SamplePojo> exporter = new JSONExporter(SamplePojo.class);
 
         OutputStream outputStream = new FileOutputStream(new File(SAMPLE));
 
-        exporter.exportStream(SamplePojo.class, outputStream, TestData.getData().iterator());
+        exporter.exportStream(outputStream, TestData.getData().iterator());
 
         outputStream.flush();
     }

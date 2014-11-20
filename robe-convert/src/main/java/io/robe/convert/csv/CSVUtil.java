@@ -1,7 +1,8 @@
 package io.robe.convert.csv;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
-import io.robe.convert.MappingProperty;
+import io.robe.convert.common.Converter;
+import io.robe.convert.common.annotation.ConvertField;
 import io.robe.convert.csv.supercsv.ParseDate;
 import org.supercsv.cellprocessor.CellProcessorAdaptor;
 import org.supercsv.cellprocessor.Optional;
@@ -14,11 +15,12 @@ import java.util.Locale;
 
 public class CSVUtil {
 
-    static CellProcessor[] convertFieldsToCellProcessors(Collection<Field> fields, String[] fieldNames) {
+    static CellProcessor[] convertFieldsToCellProcessors(Collection<Converter.FieldEntry> fields, String[] fieldNames) {
         CellProcessor[] processors = new CellProcessor[fields.size()];
         int i = 0;
-        for (Field field : fields) {
-            MappingProperty an = field.getAnnotation(MappingProperty.class);
+        for (Converter.FieldEntry fieldEntry : fields) {
+            Field field = fieldEntry.getValue();
+            ConvertField an = field.getAnnotation(ConvertField.class);
             if(an == null){
                 continue;
             }

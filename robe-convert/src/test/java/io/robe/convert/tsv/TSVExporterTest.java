@@ -9,11 +9,11 @@ import java.io.OutputStream;
 public class TSVExporterTest {
     @Test
     public void testExportStream() throws Exception {
-        TSVExporter exporter = new TSVExporter();
+        TSVExporter<SamplePojo> exporter = new TSVExporter(SamplePojo.class);
 
         OutputStream outputStream = System.out;
 
-        exporter.exportStream(SamplePojo.class, outputStream, TestData.getData().iterator());
+        exporter.exportStream(outputStream, TestData.getData().iterator());
 
     }
 }

@@ -8,9 +8,9 @@ public class XMLExporterTest {
     @Test
     public void testExportStream() throws Exception {
 
-        XMLExporter exporter = new XMLExporter();
+        XMLExporter<SamplePojo> exporter = new XMLExporter<>(SamplePojo.class);
 
-        exporter.exportStream(SamplePojo.class, System.out, TestData.getData().iterator());
+        exporter.exportStream(System.out, TestData.getData().iterator());
 
     }
 }

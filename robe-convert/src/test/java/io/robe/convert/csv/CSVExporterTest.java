@@ -10,13 +10,10 @@ public class CSVExporterTest {
     @Test
     public void testExportStream() throws Exception {
 
-        CSVExporter exporter = new CSVExporter();
-
+        CSVExporter<SamplePojo> exporter = new CSVExporter(SamplePojo.class);
 
         OutputStream outputStream = System.out;
 
-        exporter.exportStream(SamplePojo.class, outputStream, TestData.getData().iterator());
-
-//        outputStream.flush();
+        exporter.exportStream(outputStream, TestData.getData().iterator());
     }
 }

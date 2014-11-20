@@ -1,7 +1,7 @@
 package io.robe.convert.csv;
 
-import io.robe.convert.IsImporter;
-import io.robe.convert.OnItemHandler;
+import io.robe.convert.common.Importer;
+import io.robe.convert.common.OnItemHandler;
 import org.supercsv.cellprocessor.ift.CellProcessor;
 import org.supercsv.io.CsvBeanReader;
 import org.supercsv.io.ICsvBeanReader;
@@ -10,34 +10,37 @@ import org.supercsv.prefs.CsvPreference;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.Reader;
-import java.lang.reflect.Field;
-import java.util.ArrayList;
 import java.util.Collection;
+import java.util.LinkedList;
 import java.util.List;
 
-public class CSVImporter extends IsImporter {
-    CsvPreference preference = CsvPreference.EXCEL_PREFERENCE.STANDARD_PREFERENCE;
+public class CSVImporter<T> extends Importer<T> {
 
-    public CSVImporter() {
+    private CsvPreference preference = null;
+    private Collection<FieldEntry> fields = null;
+    private String[] fieldNames = null;
+    private CellProcessor[] processors = null;
+
+    public CSVImporter(Class dataClass) {
+        this(dataClass, CsvPreference.EXCEL_PREFERENCE.STANDARD_PREFERENCE);
     }
 
-    public CSVImporter(CsvPreference preference) {
+    public CSVImporter(Class dataClass, CsvPreference preference) {
+        super(dataClass);
         this.preference = preference;
+        this.fields = getFields(getDataClass());
+        this.fieldNames = new String[fields.size()];
+        this.processors = CSVUtil.convertFieldsToCellProcessors(this.fields, this.fieldNames);
     }
 
     @Override
-    public <T> List<T> importStream(Class clazz, InputStream inputStream) throws Exception {
+    public List<T> importStream(InputStream inputStream) throws Exception {
 
-        final List<T> list = new ArrayList<T>();
+        final List<T> list = new LinkedList<>();
 
-        OnItemHandler<T> handler = new OnItemHandler<T>() {
-            @Override
-            public void onItem(T item) {
-                list.add(item);
-            }
-        };
+        DefaultOnItemHandler handler = new DefaultOnItemHandler(list);
         try {
-            this.<T>importStream(clazz, inputStream, handler);
+            this.importStream(inputStream, handler);
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -45,19 +48,14 @@ public class CSVImporter extends IsImporter {
     }
 
     @Override
-    public <T> void importStream(Class clazz, InputStream inputStream, OnItemHandler handler) throws Exception {
-
-        Collection<Field> fields = getFields(clazz);
-        String[] fieldNames = new String[fields.size()];
+    public void importStream(InputStream inputStream, OnItemHandler handler) throws Exception {
 
         Reader reader = new InputStreamReader(inputStream);
 
-        CellProcessor[] processors = CSVUtil.convertFieldsToCellProcessors(fields, fieldNames);
-
-        ICsvBeanReader csvBeanReader = new CsvBeanReader(reader, preference);
-        Object obj;
-        while ((obj = csvBeanReader.read(clazz, fieldNames, processors)) != null) {
-            handler.onItem((T) obj);
+        ICsvBeanReader csvBeanReader = new CsvBeanReader(reader, this.preference);
+        T obj;
+        while ((obj = csvBeanReader.<T>read(getDataClass(), this.fieldNames, this.processors)) != null) {
+            handler.onItem(obj);
         }
     }
 

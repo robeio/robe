@@ -16,11 +16,11 @@ public class TestData {
 
     static {
         try {
-            pojos.add(new SamplePojo(1, "Seray", "Uzgur", 1, 6, BigDecimal.ZERO, FORMAT.parse("01.01.2014")));
-            pojos.add(new SamplePojo(1, "Kaan", "Alkim", 2, 7, BigDecimal.ONE, FORMAT.parse("02.01.2014")));
-            pojos.add(new SamplePojo(1, "Sinan", "Selimogli", 3, 8, BigDecimal.ZERO, FORMAT.parse("03.01.2014")));
-            pojos.add(new SamplePojo(1, "Kamil", "Bukum", 4, 9, BigDecimal.ONE, FORMAT.parse("04.01.2014")));
-            pojos.add(new SamplePojo(1, "Hasan", "Mumin", 5, 10, BigDecimal.ZERO, FORMAT.parse("05.01.2014")));
+            pojos.add(new SamplePojo(1, "Seray", "Uzgur", 11, 111, BigDecimal.valueOf(1111), FORMAT.parse("01.01.2014")));
+            pojos.add(new SamplePojo(2, "Kaan", "Alkim", 12, 112, BigDecimal.valueOf(1112), FORMAT.parse("02.01.2014")));
+            pojos.add(new SamplePojo(3, "Sinan", "Selimogli", 13, 113, BigDecimal.valueOf(1113), FORMAT.parse("03.01.2014")));
+            pojos.add(new SamplePojo(4, "Kamil", "Bukum", 14, 114, BigDecimal.valueOf(1114), FORMAT.parse("04.01.2014")));
+            pojos.add(new SamplePojo(5, "Hasan", "Mumin", 15, 115, BigDecimal.valueOf(1115), FORMAT.parse("05.01.2014")));
         } catch (ParseException e) {
             e.printStackTrace();
         }
