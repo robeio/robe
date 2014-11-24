@@ -3,8 +3,8 @@ define([
 ], function(SingletonDataSource, ${entity}Model) {
 
 var ${entity}DataSource = SingletonDataSource.define({
-name: "${entity}DataSource",
-parameters: {
+    name: "${entity}DataSource",
+        parameters: {
             transport: {
                 read: {
                     type: "GET",
@@ -30,7 +30,7 @@ parameters: {
                     dataType: "json",
                     contentType: "application/json"
                 },
-parameterMap: function(options, operation) {
+                parameterMap: function(options, operation) {
                     if (operation !== "read") {
                         return kendo.stringify(options);
                     }
@@ -39,9 +39,9 @@ parameterMap: function(options, operation) {
             batch: false,
             pageSize: 20,
             schema: {
-model: ${entity}Model
+                model: ${entity}Model
             }
-}
+        }
     });
 return ${entity}DataSource;
 });
