@@ -1,8 +1,8 @@
-package io.robe.hibernate.gui;
+package io.robe.crud.gui;
 
-import io.robe.hibernate.crud.DaoCrud;
-import io.robe.hibernate.crud.ResourceCrud;
-import io.robe.hibernate.helper.CrudUtility;
+import io.robe.crud.DaoCrud;
+import io.robe.crud.ResourceCrud;
+import io.robe.crud.helper.CrudUtility;
 import japa.parser.JavaParser;
 import japa.parser.ParseException;
 import japa.parser.ast.CompilationUnit;
@@ -35,10 +35,45 @@ public class RobeCrudGUI extends javax.swing.JFrame {
     public static String OUTPUT_PATH;
     public static Map<String, String> imports = new HashMap<String, String>();
     public static CompilationUnit compilationUnit;
+    private javax.swing.JButton btnProjectPath;
+    private javax.swing.JButton btnGenerate;
+    private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel2;
+    private javax.swing.JLabel jLabel3;
+    private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JTable jTable1;
+    private javax.swing.JTextField tfProjectPath;
+    private javax.swing.JTextField tfProjectOutputPath;
+    private javax.swing.JTextField txtPackageName;
+    private javax.swing.JProgressBar progressBar;
 
     public RobeCrudGUI() {
         setResizable(false);
         initComponents();
+    }
+
+    public static void main(String args[]) {
+        try {
+            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
+                if ("Nimbus".equals(info.getName())) {
+                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
+                    break;
+                }
+            }
+        } catch (ClassNotFoundException ex) {
+            java.util.logging.Logger.getLogger(RobeCrudGUI.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+        } catch (InstantiationException ex) {
+            java.util.logging.Logger.getLogger(RobeCrudGUI.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+        } catch (IllegalAccessException ex) {
+            java.util.logging.Logger.getLogger(RobeCrudGUI.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
+            java.util.logging.Logger.getLogger(RobeCrudGUI.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+        }
+        java.awt.EventQueue.invokeLater(new Runnable() {
+            public void run() {
+                new RobeCrudGUI().setVisible(true);
+            }
+        });
     }
 
     private void initComponents() {
@@ -193,7 +228,7 @@ public class RobeCrudGUI extends javax.swing.JFrame {
         getContentPane().setLayout(groupLayout);
 
         pack();
-    }// </editor-fold>                        
+    }// </editor-fold>
 
     private void btnProjectPathActionPerformed(java.awt.event.ActionEvent evt) {
 
@@ -287,8 +322,8 @@ public class RobeCrudGUI extends javax.swing.JFrame {
                 }
                 if (resource) {
 
-                    String resourceName = entity + "Resource";
-                    String newResourceClassName = fileResourceLocation + File.separator + resourceName + ".java";
+
+                    String newResourceClassName = fileResourceLocation + File.separator + entity + "Resource.java";
                     File fileResource = new File(newResourceClassName);
                     if (!fileResource.exists()) {
                         fileResource.createNewFile();
@@ -300,7 +335,7 @@ public class RobeCrudGUI extends javax.swing.JFrame {
 
                     bodyDeclarations.add(ResourceCrud.getAll(entity, daoName, "findAll", auth));
                     bodyDeclarations.add(ResourceCrud.get(entity, daoName, findBy, auth));
-                    bodyDeclarations.add(ResourceCrud.create(entity, daoName, uniqueFields, "create", auth,findBy));
+                    bodyDeclarations.add(ResourceCrud.create(entity, daoName, uniqueFields, "create", auth, findBy));
                     bodyDeclarations.add(ResourceCrud.update(entity, daoName, fieldGet, "getOid", findBy, "update", "detach", auth));
                     bodyDeclarations.add(ResourceCrud.delete(entity, daoName, "getOid", findBy, "delete", auth));
                     List<ImportDeclaration> importDeclarationsResource = new ArrayList<ImportDeclaration>();
@@ -325,7 +360,7 @@ public class RobeCrudGUI extends javax.swing.JFrame {
 
                     };
                     importDeclarationsResource.addAll(CrudUtility.getImports(imports));
-                    bwResource.write(ResourceCrud.ResourceGenerate(resourceName, entity, daoName, bodyDeclarations, importDeclarationsResource, packageName + ".resource", inject));
+                    bwResource.write(ResourceCrud.resourceGenerate(entity, daoName, bodyDeclarations, importDeclarationsResource, packageName + ".resource", inject));
                     bwResource.close();
                 }
 
@@ -460,40 +495,4 @@ public class RobeCrudGUI extends javax.swing.JFrame {
             }
         }
     }
-
-    public static void main(String args[]) {
-        try {
-            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
-                if ("Nimbus".equals(info.getName())) {
-                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
-                    break;
-                }
-            }
-        } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(RobeCrudGUI.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(RobeCrudGUI.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(RobeCrudGUI.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(RobeCrudGUI.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        }
-        java.awt.EventQueue.invokeLater(new Runnable() {
-            public void run() {
-                new RobeCrudGUI().setVisible(true);
-            }
-        });
-    }
-
-    private javax.swing.JButton btnProjectPath;
-    private javax.swing.JButton btnGenerate;
-    private javax.swing.JLabel jLabel1;
-    private javax.swing.JLabel jLabel2;
-    private javax.swing.JLabel jLabel3;
-    private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JTable jTable1;
-    private javax.swing.JTextField tfProjectPath;
-    private javax.swing.JTextField tfProjectOutputPath;
-    private javax.swing.JTextField txtPackageName;
-    private javax.swing.JProgressBar progressBar;
 }

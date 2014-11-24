@@ -1,4 +1,4 @@
-package io.robe.hibernate.helper;
+package io.robe.crud.helper;
 
 import japa.parser.ASTHelper;
 import japa.parser.ast.ImportDeclaration;

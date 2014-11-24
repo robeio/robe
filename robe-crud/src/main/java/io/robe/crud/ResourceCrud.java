@@ -1,6 +1,6 @@
-package io.robe.hibernate.crud;
+package io.robe.crud;
 
-import io.robe.hibernate.helper.CrudUtility;
+import io.robe.crud.helper.CrudUtility;
 import japa.parser.ASTHelper;
 import japa.parser.ast.CompilationUnit;
 import japa.parser.ast.ImportDeclaration;
@@ -16,7 +16,8 @@ import java.util.List;
 
 public class ResourceCrud {
 
-    public static String ResourceGenerate(String name, String entityName, String daoName, List<BodyDeclaration> bodyDeclarationsList, List<ImportDeclaration> importDeclarations, String packageName, Boolean inject) {
+    public static String resourceGenerate(String entityName, String daoName, List<BodyDeclaration> bodyDeclarationsList, List<ImportDeclaration> importDeclarations, String packageName,
+                                          Boolean inject) {
 
         CompilationUnit compilationUnit = new CompilationUnit();
         compilationUnit.setImports(importDeclarations);
@@ -46,7 +47,10 @@ public class ResourceCrud {
         }
 
 
-        ClassOrInterfaceDeclaration type = new ClassOrInterfaceDeclaration(1, Arrays.asList(CrudUtility.generateAnnotation("Path", CrudUtility.capitalizeToLower(entityName), null), CrudUtility.generateAnnotation("Consumes", "MediaType", "APPLICATION_JSON"), CrudUtility.generateAnnotation("Produces", "MediaType", "APPLICATION_JSON")), false, name, null, null, null, bodyDeclarationsList);
+        ClassOrInterfaceDeclaration type = new ClassOrInterfaceDeclaration(1, Arrays.asList(CrudUtility.generateAnnotation("Path", CrudUtility.capitalizeToLower(entityName), null), CrudUtility
+                .generateAnnotation("Consumes", "MediaType", "APPLICATION_JSON"), CrudUtility.generateAnnotation("Produces", "MediaType", "APPLICATION_JSON")), false, entityName + "Resource", null,
+                null, null,
+                bodyDeclarationsList);
         ASTHelper.addTypeDeclaration(compilationUnit, type);
 
         return compilationUnit.toString();

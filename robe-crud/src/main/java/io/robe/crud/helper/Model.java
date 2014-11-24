@@ -1,4 +1,4 @@
-package io.robe.hibernate.helper;
+package io.robe.crud.helper;
 
 public class Model {
 
