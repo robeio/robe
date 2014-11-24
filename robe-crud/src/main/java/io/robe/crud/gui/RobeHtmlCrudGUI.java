@@ -30,7 +30,6 @@ public class RobeHtmlCrudGUI extends javax.swing.JFrame {
     private JTable jTable1;
     private javax.swing.JTextField tfProjectPath;
     private javax.swing.JTextField tfProjectOutputPath;
-    private javax.swing.JTextField txtProjectName;
     private javax.swing.JProgressBar progressBar;
 
     public RobeHtmlCrudGUI() {
@@ -126,13 +125,6 @@ public class RobeHtmlCrudGUI extends javax.swing.JFrame {
             }
         });
         btnOutputPath.setText("Select");
-
-
-        txtProjectName = new javax.swing.JTextField();
-        txtProjectName.setColumns(10);
-
-        JLabel lblPackage = new JLabel();
-        lblPackage.setText("Project Name:");
         GroupLayout groupLayout = new GroupLayout(getContentPane());
         groupLayout.setHorizontalGroup(
                 groupLayout.createParallelGroup(Alignment.LEADING)
@@ -152,9 +144,7 @@ public class RobeHtmlCrudGUI extends javax.swing.JFrame {
                                                 .addGap(18)
                                                 .addComponent(btnOutputPath, GroupLayout.PREFERRED_SIZE, 191, GroupLayout.PREFERRED_SIZE))
                                         .addGroup(groupLayout.createSequentialGroup()
-                                                .addComponent(lblPackage, GroupLayout.PREFERRED_SIZE, 78, GroupLayout.PREFERRED_SIZE)
-                                                .addGap(11)
-                                                .addComponent(txtProjectName, GroupLayout.PREFERRED_SIZE, 436, GroupLayout.PREFERRED_SIZE))
+                                                .addGap(11))
                                         .addGroup(groupLayout.createSequentialGroup()
                                                 .addComponent(jLabel2)
                                                 .addGap(50)
@@ -189,9 +179,7 @@ public class RobeHtmlCrudGUI extends javax.swing.JFrame {
                                 .addGap(6)
                                 .addGroup(groupLayout.createParallelGroup(Alignment.LEADING)
                                         .addGroup(groupLayout.createSequentialGroup()
-                                                .addGap(3)
-                                                .addComponent(lblPackage))
-                                        .addComponent(txtProjectName, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
+                                                .addGap(3)))
                                 .addGap(23)
                                 .addGroup(groupLayout.createParallelGroup(Alignment.LEADING)
                                         .addComponent(jLabel2)
