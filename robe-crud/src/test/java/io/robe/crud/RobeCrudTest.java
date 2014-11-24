@@ -15,6 +15,7 @@ import java.util.List;
 public class RobeCrudTest {
 
 
+    //TODO var olan başarılı bir proje ile karşılaştırılması
     @Test
     public void generateHtml() throws IOException, TemplateException {
 
@@ -115,7 +116,7 @@ public class RobeCrudTest {
         String entity = "Address";
         String daoName = "AddressDao";
         String findBy = "findById";
-        String packageName = "io.robe";
+        String packageName = "io.robe.entity";
         boolean auth = true;
         boolean inject = true;
 
@@ -151,7 +152,7 @@ public class RobeCrudTest {
                 "javax.ws.rs.Produces",
                 "javax.ws.rs.core.MediaType",
                 "java.util.List",
-                entity + ".dao." + entity + "Dao",
+                "io.robe.dao." + entity + "Dao",
                 packageName + "." + entity,
 
         };
