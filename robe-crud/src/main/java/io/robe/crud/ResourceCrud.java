@@ -202,7 +202,7 @@ public class ResourceCrud {
         MethodDeclaration method = new MethodDeclaration(ModifierSet.PUBLIC, ASTHelper.createReferenceType(entityName, 0), "get");
 
         List<Parameter> parameterList = new ArrayList<Parameter>();
-        parameterList.add(CrudUtility.generateParameter("String", "PathParam", "{" + pathParamName + "}", pathParamName, null));
+        parameterList.add(CrudUtility.generateParameter("String", "PathParam", pathParamName, pathParamName, null));
         if (auth) {
             parameterList.add(CrudUtility.generateParameter("Credentials", "Auth", null, null, null));
         }
