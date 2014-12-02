@@ -2,8 +2,6 @@ package io.robe.admin;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import io.dropwizard.Configuration;
-import io.robe.as2.As2Configuration;
-import io.robe.as2.HasAs2Configuration;
 import io.robe.auth.tokenbased.configuration.HasTokenBasedAuthConfiguration;
 import io.robe.auth.tokenbased.configuration.TokenBasedAuthConfiguration;
 import io.robe.common.asset.AssetConfiguration;
@@ -29,8 +27,7 @@ public class RobeServiceConfiguration extends Configuration implements
         HasMailConfiguration,
         HasMessageQueueConfiguration,
         HasTokenBasedAuthConfiguration,
-		HasAssetConfiguration,
-		HasAs2Configuration {
+		HasAssetConfiguration {
 
     @Valid
     @NotNull
@@ -61,10 +58,6 @@ public class RobeServiceConfiguration extends Configuration implements
 	@Valid
 	@JsonProperty
 	private AssetConfiguration asset;
-
-	@Valid
-	@JsonProperty
-	private As2Configuration as2;
 
 
 	public HibernateConfiguration getHibernateConfiguration() {
@@ -101,8 +94,4 @@ public class RobeServiceConfiguration extends Configuration implements
 		return asset;
 	}
 
-	@Override
-	public As2Configuration getAs2Configuration() {
-		return as2;
-	}
 }
