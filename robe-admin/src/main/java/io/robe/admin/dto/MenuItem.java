@@ -24,7 +24,9 @@ public class MenuItem {
 
 
     public String getCssClass() {
-        return "command:" + cssClass;
+//        TODO removed for new admin ui menu panel
+//        return "command:" + cssClass;
+        return cssClass;
     }
 
     public void setCssClass(String cssClass) {
@@ -35,15 +37,15 @@ public class MenuItem {
         return items;
     }
 
+    public void setItems(List<MenuItem> items) {
+        this.items = items;
+    }
+
     public boolean isExpanded() {
         return expanded;
     }
 
     public void setExpanded(boolean expanded) {
         this.expanded = expanded;
-    }
-
-    public void setItems(List<MenuItem> items) {
-        this.items = items;
     }
 }
