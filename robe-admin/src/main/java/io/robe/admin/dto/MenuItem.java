@@ -24,8 +24,6 @@ public class MenuItem {
 
 
     public String getCssClass() {
-//        TODO removed for new admin ui menu panel
-//        return "command:" + cssClass;
         return cssClass;
     }
 
