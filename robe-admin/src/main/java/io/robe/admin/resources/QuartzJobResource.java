@@ -6,11 +6,14 @@ import io.dropwizard.hibernate.UnitOfWork;
 import io.robe.admin.hibernate.dao.QuartzJobDao;
 import io.robe.auth.Credentials;
 import io.robe.quartz.job.hibernate.JobEntity;
+import org.hibernate.FlushMode;
 import org.hibernate.Hibernate;
 
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 import java.util.List;
+
+import static org.hibernate.CacheMode.GET;
 
 @Path("quartzJob")
 @Consumes(MediaType.APPLICATION_JSON)
@@ -20,7 +23,7 @@ public class QuartzJobResource {
     QuartzJobDao quartzJobDao;
 
     @GET
-    @UnitOfWork
+    @UnitOfWork(readOnly = true, cacheMode = GET,flushMode = FlushMode.MANUAL)
     public List<JobEntity> getAll(@Auth Credentials credentials) {
         List<JobEntity> jobEntities = quartzJobDao.findAll(JobEntity.class);
         for (JobEntity jobEntity : jobEntities) {

@@ -4,10 +4,9 @@ import io.dropwizard.Configuration;
 import io.dropwizard.ConfiguredBundle;
 import io.dropwizard.setup.Bootstrap;
 import io.dropwizard.setup.Environment;
-import io.robe.auth.TokenWrapper;
 import io.robe.auth.tokenbased.configuration.HasTokenBasedAuthConfiguration;
 import io.robe.auth.tokenbased.configuration.TokenBasedAuthConfiguration;
-import io.robe.auth.tokenbased.filter.TokenBasedAuthResourceFilterFactory;
+import io.robe.auth.tokenbased.filter.TokenBasedAuthResponseFilter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -28,8 +27,8 @@ public class TokenBasedAuthBundle<T extends Configuration & HasTokenBasedAuthCon
         LOGGER.info("-------Auth Bundle------");
         LOGGER.info("------------------------");
         this.configuration = configuration.getTokenBasedAuthConfiguration();
-        environment.jersey().register(new TokenBasedAuthResourceFilterFactory(configuration.getTokenBasedAuthConfiguration()));
-        TokenWrapper.setMaxage(configuration.getTokenBasedAuthConfiguration().getMaxage());
+
+        environment.jersey().getResourceConfig().getContainerResponseFilters().add(new TokenBasedAuthResponseFilter(configuration.getTokenBasedAuthConfiguration()));
     }
 
     /**
@@ -40,6 +39,7 @@ public class TokenBasedAuthBundle<T extends Configuration & HasTokenBasedAuthCon
     @Override
     public void initialize(Bootstrap<?> bootstrap) {
     }
+
 
     public TokenBasedAuthConfiguration getConfiguration() {
         return configuration;

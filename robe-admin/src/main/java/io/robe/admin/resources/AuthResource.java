@@ -10,9 +10,11 @@ import io.robe.admin.hibernate.dao.UserDao;
 import io.robe.admin.hibernate.entity.User;
 import io.robe.auth.AbstractAuthResource;
 import io.robe.auth.Credentials;
-import io.robe.auth.IsToken;
-import io.robe.auth.TokenWrapper;
+import io.robe.auth.Token;
+import io.robe.auth.TokenFactory;
 import io.robe.auth.tokenbased.filter.TokenBasedAuthResponseFilter;
+import org.hibernate.FlushMode;
+import org.joda.time.DateTime;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -21,7 +23,10 @@ import javax.ws.rs.*;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
+import java.util.HashMap;
 import java.util.Map;
+
+import static org.hibernate.CacheMode.GET;
 
 
 /**
@@ -44,19 +49,25 @@ public class AuthResource extends AbstractAuthResource<User> {
 
 
     @POST
-    @UnitOfWork
+    @UnitOfWork(readOnly = true, cacheMode = GET,flushMode = FlushMode.MANUAL)
     @Path("login")
     @Timed
     public Response login(@Context HttpServletRequest request, Map<String, String> credentials) throws Exception {
+
 
         Optional<User> user = userDao.findByUsername(credentials.get("username"));
         if (!user.isPresent()) {
             throw new WebApplicationException(Response.Status.UNAUTHORIZED);
         } else if (user.get().getPassword().equals(credentials.get("password"))) {
-            IsToken token = TokenWrapper.createToken(user.get().getEmail(), null);
+            Map<String,String> attributes = new HashMap<>();
+            attributes.put("userAgent",request.getHeader("User-Agent"));
+            attributes.put("remoteAddr",request.getRemoteAddr());
+
+            Token token = TokenFactory.getInstance().createToken(user.get().getEmail(), DateTime.now(), attributes);
+            token.setExpiration(token.getMaxAge());
             credentials.remove("password");
 
-            return Response.ok().header("Set-Cookie", TokenBasedAuthResponseFilter.getTokenSentence(token.getToken())).entity(credentials).build();
+            return Response.ok().header("Set-Cookie", TokenBasedAuthResponseFilter.getTokenSentence(token.getTokenString())).entity(credentials).build();
         } else {
             throw new WebApplicationException(Response.Status.UNAUTHORIZED);
         }

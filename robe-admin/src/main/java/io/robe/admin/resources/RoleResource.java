@@ -8,6 +8,7 @@ import io.robe.admin.hibernate.dao.RoleDao;
 import io.robe.admin.hibernate.entity.Role;
 import io.robe.auth.Credentials;
 import io.robe.common.exception.RobeRuntimeException;
+import org.hibernate.FlushMode;
 import org.hibernate.Hibernate;
 
 import javax.validation.Valid;
@@ -18,6 +19,7 @@ import java.util.List;
 import java.util.Set;
 
 import static com.google.common.base.Preconditions.checkNotNull;
+import static org.hibernate.CacheMode.GET;
 
 
 @Path("role")
@@ -31,7 +33,7 @@ public class RoleResource {
 
     @Path("all")
     @GET
-    @UnitOfWork
+    @UnitOfWork(readOnly = true, cacheMode = GET,flushMode = FlushMode.MANUAL)
     public List<Role> getRoles(@Auth Credentials credentials) {
         List<Role> roles = roleDao.findAll(Role.class);
         for (Role role : roles) {
@@ -41,7 +43,7 @@ public class RoleResource {
     }
 
     @GET
-    @UnitOfWork
+    @UnitOfWork(readOnly = true, cacheMode = GET,flushMode = FlushMode.MANUAL)
     @Path("{userId}")
     public Role get(@Auth Credentials credentials, @PathParam("userId") String id) {
         Role role = roleDao.findById(id);

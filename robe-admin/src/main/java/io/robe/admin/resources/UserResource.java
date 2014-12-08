@@ -20,6 +20,7 @@ import io.robe.auth.Credentials;
 import io.robe.common.exception.RobeRuntimeException;
 import io.robe.mail.MailItem;
 import io.robe.mail.MailManager;
+import org.hibernate.FlushMode;
 import org.joda.time.DateTime;
 
 import javax.validation.Valid;
@@ -32,6 +33,8 @@ import java.io.StringWriter;
 import java.io.Writer;
 import java.nio.charset.StandardCharsets;
 import java.util.*;
+
+import static org.hibernate.CacheMode.GET;
 
 @Path("user")
 @Consumes(MediaType.APPLICATION_JSON)
@@ -49,7 +52,7 @@ public class UserResource {
 
     @Path("all")
     @GET
-    @UnitOfWork
+    @UnitOfWork(readOnly = true, cacheMode = GET,flushMode = FlushMode.MANUAL)
     public List<UserDTO> getUsers(@Auth Credentials credentials) {
         List<User> entities = userDao.findAll(User.class);
         List<UserDTO> users = new LinkedList<UserDTO>();
@@ -61,14 +64,14 @@ public class UserResource {
     }
 
     @GET
-    @UnitOfWork
+    @UnitOfWork(readOnly = true, cacheMode = GET,flushMode = FlushMode.MANUAL)
     @Path("{userId}")
     public UserDTO get(@Auth Credentials credentials, @PathParam("userId") String id) {
         return new UserDTO(userDao.findById(id));
     }
 
     @GET
-    @UnitOfWork
+    @UnitOfWork(readOnly = true, cacheMode = GET,flushMode = FlushMode.MANUAL)
     @Path("profile")
     public UserDTO getByEmail(@Auth Credentials credentials) {
         User user = userDao.findByUsername(credentials.getUsername()).get();

@@ -3,8 +3,8 @@ package io.robe.auth.tokenbased;
 import com.google.common.base.Optional;
 import io.dropwizard.auth.AuthenticationException;
 import io.dropwizard.auth.Authenticator;
-import io.robe.auth.IsToken;
-import io.robe.auth.TokenWrapper;
+import io.robe.auth.Token;
+import io.robe.auth.TokenFactory;
 import io.robe.auth.data.entry.PermissionEntry;
 import io.robe.auth.data.entry.RoleEntry;
 import io.robe.auth.data.entry.ServiceEntry;
@@ -14,7 +14,6 @@ import io.robe.auth.data.store.UserStore;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.lang.reflect.InvocationTargetException;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.Set;
@@ -22,7 +21,7 @@ import java.util.Set;
 /**
  * Authenticator implementation for token based authentication.
  */
-public class TokenBasedAuthenticator implements Authenticator<String, IsToken> {
+public class TokenBasedAuthenticator implements Authenticator<String, Token> {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(TokenBasedAuthenticator.class);
 
@@ -48,46 +47,52 @@ public class TokenBasedAuthenticator implements Authenticator<String, IsToken> {
      * @throws AuthenticationException
      */
     @Override
-    public Optional<IsToken> authenticate(String tokenString) throws AuthenticationException {
+    public Optional<Token> authenticate(String tokenString) throws AuthenticationException {
+
+        LOGGER.info("----------------------------");
+        LOGGER.info("Authenticating from database");
+        LOGGER.info("----------------------------");
 
         try {
-            if (tokenString == null) {
-                return Optional.absent();
-            }
-
             // Decode tokenString and get user
-            IsToken token = TokenWrapper.createToken(tokenString);
+            Token token = TokenFactory.getInstance().createToken(tokenString);
 
-            Optional<UserEntry> user = (Optional<UserEntry>) userStore.findByUsername(token.getUserAccountName());
+            Optional<UserEntry> user = (Optional<UserEntry>) userStore.findByUsername(token.getUsername());
             if (!user.isPresent()) {
                 return Optional.absent();
             }
             // If user exists and active than check Service Permissions for authorization controls
             if (user.get().isActive()) {
-                Set<String> permissions = new HashSet<String>();
-                Set<PermissionEntry> rolePermissions = new HashSet<PermissionEntry>();
-                //If user role is a group than add sub role permissions to group
-                getAllRolePermissions(user.get().getRole(), rolePermissions);
+                if (token.getPermissions() == null) {
 
-                for (PermissionEntry permission : rolePermissions) {
-                    if (permission.getType().equals(PermissionEntry.Type.SERVICE)) {
-                        Optional<? extends ServiceEntry> service = serviceStore.findByCode(permission.getRestrictedItemId());
-                        if (service.isPresent()) {
-                            permissions.add(service.get().getPath() + ":" + service.get().getMethod());
+                    Set<String> permissions = new HashSet<String>();
+                    Set<PermissionEntry> rolePermissions = new HashSet<PermissionEntry>();
+
+                    //If user role is a group than add sub role permissions to group
+                    getAllRolePermissions(user.get().getRole(), rolePermissions);
+
+                    for (PermissionEntry permission : rolePermissions) {
+                        if (permission.getType().equals(PermissionEntry.Type.SERVICE)) {
+                            Optional<? extends ServiceEntry> service = serviceStore.findByCode(permission.getRestrictedItemId());
+                            if (service.isPresent()) {
+                                permissions.add(service.get().getPath() + ":" + service.get().getMethod());
+                            }
                         }
                     }
+                    // Create credentials with user info and permission list
+                    token.setPermissions(Collections.unmodifiableSet(permissions));
+                    LOGGER.info("----------------------------");
+                    LOGGER.info("Loading permissions from database");
+                    LOGGER.info("----------------------------");
+                } else {
+                    LOGGER.info("----------------------------");
+                    LOGGER.info("Loading permissions from CACHE");
+                    LOGGER.info("----------------------------");
                 }
-                // Create credentials with user info and permission list
-                token.setPermissions(Collections.unmodifiableSet(permissions));
+
                 return Optional.fromNullable(token);
             }
-        } catch (InvocationTargetException e) {
-            LOGGER.error(tokenString, e);
-        } catch (NoSuchMethodException e) {
-            LOGGER.error(tokenString, e);
-        } catch (InstantiationException e) {
-            LOGGER.error(tokenString, e);
-        } catch (IllegalAccessException e) {
+        } catch (Exception e) {
             LOGGER.error(tokenString, e);
         }
         return Optional.absent();
@@ -107,6 +112,8 @@ public class TokenBasedAuthenticator implements Authenticator<String, IsToken> {
             getAllRolePermissions(role, rolePermissions);
         }
     }
+
+
 }
 
 

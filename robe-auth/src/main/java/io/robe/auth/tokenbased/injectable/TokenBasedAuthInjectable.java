@@ -1,13 +1,15 @@
 package io.robe.auth.tokenbased.injectable;
 
 import com.google.common.base.Optional;
+import com.google.common.hash.Hashing;
 import com.sun.jersey.api.core.HttpContext;
+import com.sun.jersey.api.core.HttpRequestContext;
 import com.sun.jersey.api.uri.UriTemplate;
 import com.sun.jersey.server.impl.application.WebApplicationContext;
 import com.sun.jersey.server.impl.inject.AbstractHttpContextInjectable;
-import io.dropwizard.auth.AuthenticationException;
 import io.dropwizard.auth.Authenticator;
-import io.robe.auth.IsToken;
+import io.robe.auth.Token;
+import io.robe.auth.TokenFactory;
 import io.robe.auth.tokenbased.configuration.TokenBasedAuthConfiguration;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -15,6 +17,7 @@ import org.slf4j.LoggerFactory;
 import javax.ws.rs.WebApplicationException;
 import javax.ws.rs.core.Cookie;
 import javax.ws.rs.core.Response;
+import java.nio.charset.StandardCharsets;
 import java.util.List;
 
 
@@ -24,7 +27,7 @@ import java.util.List;
  *
  * @param <T> The type of the injectable.
  */
-public class TokenBasedAuthInjectable<T extends IsToken> extends AbstractHttpContextInjectable<T> {
+public class TokenBasedAuthInjectable<T extends Token> extends AbstractHttpContextInjectable<T> {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(TokenBasedAuthInjectable.class);
 
@@ -46,36 +49,44 @@ public class TokenBasedAuthInjectable<T extends IsToken> extends AbstractHttpCon
      * This method gets the context and does all necessary controls.
      * Returns injectable or throws {@link javax.ws.rs.WebApplicationException} with response type {@link Response.Status} UNAUTHORIZED
      *
-     * @param c The http context of the inject request.
+     * @param context The http context of the inject request.
      * @return Returns the desired injectable.
      */
     @Override
-    public T getValue(HttpContext c) {
+    public T getValue(HttpContext context) {
 
-        Cookie tokenList = c.getRequest().getCookies().get(tokenKey);
-        if (tokenList == null || tokenList.getValue().length() == 0) {
+        Cookie tokenCookie = context.getRequest().getCookies().get(tokenKey);
+
+        if (tokenCookie == null ) {
             throw new WebApplicationException(Response.Status.UNAUTHORIZED);
-        } else if (nullOrEmpty(tokenList.getValue())) {
+        } else if (nullOrEmpty(tokenCookie.getValue())) {
             throw new WebApplicationException(Response.Status.UNAUTHORIZED);
         } else {
-            //Validate old token for auth token
             try {
-                Optional<T> result = authenticator.authenticate(tokenList.getValue());
+                if(!isRealOwnerOfToken(context, tokenCookie)){
+                    throw new WebApplicationException(Response.Status.UNAUTHORIZED);
+                }
+                Optional<T> result = authenticator.authenticate(tokenCookie.getValue());
+
                 if (!result.isPresent()) {
                     throw new WebApplicationException(Response.Status.UNAUTHORIZED);
-                } else if (!isAuthorized(result.get(), ((WebApplicationContext) c).getMatchedTemplates(), c.getRequest().getMethod())) {
+                } else if (!isAuthorized(result.get(), ((WebApplicationContext) context).getMatchedTemplates(), context.getRequest().getMethod())) {
                     throw new WebApplicationException(Response.Status.FORBIDDEN);
                 } else {
                     return result.get();
                 }
-            } catch (IllegalArgumentException e) {
+            } catch (Exception e) {
                 LOGGER.debug("BasicPair decoding credentials", e);
-                throw new WebApplicationException(Response.Status.PRECONDITION_FAILED);
-            } catch (AuthenticationException e) {
-                LOGGER.warn("BasicPair authenticating credentials", e);
                 throw new WebApplicationException(Response.Status.PRECONDITION_FAILED);
             }
         }
+    }
+
+    private boolean isRealOwnerOfToken(HttpContext c, Cookie tokenCookie) throws Exception {
+        Token token = TokenFactory.getInstance().createToken(tokenCookie.getValue());
+        String hash = generateAttributesHash(c.getRequest());
+        return hash.equals(token.getAttributesHash());
+
     }
 
     private boolean nullOrEmpty(String token) {
@@ -92,7 +103,7 @@ public class TokenBasedAuthInjectable<T extends IsToken> extends AbstractHttpCon
      * @param method           HTTP Method of the request. Will be merged with
      * @return true if user is Authorized.
      */
-    private boolean isAuthorized(IsToken token, List<UriTemplate> matchedTemplates, String method) {
+    private boolean isAuthorized(Token token, List<UriTemplate> matchedTemplates, String method) {
         StringBuilder path = new StringBuilder();
         // Merge all path templates and generate a path.
         for (UriTemplate template : matchedTemplates) {
@@ -102,6 +113,14 @@ public class TokenBasedAuthInjectable<T extends IsToken> extends AbstractHttpCon
 
         //Look at user permissions to see if the service is permitted.
         return token.getPermissions().contains(path.toString());
+    }
+
+
+    public String generateAttributesHash(HttpRequestContext request) {
+        StringBuilder attr = new StringBuilder();
+        attr.append(request.getHeaderValue("User-Agent"));
+        attr.append(request.getRequestUri().getHost());
+        return Hashing.sha256().hashString(attr.toString(), StandardCharsets.UTF_8).toString();
     }
 
 }

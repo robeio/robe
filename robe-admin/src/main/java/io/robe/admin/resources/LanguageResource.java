@@ -4,6 +4,8 @@ import com.google.inject.Inject;
 import io.dropwizard.hibernate.UnitOfWork;
 import io.robe.admin.hibernate.dao.LanguageDao;
 import io.robe.admin.hibernate.entity.Language;
+import org.hibernate.CacheMode;
+import org.hibernate.FlushMode;
 
 import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
@@ -22,7 +24,7 @@ public class LanguageResource {
 
     @GET
     @Path("/all")
-    @UnitOfWork
+    @UnitOfWork(readOnly = true, cacheMode = CacheMode.GET,flushMode = FlushMode.MANUAL)
     public List<Language> getAll() {
         return languageDao.findAll(Language.class);
     }

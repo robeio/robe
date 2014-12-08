@@ -9,6 +9,7 @@ import io.robe.admin.hibernate.entity.Service;
 import io.robe.auth.Credentials;
 import io.robe.auth.data.entry.ServiceEntry;
 import io.robe.guice.GuiceConfiguration;
+import org.hibernate.FlushMode;
 import org.reflections.Reflections;
 
 import javax.ws.rs.*;
@@ -17,6 +18,8 @@ import javax.ws.rs.core.Response;
 import java.lang.reflect.Method;
 import java.util.List;
 import java.util.Set;
+
+import static org.hibernate.CacheMode.GET;
 
 @Path("service")
 @Produces(MediaType.APPLICATION_JSON)
@@ -30,7 +33,7 @@ public class ServiceResource {
 
     @Path("/all")
     @GET
-    @UnitOfWork
+    @UnitOfWork(readOnly = true, cacheMode = GET,flushMode = FlushMode.MANUAL)
     public List<Service> getAll(@Auth Credentials credentials) {
 
         return serviceDao.findAll(Service.class);

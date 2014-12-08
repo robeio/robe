@@ -3,11 +3,14 @@ package io.robe.auth.tokenbased.filter;
 import com.sun.jersey.spi.container.ContainerRequest;
 import com.sun.jersey.spi.container.ContainerResponse;
 import com.sun.jersey.spi.container.ContainerResponseFilter;
-import io.robe.auth.IsToken;
-import io.robe.auth.TokenWrapper;
+import io.robe.auth.Token;
+import io.robe.auth.TokenFactory;
 import io.robe.auth.tokenbased.configuration.TokenBasedAuthConfiguration;
+import org.joda.time.DateTime;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import javax.ws.rs.core.Response;
 
 
 /**
@@ -19,7 +22,7 @@ public class TokenBasedAuthResponseFilter implements ContainerResponseFilter {
     private static String cookieSentence;
 
 
-    TokenBasedAuthResponseFilter(TokenBasedAuthConfiguration configuration) {
+    public TokenBasedAuthResponseFilter(TokenBasedAuthConfiguration configuration) {
         this.tokenKey = configuration.getTokenKey();
         String domain = configuration.getDomain();
         String path = configuration.getPath();
@@ -39,16 +42,28 @@ public class TokenBasedAuthResponseFilter implements ContainerResponseFilter {
         String authToken = extractAuthTokenFromCookieList(request.getHeaderValue("Cookie"));
         if (authToken != null && authToken.length() != 0) {
             try {
-                IsToken cryptoToken = TokenWrapper.createToken(authToken);
-                if (cryptoToken.isExpired()) {
-                    authToken = cryptoToken.getToken();
+                Token token = TokenFactory.getInstance().createToken(authToken);
+                if (token.isExpired()) {
+                    LOGGER.info("ExpireDate : " + token.getExpirationDate().toString());
+                    LOGGER.info("Now: " + DateTime.now().toDate().toString());
+                    response.getHttpHeaders().putSingle("Set-Cookie", getTokenSentence(""));
+                    response.setStatusType(Response.Status.UNAUTHORIZED);
+                    response.setEntity("Token expired. Pleas login again.");
+                    LOGGER.info("Token expired. Pleas login again.");
+                } else {
+                    token.setExpiration(token.getMaxAge());
+                    response.getHttpHeaders().putSingle("Set-Cookie", getTokenSentence(token.getTokenString()));
                 }
+
             } catch (Exception e) {
                 LOGGER.error("Token re-creation failed", e.getMessage());
+                response.setStatusType(Response.Status.UNAUTHORIZED);
+
             }
-            response.getHttpHeaders().putSingle("Set-Cookie", getTokenSentence(authToken));
         }
+
         return response;
+
 
     }
 

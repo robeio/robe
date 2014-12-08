@@ -6,11 +6,14 @@ import io.dropwizard.hibernate.UnitOfWork;
 import io.robe.admin.hibernate.dao.MailTemplateDao;
 import io.robe.admin.hibernate.entity.MailTemplate;
 import io.robe.auth.Credentials;
+import org.hibernate.FlushMode;
 
 import javax.validation.Valid;
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 import java.util.List;
+
+import static org.hibernate.CacheMode.GET;
 
 @Path("mailtemplate")
 @Consumes(MediaType.APPLICATION_JSON)
@@ -21,7 +24,7 @@ public class MailTemplateResource {
 
     @GET
     @Path("/all")
-    @UnitOfWork
+    @UnitOfWork(readOnly = true, cacheMode = GET,flushMode = FlushMode.MANUAL)
     public List<MailTemplate> getAll() {
         return mailTemplateDao.findAll(MailTemplate.class);
     }

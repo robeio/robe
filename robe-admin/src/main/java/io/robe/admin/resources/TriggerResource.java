@@ -11,6 +11,7 @@ import io.robe.quartz.QuartzBundle;
 import io.robe.quartz.job.QuartzJob;
 import io.robe.quartz.job.hibernate.JobEntity;
 import io.robe.quartz.job.hibernate.TriggerEntity;
+import org.hibernate.FlushMode;
 import org.quartz.*;
 
 import javax.ws.rs.*;
@@ -20,6 +21,7 @@ import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Set;
 
+import static org.hibernate.CacheMode.GET;
 import static org.quartz.TriggerBuilder.newTrigger;
 
 
@@ -37,7 +39,7 @@ public class TriggerResource {
     QuartzJobDao quartzJobDao;
 
     @GET
-    @UnitOfWork
+    @UnitOfWork(readOnly = true, cacheMode = GET,flushMode = FlushMode.MANUAL)
     public List<TriggerEntity> getAll(@Auth Credentials credentials) {
         return quartzTriggerDao.findAll(TriggerEntity.class);
     }

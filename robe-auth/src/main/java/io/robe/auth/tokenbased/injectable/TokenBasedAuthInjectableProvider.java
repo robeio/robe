@@ -7,7 +7,9 @@ import com.sun.jersey.spi.inject.Injectable;
 import com.sun.jersey.spi.inject.InjectableProvider;
 import io.dropwizard.auth.Auth;
 import io.dropwizard.auth.Authenticator;
-import io.robe.auth.IsToken;
+import io.robe.auth.Token;
+import io.robe.auth.TokenFactory;
+import io.robe.auth.tokenbased.BasicToken;
 import io.robe.auth.tokenbased.configuration.TokenBasedAuthConfiguration;
 
 import javax.inject.Inject;
@@ -18,7 +20,7 @@ import javax.inject.Inject;
  *
  * @param <T> Type of the injectable parameter.
  */
-public class TokenBasedAuthInjectableProvider<T extends IsToken> implements InjectableProvider<Auth, Parameter> {
+public class TokenBasedAuthInjectableProvider<T extends Token> implements InjectableProvider<Auth, Parameter> {
 
     private final TokenBasedAuthConfiguration configuration;
     private final Authenticator authenticator;
@@ -32,6 +34,11 @@ public class TokenBasedAuthInjectableProvider<T extends IsToken> implements Inje
     public TokenBasedAuthInjectableProvider(Authenticator authenticator, TokenBasedAuthConfiguration configuration) {
         this.authenticator = authenticator;
         this.configuration = configuration;
+        try {
+            TokenFactory.<BasicToken>configure(BasicToken.class, configuration);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     /**
