@@ -14,7 +14,7 @@ import io.robe.admin.guice.module.AuthenticatorModule;
 import io.robe.admin.guice.module.HibernateModule;
 import io.robe.admin.guice.module.QuartzModule;
 import io.robe.auth.tokenbased.TokenBasedAuthBundle;
-import io.robe.common.asset.ConfiguredAssetBundle;
+import io.robe.assets.ConfiguredAssetBundle;
 import io.robe.common.exception.RobeExceptionMapper;
 import io.robe.guice.GuiceBundle;
 import io.robe.hibernate.HibernateBundle;

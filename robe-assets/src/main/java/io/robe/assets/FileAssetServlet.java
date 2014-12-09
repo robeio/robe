@@ -1,6 +1,7 @@
 package io.robe.assets;
 
 import com.google.common.base.CharMatcher;
+import com.google.common.base.Preconditions;
 import com.google.common.hash.Hashing;
 import com.google.common.io.Files;
 import com.google.common.io.Resources;
@@ -17,8 +18,6 @@ import java.io.IOException;
 import java.net.URISyntaxException;
 import java.net.URL;
 import java.nio.charset.Charset;
-
-import static com.google.common.base.Preconditions.checkArgument;
 
 /**
  * Servlet for serving assets with configuration. This is copied from

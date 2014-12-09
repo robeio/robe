@@ -25,20 +25,22 @@ public class ConfiguredAssetBundle<T extends Configuration & HasAssetConfigurati
 
 	@Override
 	public void run(T configuration, Environment environment) throws Exception {
-		String resourcePath = configuration.getAsset().getResourcePath();
-		Preconditions.checkArgument(resourcePath.startsWith("/"), "%s is not an absolute path", resourcePath);
-		Preconditions.checkArgument(!"/".equals(resourcePath), "%s is the classpath root", resourcePath);
-		resourcePath = resourcePath.endsWith("/") ? resourcePath : (resourcePath + '/');
-		String uriPath = configuration.getAsset().getUriPath();
-		uriPath = uriPath.endsWith("/") ? uriPath : (uriPath + '/');
-		LOGGER.info("Registering AssetBundle with name: {} for path {}", configuration.getAsset().getAssetsName(), uriPath + '*');
-		environment.servlets().addServlet(configuration.getAsset().getAssetsName(),
-				new FileAssetServlet(
-						resourcePath,
-						uriPath,
-						configuration.getAsset().getIndexFile(),
-						Charsets.UTF_8)
-		).addMapping(uriPath + '*');
+		for(AssetConfiguration assetConf : configuration.getAssets()) {
+			String resourcePath = assetConf.getResourcePath();
+			Preconditions.checkArgument(resourcePath.startsWith("/"), "%s is not an absolute path", resourcePath);
+			Preconditions.checkArgument(!"/".equals(resourcePath), "%s is the classpath root", resourcePath);
+			resourcePath = resourcePath.endsWith("/") ? resourcePath : (resourcePath + '/');
+			String uriPath = assetConf.getUriPath();
+			uriPath = uriPath.endsWith("/") ? uriPath : (uriPath + '/');
+			LOGGER.info("Registering AssetBundle with name: {} for path {}", assetConf.getAssetsName(), uriPath + '*');
+			environment.servlets().addServlet(assetConf.getAssetsName(),
+					new FileAssetServlet(
+							resourcePath,
+							uriPath,
+							assetConf.getIndexFile(),
+							Charsets.UTF_8)
+			).addMapping(uriPath + '*');
+		}
 	}
 
 	@Override

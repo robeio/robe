@@ -27,6 +27,8 @@ hibernate:
        charSet: UTF-8
        dialect: org.hibernate.dialect.MySQL5InnoDBDialect
        hibernate.hbm2ddl.auto: update
+       # hibernate.jdbc.wrap_result_sets: true # performance fix specially for oracle
+
 
 logging:
      # The default level of all loggers. Can be OFF, ERROR, WARN, INFO, DEBUG, TRACE, or ALL.
@@ -77,14 +79,18 @@ auth:
   tokenKey: auth-token
   domain: 127.0.0.1
   path: /
-  maxage: 3600 #s
+  maxage: 60 #s
   secure: false
   poolSize: 4 # parallel with cpu cores
   algorithm: PBEWithMD5AndTripleDES
   serverPassword: auto # auto for uuid, if it is cluster use custom password
 
-asset:
-  resourcePath: /Users/serayuzgur/Development/robe-admin-ui/src
-  uriPath: /admin-ui/
-  indexFile: index.html
-  assetsName: io.robe.admin.ui
+assets:
+ - resourcePath: /Users/serayuzgur/Development/robe-admin-ui/src
+   uriPath:      /admin-ui/
+   indexFile:    index.html
+   assetsName:   io.robe.admin.ui
+ - resourcePath: /Users/serayuzgur/Desktop
+   uriPath:      /admin-tobb/
+   indexFile:    tobb.jpg
+   assetsName:   io.robe.tobb

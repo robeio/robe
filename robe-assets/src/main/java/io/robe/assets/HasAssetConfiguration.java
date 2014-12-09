@@ -1,6 +1,8 @@
 package io.robe.assets;
 
+import java.util.List;
+
 public interface HasAssetConfiguration {
 
-	public AssetConfiguration getAsset();
+	public List<AssetConfiguration> getAssets();
 }

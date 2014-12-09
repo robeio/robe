@@ -2,10 +2,10 @@ package io.robe.admin;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import io.dropwizard.Configuration;
+import io.robe.assets.AssetConfiguration;
+import io.robe.assets.HasAssetConfiguration;
 import io.robe.auth.tokenbased.configuration.HasTokenBasedAuthConfiguration;
 import io.robe.auth.tokenbased.configuration.TokenBasedAuthConfiguration;
-import io.robe.common.asset.AssetConfiguration;
-import io.robe.common.asset.HasAssetConfiguration;
 import io.robe.guice.GuiceConfiguration;
 import io.robe.guice.HasGuiceConfiguration;
 import io.robe.hibernate.HasHibernateConfiguration;
@@ -19,6 +19,7 @@ import io.robe.quartz.configuration.QuartzConfiguration;
 
 import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
+import java.util.List;
 
 public class RobeServiceConfiguration extends Configuration implements
         HasHibernateConfiguration,
@@ -57,7 +58,7 @@ public class RobeServiceConfiguration extends Configuration implements
 
 	@Valid
 	@JsonProperty
-	private AssetConfiguration asset;
+	private List<AssetConfiguration> assets;
 
 
 	public HibernateConfiguration getHibernateConfiguration() {
@@ -90,8 +91,8 @@ public class RobeServiceConfiguration extends Configuration implements
     }
 
 	@Override
-	public AssetConfiguration getAsset() {
-		return asset;
+	public List<AssetConfiguration> getAssets() {
+		return assets;
 	}
 
 }
