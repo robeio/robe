@@ -1,4 +1,4 @@
-package io.robe.common.asset;
+package io.robe.assets;
 
 import com.google.common.base.CharMatcher;
 import com.google.common.hash.Hashing;
@@ -157,7 +157,7 @@ public class FileAssetServlet extends HttpServlet {
 	}
 
 	private CachedAsset loadAsset(String key) throws URISyntaxException, IOException {
-		checkArgument(key.startsWith(uriPath));
+		Preconditions.checkArgument(key.startsWith(uriPath));
 		final String requestedResourcePath = SLASHES.trimFrom(key.substring(uriPath.length()));
 		final String absoluteRequestedResourcePath = this.resourcePath + requestedResourcePath;
 

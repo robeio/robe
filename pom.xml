@@ -14,6 +14,7 @@
         <module>robe-mq</module>
         <module>robe-crud</module>
         <module>robe-convert</module>
+        <module>robe-assets</module>
     </modules>
 
     <properties>

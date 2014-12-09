@@ -1,14 +1,13 @@
-package io.robe.common.asset;
+package io.robe.assets;
 
 import com.google.common.base.Charsets;
+import com.google.common.base.Preconditions;
 import io.dropwizard.Configuration;
 import io.dropwizard.ConfiguredBundle;
 import io.dropwizard.setup.Bootstrap;
 import io.dropwizard.setup.Environment;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
-import static com.google.common.base.Preconditions.checkArgument;
 
 /**
  * A Configured bundle for serving static asset files from the file system.
@@ -27,8 +26,8 @@ public class ConfiguredAssetBundle<T extends Configuration & HasAssetConfigurati
 	@Override
 	public void run(T configuration, Environment environment) throws Exception {
 		String resourcePath = configuration.getAsset().getResourcePath();
-		checkArgument(resourcePath.startsWith("/"), "%s is not an absolute path", resourcePath);
-		checkArgument(!"/".equals(resourcePath), "%s is the classpath root", resourcePath);
+		Preconditions.checkArgument(resourcePath.startsWith("/"), "%s is not an absolute path", resourcePath);
+		Preconditions.checkArgument(!"/".equals(resourcePath), "%s is the classpath root", resourcePath);
 		resourcePath = resourcePath.endsWith("/") ? resourcePath : (resourcePath + '/');
 		String uriPath = configuration.getAsset().getUriPath();
 		uriPath = uriPath.endsWith("/") ? uriPath : (uriPath + '/');

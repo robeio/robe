@@ -1,4 +1,4 @@
-package io.robe.common.asset;
+package io.robe.assets;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 
