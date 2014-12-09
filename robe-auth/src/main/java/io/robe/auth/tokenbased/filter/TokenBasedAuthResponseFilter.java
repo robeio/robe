@@ -3,8 +3,8 @@ package io.robe.auth.tokenbased.filter;
 import com.sun.jersey.spi.container.ContainerRequest;
 import com.sun.jersey.spi.container.ContainerResponse;
 import com.sun.jersey.spi.container.ContainerResponseFilter;
-import io.robe.auth.Token;
-import io.robe.auth.TokenFactory;
+import io.robe.auth.tokenbased.Token;
+import io.robe.auth.tokenbased.TokenFactory;
 import io.robe.auth.tokenbased.configuration.TokenBasedAuthConfiguration;
 import org.joda.time.DateTime;
 import org.slf4j.Logger;
@@ -22,6 +22,10 @@ public class TokenBasedAuthResponseFilter implements ContainerResponseFilter {
     private static String cookieSentence;
 
 
+    /**
+     * Creates a valid token cookie template with the given configuration.
+     * @param configuration
+     */
     public TokenBasedAuthResponseFilter(TokenBasedAuthConfiguration configuration) {
         this.tokenKey = configuration.getTokenKey();
         String domain = configuration.getDomain();
@@ -37,6 +41,13 @@ public class TokenBasedAuthResponseFilter implements ContainerResponseFilter {
     }
 
 
+    /**
+     * Checks the expiration date of token.
+     * Renews and puts at header of response.
+     * @param request
+     * @param response
+     * @return
+     */
     @Override
     public ContainerResponse filter(ContainerRequest request, ContainerResponse response) {
         String authToken = extractAuthTokenFromCookieList(request.getHeaderValue("Cookie"));
@@ -67,10 +78,20 @@ public class TokenBasedAuthResponseFilter implements ContainerResponseFilter {
 
     }
 
+    /**
+     * Combines the token and cookie sentence
+     * @param authToken final cookie
+     * @return
+     */
     public static String getTokenSentence(String authToken) {
         return tokenKey + "=" + authToken + cookieSentence;
     }
 
+    /**
+     * Extracts the accesstoken from cookies
+     * @param cookieList
+     * @return
+     */
     private String extractAuthTokenFromCookieList(String cookieList) {
         if (cookieList == null || cookieList.length() == 0) {
             return null;

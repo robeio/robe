@@ -7,8 +7,8 @@ import com.sun.jersey.spi.inject.Injectable;
 import com.sun.jersey.spi.inject.InjectableProvider;
 import io.dropwizard.auth.Auth;
 import io.dropwizard.auth.Authenticator;
-import io.robe.auth.Token;
-import io.robe.auth.TokenFactory;
+import io.robe.auth.tokenbased.Token;
+import io.robe.auth.tokenbased.TokenFactory;
 import io.robe.auth.tokenbased.BasicToken;
 import io.robe.auth.tokenbased.configuration.TokenBasedAuthConfiguration;
 

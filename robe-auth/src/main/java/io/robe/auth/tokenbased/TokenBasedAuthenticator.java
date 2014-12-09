@@ -3,8 +3,6 @@ package io.robe.auth.tokenbased;
 import com.google.common.base.Optional;
 import io.dropwizard.auth.AuthenticationException;
 import io.dropwizard.auth.Authenticator;
-import io.robe.auth.Token;
-import io.robe.auth.TokenFactory;
 import io.robe.auth.data.entry.PermissionEntry;
 import io.robe.auth.data.entry.RoleEntry;
 import io.robe.auth.data.entry.ServiceEntry;
@@ -48,23 +46,21 @@ public class TokenBasedAuthenticator implements Authenticator<String, Token> {
      */
     @Override
     public Optional<Token> authenticate(String tokenString) throws AuthenticationException {
-
-        LOGGER.info("----------------------------");
-        LOGGER.info("Authenticating from database");
-        LOGGER.info("----------------------------");
-
+        LOGGER.debug("Authenticating from database:  " + tokenString);
         try {
             // Decode tokenString and get user
             Token token = TokenFactory.getInstance().createToken(tokenString);
 
             Optional<UserEntry> user = (Optional<UserEntry>) userStore.findByUsername(token.getUsername());
             if (!user.isPresent()) {
+                LOGGER.warn("User is not available: " + tokenString);
                 return Optional.absent();
             }
             // If user exists and active than check Service Permissions for authorization controls
             if (user.get().isActive()) {
-                if (token.getPermissions() == null) {
 
+                if (token.getPermissions() == null) {
+                    LOGGER.debug("Loading Permissions from DB: " + tokenString);
                     Set<String> permissions = new HashSet<String>();
                     Set<PermissionEntry> rolePermissions = new HashSet<PermissionEntry>();
 
@@ -81,13 +77,8 @@ public class TokenBasedAuthenticator implements Authenticator<String, Token> {
                     }
                     // Create credentials with user info and permission list
                     token.setPermissions(Collections.unmodifiableSet(permissions));
-                    LOGGER.info("----------------------------");
-                    LOGGER.info("Loading permissions from database");
-                    LOGGER.info("----------------------------");
                 } else {
-                    LOGGER.info("----------------------------");
-                    LOGGER.info("Loading permissions from CACHE");
-                    LOGGER.info("----------------------------");
+                    LOGGER.debug("Loading Permissions from Cache: " + tokenString);
                 }
 
                 return Optional.fromNullable(token);

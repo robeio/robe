@@ -1,10 +1,8 @@
 package io.robe.auth.tokenbased;
 
-import com.codahale.metrics.annotation.Timed;
 import com.google.common.cache.Cache;
 import com.google.common.cache.CacheBuilder;
 import com.google.common.hash.Hashing;
-import io.robe.auth.Token;
 import io.robe.auth.tokenbased.configuration.TokenBasedAuthConfiguration;
 import org.apache.commons.codec.DecoderException;
 import org.apache.commons.codec.binary.Hex;
@@ -20,6 +18,11 @@ import java.util.Set;
 import java.util.UUID;
 import java.util.concurrent.TimeUnit;
 
+/**
+ * A basic token implementation.  Uses jasypt for encrypt & decrypt operations.
+ * Takes all properties from configurarion. Uses Guava for permission caching.
+ * All cached permission entries will live with token.
+ */
 public class BasicToken implements Token {
     private static final Logger LOGGER = LoggerFactory.getLogger(BasicToken.class);
 
@@ -38,7 +41,7 @@ public class BasicToken implements Token {
 
 
     /**
-     * Initialize method for Token generation configurations and ENCRYPTOR configure
+     * Configure method for Token generation configurations and ENCRYPTOR configure
      *
      * @param configuration
      */
@@ -53,19 +56,22 @@ public class BasicToken implements Token {
         ENCRYPTOR.initialize();
         BasicToken.defaultMaxAge = configuration.getMaxage();
 
+        //Create cache for permissions.
         cache = CacheBuilder.newBuilder()
                 .expireAfterAccess(defaultMaxAge, TimeUnit.SECONDS)
                 .expireAfterWrite(defaultMaxAge, TimeUnit.SECONDS)
                 .build();
     }
 
-    public BasicToken(String username, DateTime expireAt, String attributesHash) {
-        this.username = username;
-        this.expireAt = expireAt;
-        this.attributesHash = attributesHash;
-        this.maxAge = defaultMaxAge;
-    }
-
+    /**
+     * Creates an access token with the given parameters.
+     *
+     * @param username   Username
+     * @param expireAt   expiration time of token
+     * @param attributes extra attributes to customize token
+     * @return
+     * @throws Exception
+     */
     public BasicToken(String username, DateTime expireAt, Map<String, String> attributes) {
         this.username = username;
         this.expireAt = expireAt;
@@ -73,22 +79,22 @@ public class BasicToken implements Token {
         generateAttributesHash(attributes);
     }
 
-    public BasicToken(Token token) {
-        this.username = token.getUsername();
-        this.expireAt = new DateTime(token.getExpirationDate());
-        this.attributesHash = token.getAttributesHash();
-        this.maxAge = token.getMaxAge();
-    }
-
-    public BasicToken(String token) throws Exception {
+    /**
+     * Creates an access token with the given tokenString.
+     *
+     * @param tokenString to parse
+     * @return
+     * @throws Exception
+     */
+    public BasicToken(String tokenString) throws Exception {
         try {
-            token = new String(Hex.decodeHex(token.toCharArray()));
-            String[] parts = ENCRYPTOR.decrypt(token).split(SEPARATOR);
+            tokenString = new String(Hex.decodeHex(tokenString.toCharArray()));
+            String[] parts = ENCRYPTOR.decrypt(tokenString).split(SEPARATOR);
             this.username = parts[0];
             this.expireAt = new DateTime(Long.valueOf(parts[1]));
             this.attributesHash = parts[2];
         } catch (DecoderException e) {
-            LOGGER.error("Cant decode token: " + token, e);
+            LOGGER.error("Cant decode token: " + tokenString, e);
             throw e;
         }
 
@@ -116,18 +122,16 @@ public class BasicToken implements Token {
         return expireAt.toDate();
     }
 
-
-    @Override
-    public void updateAttributeHash(Map<String, String> map) {
-        generateAttributesHash(map);
-        resetTokenString();
-    }
-
     @Override
     public String getAttributesHash() {
         return attributesHash;
     }
 
+    /**
+     * Generates attribute has with 'userAgent', 'remoteAddr' keys.
+     * Combines them and hashes with SHA256 and sets the variable.
+     * @param attributes
+     */
     private void generateAttributesHash(Map<String, String> attributes) {
         StringBuilder attr = new StringBuilder();
         attr.append(attributes.get("userAgent"));
@@ -146,7 +150,6 @@ public class BasicToken implements Token {
      * @return new tokenString
      * @throws Exception
      */
-    @Timed
     private String generateTokenString() throws Exception {
         //Renew age
         //Stringify token data
@@ -168,6 +171,10 @@ public class BasicToken implements Token {
         return maxAge < 1 ? defaultMaxAge:maxAge;
     }
 
+    /**
+     * Sets permissions to the cache with current username
+     * @param permissions
+     */
     @Override
     public void setPermissions(Set<String> permissions) {
         cache.put(getUsername(), permissions);
