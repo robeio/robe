@@ -90,7 +90,4 @@ assets:
    uriPath:      /admin-ui/
    indexFile:    index.html
    assetsName:   io.robe.admin.ui
- - resourcePath: /Users/serayuzgur/Desktop
-   uriPath:      /admin-tobb/
-   indexFile:    tobb.jpg
-   assetsName:   io.robe.tobb
+   cached:       true

@@ -1,191 +1,163 @@
 package io.robe.assets;
 
-import com.google.common.base.CharMatcher;
-import com.google.common.base.Preconditions;
-import com.google.common.hash.Hashing;
-import com.google.common.io.Files;
-import com.google.common.io.Resources;
+import com.google.common.cache.Cache;
+import com.google.common.cache.CacheBuilder;
 import com.google.common.net.HttpHeaders;
 import com.google.common.net.MediaType;
+import io.robe.assets.asset.FileAsset;
 
 import javax.servlet.ServletException;
 import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.io.File;
 import java.io.IOException;
-import java.net.URISyntaxException;
-import java.net.URL;
 import java.nio.charset.Charset;
 
 /**
- * Servlet for serving assets with configuration. This is copied from
- * {@link io.dropwizard.servlets.assets.AssetServlet} only loadAsset changed.
+ * Servlet for serving assets with configuration.
  *
  * @see io.dropwizard.servlets.assets.AssetServlet
  */
 
 public class FileAssetServlet extends HttpServlet {
-	private static final long serialVersionUID = 6393345594784987908L;
-	private static final CharMatcher SLASHES = CharMatcher.is('/');
 
-	private static class CachedAsset {
-		private final byte[] resource;
-		private final String eTag;
-		private final long lastModifiedTime;
 
-		private CachedAsset(byte[] resource, long lastModifiedTime) {
-			this.resource = resource;
-			this.eTag = '"' + Hashing.murmur3_128().hashBytes(resource).toString() + '"';
-			this.lastModifiedTime = lastModifiedTime;
-		}
+    private Cache<String, FileAsset> cache;
+    private static final MediaType DEFAULT_MEDIA_TYPE = MediaType.HTML_UTF_8;
 
-		public byte[] getResource() {
-			return resource;
-		}
+    private final String resourcePath;
+    private final String uriPath;
+    private final String indexFile;
+    private final Charset defaultCharset;
+    private final boolean cached;
 
-		public String getETag() {
-			return eTag;
-		}
+    /**
+     * Creates a new {@code FileAssetServlet} that serves static assets loaded from {@code resourceURL}
+     *
+     * @param resourcePath   the base URL from which assets are loaded
+     * @param uriPath        the URI path fragment in which all requests are rooted
+     * @param indexFile      the filename to use when directories are requested, or null to serve no
+     *                       indexes
+     * @param defaultCharset the default character set
+     */
+    public FileAssetServlet(String resourcePath,
+                            String uriPath,
+                            String indexFile,
+                            Charset defaultCharset,
+                            boolean cached) {
+        this.resourcePath = fixPath(resourcePath);
+        uriPath = uriPath.endsWith("/") ? uriPath.substring(0, uriPath.length() - 1) : uriPath;
+        this.uriPath = uriPath.isEmpty() ? "/" : uriPath;
+        this.indexFile = indexFile;
+        this.defaultCharset = defaultCharset;
+        this.cached = cached;
+        cache = CacheBuilder.newBuilder().build();
+    }
 
-		public long getLastModifiedTime() {
-			return lastModifiedTime;
-		}
-	}
+    /**
+     * Helps to fix path
+     *
+     * @param path to fix
+     * @return
+     */
+    private String fixPath(String path) {
+        if (!path.isEmpty()) {
+            if (!path.endsWith("/"))
+                return path + '/';
+            else
+                return path;
+        } else
+            return path;
+    }
 
-	private static final MediaType DEFAULT_MEDIA_TYPE = MediaType.HTML_UTF_8;
 
-	private final String resourcePath;
-	private final String uriPath;
-	private final String indexFile;
-	private final Charset defaultCharset;
+    public String getIndexFile() {
+        return indexFile;
+    }
 
-	/**
-	 * Creates a new {@code FileAssetServlet} that serves static assets loaded from {@code resourceURL}
-	 * (typically a file: or jar: URL). The assets are served at URIs rooted at {@code uriPath}. For
-	 * example, given a {@code resourceURL} of {@code "file:/data/assets"} and a {@code uriPath} of
-	 * {@code "/js"}, an {@code AssetServlet} would serve the contents of {@code
-	 * /data/assets/example.js} in response to a request for {@code /js/example.js}. If a directory
-	 * is requested and {@code indexFile} is defined, then {@code AssetServlet} will attempt to
-	 * serve a file with that name in that directory. If a directory is requested and {@code
-	 * indexFile} is null, it will serve a 404.
-	 *
-	 * @param resourcePath   the base URL from which assets are loaded
-	 * @param uriPath        the URI path fragment in which all requests are rooted
-	 * @param indexFile      the filename to use when directories are requested, or null to serve no
-	 *                       indexes
-	 * @param defaultCharset the default character set
-	 */
-	public FileAssetServlet(String resourcePath,
-	                        String uriPath,
-	                        String indexFile,
-	                        Charset defaultCharset) {
-		this.resourcePath = resourcePath.isEmpty() ? resourcePath : resourcePath + '/';
-		final String trimmedUri = SLASHES.trimTrailingFrom(uriPath);
-		this.uriPath = trimmedUri.isEmpty() ? "/" : trimmedUri;
-		this.indexFile = indexFile;
-		this.defaultCharset = defaultCharset;
-	}
+    @Override
+    protected void doGet(HttpServletRequest req,
+                         HttpServletResponse resp) throws ServletException, IOException {
+        try {
+            final StringBuilder builder = new StringBuilder(req.getServletPath());
 
-	public URL getResourceURL() {
-		return Resources.getResource(resourcePath);
-	}
+            // If asset is empty redirect to index file.
+            if (req.getPathInfo() != null) {
+                builder.append(req.getPathInfo());
+            } else {
+                builder.insert(0, req.getContextPath());
+                builder.append("/").append(getIndexFile());
+                resp.sendRedirect(builder.toString());
+                return;
+            }
 
-	public String getUriPath() {
-		return uriPath;
-	}
+            String assetPath = builder.toString();
+            //Get from cache if not available load it.
+            FileAsset asset = cache.getIfPresent(assetPath);
+            if (asset == null) {
+                asset = loadAsset(assetPath);
+            }
+            //If still it is null it means nothing to load.
+            if (asset == null) {
+                resp.sendError(HttpServletResponse.SC_NOT_FOUND);
+                return;
+            }
 
-	public String getIndexFile() {
-		return indexFile;
-	}
+            // Maybe client got it already
+            if (isDifferentFromClientCache(req, asset)) {
+                resp.sendError(HttpServletResponse.SC_NOT_MODIFIED);
+                return;
+            }
 
-	@Override
-	protected void doGet(HttpServletRequest req,
-	                     HttpServletResponse resp) throws ServletException, IOException {
-		try {
-			final StringBuilder builder = new StringBuilder(req.getServletPath());
-			if (req.getPathInfo() != null) {
-				builder.append(req.getPathInfo());
-			} else {
-				builder.insert(0, req.getContextPath());
-				builder.append("/").append(getIndexFile());
-				resp.sendRedirect(builder.toString());
-				return;
-			}
-			final CachedAsset cachedAsset = loadAsset(builder.toString());
-			if (cachedAsset == null) {
-				resp.sendError(HttpServletResponse.SC_NOT_FOUND);
-				return;
-			}
+            //Modify response identifiers
+            resp.setDateHeader(HttpHeaders.LAST_MODIFIED, asset.getLastModified());
+            resp.setHeader(HttpHeaders.ETAG, asset.getMd5());
 
-			if (isCachedClientSide(req, cachedAsset)) {
-				resp.sendError(HttpServletResponse.SC_NOT_MODIFIED);
-				return;
-			}
+            decideMimeAndEncoding(req, resp);
 
-			resp.setDateHeader(HttpHeaders.LAST_MODIFIED, cachedAsset.getLastModifiedTime());
-			resp.setHeader(HttpHeaders.ETAG, cachedAsset.getETag());
 
-			final String mimeTypeOfExtension = req.getServletContext()
-					.getMimeType(req.getRequestURI());
-			MediaType mediaType = DEFAULT_MEDIA_TYPE;
+            try (ServletOutputStream output = resp.getOutputStream()) {
+                output.write(asset.loadAsset());
+            }
+        } catch (RuntimeException e) {
+            resp.sendError(HttpServletResponse.SC_NOT_FOUND);
+        }
+    }
 
-			if (mimeTypeOfExtension != null) {
-				try {
-					mediaType = MediaType.parse(mimeTypeOfExtension);
-					if (defaultCharset != null && mediaType.is(MediaType.ANY_TEXT_TYPE)) {
-						mediaType = mediaType.withCharset(defaultCharset);
-					}
-				} catch (IllegalArgumentException ignore) {
-				}
-			}
+    private void decideMimeAndEncoding(HttpServletRequest req, HttpServletResponse resp) {
+        //Decide mimetype
+        String mime = req.getServletContext().getMimeType(req.getRequestURI());
+        MediaType mediaType = (mime == null) ? DEFAULT_MEDIA_TYPE : MediaType.parse(mime);
+        if (defaultCharset != null && mediaType.is(MediaType.ANY_TEXT_TYPE)) {
+            mediaType = mediaType.withCharset(defaultCharset);
+        }
+        resp.setContentType(mediaType.type() + '/' + mediaType.subtype());
+        if (mediaType.charset().isPresent()) {
+            resp.setCharacterEncoding(mediaType.charset().get().toString());
+        }
+    }
 
-			resp.setContentType(mediaType.type() + '/' + mediaType.subtype());
+    private FileAsset loadAsset(String path) {
+        if (!path.startsWith(uriPath))
+            return null;
+        String absolutePath = path.substring(uriPath.length());
+        absolutePath = absolutePath.startsWith("/") ? absolutePath.substring(1) : absolutePath;
+        absolutePath = absolutePath.endsWith("/") ? absolutePath.substring(0, absolutePath.length() - 1) : absolutePath;
+        absolutePath = this.resourcePath + absolutePath;
 
-			if (mediaType.charset().isPresent()) {
-				resp.setCharacterEncoding(mediaType.charset().get().toString());
-			}
+        FileAsset asset = new FileAsset(absolutePath, cached);
+        cache.put(path, asset);
 
-			try (ServletOutputStream output = resp.getOutputStream()) {
-				output.write(cachedAsset.getResource());
-			}
-		} catch (RuntimeException | URISyntaxException ignored) {
-			resp.sendError(HttpServletResponse.SC_NOT_FOUND);
-		}
-	}
+        return asset;
+    }
 
-	private CachedAsset loadAsset(String key) throws URISyntaxException, IOException {
-		Preconditions.checkArgument(key.startsWith(uriPath));
-		final String requestedResourcePath = SLASHES.trimFrom(key.substring(uriPath.length()));
-		final String absoluteRequestedResourcePath = this.resourcePath + requestedResourcePath;
+    private long msToSec(long time) {
+        return time / 1000;
+    }
 
-		File requestedResource = new File(absoluteRequestedResourcePath);
-		if (!requestedResource.exists()) {
-			return null;
-		}
-		if (requestedResource.isDirectory()) {
-			if (indexFile != null) {
-				requestedResource = new File(absoluteRequestedResourcePath + '/' + indexFile);
-			} else {
-				// directory requested but no index file defined
-				return null;
-			}
-		}
-
-		long lastModified = requestedResource.lastModified();
-		if (lastModified < 1) {
-			// Something went wrong trying to get the last modified time: just use the current time
-			lastModified = System.currentTimeMillis();
-		}
-
-		// zero out the millis since the date we get back from If-Modified-Since will not have them
-		lastModified = (lastModified / 1000) * 1000;
-		return new CachedAsset(Files.toByteArray(requestedResource), lastModified);
-	}
-
-	private boolean isCachedClientSide(HttpServletRequest req, CachedAsset cachedAsset) {
-		return cachedAsset.getETag().equals(req.getHeader(HttpHeaders.IF_NONE_MATCH)) ||
-				(req.getDateHeader(HttpHeaders.IF_MODIFIED_SINCE) >= cachedAsset.getLastModifiedTime());
-	}
+    private boolean isDifferentFromClientCache(HttpServletRequest req, FileAsset asset) {
+        return asset.getMd5().equals(req.getHeader(HttpHeaders.IF_NONE_MATCH)) ||
+                (msToSec(req.getDateHeader(HttpHeaders.IF_MODIFIED_SINCE)) >= msToSec(asset.getLastModified()));
+    }
 }

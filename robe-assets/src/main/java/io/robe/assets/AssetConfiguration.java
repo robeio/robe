@@ -27,6 +27,11 @@ public class AssetConfiguration {
 	@JsonProperty
 	private String assetsName;
 
+	@Valid
+	@NotNull
+	@JsonProperty
+	private boolean cached;
+
 	public String getResourcePath() {
 		return resourcePath;
 	}
@@ -41,5 +46,9 @@ public class AssetConfiguration {
 
 	public String getAssetsName() {
 		return assetsName;
+	}
+
+	public boolean getCached() {
+		return cached;
 	}
 }

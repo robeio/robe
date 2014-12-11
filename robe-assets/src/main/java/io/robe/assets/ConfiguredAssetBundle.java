@@ -38,7 +38,8 @@ public class ConfiguredAssetBundle<T extends Configuration & HasAssetConfigurati
 							resourcePath,
 							uriPath,
 							assetConf.getIndexFile(),
-							Charsets.UTF_8)
+							Charsets.UTF_8,
+							assetConf.getCached())
 			).addMapping(uriPath + '*');
 		}
 	}
