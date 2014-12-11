@@ -72,7 +72,7 @@ public class RobeRuntimeException extends WebApplicationException {
     }
 
     /**
-     * @return {@link io.robe.admin.dto.BasicPair#toString()}
+     * @return {@link io.robe.common.dto.BasicPair#toString()}
      */
     @Override
     public String toString() {
