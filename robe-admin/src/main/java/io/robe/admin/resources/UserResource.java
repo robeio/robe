@@ -130,11 +130,9 @@ public class UserResource {
                 MailManager.sendMail(mailItem);
 
             } catch (TemplateException e) {
-                e.printStackTrace();
                 throw new RobeRuntimeException("Error", e.getLocalizedMessage());
             }
         } catch (IOException e) {
-            e.printStackTrace();
             throw new RobeRuntimeException("Error", "ChangePasswordMail template not found:" + e.getLocalizedMessage());
         }
 
@@ -253,11 +251,9 @@ public class UserResource {
                 mailItem.setTitle("Robe.io Kayıt Olma Bildirimi");
                 MailManager.sendMail(mailItem);
             } catch (TemplateException e) {
-                e.printStackTrace();
                 throw new RobeRuntimeException("Error", e.getLocalizedMessage());
             }
         } catch (IOException e) {
-            e.printStackTrace();
             throw new RobeRuntimeException("Error", "RegisterMail template not found:" + e.getLocalizedMessage());
         }
 
