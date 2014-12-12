@@ -33,7 +33,7 @@ public class ServiceResource {
 
     @Path("/all")
     @GET
-    @UnitOfWork(readOnly = true, cacheMode = GET,flushMode = FlushMode.MANUAL)
+    @UnitOfWork(readOnly = true, cacheMode = GET, flushMode = FlushMode.MANUAL)
     public List<Service> getAll(@Auth Credentials credentials) {
 
         return serviceDao.findAll(Service.class);
@@ -53,12 +53,9 @@ public class ServiceResource {
         for (Class service : services) {
             String parentPath = "/" + ((Path) service.getAnnotation(Path.class)).value();
             for (Method method : service.getMethods()) {
-                if (isItService(method)) {
-                    String httpMethod = method.getAnnotation(GET.class) != null ? "GET" :
-                            method.getAnnotation(POST.class) != null ? "POST" :
-                                    method.getAnnotation(PUT.class) != null ? "PUT" :
-                                            method.getAnnotation(DELETE.class) != null ? "DELETE" :
-                                                    method.getAnnotation(OPTIONS.class) != null ? "OPTIONS" : "";
+                String httpMethod = ifServiceGetHttpMethod(method);
+                if (httpMethod != null) {
+
                     String path = parentPath;
                     if (method.getAnnotation(Path.class) != null) {
                         path += "/" + method.getAnnotation(Path.class).value();
@@ -79,7 +76,18 @@ public class ServiceResource {
         return Response.ok(count).build();
     }
 
-    private boolean isItService(Method method) {
-        return method.getAnnotation(GET.class) != null || method.getAnnotation(PUT.class) != null || method.getAnnotation(POST.class) != null || method.getAnnotation(DELETE.class) != null || method.getAnnotation(OPTIONS.class) != null;
+    private String ifServiceGetHttpMethod(Method method) {
+        if (method.getAnnotation(GET.class) != null)
+            return "GET";
+        if (method.getAnnotation(PUT.class) != null)
+            return "PUT";
+        if (method.getAnnotation(POST.class) != null)
+            return "POST";
+        if (method.getAnnotation(DELETE.class) != null)
+            return "DELETE";
+        if (method.getAnnotation(OPTIONS.class) != null)
+            return "OPTIONS";
+
+        return null;
     }
 }
