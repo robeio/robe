@@ -42,6 +42,10 @@ import static org.hibernate.CacheMode.GET;
 public class UserResource {
 
 
+    public static final String E_MAIL = "E-MAIL";
+    public static final String TICKET = "TICKET";
+    public static final String TEMPLATES_PATH = "/templates/";
+
     @Inject
     UserDao userDao;
     @Inject
@@ -83,7 +87,7 @@ public class UserResource {
     public UserDTO create(@Auth Credentials credentials, @Valid UserDTO user, @Context UriInfo uriInfo) {
         Optional<User> checkUser = userDao.findByUsername(user.getEmail());
         if (checkUser.isPresent()) {
-            throw new RobeRuntimeException("E-mail", user.getEmail() + " already used by another user. Please use different e-mail.");
+            throw new RobeRuntimeException(E_MAIL, user.getEmail() + " already used by another user. Please use different e-mail.");
         }
         User entity = new User();
         entity.setEmail(user.getEmail());
@@ -111,7 +115,7 @@ public class UserResource {
         MailItem mailItem = new MailItem();
 
         Configuration cfg = new Configuration(Configuration.DEFAULT_INCOMPATIBLE_IMPROVEMENTS);
-        cfg.setClassForTemplateLoading(this.getClass(), "/templates/");
+        cfg.setClassForTemplateLoading(this.getClass(), TEMPLATES_PATH);
         Map<String, Object> parameter = new HashMap<String, Object>();
 
         parameter.put("ticketUrl", url + "ticket/" + ticket.getOid());
@@ -126,16 +130,14 @@ public class UserResource {
 
                 mailItem.setBody(out.toString());
                 mailItem.setReceivers(entity.getUsername());
-                mailItem.setTitle("Robe.io Şifre Değiştrme Bildirimi");
+                mailItem.setTitle("Robe.io Password Change Request");
                 MailManager.sendMail(mailItem);
 
             } catch (TemplateException e) {
-                e.printStackTrace();
-                throw new RobeRuntimeException("Error", e.getLocalizedMessage());
+                throw new RobeRuntimeException(E_MAIL, e.getLocalizedMessage());
             }
         } catch (IOException e) {
-            e.printStackTrace();
-            throw new RobeRuntimeException("Error", "ChangePasswordMail template not found:" + e.getLocalizedMessage());
+            throw new RobeRuntimeException(E_MAIL, "ChangePasswordMail template not found:" + e.getLocalizedMessage());
         }
 
         return new UserDTO(entity);
@@ -182,7 +184,7 @@ public class UserResource {
 
         String oPassword = user.getPassword();
         if (!(oPassword.equals(oldPassword))) {
-            throw new RobeRuntimeException("Eski Şifre Hatası", "Eski Şifrenizle Girdiğiniz Şifre ile Uyumlu Değildir");
+            throw new RobeRuntimeException("Old Password Error", "Your old password is not correct");
         }
 
         user.setPassword(newPassword);
@@ -207,7 +209,7 @@ public class UserResource {
 
         Optional<User> checkUser = userDao.findByUsername(email);
         if (checkUser.isPresent()) {
-            throw new RobeRuntimeException("E-mail", checkUser.get().getEmail() + " already used by another user. Please use different e-mail.");
+            throw new RobeRuntimeException(E_MAIL, checkUser.get().getEmail() + " already used by another user. Please use different e-mail.");
         }
 
         User entity = new User();
@@ -218,7 +220,7 @@ public class UserResource {
         entity.setPassword(UUID.randomUUID().toString());
         Role role = roleDao.findById(roleOid);
         if (role == null) {
-            throw new RobeRuntimeException("Rol", "Rol " + ExceptionMessages.CANT_BE_NULL.toString());
+            throw new RobeRuntimeException("Role", "Role " + ExceptionMessages.CANT_BE_NULL.toString());
         }
         entity.setRole(role);
         entity = userDao.create(entity);
@@ -233,7 +235,7 @@ public class UserResource {
         MailItem mailItem = new MailItem();
 
         Configuration cfg = new Configuration(Configuration.DEFAULT_INCOMPATIBLE_IMPROVEMENTS);
-        cfg.setClassForTemplateLoading(this.getClass(), "/templates/");
+        cfg.setClassForTemplateLoading(this.getClass(), TEMPLATES_PATH);
         Map<String, Object> parameter = new HashMap<String, Object>();
 
         String url = uriInfo.getBaseUri().toString();
@@ -250,15 +252,13 @@ public class UserResource {
 
                 mailItem.setBody(out.toString());
                 mailItem.setReceivers(email);
-                mailItem.setTitle("Robe.io Kayıt Olma Bildirimi");
+                mailItem.setTitle("Robe.io Registration Request");
                 MailManager.sendMail(mailItem);
             } catch (TemplateException e) {
-                e.printStackTrace();
-                throw new RobeRuntimeException("Error", e.getLocalizedMessage());
+                throw new RobeRuntimeException(E_MAIL, e.getLocalizedMessage());
             }
         } catch (IOException e) {
-            e.printStackTrace();
-            throw new RobeRuntimeException("Error", "RegisterMail template not found:" + e.getLocalizedMessage());
+            throw new RobeRuntimeException(E_MAIL, "RegisterMail template not found:" + e.getLocalizedMessage());
         }
 
         return entity;
@@ -271,15 +271,15 @@ public class UserResource {
 
         Ticket ticket = ticketDao.findById(user.getTicket());
         if (ticket == null) {
-            throw new RobeRuntimeException("Error", "Ticket not found");
+            throw new RobeRuntimeException(TICKET, "Ticket not found");
         }
 
         if (ticket.getExpirationDate().getTime() < Calendar.getInstance().getTime().getTime()) {
-            throw new RobeRuntimeException("Error", "Ticket date is expired");
+            throw new RobeRuntimeException(TICKET, "Ticket date is expired");
         }
         User entity = ticket.getUser();
         if (!entity.getUsername().equals(user.getUsername())) {
-            throw new RobeRuntimeException("Email", "Tickets not belong to your email");
+            throw new RobeRuntimeException(TICKET, "Tickets not belong to your email");
         }
 
         String newPasswordHashed = Hashing.sha256().hashString(user.getNewPassword(), StandardCharsets.UTF_8).toString();
@@ -301,14 +301,14 @@ public class UserResource {
         //TODO validation add this and html file
         Ticket ticket = ticketDao.findById(user.getTicket());
         if (ticket == null) {
-            throw new RobeRuntimeException("Error", "Ticket not found");
+            throw new RobeRuntimeException(TICKET, "Ticket not found");
         }
         if (ticket.getExpirationDate().getTime() < Calendar.getInstance().getTime().getTime()) {
-            throw new RobeRuntimeException("Error", "Ticket date is expired");
+            throw new RobeRuntimeException(TICKET, "Ticket date is expired");
         }
         User entity = ticket.getUser();
         if (!entity.getUsername().equals(user.getUsername())) {
-            throw new RobeRuntimeException("Error", "Tickets not belong to your email");
+            throw new RobeRuntimeException(TICKET, "Tickets not belong to your email");
         }
 
         String newPasswordHashed = Hashing.sha256().hashString(user.getNewPassword(), StandardCharsets.UTF_8).toString();

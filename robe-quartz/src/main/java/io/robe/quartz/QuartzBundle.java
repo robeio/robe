@@ -5,11 +5,13 @@ import io.dropwizard.ConfiguredBundle;
 import io.dropwizard.setup.Bootstrap;
 import io.dropwizard.setup.Environment;
 import io.robe.hibernate.HasHibernateConfiguration;
+import io.robe.hibernate.HibernateBundle;
 import io.robe.quartz.configuration.HasQuartzConfiguration;
 import io.robe.quartz.configuration.QuartzConfiguration;
 import io.robe.quartz.job.QuartzJob;
 import io.robe.quartz.job.QuartzTrigger;
 import io.robe.quartz.job.annotation.ByAnnotation;
+import io.robe.quartz.job.hibernate.ByHibernate;
 import io.robe.quartz.job.schedule.OnApplicationStart;
 import io.robe.quartz.job.schedule.OnApplicationStop;
 import io.robe.quartz.job.schedule.Scheduled;
@@ -35,6 +37,13 @@ public class QuartzBundle<T extends Configuration & HasQuartzConfiguration & Has
     Set<Class<? extends Job>> onStopJobs = null;
 
     private T configuration;
+
+    public QuartzBundle() {
+    }
+
+    public QuartzBundle(HibernateBundle<T> hibernateBundle) {
+        ByHibernate.setHibernateBundle(hibernateBundle);
+    }
 
 
     /**
