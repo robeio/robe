@@ -131,7 +131,7 @@ public class UserResource {
                 parameter.put("name", entity.getName());
                 parameter.put("surname", entity.getSurname());
             } catch (IOException e) {
-                e.printStackTrace();
+                throw new RobeRuntimeException("ERROR",e.getLocalizedMessage());
             }
 
         } else {
@@ -154,7 +154,7 @@ public class UserResource {
         } catch (TemplateException e) {
             throw new RobeRuntimeException(E_MAIL, e.getLocalizedMessage());
         } catch (IOException e) {
-            e.printStackTrace();
+            throw new RobeRuntimeException("ERROR",e.getLocalizedMessage());
         }
 
         mailItem.setBody(out.toString());
@@ -273,7 +273,7 @@ public class UserResource {
                 template = new Template("robeTemplate", body, cfg);
 
             } catch (IOException e) {
-                e.printStackTrace();
+                throw new RobeRuntimeException("ERROR",e.getLocalizedMessage());
             }
 
         } else {
@@ -293,7 +293,7 @@ public class UserResource {
                 throw new RobeRuntimeException(E_MAIL, "ChangePasswordMail template not found");
             }
         } catch (TemplateException | IOException e) {
-            e.printStackTrace();
+            throw new RobeRuntimeException("ERROR",e.getLocalizedMessage());
         }
 
         mailItem.setBody(out.toString());
