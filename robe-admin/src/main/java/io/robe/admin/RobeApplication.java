@@ -20,7 +20,6 @@ import io.robe.guice.GuiceBundle;
 import io.robe.hibernate.HibernateBundle;
 import io.robe.mail.MailBundle;
 import io.robe.quartz.QuartzBundle;
-import io.robe.quartz.job.hibernate.ByHibernate;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -68,7 +67,7 @@ public class RobeApplication<T extends RobeServiceConfiguration> extends Applica
 	public void initialize(Bootstrap<T> bootstrap) {
 		LOGGER.info("Robe Admin is Starting...");
 		hibernateBundle = new HibernateBundle<T>();
-		QuartzBundle<T> quartzBundle = new QuartzBundle<T>();
+		QuartzBundle<T> quartzBundle = new QuartzBundle<T>(hibernateBundle);
 		MailBundle<T> mailBundle = new MailBundle<T>();
 		TokenBasedAuthBundle<T> authBundle = new TokenBasedAuthBundle<T>();
 
@@ -88,9 +87,6 @@ public class RobeApplication<T extends RobeServiceConfiguration> extends Applica
 		bootstrap.addBundle(new GuiceBundle<T>(modules, bootstrap.getApplication().getConfigurationClass()));
 		bootstrap.addCommand(new InitializeCommand(this, hibernateBundle));
 
-
-		//TODO: Bad way to get it. Will change it later.
-		ByHibernate.setHibernateBundle(hibernateBundle);
 
 	}
 
