@@ -146,7 +146,7 @@ public class AuthResource extends AbstractAuthResource<User> {
 
                 mailItem.setBody(out.toString());
                 mailItem.setReceivers(userOptiona.get().getUsername());
-                mailItem.setTitle("Robe.io password change notification");
+                mailItem.setTitle("Robe.io password change request");
                 MailManager.sendMail(mailItem);
 
             } catch (TemplateException e) {
