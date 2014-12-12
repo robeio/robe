@@ -44,7 +44,6 @@ public class ServiceResource {
     @UnitOfWork
     public Response refreshServices(@Auth Credentials credentials) {
 
-
         GuiceConfiguration configuration = robeServiceConfiguration.getGuiceConfiguration();
 
         Reflections reflections = new Reflections(configuration.getScanPackages(), this.getClass().getClassLoader());
@@ -54,26 +53,33 @@ public class ServiceResource {
             String parentPath = "/" + ((Path) service.getAnnotation(Path.class)).value();
             for (Method method : service.getMethods()) {
                 String httpMethod = ifServiceGetHttpMethod(method);
-                if (httpMethod != null) {
-
-                    String path = parentPath;
-                    if (method.getAnnotation(Path.class) != null) {
-                        path += "/" + method.getAnnotation(Path.class).value();
-                        path = path.replaceAll("//", "/");
-                    }
-                    io.robe.admin.hibernate.entity.Service entity = serviceDao.findByPathAndMethod(path, ServiceEntry.Method.valueOf(httpMethod));
-                    if (entity == null) {
-                        entity = new io.robe.admin.hibernate.entity.Service();
-                        entity.setPath(path);
-                        entity.setMethod(io.robe.admin.hibernate.entity.Service.Method.valueOf(httpMethod));
-                        serviceDao.create(entity);
-                        count++;
-                    }
-
+                if (httpMethod == null) {
+                    continue;
                 }
+                String path = parentPath;
+                path = extractPath(method, path);
+
+                io.robe.admin.hibernate.entity.Service entity = serviceDao.findByPathAndMethod(path, ServiceEntry.Method.valueOf(httpMethod));
+                if (entity != null) {
+                    continue;
+                }
+                entity = new io.robe.admin.hibernate.entity.Service();
+                entity.setPath(path);
+                entity.setMethod(io.robe.admin.hibernate.entity.Service.Method.valueOf(httpMethod));
+                serviceDao.create(entity);
+                count++;
+
             }
         }
         return Response.ok(count).build();
+    }
+
+    private String extractPath(Method method, String path) {
+        if (method.getAnnotation(Path.class) != null) {
+            path += "/" + method.getAnnotation(Path.class).value();
+            path = path.replaceAll("//", "/");
+        }
+        return path;
     }
 
     private String ifServiceGetHttpMethod(Method method) {

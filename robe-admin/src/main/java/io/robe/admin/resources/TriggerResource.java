@@ -39,7 +39,7 @@ public class TriggerResource {
     QuartzJobDao quartzJobDao;
 
     @GET
-    @UnitOfWork(readOnly = true, cacheMode = GET,flushMode = FlushMode.MANUAL)
+    @UnitOfWork(readOnly = true, cacheMode = GET, flushMode = FlushMode.MANUAL)
     public List<TriggerEntity> getAll(@Auth Credentials credentials) {
         return quartzTriggerDao.findAll(TriggerEntity.class);
     }
@@ -47,9 +47,9 @@ public class TriggerResource {
     @DELETE
     @UnitOfWork
     public TriggerEntity delete(@Auth Credentials credentials, TriggerEntity triggerEntity) throws SchedulerException {
-        triggerEntity = quartzTriggerDao.findById(triggerEntity.getOid());
-        unScheduleJobTrigger(triggerEntity);
-        return quartzTriggerDao.delete(triggerEntity);
+        TriggerEntity entity = quartzTriggerDao.findById(triggerEntity.getOid());
+        unScheduleJobTrigger(entity);
+        return quartzTriggerDao.delete(entity);
     }
 
     @POST
@@ -69,16 +69,16 @@ public class TriggerResource {
     @Path("/run")
     @UnitOfWork
     public TriggerEntity fireTrigger(TriggerEntity triggerEntity) throws SchedulerException {
-        triggerEntity = quartzTriggerDao.findById(triggerEntity.getOid());
-        return scheduleJob(triggerEntity);
+        TriggerEntity entity = quartzTriggerDao.findById(triggerEntity.getOid());
+        return scheduleJob(entity);
     }
 
     @POST
     @Path("/stop")
     @UnitOfWork
     public TriggerEntity stopTrigger(TriggerEntity triggerEntity) throws SchedulerException {
-        triggerEntity = quartzTriggerDao.findById(triggerEntity.getOid());
-        return unScheduleJobTrigger(triggerEntity);
+        TriggerEntity entity = quartzTriggerDao.findById(triggerEntity.getOid());
+        return unScheduleJobTrigger(entity);
 
     }
 
@@ -146,7 +146,7 @@ public class TriggerResource {
             triggers.add(trigger.withSchedule(CronScheduleBuilder.cronSchedule(cronExpression)).build());
             scheduler.scheduleJob(jobDetail, triggers, true);
             triggerEntity.setActive(true);
-            triggerEntity = quartzTriggerDao.update(triggerEntity);
+            return quartzTriggerDao.update(triggerEntity);
         }
         return triggerEntity;
     }

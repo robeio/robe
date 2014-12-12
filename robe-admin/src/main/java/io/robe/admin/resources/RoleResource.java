@@ -28,6 +28,8 @@ import static org.hibernate.CacheMode.GET;
 public class RoleResource {
 
 
+    private static final String ALREADY_USED =  " already used by another role. Please use different code.";
+
     @Inject
     RoleDao roleDao;
 
@@ -56,7 +58,7 @@ public class RoleResource {
     public Role create(@Auth Credentials credentials, @Valid Role role) {
         Optional<Role> checkRole = roleDao.findByName(role.getCode());
         if (checkRole.isPresent()) {
-            throw new RobeRuntimeException("Code", role.getCode() + " already used by another role. Please use different code.");
+            throw new RobeRuntimeException("Code", role.getCode() + ALREADY_USED);
         }
         return roleDao.create(role);
     }
@@ -68,7 +70,7 @@ public class RoleResource {
         roleDao.detach(role);
         Optional<Role> checkRole = roleDao.findByNameAndNotEqualMe(role.getCode(), role.getOid());
         if (checkRole.isPresent()) {
-            throw new RobeRuntimeException("Code", role.getCode() + " already used by another role. Please use different code.");
+            throw new RobeRuntimeException("Code", role.getCode() + ALREADY_USED);
         }
         Role entity = roleDao.findById(role.getOid());
         entity.setName(role.getName());
