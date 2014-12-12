@@ -14,14 +14,13 @@
     <div class="row text-center pad-top ">
         <div class="col-md-12">
             <h2>Robe.io</h2>
-
-            <h2>Kullanıcı Şifre Değiştirme Bildirimi</h2>
+            <h2>User password change notifcation</h2>
         </div>
     </div>
     <div class="panel-heading" style="text-align: center;">
         <div class="alert alert-info" role="alert">
-            <strong>Şifrenizi değiştirmek linke
-                <a target="_blank" class="alert-link" href="${ticketUrl}">tıklayınız</a>
+            <strong>To change your password, lick on the link
+                <a target="_blank" class="alert-link" href="${ticketUrl}">link</a>
             </strong>
         </div>
     </div>

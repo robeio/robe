@@ -7,11 +7,7 @@
     <![endif]-->
     <title>Robe.io</title>
     <!-- BOOTSTRAP CORE STYLE CSS -->
-    <link href="../admin-ui/lib/bootstrap/bootstrap.orange.css" rel="stylesheet"/>
-    <!-- FONTAWESOME STYLE CSS -->
-    <!-- CUSTOM STYLE CSS -->
-    <!-- GOOGLE FONT -->
-<#--<link href='http://fonts.googleapis.com/css?family=Open+Sans' rel='stylesheet' type='text/css' />-->
+    <link href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/css/bootstrap.min.css" rel="stylesheet"/>
 </head>
 <body>
 <div class="container">
