@@ -146,7 +146,11 @@ public class UserResource {
 
         try {
             parameter.put("ticketUrl", ticketUrl);
-            template.process(parameter, out);
+            if (template != null) {
+                template.process(parameter, out);
+            } else {
+                throw new RobeRuntimeException(E_MAIL, "ChangePasswordMail template not found");
+            }
         } catch (TemplateException e) {
             throw new RobeRuntimeException(E_MAIL, e.getLocalizedMessage());
         } catch (IOException e) {
@@ -283,7 +287,11 @@ public class UserResource {
 
         try {
             parameter.put("ticketUrl", ticketUrl);
-            template.process(parameter, out);
+            if (template != null) {
+                template.process(parameter, out);
+            } else {
+                throw new RobeRuntimeException(E_MAIL, "ChangePasswordMail template not found");
+            }
         } catch (TemplateException | IOException e) {
             e.printStackTrace();
         }
@@ -328,7 +336,6 @@ public class UserResource {
     @Path("registerPassword")
     public UserDTO registerUserPassword(@Valid UserDTO user) {
 
-        //TODO validation add this and html file
         Ticket ticket = ticketDao.findById(user.getTicket());
         if (ticket == null) {
             throw new RobeRuntimeException(TICKET, "Ticket not found");
