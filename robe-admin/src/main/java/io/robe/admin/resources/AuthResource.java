@@ -151,7 +151,7 @@ public class AuthResource extends AbstractAuthResource<User> {
                 parameter.put("name", userOptional.get().getName());
                 parameter.put("surname", userOptional.get().getSurname());
             } catch (IOException e) {
-                e.printStackTrace();
+                throw new RobeRuntimeException("ERROR",e.getLocalizedMessage());
             }
 
 
@@ -171,7 +171,7 @@ public class AuthResource extends AbstractAuthResource<User> {
         } catch (TemplateException e) {
             throw new RobeRuntimeException(E_MAIL, e.getLocalizedMessage());
         } catch (IOException e) {
-            e.printStackTrace();
+            throw new RobeRuntimeException("ERROR",e.getLocalizedMessage());
         }
 
         mailItem.setBody(out.toString());
