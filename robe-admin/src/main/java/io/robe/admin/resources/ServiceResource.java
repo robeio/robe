@@ -3,11 +3,11 @@ package io.robe.admin.resources;
 import com.google.inject.Inject;
 import io.dropwizard.auth.Auth;
 import io.dropwizard.hibernate.UnitOfWork;
-import io.robe.admin.RobeServiceConfiguration;
 import io.robe.admin.hibernate.dao.ServiceDao;
 import io.robe.admin.hibernate.entity.Service;
 import io.robe.auth.Credentials;
 import io.robe.auth.data.entry.ServiceEntry;
+import io.robe.guice.GuiceBundle;
 import io.robe.guice.GuiceConfiguration;
 import org.hibernate.FlushMode;
 import org.reflections.Reflections;
@@ -26,14 +26,13 @@ import static org.hibernate.CacheMode.GET;
 @Consumes(MediaType.APPLICATION_JSON)
 public class ServiceResource {
 
-    @Inject
-    RobeServiceConfiguration robeServiceConfiguration;
+
     @Inject
     private ServiceDao serviceDao;
 
     @Path("/all")
     @GET
-    @UnitOfWork(readOnly = true, cacheMode = GET,flushMode = FlushMode.MANUAL)
+    @UnitOfWork(readOnly = true, cacheMode = GET, flushMode = FlushMode.MANUAL)
     public List<Service> getAll(@Auth Credentials credentials) {
 
         return serviceDao.findAll(Service.class);
@@ -45,7 +44,7 @@ public class ServiceResource {
     public Response refreshServices(@Auth Credentials credentials) {
 
 
-        GuiceConfiguration configuration = robeServiceConfiguration.getGuiceConfiguration();
+        GuiceConfiguration configuration = GuiceBundle.getConfiguration();
 
         Reflections reflections = new Reflections(configuration.getScanPackages(), this.getClass().getClassLoader());
         Set<Class<?>> services = reflections.getTypesAnnotatedWith(Path.class);
@@ -53,33 +52,48 @@ public class ServiceResource {
         for (Class service : services) {
             String parentPath = "/" + ((Path) service.getAnnotation(Path.class)).value();
             for (Method method : service.getMethods()) {
-                if (isItService(method)) {
-                    String httpMethod = method.getAnnotation(GET.class) != null ? "GET" :
-                            method.getAnnotation(POST.class) != null ? "POST" :
-                                    method.getAnnotation(PUT.class) != null ? "PUT" :
-                                            method.getAnnotation(DELETE.class) != null ? "DELETE" :
-                                                    method.getAnnotation(OPTIONS.class) != null ? "OPTIONS" : "";
-                    String path = parentPath;
-                    if (method.getAnnotation(Path.class) != null) {
-                        path += "/" + method.getAnnotation(Path.class).value();
-                        path = path.replaceAll("//", "/");
-                    }
-                    io.robe.admin.hibernate.entity.Service entity = serviceDao.findByPathAndMethod(path, ServiceEntry.Method.valueOf(httpMethod));
-                    if (entity == null) {
-                        entity = new io.robe.admin.hibernate.entity.Service();
-                        entity.setPath(path);
-                        entity.setMethod(io.robe.admin.hibernate.entity.Service.Method.valueOf(httpMethod));
-                        serviceDao.create(entity);
-                        count++;
-                    }
-
+                String httpMethod = ifServiceGetHttpMethod(method);
+                if (httpMethod == null) {
+                    continue;
                 }
+                String path = parentPath;
+                path = extractPath(method, path);
+
+                io.robe.admin.hibernate.entity.Service entity = serviceDao.findByPathAndMethod(path, ServiceEntry.Method.valueOf(httpMethod));
+                if (entity != null) {
+                    continue;
+                }
+                entity = new io.robe.admin.hibernate.entity.Service();
+                entity.setPath(path);
+                entity.setMethod(io.robe.admin.hibernate.entity.Service.Method.valueOf(httpMethod));
+                serviceDao.create(entity);
+                count++;
+
             }
         }
         return Response.ok(count).build();
     }
 
-    private boolean isItService(Method method) {
-        return method.getAnnotation(GET.class) != null || method.getAnnotation(PUT.class) != null || method.getAnnotation(POST.class) != null || method.getAnnotation(DELETE.class) != null || method.getAnnotation(OPTIONS.class) != null;
+    private String extractPath(Method method, String path) {
+        if (method.getAnnotation(Path.class) != null) {
+            path += "/" + method.getAnnotation(Path.class).value();
+            path = path.replaceAll("//", "/");
+        }
+        return path;
+    }
+
+    private String ifServiceGetHttpMethod(Method method) {
+        if (method.getAnnotation(GET.class) != null)
+            return "GET";
+        if (method.getAnnotation(PUT.class) != null)
+            return "PUT";
+        if (method.getAnnotation(POST.class) != null)
+            return "POST";
+        if (method.getAnnotation(DELETE.class) != null)
+            return "DELETE";
+        if (method.getAnnotation(OPTIONS.class) != null)
+            return "OPTIONS";
+
+        return null;
     }
 }

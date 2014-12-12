@@ -32,12 +32,8 @@ import java.util.Set;
 
 public class GuiceBundle<T extends Configuration & HasGuiceConfiguration> implements ConfiguredBundle<T> {
     private static final Logger LOGGER = LoggerFactory.getLogger(GuiceBundle.class);
-
     private static Injector injector = null;
-
-    public static Injector getInjector() {
-        return injector;
-    }
+    private static GuiceConfiguration configuration;
 
     private Reflections reflections;
     private List<Module> modules = new LinkedList<Module>();
@@ -50,6 +46,14 @@ public class GuiceBundle<T extends Configuration & HasGuiceConfiguration> implem
         this.modules = modules;
         this.type = type;
 
+    }
+
+    public static GuiceConfiguration getConfiguration() {
+        return configuration;
+    }
+
+    public static Injector getInjector() {
+        return injector;
     }
 
 
@@ -80,6 +84,7 @@ public class GuiceBundle<T extends Configuration & HasGuiceConfiguration> implem
             if (configuration.getGuiceConfiguration() == null) {
                 LOGGER.error("GuiceBundle can not work without and configuration!");
             }
+            GuiceBundle.configuration = configuration.getGuiceConfiguration();
             createReflections(configuration.getGuiceConfiguration().getScanPackages());
             prepareContainer(configuration, environment);
             findAndRunScanners(environment, injector);
