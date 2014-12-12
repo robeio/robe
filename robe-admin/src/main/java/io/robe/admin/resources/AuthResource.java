@@ -9,8 +9,10 @@ import freemarker.template.TemplateException;
 import io.dropwizard.auth.Auth;
 import io.dropwizard.auth.AuthenticationException;
 import io.dropwizard.hibernate.UnitOfWork;
+import io.robe.admin.hibernate.dao.MailTemplateDao;
 import io.robe.admin.hibernate.dao.TicketDao;
 import io.robe.admin.hibernate.dao.UserDao;
+import io.robe.admin.hibernate.entity.MailTemplate;
 import io.robe.admin.hibernate.entity.Ticket;
 import io.robe.admin.hibernate.entity.User;
 import io.robe.auth.AbstractAuthResource;
@@ -50,8 +52,12 @@ import static org.hibernate.CacheMode.GET;
 
 public class AuthResource extends AbstractAuthResource<User> {
 
+    public static final String E_MAIL = "E-MAIL";
+    public static final String TEMPLATES_PATH = "/templates/";
     private static final Logger LOGGER = LoggerFactory.getLogger(AuthResource.class);
     UserDao userDao;
+    @Inject
+    MailTemplateDao mailTemplateDao;
 
     @Inject
     TicketDao ticketDao;
@@ -108,13 +114,13 @@ public class AuthResource extends AbstractAuthResource<User> {
     @Path("forgotpassword/{forgotEmail}")
     public Response forgotPassword(@PathParam("forgotEmail") String forgotEmail, @Context UriInfo uriInfo) {
 
-        Optional<User> userOptiona = userDao.findByUsername(forgotEmail);
+        Optional<User> userOptional = userDao.findByUsername(forgotEmail);
 
-        if (!userOptiona.isPresent()) {
+        if (!userOptional.isPresent()) {
             throw new RobeRuntimeException("ERROR", "Your e-mail address was not found in the system");
         }
 
-        Optional<Ticket> ticketOptional = ticketDao.findByUserAndActive(userOptiona.get());
+        Optional<Ticket> ticketOptional = ticketDao.findByUserAndActive(userOptional.get());
 
         if (ticketOptional.isPresent()) {
             throw new RobeRuntimeException("ERROR", "Already opened your behalf tickets available");
@@ -122,41 +128,56 @@ public class AuthResource extends AbstractAuthResource<User> {
 
         Ticket ticket = new Ticket();
         ticket.setType(Ticket.Type.CHANGE_PASSWORD);
-        ticket.setUser(userOptiona.get());
+        ticket.setUser(userOptional.get());
         DateTime expire = DateTime.now().plusDays(5);
         ticket.setExpirationDate(expire.toDate());
         ticket = ticketDao.create(ticket);
         String url = uriInfo.getBaseUri().toString();
+        String ticketUrl = url + "ticket/" + ticket.getOid();
 
         MailItem mailItem = new MailItem();
 
+        Optional<MailTemplate> mailTemplateOptional = mailTemplateDao.findByCode(Ticket.Type.CHANGE_PASSWORD.name());
         Configuration cfg = new Configuration(Configuration.DEFAULT_INCOMPATIBLE_IMPROVEMENTS);
-        cfg.setClassForTemplateLoading(this.getClass(), "/templates/");
+        Template template = null;
         Map<String, Object> parameter = new HashMap<String, Object>();
+        Writer out = new StringWriter();
 
-        parameter.put("ticketUrl", url + "ticket/" + ticket.getOid());
+        if (mailTemplateOptional.isPresent()) {
+            String body = mailTemplateOptional.get().getTemplate();
+            try {
+                template = new Template("robeTemplate", body, cfg);
+                parameter.put("ticketUrl", ticketUrl);
+                parameter.put("name", userOptional.get().getName());
+                parameter.put("surname", userOptional.get().getSurname());
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
 
-        Template template;
+
+        } else {
+            cfg.setClassForTemplateLoading(this.getClass(), TEMPLATES_PATH);
+            parameter.put("ticketUrl", ticketUrl);
+            try {
+                template = cfg.getTemplate("ChangePasswordMail.ftl");
+            } catch (IOException e) {
+                throw new RobeRuntimeException(E_MAIL, "ChangePasswordMail template not found:" + e.getLocalizedMessage());
+            }
+
+        }
 
         try {
-            template = cfg.getTemplate("ChangePasswordMail.ftl");
-            Writer out = new StringWriter();
-            try {
-                template.process(parameter, out);
-
-                mailItem.setBody(out.toString());
-                mailItem.setReceivers(userOptiona.get().getUsername());
-                mailItem.setTitle("Robe.io password change request");
-                MailManager.sendMail(mailItem);
-
-            } catch (TemplateException e) {
-                e.printStackTrace();
-                throw new RobeRuntimeException("Error", e.getLocalizedMessage());
-            }
+            template.process(parameter, out);
+        } catch (TemplateException e) {
+            throw new RobeRuntimeException(E_MAIL, e.getLocalizedMessage());
         } catch (IOException e) {
             e.printStackTrace();
-            throw new RobeRuntimeException("Error", "ChangePasswordMail template not found:" + e.getLocalizedMessage());
         }
+
+        mailItem.setBody(out.toString());
+        mailItem.setReceivers(userOptional.get().getUsername());
+        mailItem.setTitle("Robe.io Password Change Request");
+        MailManager.sendMail(mailItem);
 
         return Response.ok().build();
     }

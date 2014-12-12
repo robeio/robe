@@ -10,7 +10,10 @@
     <![endif]-->
     <title>Robe.io</title>
     <link href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/css/bootstrap.min.css" rel="stylesheet"/>
-    <script src="https://code.jquery.com/jquery-1.11.1.min.js"></script>
+    <script src="https://code.jquery.com/jquery-1.11.1.min.js"/>
+    <script src="http://cdnjs.cloudflare.com/ajax/libs/crypto-js/3.1.2/components/sha256-min.js"/>
+    <script src="http://cdnjs.cloudflare.com/ajax/libs/crypto-js/3.1.2/components/enc-base64-min.js"/>
+    <script src="http://cdnjs.cloudflare.com/ajax/libs/crypto-js/3.1.2/components/core-min.js"/>
     <script>
         $(document).ready(function () {
             $("#save").bind("click", function () {
@@ -66,18 +69,22 @@
                     type: "POST",
                     url: "${url.value}user/registerPassword",
                     'contentType': 'application/json',
-                    data: '{"email":"' + email + '","ticket":"' + ticket + '","newPassword":"' + password + '","username":"' + email + '"}',
+                    data: '{"email":"' + email + '","ticket":"' + ticket + '","newPassword":"' + CryptoJS.SHA256(password).toString() + '","username":"' + email + '"}',
                     'dataType': 'json',
                     success: function (response) {
+                        var alert = $("#alert");
                         alert.removeClass("alert-danger");
                         alert.addClass("alert-success");
                         alert.html("Record was successfully added");
+                        alert.show();
                     },
                     error: function (request) {
+                        var alert = $("#alert");
                         var response = JSON.parse(request.responseText);
                         alert.addClass("alert-danger");
                         alert.removeClass("alert-success");
                         alert.html(response.name + " " + response.value);
+                        alert.show();
                     }
                 });
 
