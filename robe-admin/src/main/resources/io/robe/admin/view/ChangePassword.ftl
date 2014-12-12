@@ -9,13 +9,8 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
     <![endif]-->
     <title>Robe.io</title>
-    <!-- BOOTSTRAP CORE STYLE CSS -->
-    <link href="../admin-ui/lib/bootstrap/bootstrap.orange.css" rel="stylesheet"/>
-    <!-- FONTAWESOME STYLE CSS -->
-    <!-- CUSTOM STYLE CSS -->
-    <!-- GOOGLE FONT -->
-    <link href='http://fonts.googleapis.com/css?family=Open+Sans' rel='stylesheet' type='text/css'/>
-    <script src="../admin-ui/lib/jquery/jquery.min.js"></script>
+    <link href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/css/bootstrap.min.css" rel="stylesheet"/>
+    <script src="https://code.jquery.com/jquery-1.11.1.min.js"></script>
     <script>
         $(document).ready(function () {
             $("#save").bind("click", function () {
@@ -69,7 +64,7 @@
 
                 $.ajax({
                     type: "POST",
-                    url: ${url.value}+"user/registerPassword",
+                    url: "${url.value}user/registerPassword",
                     'contentType': 'application/json',
                     data: '{"email":"' + email + '","ticket":"' + ticket + '","newPassword":"' + password + '","username":"' + email + '"}',
                     'dataType': 'json',
@@ -102,7 +97,7 @@
         <div class="col-md-12">
             <h2>Robe.io</h2>
 
-            <h2>Şifre Kayıt Formu</h2>
+            <h2>Password Register Form</h2>
         </div>
     </div>
     <div class="row  pad-top">
@@ -110,27 +105,27 @@
         <div class="col-md-4 col-md-offset-4 col-sm-6 col-sm-offset-3 col-xs-10 col-xs-offset-1">
             <div class="panel panel-default">
                 <div class="panel-heading" style="text-align: center;">
-                    <strong>Lütfen Tüm Alanları Doldrurunuz</strong>
+                    <strong>Please fill in all fields</strong>
                 </div>
                 <div class="panel-body">
                     <form role="form">
                         <br/>
 
                         <div class="form-group input-group">
-                            <span class="input-group-addon">Mail&nbsp;&nbsp;&nbsp;&nbsp;</span>
+                            <span class="input-group-addon">E-mail:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>
                             <input id="email" type="text" class="form-control" readonly value="${mail.value}"/>
                         </div>
                         <div class="form-group input-group">
-                            <span class="input-group-addon">Şifre&nbsp;&nbsp;&nbsp;</span>
+                            <span class="input-group-addon">Password:</span>
                             <input id="password" type="password" class="form-control"/>
                         </div>
                         <div class="form-group input-group">
-                            <span class="input-group-addon">Tekrar</span>
+                            <span class="input-group-addon">Again:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>
                             <input id="rePassword" type="password" class="form-control"/>
                         </div>
 
                         <div class="form-group input-group">
-                            <span class="input-group-addon">Ticket:</span>
+                            <span class="input-group-addon">Ticket:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>
                             <input id="ticket" type="text" class="form-control" readonly value="${ticket.value}"/>
                         </div>
                         <div class="alert alert-danger" role="alert" id="alert" hidden>

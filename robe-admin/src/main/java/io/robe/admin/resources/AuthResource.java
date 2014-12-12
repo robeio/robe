@@ -3,16 +3,24 @@ package io.robe.admin.resources;
 import com.codahale.metrics.annotation.Timed;
 import com.google.common.base.Optional;
 import com.google.inject.Inject;
+import freemarker.template.Configuration;
+import freemarker.template.Template;
+import freemarker.template.TemplateException;
 import io.dropwizard.auth.Auth;
 import io.dropwizard.auth.AuthenticationException;
 import io.dropwizard.hibernate.UnitOfWork;
+import io.robe.admin.hibernate.dao.TicketDao;
 import io.robe.admin.hibernate.dao.UserDao;
+import io.robe.admin.hibernate.entity.Ticket;
 import io.robe.admin.hibernate.entity.User;
 import io.robe.auth.AbstractAuthResource;
 import io.robe.auth.Credentials;
 import io.robe.auth.tokenbased.Token;
 import io.robe.auth.tokenbased.TokenFactory;
 import io.robe.auth.tokenbased.filter.TokenBasedAuthResponseFilter;
+import io.robe.common.exception.RobeRuntimeException;
+import io.robe.mail.MailItem;
+import io.robe.mail.MailManager;
 import org.hibernate.FlushMode;
 import org.joda.time.DateTime;
 import org.slf4j.Logger;
@@ -23,6 +31,10 @@ import javax.ws.rs.*;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
+import javax.ws.rs.core.UriInfo;
+import java.io.IOException;
+import java.io.StringWriter;
+import java.io.Writer;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -42,6 +54,9 @@ public class AuthResource extends AbstractAuthResource<User> {
     UserDao userDao;
 
     @Inject
+    TicketDao ticketDao;
+
+    @Inject
     public AuthResource(UserDao userDao) {
         super(userDao);
         this.userDao = userDao;
@@ -49,7 +64,7 @@ public class AuthResource extends AbstractAuthResource<User> {
 
 
     @POST
-    @UnitOfWork(readOnly = true, cacheMode = GET,flushMode = FlushMode.MANUAL)
+    @UnitOfWork(readOnly = true, cacheMode = GET, flushMode = FlushMode.MANUAL)
     @Path("login")
     @Timed
     public Response login(@Context HttpServletRequest request, Map<String, String> credentials) throws Exception {
@@ -59,9 +74,9 @@ public class AuthResource extends AbstractAuthResource<User> {
         if (!user.isPresent()) {
             throw new WebApplicationException(Response.Status.UNAUTHORIZED);
         } else if (user.get().getPassword().equals(credentials.get("password"))) {
-            Map<String,String> attributes = new HashMap<>();
-            attributes.put("userAgent",request.getHeader("User-Agent"));
-            attributes.put("remoteAddr",request.getRemoteAddr());
+            Map<String, String> attributes = new HashMap<>();
+            attributes.put("userAgent", request.getHeader("User-Agent"));
+            attributes.put("remoteAddr", request.getRemoteAddr());
 
             Token token = TokenFactory.getInstance().createToken(user.get().getEmail(), DateTime.now(), attributes);
             token.setExpiration(token.getMaxAge());
@@ -91,14 +106,58 @@ public class AuthResource extends AbstractAuthResource<User> {
     @POST
     @UnitOfWork
     @Path("forgotpassword/{forgotEmail}")
-    public Response forgotPassword(@PathParam("forgotEmail") String forgotEmail) {
-        String userEmail = forgotEmail;
+    public Response forgotPassword(@PathParam("forgotEmail") String forgotEmail, @Context UriInfo uriInfo) {
 
-        return null;
-    }
+        Optional<User> userOptiona = userDao.findByUsername(forgotEmail);
 
-    public User completeforgotPassword(String email, String clientId) {
-        //TODO complete request with a mail
-        return null;
+        if (!userOptiona.isPresent()) {
+            throw new RobeRuntimeException("ERROR", "Your e-mail address was not found in the system");
+        }
+
+        Optional<Ticket> ticketOptional = ticketDao.findByUserAndActive(userOptiona.get());
+
+        if (ticketOptional.isPresent()) {
+            throw new RobeRuntimeException("ERROR", "Already opened your behalf tickets available");
+        }
+
+        Ticket ticket = new Ticket();
+        ticket.setType(Ticket.Type.CHANGE_PASSWORD);
+        ticket.setUser(userOptiona.get());
+        DateTime expire = DateTime.now().plusDays(5);
+        ticket.setExpirationDate(expire.toDate());
+        ticket = ticketDao.create(ticket);
+        String url = uriInfo.getBaseUri().toString();
+
+        MailItem mailItem = new MailItem();
+
+        Configuration cfg = new Configuration(Configuration.DEFAULT_INCOMPATIBLE_IMPROVEMENTS);
+        cfg.setClassForTemplateLoading(this.getClass(), "/templates/");
+        Map<String, Object> parameter = new HashMap<String, Object>();
+
+        parameter.put("ticketUrl", url + "ticket/" + ticket.getOid());
+
+        Template template;
+
+        try {
+            template = cfg.getTemplate("ChangePasswordMail.ftl");
+            Writer out = new StringWriter();
+            try {
+                template.process(parameter, out);
+
+                mailItem.setBody(out.toString());
+                mailItem.setReceivers(userOptiona.get().getUsername());
+                mailItem.setTitle("Robe.io password change request");
+                MailManager.sendMail(mailItem);
+
+            } catch (TemplateException e) {
+                e.printStackTrace();
+                throw new RobeRuntimeException("Error", e.getLocalizedMessage());
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+            throw new RobeRuntimeException("Error", "ChangePasswordMail template not found:" + e.getLocalizedMessage());
+        }
+
+        return Response.ok().build();
     }
 }

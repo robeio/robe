@@ -15,12 +15,12 @@
         <div class="col-md-12">
             <h2>Robe.io</h2>
 
-            <h2>Kullanıcı Kayıt olma bildirimi</h2>
+            <h2>User Register Notification</h2>
         </div>
     </div>
     <div class="panel-heading" style="text-align: center;">
         <div class="alert alert-info" role="alert">
-            <strong>Kayıt olmak için linke <a target="_blank" class="alert-link" href="${ticketUrl}">tıklayınız</a>
+            <strong>To register,click on the <a target="_blank" class="alert-link" href="${ticketUrl}">link</a>
             </strong>
         </div>
     </div>
