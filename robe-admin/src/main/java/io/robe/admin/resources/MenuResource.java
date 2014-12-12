@@ -13,7 +13,6 @@ import io.robe.admin.hibernate.entity.Permission;
 import io.robe.admin.hibernate.entity.Role;
 import io.robe.admin.hibernate.entity.User;
 import io.robe.auth.Credentials;
-import io.robe.common.audit.Audited;
 import io.robe.common.exception.RobeRuntimeException;
 import org.hibernate.FlushMode;
 import org.hibernate.Hibernate;
@@ -38,7 +37,7 @@ public class MenuResource {
 
     @Path("all")
     @GET
-    @UnitOfWork(readOnly = true, cacheMode = GET,flushMode = FlushMode.MANUAL)
+    @UnitOfWork(readOnly = true, cacheMode = GET, flushMode = FlushMode.MANUAL)
     public List<Menu> getMenus(@Auth Credentials credentials) {
 
         List<Menu> menus = new ArrayList<>();
@@ -58,7 +57,7 @@ public class MenuResource {
 
     @Path("user")
     @GET
-    @UnitOfWork(readOnly = true, cacheMode = GET,flushMode = FlushMode.MANUAL)
+    @UnitOfWork(readOnly = true, cacheMode = GET, flushMode = FlushMode.MANUAL)
     @CacheControl(noCache = true)
     public List<MenuItem> getUserHierarchicalMenu(@Auth Credentials credentials) {
         Optional<User> user = userDao.findByUsername(credentials.getUsername());
@@ -94,7 +93,7 @@ public class MenuResource {
 
     @Path("roots")
     @GET
-    @UnitOfWork(readOnly = true, cacheMode = GET,flushMode = FlushMode.MANUAL)
+    @UnitOfWork(readOnly = true, cacheMode = GET, flushMode = FlushMode.MANUAL)
     public List<Menu> getHierarchicalMenu(@Auth Credentials credentials) {
         List<Menu> menus = menuDao.findHierarchicalMenu();
         for (Menu menu : menus) {
@@ -146,7 +145,6 @@ public class MenuResource {
 
     @POST
     @UnitOfWork
-    @Audited
     public Menu update(@Auth Credentials credentials, Menu menu) {
         return menuDao.update(menu);
 
