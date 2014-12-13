@@ -151,7 +151,7 @@ public class AuthResource extends AbstractAuthResource<User> {
                 parameter.put("name", userOptional.get().getName());
                 parameter.put("surname", userOptional.get().getSurname());
             } catch (IOException e) {
-                throw new RobeRuntimeException("ERROR", e.getLocalizedMessage());
+                throw new RobeRuntimeException("ERROR", e);
             }
 
 
@@ -161,7 +161,7 @@ public class AuthResource extends AbstractAuthResource<User> {
             try {
                 template = cfg.getTemplate("ChangePasswordMail.ftl");
             } catch (IOException e) {
-                throw new RobeRuntimeException(E_MAIL, "ChangePasswordMail template not found:" + e.getLocalizedMessage());
+                throw new RobeRuntimeException(E_MAIL, e);
             }
 
         }
