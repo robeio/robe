@@ -262,7 +262,7 @@
 * Uygulama sınıfını ayağa kaldıracak bir çalıştırma oluşturunuz ve program argümanlar olarak `server ornek.yml` veriniz.
 
 **NOT: Bu komut sunucunun çalışmasını sağlamaktadır**
-* Uygulama sınıfını ayağa kaldıracak bir çalıştırma oluşturunuz ve program argümanlar olarak `initialize ornek.yml` veriniz
+* Uygulama sınıfını ayağa kaldıracak bir çalıştırma oluşturunuz ve program argümanlar olarak `initialize ornek.yml` veriniz. Sizden admin için şifre istyecektir.
 
 **NOT: Bu robe-admin projesini extend alan projeler için standart olan kullanıcı,rol,izin,menü vs olan başlangıç ayarlarını yapmaktadır.**
 
