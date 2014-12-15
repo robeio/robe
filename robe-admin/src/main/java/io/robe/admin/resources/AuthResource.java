@@ -120,7 +120,7 @@ public class AuthResource extends AbstractAuthResource<User> {
             throw new RobeRuntimeException("ERROR", "Your e-mail address was not found in the system");
         }
 
-        Optional<Ticket> ticketOptional = ticketDao.findByUserAndActive(userOptional.get());
+        Optional<Ticket> ticketOptional = ticketDao.findByUserAndExpirationDate(userOptional.get());
 
         if (ticketOptional.isPresent()) {
             throw new RobeRuntimeException("ERROR", "Already opened your behalf tickets available");
