@@ -1,5 +1,6 @@
 package io.robe.admin.cli;
 
+import com.google.common.hash.Hashing;
 import io.dropwizard.Application;
 import io.dropwizard.cli.EnvironmentCommand;
 import io.dropwizard.hibernate.UnitOfWork;
@@ -16,9 +17,12 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import javax.ws.rs.*;
+import java.io.Console;
 import java.lang.reflect.Method;
+import java.nio.charset.StandardCharsets;
 import java.util.Arrays;
 import java.util.HashSet;
+import java.util.Scanner;
 import java.util.Set;
 
 
@@ -46,6 +50,28 @@ public class InitializeCommand<T extends RobeServiceConfiguration> extends Envir
 
     @UnitOfWork
     public void execute(T configuration) {
+        LOGGER.info("------------------------");
+        LOGGER.info("------------------------");
+        LOGGER.info("Please enter the admin password for the first :");
+
+        Console console = System.console();
+
+        String password;
+
+        if (console != null) {
+            // read password from server console
+            password = Arrays.toString(console.readPassword());
+        } else {
+            // read password from idea console
+            Scanner scan = new Scanner(System.in);
+            password = scan.nextLine();
+        }
+
+        password = Hashing.sha256().hashString(password, StandardCharsets.UTF_8).toString();
+        System.out.println("creating password " + password);
+        LOGGER.info("------------------------");
+        LOGGER.info("------------------------");
+
         final Session session = hibernateBundle.getSessionFactory().openSession();
 
         Role role = (Role) session.createCriteria(Role.class).add(Restrictions.eq("name", "Admin")).uniqueResult();
@@ -110,7 +136,7 @@ public class InitializeCommand<T extends RobeServiceConfiguration> extends Envir
             }
         }
 
-        LOGGER.info("Creating admin user. U:admin@robe.io P: 123123");
+        LOGGER.info("Creating admin user. U:admin@robe.io");
         User user = (User) session.createCriteria(User.class).add(Restrictions.eq("email", "admin@robe.io")).uniqueResult();
         if (user == null) {
             user = new User();
@@ -118,7 +144,7 @@ public class InitializeCommand<T extends RobeServiceConfiguration> extends Envir
             user.setActive(true);
             user.setName(IO_ROBE_ADMIN);
             user.setSurname(IO_ROBE_ADMIN);
-            user.setPassword("96cae35ce8a9b0244178bf28e4966c2ce1b8385723a96a6b838858cdd6ca0a1e");
+            user.setPassword(password);
             user.setRole(role);
             session.persist(user);
 
