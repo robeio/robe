@@ -71,7 +71,7 @@ public abstract class ExcelImporter<T> extends Importer<T> {
                                 cellData = Parsers.valueOf(field.getType().getSimpleName().toUpperCase(Locale.ENGLISH)).getParser().parse(cell.toString(), field);
 
                             } else {
-                                cellData = Parsers.valueOf("ENUMTYPES").getParser().parse(cell, field);
+                                cellData = Parsers.valueOf("ENUM").getParser().parse(cell, field);
                             }
 
                             checkFieldLength(cfAnn, cell, field, row);
@@ -90,7 +90,7 @@ public abstract class ExcelImporter<T> extends Importer<T> {
                                 cellData = Parsers.valueOf(field.getType().getSimpleName().toUpperCase(Locale.ENGLISH)).getParser().parse(cell.toString(), field);
 
                             } else {
-                                cellData = Parsers.valueOf("ENUMTYPES").getParser().parse(cell, field);
+                                cellData = Parsers.valueOf("ENUM").getParser().parse(cell, field);
                             }
 
                             checkFieldLength(cfAnn, cell, field, row);

@@ -1,4 +1,4 @@
-package io.robe.convert.csv.supercsv;
+package io.robe.convert.csv.parsers;
 
 import org.supercsv.cellprocessor.ift.DateCellProcessor;
 import org.supercsv.util.CsvContext;

@@ -87,7 +87,7 @@ public abstract class ExcelExporter<T> extends Exporter<T> {
                     if (!(field.getType() != null && (field.getType()).isEnum())) {
                         parser = Parsers.valueOf(field.getType().getSimpleName().toUpperCase(Locale.ENGLISH)).getParser();
                     } else {
-                        parser = Parsers.valueOf("ENUMTYPES").getParser();
+                        parser = Parsers.valueOf("ENUM").getParser();
                     }
                     parser.setCell(field.get(item), cell, field);
                     field.setAccessible(initialAccessible);
