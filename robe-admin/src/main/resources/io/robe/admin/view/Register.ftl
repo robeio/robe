@@ -11,6 +11,11 @@
     <title>Robe.io</title>
     <link href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/css/bootstrap.min.css" rel="stylesheet"/>
     <script src="https://code.jquery.com/jquery-1.11.1.min.js"></script>
+    <script src="http://cdnjs.cloudflare.com/ajax/libs/crypto-js/3.1.2/components/core-min.js"></script>
+
+    <script src="http://cdnjs.cloudflare.com/ajax/libs/crypto-js/3.1.2/components/sha256-min.js"></script>
+    <script src="http://cdnjs.cloudflare.com/ajax/libs/crypto-js/3.1.2/components/enc-base64-min.js"></script>
+
     <script>
         $(document).ready(function () {
             $("#save").bind("click", function () {
@@ -74,9 +79,9 @@
 
                 $.ajax({
                     type: "POST",
-                    url: ${url.value}+"user/registerByMail",
+                    url: "${url.value}user/registerByMail",
                     'contentType': 'application/json',
-                    data: '{"email":"' + email + '","username":"' + email + '","name":"' + name + '","surname":"' + surname + '","ticket":"' + ticket + '","newPassword":"' + password + '"}',
+                    data: '{"email":"' + email + '","username":"' + email + '","name":"' + name + '","surname":"' + surname + '","ticket":"' + ticket + '","newPassword":"' + CryptoJS.SHA256(password).toString() + '"}',
                     'dataType': 'json',
                     success: function (response) {
                         var alert = $("#alert");
@@ -124,28 +129,28 @@
                         <br/>
 
                         <div class="form-group input-group">
-                            <span class="input-group-addon">Name&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>
+                            <span class="input-group-addon">Name:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>
                             <input id="name" type="text" class="form-control"/>
                         </div>
                         <div class="form-group input-group">
-                            <span class="input-group-addon">Surnanme</span>
+                            <span class="input-group-addon">Surname:&nbsp;&nbsp;</span>
                             <input id="surname" type="text" class="form-control"/>
                         </div>
                         <div class="form-group input-group">
-                            <span class="input-group-addon">E-Mail&nbsp;&nbsp;&nbsp;&nbsp;</span>
+                            <span class="input-group-addon">E-Mail:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>
                             <input id="email" type="text" class="form-control" readonly value="${mail.value}"/>
                         </div>
                         <div class="form-group input-group">
-                            <span class="input-group-addon">Password&nbsp;&nbsp;&nbsp;</span>
+                            <span class="input-group-addon">Password:</span>
                             <input id="password" type="password" class="form-control"/>
                         </div>
                         <div class="form-group input-group">
-                            <span class="input-group-addon">Again</span>
+                            <span class="input-group-addon">Again:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>
                             <input id="rePassword" type="password" class="form-control"/>
                         </div>
 
                         <div class="form-group input-group">
-                            <span class="input-group-addon">Ticket:</span>
+                            <span class="input-group-addon">Ticket:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp</span>
                             <input id="ticket" type="text" class="form-control" readonly value="${ticket.value}"/>
                         </div>
                         <div class="alert alert-danger" role="alert" id="alert" hidden>

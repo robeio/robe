@@ -1,14 +1,14 @@
 # Robe Tutorial
-## Initial Configuration
-* Create Development account 
-* Install git,maven, intellij or eclipse, mysql
-* Generate maven repository passwords.
+## Başlangıç Konfigurasyonları
+* Yazılım geliştirme hesabı oluşturun 
+* Git,maven,mysql ve yazılım geliştirme için intellij veya eclipse indirin.
+* Maven repo için şifre oluşturun.
 
-## Project
-* Create a new maven project
-* Enable Autoimport for maven
-* Copy .gitignore
-* Modify `pom.xml` with the given 
+## Proje
+* Yeni bir maven projesi oluşturun
+* Maven için otomatik import seçeneğini aktif edin
+* .gitignore dosyasını kopyalayın
+* `pom.xml` dosyanızı aşağıdaki özelliklere göre güncelleyin
  * Properties
 
  	```xml
@@ -164,7 +164,7 @@
   
     ```
 
-* Create a `projectname.yml` file with the basic configuration. [sample.yml] (http://goo.gl/VxB7UM)
+* `projeadiniz.yml` adında basit konfigürasyona sahip bir dosya oluşturun. [ornek.yml] (http://goo.gl/VxB7UM)
     ```yml
 	# HTTP-specific options.
 	server:
@@ -237,7 +237,7 @@
 	  indexFile: index.html
 	  assetsName: io.robe.sample.ui
     ```
-* Create a class which extends `RobeApplication<RobeServiceConfiguration>`
+*  `RobeApplication<RobeServiceConfiguration>` sınfını extend alan yeni bir sınıf yaratın.
 	``` java
 	public class SampleApplication extends RobeApplication<RobeServiceConfiguration> {
 	    private static Logger LOGGER = LoggerFactory.getLogger(SampleApplication.class);
@@ -259,12 +259,12 @@
 	}
 	```
 
-* Create a run configuration which will target Application class and have program arguments  `server sample.yml`
+* Uygulama sınıfını ayağa kaldıracak bir çalıştırma oluşturunuz ve program argümanlar olarak `server ornek.yml` veriniz.
 
-**NOTE: This is for server command which starts server**
-* Create a run configuration which will target Application class and have program arguments  `initialize sample.yml
+**NOT: Bu komut sunucunun çalışmasını sağlamaktadır**
+* Uygulama sınıfını ayağa kaldıracak bir çalıştırma oluşturunuz ve program argümanlar olarak `initialize ornek.yml` veriniz
 
-**NOTE: This is for initialize command which creates standard user,role,permission,menu.etc for the projects which are extended from robe-admin**
+**NOT: Bu robe-admin projesini extend alan projeler için standart olan kullanıcı,rol,izin,menü vs olan başlangıç ayarlarını yapmaktadır.**
 
-* Start MySql Server
-* Run your application for the first time.
+* MySql Serverı çalıştırınız.
+* Uygulamazı çalıştınız.

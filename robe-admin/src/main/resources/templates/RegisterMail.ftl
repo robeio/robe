@@ -14,7 +14,6 @@
     <div class="row text-center pad-top ">
         <div class="col-md-12">
             <h2>Robe.io</h2>
-
             <h2>User Register Notification</h2>
         </div>
     </div>

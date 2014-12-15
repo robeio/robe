@@ -18,9 +18,9 @@ public class TicketDao extends BaseDao<Ticket> {
     }
 
 
-    public Optional<Ticket> findByUserAndActive(User user) {
+    public Optional<Ticket> findByUserAndExpirationDate(User user) {
         Criteria criteria = currentSession().createCriteria(Ticket.class);
-        criteria.add(Restrictions.eq("user", user));
+        criteria.add(Restrictions.eq("user", user.getOid()));
         criteria.add(Restrictions.ge("expirationDate", DateTime.now().toDate()));
         return Optional.fromNullable(uniqueResult(criteria));
     }
