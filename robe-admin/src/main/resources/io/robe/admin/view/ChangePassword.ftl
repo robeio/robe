@@ -10,10 +10,11 @@
     <![endif]-->
     <title>Robe.io</title>
     <link href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/css/bootstrap.min.css" rel="stylesheet"/>
-    <script src="https://code.jquery.com/jquery-1.11.1.min.js"/>
-    <script src="http://cdnjs.cloudflare.com/ajax/libs/crypto-js/3.1.2/components/sha256-min.js"/>
-    <script src="http://cdnjs.cloudflare.com/ajax/libs/crypto-js/3.1.2/components/enc-base64-min.js"/>
-    <script src="http://cdnjs.cloudflare.com/ajax/libs/crypto-js/3.1.2/components/core-min.js"/>
+
+    <script src="https://code.jquery.com/jquery-1.11.1.min.js"></script>
+    <script src="http://cdnjs.cloudflare.com/ajax/libs/crypto-js/3.1.2/components/core-min.js"></script>
+    <script src="http://cdnjs.cloudflare.com/ajax/libs/crypto-js/3.1.2/components/sha256-min.js"></script>
+    <script src="http://cdnjs.cloudflare.com/ajax/libs/crypto-js/3.1.2/components/enc-base64-min.js"></script>
     <script>
         $(document).ready(function () {
             $("#save").bind("click", function () {

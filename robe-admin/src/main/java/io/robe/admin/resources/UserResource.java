@@ -131,7 +131,7 @@ public class UserResource {
                 parameter.put("name", entity.getName());
                 parameter.put("surname", entity.getSurname());
             } catch (IOException e) {
-                throw new RobeRuntimeException("ERROR",e);
+                throw new RobeRuntimeException("ERROR", e);
             }
 
         } else {
@@ -154,7 +154,7 @@ public class UserResource {
         } catch (TemplateException e) {
             throw new RobeRuntimeException(E_MAIL, e);
         } catch (IOException e) {
-            throw new RobeRuntimeException("ERROR",e);
+            throw new RobeRuntimeException("ERROR", e);
         }
 
         mailItem.setBody(out.toString());
@@ -254,7 +254,7 @@ public class UserResource {
         ticket.setExpirationDate(expire.toDate());
         ticket = ticketDao.create(ticket);
         String url = uriInfo.getBaseUri().toString();
-        String ticketUrl = url + "robe/ticket/" + ticket.getOid();
+        String ticketUrl = url + "ticket/" + ticket.getOid();
 
         MailItem mailItem = new MailItem();
 
@@ -273,7 +273,7 @@ public class UserResource {
                 template = new Template("robeTemplate", body, cfg);
 
             } catch (IOException e) {
-                throw new RobeRuntimeException("ERROR",e.getLocalizedMessage());
+                throw new RobeRuntimeException("ERROR", e.getLocalizedMessage());
             }
 
         } else {
@@ -281,7 +281,7 @@ public class UserResource {
             try {
                 template = cfg.getTemplate("RegisterMail.ftl");
             } catch (IOException e) {
-                throw new RobeRuntimeException(E_MAIL,e);
+                throw new RobeRuntimeException(E_MAIL, e);
             }
         }
 
@@ -293,7 +293,7 @@ public class UserResource {
                 throw new RobeRuntimeException(E_MAIL, "ChangePasswordMail template not found");
             }
         } catch (TemplateException | IOException e) {
-            throw new RobeRuntimeException("ERROR",e);
+            throw new RobeRuntimeException("ERROR", e);
         }
 
         mailItem.setBody(out.toString());
