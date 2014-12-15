@@ -35,79 +35,92 @@ import java.util.List;
 public class RobeApplication<T extends RobeServiceConfiguration> extends Application<T> {
 
 
-	private HibernateBundle<T> hibernateBundle = null;
-	private static final Logger LOGGER = LoggerFactory.getLogger(RobeApplication.class);
+    private HibernateBundle<T> hibernateBundle = null;
+    private static final Logger LOGGER = LoggerFactory.getLogger(RobeApplication.class);
+    private boolean withServerCommand = false;
 
-	public static void main(String[] args) throws Exception {
-		new RobeApplication().run(args);
-	}
+    public static void main(String[] args) throws Exception {
+        RobeApplication application = new RobeApplication();
+        if (args.length > 1 && args[0].equals("server"))
+            application.setWithServerCommand(true);
+        application.run(args);
+    }
 
-	public HibernateBundle getHibernateBundle() {
-		return hibernateBundle;
-	}
+    public void setWithServerCommand(boolean withServerCommand) {
+        this.withServerCommand = withServerCommand;
+    }
 
-	/**
-	 * Adds
-	 * Hibernate bundle for PROVIDER connection
-	 * Asset bundle for io.robe.admin screens and
-	 * Class scanners for
-	 * <ul>
-	 * <li>Entities</li>
-	 * <li>HealthChecks</li>
-	 * <li>Providers</li>
-	 * <li>InjectableProviders</li>
-	 * <li>Resources</li>
-	 * <li>Tasks</li>
-	 * <li>Managed objects</li>
-	 * </ul>
-	 *
-	 * @param bootstrap
-	 */
-	@Override
-	public void initialize(Bootstrap<T> bootstrap) {
-		LOGGER.info("Robe Admin is Starting...");
-		hibernateBundle = new HibernateBundle<T>();
-		QuartzBundle<T> quartzBundle = new QuartzBundle<T>(hibernateBundle);
-		MailBundle<T> mailBundle = new MailBundle<T>();
-		TokenBasedAuthBundle<T> authBundle = new TokenBasedAuthBundle<T>();
+    public HibernateBundle getHibernateBundle() {
+        return hibernateBundle;
+    }
 
-		bootstrap.addBundle(hibernateBundle);
-		bootstrap.addBundle(authBundle);
-		bootstrap.addBundle(quartzBundle);
-		bootstrap.addBundle(new ViewBundle());
-		bootstrap.addBundle(new ViewBundle(ImmutableList.<ViewRenderer>of(new FreemarkerViewRenderer())));
-		bootstrap.addBundle(mailBundle);
-		bootstrap.addBundle(new ConfiguredAssetBundle<T>());
+    /**
+     * Adds
+     * Hibernate bundle for PROVIDER connection
+     * Asset bundle for io.robe.admin screens and
+     * Class scanners for
+     * <ul>
+     * <li>Entities</li>
+     * <li>HealthChecks</li>
+     * <li>Providers</li>
+     * <li>InjectableProviders</li>
+     * <li>Resources</li>
+     * <li>Tasks</li>
+     * <li>Managed objects</li>
+     * </ul>
+     *
+     * @param bootstrap
+     */
+    @Override
+    public void initialize(Bootstrap<T> bootstrap) {
 
-		List<Module> modules = new LinkedList<Module>();
-		modules.add(new HibernateModule(hibernateBundle));
-		modules.add(new AuthenticatorModule(authBundle, bootstrap.getMetricRegistry()));
-		modules.add(new QuartzModule(quartzBundle));
+        hibernateBundle = new HibernateBundle<T>();
+        QuartzBundle<T> quartzBundle = new QuartzBundle<T>(hibernateBundle);
+        MailBundle<T> mailBundle = new MailBundle<T>();
+        TokenBasedAuthBundle<T> authBundle = new TokenBasedAuthBundle<T>();
 
-		bootstrap.addBundle(new GuiceBundle<T>(modules, bootstrap.getApplication().getConfigurationClass()));
-		bootstrap.addCommand(new InitializeCommand(this, hibernateBundle));
+        bootstrap.addCommand(new InitializeCommand(this, hibernateBundle));
+
+        bootstrap.addBundle(hibernateBundle);
+        if (withServerCommand) {
+            bootstrap.addBundle(authBundle);
+            bootstrap.addBundle(quartzBundle);
+            bootstrap.addBundle(new ViewBundle());
+            bootstrap.addBundle(new ViewBundle(ImmutableList.<ViewRenderer>of(new FreemarkerViewRenderer())));
+            bootstrap.addBundle(mailBundle);
+            bootstrap.addBundle(new ConfiguredAssetBundle<T>());
+        }
+
+        List<Module> modules = new LinkedList<Module>();
+        modules.add(new HibernateModule(hibernateBundle));
+        if (withServerCommand) {
+            modules.add(new AuthenticatorModule(authBundle, bootstrap.getMetricRegistry()));
+            modules.add(new QuartzModule(quartzBundle));
+        }
+
+        bootstrap.addBundle(new GuiceBundle<T>(modules, bootstrap.getApplication().getConfigurationClass()));
 
 
-	}
+    }
 
 
-	/**
-	 * {@inheritDoc}
-	 * In addition adds exception mapper.
-	 *
-	 * @param configuration
-	 * @param environment
-	 * @throws Exception
-	 */
-	@UnitOfWork
-	@Override
-	public void run(T configuration, Environment environment) throws Exception {
-		addExceptionMappers(environment);
-	}
+    /**
+     * {@inheritDoc}
+     * In addition adds exception mapper.
+     *
+     * @param configuration
+     * @param environment
+     * @throws Exception
+     */
+    @UnitOfWork
+    @Override
+    public void run(T configuration, Environment environment) throws Exception {
+        addExceptionMappers(environment);
+    }
 
-	private void addExceptionMappers(Environment environment) {
-		environment.jersey().register(new RobeExceptionMapper());
+    private void addExceptionMappers(Environment environment) {
+        environment.jersey().register(new RobeExceptionMapper());
 
-	}
+    }
 
 }
