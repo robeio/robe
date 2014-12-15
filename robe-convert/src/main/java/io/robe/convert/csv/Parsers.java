@@ -1,5 +1,6 @@
 package io.robe.convert.csv;
 
+import io.robe.convert.excel.parsers.ParseEnum;
 import org.supercsv.cellprocessor.*;
 
 public enum Parsers {
@@ -11,13 +12,19 @@ public enum Parsers {
     INTEGER("java.lang.Integer",new ParseInt()),
     LONG("java.lang.Long", new ParseLong()),
     STRING("java.lang.String",null),
-    CHAR("java.lang.String",new ParseChar());
+    CHAR("java.lang.String",new ParseChar()),
+    ENUM("java.lang.Enum",new ParseEnum());
 
 
     private final String type;
     private final CellProcessorAdaptor parser;
 
     public CellProcessorAdaptor getParser() {
+        return parser;
+    }
+    public CellProcessorAdaptor getParser(Object... params) {
+        if(parser instanceof ParseEnum)
+            ((ParseEnum)parser).setEnumType((Class<? extends Enum>) params[0]);
         return parser;
     }
 

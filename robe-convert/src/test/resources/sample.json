@@ -6,7 +6,8 @@
     "longid": 11,
     "doubleid": 111.0,
     "big": 1111,
-    "date2": "01.01.2014"
+    "date2": "01.01.2014",
+    "sampleEnum": "SAMPLE1"
   },
   {
     "id": 2,
@@ -15,7 +16,9 @@
     "longid": 12,
     "doubleid": 112.0,
     "big": 1112,
-    "date2": "02.01.2014"
+    "date2": "02.01.2014",
+    "sampleEnum": "SAMPLE2"
+
   },
   {
     "id": 3,
@@ -24,7 +27,8 @@
     "longid": 13,
     "doubleid": 113.0,
     "big": 1113,
-    "date2": "03.01.2014"
+    "date2": "03.01.2014",
+    "sampleEnum": "SAMPLE1"
   },
   {
     "id": 4,
@@ -33,7 +37,8 @@
     "longid": 14,
     "doubleid": 114.0,
     "big": 1114,
-    "date2": "04.01.2014"
+    "date2": "04.01.2014",
+    "sampleEnum": "SAMPLE2"
   },
   {
     "id": 5,
@@ -42,6 +47,7 @@
     "longid": 15,
     "doubleid": 115.0,
     "big": 1115,
-    "date2": "05.01.2014"
+    "date2": "05.01.2014",
+    "sampleEnum": "SAMPLE1"
   }
 ]

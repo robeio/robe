@@ -47,6 +47,13 @@ public class CSVUtil {
 
     static CellProcessorAdaptor decideAdaptor(Field field) {
         String fieldType = field.getType().getSimpleName().toUpperCase(Locale.ENGLISH);
+        // if it is enum convert name to ENUM
+        if(field.getType().getGenericSuperclass() != null) {
+            if (field.getType().getGenericSuperclass().toString().startsWith("java.lang.Enum")) {
+                fieldType = "ENUM";
+                return Parsers.valueOf(fieldType).getParser(field.getType());
+            }
+        }
         if(fieldType.equals("DATE")){
             if(field.getAnnotation(JsonFormat.class) != null){
                 String format = field.getAnnotation(JsonFormat.class).pattern();

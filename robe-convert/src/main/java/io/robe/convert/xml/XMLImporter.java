@@ -72,9 +72,15 @@ public class XMLImporter<T> extends Importer<T> {
     }
 
     private <T> void setField(JsonParser parser, T item, Field field) throws IllegalAccessException, IOException {
+        String fieldType = field.getType().getSimpleName().toUpperCase(Locale.ENGLISH);
+        if(field.getType().getGenericSuperclass() != null) {
+            if (field.getType().getGenericSuperclass().toString().startsWith("java.lang.Enum")) {
+                fieldType = "ENUM";
+            }
+        }
         boolean acc = field.isAccessible();
         field.setAccessible(true);
-        field.set(item, Parsers.valueOf(field.getType().getSimpleName().toUpperCase(Locale.ENGLISH)).getParser().parse(parser, field));
+        field.set(item, Parsers.valueOf(fieldType).getParser().parse(parser, field));
         field.setAccessible(acc);
     }
 

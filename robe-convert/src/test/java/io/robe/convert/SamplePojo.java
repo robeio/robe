@@ -30,11 +30,14 @@ public class SamplePojo {
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd.MM.yyyy", timezone = "EET")
     private Date date2;
 
+    @Convert
+    private SampleEnum sampleEnum;
+
     public SamplePojo() {
 
     }
 
-    public SamplePojo(int id, String name, String surname, long longid, double doubleid, BigDecimal big, Date date2) {
+    public SamplePojo(int id, String name, String surname, long longid, double doubleid, BigDecimal big, Date date2, SampleEnum sampleEnum) {
         this.id = id;
         this.name = name;
         this.surname = surname;
@@ -42,6 +45,7 @@ public class SamplePojo {
         this.doubleid = doubleid;
         this.big = big;
         this.date2 = date2;
+        this.sampleEnum = sampleEnum;
     }
 
     public int getId() {
@@ -100,23 +104,33 @@ public class SamplePojo {
         this.date2 = date2;
     }
 
+    public SampleEnum getSampleEnum() {
+        return sampleEnum;
+    }
+
+    public void setSampleEnum(SampleEnum sampleEnum) {
+        this.sampleEnum = sampleEnum;
+    }
+
     @Override
     public String toString() {
-        return "SamplePojo{" +
-                "id=" + id +
-                ", name='" + name + '\'' +
-                ", surname='" + surname + '\'' +
-                ", longid=" + longid +
-                ", doubleid=" + doubleid +
-                ", big=" + big +
-                ", date2=" + date2 +
-                '}';
+        final StringBuilder sb = new StringBuilder("SamplePojo{");
+        sb.append("id=").append(id);
+        sb.append(", name='").append(name).append('\'');
+        sb.append(", surname='").append(surname).append('\'');
+        sb.append(", longid=").append(longid);
+        sb.append(", doubleid=").append(doubleid);
+        sb.append(", big=").append(big);
+        sb.append(", date2=").append(date2);
+        sb.append(", sampleEnum=").append(sampleEnum);
+        sb.append('}');
+        return sb.toString();
     }
 
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
+        if (!(o instanceof SamplePojo)) return false;
 
         SamplePojo that = (SamplePojo) o;
 
@@ -126,6 +140,7 @@ public class SamplePojo {
         if (big != null ? big.compareTo(that.big) != 0 : that.big != null) return false;
         if (date2 != null ? !date2.equals(that.date2) : that.date2 != null) return false;
         if (name != null ? !name.equals(that.name) : that.name != null) return false;
+        if (sampleEnum != that.sampleEnum) return false;
         if (surname != null ? !surname.equals(that.surname) : that.surname != null) return false;
 
         return true;
@@ -143,6 +158,7 @@ public class SamplePojo {
         result = 31 * result + (int) (temp ^ (temp >>> 32));
         result = 31 * result + (big != null ? big.hashCode() : 0);
         result = 31 * result + (date2 != null ? date2.hashCode() : 0);
+        result = 31 * result + (sampleEnum != null ? sampleEnum.hashCode() : 0);
         return result;
     }
 }
