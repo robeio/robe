@@ -22,8 +22,6 @@ Robe solves these complication by including various production ready libraries a
 
 **Robe.Mail :** This module handles mail template creation, mail queue operations and mail authentication etc. These operations are handled in a developer friendly approach.(Not fully implemented yet)
  
-**Robe.MQ :** Will be implemented to handle all internal and external MQ operations.
-
 
 **Robe.AdminPanel :** This module handles admin operations which are assigned to the administrators. These operations allows controlling UI, users, roles, permissions, mails and scheduled tasks. AdminPanel is developed with KendoUI and allows the user to observe server metric information. In case of a need in changing the UI, the developer can place their application's menus in this panel. 
 
