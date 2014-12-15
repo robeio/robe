@@ -262,9 +262,9 @@
 * Create a run configuration which will target Application class and have program arguments  `server sample.yml`
 
 **NOTE: This is for server command which starts server**
-* Create a run configuration which will target Application class and have program arguments  `initialize sample.yml
+* Create a run configuration which will target Application class and have program arguments  `initialize sample.yml`. Will prompt you the password for the admin.
 
-**NOTE: This is for initialize command which creates standard user,role,permission,menu.etc for the projects which are extended from robe-admin**
+**NOTE:This is for initialize command which creates standard user,role,permission,menu.etc for the projects which are extended from robe-admin.**
 
 * Start MySql Server
 * Run your application for the first time.
