@@ -164,7 +164,7 @@
   
     ```
 
-* Create a `projectname.yml` file with the basic configuration. [sample.yml] (http://dev.mebitech.com/confluence/display/ROBE/Sample+Robe+YML+Configuration)
+* Create a `projectname.yml` file with the basic configuration. [sample.yml] (http://goo.gl/VxB7UM)
     ```yml
 	# HTTP-specific options.
 	server:

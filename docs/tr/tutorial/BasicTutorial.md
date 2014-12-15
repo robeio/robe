@@ -164,7 +164,7 @@
   
     ```
 
-* `projeadiniz.yml` adında basit konfigürasyona sahip bir dosya oluşturun. [ornek.yml] (http://dev.mebitech.com/confluence/display/ROBE/Sample+Robe+YML+Configuration)
+* `projeadiniz.yml` adında basit konfigürasyona sahip bir dosya oluşturun. [ornek.yml] (http://goo.gl/VxB7UM)
     ```yml
 	# HTTP-specific options.
 	server:
