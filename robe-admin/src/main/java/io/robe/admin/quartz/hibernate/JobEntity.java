@@ -21,11 +21,24 @@ public class JobEntity extends BaseEntity implements JobInfo {
     @OneToMany(mappedBy = "job", cascade = CascadeType.ALL, fetch = FetchType.LAZY, targetEntity = TriggerEntity.class, orphanRemoval = true)
     private List<TriggerInfo> triggers = new ArrayList<>();
     private String name;
-
-    @Transient
     private Class<? extends Job> jobClass;
     private String description;
 
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    public void setJobClass(Class<? extends Job> jobClass) {
+        this.jobClass = jobClass;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public void setTriggers(List<TriggerInfo> triggers) {
+        this.triggers = triggers;
+    }
 
     @Override
     public String getName() {

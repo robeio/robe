@@ -11,6 +11,7 @@ import javax.persistence.*;
 public class TriggerEntity extends BaseEntity implements TriggerInfo {
 
     private String name;
+    @Column(name = "triggerGroup")
     private String group;
     private long startTime = -1;
     private long endTime = -1;
