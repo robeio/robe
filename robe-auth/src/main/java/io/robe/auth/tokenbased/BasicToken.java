@@ -194,4 +194,26 @@ public class BasicToken implements Token {
     private void resetTokenString() {
         tokenString = null;
     }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof BasicToken)) return false;
+
+        BasicToken that = (BasicToken) o;
+
+        if (!attributesHash.equals(that.attributesHash)) return false;
+        if (!expireAt.equals(that.expireAt)) return false;
+        if (!username.equals(that.username)) return false;
+
+        return true;
+    }
+
+    @Override
+    public int hashCode() {
+        int result = username.hashCode();
+        result = 31 * result + expireAt.hashCode();
+        result = 31 * result + attributesHash.hashCode();
+        return result;
+    }
 }
