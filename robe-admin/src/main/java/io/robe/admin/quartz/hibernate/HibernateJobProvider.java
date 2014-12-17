@@ -20,7 +20,7 @@ public class HibernateJobProvider extends JobProvider {
     @Override
     public JobInfo getJob(Class<? extends Job> clazz) {
         Session session = hibernateBundle.getSessionFactory().openSession();
-        JobEntity quartzJob = (JobEntity) session.createCriteria(JobEntity.class).add(Restrictions.eq("jobClassName", clazz)).uniqueResult();
+        JobEntity quartzJob = (JobEntity) session.createCriteria(JobEntity.class).add(Restrictions.eq("jobClass", clazz)).uniqueResult();
         if(quartzJob == null)
             return  null;
         Hibernate.initialize(quartzJob.getTriggers());
