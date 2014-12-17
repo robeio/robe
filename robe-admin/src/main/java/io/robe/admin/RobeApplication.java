@@ -12,7 +12,7 @@ import io.dropwizard.views.freemarker.FreemarkerViewRenderer;
 import io.robe.admin.cli.InitializeCommand;
 import io.robe.admin.guice.module.AuthenticatorModule;
 import io.robe.admin.guice.module.HibernateModule;
-import io.robe.admin.guice.module.QuartzModule;
+import io.robe.admin.quartz.hibernate.HibernateJobProvider;
 import io.robe.assets.ConfiguredAssetBundle;
 import io.robe.auth.tokenbased.TokenBasedAuthBundle;
 import io.robe.common.exception.RobeExceptionMapper;
@@ -35,7 +35,6 @@ import java.util.List;
 public class RobeApplication<T extends RobeServiceConfiguration> extends Application<T> {
 
 
-    private HibernateBundle<T> hibernateBundle = null;
     private static final Logger LOGGER = LoggerFactory.getLogger(RobeApplication.class);
     private boolean withServerCommand = false;
 
@@ -50,9 +49,6 @@ public class RobeApplication<T extends RobeServiceConfiguration> extends Applica
         this.withServerCommand = withServerCommand;
     }
 
-    public HibernateBundle getHibernateBundle() {
-        return hibernateBundle;
-    }
 
     /**
      * Adds
@@ -74,33 +70,35 @@ public class RobeApplication<T extends RobeServiceConfiguration> extends Applica
     @Override
     public void initialize(Bootstrap<T> bootstrap) {
 
-        hibernateBundle = new HibernateBundle<T>();
-        QuartzBundle<T> quartzBundle = new QuartzBundle<T>(hibernateBundle);
-        MailBundle<T> mailBundle = new MailBundle<T>();
+        HibernateBundle<T> hibernateBundle = new HibernateBundle<T>();
+
         TokenBasedAuthBundle<T> authBundle = new TokenBasedAuthBundle<T>();
 
-        bootstrap.addCommand(new InitializeCommand(this, hibernateBundle));
+        addGuiceBundle(bootstrap, authBundle, hibernateBundle);
 
         bootstrap.addBundle(hibernateBundle);
+        bootstrap.addCommand(new InitializeCommand(this, hibernateBundle));
         if (withServerCommand) {
+            //TODO: Find a better way to send it
+            HibernateJobProvider.setHibernateBundle(hibernateBundle);
+
             bootstrap.addBundle(authBundle);
-            bootstrap.addBundle(quartzBundle);
+            bootstrap.addBundle(new QuartzBundle<T>());
             bootstrap.addBundle(new ViewBundle());
             bootstrap.addBundle(new ViewBundle(ImmutableList.<ViewRenderer>of(new FreemarkerViewRenderer())));
-            bootstrap.addBundle(mailBundle);
+            bootstrap.addBundle(new MailBundle<T>());
             bootstrap.addBundle(new ConfiguredAssetBundle<T>());
         }
 
+    }
+
+    private void addGuiceBundle(Bootstrap<T> bootstrap, TokenBasedAuthBundle<T> authBundle, HibernateBundle hibernateBundle) {
         List<Module> modules = new LinkedList<Module>();
         modules.add(new HibernateModule(hibernateBundle));
         if (withServerCommand) {
             modules.add(new AuthenticatorModule(authBundle, bootstrap.getMetricRegistry()));
-            modules.add(new QuartzModule(quartzBundle));
         }
-
         bootstrap.addBundle(new GuiceBundle<T>(modules, bootstrap.getApplication().getConfigurationClass()));
-
-
     }
 
 

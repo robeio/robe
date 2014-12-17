@@ -5,17 +5,11 @@ import io.dropwizard.ConfiguredBundle;
 import io.dropwizard.setup.Bootstrap;
 import io.dropwizard.setup.Environment;
 import io.robe.hibernate.HasHibernateConfiguration;
-import io.robe.hibernate.HibernateBundle;
+import io.robe.quartz.common.JobInfo;
+import io.robe.quartz.common.JobProvider;
+import io.robe.quartz.common.TriggerInfo;
 import io.robe.quartz.configuration.HasQuartzConfiguration;
 import io.robe.quartz.configuration.QuartzConfiguration;
-import io.robe.quartz.job.QuartzJob;
-import io.robe.quartz.job.QuartzTrigger;
-import io.robe.quartz.job.annotation.ByAnnotation;
-import io.robe.quartz.job.hibernate.ByHibernate;
-import io.robe.quartz.job.schedule.OnApplicationStart;
-import io.robe.quartz.job.schedule.OnApplicationStop;
-import io.robe.quartz.job.schedule.Scheduled;
-import io.robe.quartz.job.schedule.ScheduledBy;
 import org.quartz.*;
 import org.quartz.impl.StdSchedulerFactory;
 import org.reflections.Reflections;
@@ -24,30 +18,35 @@ import org.slf4j.LoggerFactory;
 
 import java.util.*;
 
-import static org.quartz.JobBuilder.newJob;
-import static org.quartz.TriggerBuilder.newTrigger;
-
+/**
+ * Configures  Quartz.
+ * Collect {@link io.robe.quartz.common.JobProvider} classes
+ * Initializes scheduler
+ * Collects all subtypes of {@link org.quartz.Job} annotated with {@link io.robe.quartz.job.schedule.QJob} including {@link @QTrigger}'s
+ * * Collects additional triggers from providers
+ * * Registers them all for future control.
+ * Holds application start and end triggered jobs for managed access.
+ * Provides Job & Trigger Registery
+ */
 public class QuartzBundle<T extends Configuration & HasQuartzConfiguration & HasHibernateConfiguration> implements ConfiguredBundle<T> {
-    public static final String DYNAMIC_GROUP = "DynamicCronJob";
-    public static final String STATIC_GROUP = "StaticCronJob";
     private static final Logger LOGGER = LoggerFactory.getLogger(QuartzBundle.class);
-    private static final String ERROR = "Cron Job Provider is not proper. %s : provider: %s";
-    Scheduler scheduler = null;
-    Set<Class<? extends Job>> onStartJobs = null;
-    Set<Class<? extends Job>> onStopJobs = null;
+    private Scheduler scheduler = null;
+    private List<JobProvider> providers = null;
+    private Set<Class<? extends Job>> onStartJobs = null;
+    private Set<Class<? extends Job>> onStopJobs = null;
 
-    private T configuration;
 
     public QuartzBundle() {
     }
 
-    public QuartzBundle(HibernateBundle<T> hibernateBundle) {
-        ByHibernate.setHibernateBundle(hibernateBundle);
-    }
-
 
     /**
-     * Initializes the environment.
+     * Initializes the environment. Forwards the configuration to Quartz.
+     * Collect {@link io.robe.quartz.common.JobProvider} classes
+     * Initializes scheduler
+     * Collects all subtypes of {@link org.quartz.Job} annotated with {@link io.robe.quartz.job.schedule.QJob} including {@link @QTrigger}'s
+     * * Collects additional triggers from providers
+     * * Registers them all for future control.
      *
      * @param configuration the configuration object
      * @param environment   the service's {@link io.dropwizard.setup.Environment}
@@ -55,138 +54,117 @@ public class QuartzBundle<T extends Configuration & HasQuartzConfiguration & Has
      */
     @Override
     public void run(T configuration, Environment environment) {
-        LOGGER.info("------------------------");
-        LOGGER.info("-----Quartz Bundle------");
-        LOGGER.info("------------------------");
-        this.configuration = configuration;
+        LOGGER.info("\n------------------------\n-----Quartz Bundle------\n------------------------");
+        QuartzConfiguration qConf = configuration.getQuartzConfiguration();
         try {
-            initializeScheduler();
+
+            initializeScheduler(extractProperties(qConf));
+            collectProviders(qConf.getProviders());
+            collectAndScheduleJobs(qConf.getScanPackages());
+
         } catch (SchedulerException e) {
             LOGGER.error("SchedulerException:", e);
         }
     }
 
-    public void initializeScheduler() throws SchedulerException {
-
+    /**
+     * Just sets necessary properties for quartz.
+     *
+     * @param quartzConfiguration
+     * @return
+     */
+    private Properties extractProperties(QuartzConfiguration quartzConfiguration) {
         Properties properties = new Properties();
-
-        QuartzConfiguration quartzConfiguration = configuration.getQuartzConfiguration();
-
-        //Set quartz properties.
         properties.setProperty("org.quartz.scheduler.instanceName", quartzConfiguration.getInstanceName());
         properties.setProperty("org.quartz.threadPool.threadCount", String.valueOf(quartzConfiguration.getThreadCount()));
         properties.setProperty("org.quartz.threadPool.threadPriority", String.valueOf(quartzConfiguration.getThreadPriority()));
         properties.setProperty("org.quartz.scheduler.skipUpdateCheck", quartzConfiguration.getSkipUpdateCheck());
-
         //Set jobstore properties.
         properties.setProperty("org.quartz.jobStore.class", quartzConfiguration.getJobStore().getClassName());
         //Forward jobstore properties directly
         if (quartzConfiguration.getJobStore().getProperties() != null) {
             properties.putAll(quartzConfiguration.getJobStore().getProperties());
         }
+        return properties;
+    }
 
+    private void initializeScheduler(Properties properties) throws SchedulerException {
         SchedulerFactory factory = new StdSchedulerFactory(properties);
-
         scheduler = factory.getScheduler();
         scheduler.start();
+    }
 
-        String[] scanPackages = quartzConfiguration.getScanPackages();
+    private void collectAndScheduleJobs(String[] packages) throws SchedulerException {
         Set<Class<? extends Job>> quartzJobs;
-        int jobsFound = 0;
-        onStartJobs = new HashSet<Class<? extends Job>>();
-        onStopJobs = new HashSet<Class<? extends Job>>();
 
-        for (String scanPackage : scanPackages) {
-            LOGGER.info("Scanning Jobs package : " + scanPackage);
-            Reflections reflections = new Reflections(scanPackage);
+        onStartJobs = new HashSet<>();
+        onStopJobs = new HashSet<>();
+
+        for (String pkg : packages) {
+            LOGGER.info("Scanning Jobs package : " + pkg);
+            Reflections reflections = new Reflections(pkg);
             quartzJobs = reflections.getSubTypesOf(Job.class);
-            for (Class<? extends Job> clazz : quartzJobs) {
-                if (clazz.isAnnotationPresent(OnApplicationStart.class)) {
-                    onStartJobs.add(clazz);
-                }
-                if (clazz.isAnnotationPresent(OnApplicationStop.class)) {
-                    onStopJobs.add(clazz);
-                }
-            }
-            jobsFound += quartzJobs.size();
-            startSchedulingJobs(quartzJobs, scheduler);
-        }
-        LOGGER.info("Scanning Jobs Complete Total : " + jobsFound);
 
+            for (Class<? extends Job> clazz : quartzJobs) {
+                //Collect all provided triggers
+                Set<Trigger> triggers = new HashSet<>();
+
+                for (JobProvider provider : providers) {
+                    JobInfo jInfo = provider.getJob(clazz);
+                    if (jInfo == null)
+                        continue;
+
+                    LOGGER.info("\nJob " + jInfo.getClass().getName() + "\n\tName: " + jInfo.getName() + "\n\tDesc: " + jInfo.getDescription());
+
+                    JobDetail jobDetail = JobProvider.convert2JobDetail(jInfo);
+
+                    //Collect all triggers
+                    for (TriggerInfo tInfo : jInfo.getTriggers()) {
+
+                        LOGGER.info("Trigger " + clazz.getName() + "\n\tName: " + tInfo.getName() + "\n\tType: " + tInfo.getType().name());
+
+                        if (tInfo.getType().equals(TriggerInfo.Type.ON_APP_START)) {
+                            onStartJobs.add(clazz);
+                        } else if (tInfo.getType().equals(TriggerInfo.Type.ON_APP_STOP)) {
+                            onStopJobs.add(clazz);
+                        } else {
+                            triggers.add(JobProvider.convert2Trigger(tInfo));
+                        }
+                    }
+
+                    scheduler.scheduleJob(jobDetail, triggers, true);
+
+                }
+
+                //TODO: Register Triggers for future access.
+
+
+            }
+        }
     }
 
     /**
-     * Schedule all classes with @quartz annotation
-     * If @Sheduled.Manager is ANNOTATION, it will schedule jobs with specified cron at run time
-     * If @Sheduled.Manager is PROVIDER, it will schedule durable job; after ROBE start, user could create CRON expression on admin panel
+     * Collects all custom providers at scan packages.
+     * Creates instances and stores for usage.
      *
-     * @param jobClassses Classes which implements job interface
-     * @param scheduler   Quartz Job Scheduler
-     * @return
-     * @throws SchedulerException
+     * @param packages
      */
-    private void startSchedulingJobs(Set<Class<? extends Job>> jobClassses, Scheduler scheduler) throws SchedulerException {
-        ByAnnotation byAnnotation = new ByAnnotation();
-        List<QuartzJob> jobs = new LinkedList<QuartzJob>();
-
-        for (Class<? extends Job> clazz : jobClassses) {
-            QuartzJob job = null;
-            if (clazz.getAnnotation(Scheduled.class) != null) {
-                job = byAnnotation.getQuartzJob(clazz);
-                schedule(job);
-            }
-            ScheduledBy scheduledByAnnotation = clazz.getAnnotation(ScheduledBy.class);
-
-            if (scheduledByAnnotation != null) {
+    private void collectProviders(String[] packages) {
+        providers = new LinkedList<>();
+        for (String pkg : packages) {
+            LOGGER.info("Scanning Provider package : " + pkg);
+            Reflections reflections = new Reflections(pkg);
+            Set<Class<? extends JobProvider>> classses = reflections.getSubTypesOf(JobProvider.class);
+            for (Class<? extends JobProvider> clazz : classses) {
                 try {
-                    job = scheduledByAnnotation.provider().newInstance().getQuartzJob(clazz);
-                    if (job == null) {
-                        LOGGER.warn("Job created for the first time " + clazz.getName() + " no cron definition ");
-                    } else {
-                        schedule(job);
-                    }
-                } catch (InstantiationException e) {
-                    LOGGER.error(String.format(ERROR, clazz.getName(), scheduledByAnnotation.provider()), e);
-                } catch (IllegalAccessException e) {
-                    LOGGER.error(String.format(ERROR, clazz.getName(), scheduledByAnnotation.provider()), e);
+                    JobProvider provider = clazz.newInstance();
+                    LOGGER.info("Provider found : " + clazz.getName());
+                    providers.add(provider);
+                } catch (Exception e) {
+                    LOGGER.error(clazz.getName(), e);
                 }
             }
         }
-
-    }
-
-    private void schedule(QuartzJob job) throws SchedulerException {
-        List<QuartzTrigger> quartzTriggers = job.getTriggers();
-        Set<Trigger> triggers = new LinkedHashSet<Trigger>();
-        for (QuartzTrigger quartzTrigger : quartzTriggers) {
-            TriggerBuilder<Trigger> trigger = newTrigger();
-            String cron = quartzTrigger.getCronExpression();
-            if (cron != null && cron.trim().length() > 0) {
-                trigger.startAt(new Date(quartzTrigger.getFireTime())).withSchedule(CronScheduleBuilder.cronSchedule(cron));
-                LOGGER.info(job.getClazz().getSimpleName() + " Trigger set to start at" + new Date(quartzTrigger.getFireTime()) + " with this cron definition : " + cron);
-            } else {
-                LOGGER.warn(job.getClazz().getSimpleName() + " Trigger error at " + job.getOid() + " with this cron definition.Cron: " + cron);
-            }
-            triggers.add(trigger.build());
-        }
-        if (!triggers.isEmpty()) {
-            JobKey jobKey = JobKey.jobKey(job.getOid(), STATIC_GROUP);
-            JobDetail jobDetail = newJob(job.getClazz()).
-                    withIdentity(jobKey).
-                    build();
-            scheduler.scheduleJob(jobDetail, triggers, true);
-            for (QuartzTrigger triggerEntity : quartzTriggers) {
-                LOGGER.info(job.getClazz().getSimpleName() + " Scheduled with trigger : " + triggerEntity.getCronExpression() + " started at : " + new Date());
-            }
-            try {
-                scheduler.addJob(jobDetail, true);
-            } catch (SchedulerException e) {
-                LOGGER.error("Can't schedule " + job.getClazz() + e.getMessage());
-            }
-
-        }
-
-
     }
 
 

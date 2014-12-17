@@ -77,9 +77,7 @@ public class GuiceBundle<T extends Configuration & HasGuiceConfiguration> implem
      */
     @Override
     public void run(T configuration, Environment environment) {
-        LOGGER.info("------------------------");
-        LOGGER.info("------Guice Bundle------");
-        LOGGER.info("------------------------");
+        LOGGER.info("\n------------------------\n------Guice Bundle------\n------------------------");
         try {
             if (configuration.getGuiceConfiguration() == null) {
                 LOGGER.error("GuiceBundle can not work without and configuration!");
@@ -152,10 +150,9 @@ public class GuiceBundle<T extends Configuration & HasGuiceConfiguration> implem
         Set<Class<? extends Scanner>> scanners = reflections.getSubTypesOf(Scanner.class);
         for (Class<? extends Scanner> scanner : scanners) {
             try {
-                LOGGER.info("------------------------" + scanner);
+                LOGGER.info("\n------" + scanner.getName() + "------");
                 Scanner instance = scanner.newInstance();
                 instance.scanAndAdd(environment, injector, reflections);
-                LOGGER.info("------------------------");
             } catch (Exception e) {
                 LOGGER.error("Added scanner: " + scanner, e);
             }

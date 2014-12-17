@@ -23,9 +23,7 @@ public class TokenBasedAuthBundle<T extends Configuration & HasTokenBasedAuthCon
      */
     @Override
     public void run(T configuration, Environment environment) throws Exception {
-        LOGGER.info("------------------------");
-        LOGGER.info("-------Auth Bundle------");
-        LOGGER.info("------------------------");
+        LOGGER.info("\n------------------------\n-------Auth Bundle------\n------------------------");
         this.configuration = configuration.getTokenBasedAuthConfiguration();
 
         environment.jersey().getResourceConfig().getContainerResponseFilters().add(new TokenBasedAuthResponseFilter(configuration.getTokenBasedAuthConfiguration()));

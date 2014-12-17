@@ -43,9 +43,7 @@ public class HibernateBundle<T extends Configuration & HasHibernateConfiguration
     public final void run(T configuration, Environment environment) throws Exception {
         final HibernateConfiguration databaseConfiguration = getDatabaseConfiguration(configuration);
         final DataSourceFactory dbConfig = getDataSourceFactory(configuration);
-        LOGGER.info("------------------------");
-        LOGGER.info("----Hibernate Bundle----");
-        LOGGER.info("------------------------");
+        LOGGER.info("\n------------------------\n----Hibernate Bundle----\n------------------------");
         LOGGER.info("Creating Hibernate SessionFactory");
         this.sessionFactory = sessionFactoryFactory.build(this, environment, dbConfig,
                 getEntities(databaseConfiguration.getScanPackages(), databaseConfiguration.getEntities()));

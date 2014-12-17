@@ -21,6 +21,10 @@ public class QuartzConfiguration {
     @JsonProperty
     private String[] scanPackages;
 
+    @NotNull
+    @JsonProperty
+    private String[] providers;
+
     @JsonProperty
     private String skipUpdateCheck = "true";
 
@@ -74,6 +78,14 @@ public class QuartzConfiguration {
 
     public void setScanPackages(String[] scanPackages) {
         this.scanPackages = Arrays.copyOf(scanPackages, scanPackages.length);
+    }
+
+    public String[] getProviders() {
+        return providers;
+    }
+
+    public void setProviders(String[] providers) {
+        this.providers = providers;
     }
 
     public String getSkipUpdateCheck() {

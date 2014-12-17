@@ -1,6 +1,6 @@
 package io.robe.quartz.job.schedule;
 
-import io.robe.quartz.job.CronProvider;
+import io.robe.quartz.common.JobProvider;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
@@ -14,7 +14,7 @@ import java.lang.annotation.Target;
 @Retention(RetentionPolicy.RUNTIME)
 public @interface ScheduledBy {
 
-    Class<? extends CronProvider> provider();
+    Class<? extends JobProvider> provider();
 
     String description() default "Quartz Job";
 
