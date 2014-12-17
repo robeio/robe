@@ -29,7 +29,6 @@ import java.util.*;
  */
 public class QuartzBundle<T extends Configuration & HasQuartzConfiguration > implements ConfiguredBundle<T> {
     private static final Logger LOGGER = LoggerFactory.getLogger(QuartzBundle.class);
-    private Scheduler scheduler = null;
     private List<JobProvider> providers = null;
     private Set<Class<? extends Job>> onStartJobs = null;
     private Set<Class<? extends Job>> onStopJobs = null;
@@ -87,10 +86,16 @@ public class QuartzBundle<T extends Configuration & HasQuartzConfiguration > imp
         return properties;
     }
 
+    /**
+     * Initialize scheduler and start JobManager
+     * @param properties
+     * @throws SchedulerException
+     */
     private void initializeScheduler(Properties properties) throws SchedulerException {
         SchedulerFactory factory = new StdSchedulerFactory(properties);
-        scheduler = factory.getScheduler();
+        Scheduler scheduler = factory.getScheduler();
         scheduler.start();
+        JobManager.initialize(scheduler);
     }
 
     private void collectAndScheduleJobs(String[] packages) throws SchedulerException {
@@ -131,7 +136,7 @@ public class QuartzBundle<T extends Configuration & HasQuartzConfiguration > imp
                         }
                     }
 
-                    scheduler.scheduleJob(jobDetail, triggers, true);
+                    JobManager.getInstance().scheduleJob(jobDetail, triggers, true);
 
                 }
 
@@ -175,10 +180,6 @@ public class QuartzBundle<T extends Configuration & HasQuartzConfiguration > imp
     @Override
     public void initialize(Bootstrap<?> bootstrap) {
         LOGGER.info("Initializing QuartzBundle");
-    }
-
-    public Scheduler getScheduler() {
-        return scheduler;
     }
 
     public Set<Class<? extends Job>> getOnStartJobs() {

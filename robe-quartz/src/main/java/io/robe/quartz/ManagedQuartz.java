@@ -16,7 +16,7 @@ public class ManagedQuartz implements Managed {
     private Set<Class<? extends Job>> onStopJobs;
     private Scheduler scheduler;
 
-    public ManagedQuartz(Scheduler scheduler, Set<Class<? extends Job>> onStartJobs, Set<Class<? extends Job>> onStopJobs) {
+    private ManagedQuartz(Scheduler scheduler, Set<Class<? extends Job>> onStartJobs, Set<Class<? extends Job>> onStopJobs) {
         checkNotNull(scheduler);
         this.scheduler = scheduler;
         this.onStartJobs = onStartJobs;
