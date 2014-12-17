@@ -4,7 +4,6 @@ import io.dropwizard.Configuration;
 import io.dropwizard.ConfiguredBundle;
 import io.dropwizard.setup.Bootstrap;
 import io.dropwizard.setup.Environment;
-import io.robe.hibernate.HasHibernateConfiguration;
 import io.robe.quartz.common.JobInfo;
 import io.robe.quartz.common.JobProvider;
 import io.robe.quartz.common.TriggerInfo;
@@ -28,7 +27,7 @@ import java.util.*;
  * Holds application start and end triggered jobs for managed access.
  * Provides Job & Trigger Registery
  */
-public class QuartzBundle<T extends Configuration & HasQuartzConfiguration & HasHibernateConfiguration> implements ConfiguredBundle<T> {
+public class QuartzBundle<T extends Configuration & HasQuartzConfiguration > implements ConfiguredBundle<T> {
     private static final Logger LOGGER = LoggerFactory.getLogger(QuartzBundle.class);
     private Scheduler scheduler = null;
     private List<JobProvider> providers = null;
