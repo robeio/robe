@@ -30,8 +30,8 @@ import java.util.*;
 public class QuartzBundle<T extends Configuration & HasQuartzConfiguration > implements ConfiguredBundle<T> {
     private static final Logger LOGGER = LoggerFactory.getLogger(QuartzBundle.class);
     private List<JobProvider> providers = null;
-    private Set<Class<? extends Job>> onStartJobs = null;
-    private Set<Class<? extends Job>> onStopJobs = null;
+    private Set<JobDetail> onStartJobs = null;
+    private Set<JobDetail> onStopJobs = null;
 
 
     public QuartzBundle() {
@@ -59,6 +59,8 @@ public class QuartzBundle<T extends Configuration & HasQuartzConfiguration > imp
             initializeScheduler(extractProperties(qConf));
             collectProviders(qConf.getProviders());
             collectAndScheduleJobs(qConf.getScanPackages());
+
+            environment.lifecycle().manage(new ManagedQuartz(getOnStartJobs(),getOnStopJobs()));
 
         } catch (SchedulerException e) {
             LOGGER.error("SchedulerException:", e);
@@ -128,9 +130,9 @@ public class QuartzBundle<T extends Configuration & HasQuartzConfiguration > imp
                         LOGGER.info("Trigger " + clazz.getName() + "\n\tName: " + tInfo.getName() + "\n\tType: " + tInfo.getType().name());
 
                         if (tInfo.getType().equals(TriggerInfo.Type.ON_APP_START)) {
-                            onStartJobs.add(clazz);
+                            onStartJobs.add(jobDetail);
                         } else if (tInfo.getType().equals(TriggerInfo.Type.ON_APP_STOP)) {
-                            onStopJobs.add(clazz);
+                            onStopJobs.add(jobDetail);
                         } else {
                             triggers.add(JobProvider.convert2Trigger(tInfo));
                         }
@@ -182,11 +184,11 @@ public class QuartzBundle<T extends Configuration & HasQuartzConfiguration > imp
         LOGGER.info("Initializing QuartzBundle");
     }
 
-    public Set<Class<? extends Job>> getOnStartJobs() {
+    public Set<JobDetail> getOnStartJobs() {
         return onStartJobs;
     }
 
-    public Set<Class<? extends Job>> getOnStopJobs() {
+    public Set<JobDetail> getOnStopJobs() {
         return onStopJobs;
     }
 }

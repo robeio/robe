@@ -16,8 +16,6 @@ public interface TriggerInfo {
 
     public String getCron();
 
-    public boolean isAutostart();
-
     public Type getType();
 
     enum Type {

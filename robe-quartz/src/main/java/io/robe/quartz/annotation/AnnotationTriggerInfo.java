@@ -11,7 +11,6 @@ class AnnotationTriggerInfo implements TriggerInfo {
     private int repeatCount;
     private long repeatInterval;
     private String cron;
-    private boolean autostart;
     private Type type;
 
     public AnnotationTriggerInfo(QTrigger ann) {
@@ -22,7 +21,6 @@ class AnnotationTriggerInfo implements TriggerInfo {
         repeatCount = ann.repeatCount();
         repeatInterval = ann.repeatInterval();
         cron = ann.cron();
-        autostart = ann.autoStart();
         type = ann.type();
 
     }
@@ -60,11 +58,6 @@ class AnnotationTriggerInfo implements TriggerInfo {
     @Override
     public String getCron() {
         return cron;
-    }
-
-    @Override
-    public boolean isAutostart() {
-        return autostart;
     }
 
     @Override

@@ -27,8 +27,6 @@ public @interface QTrigger {
 
     public String cron() default "";
 
-    public boolean autoStart() default true;
-
     public TriggerInfo.Type type();
 
 

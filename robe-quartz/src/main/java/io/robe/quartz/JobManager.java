@@ -35,7 +35,11 @@ public class JobManager {
         return instance;
     }
 
-
+    public void scheduleJob(JobDetail jobDetail, Trigger trigger ) throws SchedulerException {
+        synchronized (lock) {
+            scheduler.scheduleJob(jobDetail, trigger);
+        }
+    }
     public void scheduleJob(JobDetail jobDetail, Set<Trigger> triggers, boolean replace) throws SchedulerException {
         synchronized (lock) {
             scheduler.scheduleJob(jobDetail, triggers, replace);
@@ -49,8 +53,12 @@ public class JobManager {
     }
 
     public boolean checkExists(String name, String group) throws SchedulerException {
+        return JobManager.getInstance().checkExists(JobKey.jobKey(name,group));
+    }
+
+    public boolean checkExists(JobKey key) throws SchedulerException {
         synchronized (lock) {
-            return scheduler.checkExists(TriggerKey.triggerKey(name, group));
+            return scheduler.checkExists(key);
         }
     }
 
@@ -115,4 +123,7 @@ public class JobManager {
         scheduler.pauseTrigger(key);
     }
 
+    public void shutdown(boolean b) throws SchedulerException {
+        scheduler.shutdown(b);
+    }
 }

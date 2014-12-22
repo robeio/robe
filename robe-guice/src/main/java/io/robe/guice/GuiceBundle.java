@@ -59,13 +59,13 @@ public class GuiceBundle<T extends Configuration & HasGuiceConfiguration> implem
 
     @Override
     public void initialize(Bootstrap<?> bootstrap) {
+
         container = new GuiceContainer();
         JerseyContainerModule jerseyContainerModule = new JerseyContainerModule(container);
         deModule = new DropwizardEnvironmentModule<T>(type);
         modules.add(deModule);
         modules.add(jerseyContainerModule);
         injector = Guice.createInjector(Stage.PRODUCTION, modules);
-
 
     }
 
@@ -86,7 +86,6 @@ public class GuiceBundle<T extends Configuration & HasGuiceConfiguration> implem
             createReflections(configuration.getGuiceConfiguration().getScanPackages());
             prepareContainer(configuration, environment);
             findAndRunScanners(environment, injector);
-
 
         } catch (Exception e) {
             LOGGER.error(e.getMessage(), e);
