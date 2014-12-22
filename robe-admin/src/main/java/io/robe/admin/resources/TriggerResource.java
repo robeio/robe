@@ -8,9 +8,13 @@ import io.robe.admin.hibernate.dao.QuartzTriggerDao;
 import io.robe.admin.quartz.hibernate.JobEntity;
 import io.robe.admin.quartz.hibernate.TriggerEntity;
 import io.robe.auth.Credentials;
-import io.robe.quartz.common.JobInfo;
+import io.robe.common.exception.RobeRuntimeException;
+import io.robe.quartz.JobManager;
+import io.robe.quartz.common.JobProvider;
 import org.hibernate.FlushMode;
+import org.quartz.JobDetail;
 import org.quartz.SchedulerException;
+import org.quartz.Trigger;
 
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
@@ -37,109 +41,120 @@ public class TriggerResource {
 
     @DELETE
     @UnitOfWork
-    public TriggerEntity delete(@Auth Credentials credentials, TriggerEntity triggerEntity) throws SchedulerException {
+    public TriggerEntity delete(@Auth Credentials credentials, TriggerEntity triggerEntity) {
         TriggerEntity entity = quartzTriggerDao.findById(triggerEntity.getOid());
-        unScheduleJobTrigger(entity);
+
+        try {
+            JobManager.getInstance().unScheduleJob(entity.getName(), entity.getGroup());
+        } catch (SchedulerException e) {
+            throw new RobeRuntimeException("ERROR", e.getLocalizedMessage());
+        }
         return quartzTriggerDao.delete(entity);
     }
 
     @POST
     @Path("/update")
     @UnitOfWork
-    public TriggerEntity setCron(TriggerEntity triggerEntity) {
+    public TriggerEntity update(@Auth Credentials credentials, TriggerEntity triggerEntity) {
+
         TriggerEntity entity = quartzTriggerDao.findById(triggerEntity.getOid());
-//        entity.setActive(triggerEntity.isActive());
-//        entity.setCronExpression(triggerEntity.getCronExpression());
-//        entity.setFireTime(triggerEntity.getFireTime());
-        quartzTriggerDao.update(entity);
-        return entity;
+
+        try {
+            JobManager.getInstance().unScheduleJob(entity.getName(), entity.getGroup());
+
+            entity.setName(triggerEntity.getName());
+            entity.setCron(triggerEntity.getCron());
+            entity.setStartTime(triggerEntity.getStartTime());
+            entity.setEndTime(triggerEntity.getEndTime());
+            entity.setGroup(triggerEntity.getGroup());
+            entity.setType(triggerEntity.getType());
+            entity.setRepeatCount(triggerEntity.getRepeatCount());
+            entity.setRepeatInterval(triggerEntity.getRepeatInterval());
+            entity = quartzTriggerDao.update(entity);
+
+            JobDetail jobDetail = JobProvider.convert2JobDetail(entity.getJob());
+            Trigger trigger = JobProvider.convert2Trigger(triggerEntity);
+
+            JobManager.getInstance().scheduleJob(jobDetail, trigger);
+
+
+        } catch (SchedulerException e) {
+            e.printStackTrace();
+        }
+
+        return quartzTriggerDao.update(entity);
     }
 
 
     @POST
     @Path("/run")
     @UnitOfWork
-    public TriggerEntity fireTrigger(TriggerEntity triggerEntity) throws SchedulerException {
+    public TriggerEntity fireTrigger(@Auth Credentials credentials, TriggerEntity triggerEntity) {
+
         TriggerEntity entity = quartzTriggerDao.findById(triggerEntity.getOid());
-        return scheduleJob(entity);
+        JobDetail jobDetail = JobProvider.convert2JobDetail(entity.getJob());
+        Trigger trigger = JobProvider.convert2Trigger(triggerEntity);
+        try {
+            if (!JobManager.getInstance().checkExists(entity.getName(), entity.getGroup())) {
+                JobManager.getInstance().resumeTrigger(trigger.getKey());
+            } else {
+                JobManager.getInstance().scheduleJob(jobDetail, trigger);
+            }
+        } catch (SchedulerException e) {
+            throw new RobeRuntimeException("ERROR", e.getLocalizedMessage());
+        }
+        entity.setActive(true);
+
+        return quartzTriggerDao.update(entity);
     }
 
     @POST
     @Path("/stop")
     @UnitOfWork
-    public TriggerEntity stopTrigger(TriggerEntity triggerEntity) throws SchedulerException {
+    public TriggerEntity stopTrigger(@Auth Credentials credentials, TriggerEntity triggerEntity) {
+
         TriggerEntity entity = quartzTriggerDao.findById(triggerEntity.getOid());
-        return unScheduleJobTrigger(entity);
+        Trigger trigger = JobProvider.convert2Trigger(triggerEntity);
+        try {
+            JobManager.getInstance().pauseTrigger(trigger.getKey());
+        } catch (SchedulerException e) {
+            e.printStackTrace();
+        }
+        entity.setActive(false);
+
+        return quartzTriggerDao.update(entity);
 
     }
+
 
     @POST
     @Path("/add")
     @UnitOfWork
-    public TriggerEntity addTrigger(JobEntity quartzJob) throws SchedulerException {
+    public TriggerEntity addTrigger(TriggerEntity triggerEntity) {
+
+        JobEntity jobEntity = quartzJobDao.findById(triggerEntity.getJobId());
 
         TriggerEntity entity = new TriggerEntity();
-        entity.setJob(quartzJob);
+
+        entity.setCron(triggerEntity.getCron());
+        entity.setName(triggerEntity.getName());
+        entity.setGroup(triggerEntity.getGroup());
+        entity.setType(triggerEntity.getType());
+        //TODO set default value -1 change another good way
+
+        entity.setStartTime(triggerEntity.getStartTime() == 0 ? -1 : triggerEntity.getStartTime());
+        entity.setEndTime(triggerEntity.getEndTime() == 0 ? -1 : triggerEntity.getStartTime());
+
+        entity.setJob(jobEntity);
+
         entity = quartzTriggerDao.create(entity);
+
         quartzTriggerDao.flush();
-        quartzJob.getTriggers().add(entity);
-        quartzJobDao.update(quartzJob);
+
+        jobEntity.getTriggers().add(entity);
+        quartzJobDao.update(jobEntity);
         return entity;
 
-    }
-
-    /**
-     * Creates a new TriggerEntity by using parent quartzJob Id
-     *
-     * @param quartzJob
-     * @return
-     */
-    private TriggerEntity createQuartzTrigger(JobEntity quartzJob) {
-        TriggerEntity newTriggerEntity = new TriggerEntity();
-        newTriggerEntity.setJob(quartzJob);
-        quartzTriggerDao.create(newTriggerEntity);
-        return newTriggerEntity;
-    }
-
-    /**
-     * Unschedule specified trigger
-     *
-     * @param triggerEntity
-     * @return
-     * @throws SchedulerException
-     */
-    public TriggerEntity unScheduleJobTrigger(TriggerEntity triggerEntity) throws SchedulerException {
-//        Scheduler scheduler = managedQuartz.getScheduler();
-        JobInfo jobInfo = triggerEntity.getJob();
-//        scheduler.pauseTrigger(TriggerKey.triggerKey(triggerEntity.getOid(), jobInfo.getOid()));
-//        triggerEntity.setActive(false);
-        quartzTriggerDao.update(triggerEntity);
-
-        return triggerEntity;
-    }
-
-    /**
-     * Gets TriggerEntity and fire with its job class
-     *
-     * @param triggerEntity
-     * @return fired triggerEntity
-     * @throws SchedulerException
-     */
-    public TriggerEntity scheduleJob(TriggerEntity triggerEntity) throws SchedulerException {
-//        String cronExpression = triggerEntity.getCronExpression();
-//        JobInfo jobInfo = triggerEntity.getJob();
-//        Scheduler scheduler = managedQuartz.getScheduler();
-//        JobDetail jobDetail = scheduler.getJobDetail(new JobKey(jobInfo.getOid(), QuartzBundle.STATIC_GROUP));
-//        if (cronExpression != null) {
-//            TriggerKey triggerKey = new TriggerKey(triggerEntity.getOid(), jobInfo.getOid());
-//            TriggerBuilder<Trigger> trigger = newTrigger().startAt(new Date(triggerEntity.getFireTime())).withIdentity(triggerKey);
-//            Set<Trigger> triggers = new LinkedHashSet<Trigger>();
-//            triggers.add(trigger.withSchedule(CronScheduleBuilder.cronSchedule(cronExpression)).build());
-//            scheduler.scheduleJob(jobDetail, triggers, true);
-//            triggerEntity.setActive(true);
-        return quartzTriggerDao.update(triggerEntity);
-//        }
-//        return triggerEntity;
     }
 
 

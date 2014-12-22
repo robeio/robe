@@ -1,6 +1,5 @@
 package io.robe.admin.quartz.hibernate;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
 import io.robe.hibernate.entity.BaseEntity;
 import io.robe.quartz.common.TriggerInfo;
 
@@ -18,15 +17,35 @@ public class TriggerEntity extends BaseEntity implements TriggerInfo {
     private int repeatCount = 0;
     private long repeatInterval = 0;
     private String cron = "";
+    @Enumerated(EnumType.STRING)
     private Type type;
-    private boolean autostart;
-
-
-    @JsonBackReference("job")
+    private boolean active;
     @ManyToOne(cascade = CascadeType.REFRESH, targetEntity = JobEntity.class)
     @JoinColumn(name = "PARENTOID")
     private JobEntity job;
 
+    @Transient
+    private String jobId;
+
+    public String getJobId() {
+        if (job != null) {
+            return job.getOid();
+        } else {
+            return jobId;
+        }
+    }
+
+    public void setJobId(String jobId) {
+        this.jobId = jobId;
+    }
+
+    public boolean isActive() {
+        return active;
+    }
+
+    public void setActive(boolean active) {
+        this.active = active;
+    }
 
     @Override
     public String getName() {
@@ -100,13 +119,6 @@ public class TriggerEntity extends BaseEntity implements TriggerInfo {
         this.type = type;
     }
 
-    public boolean isAutostart() {
-        return autostart;
-    }
-
-    public void setAutostart(boolean autostart) {
-        this.autostart = autostart;
-    }
 
     public JobEntity getJob() {
         return job;
