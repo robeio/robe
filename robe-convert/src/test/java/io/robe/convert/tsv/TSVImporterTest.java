@@ -1,30 +1,25 @@
 package io.robe.convert.tsv;
 
+import io.robe.convert.SamplePojo;
+import io.robe.convert.TestData;
 import org.junit.Test;
 
-//TODO Testlerde sıkıntı olduğu için çevrildi
+import java.util.List;
+
 public class TSVImporterTest {
     @Test
     public void testImportStream() throws Exception {
-//        TSVImporter importer = new TSVImporter();
-//        List<SamplePojo> list = importer.importStream(SamplePojo.class, TSVImporterTest.class.getClassLoader().getResourceAsStream("sample.tsv"));
-//
-//        for (SamplePojo pojo : list) {
-//            System.out.println(pojo.toString());
-//        }
+        TSVImporter importer = new TSVImporter(SamplePojo.class);
+        List<SamplePojo> list = importer.importStream(TSVImporterTest.class.getClassLoader().getResourceAsStream("sample.tsv"));
+
+        assert list.size() == TestData.getData().size();
+
+        int index = 0;
+        for (SamplePojo item : list) {
+            SamplePojo ref = TestData.getData().get(index++);
+            assert item.equals(ref);
+            System.out.println(ref);
+        }
     }
 
-    @Test
-    public void testImportStreamByItem() throws Exception {
-
-//        TSVImporter importer = new TSVImporter();
-//        OnItemHandler<SamplePojo> handler = new OnItemHandler<SamplePojo>() {
-//            @Override
-//            public void onItem(SamplePojo item) {
-//                System.out.println(item.toString());
-//            }
-//        };
-//        importer.importStream(SamplePojo.class, TSVImporterTest.class.getClassLoader().getResourceAsStream("sample.tsv"), handler);
-
-    }
 }

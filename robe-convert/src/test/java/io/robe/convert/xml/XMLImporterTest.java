@@ -1,6 +1,7 @@
 package io.robe.convert.xml;
 
 import io.robe.convert.SamplePojo;
+import io.robe.convert.TestData;
 import io.robe.convert.common.OnItemHandler;
 import org.junit.Test;
 
@@ -12,9 +13,13 @@ public class XMLImporterTest {
         XMLImporter<SamplePojo> xmlImporter = new XMLImporter<>(SamplePojo.class);
 
         List<SamplePojo> list = xmlImporter.importStream(XMLImporterTest.class.getClassLoader().getResourceAsStream("sample.xml"));
+        assert list.size() == TestData.getData().size();
 
-        for(SamplePojo pojo: list){
-            System.out.println(pojo);
+        int index = 0;
+        for (SamplePojo item : list) {
+            SamplePojo ref = TestData.getData().get(index++);
+            assert item.equals(ref);
+            System.out.println(ref);
         }
 
     }
