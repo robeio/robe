@@ -13,10 +13,9 @@ import java.util.Set;
  */
 public class JobManager {
 
+    private static final Object lock = new Object();
     private static boolean initialized = false;
     private static JobManager instance;
-    private static final Object lock = new Object();
-
     //TODO: Convert to factory later
     private final Scheduler scheduler;
 
@@ -35,11 +34,12 @@ public class JobManager {
         return instance;
     }
 
-    public void scheduleJob(JobDetail jobDetail, Trigger trigger ) throws SchedulerException {
+    public void scheduleJob(JobDetail jobDetail, Trigger trigger) throws SchedulerException {
         synchronized (lock) {
             scheduler.scheduleJob(jobDetail, trigger);
         }
     }
+
     public void scheduleJob(JobDetail jobDetail, Set<Trigger> triggers, boolean replace) throws SchedulerException {
         synchronized (lock) {
             scheduler.scheduleJob(jobDetail, triggers, replace);
@@ -53,7 +53,7 @@ public class JobManager {
     }
 
     public boolean checkExists(String name, String group) throws SchedulerException {
-        return JobManager.getInstance().checkExists(JobKey.jobKey(name,group));
+        return JobManager.getInstance().checkExists(JobKey.jobKey(name, group));
     }
 
     public boolean checkExists(JobKey key) throws SchedulerException {
@@ -77,7 +77,7 @@ public class JobManager {
     }
 
     public List<JobExecutionContext> getCurrentlyExecutingJobs() throws SchedulerException {
-            return scheduler.getCurrentlyExecutingJobs();
+        return scheduler.getCurrentlyExecutingJobs();
     }
 
     public List<JobKey> getAllScheduledJobs() throws SchedulerException {
@@ -116,9 +116,14 @@ public class JobManager {
         return scheduler.getTriggerState(key);
     }
 
+    public void resumeTrigger(TriggerKey key) throws SchedulerException {
+        scheduler.resumeTrigger(key);
+    }
+
     public void pauseJob(JobKey key) throws SchedulerException {
         scheduler.pauseJob(key);
     }
+
     public void pauseTrigger(TriggerKey key) throws SchedulerException {
         scheduler.pauseTrigger(key);
     }

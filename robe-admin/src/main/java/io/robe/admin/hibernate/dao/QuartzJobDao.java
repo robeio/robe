@@ -1,8 +1,8 @@
 package io.robe.admin.hibernate.dao;
 
 import com.google.inject.Inject;
-import io.robe.hibernate.dao.BaseDao;
 import io.robe.admin.quartz.hibernate.JobEntity;
+import io.robe.hibernate.dao.BaseDao;
 import org.hibernate.SessionFactory;
 
 /**

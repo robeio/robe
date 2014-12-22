@@ -24,25 +24,13 @@ public class JobEntity extends BaseEntity implements JobInfo {
     private Class<? extends Job> jobClass;
     private String description;
 
-    public void setDescription(String description) {
-        this.description = description;
-    }
-
-    public void setJobClass(Class<? extends Job> jobClass) {
-        this.jobClass = jobClass;
+    @Override
+    public String getName() {
+        return name;
     }
 
     public void setName(String name) {
         this.name = name;
-    }
-
-    public void setTriggers(List<TriggerInfo> triggers) {
-        this.triggers = triggers;
-    }
-
-    @Override
-    public String getName() {
-        return name;
     }
 
     @Override
@@ -50,14 +38,26 @@ public class JobEntity extends BaseEntity implements JobInfo {
         return description;
     }
 
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
     @Override
     public List<TriggerInfo> getTriggers() {
         return triggers;
+    }
+
+    public void setTriggers(List<TriggerInfo> triggers) {
+        this.triggers = triggers;
     }
 
     @Override
     public Class<? extends Job> getJobClass() {
 
         return jobClass;
+    }
+
+    public void setJobClass(Class<? extends Job> jobClass) {
+        this.jobClass = jobClass;
     }
 }
