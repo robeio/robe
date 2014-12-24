@@ -92,3 +92,4 @@ assets:
    indexFile:    index.html
    assetsName:   io.robe.admin.ui
    cached:       true
+   type: filesystem # use "classpath" or "filesystem"
