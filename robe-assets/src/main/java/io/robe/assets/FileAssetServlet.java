@@ -16,6 +16,7 @@ import java.nio.charset.Charset;
 
 /**
  * Servlet for serving assets with configuration.
+ * Cache mechanism holds only paths. Actual byte cache is managed by {@link io.robe.assets.asset.FileAsset}
  *
  * @see io.dropwizard.servlets.assets.AssetServlet
  */
@@ -82,7 +83,7 @@ public class FileAssetServlet extends HttpServlet {
         try {
             final StringBuilder builder = new StringBuilder(req.getServletPath());
 
-            // If asset is empty redirect to index file.
+            // If asset is empty redirect to index asset.
             if (req.getPathInfo() != null) {
                 builder.append(req.getPathInfo());
             } else {
@@ -95,7 +96,7 @@ public class FileAssetServlet extends HttpServlet {
             String assetPath = builder.toString();
             //Get from cache if not available load it.
             FileAsset asset = cache.getIfPresent(assetPath);
-            if (asset == null) {
+            if (asset == null ) {
                 asset = loadAsset(assetPath);
             }
             //If still it is null it means nothing to load.

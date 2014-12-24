@@ -29,8 +29,8 @@ public class FileAsset {
 
 
     /**
-     * Sets asset file according to path.
-     * It must exist as file.
+     * Sets asset asset according to path.
+     * It must exist as asset.
      *
      * @param path
      */
@@ -52,12 +52,12 @@ public class FileAsset {
 
     /**
      * Loads asset data. If cache is enabled checks modification date and loads to cache.
-     * Else just returns file
+     * Else just returns asset
      *
      * @return
      */
     public byte[] loadAsset() {
-            generateMD5();
+        generateMD5();
         if (!cached) {
             return loadAssetFromFile();
         } else if (lastModified < asset.lastModified())
@@ -68,7 +68,7 @@ public class FileAsset {
     }
 
     /**
-     * Loads asset from the file
+     * Loads asset from the asset
      *
      * @return
      */

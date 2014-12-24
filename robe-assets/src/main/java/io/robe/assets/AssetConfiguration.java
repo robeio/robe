@@ -7,48 +7,62 @@ import javax.validation.constraints.NotNull;
 
 public class AssetConfiguration {
 
-	@Valid
-	@NotNull
-	@JsonProperty
-	private String resourcePath;
+    @Valid
+    @NotNull
+    @JsonProperty
+    private String type;
 
-	@Valid
-	@NotNull
-	@JsonProperty
-	private String uriPath;
+    @Valid
+    @NotNull
+    @JsonProperty
+    private String resourcePath;
 
-	@Valid
-	@NotNull
-	@JsonProperty
-	private String indexFile;
+    @Valid
+    @NotNull
+    @JsonProperty
+    private String uriPath;
 
-	@Valid
-	@NotNull
-	@JsonProperty
-	private String assetsName;
+    @Valid
+    @NotNull
+    @JsonProperty
+    private String indexFile;
 
-	@Valid
-	@NotNull
-	@JsonProperty
-	private boolean cached;
+    @Valid
+    @NotNull
+    @JsonProperty
+    private String assetsName;
 
-	public String getResourcePath() {
-		return resourcePath;
-	}
+    @Valid
+    @NotNull
+    @JsonProperty
+    private boolean cached;
 
-	public String getUriPath() {
-		return uriPath;
-	}
+    public String getType() {
+        return type;
+    }
 
-	public String getIndexFile() {
-		return indexFile;
-	}
+    public boolean isCached() {
+        return cached;
+    }
 
-	public String getAssetsName() {
-		return assetsName;
-	}
+    public String getResourcePath() {
+        return resourcePath;
+    }
 
-	public boolean getCached() {
-		return cached;
-	}
+    public String getUriPath() {
+        return uriPath;
+    }
+
+    public String getIndexFile() {
+        return indexFile;
+    }
+
+    public String getAssetsName() {
+        return assetsName;
+    }
+
+    public boolean getCached() {
+        return cached;
+    }
+
 }
