@@ -1,4 +1,4 @@
-package io.robe.assets.asset;
+package io.robe.assets.file;
 
 import com.google.common.hash.Hashing;
 import com.google.common.io.Files;
@@ -16,9 +16,9 @@ public class FileAsset {
 
 
     /**
-     * Creates and asset entry
+     * Creates and http entry
      *
-     * @param path   asset path
+     * @param path   http path
      * @param cached to cache or not to cache.
      */
     public FileAsset(String path, boolean cached) {
@@ -29,8 +29,8 @@ public class FileAsset {
 
 
     /**
-     * Sets asset asset according to path.
-     * It must exist as asset.
+     * Sets http http according to path.
+     * It must exist as http.
      *
      * @param path
      */
@@ -42,7 +42,7 @@ public class FileAsset {
 
 
     /**
-     * Generates hash (MD5) from asset path and last modification date
+     * Generates hash (MD5) from http path and last modification date
      *
      * @return
      */
@@ -51,8 +51,8 @@ public class FileAsset {
     }
 
     /**
-     * Loads asset data. If cache is enabled checks modification date and loads to cache.
-     * Else just returns asset
+     * Loads http data. If cache is enabled checks modification date and loads to cache.
+     * Else just returns http
      *
      * @return
      */
@@ -68,7 +68,7 @@ public class FileAsset {
     }
 
     /**
-     * Loads asset from the asset
+     * Loads http from the http
      *
      * @return
      */
@@ -83,7 +83,7 @@ public class FileAsset {
     }
 
     /**
-     * Writes asset to a cache (byte array)
+     * Writes http to a cache (byte array)
      */
     private void loadAssetToCache() {
         try {

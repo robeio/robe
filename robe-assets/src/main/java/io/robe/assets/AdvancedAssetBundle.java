@@ -7,22 +7,24 @@ import io.dropwizard.ConfiguredBundle;
 import io.dropwizard.servlets.assets.AssetServlet;
 import io.dropwizard.setup.Bootstrap;
 import io.dropwizard.setup.Environment;
+import io.robe.assets.file.FileAssetServlet;
+import io.robe.assets.http.HttpAssetServlet;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import javax.servlet.http.HttpServlet;
 
 /**
- * A Configured bundle for serving static asset files from the asset system.
+ * A Configured bundle for serving static http files from the http system.
  */
-public class ConfiguredAssetBundle<T extends Configuration & HasAssetConfiguration> implements ConfiguredBundle<T> {
-    private static final Logger LOGGER = LoggerFactory.getLogger(ConfiguredAssetBundle.class);
+public class AdvancedAssetBundle<T extends Configuration & HasAssetConfiguration> implements ConfiguredBundle<T> {
+    private static final Logger LOGGER = LoggerFactory.getLogger(AdvancedAssetBundle.class);
 
 
     /**
      * Creates a new ConfiguredAssetBundle which will configure the application to serve the static files
      */
-    public ConfiguredAssetBundle() {
+    public AdvancedAssetBundle() {
 
     }
 
@@ -30,7 +32,7 @@ public class ConfiguredAssetBundle<T extends Configuration & HasAssetConfigurati
     public void run(T configuration, Environment environment) throws Exception {
         for (AssetConfiguration assetConf : configuration.getAssets()) {
             String resourcePath = assetConf.getResourcePath();
-            Preconditions.checkArgument(resourcePath.startsWith("/"), "%s is not an absolute path", resourcePath);
+//            Preconditions.checkArgument(resourcePath.startsWith("/"), "%s is not an absolute path", resourcePath);
             Preconditions.checkArgument(!"/".equals(resourcePath), "%s is the classpath root", resourcePath);
             resourcePath = resourcePath.endsWith("/") ? resourcePath : (resourcePath + '/');
             String uriPath = assetConf.getUriPath();
@@ -44,9 +46,17 @@ public class ConfiguredAssetBundle<T extends Configuration & HasAssetConfigurati
                 case "classpath":
                     assetServlet = getClasspathAssetServlet(assetConf,resourcePath,uriPath);
                     break;
+                case "http":
+                    assetServlet = getHttpAssetServlet(assetConf, resourcePath, uriPath);
+                    break;
             }
             environment.servlets().addServlet(assetConf.getAssetsName(), assetServlet).addMapping(uriPath + '*');
         }
+    }
+
+    private HttpServlet getHttpAssetServlet(AssetConfiguration conf, String resourcePath, String uriPath) {
+        return new HttpAssetServlet(resourcePath,uriPath,conf.getIndexFile(), Charsets.UTF_8,conf.getCached());
+
     }
 
     private HttpServlet getClasspathAssetServlet(AssetConfiguration assetConf, String resourcePath, String uriPath) {

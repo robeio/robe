@@ -13,7 +13,7 @@ import io.robe.admin.cli.InitializeCommand;
 import io.robe.admin.guice.module.AuthenticatorModule;
 import io.robe.admin.guice.module.HibernateModule;
 import io.robe.admin.quartz.hibernate.HibernateJobProvider;
-import io.robe.assets.ConfiguredAssetBundle;
+import io.robe.assets.AdvancedAssetBundle;
 import io.robe.auth.tokenbased.TokenBasedAuthBundle;
 import io.robe.common.exception.RobeExceptionMapper;
 import io.robe.guice.GuiceBundle;
@@ -87,7 +87,7 @@ public class RobeApplication<T extends RobeServiceConfiguration> extends Applica
             bootstrap.addBundle(new ViewBundle());
             bootstrap.addBundle(new ViewBundle(ImmutableList.<ViewRenderer>of(new FreemarkerViewRenderer())));
             bootstrap.addBundle(new MailBundle<T>());
-            bootstrap.addBundle(new ConfiguredAssetBundle<T>());
+            bootstrap.addBundle(new AdvancedAssetBundle<T>());
         }
 
     }
