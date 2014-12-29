@@ -68,7 +68,10 @@ public abstract class ExcelImporter<T> extends Importer<T> {
                         Object cellData;
                         if (cell != null) {
                             if (!(field.getType() instanceof Class && (field.getType()).isEnum())) {
-                                cellData = Parsers.valueOf(field.getType().getSimpleName().toUpperCase(Locale.ENGLISH)).getParser().parse(cell.toString(), field);
+                                if(cell.getCellType() != Cell.CELL_TYPE_STRING)
+                                    cell.setCellType(Cell.CELL_TYPE_STRING);
+
+                                cellData = Parsers.valueOf(field.getType().getSimpleName().toUpperCase(Locale.ENGLISH)).getParser().parse(cell.getStringCellValue(), field);
 
                             } else {
                                 cellData = Parsers.valueOf("ENUM").getParser().parse(cell, field);

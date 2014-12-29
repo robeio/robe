@@ -1,10 +1,9 @@
-package io.robe.assets;
+package io.robe.assets.http;
 
 import com.google.common.cache.Cache;
 import com.google.common.cache.CacheBuilder;
 import com.google.common.net.HttpHeaders;
 import com.google.common.net.MediaType;
-import io.robe.assets.asset.FileAsset;
 
 import javax.servlet.ServletException;
 import javax.servlet.ServletOutputStream;
@@ -16,14 +15,15 @@ import java.nio.charset.Charset;
 
 /**
  * Servlet for serving assets with configuration.
+ * Cache mechanism holds only paths. Actual byte cache is managed by {@link io.robe.assets.http.HttpAsset}
  *
  * @see io.dropwizard.servlets.assets.AssetServlet
  */
 
-public class FileAssetServlet extends HttpServlet {
+public class HttpAssetServlet extends HttpServlet {
 
 
-    private Cache<String, FileAsset> cache;
+    private Cache<String, HttpAsset> cache;
     private static final MediaType DEFAULT_MEDIA_TYPE = MediaType.HTML_UTF_8;
 
     private final String resourcePath;
@@ -41,7 +41,7 @@ public class FileAssetServlet extends HttpServlet {
      *                       indexes
      * @param defaultCharset the default character set
      */
-    public FileAssetServlet(String resourcePath,
+    public HttpAssetServlet(String resourcePath,
                             String uriPath,
                             String indexFile,
                             Charset defaultCharset,
@@ -82,7 +82,7 @@ public class FileAssetServlet extends HttpServlet {
         try {
             final StringBuilder builder = new StringBuilder(req.getServletPath());
 
-            // If asset is empty redirect to index file.
+            // If http is empty redirect to index http.
             if (req.getPathInfo() != null) {
                 builder.append(req.getPathInfo());
             } else {
@@ -94,7 +94,7 @@ public class FileAssetServlet extends HttpServlet {
 
             String assetPath = builder.toString();
             //Get from cache if not available load it.
-            FileAsset asset = cache.getIfPresent(assetPath);
+            HttpAsset asset = cache.getIfPresent(assetPath);
             if (asset == null) {
                 asset = loadAsset(assetPath);
             }
@@ -105,14 +105,14 @@ public class FileAssetServlet extends HttpServlet {
             }
 
             // Maybe client got it already
-            if (isDifferentFromClientCache(req, asset)) {
+            if (!isDifferentFromClientCache(req, asset)) {
                 resp.sendError(HttpServletResponse.SC_NOT_MODIFIED);
                 return;
             }
 
             //Modify response identifiers
             resp.setDateHeader(HttpHeaders.LAST_MODIFIED, asset.getLastModified());
-            resp.setHeader(HttpHeaders.ETAG, asset.getMd5());
+            resp.setHeader(HttpHeaders.ETAG, asset.getETAG());
 
             decideMimeAndEncoding(req, resp);
 
@@ -138,7 +138,7 @@ public class FileAssetServlet extends HttpServlet {
         }
     }
 
-    private FileAsset loadAsset(String path) {
+    private HttpAsset loadAsset(String path) {
         if (!path.startsWith(uriPath))
             return null;
         String absolutePath = path.substring(uriPath.length());
@@ -146,7 +146,7 @@ public class FileAssetServlet extends HttpServlet {
         absolutePath = absolutePath.endsWith("/") ? absolutePath.substring(0, absolutePath.length() - 1) : absolutePath;
         absolutePath = this.resourcePath + absolutePath;
 
-        FileAsset asset = new FileAsset(absolutePath, cached);
+        HttpAsset asset = new HttpAsset(absolutePath, cached);
         cache.put(path, asset);
 
         return asset;
@@ -156,8 +156,8 @@ public class FileAssetServlet extends HttpServlet {
         return time / 1000;
     }
 
-    private boolean isDifferentFromClientCache(HttpServletRequest req, FileAsset asset) {
-        return asset.getMd5().equals(req.getHeader(HttpHeaders.IF_NONE_MATCH)) ||
+    private boolean isDifferentFromClientCache(HttpServletRequest req, HttpAsset asset) {
+        return asset.getETAG().equals(req.getHeader(HttpHeaders.IF_NONE_MATCH)) ||
                 (msToSec(req.getDateHeader(HttpHeaders.IF_MODIFIED_SINCE)) >= msToSec(asset.getLastModified()));
     }
 }

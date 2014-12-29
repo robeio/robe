@@ -92,3 +92,10 @@ assets:
    indexFile:    index.html
    assetsName:   io.robe.admin.ui
    cached:       true
+   type: filesystem # use "classpath" or "filesystem" or "http"
+ - resourcePath: http://json.org/
+   uriPath:      /placehold/
+   indexFile:    example
+   assetsName:   placehold
+   cached:       true
+   type: http # use "classpath" or "filesystem" or "http"

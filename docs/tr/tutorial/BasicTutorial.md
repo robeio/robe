@@ -236,6 +236,7 @@
 	  uriPath: /ui/
 	  indexFile: index.html
 	  assetsName: io.robe.sample.ui
+	  type: filesystem # use "classpath" or "filesystem"
     ```
 *  `RobeApplication<RobeServiceConfiguration>` sınfını extend alan yeni bir sınıf yaratın.
 	``` java
