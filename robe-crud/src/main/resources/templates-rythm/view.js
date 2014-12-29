@@ -1,34 +1,36 @@
+@args List<io.robe.crud.helper.Model> models,String entity
+
 define([
-    'text!./${entity}Management.html',
-    './${entity}DataSource',
+    'text!./@entity@Management.html',
+    './@entity@DataSource',
     'kendo/kendo.grid.min',
     'kendo/kendo.window.min',
     'robe/view/RobeView'
-], function (html, ${entity}DataSource) {
-    var ${entity}ManagementView = require('robe/view/RobeView').define({
-        name: "${entity}ManagementView",
+], function (html,@entity@DataSource) {
+    var @entity@ManagementView = require('robe/view/RobeView').define({
+        name: "@entity@ManagementView",
         html: html,
         containerId: "container",
         initialize: function () {
-            $("#grid${entity}").kendoGrid({
-                dataSource: ${entity}DataSource.get(),
+            $("#grid@entity").kendoGrid({
+                dataSource: @entity@DataSource.get(),
                 sortable: true,
                 pageable: {
-                refresh: true
-            },
-            toolbar: [
-                {
-                    name: "create",
-                    text: "Yeni Ekle"
-                }
-            ],
+                    refresh: true
+                },
+                toolbar: [
+                    {
+                        name: "create",
+                        text: "Yeni Ekle"
+                    }
+                ],
                 columns: [
-            <#list fields as field>
-            {
-                field : "${field.name}",
-                title : "${field.name}"
-            },
-            </#list>
+                @for (io.robe.crud.helper.Model model: models) {
+                {
+                    field:@model.getName(),
+                    title:@model.getName()
+                },
+                }
             {
                 command: [
                     {
@@ -56,12 +58,12 @@ define([
                     title: "Save"
                 },
                 confirmation: "Are you sure you want to delete?",
-                    confirmDelete: "Yes"
+                confirmDelete: "Yes"
             }
         });
 
         }
     });
 
-    return ${entity}ManagementView;
+    return @entity@ManagementView;
 });

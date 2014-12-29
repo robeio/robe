@@ -2,19 +2,14 @@ package io.robe.crud.gui;
 
 import io.robe.crud.DaoCrud;
 import io.robe.crud.ResourceCrud;
+import io.robe.crud.helper.ClassVisitor;
+import io.robe.crud.helper.Constants;
 import io.robe.crud.helper.CrudUtility;
 import japa.parser.JavaParser;
 import japa.parser.ParseException;
 import japa.parser.ast.CompilationUnit;
 import japa.parser.ast.ImportDeclaration;
-import japa.parser.ast.Node;
-import japa.parser.ast.body.BodyDeclaration;
-import japa.parser.ast.body.ClassOrInterfaceDeclaration;
-import japa.parser.ast.body.FieldDeclaration;
-import japa.parser.ast.body.VariableDeclarator;
-import japa.parser.ast.expr.AnnotationExpr;
-import japa.parser.ast.expr.MemberValuePair;
-import japa.parser.ast.visitor.VoidVisitorAdapter;
+import japa.parser.ast.expr.NameExpr;
 import org.apache.tools.ant.DirectoryScanner;
 
 import javax.swing.*;
@@ -26,14 +21,11 @@ import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 public class RobeCrudGUI extends javax.swing.JFrame {
     public static final String JAVA_IO_TMP_DIR = "user.home";
     public static String OUTPUT_PATH;
-    public static Map<String, String> imports = new HashMap<String, String>();
     public static CompilationUnit compilationUnit;
     private javax.swing.JButton btnProjectPath;
     private javax.swing.JButton btnGenerate;
@@ -60,13 +52,7 @@ public class RobeCrudGUI extends javax.swing.JFrame {
                     break;
                 }
             }
-        } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(RobeCrudGUI.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(RobeCrudGUI.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(RobeCrudGUI.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
+        } catch (ClassNotFoundException | InstantiationException | UnsupportedLookAndFeelException | IllegalAccessException ex) {
             java.util.logging.Logger.getLogger(RobeCrudGUI.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
         java.awt.EventQueue.invokeLater(new Runnable() {
@@ -98,7 +84,7 @@ public class RobeCrudGUI extends javax.swing.JFrame {
         btnProjectPath.setText("Select");
         btnProjectPath.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnProjectPathActionPerformed(evt);
+                btnProjectPathActionPerformed();
             }
         });
 
@@ -130,7 +116,7 @@ public class RobeCrudGUI extends javax.swing.JFrame {
         btnGenerate.setText("Generate");
         btnGenerate.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnGenerateActionPerformed(evt);
+                btnGenerateActionPerformed();
             }
         });
 
@@ -141,7 +127,7 @@ public class RobeCrudGUI extends javax.swing.JFrame {
         btnOutputPath.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent evt) {
 
-                btnProjectOutputPathActionPerformed(evt);
+                btnProjectOutputPathActionPerformed();
 
             }
         });
@@ -230,7 +216,7 @@ public class RobeCrudGUI extends javax.swing.JFrame {
         pack();
     }// </editor-fold>
 
-    private void btnProjectPathActionPerformed(java.awt.event.ActionEvent evt) {
+    private void btnProjectPathActionPerformed() {
 
         JFileChooser dialog = new JFileChooser(JAVA_IO_TMP_DIR);
 
@@ -245,7 +231,7 @@ public class RobeCrudGUI extends javax.swing.JFrame {
         }
     }
 
-    private void btnProjectOutputPathActionPerformed(java.awt.event.ActionEvent evt) {
+    protected void btnProjectOutputPathActionPerformed() {
 
         JFileChooser dialog = new JFileChooser(JAVA_IO_TMP_DIR);
 
@@ -259,7 +245,7 @@ public class RobeCrudGUI extends javax.swing.JFrame {
         }
     }
 
-    private void btnGenerateActionPerformed(java.awt.event.ActionEvent evt) {
+    protected void btnGenerateActionPerformed() {
 
 
         Object[][] tableData = getTableData(jTable1);
@@ -292,36 +278,36 @@ public class RobeCrudGUI extends javax.swing.JFrame {
                         findBy += "Or" + CrudUtility.capitalizeToUpper(string);
                     }
                 }
-                String importEntity = imports.get(entity);
+                String importEntity = ClassVisitor.imports.get(entity);
                 String packageName = txtPackageName.getText();
 
                 if (dao) {
-                    List<ImportDeclaration> importDeclarations = new ArrayList<ImportDeclaration>();
-
-                    String[] imports = {
-                            "com.google.inject.Inject",
-                            "org.hibernate.SessionFactory",
-                            "io.robe.hibernate.dao.BaseDao",
-                            importEntity + "." + entity
-                    };
-                    importDeclarations.addAll(CrudUtility.getImports(imports));
-                    if (!findBy.equals("findById")) {
-                        importDeclarations.addAll(CrudUtility.getImports("com.google.common.base.Optional", "org.hibernate.Criteria", "org.hibernate.criterion.Restrictions"));
-                    }
+                    List<ImportDeclaration> daoImports = new ArrayList<ImportDeclaration>();
+                    daoImports.addAll(Constants.daoImports);
+                    daoImports.add(new ImportDeclaration(new NameExpr(importEntity + "." + entity), false, false));
                     File fileDao = new File(newDaoClassName);
                     if (!fileDao.exists()) {
                         fileDao.createNewFile();
                     }
 
-                    FileWriter fwDao = null;
-                    fwDao = new FileWriter(fileDao.getAbsoluteFile());
+                    DaoCrud.setEntityName(entity);
+                    DaoCrud.setUniqueFields(uniqueFields);
+                    DaoCrud.setFindBy(findBy);
+
+                    FileWriter fwDao = new FileWriter(fileDao.getAbsoluteFile());
                     BufferedWriter bwDao = new BufferedWriter(fwDao);
-                    bwDao.write(DaoCrud.createDao(entity, packageName + ".dao", importDeclarations, uniqueFields, findBy));
+                    bwDao.write(DaoCrud.createDao(packageName + ".dao", daoImports));
                     bwDao.close();
 
                 }
                 if (resource) {
 
+                    ResourceCrud.setUniqueFields(uniqueFields);
+                    ResourceCrud.setFields(fieldGet);
+                    ResourceCrud.setDaoName(daoName);
+                    ResourceCrud.setAuth(auth);
+                    ResourceCrud.setEntityName(entity);
+                    ResourceCrud.setIdGetFunction(findBy);
 
                     String newResourceClassName = fileResourceLocation + File.separator + entity + "Resource.java";
                     File fileResource = new File(newResourceClassName);
@@ -331,45 +317,20 @@ public class RobeCrudGUI extends javax.swing.JFrame {
 
                     FileWriter fwResource = new FileWriter(fileResource.getAbsoluteFile());
                     BufferedWriter bwResource = new BufferedWriter(fwResource);
-                    List<BodyDeclaration> bodyDeclarations = new ArrayList<BodyDeclaration>();
-
-                    bodyDeclarations.add(ResourceCrud.getAll(entity, daoName, "findAll", auth));
-                    bodyDeclarations.add(ResourceCrud.get(entity, daoName, findBy, auth));
-                    bodyDeclarations.add(ResourceCrud.create(entity, daoName, uniqueFields, "create", auth, findBy));
-                    bodyDeclarations.add(ResourceCrud.update(entity, daoName, fieldGet, "getOid", findBy, "update", "detach", auth));
-                    bodyDeclarations.add(ResourceCrud.delete(entity, daoName, "getOid", findBy, "delete", auth));
-                    List<ImportDeclaration> importDeclarationsResource = new ArrayList<ImportDeclaration>();
-                    String[] imports = {
-                            "com.google.inject.Inject",
-                            "io.dropwizard.auth.Auth",
-                            "io.dropwizard.hibernate.UnitOfWork",
-                            "io.robe.auth.Credentials",
-                            "javax.validation.Valid",
-                            "javax.ws.rs.Consumes",
-                            "javax.ws.rs.DELETE",
-                            "javax.ws.rs.GET",
-                            "javax.ws.rs.POST",
-                            "javax.ws.rs.PUT",
-                            "javax.ws.rs.Path",
-                            "javax.ws.rs.PathParam",
-                            "javax.ws.rs.Produces",
-                            "javax.ws.rs.core.MediaType",
-                            "java.util.List",
-                            packageName + ".dao." + entity + "Dao",
-                            importEntity + "." + entity,
-
-                    };
-                    importDeclarationsResource.addAll(CrudUtility.getImports(imports));
-                    bwResource.write(ResourceCrud.resourceGenerate(entity, daoName, bodyDeclarations, importDeclarationsResource, packageName + ".resource", inject));
+                    List<ImportDeclaration> resourceImports = new ArrayList<ImportDeclaration>();
+                    resourceImports.addAll(Constants.resourceImports);
+                    resourceImports.add(new ImportDeclaration(new NameExpr(packageName + ".dao." + entity + "Dao"), false, false));
+                    resourceImports.add(new ImportDeclaration(new NameExpr(importEntity + "." + entity), false, false));
+                    bwResource.write(ResourceCrud.resourceGenerate(resourceImports, packageName + ".resource", inject));
                     bwResource.close();
                 }
 
             } catch (IOException e) {
-                e.printStackTrace();
+                javax.swing.JOptionPane.showMessageDialog(this, e.getLocalizedMessage());
             }
         }
         progressBar.setIndeterminate(false);
-        javax.swing.JOptionPane.showMessageDialog(this, "created successfull!");
+        javax.swing.JOptionPane.showMessageDialog(this, "created successful!");
 
     }
 
@@ -396,10 +357,7 @@ public class RobeCrudGUI extends javax.swing.JFrame {
         for (String string : files) {
             try {
                 compilationUnit = JavaParser.parse(new File(absolutePath + File.separator + string));
-            } catch (ParseException e) {
-
-                e.printStackTrace();
-            } catch (IOException e) {
+            } catch (ParseException | IOException e) {
 
                 e.printStackTrace();
             }
@@ -407,8 +365,7 @@ public class RobeCrudGUI extends javax.swing.JFrame {
 
         }
 
-        Object[][] list = null;
-        list = new Object[ClassVisitor.classes.size()][5];
+        Object[][] list = new Object[ClassVisitor.classes.size()][5];
 
 
         int i = 0;
@@ -434,65 +391,5 @@ public class RobeCrudGUI extends javax.swing.JFrame {
                 return types[columnIndex];
             }
         });
-    }
-
-    private static class ClassVisitor extends VoidVisitorAdapter {
-
-        public static List<String> classes = new ArrayList<String>();
-        public static Map<String, List<String>> allColumns = new HashMap<String, List<String>>();
-        public static Map<String, List<String>> uniqueColumns = new HashMap<String, List<String>>();
-
-        @Override
-        public void visit(ClassOrInterfaceDeclaration n, Object arg) {
-
-            List<AnnotationExpr> list = n.getAnnotations();
-
-            if (list != null) {
-                for (AnnotationExpr annotationExpr : list) {
-                    if (annotationExpr.toString().equals("@Entity")) {
-
-                        RobeCrudGUI.imports.put(n.getName(), RobeCrudGUI.compilationUnit.getPackage().getName().toString());
-                        List<BodyDeclaration> body = n.getMembers();
-
-                        List<String> allList = new ArrayList<String>();
-                        List<String> uniqueList = new ArrayList<String>();
-
-                        for (BodyDeclaration bodyDeclaration : body) {
-
-                            if (bodyDeclaration instanceof FieldDeclaration) {
-                                FieldDeclaration fieldDeclaration = (FieldDeclaration) bodyDeclaration;
-                                List<AnnotationExpr> fieldExp = fieldDeclaration.getAnnotations();
-
-                                if (fieldExp != null) {
-
-                                    VariableDeclarator variableDeclarator = fieldDeclaration.getVariables().get(0);
-
-                                    for (AnnotationExpr expr : fieldExp) {
-                                        if (expr.getName().toString().equals("Column")) {
-                                            allList.add(variableDeclarator.getId().toString());
-                                            List<Node> nodes = expr.getChildrenNodes();
-                                            for (Node node : nodes) {
-                                                if (node instanceof MemberValuePair) {
-                                                    MemberValuePair memberValuePair = (MemberValuePair) node;
-                                                    if (memberValuePair.getName().equals("unique")) {
-                                                        if (Boolean.valueOf(memberValuePair.getValue().toString())) {
-                                                            uniqueList.add(variableDeclarator.getId().toString());
-                                                        }
-                                                    }
-                                                }
-                                            }
-                                        }
-                                    }
-                                    allColumns.put(n.getName(), allList);
-                                    uniqueColumns.put(n.getName(), uniqueList);
-                                }
-                            }
-                        }
-                        classes.add(n.getName());
-                        return;
-                    }
-                }
-            }
-        }
     }
 }

@@ -1,32 +1,33 @@
+@args String entity
 define([
-'common/SingletonDataSource', './${entity}Model'
-], function(SingletonDataSource, ${entity}Model) {
+    'common/SingletonDataSource', './@entity@Model'
+], function(SingletonDataSource, @entity@Model) {
 
-var ${entity}DataSource = SingletonDataSource.define({
-    name: "${entity}DataSource",
+    var @entity@DataSource = SingletonDataSource.define({
+        name: "@entity@DataSource",
         parameters: {
             transport: {
                 read: {
                     type: "GET",
-                    url: AdminApp.getBackendURL() + "${entity?uncap_first}/all",
+                    url: AdminApp.getBackendURL() + "@entity.lowerCase()/all",
                     dataType: "json",
                     contentType: "application/json"
                 },
                 update: {
                     type: "POST",
-                    url: AdminApp.getBackendURL() + "${entity?uncap_first}",
+                    url: AdminApp.getBackendURL() + "@entity.lowerCase()",
                     dataType: "json",
                     contentType: "application/json"
                 },
                 destroy: {
                     type: "DELETE",
-                    url: AdminApp.getBackendURL() + "${entity?uncap_first}",
+                    url: AdminApp.getBackendURL() + "@entity.lowerCase()",
                     dataType: "json",
                     contentType: "application/json"
                 },
                 create: {
                     type: "PUT",
-                    url: AdminApp.getBackendURL() + "${entity?uncap_first}",
+                    url: AdminApp.getBackendURL() + "@entity.lowerCase()",
                     dataType: "json",
                     contentType: "application/json"
                 },
@@ -39,9 +40,8 @@ var ${entity}DataSource = SingletonDataSource.define({
             batch: false,
             pageSize: 20,
             schema: {
-                model: ${entity}Model
+                model:@entity@Model
             }
-        }
-    });
-return ${entity}DataSource;
+        }});
+    return @entity@DataSource;
 });

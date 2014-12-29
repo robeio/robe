@@ -1,5 +1,6 @@
 package io.robe.crud.helper;
 
+import japa.parser.ast.CompilationUnit;
 import japa.parser.ast.Node;
 import japa.parser.ast.body.BodyDeclaration;
 import japa.parser.ast.body.ClassOrInterfaceDeclaration;
@@ -18,6 +19,9 @@ public class ClassVisitor extends VoidVisitorAdapter {
 
     public static List<String> classes = new ArrayList<String>();
     public static Map<String, List<Model>> models = new HashMap<String, List<Model>>();
+    public static Map<String, List<String>> allColumns = new HashMap<String, List<String>>();
+    public static Map<String, List<String>> uniqueColumns = new HashMap<String, List<String>>();
+    public static Map<String, String> imports = new HashMap<String, String>();
 
     @Override
     public void visit(ClassOrInterfaceDeclaration n, Object arg) {
@@ -29,34 +33,38 @@ public class ClassVisitor extends VoidVisitorAdapter {
                 if (annotationExpr.toString().equals("@Entity")) {
 
                     List<BodyDeclaration> body = n.getMembers();
+                    List<String> allList = new ArrayList<String>();
+                    List<String> uniqueList = new ArrayList<String>();
 
+                    imports.put(n.getName(), ((CompilationUnit) n.getParentNode()).getPackage().getName().toString());
                     List<Model> model = new ArrayList<Model>();
                     for (BodyDeclaration bodyDeclaration : body) {
 
                         if (bodyDeclaration instanceof FieldDeclaration) {
                             FieldDeclaration fieldDeclaration = (FieldDeclaration) bodyDeclaration;
                             List<AnnotationExpr> fieldExp = fieldDeclaration.getAnnotations();
+                            VariableDeclarator variableDeclarator = fieldDeclaration.getVariables().get(0);
+
+                            Model m = new Model();
+
+                            m.setName(variableDeclarator.getId().toString());
+                            //set default value
+                            m.setNullable(true);
+                            m.setLength("255");
+                            m.setType("string");
+
+                            String fieldType = fieldDeclaration.getType().toString().toLowerCase().replaceAll("\"", "");
+                            if (fieldType.equals("boolean")) {
+                                m.setType("boolean");
+                            } else if (fieldType.equals("integer") || fieldType.equals("int") || fieldType.equals("bigdecimal") || fieldType.equals("double") || fieldType.equals("long")) {
+                                m.setType("number");
+                            }
 
                             if (fieldExp != null) {
-
-                                VariableDeclarator variableDeclarator = fieldDeclaration.getVariables().get(0);
-
                                 for (AnnotationExpr expr : fieldExp) {
                                     if (expr.getName().toString().equals("Column")) {
-
+                                        allList.add(variableDeclarator.getId().toString());
                                         List<Node> nodes = expr.getChildrenNodes();
-                                        Model m = new Model();
-                                        m.setName(variableDeclarator.getId().toString());
-                                        m.setNullable(true);
-                                        m.setLength("255");
-                                        m.setType("string");
-                                        String fieldType = fieldDeclaration.getType().toString().toLowerCase().replaceAll("\"", "");
-
-                                        if (fieldType.equals("boolean")) {
-                                            m.setType("boolean");
-                                        } else if (fieldType.equals("integer") || fieldType.equals("int") || fieldType.equals("bigdecimal") || fieldType.equals("double") || fieldType.equals("long")) {
-                                            m.setType("number");
-                                        }
                                         for (Node node : nodes) {
                                             if (node instanceof MemberValuePair) {
                                                 MemberValuePair memberValuePair = (MemberValuePair) node;
@@ -66,19 +74,27 @@ public class ClassVisitor extends VoidVisitorAdapter {
                                                 } else if ((memberValuePair.getName().equals("length"))) {
                                                     m.setLength(memberValuePair.getValue().toString());
                                                 }
+                                                if (memberValuePair.getName().equals("unique")) {
+                                                    if (Boolean.valueOf(memberValuePair.getValue().toString())) {
+                                                        uniqueList.add(variableDeclarator.getId().toString());
+                                                    }
+                                                }
                                             }
                                         }
                                         model.add(m);
                                     }
                                 }
+                                allColumns.put(n.getName(), allList);
+                                uniqueColumns.put(n.getName(), uniqueList);
                                 models.put(n.getName(), model);
                             }
                         }
                     }
                     classes.add(n.getName());
-                    return;
                 }
             }
+
         }
+
     }
 }

@@ -38,4 +38,9 @@ public class Model {
     public void setType(String type) {
         this.type = type;
     }
+
+    @Override
+    public String toString() {
+        return "Name: " + name + " Nullable: " + nullable + " Length: " + length + " Type: " + type;
+    }
 }

@@ -18,18 +18,6 @@ public class CrudUtility {
         return new PackageDeclaration(ASTHelper.createNameExpr(dirPath));
     }
 
-    public static List<ImportDeclaration> getImports(String... imports) {
-        List<ImportDeclaration> importDeclarations = new LinkedList<ImportDeclaration>();
-
-        for (String pak : imports) {
-            ImportDeclaration imp = new ImportDeclaration();
-            imp.setName(ASTHelper.createNameExpr(pak));
-            importDeclarations.add(imp);
-        }
-        return importDeclarations;
-    }
-
-
     public static AnnotationExpr generateAnnotation(String annotation, String annotationParameter, String parameterAccess) {
         if (isEmpty(annotationParameter)) {
             return new MarkerAnnotationExpr(ASTHelper.createNameExpr(annotation));

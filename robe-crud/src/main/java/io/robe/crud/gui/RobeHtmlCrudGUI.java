@@ -7,12 +7,14 @@ import japa.parser.JavaParser;
 import japa.parser.ParseException;
 import japa.parser.ast.CompilationUnit;
 import org.apache.tools.ant.DirectoryScanner;
+import org.rythmengine.Rythm;
 
 import javax.swing.*;
 import javax.swing.GroupLayout.Alignment;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.*;
+import java.util.HashMap;
 import java.util.List;
 
 public class RobeHtmlCrudGUI extends javax.swing.JFrame {
@@ -35,6 +37,10 @@ public class RobeHtmlCrudGUI extends javax.swing.JFrame {
     public RobeHtmlCrudGUI() {
         setResizable(false);
         initComponents();
+        HashMap<String, Object> configuration = new HashMap<>();
+        configuration.put("home.template", "templates-rythm");
+        configuration.put("codegen.compact", false);
+        Rythm.init(configuration);
     }
 
     public static void main(String args[]) {
@@ -298,7 +304,7 @@ public class RobeHtmlCrudGUI extends javax.swing.JFrame {
             }
         }
         progressBar.setIndeterminate(false);
-        javax.swing.JOptionPane.showMessageDialog(this, "created successfull!");
+        javax.swing.JOptionPane.showMessageDialog(this, "created successful!");
 
     }
 

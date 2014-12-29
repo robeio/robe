@@ -18,12 +18,28 @@ import java.util.List;
 
 public class DaoCrud {
 
-    public static String createDao(String entityName, String packageName, List<ImportDeclaration> importDeclarations, List<String> uniqueFields, String findBy) {
+    private static String entityName;
+    private static List<String> uniqueFields;
+    private static String findBy;
+
+    public static void setEntityName(String entityName) {
+        DaoCrud.entityName = entityName;
+    }
+
+    public static void setUniqueFields(List<String> uniqueFields) {
+        DaoCrud.uniqueFields = uniqueFields;
+    }
+
+    public static void setFindBy(String findBy) {
+        DaoCrud.findBy = findBy;
+    }
+
+    public static String createDao(String packageName, List<ImportDeclaration> importDeclarations) {
         CompilationUnit compilationUnit = new CompilationUnit();
         compilationUnit.setPackage(new PackageDeclaration(ASTHelper.createNameExpr(packageName)));
 
-        List<ClassOrInterfaceType> extedsList = new ArrayList<ClassOrInterfaceType>();
-        extedsList.add(new ClassOrInterfaceType("BaseDao<" + entityName + ">"));
+        List<ClassOrInterfaceType> extendList = new ArrayList<ClassOrInterfaceType>();
+        extendList.add(new ClassOrInterfaceType("BaseDao<" + entityName + ">"));
 
         compilationUnit.setImports(importDeclarations);
 
@@ -43,15 +59,15 @@ public class DaoCrud {
         constructorDeclaration.setBlock(conBlock);
         members.add(constructorDeclaration);
         if (!findBy.equals("findById")) {
-            members.add(findby(entityName, uniqueFields, findBy));
+            members.add(createFindByMethod());
         }
-        ClassOrInterfaceDeclaration type = new ClassOrInterfaceDeclaration(1, null, false, entityName + "Dao", null, extedsList, null, members);
+        ClassOrInterfaceDeclaration type = new ClassOrInterfaceDeclaration(ModifierSet.PUBLIC, null, false, entityName + "Dao", null, extendList, null, members);
         ASTHelper.addTypeDeclaration(compilationUnit, type);
 
         return compilationUnit.toString();
     }
 
-    private static MethodDeclaration findby(String entityName, List<String> fields, String findBy) {
+    private static MethodDeclaration createFindByMethod() {
 
         MethodDeclaration method = new MethodDeclaration(ModifierSet.PUBLIC, ASTHelper.createReferenceType(entityName, 0), findBy);
 
@@ -73,12 +89,12 @@ public class DaoCrud {
         ASTHelper.addStmt(body, variableDeclarationExpr1);
 
 
-        MethodCallExpr calloid = new MethodCallExpr(new NameExpr("disjunction"), "add");
+        MethodCallExpr callOid = new MethodCallExpr(new NameExpr("disjunction"), "add");
         MethodCallExpr callEqOid = new MethodCallExpr(new NameExpr("Restrictions"), "eq", Arrays.asList(new StringLiteralExpr("oid"), new NameExpr("code")));
-        ASTHelper.addArgument(calloid, callEqOid);
-        ASTHelper.addStmt(body, calloid);
+        ASTHelper.addArgument(callOid, callEqOid);
+        ASTHelper.addStmt(body, callOid);
 
-        for (String string : fields) {
+        for (String string : uniqueFields) {
 
             MethodCallExpr callAdd = new MethodCallExpr(new NameExpr("disjunction"), "add");
             MethodCallExpr callEq = new MethodCallExpr(new NameExpr("Restrictions"), "eq", Arrays.asList(new StringLiteralExpr(string), new NameExpr("code")));

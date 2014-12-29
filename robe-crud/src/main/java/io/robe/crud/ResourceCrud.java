@@ -16,15 +16,58 @@ import java.util.List;
 
 public class ResourceCrud {
 
-    public static String resourceGenerate(String entityName, String daoName, List<BodyDeclaration> bodyDeclarationsList, List<ImportDeclaration> importDeclarations, String packageName,
+    private static String daoName;
+
+    private static String entityName;
+
+    private static Boolean auth;
+
+    private static String idGetFunction;
+
+    private static List<String> uniqueFields;
+    private static List<String> fields;
+
+    public static void setUniqueFields(List<String> uniqueFields) {
+        ResourceCrud.uniqueFields = uniqueFields;
+    }
+
+    public static void setFields(List<String> fields) {
+        ResourceCrud.fields = fields;
+    }
+
+    public static void setIdGetFunction(String idGetFunction) {
+        ResourceCrud.idGetFunction = idGetFunction;
+    }
+
+    public static void setAuth(Boolean auth) {
+        ResourceCrud.auth = auth;
+    }
+
+    public static void setEntityName(String entityName) {
+        ResourceCrud.entityName = entityName;
+    }
+
+    public static void setDaoName(String daoName) {
+        ResourceCrud.daoName = daoName;
+    }
+
+    public static String resourceGenerate(List<ImportDeclaration> importDeclarations, String packageName,
                                           Boolean inject) {
+
+        List<BodyDeclaration> bodyDeclarationsList = new ArrayList<BodyDeclaration>();
+
+        bodyDeclarationsList.add(ResourceCrud.getAll());
+        bodyDeclarationsList.add(ResourceCrud.get());
+        bodyDeclarationsList.add(ResourceCrud.create());
+        bodyDeclarationsList.add(ResourceCrud.update());
+        bodyDeclarationsList.add(ResourceCrud.delete());
 
         CompilationUnit compilationUnit = new CompilationUnit();
         compilationUnit.setImports(importDeclarations);
 
         compilationUnit.setPackage(CrudUtility.getPackage(packageName));
 
-        FieldDeclaration injectFieldDeclaration = ASTHelper.createFieldDeclaration(0, new ClassOrInterfaceType(daoName), CrudUtility.createVariableDeclarator(CrudUtility.capitalizeToLower(daoName), null));
+        FieldDeclaration injectFieldDeclaration = ASTHelper.createFieldDeclaration(0, new ClassOrInterfaceType(CrudUtility.capitalizeToUpper(daoName)), CrudUtility.createVariableDeclarator(CrudUtility.capitalizeToLower(daoName), null));
         bodyDeclarationsList.add(0, injectFieldDeclaration);
 
         if (inject) {
@@ -56,7 +99,7 @@ public class ResourceCrud {
         return compilationUnit.toString();
     }
 
-    public static MethodDeclaration delete(String entityName, String daoName, String idGetFunction, String findByFunction, String deleteFunction, Boolean auth) {
+    public static MethodDeclaration delete() {
 
         String entityVariableName = CrudUtility.capitalizeToLower(entityName);
         daoName = CrudUtility.capitalizeToLower(daoName);
@@ -64,7 +107,7 @@ public class ResourceCrud {
         MethodDeclaration method = new MethodDeclaration(ModifierSet.PUBLIC, ASTHelper.createReferenceType(entityName, 0), "delete");
 
         List<Parameter> parameterList = new ArrayList<Parameter>();
-        parameterList.add(CrudUtility.generateParameter(entityName, null, null, null, null));
+        parameterList.add(CrudUtility.generateParameter(entityName, "Valid", null, null, null));
         if (auth) {
             parameterList.add(CrudUtility.generateParameter("Credentials", "Auth", null, null, null));
         }
@@ -74,18 +117,16 @@ public class ResourceCrud {
 
         BlockStmt body = new BlockStmt();
 
-        MethodCallExpr call1 = new MethodCallExpr(new NameExpr(daoName), findByFunction);
-        ASTHelper.addArgument(call1, new MethodCallExpr(new NameExpr(entityVariableName), idGetFunction));
+        MethodCallExpr methodFindBy = new MethodCallExpr(new NameExpr(daoName), idGetFunction);
+        ASTHelper.addArgument(methodFindBy, new MethodCallExpr(new NameExpr(entityVariableName), "getOid"));
 
-        AssignExpr assignExpr = new AssignExpr(new NameExpr(entityVariableName), call1, AssignExpr.Operator.assign);
+        AssignExpr assignExpr = new AssignExpr(new NameExpr(entityVariableName), methodFindBy, AssignExpr.Operator.assign);
 
-        MethodCallExpr call2 = new MethodCallExpr(new NameExpr(daoName), deleteFunction);
-        ASTHelper.addArgument(call2, new NameExpr(entityVariableName));
+        MethodCallExpr methodDelete = new MethodCallExpr(new NameExpr(daoName), "delete");
+        ASTHelper.addArgument(methodDelete, new NameExpr(entityVariableName));
 
         ASTHelper.addStmt(body, assignExpr);
-        ASTHelper.addStmt(body, call2);
-
-        ASTHelper.addStmt(body, new ReturnStmt(ASTHelper.createNameExpr(entityVariableName)));
+        ASTHelper.addStmt(body, new ReturnStmt(methodDelete));
 
         method.setBody(body);
 
@@ -93,7 +134,7 @@ public class ResourceCrud {
 
     }
 
-    public static MethodDeclaration update(String entityName, String daoName, List<String> fields, String idGetFunction, String findByFunction, String updateFunction, String detachFunction, Boolean auth) {
+    public static MethodDeclaration update() {
 
         String entityVariableName = CrudUtility.capitalizeToLower(entityName);
         daoName = CrudUtility.capitalizeToLower(daoName);
@@ -101,7 +142,7 @@ public class ResourceCrud {
 
 
         List<Parameter> parameterList = new ArrayList<Parameter>();
-        parameterList.add(CrudUtility.generateParameter(entityName, null, null, null, null));
+        parameterList.add(CrudUtility.generateParameter(entityName, "Valid", null, null, null));
         if (auth) {
             parameterList.add(CrudUtility.generateParameter("Credentials", "Auth", null, null, null));
         }
@@ -111,27 +152,24 @@ public class ResourceCrud {
 
         BlockStmt body = new BlockStmt();
 
-        MethodCallExpr call1 = new MethodCallExpr(new NameExpr(daoName), detachFunction);
+        MethodCallExpr detach = new MethodCallExpr(new NameExpr(daoName), "detach");
 
-        ASTHelper.addArgument(call1, new NameExpr(entityVariableName));
+        ASTHelper.addArgument(detach, new NameExpr(entityVariableName));
 
-        MethodCallExpr call2 = new MethodCallExpr(new NameExpr(daoName), findByFunction);
-        ASTHelper.addArgument(call2, new MethodCallExpr(new NameExpr(entityVariableName), idGetFunction));
+        MethodCallExpr findBy = new MethodCallExpr(new NameExpr(daoName), idGetFunction);
+        ASTHelper.addArgument(findBy, new MethodCallExpr(new NameExpr(entityVariableName), "getOid"));
 
-        VariableDeclarationExpr variableDeclarationExpr = new VariableDeclarationExpr(ASTHelper.createReferenceType(entityName, 0), Arrays.asList(CrudUtility.createVariableDeclarator("entity", call2)));
+        VariableDeclarationExpr variableDeclarationExpr = new VariableDeclarationExpr(ASTHelper.createReferenceType(entityName, 0), Arrays.asList(CrudUtility.createVariableDeclarator("entity", findBy)));
 
-        MethodCallExpr call5 = new MethodCallExpr(new NameExpr(daoName), updateFunction);
-        ASTHelper.addArgument(call5, new NameExpr("entity"));
+        MethodCallExpr update = new MethodCallExpr(new NameExpr(daoName), "update");
+        ASTHelper.addArgument(update, new NameExpr("entity"));
 
-        AssignExpr assignExpr = new AssignExpr(new NameExpr("entity"), call5, AssignExpr.Operator.assign);
-
-        ASTHelper.addStmt(body, call1);
+        ASTHelper.addStmt(body, detach);
         ASTHelper.addStmt(body, variableDeclarationExpr);
         for (String string : fields) {
             ASTHelper.addStmt(body, CrudUtility.generateUpdateRow("entity", entityVariableName, "set" + CrudUtility.capitalizeToUpper(string), "get" + CrudUtility.capitalizeToUpper(string)));
         }
-        ASTHelper.addStmt(body, assignExpr);
-        ASTHelper.addStmt(body, new ReturnStmt(ASTHelper.createNameExpr("entity")));
+        ASTHelper.addStmt(body, new ReturnStmt(update));
 
         method.setBody(body);
 
@@ -139,7 +177,7 @@ public class ResourceCrud {
 
     }
 
-    public static MethodDeclaration create(String entityName, String daoName, List<String> idGetFunction, String createFunction, Boolean auth, String findByFunction) {
+    public static MethodDeclaration create() {
 
         String entityVariableName = CrudUtility.capitalizeToLower(entityName);
         daoName = CrudUtility.capitalizeToLower(daoName);
@@ -155,17 +193,16 @@ public class ResourceCrud {
         method.setAnnotations(Arrays.asList(CrudUtility.generateAnnotation("PUT", null, null), CrudUtility.generateAnnotation("UnitOfWork", null, null)));
 
         BlockStmt body = new BlockStmt();
-        if (idGetFunction != null) {
-            for (String string : idGetFunction) {
+        if (uniqueFields != null) {
+            for (String field : uniqueFields) {
 
-                MethodCallExpr callFindBy = new MethodCallExpr(new NameExpr(daoName), findByFunction);
-                ASTHelper.addArgument(callFindBy, new MethodCallExpr(new NameExpr(entityVariableName), "get" + CrudUtility.capitalizeToUpper(string)));
+                MethodCallExpr callFindBy = new MethodCallExpr(new NameExpr(daoName), idGetFunction);
+                ASTHelper.addArgument(callFindBy, new MethodCallExpr(new NameExpr(entityVariableName), "get" + CrudUtility.capitalizeToUpper(field)));
 
-                VariableDeclarationExpr variableDeclarationExpr = new VariableDeclarationExpr(ASTHelper.createReferenceType("Optional<" + entityName + ">", 0), Arrays.asList(CrudUtility.createVariableDeclarator(CrudUtility.capitalizeToLower(string), callFindBy)));
+                VariableDeclarationExpr variableDeclarationExpr = new VariableDeclarationExpr(ASTHelper.createReferenceType("Optional<" + entityName + ">", 0), Arrays.asList(CrudUtility.createVariableDeclarator(CrudUtility.capitalizeToLower(field), callFindBy)));
                 ASTHelper.addStmt(body, variableDeclarationExpr);
-
-
-                BinaryExpr binaryExpr = new BinaryExpr(new MethodCallExpr(new NameExpr(entityVariableName), "get" + CrudUtility.capitalizeToUpper(string)), new StringLiteralExpr("already used by another " + entityVariableName + ". Please use different code."), Operator.plus);
+                BinaryExpr binaryExpr = new BinaryExpr(new MethodCallExpr(new NameExpr(entityVariableName), "get" + CrudUtility.capitalizeToUpper(field)), new StringLiteralExpr("already used by " +
+                        "another " + entityVariableName + ". Please use different " + field), Operator.plus);
 
                 MethodCallExpr callException = new MethodCallExpr(null, "RobeRuntimeException", Arrays.asList(new StringLiteralExpr("Error"), binaryExpr));
 
@@ -174,26 +211,21 @@ public class ResourceCrud {
                 ThrowStmt throwStmt = new ThrowStmt(callException);
                 ifStatements.add(throwStmt);
 
-                IfStmt ifStmt = new IfStmt(new MethodCallExpr(new NameExpr(CrudUtility.capitalizeToLower(string)), "isPresent"), new BlockStmt(ifStatements), null);
+                IfStmt ifStmt = new IfStmt(new MethodCallExpr(new NameExpr(CrudUtility.capitalizeToLower(field)), "isPresent"), new BlockStmt(ifStatements), null);
                 ASTHelper.addStmt(body, ifStmt);
             }
         }
 
-        MethodCallExpr callCreateFunction = new MethodCallExpr(new NameExpr(daoName), createFunction);
+        MethodCallExpr callCreateFunction = new MethodCallExpr(new NameExpr(daoName), "create");
         ASTHelper.addArgument(callCreateFunction, new NameExpr(entityVariableName));
-
-        AssignExpr assignExpr = new AssignExpr(new NameExpr(entityVariableName), callCreateFunction, AssignExpr.Operator.assign);
-        ASTHelper.addStmt(body, assignExpr);
-
-        ASTHelper.addStmt(body, new ReturnStmt(ASTHelper.createNameExpr(entityVariableName)));
-
+        ASTHelper.addStmt(body, new ReturnStmt(callCreateFunction));
         method.setBody(body);
 
         return method;
 
     }
 
-    public static MethodDeclaration get(String entityName, String daoName, String idGetFunction, Boolean auth) {
+    public static MethodDeclaration get() {
 
         String entityVariableName = CrudUtility.capitalizeToLower(entityName);
         String pathParamName = entityVariableName + "Id";
@@ -208,9 +240,7 @@ public class ResourceCrud {
         }
         method.setParameters(parameterList);
         method.setAnnotations(Arrays.asList(CrudUtility.generateAnnotation("Path", "{" + pathParamName + "}", null), CrudUtility.generateAnnotation("GET", null, null), CrudUtility.generateAnnotation("UnitOfWork", null, null)));
-
         BlockStmt body = new BlockStmt();
-
         MethodCallExpr callFindAll = new MethodCallExpr(new NameExpr(daoName), idGetFunction);
         ASTHelper.addArgument(callFindAll, new NameExpr(pathParamName));
         ReturnStmt returnStmt = new ReturnStmt(callFindAll);
@@ -223,11 +253,9 @@ public class ResourceCrud {
 
     }
 
-    public static MethodDeclaration getAll(String entityName, String daoName, String findAllFunction, Boolean auth) {
-
+    public static MethodDeclaration getAll() {
         String name = "get" + entityName + "s";
         daoName = CrudUtility.capitalizeToLower(daoName);
-
         MethodDeclaration method = new MethodDeclaration(ModifierSet.PUBLIC, ASTHelper.createReferenceType("List<" + entityName + ">", 0), name);
         if (auth) {
             method.setParameters(Arrays.asList(CrudUtility.generateParameter("Credentials", "Auth", null, null, null)));
@@ -236,7 +264,7 @@ public class ResourceCrud {
         BlockStmt body = new BlockStmt();
 
         FieldAccessExpr field = new FieldAccessExpr(new NameExpr(entityName), "class");
-        MethodCallExpr callFindAll = new MethodCallExpr(new NameExpr(daoName), findAllFunction);
+        MethodCallExpr callFindAll = new MethodCallExpr(new NameExpr(daoName), "findAll");
         ASTHelper.addArgument(callFindAll, field);
 
         ReturnStmt returnStmt = new ReturnStmt(callFindAll);
