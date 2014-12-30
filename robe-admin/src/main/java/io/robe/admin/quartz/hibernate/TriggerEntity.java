@@ -17,6 +17,7 @@ public class TriggerEntity extends BaseEntity implements TriggerInfo {
     private int repeatCount = 0;
     private long repeatInterval = 0;
     private String cron = "";
+    @Column(name = "triggerType")
     @Enumerated(EnumType.STRING)
     private Type type;
     private boolean active;
