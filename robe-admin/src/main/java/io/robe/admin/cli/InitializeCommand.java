@@ -28,13 +28,17 @@ import java.util.Set;
 
 public class InitializeCommand<T extends RobeServiceConfiguration> extends EnvironmentCommand<T> {
 
-    public static final String IO_ROBE_ADMIN = "io/robe/admin";
-    public static final String ADMIN = "Admin";
+    protected static String IO_ROBE_ADMIN = "io/robe/admin";
+    protected static String ADMIN = "Admin";
     private static final Logger LOGGER = LoggerFactory.getLogger(InitializeCommand.class);
-    private HibernateBundle hibernateBundle;
+    protected HibernateBundle hibernateBundle;
 
     public InitializeCommand(Application<T> service, HibernateBundle hibernateBundle) {
-        super(service, "initialize", "Runs Hibernate and initialize required columns");
+        this(service, "initialize", "Runs Hibernate and initialize required columns",hibernateBundle);
+    }
+
+    public InitializeCommand(Application<T> service, String name, String description, HibernateBundle hibernateBundle) {
+        super(service, name, description);
         this.hibernateBundle = hibernateBundle;
     }
 
@@ -243,11 +247,10 @@ public class InitializeCommand<T extends RobeServiceConfiguration> extends Envir
         session.flush();
         session.close();
 
-        LOGGER.info("Initialize finished.");
-        System.exit(0);
+        LOGGER.info("Initialize finished. for robe");
     }
 
-    private Permission createPermission(boolean b, String oid, Role role) {
+    protected Permission createPermission(boolean b, String oid, Role role) {
         Permission permission = new Permission();
         permission.setpLevel((short) 7);
         permission.setType(b ? Permission.Type.MENU : Permission.Type.SERVICE);
@@ -256,7 +259,7 @@ public class InitializeCommand<T extends RobeServiceConfiguration> extends Envir
         return permission;
     }
 
-    private boolean isItService(Method method) {
+    protected boolean isItService(Method method) {
         return method.getAnnotation(GET.class) != null ||
                 method.getAnnotation(PUT.class) != null ||
                 method.getAnnotation(POST.class) != null ||
@@ -264,7 +267,7 @@ public class InitializeCommand<T extends RobeServiceConfiguration> extends Envir
                 method.getAnnotation(OPTIONS.class) != null;
     }
 
-    private String getHttpMethodType(Method method) {
+    protected String getHttpMethodType(Method method) {
         return method.getAnnotation(GET.class) != null ? "GET" :
                 method.getAnnotation(POST.class) != null ? "POST" :
                         method.getAnnotation(PUT.class) != null ? "PUT" :
