@@ -5,7 +5,7 @@
     <parent>
         <groupId>io.robe</groupId>
         <artifactId>robe-parent</artifactId>
-        <version>0.4.1</version>
+        <version>0.4.2</version>
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
@@ -48,11 +48,6 @@
         <dependency>
             <groupId>io.robe</groupId>
             <artifactId>robe-quartz</artifactId>
-            <version>${project.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>io.robe</groupId>
-            <artifactId>robe-mq</artifactId>
             <version>${project.version}</version>
         </dependency>
         <dependency>

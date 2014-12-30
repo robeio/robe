@@ -12,8 +12,6 @@ import io.robe.hibernate.HasHibernateConfiguration;
 import io.robe.hibernate.HibernateConfiguration;
 import io.robe.mail.HasMailConfiguration;
 import io.robe.mail.MailConfiguration;
-import io.robe.mq.HasMessageQueueConfiguration;
-import io.robe.mq.MessageQueueConfiguration;
 import io.robe.quartz.configuration.HasQuartzConfiguration;
 import io.robe.quartz.configuration.QuartzConfiguration;
 
@@ -26,7 +24,6 @@ public class RobeServiceConfiguration extends Configuration implements
         HasGuiceConfiguration,
         HasQuartzConfiguration,
         HasMailConfiguration,
-        HasMessageQueueConfiguration,
         HasTokenBasedAuthConfiguration,
 		HasAssetConfiguration {
 
@@ -48,9 +45,6 @@ public class RobeServiceConfiguration extends Configuration implements
     @JsonProperty
     private GuiceConfiguration guice;
 
-    @Valid
-    @JsonProperty
-    private MessageQueueConfiguration messageQueue;
 
     @Valid
     @JsonProperty
@@ -80,10 +74,6 @@ public class RobeServiceConfiguration extends Configuration implements
         return guice;
     }
 
-    @Override
-    public MessageQueueConfiguration getMessageQueueConfiguration() {
-        return messageQueue;
-    }
 
     @Override
     public TokenBasedAuthConfiguration getTokenBasedAuthConfiguration() {
