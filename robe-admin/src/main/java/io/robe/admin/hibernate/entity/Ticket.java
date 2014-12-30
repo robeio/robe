@@ -9,7 +9,7 @@ import java.util.Date;
 @Table
 public class Ticket extends BaseEntity {
 
-    @Column
+    @Column(name = "ticketType")
     @Enumerated(EnumType.STRING)
     private Type type;
     @Column
