@@ -73,7 +73,7 @@ auth:
 Örnekte görüldüğü gibi token parametrelere göre çalışmakta ve rastgele `PBEWithMD5AndTripleDES` algoritmasına göre şifrelenmektedir. Çerezler hakkında daha fazla bilgi için [Wikipedia Http Cookie](http://en.wikipedia.org/wiki/HTTP_cookie) ziyaret ediniz.
 Parametre detayları,
 * `tokenKey` : Token için belirtilen çerez adı. Token işlemleri için kullanılacaktırç
-* `domain` : Zerez etki adı 
+* `domain` : Çerez etki adı
 * `path` : Çerez yolu
 * `maxage` : Çerezin maksimum geçerli olacağı saniye sayısı.
 * `secure` : Çerez için güvenlik parametresi.

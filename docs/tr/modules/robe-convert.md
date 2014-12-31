@@ -1,12 +1,14 @@
 # robe-convert
 ---
-Convert bundle for dropwizard.It manages file importing and exporting between formats(xls, xlsx, xml, csv, tsv, json) to POJOs with the help of annotations. Annotations prevents the developer to write extra code for validating the procedure.
+Dropwizard projeleri için dönüştürme modülüdür. Dosyaların formatlar arasında(xls, xlsx, xml, csv, tsv, json) dönüşümlerini sağlamaktadır. Dönüşüm işlemlerini POJO'lar içerisindeki annotation'lar üzerinden yapmaktadır. Bu sayede geliştirilerin fazladan kod yazmasını önler.
 
-## Motivation
-Creating a basic system for different libraries. Helping user to do the most important importing and exporting operations with one annotation.
-## Getting started
-You have to complete 3 steps in order to start using quartz bundle.
-* Add dependency (Maven sample)
+## Motivasyon
+Farklı kütüphaneler için temel bir sistem oluşturmak ve kullanıcılar için çok önemli olan dönüşüm işlemlerini tek bir annotation ile yapmak.
+## Başlarken
+
+Robe-convert kullanmak için 3 adımı tamamlamanız gerekmektedir.
+
+* Bağımlılığı ekleyin (Örnek:Maven)
 
 ```xml
 <dependency>
@@ -16,7 +18,7 @@ You have to complete 3 steps in order to start using quartz bundle.
 </dependency>
 ```
 
-* Use `@Convert` annotation to makes you . Sample multiple trigger job.
+* `@Convert` annotation ile dönüştürme ayarlarını belirtin. Örnek:
 
 ```java
 public class SamplePojo {
@@ -28,28 +30,30 @@ public class SamplePojo {
     private String name;
 ...
 ```
-Now it is ready for import&export operations with all formats below.
-* User importer or exporter  to complete the operation.
+Bununla beraber artık tüm formatlarda dönüştürme işlemleri için POJO nuz hazır.
+
+* İmport yada export olduğunu belirtin ve dönüştürme işlemlerinizi tamamlayın.Örnek:
 
 ```java
 CSVImporter<SamplePojo> importer = new CSVImporter<>(SamplePojo.class);
 List<SamplePojo> list = importer.importStream(new FileInputStream(outputFile.getPath()));
 ```
 
-**!!! You can look at the test classes for sample usage !!!**
+**!!! Test sınıflarını inceleyerek bütün formatlar için örnekleri inceleyebilirsiniz !!!**
 
-## Details
-Usage and details will be explained below.
-### Libraries
+## Detaylar
+Kullanılan kütüphaneler ve kullanımı aşağıdadır.
+### Kütüphaneler
 * xls : [Apache POI](http://poi.apache.org/)
 * xlsx: [Apache POI](http://poi.apache.org/) 
 * json: [Jackson](https://github.com/FasterXML/jackson)
-* xml : [Jackson](https://github.com/FasterXML/jackson) (Different configuration)
+* xml : [Jackson](https://github.com/FasterXML/jackson) (Faklı yapılandırma)
 * csv : [SuperCSV](http://supercsv.sourceforge.net/)
 * tsv : [SuperCSV](http://supercsv.sourceforge.net/)
 
-### Usage
-Please look at the test classes for sample usage. If you really want to see a quick demo ...
+### Kullanımı
+Eğer gerçekten hızlı bir demo görmek istiyorsanız,örnek kullanım için test sınıflarına bakınız. 
+
 ```java
 CSVExporter<SamplePojo> exporter = new CSVExporter(SamplePojo.class);
 exporter.exportStream(outputStream, TestData.getData().iterator());

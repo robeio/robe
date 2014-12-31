@@ -5,7 +5,7 @@ Convert bundle for dropwizard.It manages file importing and exporting between fo
 ## Motivation
 Creating a basic system for different libraries. Helping user to do the most important importing and exporting operations with one annotation.
 ## Getting started
-You have to complete 3 steps in order to start using quartz bundle.
+You have to complete 3 steps in order to start using robe-convert bundle.
 * Add dependency (Maven sample)
 
 ```xml
@@ -16,7 +16,7 @@ You have to complete 3 steps in order to start using quartz bundle.
 </dependency>
 ```
 
-* Use `@Convert` annotation to makes you . Sample multiple trigger job.
+* Use `@Convert` annotation to makes you . Sample:
 
 ```java
 public class SamplePojo {
