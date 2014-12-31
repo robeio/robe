@@ -5,8 +5,9 @@ Quartz bundle for dropwizard.
 Creating an auth bundle which can provide following points. 
 * easy to understand 
 * configurable 
-* ready to use (TokenBasedAuthBundle impl.)
-* cache support
+* ready to use
+* Cron,On application start,On application stop and Basic including 4 different types.
+
 ## Getting started
 You have to complete 4 steps in order to start using quartz bundle.
 * Add dependency (Maven sample)

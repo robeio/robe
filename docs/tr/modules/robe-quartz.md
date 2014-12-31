@@ -1,15 +1,20 @@
 # robe-quartz
 ---
-Quartz bundle for dropwizard.
-## Motivation
-Creating an auth bundle which can provide following points. 
-* easy to understand 
-* configurable 
-* ready to use (TokenBasedAuthBundle impl.)
-* cache support
-## Getting started
-You have to complete 4 steps in order to start using quartz bundle.
-* Add dependency (Maven sample)
+Dropwizard için Quartz modulüdür.
+
+## Motivasyon
+Yarattığınız bir quartz bundle aşağıdaki özellikleri sağlar.
+ 
+* Kolay kullanım
+* Kolay yapılandırma 
+* Kullanıma hazır
+* Çoklu trigger desteği
+* Cron,Uygulama açıldığında,Uygulama Kapandığında ve Temel olmak üzere 4 farklı tip.
+
+## Başlarken 
+Quartz modülünü kullanmak için 4 adımı tamamlamanız gerekmektedir.
+
+* Bağımlılığı ekleyin (Örnek:Maven)
 
 ```xml
 <dependency>
@@ -19,7 +24,7 @@ You have to complete 4 steps in order to start using quartz bundle.
 </dependency>
 ```
 
-* Decide the properties. and how to serve in yml.
+* Özelliklerini kendinize göre yml içinde yapılandırın.
 
 ```yml
 quartz:
@@ -34,12 +39,13 @@ quartz:
     className: org.quartz.simpl.RAMJobStore
    ```
    
-* Add bundle to the bootstrap at you Aplication
+* Uygulamanız içerisinde bootstrap e yeni bir bundle olarak ekleyin.
 
 ```java
 bootstrap.addBundle(new QuartzBundle<T>());
 ```
-* Use `@QJob` annotation to make your job class configured automaticly. Sample multiple trigger job.
+
+* `@QJob` annotation ile job sınıfınızın otomatik yapılandırılmasını sağlayın. Örnek çoklu trigger job sınıfı:
 
 ```java
 @QJob(name = "SampleJob", description = "Sample Quartz Job for a demonstration.",
@@ -60,24 +66,26 @@ public class SampleJob implements org.quartz.Job {
 }
 ```
 Now it is fire with 4 different triggers.
+Artık 4 faklı trigger tipi ile çalıştırabilirsiniz.
 
-## Details
-Configuration, usage and details will be explained below.
-### Configuration
-Configuration includes two group of fields. 
-* robe-quartz configuration. Packages for discovery.
- * `providers`: package list of **JobProviders**. It will search providers itself. *__!!Will explain later!!__*
- * `scanPackages`: Package list of Jobs. All jobs under these packages will discovered automatic.
-* quartz configuration. Quartz configuration mappings.
+## Detay
+Yapılandırma, kullanım, varsayılan ayarlar aşağıda açıklanacaktır.
+### Yapılandırma
+Yapılandırma alanları iki grubu içerir:
+ 
+* robe-quartz yapılandırması. Paket ismi ile ortaya çıkarmak(bulmak).
+ * `providers`: **JobProviders** paket listesidir. Bu sağlayıcıları kendisi arayacak . *__!!Daha sonra açıklanacak!!__*
+ * `scanPackages`: Bütün job ların paket listesi.Bu paket altındaki bütün job lar otomatik ortaya çıkarılacaktır(bulunacaktır).
+* quartz yapılandırması. Quartz yapılandırma dönüşümleri:
  * `instanceName`: `org.quartz.scheduler.instanceName`
  * `threadCount`: `org.quartz.threadPool.threadCount`
  * `threadPriority`:`org.quartz.threadPool.threadPriority`
  * `skipUpdateCheck`:`org.quartz.scheduler.skipUpdateCheck`
  * `jobStore`:
  * `className`: org.quartz.jobStore.class 
- * `properties`: Properies of jobstore
+ * `properties`: jobstore özellikleri
 
- Sample of alternate jobstore with extra properties.
+Extra özelliklere sahip alternatif jobstore özellikleri
  
          
 	```yml
