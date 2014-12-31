@@ -5,7 +5,7 @@ Dropwizard projeleri için gelişmiş ve kolay kullanım için asset desteği sa
 Yarattığınız bir asset bundle aşağıdaki özellikleri sağlar.
 
 * Kolay anlaşılabilir 
-* Kolay yaoılandırma yapılabilir
+* Kolay yapılandırma yapılabilir
 * Ortak ihtiyaçları karşılayabilir (classpath,filesystem,http)
 * Önbellek desteği sağlamaktadır
 
@@ -73,7 +73,7 @@ Alanların detaylı açıklaması aşağıdaki gibidir:
 * `uriPath` :  Asset i servis etmek için kullanılan url yoludur.Değer uygulamanın `applicationContextPath` içine eklenir.
 * `indexFile` : Asset i varsayılan olan servis eden dosyadır.Eğer varsayılan olarak servis edilen dosyanız yoksa (index.html/index.php...), bu isim ile servis edebilirsiniz.   
 * `assetsName` : Assets adı. Sunucu uygulamasına bu isim ile kayıt edilir.
-* `cached` : Ön belleği aktif yada pasif ederç`true/false`
+* `cached` : Ön belleği aktif yada pasif eder`true/false`.
 * `type` : Asset servisi tipi. Varsayılan olarak 3 adet tip uygulanabilir.
   * `filesystem` : Asset leri dosya sisyeminden yükler. (jar hariç)
   * `classpath` : Asset leri uygulamanızın kaynak dosyasından yükler (jar dahil)

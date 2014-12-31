@@ -1,16 +1,20 @@
 # robe-auth
 ---
-Authhentication and authorization bundle for dropwizard with TokenBasedAuthBundle implementation.
-## Motivation
-Creating an auth bundle which can provide following points. 
-* easy to understand 
-* configurable 
-* ready to use (TokenBasedAuthBundle impl.)
-* cache support
+Dropwizard için kimlik doğrulama ve yetkilendirme paketidir.TokenBasedAuthBundle ile birlikte uygulanmıştır.
 
-## Getting Started
-You have to complete 4 steps in order to start using token based authentication.
-* Add dependency (Maven sample)
+## Motivasyon
+Yarattığınız bir auth bundle aşağıdaki özellikleri sağlar.
+
+* Kolay kullanım
+* Kolay yapılandırma
+* Kullanıma hazır (TokenBasedAuthBundle uygulanması)
+* Ön bellek desteği
+
+## Başlarken
+
+Robe-auth kimlik doğrulaması modülünü kullanmak için 4 adımı tamamlamanız gerekmektedir.
+
+* Bağımlılığı ekleyin (Örnek:Maven)
 
 ```xml
 <dependency>
@@ -20,7 +24,7 @@ You have to complete 4 steps in order to start using token based authentication.
 </dependency>
 ```
 
-* Decide the properties. and how to serve in yml.
+* Özelliklerini kendinize göre yml içinde yapılandırın.
 
 ```yml
 auth:
@@ -34,13 +38,13 @@ auth:
   serverPassword: auto # auto for uuid, if it is cluster use custom password
    ```
    
-* Add bundle to the bootstrap at you Aplication
+* Uygulamanız içerisinde bootstrap e yeni bir bundle olarak ekleyin.
 
 ```java
 TokenBasedAuthBundle<T> authBundle = new TokenBasedAuthBundle<T>();
 bootstrap.addBundle(authBundle);
 ```
-* Use `@Auth` annotation to make your resource secure
+* `@Auth` annotation ı ile servislerinizi güvenli hale getirin
 
 ```java
 @GET
@@ -49,12 +53,12 @@ bootstrap.addBundle(authBundle);
 public String get(@Auth Credentials credentials, @PathParam("id") String id) {
 ...
 ```
-Now it is ready to control all request paths according to you provided stores. (Yes you will provide stores for user roles and permissions.)
+Artık istekler için kimlik doğrulamasını uyguladınız. Kullanıcı yetkileri ve izinleri üzerinden kontrolünüzü sağlamaya hazır.
 
-## Details
-Configuration, usage, default asset servlets will be explained below. 
-### Configuration
-`AdvancedAssetBundle`will read configurations from YML. As default `robe-admin` we get it under assets. You can define multiple asset servlets. Sample is below.
+## Detaylar
+Yapılandırma, kullanım, varsayılan ayarlar aşağıda açıklanacaktır.
+### Yapılandırma
+`TokenBasedAuthBundle` yapılandırma ayarlarını yml içinden okumaktadır.Örnek aşağıdaki gibidir 
 ```yml
 auth:
   tokenKey: auth-token
@@ -66,27 +70,24 @@ auth:
   algorithm: PBEWithMD5AndTripleDES
   serverPassword: auto # auto for uuid, if it is cluster use custom password
    ```
-As you see we defined a token which will work with the given cookie properties and encrypted with a random password using `PBEWithMD5AndTripleDES` algorithm.
-Visit [Wikipedia Http Cookie](http://en.wikipedia.org/wiki/HTTP_cookie) for more info about cookie properties.
-Field details,
-* `tokenKey` : Name of the token cookie. This will be used for token operations.
-* `domain` : domain for the cookie. 
-* `path` : path for the cookie
-* `maxage` : max age for the cookie in seconds
-* `secure` : secure parameter for cookie.
-* `poolSize`: CPU core limit for crypto operations. [See](http://www.jasypt.org/)
-* `algorithm` : Algorithm for crypto operations. Stronger it gets harder it takes. [See](http://www.jasypt.org/)
-* `serverPassword`: Password for token operations. 
- * `auto`: An automatic parsword generation per server. All nodes will take different password.
- * `aaaabbbb`: Given password will be used for token generation. Same passwords will make nodes understand each other.
+Örnekte görüldüğü gibi token parametrelere göre çalışmakta ve rastgele `PBEWithMD5AndTripleDES` algoritmasına göre şifrelenmektedir. Çerezler hakkında daha fazla bilgi için [Wikipedia Http Cookie](http://en.wikipedia.org/wiki/HTTP_cookie) ziyaret ediniz.
+Parametre detayları,
+* `tokenKey` : Token için belirtilen çerez adı. Token işlemleri için kullanılacaktırç
+* `domain` : Zerez etki adı 
+* `path` : Çerez yolu
+* `maxage` : Çerezin maksimum geçerli olacağı saniye sayısı.
+* `secure` : Çerez için güvenlik parametresi.
+* `poolSize`: Şifreleme işlemleri için CPU çekirdek sınırı.. [Bakınız](http://www.jasypt.org/)
+* `algorithm` : Kripto işlemleri için algoritma. Güçlü olması kırmayı zorlaştırır. [Bakınız](http://www.jasypt.org/)
+* `serverPassword`: Token işlemleri için şifre. 
+ * `auto`: Her sunucu için otomatik şifre üretme işlemi. An automatic parsword generation per server. Her düğüm için ayrı bir şifre alacaktır.
+ * `aaaabbbb`: Verilen şifre token üretmek için kullanılacaktır. Aynı şifre düğümleri diğerlerini anlamlı hale getirecektir.
  
-### Responses
+### Yanıtlar
 
+`UNAUTHORIZED(401, "Unauthorized")`: Eğer kullanıcının yetkisi mevcut değilse.
 
-
-`UNAUTHORIZED(401, "Unauthorized")`: If user is unauthhorized.
-
-`FORBIDDEN(403, "Forbidden")`: If user has no permission for the given path.
+`FORBIDDEN(403, "Forbidden")`: Gidilen path için yetkisi mevcut değilse.
   
 
 

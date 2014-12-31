@@ -54,7 +54,7 @@ Now it is ready to control all request paths according to you provided stores. (
 ## Details
 Configuration, usage, default asset servlets will be explained below. 
 ### Configuration
-`AdvancedAssetBundle`will read configurations from YML. As default `robe-admin` we get it under assets. You can define multiple asset servlets. Sample is below.
+`TokenBasedAuthBundle`will read configurations from YML.
 ```yml
 auth:
   tokenKey: auth-token
