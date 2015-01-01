@@ -14,7 +14,8 @@ public class Ticket extends BaseEntity {
     private Type type;
     @Column
     private Date expirationDate;
-    @ManyToOne(targetEntity = User.class)
+
+    @ManyToOne(cascade = CascadeType.REFRESH, targetEntity = User.class)
     @JoinColumn(name = "ticketUser")
     private User user;
 

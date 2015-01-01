@@ -2,10 +2,13 @@ package io.robe.admin.hibernate.entity;
 
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import io.robe.auth.data.entry.UserEntry;
 import io.robe.hibernate.entity.BaseEntity;
 
 import javax.persistence.*;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Table
@@ -31,6 +34,19 @@ public class User extends BaseEntity implements UserEntry {
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "roleOid")
     private Role role;
+
+    @JsonIgnore
+    @JsonManagedReference("ticket")
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.LAZY, targetEntity = Ticket.class, orphanRemoval = true)
+    private List<Ticket> tickets = new ArrayList<Ticket>();
+
+    public List<Ticket> getTickets() {
+        return tickets;
+    }
+
+    public void setTickets(List<Ticket> tickets) {
+        this.tickets = tickets;
+    }
 
     public String getEmail() {
         return email;
