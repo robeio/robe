@@ -1,4 +1,3 @@
-![Robe logo](http://goo.gl/pyt3tZ)
 # Robe.io
 #### *A brand new robe for dropwizard.*
 ----------------------------------------
@@ -12,11 +11,11 @@ Projenin ana motivasyonu kolaylık ve anlaşılırlık ilkeleri ile belirlenmiş
 
 Robe Admin Desteklediği Tarayıcılar: ([BrowserStack](http://www.browserstack.com)  üzerinde testleri yapılmıştır.)
                                   
-* Internet Exporer 8.0 + 
-* Chrome 14.0 + 
-* Firefox 4.0 + 
-* Safari 4.0 + 
-* Opera 15.0 +
+- [x] Internet Exporer 8.0 +
+- [x] Chrome 14.0 +
+- [x] Firefox 4.0 +
+- [x] Safari 4.0 +
+- [x] Opera 15.0 +
 
 ##Başlangıç
 Robe Temel Fonksiyonları:
