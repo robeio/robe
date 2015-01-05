@@ -18,7 +18,7 @@ Robe solves these complication by including various production ready libraries a
 
 **Robe.Guice :** Guice is the open source Google Java library used for dependency injection. This package also includes all the auto scanning for resources, entities, tasks, managed commands, providers, injectable providers and health checks.
 
-**Robe.Hibernate :**  This module reads the user's configuration file and maps the entity classes within the given packages and specifically stated class names to Dropwizard's hibernate module.
+**Robe.Hibernate :**  This module reads the user's configuration file and maps the entity classes within the given packages and specifically stated class names to Dropwizard's hibernate module.[Details](./docs/en/modules/robe-hibernate.md)
 
 **Robe.Mail :** This module handles mail template creation, mail queue operations and mail authentication etc. These operations are handled in a developer friendly approach.(Not fully implemented yet)
  
