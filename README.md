@@ -19,7 +19,7 @@ This module includes all the solutions of job related issues with the help of qu
 ### robe-convert [more...](./docs/en/modules/robe-convert.md)
 This module is designed for mapping methodology. It manages file importing and exporting between formats(xls, xlsx, xml, csv, tsv, json) to POJOs with the help of annotations. Annotations prevents the developer to write extra code for validating the procedure. 
 
-### robe-crud [more...](./docs/en/modules/robe-convert.md)
+### robe-crud 
 Crud analyses the package given by the user and finds the entity classes. Crud module creates the RESTful web services and JavaScript files accordingly with the previously given entity classes. For the time being in the front-end part, Crud is backed by KendoUI, based on JQuery. Support for different JavaScript libraries is still on development.
 
 ### robe-guice  [more...](./docs/en/modules/robe-convert.md)
@@ -28,10 +28,10 @@ Guice is the open source Google Java library used for dependency injection. This
 ### robe-hibernate [more...](./docs/en/modules/robe-hibernate.md)
 This module reads the user's configuration file and maps the entity classes within the given packages and specifically stated class names to Dropwizard's hibernate module.
 
-### robe-mail:
+### robe-mail [more...](./docs/en/modules/robe-mail.md)
 This module handles mail template creation, mail queue operations and mail authentication etc. These operations are handled in a developer friendly approach.(Not fully implemented yet)
 
-### robe-admin-panel
+### robe-admin-panel 
 This module handles admin operations which are assigned to the administrators. These operations allows controlling UI, users, roles, permissions, mails and scheduled tasks. AdminPanel is developed with KendoUI and allows the user to observe server metric information. In case of a need in changing the UI, the developer can place their application's menus in this panel. 
 
 
