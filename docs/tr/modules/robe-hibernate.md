@@ -1,6 +1,6 @@
 # robe-hibernate
 ---
-Bu modül YML dosyasından yapılandırma ayarlarını okur ve verilen paket isimleriyle ve özellikle belirtilen sınf isimleiyle birlikte Dropwizard Hibernate modulü ile eşleştirir.
+Bu modül YML dosyasından yapılandırma ayarlarını okur ve verilen paket isimleriyle ve özellikle belirtilen sınf isimleriyle birlikte Dropwizard Hibernate modulü ile eşleştirir.
 ## Motivasyon
 YMl dosyası içerisinden basit bir şekilde ek `Base` sınıfları ile genişletilmiş `Entity` tarama sisteminin oluşturulması.
 

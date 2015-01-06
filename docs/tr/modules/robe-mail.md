@@ -12,7 +12,7 @@ Yarattığınız bir mail bundle aşağıdaki özellikleri sağlar.
 ## Başlarken
 Mail bundle kullanmanız için aşağıdaki 4 adımı tamamlamanız gerekmektedir.
 
-* Bağımlılığı ekleyin
+* Bağımlılığı ekleyin(Örnek: Maven)
 
 ```xml
 <dependency>
