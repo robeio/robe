@@ -59,7 +59,7 @@ parameter.put("surname", entity.getSurname());
 template.process(parameter, out);
 mailItem.setBody(out.toString());
 ```
-Now it is ready to control all request paths according to you provided stores. (Yes you will provide stores for user roles and permissions.)
+Now it is ready for send mail.
 
 ## Details
 
