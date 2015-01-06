@@ -69,5 +69,5 @@ mailItem.setBody(out.toString());
  
  
 * Gönderici iş parçacığı her yeni eleman eklendiğinde uyanır ve kuyruk boşalanana kadar çalışmaya başlar.  
-* Kuruktaki her öğe yanlızca bir kez tüketiliyor olacak. 
+* Kuyruktaki her öğe yanlızca bir kez tüketiliyor olacak.
 * Herhangi bir hata oluşması halinde, bu hatanın işlenmesi geliştiricinin sorumluluğundadır. {@link io.robe.mail.MailEvent}.
