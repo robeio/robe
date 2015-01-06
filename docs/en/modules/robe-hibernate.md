@@ -7,7 +7,6 @@ Creating an extended entity scanning system with additional `Base` classes for e
 ## Getting started
 You have to complete 3 steps in order to start using robe-hibernate bundle.
 * Add dependency (Maven sample)
-
 ```xml
 <dependency>
   <groupId>io.robe</groupId>
