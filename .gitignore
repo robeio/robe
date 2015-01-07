@@ -25,5 +25,5 @@ target/
 # netbeans
 nbactions.xml
 
-!robe-crud/disk/robe-crud-html-gui.jar
-!robe-crud/disk/robe-crud-java-gui.jar
+#!robe-crud/disk/robe-crud-html-gui.jar
+#!robe-crud/disk/robe-crud-java-gui.jar
