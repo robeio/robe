@@ -6,8 +6,7 @@ CRUD, sunucu tarafında ve önyüzde hazırlanması uzun zaman alan CRUD ekranla
 
 ## Başlarken
 robe-crud modülünü kullanmak için jar dosyalarını indirmeniz gerekmektedir.
-[RobeCrudGUI](https://github.com/robeio/robe/blob/master/robe-crud/disk/robe-crud-java-gui.jar?raw=true) ve [RobeHtmlCrudGUI](https://github
-.com/robeio/robe/blob/master/robe-crud/disk/robe-crud-html-gui.jar?raw=true) linklerinden jar dosyalarını indirebilirsiniz.
+[RobeCrudGUI](https://github.com/robeio/robe/blob/master/robe-crud/disk/robe-crud-java-gui.jar?raw=true) ve [RobeHtmlCrudGUI](https://github.com/robeio/robe/blob/master/robe-crud/disk/robe-crud-html-gui.jar?raw=true) linklerinden jar dosyalarını indirebilirsiniz.
 
 * Pojo sınıfları üzerinde `@Entity` olması.
 
