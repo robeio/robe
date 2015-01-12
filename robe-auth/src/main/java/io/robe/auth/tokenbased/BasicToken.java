@@ -135,7 +135,7 @@ public class BasicToken implements Token {
     private void generateAttributesHash(Map<String, String> attributes) {
         StringBuilder attr = new StringBuilder();
         attr.append(attributes.get("userAgent"));
-        attr.append(attributes.get("remoteAddr"));
+//        attr.append(attributes.get("remoteAddr")); TODO: add remote ip address after you find how to get remote IP from HttpContext
         attributesHash = Hashing.sha256().hashString(attr.toString(), StandardCharsets.UTF_8).toString();
         resetTokenString();
     }

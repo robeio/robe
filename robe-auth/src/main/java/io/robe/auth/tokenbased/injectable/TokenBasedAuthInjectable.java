@@ -119,7 +119,7 @@ public class TokenBasedAuthInjectable<T extends Token> extends AbstractHttpConte
     public String generateAttributesHash(HttpRequestContext request) {
         StringBuilder attr = new StringBuilder();
         attr.append(request.getHeaderValue("User-Agent"));
-        attr.append(request.getRequestUri().getHost());
+//        attr.append(request.getRequestUri().getHost()); TODO: add remote ip address after you find how to get remote IP from HttpContext
         return Hashing.sha256().hashString(attr.toString(), StandardCharsets.UTF_8).toString();
     }
 
