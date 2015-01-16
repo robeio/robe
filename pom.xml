@@ -37,7 +37,7 @@
 
     <groupId>io.robe</groupId>
     <artifactId>robe-parent</artifactId>
-    <version>0.4.2</version>
+    <version>0.4.3</version>
     <packaging>pom</packaging>
     <name>Robe Project</name>
     <url>www.robe.io</url>
