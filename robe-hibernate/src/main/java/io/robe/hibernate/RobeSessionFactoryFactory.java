@@ -10,6 +10,7 @@ import org.hibernate.SessionFactory;
 import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
 import org.hibernate.cfg.AvailableSettings;
 import org.hibernate.cfg.Configuration;
+import org.hibernate.cfg.NamingStrategy;
 import org.hibernate.engine.jdbc.connections.internal.DatasourceConnectionProviderImpl;
 import org.hibernate.engine.jdbc.connections.spi.ConnectionProvider;
 import org.hibernate.service.ServiceRegistry;
@@ -27,7 +28,7 @@ public class RobeSessionFactoryFactory {
     public SessionFactory build(HibernateBundle<?> bundle,
                                 Environment environment,
                                 DataSourceFactory dbConfig,
-                                List<Class<?>> entities) throws ClassNotFoundException {
+                                List<Class<?>> entities) throws Exception {
         final ManagedDataSource dataSource = dbConfig.build(environment.metrics(), "hibernate");
         return build(bundle, environment, dbConfig, dataSource, entities);
     }
@@ -36,7 +37,7 @@ public class RobeSessionFactoryFactory {
                                 Environment environment,
                                 DataSourceFactory dbConfig,
                                 ManagedDataSource dataSource,
-                                List<Class<?>> entities) throws ClassNotFoundException {
+                                List<Class<?>> entities) throws Exception {
         final ConnectionProvider provider = buildConnectionProvider(dataSource,
                 dbConfig.getProperties());
         final SessionFactory factory = buildSessionFactory(bundle,
@@ -61,7 +62,7 @@ public class RobeSessionFactoryFactory {
                                                DataSourceFactory dbConfig,
                                                ConnectionProvider connectionProvider,
                                                Map<String, String> properties,
-                                               List<Class<?>> entities) {
+                                               List<Class<?>> entities) throws Exception {
         final Configuration configuration = new Configuration();
         configuration.setProperty(AvailableSettings.CURRENT_SESSION_CONTEXT_CLASS, "managed");
         configuration.setProperty(AvailableSettings.USE_SQL_COMMENTS, Boolean.toString(dbConfig.isAutoCommentsEnabled()));
@@ -73,11 +74,8 @@ public class RobeSessionFactoryFactory {
         configuration.setProperty(AvailableSettings.USE_NEW_ID_GENERATOR_MAPPINGS, "true");
         configuration.setProperty("jadira.usertype.autoRegisterUserTypes", "true");
 
-	    String prefix = properties.get("hibernate.prefix");
-	    if (prefix != null) {
-		    configuration.setNamingStrategy(new RobeHibernateNamingStrategy(prefix));
-		    LOGGER.info("Table Prefix: ", prefix);
-	    }
+        determineNamingStrategy(properties, configuration);
+
         for (Map.Entry<String, String> property : properties.entrySet()) {
             configuration.setProperty(property.getKey(), property.getValue());
         }
@@ -92,6 +90,22 @@ public class RobeSessionFactoryFactory {
 
         return configuration.buildSessionFactory(registry);
     }
+
+    private void determineNamingStrategy(Map<String, String> properties, Configuration configuration) throws Exception {
+        String prefix = properties.get("hibernate.prefix");
+        if (prefix != null) {
+            configuration.setNamingStrategy(new RobeHibernateNamingStrategy(prefix));
+            LOGGER.info("Table Prefix: ", prefix);
+        }
+
+        String namingStrategy = properties.get("hibernate.namingStrategy");
+        if (namingStrategy != null) {
+            LOGGER.warn("Hibernate.prefix property will be ignored, cause: another type of naming strategy selected");
+            configuration.setNamingStrategy((NamingStrategy) Class.forName(namingStrategy).newInstance());
+        }
+
+    }
+
 
     private void addAnnotatedClasses(Configuration configuration,
                                      Iterable<Class<?>> entities) {

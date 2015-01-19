@@ -1,12 +1,12 @@
 package io.robe.hibernate.conf;
 
-import org.hibernate.cfg.ImprovedNamingStrategy;
+import org.hibernate.cfg.DefaultNamingStrategy;
 
 /**
  * Custom named strategy for table names
  * read from robe.yml -hibernate.prefix
  */
-public class RobeHibernateNamingStrategy extends ImprovedNamingStrategy {
+public class RobeHibernateNamingStrategy extends DefaultNamingStrategy {
     private static final long serialVersionUID = 1L;
     private String prefix;
 
