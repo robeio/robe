@@ -21,7 +21,7 @@ public class MailTemplate extends BaseEntity {
     @Column(name = "lang", nullable = false)
     private Type lang;
 
-    @Column(name = "mailTemplate", nullable = false, columnDefinition = "Text")
+    @Column(name = "mailTemplate", nullable = false)
     private String template;
 
     public String getCode() {
