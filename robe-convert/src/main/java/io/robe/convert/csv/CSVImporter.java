@@ -35,14 +35,12 @@ public class CSVImporter<T> extends Importer<T> {
 
     @Override
     public List<T> importStream(InputStream inputStream) throws Exception {
-        System.out.println("Delimeter char : " + preference.getDelimiterChar());
         return importStream(inputStream, DEFAULT_ENCODING);
     }
 
     @Override
     public List<T> importStream(InputStream inputStream, String charSetName) throws Exception {
 
-        System.out.println("Delimeter char : " + preference.getDelimiterChar());
         final List<T> list = new LinkedList<>();
 
         DefaultOnItemHandler handler = new DefaultOnItemHandler(list);
