@@ -9,6 +9,7 @@ import io.robe.convert.xml.parsers.Parsers;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.lang.reflect.Field;
 import java.util.LinkedList;
 import java.util.List;
@@ -24,7 +25,11 @@ public class XMLImporter<T> extends Importer<T> {
 
     @Override
     public List<T> importStream(InputStream inputStream) throws Exception {
+        return importStream(inputStream, DEFAULT_ENCODING);
+    }
 
+    @Override
+    public List<T> importStream(InputStream inputStream, String charSetName) throws Exception {
         final List<T> list = new LinkedList<T>();
         OnItemHandler<T> handler = new OnItemHandler<T>() {
             @Override
@@ -32,14 +37,20 @@ public class XMLImporter<T> extends Importer<T> {
                 list.add(item);
             }
         };
-        importStream(inputStream, handler);
+        importStream(inputStream, handler, charSetName);
         return list;
     }
 
     @Override
     public void importStream(InputStream inputStream, OnItemHandler handler) throws Exception {
+        importStream(inputStream, handler, DEFAULT_ENCODING);
+    }
+
+    @Override
+    public void importStream(InputStream inputStream, OnItemHandler handler, String charSetName) throws Exception {
+
         XmlFactory factory = new XmlFactory();
-        JsonParser parser = factory.createParser(inputStream);
+        JsonParser parser = factory.createParser(new InputStreamReader(inputStream, charSetName));
         JsonToken current;
 
         Map<String, Field> fields = getFieldMap(getDataClass());
@@ -73,7 +84,7 @@ public class XMLImporter<T> extends Importer<T> {
 
     private <T> void setField(JsonParser parser, T item, Field field) throws IllegalAccessException, IOException {
         String fieldType = field.getType().getSimpleName().toUpperCase(Locale.ENGLISH);
-        if(field.getType().getGenericSuperclass() != null) {
+        if (field.getType().getGenericSuperclass() != null) {
             if (field.getType().getGenericSuperclass().toString().startsWith("java.lang.Enum")) {
                 fieldType = "ENUM";
             }

@@ -35,12 +35,19 @@ public class CSVImporter<T> extends Importer<T> {
 
     @Override
     public List<T> importStream(InputStream inputStream) throws Exception {
+        System.out.println("Delimeter char : " + preference.getDelimiterChar());
+        return importStream(inputStream, DEFAULT_ENCODING);
+    }
 
+    @Override
+    public List<T> importStream(InputStream inputStream, String charSetName) throws Exception {
+
+        System.out.println("Delimeter char : " + preference.getDelimiterChar());
         final List<T> list = new LinkedList<>();
 
         DefaultOnItemHandler handler = new DefaultOnItemHandler(list);
         try {
-            this.importStream(inputStream, handler);
+            this.importStream(inputStream, handler, charSetName);
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -49,14 +56,20 @@ public class CSVImporter<T> extends Importer<T> {
 
     @Override
     public void importStream(InputStream inputStream, OnItemHandler handler) throws Exception {
+        this.importStream(inputStream, handler, DEFAULT_ENCODING);
+    }
 
-        Reader reader = new InputStreamReader(inputStream);
+    @Override
+    public void importStream(InputStream inputStream, OnItemHandler handler, String charSetName) throws Exception {
+
+        Reader reader = new InputStreamReader(inputStream, charSetName);
 
         ICsvBeanReader csvBeanReader = new CsvBeanReader(reader, this.preference);
         Object obj;
         while ((obj = csvBeanReader.<T>read(getDataClass(), this.fieldNames, this.processors)) != null) {
             handler.onItem(obj);
         }
+
     }
 
 }
