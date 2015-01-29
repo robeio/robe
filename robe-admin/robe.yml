@@ -70,12 +70,6 @@ quartz:
 #      org.quartz.jobStore.driverDelegateClass: org.quartz.impl.jdbcjobstore.StdJDBCDelegate
 
 
-# Message queue configuration
-messageQueue:
-  host: mq.example.com
-  port: 5673
-
-
 auth:
   tokenKey: auth-token
   domain: 127.0.0.1

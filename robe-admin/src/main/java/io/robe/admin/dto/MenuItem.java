@@ -5,13 +5,16 @@ import java.util.List;
 
 public class MenuItem {
     private String text;
-    private String cssClass;
+    private String command;
     private List<MenuItem> items = new LinkedList<MenuItem>();
     private boolean expanded = true;
+    private int itemOrder;
 
-    public MenuItem(String text, String cssClass) {
-        this.cssClass = cssClass;
+
+    public MenuItem(String text, String command,int itemOrder) {
+        this.command = command;
         this.text = text;
+        this.itemOrder = itemOrder;
     }
 
     public String getText() {
@@ -23,12 +26,12 @@ public class MenuItem {
     }
 
 
-    public String getCssClass() {
-        return cssClass;
+    public String getCommand() {
+        return command;
     }
 
-    public void setCssClass(String cssClass) {
-        this.cssClass = cssClass;
+    public void setCommand(String command) {
+        this.command = command;
     }
 
     public List<MenuItem> getItems() {
@@ -45,5 +48,13 @@ public class MenuItem {
 
     public void setExpanded(boolean expanded) {
         this.expanded = expanded;
+    }
+
+    public int getItemOrder() {
+        return itemOrder;
+    }
+
+    public void setItemOrder(int itemOrder) {
+        this.itemOrder = itemOrder;
     }
 }

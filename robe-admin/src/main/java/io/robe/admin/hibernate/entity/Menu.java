@@ -18,6 +18,7 @@ public class Menu extends BaseEntity {
     private String name;
 
     @OneToMany(mappedBy = "parentOid", fetch = FetchType.LAZY)
+    @OrderBy("itemOrder ASC")
     private List<Menu> items = new LinkedList<Menu>();
 
     @Column

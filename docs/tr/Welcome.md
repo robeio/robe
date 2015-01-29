@@ -19,6 +19,7 @@ Robe Admin Desteklediği Tarayıcılar: ([BrowserStack](http://www.browserstack.
 
 ##Başlangıç
 Robe Temel Fonksiyonları:
+
 * **Robe.Auth :**  Bütün kısıtlamalar ve yetkilendirmeler servis bazında sağlanmakta olup, kullanıcıya ekran kısıtlamanın yanında seçilen servisin yetkisiz kullanılamaması gibi güvenlik opsiyonları getirilmiştir.
 * **Robe.Quartz :** Uygulama üzerindeki bütün zamanlanmış görevlerin yerine getirilmesi için quartz job kütüphanesi eklenmiştir. Zamanlanmış görevler bu yapı sayesinde tam olarak platform bağımsız çalışmaktadır. Görev planlanması Java Annotaions kullanılarak yapılmaktadır. Tek bir annotation ile belirtilen sınıfa, görev ve zaman ataması yapılabilir.
 * **Robe.Common :** Bu modül, Robe içerisindeki diğer tüm modüllerin ortak kullanım alanı olarak tanımlanabilir. Özel exception işleme, veri transfer nesneleri, sunucu metrik bilgileri ve özel dosya işlemleri gibi bir çok sınıfı barındırır.

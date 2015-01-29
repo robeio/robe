@@ -6,6 +6,7 @@ import io.robe.admin.hibernate.entity.Menu;
 import io.robe.hibernate.dao.BaseDao;
 import org.hibernate.Criteria;
 import org.hibernate.SessionFactory;
+import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Restrictions;
 
 import java.util.List;
@@ -26,6 +27,7 @@ public class MenuDao extends BaseDao<Menu> {
     public List<Menu> findHierarchicalMenu() {
         Criteria criteria = currentSession().createCriteria(Menu.class);
         criteria.add(Restrictions.isNull("parentOid"));
+        criteria.addOrder(Order.desc("itemOrder"));
         return list(criteria);
     }
 }
