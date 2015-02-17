@@ -99,7 +99,7 @@ public class UserResource {
         entity.setActive(user.isActive());
         Role role = roleDao.findById(user.getRoleOid());
         if (role == null) {
-            throw new RobeRuntimeException("Role", user.getEmail() + ExceptionMessages.CANT_BE_NULL.toString());
+            throw new RobeRuntimeException("Role", "Role can not be null.Please select role and try again");
         }
         entity.setRole(role);
         entity.setPassword(UUID.randomUUID().toString());
