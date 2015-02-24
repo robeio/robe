@@ -34,9 +34,9 @@ class MailSender {
     }
 
     private void setProperties() {
-	    LOGGER.debug("Setting configuration.");
-	    LOGGER.debug(configuration.toString());
-	    PROPERTIES.put("mail.smtp.host", configuration.getHost());
+        LOGGER.debug("Setting configuration.");
+        LOGGER.debug(configuration.toString());
+        PROPERTIES.put("mail.smtp.host", configuration.getHost());
         PROPERTIES.put("mail.smtp.port", configuration.getPort());
         PROPERTIES.put("mail.smtp.auth", configuration.isAuth());
         PROPERTIES.put("mail.smtp.starttls.enable", configuration.isTlsssl());
@@ -50,46 +50,47 @@ class MailSender {
 
     /**
      * Sends a mail with the given item.
+     *
      * @param item MailItem to be send.
      */
     public void sendMessage(MailItem item) throws MessagingException {
-	    checkNotNull(item.getReceivers());
-	    checkNotNull(item.getReceivers().get(0));
-	    checkNotNull(item.getTitle());
-	    checkNotNull(item.getBody());
+        checkNotNull(item.getReceivers());
+        checkNotNull(item.getReceivers().get(0));
+        checkNotNull(item.getTitle());
+        checkNotNull(item.getBody());
 
-	    //If sender is empty send with the account sender.
-	    Message msg = new MimeMessage(session);
-	    if (item.getSender() == null || item.getSender().length() == 0) {
-		    item.setSender(configuration.getUsername());
-	    }
-	    InternetAddress from = new InternetAddress(item.getSender());
-	    msg.setFrom(from);
+        //If sender is empty send with the account sender.
+        Message msg = new MimeMessage(session);
+        if (item.getSender() == null || item.getSender().length() == 0) {
+            item.setSender(configuration.getUsername());
+        }
+        InternetAddress from = new InternetAddress(item.getSender());
+        msg.setFrom(from);
 
         MimeBodyPart attachFilePart = new MimeBodyPart();
-	    if (item.getAttachment() != null) {
-		    attachFilePart.setDataHandler(new DataHandler(item.getAttachment()));
-		    attachFilePart.setFileName(item.getAttachment().getName());
-	    }
+        if (item.getAttachment() != null) {
+            attachFilePart.setDataHandler(new DataHandler(item.getAttachment()));
+            attachFilePart.setFileName(item.getAttachment().getName());
+        }
 
-	    InternetAddress[] to = new InternetAddress[item.getReceivers().size()];
-	    for (int i = 0; i < item.getReceivers().size(); i++) {
-		    to[i] = new InternetAddress(item.getReceivers().get(i));
-	    }
-	    msg.setRecipients(Message.RecipientType.TO, to);
+        InternetAddress[] to = new InternetAddress[item.getReceivers().size()];
+        for (int i = 0; i < item.getReceivers().size(); i++) {
+            to[i] = new InternetAddress(item.getReceivers().get(i));
+        }
+        msg.setRecipients(Message.RecipientType.TO, to);
 
-	    msg.setSubject(item.getTitle());
+        msg.setSubject(item.getTitle());
 
-	    MimeBodyPart body = new MimeBodyPart();
-	    body.setContent(item.getBody(), "text/html; charset=UTF-8");
-	    Multipart content = new MimeMultipart();
-	    content.addBodyPart(body);
-	    if (attachFilePart.getLineCount() > 0) {
-	        content.addBodyPart(attachFilePart);
-	    }
+        MimeBodyPart body = new MimeBodyPart();
+        body.setContent(item.getBody(), "text/html; charset=UTF-8");
+        Multipart content = new MimeMultipart();
+        content.addBodyPart(body);
+        if (item.getAttachment() != null) {
+            content.addBodyPart(attachFilePart);
+        }
 
-	    msg.setContent(content);
-	    Transport.send(msg);
+        msg.setContent(content);
+        Transport.send(msg);
     }
 
 
