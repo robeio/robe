@@ -3,9 +3,6 @@ package io.robe.admin.resources;
 import com.codahale.metrics.annotation.Timed;
 import com.google.common.base.Optional;
 import com.google.inject.Inject;
-import freemarker.template.Configuration;
-import freemarker.template.Template;
-import freemarker.template.TemplateException;
 import io.dropwizard.auth.Auth;
 import io.dropwizard.auth.AuthenticationException;
 import io.dropwizard.hibernate.UnitOfWork;
@@ -15,6 +12,7 @@ import io.robe.admin.hibernate.dao.UserDao;
 import io.robe.admin.hibernate.entity.MailTemplate;
 import io.robe.admin.hibernate.entity.Ticket;
 import io.robe.admin.hibernate.entity.User;
+import io.robe.admin.util.TemplateManager;
 import io.robe.auth.AbstractAuthResource;
 import io.robe.auth.Credentials;
 import io.robe.auth.tokenbased.Token;
@@ -34,7 +32,6 @@ import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.UriInfo;
-import java.io.IOException;
 import java.io.StringWriter;
 import java.io.Writer;
 import java.util.HashMap;
@@ -53,7 +50,6 @@ import static org.hibernate.CacheMode.GET;
 public class AuthResource extends AbstractAuthResource<User> {
 
     public static final String E_MAIL = "E-MAIL";
-    public static final String TEMPLATES_PATH = "/templates/";
     private static final Logger LOGGER = LoggerFactory.getLogger(AuthResource.class);
     UserDao userDao;
     @Inject
@@ -87,7 +83,7 @@ public class AuthResource extends AbstractAuthResource<User> {
             Token token = TokenFactory.getInstance().createToken(user.get().getEmail(), DateTime.now(), attributes);
             token.setExpiration(token.getMaxAge());
             credentials.remove("password");
-            credentials.put("domain" , TokenBasedAuthResponseFilter.getTokenSentence("dummy"));
+            credentials.put("domain", TokenBasedAuthResponseFilter.getTokenSentence("dummy"));
 
             return Response.ok().header("Set-Cookie", TokenBasedAuthResponseFilter.getTokenSentence(token.getTokenString())).entity(credentials).build();
         } else {
@@ -127,6 +123,10 @@ public class AuthResource extends AbstractAuthResource<User> {
             throw new RobeRuntimeException("ERROR", "Already opened your behalf tickets available");
         }
 
+        if (!MailManager.hasConfiguration()) {
+            throw new RobeRuntimeException(E_MAIL, "You do not have mail configuration.");
+        }
+
         Ticket ticket = new Ticket();
         ticket.setType(Ticket.Type.CHANGE_PASSWORD);
         ticket.setUser(userOptional.get());
@@ -139,41 +139,27 @@ public class AuthResource extends AbstractAuthResource<User> {
         MailItem mailItem = new MailItem();
 
         Optional<MailTemplate> mailTemplateOptional = mailTemplateDao.findByCode(Ticket.Type.CHANGE_PASSWORD.name());
-        Configuration cfg = new Configuration(Configuration.DEFAULT_INCOMPATIBLE_IMPROVEMENTS);
-        Template template = null;
         Map<String, Object> parameter = new HashMap<String, Object>();
         Writer out = new StringWriter();
 
+        TemplateManager templateManager;
+
         if (mailTemplateOptional.isPresent()) {
             String body = mailTemplateOptional.get().getTemplate();
-            try {
-                template = new Template("robeTemplate", body, cfg);
-                parameter.put("ticketUrl", ticketUrl);
-                parameter.put("name", userOptional.get().getName());
-                parameter.put("surname", userOptional.get().getSurname());
-            } catch (IOException e) {
-                throw new RobeRuntimeException("ERROR", e);
-            }
+
+            templateManager = new TemplateManager("robeTemplate", body);
+            parameter.put("name", userOptional.get().getName());
+            parameter.put("surname", userOptional.get().getSurname());
 
 
         } else {
-            cfg.setClassForTemplateLoading(this.getClass(), TEMPLATES_PATH);
-            parameter.put("ticketUrl", ticketUrl);
-            try {
-                template = cfg.getTemplate("ChangePasswordMail.ftl");
-            } catch (IOException e) {
-                throw new RobeRuntimeException(E_MAIL, e);
-            }
+            templateManager = new TemplateManager("ChangePasswordMail.ftl");
 
         }
+        parameter.put("ticketUrl", ticketUrl);
+        templateManager.setParameter(parameter);
 
-        try {
-            template.process(parameter, out);
-        } catch (TemplateException e) {
-            throw new RobeRuntimeException(E_MAIL, e);
-        } catch (IOException e) {
-            throw new RobeRuntimeException("ERROR", e);
-        }
+        templateManager.process(out);
 
         mailItem.setBody(out.toString());
         mailItem.setReceivers(userOptional.get().getUsername());

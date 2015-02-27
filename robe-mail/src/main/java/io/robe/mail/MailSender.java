@@ -33,6 +33,10 @@ class MailSender {
         setProperties();
     }
 
+    public MailConfiguration getConfiguration() {
+        return configuration;
+    }
+
     private void setProperties() {
         LOGGER.debug("Setting configuration.");
         LOGGER.debug(configuration.toString());

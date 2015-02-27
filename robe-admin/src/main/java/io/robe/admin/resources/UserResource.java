@@ -2,9 +2,6 @@ package io.robe.admin.resources;
 
 import com.google.common.base.Optional;
 import com.google.inject.Inject;
-import freemarker.template.Configuration;
-import freemarker.template.Template;
-import freemarker.template.TemplateException;
 import io.dropwizard.auth.Auth;
 import io.dropwizard.hibernate.UnitOfWork;
 import io.robe.admin.dto.UserDTO;
@@ -17,10 +14,13 @@ import io.robe.admin.hibernate.entity.Role;
 import io.robe.admin.hibernate.entity.Ticket;
 import io.robe.admin.hibernate.entity.User;
 import io.robe.admin.util.ExceptionMessages;
+import io.robe.admin.util.TemplateManager;
+import io.robe.auth.AbstractAuthResource;
 import io.robe.auth.Credentials;
 import io.robe.common.exception.RobeRuntimeException;
 import io.robe.mail.MailItem;
 import io.robe.mail.MailManager;
+import org.apache.commons.codec.binary.Hex;
 import org.hibernate.FlushMode;
 import org.joda.time.DateTime;
 
@@ -29,9 +29,11 @@ import javax.ws.rs.*;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.UriInfo;
-import java.io.IOException;
 import java.io.StringWriter;
 import java.io.Writer;
+import java.nio.charset.StandardCharsets;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 import java.util.*;
 
 import static org.hibernate.CacheMode.GET;
@@ -39,14 +41,10 @@ import static org.hibernate.CacheMode.GET;
 @Path("user")
 @Consumes(MediaType.APPLICATION_JSON)
 @Produces(MediaType.APPLICATION_JSON)
-public class UserResource {
-
-
+public class UserResource extends AbstractAuthResource<User> {
     public static final String E_MAIL = "E-MAIL";
     public static final String TICKET = "TICKET";
-    public static final String TEMPLATES_PATH = "/templates/";
 
-    @Inject
     UserDao userDao;
     @Inject
     RoleDao roleDao;
@@ -56,6 +54,12 @@ public class UserResource {
 
     @Inject
     MailTemplateDao mailTemplateDao;
+
+    @Inject
+    public UserResource(UserDao userDao) {
+        super(userDao);
+        this.userDao = userDao;
+    }
 
     @Path("all")
     @GET
@@ -103,78 +107,64 @@ public class UserResource {
         }
         entity.setRole(role);
         entity.setPassword(UUID.randomUUID().toString());
-
         entity = userDao.create(entity);
 
-
-        Ticket ticket = new Ticket();
-        ticket.setType(Ticket.Type.CHANGE_PASSWORD);
-        ticket.setUser(entity);
-        DateTime expire = DateTime.now().plusDays(5);
-        ticket.setExpirationDate(expire.toDate());
-        ticket = ticketDao.create(ticket);
-        String url = uriInfo.getBaseUri().toString();
-        String ticketUrl = url + "ticket/" + ticket.getOid();
-
-        MailItem mailItem = new MailItem();
-
-        Optional<MailTemplate> mailTemplateOptional = mailTemplateDao.findByCode(Ticket.Type.CHANGE_PASSWORD.name());
-        Configuration cfg = new Configuration(Configuration.DEFAULT_INCOMPATIBLE_IMPROVEMENTS);
-        Template template = null;
-        Map<String, Object> parameter = new HashMap<String, Object>();
-        Writer out = new StringWriter();
-
-        if (mailTemplateOptional.isPresent()) {
-            String body = mailTemplateOptional.get().getTemplate();
-            try {
-                template = new Template("robeTemplate", body, cfg);
+        if (MailManager.hasConfiguration()) {
+            Ticket ticket = new Ticket();
+            ticket.setType(Ticket.Type.CHANGE_PASSWORD);
+            ticket.setUser(entity);
+            DateTime expire = DateTime.now().plusDays(5);
+            ticket.setExpirationDate(expire.toDate());
+            ticket = ticketDao.create(ticket);
+            String url = uriInfo.getBaseUri().toString();
+            String ticketUrl = url + "ticket/" + ticket.getOid();
+            MailItem mailItem = new MailItem();
+            Optional<MailTemplate> mailTemplateOptional = mailTemplateDao.findByCode(Ticket.Type.CHANGE_PASSWORD.name());
+            TemplateManager templateManager;
+            Map<String, Object> parameter = new HashMap<String, Object>();
+            Writer out = new StringWriter();
+            if (mailTemplateOptional.isPresent()) {
+                String body = mailTemplateOptional.get().getTemplate();
+                templateManager = new TemplateManager("robeTemplate", body);
                 parameter.put("name", entity.getName());
                 parameter.put("surname", entity.getSurname());
-            } catch (IOException e) {
-                throw new RobeRuntimeException("ERROR", e);
-            }
-
-        } else {
-            cfg.setClassForTemplateLoading(this.getClass(), TEMPLATES_PATH);
-            try {
-                template = cfg.getTemplate("ChangePasswordMail.ftl");
-            } catch (IOException e) {
-                throw new RobeRuntimeException(E_MAIL, e);
-            }
-
-        }
-
-        try {
-            parameter.put("ticketUrl", ticketUrl);
-            if (template != null) {
-                template.process(parameter, out);
             } else {
-                throw new RobeRuntimeException(E_MAIL, "ChangePasswordMail template not found");
+                templateManager = new TemplateManager("ChangePasswordMail.ftl");
             }
-        } catch (TemplateException e) {
-            throw new RobeRuntimeException(E_MAIL, e);
-        } catch (IOException e) {
-            throw new RobeRuntimeException("ERROR", e);
-        }
 
-        mailItem.setBody(out.toString());
-        mailItem.setReceivers(entity.getUsername());
-        mailItem.setTitle("Robe.io Password Change Request");
-        MailManager.sendMail(mailItem);
+            parameter.put("ticketUrl", ticketUrl);
+
+            templateManager.setParameter(parameter);
+            templateManager.process(out);
+            mailItem.setBody(out.toString());
+            mailItem.setReceivers(entity.getUsername());
+            mailItem.setTitle("Robe.io Password Change Request");
+            MailManager.sendMail(mailItem);
+        } else {
+            try {
+                String password = generateStrongPassword();
+                MessageDigest md = MessageDigest.getInstance("SHA-256");
+                md.update(password.getBytes(StandardCharsets.UTF_8));
+                entity.setPassword(Hex.encodeHexString(md.digest()));
+                UserDTO userDTO = new UserDTO(entity);
+                userDTO.setNewPassword(password);
+                return userDTO;
+
+            } catch (NoSuchAlgorithmException e) {
+                throw new RobeRuntimeException(e);
+            }
+        }
 
         return new UserDTO(entity);
-
     }
 
     @POST
     @UnitOfWork
     public UserDTO update(@Auth Credentials credentials, @Valid UserDTO user) {
-        // Get and check user
         User entity = userDao.findById(user.getOid());
         if (entity == null) {
             throw new RobeRuntimeException("User", user.getOid() + ExceptionMessages.NOT_EXISTS.toString());
         }
-        //Get role and firm and check for null
         Role role = roleDao.findById(user.getRoleOid());
         if (role == null) {
             throw new RobeRuntimeException("Role", user.getEmail() + ExceptionMessages.CANT_BE_NULL.toString());
@@ -234,6 +224,10 @@ public class UserResource {
             throw new RobeRuntimeException(E_MAIL, checkUser.get().getEmail() + " already used by another user. Please use different e-mail.");
         }
 
+        if (!MailManager.hasConfiguration()) {
+            throw new RobeRuntimeException(E_MAIL, "You do not have mail configuration.");
+        }
+
         User entity = new User();
         entity.setEmail(email);
         entity.setName(email);
@@ -258,43 +252,22 @@ public class UserResource {
 
         MailItem mailItem = new MailItem();
 
-        Configuration cfg = new Configuration(Configuration.DEFAULT_INCOMPATIBLE_IMPROVEMENTS);
-        cfg.setClassForTemplateLoading(this.getClass(), TEMPLATES_PATH);
         Map<String, Object> parameter = new HashMap<String, Object>();
         Writer out = new StringWriter();
 
         Optional<MailTemplate> mailTemplateOptional = mailTemplateDao.findByCode(Ticket.Type.REGISTER.name());
-        Template template = null;
 
-
+        TemplateManager templateManager;
         if (mailTemplateOptional.isPresent()) {
             String body = mailTemplateOptional.get().getTemplate();
-            try {
-                template = new Template("robeTemplate", body, cfg);
-
-            } catch (IOException e) {
-                throw new RobeRuntimeException("ERROR", e.getLocalizedMessage());
-            }
-
+            templateManager = new TemplateManager("robeTemplate", body);
         } else {
-            cfg.setClassForTemplateLoading(this.getClass(), TEMPLATES_PATH);
-            try {
-                template = cfg.getTemplate("RegisterMail.ftl");
-            } catch (IOException e) {
-                throw new RobeRuntimeException(E_MAIL, e);
-            }
+            templateManager = new TemplateManager("RegisterMail.ftl");
         }
 
-        try {
-            parameter.put("ticketUrl", ticketUrl);
-            if (template != null) {
-                template.process(parameter, out);
-            } else {
-                throw new RobeRuntimeException(E_MAIL, "ChangePasswordMail template not found");
-            }
-        } catch (TemplateException | IOException e) {
-            throw new RobeRuntimeException("ERROR", e);
-        }
+        parameter.put("ticketUrl", ticketUrl);
+        templateManager.setParameter(parameter);
+        templateManager.process(out);
 
         mailItem.setBody(out.toString());
         mailItem.setReceivers(email);
