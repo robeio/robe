@@ -85,6 +85,11 @@ public class User extends BaseEntity implements UserEntry {
         return active;
     }
 
+    @Override
+    public String getUserId() {
+        return getOid();
+    }
+
     public void setActive(boolean active) {
         this.active = active;
     }

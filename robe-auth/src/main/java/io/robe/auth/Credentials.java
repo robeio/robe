@@ -5,6 +5,7 @@ package io.robe.auth;
  */
 public interface Credentials  {
 
-    public String getUsername();
+    String getUserId();
+    String getUsername();
 }
 

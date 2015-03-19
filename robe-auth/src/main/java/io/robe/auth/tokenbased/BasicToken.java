@@ -33,6 +33,7 @@ public class BasicToken implements Token {
     private static Cache<String, Set<String>> cache;
 
 
+    private String userId;
     private String username;
     private DateTime expireAt;
     private String attributesHash;
@@ -72,7 +73,8 @@ public class BasicToken implements Token {
      * @return
      * @throws Exception
      */
-    public BasicToken(String username, DateTime expireAt, Map<String, String> attributes) {
+    public BasicToken(String userId, String username, DateTime expireAt, Map<String, String> attributes) {
+        this.userId = userId;
         this.username = username;
         this.expireAt = expireAt;
         this.maxAge = defaultMaxAge;
@@ -90,9 +92,10 @@ public class BasicToken implements Token {
         try {
             tokenString = new String(Hex.decodeHex(tokenString.toCharArray()));
             String[] parts = ENCRYPTOR.decrypt(tokenString).split(SEPARATOR);
-            this.username = parts[0];
-            this.expireAt = new DateTime(Long.valueOf(parts[1]));
-            this.attributesHash = parts[2];
+            this.userId = parts[0];
+            this.username = parts[1];
+            this.expireAt = new DateTime(Long.valueOf(parts[2]));
+            this.attributesHash = parts[3];
         } catch (DecoderException e) {
             LOGGER.error("Cant decode token: " + tokenString, e);
             throw e;
@@ -100,6 +103,11 @@ public class BasicToken implements Token {
 
     }
 
+
+    @Override
+    public String getUserId() {
+        return userId;
+    }
 
     @Override
     public String getUsername() {
@@ -130,6 +138,7 @@ public class BasicToken implements Token {
     /**
      * Generates attribute has with 'userAgent', 'remoteAddr' keys.
      * Combines them and hashes with SHA256 and sets the variable.
+     *
      * @param attributes
      */
     private void generateAttributesHash(Map<String, String> attributes) {
@@ -154,7 +163,10 @@ public class BasicToken implements Token {
         //Renew age
         //Stringify token data
         StringBuilder dataString = new StringBuilder();
-        dataString.append(getUsername())
+        dataString
+                .append(getUserId())
+                .append(SEPARATOR)
+                .append(getUsername())
                 .append(SEPARATOR)
                 .append(getExpirationDate().getTime())
                 .append(SEPARATOR)
@@ -168,11 +180,12 @@ public class BasicToken implements Token {
     }
 
     public int getMaxAge() {
-        return maxAge < 1 ? defaultMaxAge:maxAge;
+        return maxAge < 1 ? defaultMaxAge : maxAge;
     }
 
     /**
      * Sets permissions to the cache with current username
+     *
      * @param permissions
      */
     @Override
@@ -202,17 +215,16 @@ public class BasicToken implements Token {
 
         BasicToken that = (BasicToken) o;
 
-        if (!attributesHash.equals(that.attributesHash)) return false;
-        if (!expireAt.equals(that.expireAt)) return false;
+        if (!userId.equals(that.userId)) return false;
         if (!username.equals(that.username)) return false;
+        return attributesHash.equals(that.attributesHash);
 
-        return true;
     }
 
     @Override
     public int hashCode() {
-        int result = username.hashCode();
-        result = 31 * result + expireAt.hashCode();
+        int result = userId.hashCode();
+        result = 31 * result + username.hashCode();
         result = 31 * result + attributesHash.hashCode();
         return result;
     }

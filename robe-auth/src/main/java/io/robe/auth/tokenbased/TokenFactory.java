@@ -26,8 +26,18 @@ public class TokenFactory<I extends Token> {
     private static Constructor constructorByParameters;
     private static Constructor constructorByTokenString;
 
+    private static ThreadLocal<Token> currentLoginToken = new ThreadLocal<Token>();
+
     private TokenFactory() {
 
+    }
+
+    static void setCurrentLoginToken(Token token) {
+        currentLoginToken.set(token);
+    }
+
+    public static Token getCurrentLoginToken() {
+        return currentLoginToken.get();
     }
 
     /**
@@ -63,7 +73,7 @@ public class TokenFactory<I extends Token> {
             LOGGER.info("Configuring token class : " + tokenClass.getName() + " : Failed No such method");
 
         LOGGER.debug("Caching constructors");
-        constructorByParameters = tokenClass.getConstructor(String.class, DateTime.class, Map.class);
+        constructorByParameters = tokenClass.getConstructor(String.class, String.class, DateTime.class, Map.class);
         if (constructorByParameters == null) {
             LOGGER.error("Constructor (String username, DateTime expireAt, Map<String, String> attributes): Missing constructor implementation.");
             throw new RuntimeException("Missing constructor implementation");
@@ -91,8 +101,8 @@ public class TokenFactory<I extends Token> {
      * @return
      * @throws Exception
      */
-    public Token createToken(String username, DateTime expireAt, Map<String, String> attributes) throws Exception {
-        return (I) constructorByParameters.newInstance(username, expireAt, attributes);
+    public Token createToken(String userId, String username, DateTime expireAt, Map<String, String> attributes) throws Exception {
+        return (I) constructorByParameters.newInstance(userId, username, expireAt, attributes);
     }
 
     /**

@@ -81,6 +81,9 @@ public class TokenBasedAuthenticator implements Authenticator<String, Token> {
                     LOGGER.debug("Loading Permissions from Cache: " + tokenString);
                 }
 
+                //Set Token to the thread local for future access.
+                TokenFactory.setCurrentLoginToken(token);
+
                 return Optional.fromNullable(token);
             }
         } catch (Exception e) {

@@ -64,6 +64,7 @@ public class TokenBasedAuthResponseFilter implements ContainerResponseFilter {
                 } else {
                     token.setExpiration(token.getMaxAge());
                     response.getHttpHeaders().putSingle("Set-Cookie", getTokenSentence(token.getTokenString()));
+                    System.out.println(response.getHttpHeaders().get("Set-Cookie"));
                 }
 
             } catch (Exception e) {

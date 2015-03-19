@@ -80,7 +80,7 @@ public class AuthResource extends AbstractAuthResource<User> {
             attributes.put("userAgent", request.getHeader("User-Agent"));
             attributes.put("remoteAddr", request.getRemoteAddr());
 
-            Token token = TokenFactory.getInstance().createToken(user.get().getEmail(), DateTime.now(), attributes);
+            Token token = TokenFactory.getInstance().createToken(user.get().getUserId(), user.get().getEmail(), DateTime.now(), attributes);
             token.setExpiration(token.getMaxAge());
             credentials.remove("password");
             credentials.put("domain", TokenBasedAuthResponseFilter.getTokenSentence("dummy"));
