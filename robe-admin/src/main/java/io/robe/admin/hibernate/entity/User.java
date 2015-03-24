@@ -85,6 +85,7 @@ public class User extends BaseEntity implements UserEntry {
         return active;
     }
 
+    @JsonIgnore
     @Override
     public String getUserId() {
         return getOid();
