@@ -40,13 +40,15 @@ class MailSender {
     private void setProperties() {
         LOGGER.debug("Setting configuration.");
         LOGGER.debug(configuration.toString());
-        PROPERTIES.put("mail.smtp.host", configuration.getHost());
-        PROPERTIES.put("mail.smtp.port", configuration.getPort());
-        PROPERTIES.put("mail.smtp.auth", configuration.isAuth());
-        PROPERTIES.put("mail.smtp.starttls.enable", configuration.isTlsssl());
+
+        PROPERTIES.putAll(configuration.getProperties());
+
+
         session = Session.getDefaultInstance(PROPERTIES, new javax.mail.Authenticator() {
             protected PasswordAuthentication getPasswordAuthentication() {
-                return new PasswordAuthentication(configuration.getUsername(), configuration.getPassword());
+                return new PasswordAuthentication(
+                        PROPERTIES.get(configuration.getUsernameKey()).toString()
+                        , PROPERTIES.get(configuration.getPasswordKey()).toString());
             }
         });
     }
@@ -66,7 +68,7 @@ class MailSender {
         //If sender is empty send with the account sender.
         Message msg = new MimeMessage(session);
         if (item.getSender() == null || item.getSender().length() == 0) {
-            item.setSender(configuration.getUsername());
+            item.setSender(configuration.getProperties().get(configuration.getUsernameKey()).toString());
         }
         InternetAddress from = new InternetAddress(item.getSender());
         msg.setFrom(from);

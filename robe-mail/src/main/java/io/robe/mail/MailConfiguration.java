@@ -1,75 +1,37 @@
 package io.robe.mail;
 
+import java.util.HashMap;
+
 public class MailConfiguration {
-	private String host;
-	private int port;
-	private boolean auth;
-	private String username;
-	private String password;
-	private boolean tlsssl;
+	private String usernameKey;
+	private String passwordKey;
+	private HashMap<String,Object> properties;
 
 	public MailConfiguration() {
 		super();
 	}
 
-	public String getHost() {
-		return host;
+	public HashMap<String, Object> getProperties() {
+		return properties;
 	}
 
-	public void setHost(String host) {
-		this.host = host;
+	public void setProperties(HashMap<String, Object> properties) {
+		this.properties = properties;
 	}
 
-	public int getPort() {
-		return port;
+	public String getUsernameKey() {
+		return usernameKey;
 	}
 
-	public void setPort(int port) {
-		this.port = port;
+	public void setUsernameKey(String usernameKey) {
+		this.usernameKey = usernameKey;
 	}
 
-	public boolean isAuth() {
-		return auth;
+	public String getPasswordKey() {
+		return passwordKey;
 	}
 
-	public void setAuth(boolean auth) {
-		this.auth = auth;
-	}
-
-	public String getUsername() {
-		return username;
-	}
-
-	public void setUsername(String username) {
-		this.username = username;
-	}
-
-	public String getPassword() {
-		return password;
-	}
-
-	public void setPassword(String password) {
-		this.password = password;
-	}
-
-	public boolean isTlsssl() {
-		return tlsssl;
-	}
-
-	public void setTlsssl(boolean tlsssl) {
-		this.tlsssl = tlsssl;
-	}
-
-	@Override
-	public String toString() {
-		final StringBuilder sb = new StringBuilder("MailConfiguration{");
-		sb.append("host='").append(host).append('\'');
-		sb.append(", port=").append(port);
-		sb.append(", auth=").append(auth);
-		sb.append(", username='").append(username).append('\'');
-		sb.append(", password='").append("*********\'");
-		sb.append(", tlsssl=").append(tlsssl);
-		sb.append('}');
-		return sb.toString();
+	public void setPasswordKey(String passwordKey) {
+		this.passwordKey = passwordKey;
 	}
 }
