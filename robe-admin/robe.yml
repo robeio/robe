@@ -32,7 +32,7 @@ hibernate:
 
 logging:
      # The default level of all loggers. Can be OFF, ERROR, WARN, INFO, DEBUG, TRACE, or ALL.
-     level: INFO
+     level: DEBUG
      # Logger-specific levels.
      #loggers:
       #org.hibernate.SQL: ALL
@@ -40,12 +40,15 @@ logging:
 guice:
   scanPackages: [io.robe]
 mail:
- host: smtp.gmail.com
- port: 587
- auth: true
- username: username@gmail.com
- password: password
- tlsssl: true
+ usernameKey: mail.smtp.username
+ passwordKey: mail.smtp.password
+ properties:
+   mail.smtp.username: username@robe.io
+   mail.smtp.password: xxXXXXxx
+   mail.smtp.host: smtp.gmail.com
+   mail.smtp.port: 587
+   mail.smtp.auth: true
+   mail.smtp.starttls.enable: true
 
 # Quartz Scheduler configuration
 quartz:
