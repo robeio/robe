@@ -14,9 +14,11 @@ import io.robe.auth.tokenbased.configuration.TokenBasedAuthConfiguration;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import javax.naming.AuthenticationException;
 import javax.ws.rs.WebApplicationException;
 import javax.ws.rs.core.Cookie;
 import javax.ws.rs.core.Response;
+import java.lang.reflect.InvocationTargetException;
 import java.nio.charset.StandardCharsets;
 import java.util.List;
 
@@ -57,13 +59,13 @@ public class TokenBasedAuthInjectable<T extends Token> extends AbstractHttpConte
 
         Cookie tokenCookie = context.getRequest().getCookies().get(tokenKey);
 
-        if (tokenCookie == null ) {
+        if (tokenCookie == null) {
             throw new WebApplicationException(Response.Status.UNAUTHORIZED);
         } else if (nullOrEmpty(tokenCookie.getValue())) {
             throw new WebApplicationException(Response.Status.UNAUTHORIZED);
         } else {
             try {
-                if(!isRealOwnerOfToken(context, tokenCookie)){
+                if (!isRealOwnerOfToken(context, tokenCookie)) {
                     throw new WebApplicationException(Response.Status.UNAUTHORIZED);
                 }
                 Optional<T> result = authenticator.authenticate(tokenCookie.getValue());
@@ -75,14 +77,18 @@ public class TokenBasedAuthInjectable<T extends Token> extends AbstractHttpConte
                 } else {
                     return result.get();
                 }
-            } catch (Exception e) {
-                LOGGER.debug("BasicPair decoding credentials", e);
+            } catch (io.dropwizard.auth.AuthenticationException e) {
+                LOGGER.error("Authentication Exception  by Dropwizard", e);
+                throw new WebApplicationException(Response.Status.PRECONDITION_FAILED);
+            } catch (InstantiationException | InvocationTargetException | IllegalAccessException e) {
+                LOGGER.error("Authentication Exception  (Is Real ownwer of token) ", e);
                 throw new WebApplicationException(Response.Status.PRECONDITION_FAILED);
             }
         }
     }
 
-    private boolean isRealOwnerOfToken(HttpContext c, Cookie tokenCookie) throws Exception {
+    private boolean isRealOwnerOfToken(HttpContext c, Cookie tokenCookie) throws IllegalAccessException, InvocationTargetException, InstantiationException {
+        LOGGER.debug("HttpContext : " + c + " Cookie : " + tokenCookie);
         Token token = TokenFactory.getInstance().createToken(tokenCookie.getValue());
         String hash = generateAttributesHash(c.getRequest());
         return hash.equals(token.getAttributesHash());

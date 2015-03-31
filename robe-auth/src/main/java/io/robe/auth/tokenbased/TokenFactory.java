@@ -6,6 +6,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.lang.reflect.Constructor;
+import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.Map;
 
@@ -112,7 +113,7 @@ public class TokenFactory<I extends Token> {
      * @return
      * @throws Exception
      */
-    public Token createToken(String tokenString) throws Exception {
+    public Token createToken(String tokenString) throws IllegalAccessException, InvocationTargetException, InstantiationException {
         return (I) constructorByTokenString.newInstance(tokenString);
     }
 
