@@ -228,4 +228,9 @@ public class BasicToken implements Token {
         result = 31 * result + attributesHash.hashCode();
         return result;
     }
+
+
+    public static void clearPermissionCache(String username) {
+        cache.invalidate(username);
+    }
 }
