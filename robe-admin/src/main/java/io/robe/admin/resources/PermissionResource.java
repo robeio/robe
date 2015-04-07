@@ -12,6 +12,7 @@ import io.robe.admin.hibernate.entity.Permission;
 import io.robe.admin.hibernate.entity.Role;
 import io.robe.admin.hibernate.entity.Service;
 import io.robe.auth.Credentials;
+import io.robe.auth.tokenbased.BasicToken;
 import org.hibernate.FlushMode;
 
 import javax.ws.rs.*;
@@ -39,7 +40,7 @@ public class PermissionResource {
 
     @Path("{roleOid}/menu")
     @GET
-    @UnitOfWork(readOnly = true, cacheMode = GET,flushMode = FlushMode.MANUAL)
+    @UnitOfWork(readOnly = true, cacheMode = GET, flushMode = FlushMode.MANUAL)
     public List<String> getRoleHierarchicalMenu(@Auth Credentials credentials, @PathParam("roleOid") String roleOid) {
         Role role = roleDao.findById(roleOid);
         Set<Permission> permissions = role.getPermissions();
@@ -77,7 +78,7 @@ public class PermissionResource {
 
     @Path("{roleOid}/service")
     @GET
-    @UnitOfWork(readOnly = true, cacheMode = GET,flushMode = FlushMode.MANUAL)
+    @UnitOfWork(readOnly = true, cacheMode = GET, flushMode = FlushMode.MANUAL)
     public List<String> getRoleServices(@Auth Credentials credentials, @PathParam("roleOid") String roleOid) {
         Role role = roleDao.findById(roleOid);
         Set<Permission> permissions = role.getPermissions();
@@ -110,6 +111,9 @@ public class PermissionResource {
             permissionDao.create(permission);
 
         }
+
+        BasicToken.clearPermissionCache(credentials.getUsername());
+
         return serviceOids;
     }
 }
