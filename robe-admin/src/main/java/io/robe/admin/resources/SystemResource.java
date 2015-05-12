@@ -1,6 +1,7 @@
 package io.robe.admin.resources;
 
 import io.dropwizard.auth.Auth;
+import io.dropwizard.hibernate.UnitOfWork;
 import io.robe.auth.Credentials;
 import io.robe.common.exception.RobeRuntimeException;
 import io.robe.common.system.HeapDump;
@@ -29,6 +30,7 @@ public class SystemResource {
     @GET
     @Path("heapdump")
     @Produces(MediaType.APPLICATION_OCTET_STREAM)
+    @UnitOfWork
     public Response getHeapDump(@Auth Credentials credentials) {
 
         File dumpFile = HeapDump.dump(false);
