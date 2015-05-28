@@ -9,7 +9,6 @@ import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeBodyPart;
 import javax.mail.internet.MimeMessage;
 import javax.mail.internet.MimeMultipart;
-import java.io.UnsupportedEncodingException;
 import java.util.Properties;
 
 import static com.google.common.base.Preconditions.checkNotNull;
@@ -71,13 +70,7 @@ class MailSender {
         if (item.getSender() == null || item.getSender().length() == 0) {
             item.setSender(configuration.getProperties().get(configuration.getUsernameKey()).toString());
         }
-        InternetAddress from;
-        try {
-            from = new InternetAddress(item.getSender(), item.getSender());
-        } catch (UnsupportedEncodingException e) {
-            LOGGER.error("Error {}, Person {}", e.getMessage(), item.getSender());
-            from = new InternetAddress(item.getSender());
-        }
+        InternetAddress from = new InternetAddress(item.getSender());
         msg.setFrom(from);
 
         MimeBodyPart attachFilePart = new MimeBodyPart();
@@ -90,8 +83,6 @@ class MailSender {
         for (int i = 0; i < item.getReceivers().size(); i++) {
             to[i] = new InternetAddress(item.getReceivers().get(i));
         }
-
-        msg.setReplyTo(new Address[]{new InternetAddress(item.getSender())});
         msg.setRecipients(Message.RecipientType.TO, to);
 
         msg.setSubject(item.getTitle());
