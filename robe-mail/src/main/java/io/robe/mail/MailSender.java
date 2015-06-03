@@ -83,6 +83,8 @@ class MailSender {
         for (int i = 0; i < item.getReceivers().size(); i++) {
             to[i] = new InternetAddress(item.getReceivers().get(i));
         }
+
+        msg.setReplyTo(new Address[]{new InternetAddress(item.getSender())});
         msg.setRecipients(Message.RecipientType.TO, to);
 
         msg.setSubject(item.getTitle());
