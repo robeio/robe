@@ -8,6 +8,7 @@ import io.robe.hibernate.entity.BaseEntity;
 
 import javax.persistence.*;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 @Entity
@@ -39,6 +40,10 @@ public class User extends BaseEntity implements UserEntry {
     @JsonManagedReference("ticket")
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.LAZY, targetEntity = Ticket.class, orphanRemoval = true)
     private List<Ticket> tickets = new ArrayList<Ticket>();
+
+    @Column
+    private Date lastLoginTime;
+    private Date lastLogoutTime;
 
     public List<Ticket> getTickets() {
         return tickets;
@@ -109,4 +114,19 @@ public class User extends BaseEntity implements UserEntry {
         return getEmail();
     }
 
+    public void setLastLoginTime(Date lastLoginTime) {
+        this.lastLoginTime = lastLoginTime;
+    }
+
+    public Date getLastLoginTime() {
+        return lastLoginTime;
+    }
+
+    public void setLastLogoutTime(Date lastLogoutTime) {
+        this.lastLogoutTime = lastLogoutTime;
+    }
+
+    public Date getLastLogoutTime() {
+        return lastLogoutTime;
+    }
 }
