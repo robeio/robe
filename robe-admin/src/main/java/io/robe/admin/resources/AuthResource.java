@@ -15,13 +15,13 @@ import io.robe.admin.hibernate.entity.User;
 import io.robe.admin.util.TemplateManager;
 import io.robe.auth.AbstractAuthResource;
 import io.robe.auth.Credentials;
+import io.robe.auth.tokenbased.BasicToken;
 import io.robe.auth.tokenbased.Token;
 import io.robe.auth.tokenbased.TokenFactory;
 import io.robe.auth.tokenbased.filter.TokenBasedAuthResponseFilter;
 import io.robe.common.exception.RobeRuntimeException;
 import io.robe.mail.MailItem;
 import io.robe.mail.MailManager;
-import org.hibernate.FlushMode;
 import org.joda.time.DateTime;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -36,8 +36,6 @@ import java.io.StringWriter;
 import java.io.Writer;
 import java.util.HashMap;
 import java.util.Map;
-
-import static org.hibernate.CacheMode.GET;
 
 
 /**
@@ -66,7 +64,7 @@ public class AuthResource extends AbstractAuthResource<User> {
 
 
     @POST
-    @UnitOfWork(readOnly = true, cacheMode = GET, flushMode = FlushMode.MANUAL)
+    @UnitOfWork
     @Path("login")
     @Timed
     public Response login(@Context HttpServletRequest request, Map<String, String> credentials) throws Exception {
@@ -85,9 +83,31 @@ public class AuthResource extends AbstractAuthResource<User> {
             credentials.remove("password");
             credentials.put("domain", TokenBasedAuthResponseFilter.getTokenSentence("dummy"));
 
+            user.get().setLastLoginTime(DateTime.now().toDate());
+
             return Response.ok().header("Set-Cookie", TokenBasedAuthResponseFilter.getTokenSentence(token.getTokenString())).entity(credentials).build();
         } else {
             throw new WebApplicationException(Response.Status.UNAUTHORIZED);
+        }
+    }
+
+    @POST
+    @UnitOfWork
+    @Path("logout")
+    @Timed
+    public User logout(@Auth Credentials credentials) throws Exception {
+
+
+        Optional<User> user = userDao.findByUsername(credentials.getUsername());
+        if (!user.isPresent()) {
+            throw new WebApplicationException(Response.Status.UNAUTHORIZED);
+        } else {
+
+            BasicToken.clearPermissionCache(credentials.getUsername());
+
+            user.get().setLastLogoutTime(DateTime.now().toDate());
+
+            return user.get();
         }
     }
 

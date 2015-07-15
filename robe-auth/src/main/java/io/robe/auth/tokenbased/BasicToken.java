@@ -233,6 +233,7 @@ public class BasicToken implements Token {
 
     public static void clearPermissionCache(String username) {
         cache.invalidate(username);
+        cache.cleanUp();
     }
 
     public static Set<String> getCurrentUsernames() {
