@@ -55,8 +55,8 @@ public class TokenBasedAuthResponseFilter implements ContainerResponseFilter {
             try {
                 Token token = TokenFactory.getInstance().createToken(authToken);
                 if (token.isExpired()) {
-                    LOGGER.info("ExpireDate : " + token.getExpirationDate().toString());
-                    LOGGER.info("Now: " + DateTime.now().toDate().toString());
+                    LOGGER.debug("ExpireDate : " + token.getExpirationDate().toString());
+                    LOGGER.debug("Now: " + DateTime.now().toDate().toString());
                     response.getHttpHeaders().putSingle("Set-Cookie", getTokenSentence(""));
                     response.setStatusType(Response.Status.UNAUTHORIZED);
                     response.setEntity("Token expired. Pleas login again.");
@@ -64,7 +64,6 @@ public class TokenBasedAuthResponseFilter implements ContainerResponseFilter {
                 } else {
                     token.setExpiration(token.getMaxAge());
                     response.getHttpHeaders().putSingle("Set-Cookie", getTokenSentence(token.getTokenString()));
-                    System.out.println(response.getHttpHeaders().get("Set-Cookie"));
                 }
 
             } catch (Exception e) {

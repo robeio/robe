@@ -62,6 +62,7 @@ public class BasicToken implements Token {
                 .expireAfterAccess(defaultMaxAge, TimeUnit.SECONDS)
                 .expireAfterWrite(defaultMaxAge, TimeUnit.SECONDS)
                 .build();
+
     }
 
     /**
@@ -232,5 +233,10 @@ public class BasicToken implements Token {
 
     public static void clearPermissionCache(String username) {
         cache.invalidate(username);
+    }
+
+    public static Set<String> getCurrentUsernames() {
+        cache.cleanUp();
+        return cache.asMap().keySet();
     }
 }
