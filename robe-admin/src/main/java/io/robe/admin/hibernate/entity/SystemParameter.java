@@ -2,6 +2,7 @@ package io.robe.admin.hibernate.entity;
 
 import io.robe.hibernate.entity.BaseEntity;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Table;
 
@@ -9,7 +10,9 @@ import javax.persistence.Table;
 @Table
 public class SystemParameter extends BaseEntity {
 
+    @Column(unique = true, name = "PARAMETER_KEY")
     private String key;
+    @Column(name = "PARAMETER_VALUE")
     private String value;
 
     public String getKey() {

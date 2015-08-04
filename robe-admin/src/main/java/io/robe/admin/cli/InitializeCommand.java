@@ -28,13 +28,13 @@ import java.util.Set;
 
 public class InitializeCommand<T extends RobeServiceConfiguration> extends EnvironmentCommand<T> {
 
+    private static final Logger LOGGER = LoggerFactory.getLogger(InitializeCommand.class);
     protected static String IO_ROBE_ADMIN = "io/robe/admin";
     protected static String ADMIN = "Admin";
-    private static final Logger LOGGER = LoggerFactory.getLogger(InitializeCommand.class);
     protected HibernateBundle hibernateBundle;
 
     public InitializeCommand(Application<T> service, HibernateBundle hibernateBundle) {
-        this(service, "initialize", "Runs Hibernate and initialize required columns",hibernateBundle);
+        this(service, "initialize", "Runs Hibernate and initialize required columns", hibernateBundle);
     }
 
     public InitializeCommand(Application<T> service, String name, String description, HibernateBundle hibernateBundle) {
@@ -64,7 +64,7 @@ public class InitializeCommand<T extends RobeServiceConfiguration> extends Envir
 
         if (console != null) {
             // read password from server console
-            password = Arrays.toString(console.readPassword());
+            password = new String(console.readPassword());
         } else {
             // read password from idea console
             Scanner scan = new Scanner(System.in);
@@ -243,6 +243,14 @@ public class InitializeCommand<T extends RobeServiceConfiguration> extends Envir
         quartzJob.setParentOid(manager.getOid());
         session.persist(quartzJob);
         session.persist(createPermission(true, quartzJob.getOid(), role));
+
+        Menu systemParameter = new Menu();
+        systemParameter.setCode("SystemParameter");
+        systemParameter.setItemOrder(0);
+        systemParameter.setName("System Parameter");
+        systemParameter.setParentOid(manager.getOid());
+        session.persist(systemParameter);
+        session.persist(createPermission(true, systemParameter.getOid(), role));
 
         session.flush();
         session.close();
