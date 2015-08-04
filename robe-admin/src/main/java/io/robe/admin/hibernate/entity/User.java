@@ -31,6 +31,9 @@ public class User extends BaseEntity implements UserEntry {
     @Column(nullable = false)
     private boolean active;
 
+    @Column(nullable = false)
+    private int failCount = 0;
+
     @JsonIgnore
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "roleOid")
@@ -128,5 +131,13 @@ public class User extends BaseEntity implements UserEntry {
 
     public Date getLastLogoutTime() {
         return lastLogoutTime;
+    }
+
+    public int getFailCount() {
+        return failCount;
+    }
+
+    public void setFailCount(int failCount) {
+        this.failCount = failCount;
     }
 }
