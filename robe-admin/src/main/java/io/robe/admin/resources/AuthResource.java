@@ -12,6 +12,7 @@ import io.robe.admin.hibernate.dao.UserDao;
 import io.robe.admin.hibernate.entity.MailTemplate;
 import io.robe.admin.hibernate.entity.Ticket;
 import io.robe.admin.hibernate.entity.User;
+import io.robe.admin.util.SystemParameterCache;
 import io.robe.admin.util.TemplateManager;
 import io.robe.auth.AbstractAuthResource;
 import io.robe.auth.Credentials;
@@ -22,6 +23,7 @@ import io.robe.auth.tokenbased.filter.TokenBasedAuthResponseFilter;
 import io.robe.common.exception.RobeRuntimeException;
 import io.robe.mail.MailItem;
 import io.robe.mail.MailManager;
+import org.hibernate.FlushMode;
 import org.joda.time.DateTime;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -64,7 +66,7 @@ public class AuthResource extends AbstractAuthResource<User> {
 
 
     @POST
-    @UnitOfWork
+    @UnitOfWork(flushMode = FlushMode.ALWAYS)
     @Path("login")
     @Timed
     public Response login(@Context HttpServletRequest request, Map<String, String> credentials) throws Exception {
@@ -74,6 +76,8 @@ public class AuthResource extends AbstractAuthResource<User> {
         if (!user.isPresent()) {
             throw new WebApplicationException(Response.Status.UNAUTHORIZED);
         } else if (user.get().getPassword().equals(credentials.get("password"))) {
+            if (!user.get().isActive())
+                return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity("User blocked.").build();
             Map<String, String> attributes = new HashMap<>();
             attributes.put("userAgent", request.getHeader("User-Agent"));
             attributes.put("remoteAddr", request.getRemoteAddr());
@@ -87,7 +91,16 @@ public class AuthResource extends AbstractAuthResource<User> {
 
             return Response.ok().header("Set-Cookie", TokenBasedAuthResponseFilter.getTokenSentence(token.getTokenString())).entity(credentials).build();
         } else {
-            throw new WebApplicationException(Response.Status.UNAUTHORIZED);
+            if (!user.get().isActive())
+                return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity("User blocked.").build();
+            int failCount = user.get().getFailCount() + 1;
+            user.get().setFailCount(failCount);
+            boolean block = failCount >= ((Integer) SystemParameterCache.get("USER_BLOCK_FAIL_LIMIT", 3));
+            if (block)
+                user.get().setActive(false);
+
+            userDao.update(user.get());
+            return Response.status(Response.Status.UNAUTHORIZED).build();
         }
     }
 
