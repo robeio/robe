@@ -1,5 +1,6 @@
 package io.robe.admin.hibernate.dao;
 
+import com.google.common.base.Optional;
 import com.google.inject.Inject;
 import io.robe.admin.hibernate.entity.SystemParameter;
 import io.robe.hibernate.dao.BaseDao;
@@ -15,10 +16,10 @@ public class SystemParameterDao extends BaseDao<SystemParameter> {
     }
 
 
-    public SystemParameter findByPathAndMethod(String key) {
+    public Optional<SystemParameter> findByKey(String key) {
         Criteria criteria = currentSession().createCriteria(SystemParameter.class);
         criteria.add(Restrictions.eq("key", key));
-        return uniqueResult(criteria);
+        return Optional.fromNullable(uniqueResult(criteria));
     }
 
 }
