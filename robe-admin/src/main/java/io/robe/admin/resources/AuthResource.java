@@ -88,6 +88,7 @@ public class AuthResource extends AbstractAuthResource<User> {
             credentials.put("domain", TokenBasedAuthResponseFilter.getTokenSentence("dummy"));
 
             user.get().setLastLoginTime(DateTime.now().toDate());
+            user.get().setFailCount(0);
 
             return Response.ok().header("Set-Cookie", TokenBasedAuthResponseFilter.getTokenSentence(token.getTokenString())).entity(credentials).build();
         } else {
