@@ -9,6 +9,7 @@ import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeBodyPart;
 import javax.mail.internet.MimeMessage;
 import javax.mail.internet.MimeMultipart;
+import java.util.Map;
 import java.util.Properties;
 
 import static com.google.common.base.Preconditions.checkNotNull;
@@ -96,7 +97,20 @@ class MailSender {
         }
 
         msg.setContent(content);
+
+        //update headers
+        msg.saveChanges();
+
         Transport.send(msg);
+
+        // set header value
+        for (Map.Entry<String, String[]> entry : item.getHeaders().entrySet()) {
+            String[] value = msg.getHeader(entry.getKey());
+            if (value != null) {
+                entry.setValue(value);
+            }
+        }
+
     }
 
 

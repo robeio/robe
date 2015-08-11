@@ -183,6 +183,17 @@ public class UserResource extends AbstractAuthResource<User> {
 
     }
 
+    @POST
+    @Path("unblock")
+    @UnitOfWork
+    public UserDTO setActiveAndUnBlock(@Auth Credentials credentials, @Valid UserDTO user) {
+        User entity = userDao.findById(user.getOid());
+        entity.setActive(true);
+        entity.setFailCount(0);
+        entity = userDao.update(entity);
+        return new UserDTO(entity);
+    }
+
 
     @POST
     @Path("updatePassword")
