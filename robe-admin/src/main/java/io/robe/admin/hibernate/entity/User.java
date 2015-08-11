@@ -140,4 +140,21 @@ public class User extends BaseEntity implements UserEntry {
     public void setFailCount(int failCount) {
         this.failCount = failCount;
     }
+
+    @Override
+    public String toString() {
+        final StringBuilder sb = new StringBuilder("User{");
+        sb.append("email='").append(email).append('\'');
+        sb.append(", name='").append(name).append('\'');
+        sb.append(", surname='").append(surname).append('\'');
+        sb.append(", password='").append("******").append('\'');
+        sb.append(", active=").append(active);
+        sb.append(", failCount=").append(failCount);
+        sb.append(", role=").append(role);
+        sb.append(", tickets=").append(tickets);
+        sb.append(", lastLoginTime=").append(lastLoginTime);
+        sb.append(", lastLogoutTime=").append(lastLogoutTime);
+        sb.append('}');
+        return sb.toString();
+    }
 }

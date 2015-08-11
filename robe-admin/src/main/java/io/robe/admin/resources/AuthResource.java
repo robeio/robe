@@ -6,9 +6,11 @@ import com.google.inject.Inject;
 import io.dropwizard.auth.Auth;
 import io.dropwizard.auth.AuthenticationException;
 import io.dropwizard.hibernate.UnitOfWork;
+import io.robe.admin.hibernate.dao.ActionLogDao;
 import io.robe.admin.hibernate.dao.MailTemplateDao;
 import io.robe.admin.hibernate.dao.TicketDao;
 import io.robe.admin.hibernate.dao.UserDao;
+import io.robe.admin.hibernate.entity.ActionLog;
 import io.robe.admin.hibernate.entity.MailTemplate;
 import io.robe.admin.hibernate.entity.Ticket;
 import io.robe.admin.hibernate.entity.User;
@@ -59,6 +61,9 @@ public class AuthResource extends AbstractAuthResource<User> {
     TicketDao ticketDao;
 
     @Inject
+    ActionLogDao actionLogDao;
+
+    @Inject
     public AuthResource(UserDao userDao) {
         super(userDao);
         this.userDao = userDao;
@@ -90,6 +95,8 @@ public class AuthResource extends AbstractAuthResource<User> {
             user.get().setLastLoginTime(DateTime.now().toDate());
             user.get().setFailCount(0);
 
+            logAction(new ActionLog("LOGIN",user.toString(),true));
+
             return Response.ok().header("Set-Cookie", TokenBasedAuthResponseFilter.getTokenSentence(token.getTokenString())).entity(credentials).build();
         } else {
             if (!user.get().isActive())
@@ -101,8 +108,15 @@ public class AuthResource extends AbstractAuthResource<User> {
                 user.get().setActive(false);
 
             userDao.update(user.get());
+            logAction(new ActionLog("LOGIN", user.toString(), true));
+
             return Response.status(Response.Status.UNAUTHORIZED).build();
         }
+    }
+
+    private void logAction(ActionLog login) {
+        login.setOid(null);
+        actionLogDao.create(login);
     }
 
     @POST
