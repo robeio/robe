@@ -13,7 +13,7 @@ public class ActionLog extends BaseEntity {
 
     @Temporal(TemporalType.TIMESTAMP)
     @Column(nullable = false)
-    private Date actionTime;
+    private Date actionTime = new Date();
 
     @Column(nullable = true, length = 255)
     private String description;
