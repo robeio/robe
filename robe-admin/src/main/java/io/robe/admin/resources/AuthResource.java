@@ -95,12 +95,14 @@ public class AuthResource extends AbstractAuthResource<User> {
             user.get().setLastLoginTime(DateTime.now().toDate());
             user.get().setFailCount(0);
 
-            logAction(new ActionLog("LOGIN",user.toString(),true));
+            logAction(new ActionLog("LOGIN", null, user.toString(), true));
 
             return Response.ok().header("Set-Cookie", TokenBasedAuthResponseFilter.getTokenSentence(token.getTokenString())).entity(credentials).build();
         } else {
-            if (!user.get().isActive())
+            if (!user.get().isActive()) {
+                logAction(new ActionLog("LOGIN", "Blocked", user.toString(), false));
                 return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity("User blocked.").build();
+            }
             int failCount = user.get().getFailCount() + 1;
             user.get().setFailCount(failCount);
             boolean block = failCount >= ((Integer) SystemParameterCache.get("USER_BLOCK_FAIL_LIMIT", 3));
@@ -108,7 +110,7 @@ public class AuthResource extends AbstractAuthResource<User> {
                 user.get().setActive(false);
 
             userDao.update(user.get());
-            logAction(new ActionLog("LOGIN", user.toString(), true));
+            logAction(new ActionLog("LOGIN", "Wrong Password", user.toString(), false));
 
             return Response.status(Response.Status.UNAUTHORIZED).build();
         }
