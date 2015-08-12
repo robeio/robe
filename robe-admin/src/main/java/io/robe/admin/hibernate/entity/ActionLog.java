@@ -25,6 +25,10 @@ public class ActionLog extends BaseEntity {
     @Column
     private boolean positive;
 
+    public ActionLog() {
+
+    }
+
     public ActionLog(String actionType, boolean positive) {
         this.actionType = actionType;
         this.positive = positive;
