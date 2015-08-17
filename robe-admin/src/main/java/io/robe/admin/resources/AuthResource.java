@@ -105,7 +105,7 @@ public class AuthResource extends AbstractAuthResource<User> {
             }
             int failCount = user.get().getFailCount() + 1;
             user.get().setFailCount(failCount);
-            boolean block = failCount >= ((Integer) SystemParameterCache.get("USER_BLOCK_FAIL_LIMIT", 3));
+            boolean block = failCount >= Integer.valueOf((String) SystemParameterCache.get("USER_BLOCK_FAIL_LIMIT", 3));
             if (block)
                 user.get().setActive(false);
 
