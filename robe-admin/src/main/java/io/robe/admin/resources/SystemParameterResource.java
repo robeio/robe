@@ -6,6 +6,7 @@ import io.dropwizard.auth.Auth;
 import io.dropwizard.hibernate.UnitOfWork;
 import io.robe.admin.hibernate.dao.SystemParameterDao;
 import io.robe.admin.hibernate.entity.SystemParameter;
+import io.robe.admin.util.SystemParameterCache;
 import io.robe.auth.Credentials;
 import io.robe.common.exception.RobeRuntimeException;
 import org.hibernate.FlushMode;
@@ -59,4 +60,13 @@ public class SystemParameterResource {
     public SystemParameter delete(@Auth Credentials credentials, @Valid SystemParameter systemParameter) {
         return systemParameterDao.delete(systemParameter);
     }
+
+    @POST
+    @Path("clearcache")
+    @UnitOfWork(readOnly = true, flushMode = FlushMode.MANUAL)
+    public void clearCache() {
+        SystemParameterCache.fillCache();
+    }
+
+
 }
