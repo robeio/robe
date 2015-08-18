@@ -76,7 +76,6 @@ public class AuthResource extends AbstractAuthResource<User> {
     @Timed
     public Response login(@Context HttpServletRequest request, Map<String, String> credentials) throws Exception {
 
-
         Optional<User> user = userDao.findByUsername(credentials.get("username"));
         if (!user.isPresent()) {
             throw new WebApplicationException(Response.Status.UNAUTHORIZED);
@@ -105,7 +104,7 @@ public class AuthResource extends AbstractAuthResource<User> {
             }
             int failCount = user.get().getFailCount() + 1;
             user.get().setFailCount(failCount);
-            boolean block = failCount >= Integer.valueOf((String) SystemParameterCache.get("USER_BLOCK_FAIL_LIMIT", 3));
+            boolean block = failCount >= Integer.valueOf((String) SystemParameterCache.get("USER_BLOCK_FAIL_LIMIT", "3"));
             if (block)
                 user.get().setActive(false);
 
@@ -126,17 +125,12 @@ public class AuthResource extends AbstractAuthResource<User> {
     @Path("logout")
     @Timed
     public User logout(@Auth Credentials credentials) throws Exception {
-
-
         Optional<User> user = userDao.findByUsername(credentials.getUsername());
         if (!user.isPresent()) {
             throw new WebApplicationException(Response.Status.UNAUTHORIZED);
         } else {
-
             BasicToken.clearPermissionCache(credentials.getUsername());
-
             user.get().setLastLogoutTime(DateTime.now().toDate());
-
             return user.get();
         }
     }
