@@ -105,6 +105,7 @@ public class BaseDao<T extends BaseEntity> extends AbstractDAO<T> {
      * @param entity entity to merge
      * @return
      */
+    @SuppressWarnings("unchecked")
     public T merge(T entity) {
         return (T) currentSession().merge(entity);
     }

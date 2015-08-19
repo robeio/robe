@@ -33,7 +33,7 @@ public abstract class BaseResource<T extends BaseEntity> {
 
     @Path("all")
     @GET
-    @UnitOfWork(readOnly = true, cacheMode = CacheMode.GET, flushMode = FlushMode.MANUAL)
+    @UnitOfWork
     public List<T> getAll(@Auth Credentials credentials) {
         return dao.findAll(entity);
     }
