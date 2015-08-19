@@ -1,11 +1,13 @@
 package io.robe.hibernate.dao;
 
+import com.google.common.base.Preconditions;
 import com.google.inject.Inject;
 import io.dropwizard.hibernate.AbstractDAO;
 import io.robe.hibernate.entity.BaseEntity;
 import org.hibernate.Criteria;
 import org.hibernate.SessionFactory;
 
+import java.io.Serializable;
 import java.util.List;
 
 /**
@@ -46,6 +48,17 @@ public class BaseDao<T extends BaseEntity> extends AbstractDAO<T> {
      */
     public T findById(String oid) {
         return get(oid);
+    }
+
+    /**
+     * {@inheritDoc}
+     *
+     * @param oid id of the Given Entity
+     * @return returns the result.
+     */
+    @SuppressWarnings("unchecked")
+    public T findById(Class<? extends BaseEntity> clazz, Serializable oid) {
+        return (T) currentSession().get(clazz, Preconditions.checkNotNull(oid));
     }
 
     /**
