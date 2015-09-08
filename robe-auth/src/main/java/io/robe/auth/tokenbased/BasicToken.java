@@ -42,30 +42,6 @@ public class BasicToken implements Token {
 
 
     /**
-     * Configure method for Token generation configurations and ENCRYPTOR configure
-     *
-     * @param configuration
-     */
-    public static void configure(TokenBasedAuthConfiguration configuration) {
-        ENCRYPTOR.setPoolSize(configuration.getPoolSize());          // This would be a good value for a 4-core system
-        if (configuration.getServerPassword().equals("auto")) {
-            ENCRYPTOR.setPassword(UUID.randomUUID().toString());
-        } else {
-            ENCRYPTOR.setPassword(configuration.getServerPassword());
-        }
-        ENCRYPTOR.setAlgorithm(configuration.getAlgorithm());
-        ENCRYPTOR.initialize();
-        BasicToken.defaultMaxAge = configuration.getMaxage();
-
-        //Create cache for permissions.
-        cache = CacheBuilder.newBuilder()
-                .expireAfterAccess(defaultMaxAge, TimeUnit.SECONDS)
-                .expireAfterWrite(defaultMaxAge, TimeUnit.SECONDS)
-                .build();
-
-    }
-
-    /**
      * Creates an access token with the given parameters.
      *
      * @param username   Username
@@ -91,6 +67,7 @@ public class BasicToken implements Token {
      */
     public BasicToken(String tokenString) throws Exception {
         try {
+            tokenString = tokenString.replaceAll("\"", "");
             tokenString = new String(Hex.decodeHex(tokenString.toCharArray()));
             String[] parts = ENCRYPTOR.decrypt(tokenString).split(SEPARATOR);
             this.userId = parts[0];
@@ -104,6 +81,39 @@ public class BasicToken implements Token {
 
     }
 
+    /**
+     * Configure method for Token generation configurations and ENCRYPTOR configure
+     *
+     * @param configuration
+     */
+    public static void configure(TokenBasedAuthConfiguration configuration) {
+        ENCRYPTOR.setPoolSize(configuration.getPoolSize());          // This would be a good value for a 4-core system
+        if (configuration.getServerPassword().equals("auto")) {
+            ENCRYPTOR.setPassword(UUID.randomUUID().toString());
+        } else {
+            ENCRYPTOR.setPassword(configuration.getServerPassword());
+        }
+        ENCRYPTOR.setAlgorithm(configuration.getAlgorithm());
+        ENCRYPTOR.initialize();
+        BasicToken.defaultMaxAge = configuration.getMaxage();
+
+        //Create cache for permissions.
+        cache = CacheBuilder.newBuilder()
+                .expireAfterAccess(defaultMaxAge, TimeUnit.SECONDS)
+                .expireAfterWrite(defaultMaxAge, TimeUnit.SECONDS)
+                .build();
+
+    }
+
+    public static void clearPermissionCache(String username) {
+        cache.invalidate(username);
+        cache.cleanUp();
+    }
+
+    public static Set<String> getCurrentUsernames() {
+        cache.cleanUp();
+        return cache.asMap().keySet();
+    }
 
     @Override
     public String getUserId() {
@@ -184,6 +194,16 @@ public class BasicToken implements Token {
         return maxAge < 1 ? defaultMaxAge : maxAge;
     }
 
+    public void setMaxAge(int maxAge) {
+        if (maxAge < 1) maxAge = defaultMaxAge;
+        this.maxAge = maxAge;
+    }
+
+    @Override
+    public Set<String> getPermissions() {
+        return cache.getIfPresent(getUsername());
+    }
+
     /**
      * Sets permissions to the cache with current username
      *
@@ -193,17 +213,6 @@ public class BasicToken implements Token {
     public void setPermissions(Set<String> permissions) {
         cache.put(getUsername(), permissions);
     }
-
-    @Override
-    public Set<String> getPermissions() {
-        return cache.getIfPresent(getUsername());
-    }
-
-    public void setMaxAge(int maxAge) {
-        if (maxAge < 1) maxAge = defaultMaxAge;
-        this.maxAge = maxAge;
-    }
-
 
     private void resetTokenString() {
         tokenString = null;
@@ -228,16 +237,5 @@ public class BasicToken implements Token {
         result = 31 * result + username.hashCode();
         result = 31 * result + attributesHash.hashCode();
         return result;
-    }
-
-
-    public static void clearPermissionCache(String username) {
-        cache.invalidate(username);
-        cache.cleanUp();
-    }
-
-    public static Set<String> getCurrentUsernames() {
-        cache.cleanUp();
-        return cache.asMap().keySet();
     }
 }

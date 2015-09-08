@@ -46,6 +46,7 @@ public class TokenBasedAuthenticator implements Authenticator<String, Token> {
      */
     @Override
     public Optional<Token> authenticate(String tokenString) throws AuthenticationException {
+        tokenString = tokenString.replaceAll("\"", "");
         LOGGER.debug("Authenticating from database:  " + tokenString);
         try {
             // Decode tokenString and get user
