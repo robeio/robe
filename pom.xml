@@ -305,7 +305,7 @@
     </dependencies>
 
 
- <!--   <profiles>
+  <profiles>
         <profile>
             <id>release-sign-artifacts</id>
             <activation>
@@ -342,7 +342,7 @@
                 <javadoc.doclint.none>-Xdoclint:none</javadoc.doclint.none>
             </properties>
         </profile>
-    </profiles>-->
+    </profiles>
 
 
     <build>
@@ -433,7 +433,7 @@
                     </execution>
                 </executions>
             </plugin>
-            <!-- <plugin>
+             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-gpg-plugin</artifactId>
                 <version>1.5</version>
@@ -446,7 +446,7 @@
                         </goals>
                     </execution>
                 </executions>
-            </plugin>-->
+            </plugin>
             <plugin>
                 <groupId>org.sonatype.plugins</groupId>
                 <artifactId>nexus-staging-maven-plugin</artifactId>
