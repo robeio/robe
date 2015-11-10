@@ -17,6 +17,7 @@ import io.robe.admin.util.ExceptionMessages;
 import io.robe.admin.util.TemplateManager;
 import io.robe.auth.AbstractAuthResource;
 import io.robe.auth.Credentials;
+import io.robe.auth.tokenbased.BasicToken;
 import io.robe.common.exception.RobeRuntimeException;
 import io.robe.mail.MailItem;
 import io.robe.mail.MailManager;
@@ -178,6 +179,8 @@ public class UserResource extends AbstractAuthResource<User> {
 
         entity = userDao.update(entity);
         userDao.flush();
+
+        BasicToken.clearPermissionCache(entity.getUsername());
 
         return new UserDTO(entity);
 

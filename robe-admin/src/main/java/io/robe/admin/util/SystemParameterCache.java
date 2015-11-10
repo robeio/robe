@@ -23,6 +23,9 @@ public class SystemParameterCache {
 
 
     public static Object get(String key, Object defaultValue) {
+        if (cache.isEmpty()) {
+            fillCache();
+        }
         Object value = cache.get(key);
         return (value == null) ? defaultValue : value;
     }

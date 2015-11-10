@@ -12,7 +12,7 @@ import java.util.UUID;
 public class FileOperations {
 
     public static final String JAVA_IO_TMP_DIR = "java.io.tmpdir";
-    public static final String TEMP_DIR = System.getProperty(JAVA_IO_TMP_DIR).toString();
+    public static final String TEMP_DIR = System.getProperty(JAVA_IO_TMP_DIR);
 
     private FileOperations() {
 
@@ -32,15 +32,14 @@ public class FileOperations {
         String tempName = UUID.randomUUID().toString().replaceAll("-", "");
 
         //Create new temp file under OS's temp folder with a random name
-        File tempFile = new File(System.getProperty(JAVA_IO_TMP_DIR) + tempName + ".tmp");
+        File tempFile = new File(TEMP_DIR, tempName + ".tmp");
         if (!tempFile.createNewFile()) {
             throw new IOException("Can not create temp file :" + tempFile.getParent());
         } else if (in == null) {
             return tempFile;
         }
         //Write file with a 1024 byte buffer.
-        FileOutputStream tempOS = new FileOutputStream(tempFile);
-        try {
+        try (FileOutputStream tempOS = new FileOutputStream(tempFile)) {
             byte[] buf = new byte[1024];
             int i = in.read(buf);
             while (i != -1) {
@@ -48,10 +47,7 @@ public class FileOperations {
                 i = in.read(buf);
             }
         } finally {
-            if (in != null) {
-                in.close();
-            }
-            tempOS.close();
+            in.close();
         }
         return tempFile;
     }

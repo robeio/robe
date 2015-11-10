@@ -10,13 +10,13 @@ define([
                 editable: false,
                 nullable: true,
                 type: "string"
-            },@for (io.robe.crud.helper.Model model: models) {
+            },@for (io.robe.crud.helper.Model model: models).join() {
             {
                 editable : true,
                 nullable: @model.isNullable(),
-                validation: getValidations("@model.getName()","@model.getName()",@if(model.isNullable()){false}else{true}, false, 0, @model.getLength(),""),
+                validation: getValidations("@model.getName()","@model.getName()",@(!model.isNullable()), false, 0, @model.getLength(),""),
                 type:"@model.getType()"
-            }@if(model_index<models.size()){,}
+            }
         }
     });
     return @entity;
