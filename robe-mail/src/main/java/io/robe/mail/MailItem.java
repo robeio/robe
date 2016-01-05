@@ -1,13 +1,10 @@
 package io.robe.mail;
 
 import javax.activation.DataSource;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
- * MailItem is for holding mail entries. It supports standard mail attributes with  one attachment and an {@link io.robe.mail.MailEvent} for executing before and after
+ * MailItem is for holding mail entries. It supports standard mail attributes with  one attachments and an {@link io.robe.mail.MailEvent} for executing before and after
  */
 public class MailItem {
     /**
@@ -16,7 +13,7 @@ public class MailItem {
     private String id = System.currentTimeMillis() + "";
     private String title;
     private String body;
-    private DataSource attachment;
+    private List<DataSource> attachments = new ArrayList<>();
     private String sender;
     private List<String> receivers;
     private MailEvent event;
@@ -25,18 +22,34 @@ public class MailItem {
     public MailItem() {
     }
 
-    public MailItem(String title, String body, DataSource attachment, String sender, String... receivers) {
+    public MailItem(String title, String body, DataSource attachments, String sender, String... receivers) {
         this.title = title;
         this.body = body;
-        this.attachment = attachment;
+        this.attachments = Collections.singletonList(attachments);
         this.sender = sender;
         this.receivers = Arrays.asList(receivers);
     }
 
-    public MailItem(String title, String body, DataSource attachment, String sender, List<String> receivers) {
+    public MailItem(String title, String body, DataSource attachments, String sender, List<String> receivers) {
         this.title = title;
         this.body = body;
-        this.attachment = attachment;
+        this.attachments = Collections.singletonList(attachments);
+        this.sender = sender;
+        this.receivers = receivers;
+    }
+
+    public MailItem(String title, String body, List<DataSource> attachments, String sender, String... receivers) {
+        this.title = title;
+        this.body = body;
+        this.attachments = attachments;
+        this.sender = sender;
+        this.receivers = Arrays.asList(receivers);
+    }
+
+    public MailItem(String title, String body, List<DataSource> attachments, String sender, List<String> receivers) {
+        this.title = title;
+        this.body = body;
+        this.attachments = attachments;
         this.sender = sender;
         this.receivers = receivers;
     }
@@ -66,12 +79,12 @@ public class MailItem {
         this.body = body;
     }
 
-    public DataSource getAttachment() {
-        return attachment;
+    public List<DataSource> getAttachments() {
+        return attachments;
     }
 
-    public void setAttachment(DataSource attachment) {
-        this.attachment = attachment;
+    public void setAttachments(List<DataSource> attachments) {
+        this.attachments = attachments;
     }
 
     public String getSender() {
@@ -86,12 +99,12 @@ public class MailItem {
         return receivers;
     }
 
-    public void setReceivers(List<String> receivers) {
-        this.receivers = receivers;
-    }
-
     public void setReceivers(String... receivers) {
         this.receivers = Arrays.asList(receivers);
+    }
+
+    public void setReceivers(List<String> receivers) {
+        this.receivers = receivers;
     }
 
     public MailEvent getEvent() {
@@ -116,7 +129,7 @@ public class MailItem {
                 "id='" + id + '\'' +
                 ", title='" + title + '\'' +
                 ", body='" + body + '\'' +
-                ", attachment=" + attachment +
+                ", attachments=" + attachments +
                 ", sender='" + sender + '\'' +
                 ", receivers=" + receivers +
                 ", event=" + event +

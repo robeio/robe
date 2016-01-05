@@ -4,6 +4,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import javax.activation.DataHandler;
+import javax.activation.DataSource;
 import javax.mail.*;
 import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeBodyPart;
@@ -74,11 +75,6 @@ class MailSender {
         InternetAddress from = new InternetAddress(item.getSender());
         msg.setFrom(from);
 
-        MimeBodyPart attachFilePart = new MimeBodyPart();
-        if (item.getAttachment() != null) {
-            attachFilePart.setDataHandler(new DataHandler(item.getAttachment()));
-            attachFilePart.setFileName(item.getAttachment().getName());
-        }
 
         InternetAddress[] to = new InternetAddress[item.getReceivers().size()];
         for (int i = 0; i < item.getReceivers().size(); i++) {
@@ -92,8 +88,14 @@ class MailSender {
         body.setContent(item.getBody(), "text/html; charset=UTF-8");
         Multipart content = new MimeMultipart();
         content.addBodyPart(body);
-        if (item.getAttachment() != null) {
-            content.addBodyPart(attachFilePart);
+
+        if (item.getAttachments() != null && item.getAttachments().size() > 0) {
+            for (DataSource attachment : item.getAttachments()) {
+                BodyPart itemBodyPart = new MimeBodyPart();
+                itemBodyPart.setDataHandler(new DataHandler(attachment));
+                itemBodyPart.setFileName(attachment.getName());
+                content.addBodyPart(itemBodyPart);
+            }
         }
 
         msg.setContent(content);
