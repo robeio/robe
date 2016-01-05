@@ -6,6 +6,7 @@ import org.quartz.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.util.HashSet;
 import java.util.Set;
 
 
@@ -13,6 +14,11 @@ public class ManagedQuartz implements Managed {
     private static final Logger LOGGER = LoggerFactory.getLogger(ManagedQuartz.class);
     private Set<JobDetail> onStartJobs;
     private Set<JobDetail> onStopJobs;
+
+    public ManagedQuartz() {
+        this.onStartJobs = new HashSet<>();
+        this.onStopJobs = new HashSet<>();
+    }
 
     public ManagedQuartz(Set<JobDetail> onStartJobs, Set<JobDetail> onStopJobs) {
         this.onStartJobs = onStartJobs;
@@ -38,10 +44,10 @@ public class ManagedQuartz implements Managed {
 
     private void scheduleAllJobsOnApplicationStop() throws SchedulerException {
         for (JobDetail detail : onStopJobs) {
-            if(!JobManager.getInstance().checkExists(detail.getKey()))
+            if (!JobManager.getInstance().checkExists(detail.getKey()))
                 JobManager.getInstance().scheduleJob(detail, executeNowTrigger());
             else
-                JobManager.getInstance().scheduleJob(detail,addNowTrigger(detail.getKey()),true);
+                JobManager.getInstance().scheduleJob(detail, addNowTrigger(detail.getKey()), true);
 
         }
     }
@@ -49,11 +55,11 @@ public class ManagedQuartz implements Managed {
 
     private void scheduleAllJobsOnApplicationStart() throws SchedulerException {
         LOGGER.info("Jobs to run on application start: " + onStartJobs);
-        for (JobDetail detail  : onStartJobs) {
-            if(!JobManager.getInstance().checkExists(detail.getKey()))
+        for (JobDetail detail : onStartJobs) {
+            if (!JobManager.getInstance().checkExists(detail.getKey()))
                 JobManager.getInstance().scheduleJob(detail, executeNowTrigger());
             else
-                JobManager.getInstance().scheduleJob(detail, addNowTrigger(detail.getKey()),true);
+                JobManager.getInstance().scheduleJob(detail, addNowTrigger(detail.getKey()), true);
         }
     }
 
@@ -64,7 +70,7 @@ public class ManagedQuartz implements Managed {
     private Set<Trigger> addNowTrigger(JobKey key) throws SchedulerException {
         Set<Trigger> triggers = Sets.newHashSet(JobManager.getInstance().getTriggersOfJob(key.getName(), key.getGroup()));
         triggers.add(executeNowTrigger());
-        return  triggers;
+        return triggers;
 
     }
 
