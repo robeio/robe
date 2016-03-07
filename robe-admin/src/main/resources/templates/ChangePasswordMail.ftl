@@ -19,7 +19,7 @@
     </div>
     <div class="panel-heading" style="text-align: center;">
         <div class="alert alert-info" role="alert">
-            <strong>To change your password, lick on the
+            <strong>To change your password, click on the
                 <a target="_blank" class="alert-link" href="${ticketUrl}">link</a>
             </strong>
         </div>
