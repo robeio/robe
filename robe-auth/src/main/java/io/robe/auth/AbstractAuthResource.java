@@ -17,7 +17,7 @@ import java.util.regex.Pattern;
  * An Abstract class with necessary implementations of common used methods (Compatible with ESAPI Authenticator)
  * {@inheritDoc}
  *
- * @param <T>
+ * @param <T> type for userentry
  */
 public abstract class AbstractAuthResource<T extends UserEntry> {
 

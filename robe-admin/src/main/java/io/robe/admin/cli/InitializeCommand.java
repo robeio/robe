@@ -5,7 +5,7 @@ import io.dropwizard.Application;
 import io.dropwizard.cli.EnvironmentCommand;
 import io.dropwizard.hibernate.UnitOfWork;
 import io.dropwizard.setup.Environment;
-import io.robe.admin.RobeServiceConfiguration;
+import io.robe.admin.RobeConfiguration;
 import io.robe.admin.hibernate.entity.*;
 import io.robe.guice.GuiceConfiguration;
 import io.robe.hibernate.RobeHibernateBundle;
@@ -26,7 +26,7 @@ import java.util.Scanner;
 import java.util.Set;
 
 
-public class InitializeCommand<T extends RobeServiceConfiguration> extends EnvironmentCommand<T> {
+public class InitializeCommand<T extends RobeConfiguration> extends EnvironmentCommand<T> {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(InitializeCommand.class);
     protected static String IO_ROBE_ADMIN = "io/robe/admin";

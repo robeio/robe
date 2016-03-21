@@ -1,21 +1,17 @@
-package io.robe.auth.tokenbased;
+package io.robe.auth.token;
 
 import io.dropwizard.Configuration;
 import io.dropwizard.ConfiguredBundle;
 import io.dropwizard.setup.Bootstrap;
 import io.dropwizard.setup.Environment;
 import io.robe.auth.Credentials;
-import io.robe.auth.token.TokenFactoryProvider;
-import io.robe.auth.token.TokenFeature;
-import io.robe.auth.token.TokenManager;
-import io.robe.auth.tokenbased.configuration.HasTokenBasedAuthConfiguration;
-import io.robe.auth.tokenbased.configuration.TokenBasedAuthConfiguration;
-import io.robe.auth.tokenbased.filter.TokenBasedAuthResponseFilter;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import io.robe.auth.token.configuration.HasTokenBasedAuthConfiguration;
+import io.robe.auth.token.configuration.TokenBasedAuthConfiguration;
+import io.robe.auth.token.jersey.TokenBasedAuthResponseFilter;
+import io.robe.auth.token.jersey.TokenFactoryProvider;
+import io.robe.auth.token.jersey.TokenFeature;
 
-public class TokenBasedAuthBundle<T extends Configuration & HasTokenBasedAuthConfiguration> implements ConfiguredBundle<T> {
-    private static final Logger LOGGER = LoggerFactory.getLogger(TokenBasedAuthBundle.class);
+public class TokenAuthBundle<T extends Configuration & HasTokenBasedAuthConfiguration> implements ConfiguredBundle<T> {
     private TokenBasedAuthConfiguration configuration;
 
     /**
@@ -27,17 +23,11 @@ public class TokenBasedAuthBundle<T extends Configuration & HasTokenBasedAuthCon
      */
     @Override
     public void run(T configuration, Environment environment) throws Exception {
-        LOGGER.info("\n------------------------\n-------Auth Bundle------\n------------------------");
         this.configuration = configuration.getTokenBasedAuthConfiguration();
-
         environment.jersey().register(new TokenFactoryProvider.Binder<Credentials>(Credentials.class));
         environment.jersey().register(new TokenBasedAuthResponseFilter(configuration.getTokenBasedAuthConfiguration()));
         environment.jersey().register(TokenFeature.class);
-
         TokenManager.configure(BasicToken.class, configuration.getTokenBasedAuthConfiguration());
-
-//        environment.jersey().register(AuthFactory.binder(authFactory));
-
     }
 
     /**

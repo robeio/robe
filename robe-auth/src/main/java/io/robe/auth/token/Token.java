@@ -1,4 +1,4 @@
-package io.robe.auth.tokenbased;
+package io.robe.auth.token;
 
 import io.robe.auth.Credentials;
 
@@ -29,9 +29,9 @@ public interface Token extends Credentials {
     boolean isExpired();
 
     /**
-     * Sets the expirationdate by adding duration to current time
+     * Sets the expiration date by adding duration to current time
      *
-     * @param durationInSeconds
+     * @param durationInSeconds duration for expiration in seconds
      */
     void setExpiration(int durationInSeconds);
 
@@ -45,36 +45,36 @@ public interface Token extends Credentials {
     /**
      * Returns the calculated hash of attributes.
      *
-     * @return
+     * @return hash of attributes which taken from http headers
      */
     String getAttributesHash();
 
     /**
      * String representation of the token
      *
-     * @return
-     * @throws Exception
+     * @return returns the token as string
+     * @throws Exception throws if it is not possible to calculate the stoken string
      */
     String getTokenString() throws Exception;
 
     /**
      * Max age of the token
      *
-     * @return
+     * @return max age of cookie
      */
     int getMaxAge();
 
     /**
      * Set permissions to token
      *
-     * @param permissions
+     * @param permissions permission list of the current user
      */
     void setPermissions(Set<String> permissions);
 
     /**
      * Gets permissions
      *
-     * @return
+     * @return permission list of the current user
      */
     Set<String> getPermissions();
 

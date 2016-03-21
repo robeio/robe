@@ -1,11 +1,12 @@
-package io.robe.auth.token;
+package io.robe.auth.token.jersey;
 
 import com.google.common.base.Optional;
 import com.google.common.hash.Hashing;
 import io.dropwizard.auth.Authenticator;
 import io.robe.auth.Credentials;
-import io.robe.auth.tokenbased.Token;
-import io.robe.auth.tokenbased.configuration.TokenBasedAuthConfiguration;
+import io.robe.auth.token.Token;
+import io.robe.auth.token.TokenManager;
+import io.robe.auth.token.configuration.TokenBasedAuthConfiguration;
 import org.glassfish.jersey.server.internal.inject.AbstractContainerRequestValueFactory;
 import org.glassfish.jersey.uri.UriTemplate;
 import org.slf4j.Logger;
@@ -88,9 +89,9 @@ public class TokenFactory<T extends Token> extends AbstractContainerRequestValue
      * Merges all path patterns and and creates a single string value which will be equal with service methods path
      * annotation value and HTTP method type. Generated string will be used for permission checks.
      *
-     * @param token  for checking permission list
-     * @param path   matched templates of context. They will be merged with reverse order
-     * @param method HTTP Method of the request. Will be merged with
+     * @param token            for checking permission list
+     * @param matchedTemplates matched templates of context. They will be merged with reverse order
+     * @param method           HTTP Method of the request. Will be merged with
      * @return true if user is Authorized.
      */
     private boolean isAuthorized(Token token, List<UriTemplate> matchedTemplates, String method) {

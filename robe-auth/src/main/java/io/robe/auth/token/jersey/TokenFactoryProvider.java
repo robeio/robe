@@ -1,7 +1,7 @@
-package io.robe.auth.token;
+package io.robe.auth.token.jersey;
 
 import io.dropwizard.auth.Auth;
-import io.robe.auth.tokenbased.Token;
+import io.robe.auth.token.Token;
 import org.glassfish.hk2.api.Factory;
 import org.glassfish.hk2.api.InjectionResolver;
 import org.glassfish.hk2.api.ServiceLocator;

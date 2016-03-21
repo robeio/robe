@@ -21,7 +21,6 @@ public class MailBundle<T extends Configuration & HasMailConfiguration> implemen
      */
     @Override
     public void run(T configuration, Environment environment) throws Exception {
-        LOGGER.info("\n------------------------\n------Mail Bundle-------\n------------------------");
         if (configuration.getMailConfiguration() != null && configuration instanceof HasMailConfiguration && configuration instanceof Configuration) {
 	        MailManager.setSender(new MailSender(configuration.getMailConfiguration()));
         } else {

@@ -9,7 +9,6 @@ import io.robe.auth.data.entry.ServiceEntry;
 import io.robe.auth.data.entry.UserEntry;
 import io.robe.auth.data.store.ServiceStore;
 import io.robe.auth.data.store.UserStore;
-import io.robe.auth.tokenbased.Token;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

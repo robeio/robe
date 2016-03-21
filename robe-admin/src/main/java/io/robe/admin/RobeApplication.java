@@ -13,11 +13,10 @@ import io.robe.admin.cli.InitializeCommand;
 import io.robe.admin.guice.module.HibernateModule;
 import io.robe.admin.hibernate.dao.ServiceDao;
 import io.robe.admin.hibernate.dao.UserDao;
-import io.robe.admin.quartz.hibernate.HibernateJobProvider;
 import io.robe.assets.AdvancedAssetBundle;
+import io.robe.auth.token.TokenAuthBundle;
 import io.robe.auth.token.TokenAuthenticator;
-import io.robe.auth.token.TokenFactory;
-import io.robe.auth.tokenbased.TokenBasedAuthBundle;
+import io.robe.auth.token.jersey.TokenFactory;
 import io.robe.common.exception.RobeExceptionMapper;
 import io.robe.guice.GuiceBundle;
 import io.robe.hibernate.RobeHibernateBundle;
@@ -35,7 +34,7 @@ import java.util.List;
  * If you extend this class on your applications io.robe.admin class and call super methods at
  * overridden methods you will still benefit of robe souse.
  */
-public class RobeApplication<T extends RobeServiceConfiguration> extends Application<T> {
+public class RobeApplication<T extends RobeConfiguration> extends Application<T> {
 
 
     private static final Logger LOGGER = LoggerFactory.getLogger(RobeApplication.class);
@@ -67,32 +66,31 @@ public class RobeApplication<T extends RobeServiceConfiguration> extends Applica
      */
     @Override
     public void initialize(Bootstrap<T> bootstrap) {
-
-        RobeHibernateBundle<T> hibernateBundle = RobeHibernateBundle.createInstance(new String[]{"io.robe.admin.hibernate.entity", "io.robe.quartz"}, new String[0]);
-
-        TokenBasedAuthBundle<T> authBundle = new TokenBasedAuthBundle<T>();
-        addGuiceBundle(bootstrap, authBundle, hibernateBundle);
-        bootstrap.addBundle(authBundle);
-
+        RobeHibernateBundle<T> hibernateBundle = RobeHibernateBundle.createInstance(getHibernateScanPackages(), new String[0]);
+        addGuiceBundle(bootstrap, hibernateBundle);
         bootstrap.addBundle(hibernateBundle);
+        bootstrap.addBundle(new TokenAuthBundle<T>());
         bootstrap.addCommand(new InitializeCommand(this, hibernateBundle));
-
-        //TODO: Find a better way to send it
-        HibernateJobProvider.setHibernateBundle(hibernateBundle);
-
         bootstrap.addBundle(new QuartzBundle<T>());
         bootstrap.addBundle(new ViewBundle());
         bootstrap.addBundle(new ViewBundle(ImmutableList.<ViewRenderer>of(new FreemarkerViewRenderer())));
         bootstrap.addBundle(new MailBundle<T>());
         bootstrap.addBundle(new AdvancedAssetBundle<T>());
+    }
 
+    /**
+     * Implement this method in order to give your interested packages
+     *
+     * @return
+     */
+    protected String[] getHibernateScanPackages() {
+        return new String[]{"io.robe.admin.hibernate.entity", "io.robe.quartz"};
     }
 
 
-    private void addGuiceBundle(Bootstrap<T> bootstrap, TokenBasedAuthBundle<T> authBundle, RobeHibernateBundle hibernateBundle) {
-        List<Module> modules = new LinkedList<Module>();
+    private void addGuiceBundle(Bootstrap<T> bootstrap, RobeHibernateBundle hibernateBundle) {
+        List<Module> modules = new LinkedList<>();
         modules.add(new HibernateModule(hibernateBundle));
-
         bootstrap.addBundle(new GuiceBundle<T>(modules, bootstrap.getApplication().getConfigurationClass()));
     }
 
@@ -108,18 +106,11 @@ public class RobeApplication<T extends RobeServiceConfiguration> extends Applica
     @UnitOfWork
     @Override
     public void run(T configuration, Environment environment) throws Exception {
-
         TokenFactory.authenticator = new TokenAuthenticator(
                 GuiceBundle.getInjector().getInstance(UserDao.class),
                 GuiceBundle.getInjector().getInstance(ServiceDao.class));
         TokenFactory.tokenKey = configuration.getTokenBasedAuthConfiguration().getTokenKey();
         addExceptionMappers(environment);
-    }
-
-    public void run(String... args) throws Exception {
-        super.run(args);
-
-
     }
 
     private void addExceptionMappers(Environment environment) {

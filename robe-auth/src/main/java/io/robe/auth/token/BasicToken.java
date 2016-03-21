@@ -1,10 +1,10 @@
-package io.robe.auth.tokenbased;
+package io.robe.auth.token;
 
 import com.google.common.cache.Cache;
 import com.google.common.cache.CacheBuilder;
 import com.google.common.hash.Hashing;
 import com.google.common.io.BaseEncoding;
-import io.robe.auth.tokenbased.configuration.TokenBasedAuthConfiguration;
+import io.robe.auth.token.configuration.TokenBasedAuthConfiguration;
 import org.jasypt.encryption.pbe.PooledPBEStringEncryptor;
 import org.joda.time.DateTime;
 import org.slf4j.Logger;
@@ -18,8 +18,8 @@ import java.util.UUID;
 import java.util.concurrent.TimeUnit;
 
 /**
- * A basic token implementation.  Uses jasypt for encrypt & decrypt operations.
- * Takes all properties from configurarion. Uses Guava for permission caching.
+ * A basic token implementation. Uses jasypt for encrypt & decrypt operations.
+ * Takes all properties from configuration. Uses Guava for permission caching.
  * All cached permission entries will live with token.
  */
 public class BasicToken implements Token {
@@ -46,8 +46,7 @@ public class BasicToken implements Token {
      * @param username   Username
      * @param expireAt   expiration time of token
      * @param attributes extra attributes to customize token
-     * @return
-     * @throws Exception
+     * @return an instance
      */
     public BasicToken(String userId, String username, DateTime expireAt, Map<String, String> attributes) {
         this.userId = userId;
@@ -61,8 +60,8 @@ public class BasicToken implements Token {
      * Creates an access token with the given tokenString.
      *
      * @param tokenString to parse
-     * @return
-     * @throws Exception
+     * @return and instance
+     * @throws Exception throws in case of failing opening token
      */
     public BasicToken(String tokenString) throws Exception {
         tokenString = tokenString.replaceAll("\"", "");
@@ -77,7 +76,7 @@ public class BasicToken implements Token {
     /**
      * Configure method for Token generation configurations and ENCRYPTOR configure
      *
-     * @param configuration
+     * @param configuration confiuration for auth bundle
      */
     public static void configure(TokenBasedAuthConfiguration configuration) {
         ENCRYPTOR.setPoolSize(configuration.getPoolSize());          // This would be a good value for a 4-core system
@@ -200,7 +199,7 @@ public class BasicToken implements Token {
     /**
      * Sets permissions to the cache with current username
      *
-     * @param permissions
+     * @param permissions permission list for the current user.
      */
     @Override
     public void setPermissions(Set<String> permissions) {

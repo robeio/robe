@@ -1,8 +1,8 @@
-package io.robe.auth.tokenbased.filter;
+package io.robe.auth.token.jersey;
 
 import io.robe.auth.token.TokenManager;
-import io.robe.auth.tokenbased.Token;
-import io.robe.auth.tokenbased.configuration.TokenBasedAuthConfiguration;
+import io.robe.auth.token.configuration.TokenBasedAuthConfiguration;
+import io.robe.auth.token.Token;
 import org.joda.time.DateTime;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -15,7 +15,7 @@ import java.io.IOException;
 
 
 /**
- * The response filter for creating or refreshing AuthTokens. Refreshing controlled by created token.
+ * The response jersey for creating or refreshing AuthTokens. Refreshing controlled by created token.
  */
 public class TokenBasedAuthResponseFilter implements ContainerResponseFilter {
     private static final Logger LOGGER = LoggerFactory.getLogger(TokenBasedAuthResponseFilter.class);

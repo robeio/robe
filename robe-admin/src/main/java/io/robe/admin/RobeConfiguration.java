@@ -4,8 +4,8 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import io.dropwizard.Configuration;
 import io.robe.assets.AssetConfiguration;
 import io.robe.assets.HasAssetConfiguration;
-import io.robe.auth.tokenbased.configuration.HasTokenBasedAuthConfiguration;
-import io.robe.auth.tokenbased.configuration.TokenBasedAuthConfiguration;
+import io.robe.auth.token.configuration.HasTokenBasedAuthConfiguration;
+import io.robe.auth.token.configuration.TokenBasedAuthConfiguration;
 import io.robe.guice.GuiceConfiguration;
 import io.robe.guice.HasGuiceConfiguration;
 import io.robe.hibernate.HasHibernateConfiguration;
@@ -19,13 +19,13 @@ import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
 import java.util.List;
 
-public class RobeServiceConfiguration extends Configuration implements
+public class RobeConfiguration extends Configuration implements
         HasHibernateConfiguration,
         HasGuiceConfiguration,
         HasQuartzConfiguration,
         HasMailConfiguration,
         HasTokenBasedAuthConfiguration,
-		HasAssetConfiguration {
+        HasAssetConfiguration {
 
     @Valid
     @NotNull
@@ -50,12 +50,12 @@ public class RobeServiceConfiguration extends Configuration implements
     @JsonProperty
     private TokenBasedAuthConfiguration auth;
 
-	@Valid
-	@JsonProperty
-	private List<AssetConfiguration> assets;
+    @Valid
+    @JsonProperty
+    private List<AssetConfiguration> assets;
 
 
-	public HibernateConfiguration getHibernateConfiguration() {
+    public HibernateConfiguration getHibernateConfiguration() {
         return hibernate;
     }
 
@@ -80,9 +80,9 @@ public class RobeServiceConfiguration extends Configuration implements
         return auth;
     }
 
-	@Override
-	public List<AssetConfiguration> getAssets() {
-		return assets;
-	}
+    @Override
+    public List<AssetConfiguration> getAssets() {
+        return assets;
+    }
 
 }

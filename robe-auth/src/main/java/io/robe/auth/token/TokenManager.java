@@ -1,7 +1,6 @@
 package io.robe.auth.token;
 
-import io.robe.auth.tokenbased.Token;
-import io.robe.auth.tokenbased.configuration.TokenBasedAuthConfiguration;
+import io.robe.auth.token.configuration.TokenBasedAuthConfiguration;
 import org.joda.time.DateTime;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

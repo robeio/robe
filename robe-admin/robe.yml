@@ -9,10 +9,6 @@ server:
 
 
 hibernate:
-   # Hibernate ScanPackages. Accepts multiple package names separated with comma ',' with a trailing  space ' '
-   scanPackages: [io.robe.admin.hibernate.entity,io.robe.quartz]
-   # Entities to be included. Accepts multiple class names separated with comma ',' with a trailing  space ' '
-   # entities: [io.robe.hibernate.entity.User]
    database:
      # the name of your JDBC driver
      driverClass:  com.mysql.jdbc.Driver
@@ -47,7 +43,7 @@ quartz:
   threadCount: 10
   threadPriority: 8
   providers: [io.robe.quartz.annotation,io.robe.admin.quartz]
-  scanPackages: [io.robe.admin.timely]
+  scanPackages: []
   skipUpdateCheck: false
   jobStore:
     className: org.quartz.simpl.RAMJobStore

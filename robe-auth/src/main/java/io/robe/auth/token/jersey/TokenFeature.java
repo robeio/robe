@@ -1,6 +1,7 @@
-package io.robe.auth.token;
+package io.robe.auth.token.jersey;
 
 import io.dropwizard.auth.Auth;
+import io.robe.auth.token.TokenAuthenticator;
 import org.glassfish.hk2.api.InjectionResolver;
 import org.glassfish.hk2.api.TypeLiteral;
 import org.glassfish.hk2.utilities.binding.AbstractBinder;

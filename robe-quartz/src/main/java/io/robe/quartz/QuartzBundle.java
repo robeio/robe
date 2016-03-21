@@ -52,7 +52,6 @@ public class QuartzBundle<T extends Configuration & HasQuartzConfiguration > imp
      */
     @Override
     public void run(T configuration, Environment environment) {
-        LOGGER.info("\n------------------------\n-----Quartz Bundle------\n------------------------");
         QuartzConfiguration qConf = configuration.getQuartzConfiguration();
         try {
 

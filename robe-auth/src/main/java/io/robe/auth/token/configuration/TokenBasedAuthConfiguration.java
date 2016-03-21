@@ -1,4 +1,4 @@
-package io.robe.auth.tokenbased.configuration;
+package io.robe.auth.token.configuration;
 
 public class TokenBasedAuthConfiguration {
 

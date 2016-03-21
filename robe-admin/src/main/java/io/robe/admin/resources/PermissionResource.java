@@ -12,7 +12,7 @@ import io.robe.admin.hibernate.entity.Permission;
 import io.robe.admin.hibernate.entity.Role;
 import io.robe.admin.hibernate.entity.Service;
 import io.robe.auth.Credentials;
-import io.robe.auth.tokenbased.BasicToken;
+import io.robe.auth.token.BasicToken;
 import org.hibernate.FlushMode;
 
 import javax.ws.rs.*;

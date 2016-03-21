@@ -13,16 +13,9 @@ import java.util.Iterator;
 
 public class HibernateJobProvider extends JobProvider {
 
-
-    private static RobeHibernateBundle hibernateBundle;
-
-    public static void setHibernateBundle(RobeHibernateBundle hibernateBundle) {
-        HibernateJobProvider.hibernateBundle = hibernateBundle;
-    }
-
     @Override
     public JobInfo getJob(Class<? extends Job> clazz) {
-        Session session = hibernateBundle.getSessionFactory().openSession();
+        Session session = RobeHibernateBundle.getInstance().getSessionFactory().openSession();
         JobEntity quartzJob = (JobEntity) session.createCriteria(JobEntity.class).add(Restrictions.eq("jobClass", clazz)).uniqueResult();
         if (quartzJob == null)
             return null;
