@@ -8,13 +8,13 @@ public class MenuItem {
     private String command;
     private List<MenuItem> items = new LinkedList<MenuItem>();
     private boolean expanded = true;
-    private int itemOrder;
+    private int index;
 
 
-    public MenuItem(String text, String command,int itemOrder) {
+    public MenuItem(String text, String command,int index) {
         this.command = command;
         this.text = text;
-        this.itemOrder = itemOrder;
+        this.index = index;
     }
 
     public String getText() {
@@ -47,14 +47,8 @@ public class MenuItem {
     }
 
     public void setExpanded(boolean expanded) {
-        this.expanded = expanded;
+        this.expanded = true;
     }
 
-    public int getItemOrder() {
-        return itemOrder;
-    }
 
-    public void setItemOrder(int itemOrder) {
-        this.itemOrder = itemOrder;
-    }
 }

@@ -39,7 +39,8 @@ public class ManagedQuartz implements Managed {
         } catch (InterruptedException e) {
             LOGGER.info("Finished onStop Jobs Shutting down the application.");
         }
-        JobManager.getInstance().shutdown(true);
+        if (JobManager.getInstance() != null)
+            JobManager.getInstance().shutdown(true);
     }
 
     private void scheduleAllJobsOnApplicationStop() throws SchedulerException {

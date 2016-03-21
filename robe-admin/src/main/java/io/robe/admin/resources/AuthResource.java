@@ -18,9 +18,9 @@ import io.robe.admin.util.SystemParameterCache;
 import io.robe.admin.util.TemplateManager;
 import io.robe.auth.AbstractAuthResource;
 import io.robe.auth.Credentials;
+import io.robe.auth.token.TokenManager;
 import io.robe.auth.tokenbased.BasicToken;
 import io.robe.auth.tokenbased.Token;
-import io.robe.auth.tokenbased.TokenFactory;
 import io.robe.auth.tokenbased.filter.TokenBasedAuthResponseFilter;
 import io.robe.common.exception.RobeRuntimeException;
 import io.robe.mail.MailItem;
@@ -86,7 +86,7 @@ public class AuthResource extends AbstractAuthResource<User> {
             attributes.put("userAgent", request.getHeader("User-Agent"));
             attributes.put("remoteAddr", request.getRemoteAddr());
 
-            Token token = TokenFactory.getInstance().createToken(user.get().getUserId(), user.get().getEmail(), DateTime.now(), attributes);
+            Token token = TokenManager.getInstance().createToken(user.get().getUserId(), user.get().getEmail(), DateTime.now(), attributes);
             token.setExpiration(token.getMaxAge());
             credentials.remove("password");
             credentials.put("domain", TokenBasedAuthResponseFilter.getTokenSentence("dummy"));

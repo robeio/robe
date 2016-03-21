@@ -1,8 +1,8 @@
 package io.robe.guice.scanner;
 
 import com.google.inject.Injector;
-import com.sun.jersey.spi.inject.InjectableProvider;
 import io.dropwizard.setup.Environment;
+import org.glassfish.hk2.api.InjectionResolver;
 import org.reflections.Reflections;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -10,7 +10,7 @@ import org.slf4j.LoggerFactory;
 import java.util.Set;
 
 /**
- * Collects all classes extended {@link com.sun.jersey.spi.inject.InjectableProvider} and registers them to jersey
+ * Collects all classes extended {@link org.glassfish.hk2.api.InjectionResolver} and registers them to jersey
  *
  */
 public class InjectableProviderScanner implements Scanner{
@@ -18,10 +18,11 @@ public class InjectableProviderScanner implements Scanner{
 
     @Override
     public void scanAndAdd(Environment environment, Injector injector, Reflections reflections) {
-        Set<Class<? extends InjectableProvider>> injectableProviders = reflections.getSubTypesOf(InjectableProvider.class);
-        for (Class<? extends InjectableProvider> injectableProvider : injectableProviders) {
-            environment.jersey().register(injectableProvider);
-            LOGGER.info("Added injectableProvider: " + injectableProvider);
+        Set<Class<? extends InjectionResolver>> resolvers = reflections.getSubTypesOf(InjectionResolver.class);
+        for (Class<? extends InjectionResolver> resolver : resolvers) {
+            //TODO: Check if it is valid usage.
+            environment.jersey().register(resolver);
+            LOGGER.info("Added InjectableResolver: " + resolver);
         }
     }
 }

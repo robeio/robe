@@ -129,6 +129,7 @@ public class JobManager {
     }
 
     public void shutdown(boolean b) throws SchedulerException {
-        scheduler.shutdown(b);
+        if (scheduler != null)
+            scheduler.shutdown(b);
     }
 }

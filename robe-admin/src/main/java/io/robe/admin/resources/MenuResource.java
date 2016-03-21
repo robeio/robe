@@ -45,6 +45,7 @@ public class MenuResource {
             initializeItems(menu.getItems());
             menus.add(menu);
         }
+
         return menus;
     }
 
@@ -79,13 +80,13 @@ public class MenuResource {
 
     private void createMenuWithPermissions(Set<String> permissions, List<Menu> items, List<MenuItem> permittedItems) {
         for (Menu item : items) {
-            MenuItem permittedItem = new MenuItem(item.getName(), item.getCode(),item.getItemOrder());
+            MenuItem permittedItem = new MenuItem(item.getName(), item.getCode(), item.getIndex());
             if (permissions.contains(item.getOid())) {
                 permittedItems.add(permittedItem);
             }
             createMenuWithPermissions(permissions, item.getItems(), permittedItem.getItems());
             //If any sub menu permitted add parent menu also.
-            if ( !permittedItem.getItems().isEmpty() && !permittedItems.contains(permittedItem)) {
+            if (!permittedItem.getItems().isEmpty() && !permittedItems.contains(permittedItem)) {
                 permittedItems.add(permittedItem);
             }
         }
@@ -113,24 +114,47 @@ public class MenuResource {
     @POST
     @UnitOfWork
     @Path("movenode/{item}/{destination}")
-    public Menu move(@Auth Credentials credentials, @PathParam("item") String itemOid, @PathParam("destination") String parentOid) {
+    public Menu move(@Auth Credentials credentials, @PathParam("item") String itemOid, @PathParam("destination") String destination) {
+        String notValid = " is not valid.";
         Menu item = menuDao.findById(itemOid);
         Hibernate.initialize(item.getItems());
-        Menu parent = menuDao.findById(parentOid);
-        Hibernate.initialize(parent.getItems());
-        String notValid = " is not valid.";
+        Menu parent = menuDao.findById(destination);
         if (parent == null) {
-            throw new RobeRuntimeException("destination", parentOid + notValid);
-        } else if (item == null) {
+            throw new RobeRuntimeException("destination", destination + notValid);
+        }
+        Hibernate.initialize(parent.getItems());
+        reorderIndexes(item, parent.getItems());
+        if (item == null) {
             throw new RobeRuntimeException("item", itemOid + notValid);
-        } else if (itemOid.equals(parentOid)) {
+        } else if (itemOid.equals(destination)) {
             item.setParentOid(null);
         } else {
-            item.setParentOid(parentOid);
+            item.setParentOid(destination);
         }
         item = menuDao.update(item);
         return item;
 
+    }
+
+    private ArrayList<Menu> reorderIndexes(Menu target, List<Menu> items) {
+        int targetIndex = target.getIndex();
+        int index = 0;
+        ArrayList<Menu> ordered = new ArrayList<>(items.size());
+        items.remove(target);
+
+        for (Menu item : items) {
+            if (target.getCode().equals(item.getCode()))
+                continue;
+            if (index == targetIndex) {
+                ordered.add(target);
+                index++;
+            }
+
+            item.setIndex(index);
+            ordered.add(item);
+            index++;
+        }
+        return ordered;
     }
 
     @PUT

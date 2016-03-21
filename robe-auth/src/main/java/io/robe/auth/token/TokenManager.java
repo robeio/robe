@@ -1,5 +1,6 @@
-package io.robe.auth.tokenbased;
+package io.robe.auth.token;
 
+import io.robe.auth.tokenbased.Token;
 import io.robe.auth.tokenbased.configuration.TokenBasedAuthConfiguration;
 import org.joda.time.DateTime;
 import org.slf4j.Logger;
@@ -17,11 +18,11 @@ import java.util.Map;
  *
  * @param <I>
  */
-public class TokenFactory<I extends Token> {
+public class TokenManager<I extends Token> {
 
-    private static TokenFactory instance = null;
+    private static TokenManager instance = null;
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(TokenFactory.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(TokenManager.class);
     private static Class<? extends Token> tokenClass;
 
     private static Constructor constructorByParameters;
@@ -29,7 +30,7 @@ public class TokenFactory<I extends Token> {
 
     private static ThreadLocal<Token> currentLoginToken = new ThreadLocal<Token>();
 
-    private TokenFactory() {
+    private TokenManager() {
 
     }
 
@@ -47,9 +48,9 @@ public class TokenFactory<I extends Token> {
      * @param <I> Token class
      * @return instance
      */
-    public static <I extends Token> TokenFactory getInstance() {
+    public static <I extends Token> TokenManager getInstance() {
         if (instance == null)
-            instance = new TokenFactory<I>();
+            instance = new TokenManager<I>();
         {
         }
         return instance;
@@ -63,7 +64,7 @@ public class TokenFactory<I extends Token> {
      * @param <I>           Token Class
      */
     public static <I extends Token> void configure(Class<I> tokenClass, TokenBasedAuthConfiguration configuration) throws Exception {
-        TokenFactory.tokenClass = tokenClass;
+        TokenManager.tokenClass = tokenClass;
         Method configureMethod = null;
 
         LOGGER.info("Configuring token class : " + tokenClass.getName());
@@ -89,7 +90,7 @@ public class TokenFactory<I extends Token> {
         }
         LOGGER.debug("Constructor (String tokenString): Loaded.");
 
-        TokenFactory.<I>getInstance();
+        TokenManager.<I>getInstance();
 
     }
 

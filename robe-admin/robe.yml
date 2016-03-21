@@ -21,7 +21,7 @@ hibernate:
      # the password
      password:
      # the JDBC URL
-     url: jdbc:mysql://localhost:3306/robe
+     url: jdbc:mysql://localhost:3306/robe?autoReconnect=true&useSSL=false
      # Properties
      properties:
        charSet: UTF-8
@@ -32,23 +32,13 @@ hibernate:
 
 logging:
      # The default level of all loggers. Can be OFF, ERROR, WARN, INFO, DEBUG, TRACE, or ALL.
-     level: DEBUG
+     level: INFO
      # Logger-specific levels.
      #loggers:
       #org.hibernate.SQL: ALL
 
 guice:
   scanPackages: [io.robe]
-mail:
- usernameKey: mail.smtp.username
- passwordKey: mail.smtp.password
- properties:
-   mail.smtp.username: username@robe.io
-   mail.smtp.password: xxXXXXxx
-   mail.smtp.host: smtp.gmail.com
-   mail.smtp.port: 587
-   mail.smtp.auth: true
-   mail.smtp.starttls.enable: true
 
 # Quartz Scheduler configuration
 quartz:
@@ -77,22 +67,16 @@ auth:
   tokenKey: auth-token
   domain: 127.0.0.1
   path: /
-  maxage: 60 #s
+  maxage: 1000 #s
   secure: false
   poolSize: 4 # parallel with cpu cores
   algorithm: PBEWithMD5AndTripleDES
   serverPassword: auto # auto for uuid, if it is cluster use custom password
 
 assets:
- - resourcePath: /Users/serayuzgur/Development/robe-admin-ui/src
+ - resourcePath: /Users/serayuzgur/Development/robe-github/robe-admin-ui/src
    uriPath:      /admin-ui/
    indexFile:    index.html
    assetsName:   io.robe.admin.ui
    cached:       true
    type: filesystem # use "classpath" or "filesystem" or "http"
- - resourcePath: http://json.org/
-   uriPath:      /placehold/
-   indexFile:    example
-   assetsName:   placehold
-   cached:       true
-   type: http # use "classpath" or "filesystem" or "http"

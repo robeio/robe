@@ -1,4 +1,4 @@
-package io.robe.auth.tokenbased;
+package io.robe.auth.token;
 
 import com.google.common.base.Optional;
 import io.dropwizard.auth.AuthenticationException;
@@ -9,6 +9,7 @@ import io.robe.auth.data.entry.ServiceEntry;
 import io.robe.auth.data.entry.UserEntry;
 import io.robe.auth.data.store.ServiceStore;
 import io.robe.auth.data.store.UserStore;
+import io.robe.auth.tokenbased.Token;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -19,9 +20,9 @@ import java.util.Set;
 /**
  * Authenticator implementation for token based authentication.
  */
-public class TokenBasedAuthenticator implements Authenticator<String, Token> {
+public class TokenAuthenticator implements Authenticator<String, Token> {
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(TokenBasedAuthenticator.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(TokenAuthenticator.class);
 
     private final ServiceStore serviceStore;
     private final UserStore userStore;
@@ -32,13 +33,13 @@ public class TokenBasedAuthenticator implements Authenticator<String, Token> {
      * @param userStore    Store for getting user.
      * @param serviceStore Store for getting service info.
      */
-    public TokenBasedAuthenticator(UserStore userStore, ServiceStore serviceStore) {
+    public TokenAuthenticator(UserStore userStore, ServiceStore serviceStore) {
         this.userStore = userStore;
         this.serviceStore = serviceStore;
     }
 
     /**
-     * Creates {@link com.google.common.base.Optional} {@link io.robe.auth.Credentials} instance from provided tokenString
+     * Creates {@link Optional} {@link io.robe.auth.Credentials} instance from provided tokenString
      *
      * @param tokenString tokenString to decode.
      * @return Optional instance of a {@link io.robe.auth.Credentials} which created from tokenString
@@ -50,7 +51,7 @@ public class TokenBasedAuthenticator implements Authenticator<String, Token> {
         LOGGER.debug("Authenticating from database:  " + tokenString);
         try {
             // Decode tokenString and get user
-            Token token = TokenFactory.getInstance().createToken(tokenString);
+            Token token = TokenManager.getInstance().createToken(tokenString);
 
             Optional<UserEntry> user = (Optional<UserEntry>) userStore.findByUsername(token.getUsername());
             if (!user.isPresent()) {
@@ -83,7 +84,7 @@ public class TokenBasedAuthenticator implements Authenticator<String, Token> {
                 }
 
                 //Set Token to the thread local for future access.
-                TokenFactory.setCurrentLoginToken(token);
+                TokenManager.setCurrentLoginToken(token);
 
                 return Optional.fromNullable(token);
             }

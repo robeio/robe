@@ -7,7 +7,7 @@
 
     <groupId>io.robe</groupId>
     <artifactId>robe-parent</artifactId>
-    <version>0.4.5.4</version>
+    <version>0.5.0.0</version>
     <packaging>pom</packaging>
     <name>Robe Project</name>
     <url>www.robe.io</url>
@@ -50,13 +50,6 @@
                 <role>committer</role>
             </roles>
         </developer>
-        <developer>
-            <name>Tulay Kaya</name>
-            <email>tulay.kaya@mebitech.com</email>
-            <roles>
-                <role>committer</role>
-            </roles>
-        </developer>
     </developers>
 
 
@@ -93,18 +86,16 @@
     </modules>
 
     <properties>
-        <dropwizard.version>0.7.1</dropwizard.version>
-        <project.version>0.4.5.4</project.version>
-        <mysql.version>5.1.26</mysql.version>
+        <dropwizard.version>0.9.2</dropwizard.version>
+        <project.version>0.5.0.0</project.version>
+        <mysql.version>5.1.38</mysql.version>
         <beanutils.version>1.9.0</beanutils.version>
-        <commons.version>1.9</commons.version>
-        <vt.version>3.1.1</vt.version>
+        <commons.version>1.10</commons.version>
+        <vt.version>3.1.2</vt.version>
         <mail.version>1.4.7</mail.version>
-        <quartz.version>2.2.1</quartz.version>
-        <swagger.version>2.10</swagger.version>
-        <cglib.version>2.2.2</cglib.version>
-        <guice.version>3.0</guice.version>
-        <reflections.version>0.9.8</reflections.version>
+        <quartz.version>2.2.2</quartz.version>
+        <guice.version>4.0</guice.version>
+        <reflections.version>0.9.10</reflections.version>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
     </properties>
@@ -115,6 +106,16 @@
             <dependency>
                 <groupId>io.dropwizard</groupId>
                 <artifactId>dropwizard-core</artifactId>
+                <version>${dropwizard.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>io.dropwizard</groupId>
+                <artifactId>dropwizard-jersey</artifactId>
+                <version>${dropwizard.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>io.dropwizard</groupId>
+                <artifactId>dropwizard-db</artifactId>
                 <version>${dropwizard.version}</version>
             </dependency>
             <dependency>
@@ -213,9 +214,28 @@
                 <version>${guice.version}</version>
             </dependency>
             <dependency>
-                <groupId>com.sun.jersey.contribs</groupId>
-                <artifactId>jersey-guice</artifactId>
-                <version>1.18.1</version>
+                <groupId>com.squarespace.jersey2-guice</groupId>
+                <artifactId>jersey2-guice</artifactId>
+                <version>0.10</version>
+                <exclusions>
+                    <exclusion>
+                        <groupId>com.google.code.findbugs</groupId>
+                        <artifactId>jsr305</artifactId>
+                    </exclusion>
+                    <exclusion>
+                        <groupId>org.slf4j</groupId>
+                        <artifactId>slf4j-api</artifactId>
+                    </exclusion>
+                    <exclusion>
+                        <groupId>org.glassfish.jersey.containers</groupId>
+                        <artifactId>jersey-container-servlet-core</artifactId>
+                    </exclusion>
+                </exclusions>
+            </dependency>
+            <dependency>
+                <groupId>org.glassfish.hk2</groupId>
+                <artifactId>hk2-api</artifactId>
+                <version>2.4.0-b31</version>
             </dependency>
 
             <dependency>
@@ -232,7 +252,7 @@
             <dependency>
                 <groupId>com.google.guava</groupId>
                 <artifactId>guava</artifactId>
-                <version>17.0</version>
+                <version>19.0</version>
             </dependency>
 
             <dependency>
@@ -305,7 +325,7 @@
     </dependencies>
 
 
-  <profiles>
+    <profiles>
         <profile>
             <id>release-sign-artifacts</id>
             <activation>
@@ -381,23 +401,7 @@
                     </execution>
                 </executions>
             </plugin>
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-javadoc-plugin</artifactId>
-                <version>2.10.1</version>
-                <configuration>
-                    <additionalparam>${javadoc.doclint.none}</additionalparam>
-                    <quiet>true</quiet>
-                </configuration>
-                <executions>
-                    <execution>
-                        <id>attach-javadocs</id>
-                        <goals>
-                            <goal>jar</goal>
-                        </goals>
-                    </execution>
-                </executions>
-            </plugin>
+
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-resources-plugin</artifactId>
@@ -433,7 +437,7 @@
                     </execution>
                 </executions>
             </plugin>
-             <plugin>
+            <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-gpg-plugin</artifactId>
                 <version>1.5</version>
@@ -460,8 +464,6 @@
             </plugin>
         </plugins>
     </build>
-
-
 
 
 </project>

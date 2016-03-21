@@ -8,7 +8,7 @@ import io.dropwizard.setup.Environment;
 import io.robe.admin.RobeServiceConfiguration;
 import io.robe.admin.hibernate.entity.*;
 import io.robe.guice.GuiceConfiguration;
-import io.robe.hibernate.HibernateBundle;
+import io.robe.hibernate.RobeHibernateBundle;
 import net.sourceforge.argparse4j.inf.Namespace;
 import org.hibernate.Session;
 import org.hibernate.criterion.Restrictions;
@@ -31,13 +31,13 @@ public class InitializeCommand<T extends RobeServiceConfiguration> extends Envir
     private static final Logger LOGGER = LoggerFactory.getLogger(InitializeCommand.class);
     protected static String IO_ROBE_ADMIN = "io/robe/admin";
     protected static String ADMIN = "Admin";
-    protected HibernateBundle hibernateBundle;
+    protected RobeHibernateBundle hibernateBundle;
 
-    public InitializeCommand(Application<T> service, HibernateBundle hibernateBundle) {
+    public InitializeCommand(Application<T> service, RobeHibernateBundle hibernateBundle) {
         this(service, "initialize", "Runs Hibernate and initialize required columns", hibernateBundle);
     }
 
-    public InitializeCommand(Application<T> service, String name, String description, HibernateBundle hibernateBundle) {
+    public InitializeCommand(Application<T> service, String name, String description, RobeHibernateBundle hibernateBundle) {
         super(service, name, description);
         this.hibernateBundle = hibernateBundle;
     }
@@ -167,14 +167,14 @@ public class InitializeCommand<T extends RobeServiceConfiguration> extends Envir
         LOGGER.info("Createting Menu and permissions");
         Menu root = new Menu();
         root.setCode("root");
-        root.setItemOrder(1);
+        root.setIndex(1);
         root.setName("Menü");
         session.persist(root);
         session.persist(createPermission(true, root.getOid(), role));
 
         Menu manager = new Menu();
         manager.setCode("Manager");
-        manager.setItemOrder(1);
+        manager.setIndex(1);
         manager.setName("Yönetici");
         manager.setParentOid(root.getOid());
         session.persist(manager);
@@ -182,7 +182,7 @@ public class InitializeCommand<T extends RobeServiceConfiguration> extends Envir
 
         Menu userProfileManagement = new Menu();
         userProfileManagement.setCode("UserProfileManagement");
-        userProfileManagement.setItemOrder(1);
+        userProfileManagement.setIndex(1);
         userProfileManagement.setName("Profil Yönetimi");
         userProfileManagement.setParentOid(manager.getOid());
         session.persist(userProfileManagement);
@@ -190,7 +190,7 @@ public class InitializeCommand<T extends RobeServiceConfiguration> extends Envir
 
         Menu usermanagement = new Menu();
         usermanagement.setCode("UserManagement");
-        usermanagement.setItemOrder(1);
+        usermanagement.setIndex(1);
         usermanagement.setName("Kullanıcı Yönetimi");
         usermanagement.setParentOid(manager.getOid());
         session.persist(usermanagement);
@@ -198,7 +198,7 @@ public class InitializeCommand<T extends RobeServiceConfiguration> extends Envir
 
         Menu rolemanagement = new Menu();
         rolemanagement.setCode("RoleManagement");
-        rolemanagement.setItemOrder(1);
+        rolemanagement.setIndex(1);
         rolemanagement.setName("Rol Yönetimi");
         rolemanagement.setParentOid(manager.getOid());
         session.persist(rolemanagement);
@@ -206,7 +206,7 @@ public class InitializeCommand<T extends RobeServiceConfiguration> extends Envir
 
         Menu menumanagement = new Menu();
         menumanagement.setCode("MenuManagement");
-        menumanagement.setItemOrder(1);
+        menumanagement.setIndex(1);
         menumanagement.setName("Menü Yönetimi");
         menumanagement.setParentOid(manager.getOid());
         session.persist(menumanagement);
@@ -214,7 +214,7 @@ public class InitializeCommand<T extends RobeServiceConfiguration> extends Envir
 
         Menu permissionManagement = new Menu();
         permissionManagement.setCode("PermissionManagement");
-        permissionManagement.setItemOrder(1);
+        permissionManagement.setIndex(1);
         permissionManagement.setName("İzin Atama");
         permissionManagement.setParentOid(manager.getOid());
         session.persist(permissionManagement);
@@ -222,7 +222,7 @@ public class InitializeCommand<T extends RobeServiceConfiguration> extends Envir
 
         Menu dash = new Menu();
         dash.setCode("Dashboard");
-        dash.setItemOrder(0);
+        dash.setIndex(0);
         dash.setName("Dash");
         dash.setParentOid(manager.getOid());
         session.persist(dash);
@@ -230,7 +230,7 @@ public class InitializeCommand<T extends RobeServiceConfiguration> extends Envir
 
         Menu mailTemplate = new Menu();
         mailTemplate.setCode("MailTemplateManagement");
-        mailTemplate.setItemOrder(0);
+        mailTemplate.setIndex(0);
         mailTemplate.setName("Mail Template Yönetimi");
         mailTemplate.setParentOid(manager.getOid());
         session.persist(mailTemplate);
@@ -238,7 +238,7 @@ public class InitializeCommand<T extends RobeServiceConfiguration> extends Envir
 
         Menu quartzJob = new Menu();
         quartzJob.setCode("QuartzJobManagement");
-        quartzJob.setItemOrder(0);
+        quartzJob.setIndex(0);
         quartzJob.setName("Quartz Job Manager");
         quartzJob.setParentOid(manager.getOid());
         session.persist(quartzJob);
@@ -246,7 +246,7 @@ public class InitializeCommand<T extends RobeServiceConfiguration> extends Envir
 
         Menu systemParameter = new Menu();
         systemParameter.setCode("SystemParameter");
-        systemParameter.setItemOrder(0);
+        systemParameter.setIndex(0);
         systemParameter.setName("System Parameter");
         systemParameter.setParentOid(manager.getOid());
         session.persist(systemParameter);

@@ -4,6 +4,10 @@ import io.dropwizard.Configuration;
 import io.dropwizard.ConfiguredBundle;
 import io.dropwizard.setup.Bootstrap;
 import io.dropwizard.setup.Environment;
+import io.robe.auth.Credentials;
+import io.robe.auth.token.TokenFactoryProvider;
+import io.robe.auth.token.TokenFeature;
+import io.robe.auth.token.TokenManager;
 import io.robe.auth.tokenbased.configuration.HasTokenBasedAuthConfiguration;
 import io.robe.auth.tokenbased.configuration.TokenBasedAuthConfiguration;
 import io.robe.auth.tokenbased.filter.TokenBasedAuthResponseFilter;
@@ -26,7 +30,14 @@ public class TokenBasedAuthBundle<T extends Configuration & HasTokenBasedAuthCon
         LOGGER.info("\n------------------------\n-------Auth Bundle------\n------------------------");
         this.configuration = configuration.getTokenBasedAuthConfiguration();
 
-        environment.jersey().getResourceConfig().getContainerResponseFilters().add(new TokenBasedAuthResponseFilter(configuration.getTokenBasedAuthConfiguration()));
+        environment.jersey().register(new TokenFactoryProvider.Binder<Credentials>(Credentials.class));
+        environment.jersey().register(new TokenBasedAuthResponseFilter(configuration.getTokenBasedAuthConfiguration()));
+        environment.jersey().register(TokenFeature.class);
+
+        TokenManager.configure(BasicToken.class, configuration.getTokenBasedAuthConfiguration());
+
+//        environment.jersey().register(AuthFactory.binder(authFactory));
+
     }
 
     /**
@@ -36,6 +47,7 @@ public class TokenBasedAuthBundle<T extends Configuration & HasTokenBasedAuthCon
      */
     @Override
     public void initialize(Bootstrap<?> bootstrap) {
+
     }
 
 

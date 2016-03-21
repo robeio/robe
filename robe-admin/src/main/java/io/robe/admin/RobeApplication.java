@@ -10,14 +10,17 @@ import io.dropwizard.views.ViewBundle;
 import io.dropwizard.views.ViewRenderer;
 import io.dropwizard.views.freemarker.FreemarkerViewRenderer;
 import io.robe.admin.cli.InitializeCommand;
-import io.robe.admin.guice.module.AuthenticatorModule;
 import io.robe.admin.guice.module.HibernateModule;
+import io.robe.admin.hibernate.dao.ServiceDao;
+import io.robe.admin.hibernate.dao.UserDao;
 import io.robe.admin.quartz.hibernate.HibernateJobProvider;
 import io.robe.assets.AdvancedAssetBundle;
+import io.robe.auth.token.TokenAuthenticator;
+import io.robe.auth.token.TokenFactory;
 import io.robe.auth.tokenbased.TokenBasedAuthBundle;
 import io.robe.common.exception.RobeExceptionMapper;
 import io.robe.guice.GuiceBundle;
-import io.robe.hibernate.HibernateBundle;
+import io.robe.hibernate.RobeHibernateBundle;
 import io.robe.mail.MailBundle;
 import io.robe.quartz.QuartzBundle;
 import org.slf4j.Logger;
@@ -36,19 +39,14 @@ public class RobeApplication<T extends RobeServiceConfiguration> extends Applica
 
 
     private static final Logger LOGGER = LoggerFactory.getLogger(RobeApplication.class);
-    private boolean withServerCommand = false;
+
 
     public static void main(String[] args) throws Exception {
+
         RobeApplication application = new RobeApplication();
-        if (args.length > 1 && args[0].equals("server"))
-            application.setWithServerCommand(true);
         application.run(args);
-    }
 
-    public void setWithServerCommand(boolean withServerCommand) {
-        this.withServerCommand = withServerCommand;
     }
-
 
     /**
      * Adds
@@ -70,34 +68,31 @@ public class RobeApplication<T extends RobeServiceConfiguration> extends Applica
     @Override
     public void initialize(Bootstrap<T> bootstrap) {
 
-        HibernateBundle<T> hibernateBundle = new HibernateBundle<T>();
+        RobeHibernateBundle<T> hibernateBundle = RobeHibernateBundle.createInstance(new String[]{"io.robe.admin.hibernate.entity", "io.robe.quartz"}, new String[0]);
 
         TokenBasedAuthBundle<T> authBundle = new TokenBasedAuthBundle<T>();
-
         addGuiceBundle(bootstrap, authBundle, hibernateBundle);
+        bootstrap.addBundle(authBundle);
 
         bootstrap.addBundle(hibernateBundle);
         bootstrap.addCommand(new InitializeCommand(this, hibernateBundle));
-        if (withServerCommand) {
-            //TODO: Find a better way to send it
-            HibernateJobProvider.setHibernateBundle(hibernateBundle);
 
-            bootstrap.addBundle(authBundle);
-            bootstrap.addBundle(new QuartzBundle<T>());
-            bootstrap.addBundle(new ViewBundle());
-            bootstrap.addBundle(new ViewBundle(ImmutableList.<ViewRenderer>of(new FreemarkerViewRenderer())));
-            bootstrap.addBundle(new MailBundle<T>());
-            bootstrap.addBundle(new AdvancedAssetBundle<T>());
-        }
+        //TODO: Find a better way to send it
+        HibernateJobProvider.setHibernateBundle(hibernateBundle);
+
+        bootstrap.addBundle(new QuartzBundle<T>());
+        bootstrap.addBundle(new ViewBundle());
+        bootstrap.addBundle(new ViewBundle(ImmutableList.<ViewRenderer>of(new FreemarkerViewRenderer())));
+        bootstrap.addBundle(new MailBundle<T>());
+        bootstrap.addBundle(new AdvancedAssetBundle<T>());
 
     }
 
-    private void addGuiceBundle(Bootstrap<T> bootstrap, TokenBasedAuthBundle<T> authBundle, HibernateBundle hibernateBundle) {
+
+    private void addGuiceBundle(Bootstrap<T> bootstrap, TokenBasedAuthBundle<T> authBundle, RobeHibernateBundle hibernateBundle) {
         List<Module> modules = new LinkedList<Module>();
         modules.add(new HibernateModule(hibernateBundle));
-        if (withServerCommand) {
-            modules.add(new AuthenticatorModule(authBundle, bootstrap.getMetricRegistry()));
-        }
+
         bootstrap.addBundle(new GuiceBundle<T>(modules, bootstrap.getApplication().getConfigurationClass()));
     }
 
@@ -113,7 +108,18 @@ public class RobeApplication<T extends RobeServiceConfiguration> extends Applica
     @UnitOfWork
     @Override
     public void run(T configuration, Environment environment) throws Exception {
+
+        TokenFactory.authenticator = new TokenAuthenticator(
+                GuiceBundle.getInjector().getInstance(UserDao.class),
+                GuiceBundle.getInjector().getInstance(ServiceDao.class));
+        TokenFactory.tokenKey = configuration.getTokenBasedAuthConfiguration().getTokenKey();
         addExceptionMappers(environment);
+    }
+
+    public void run(String... args) throws Exception {
+        super.run(args);
+
+
     }
 
     private void addExceptionMappers(Environment environment) {

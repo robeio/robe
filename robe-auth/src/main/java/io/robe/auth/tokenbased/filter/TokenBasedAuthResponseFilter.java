@@ -1,16 +1,17 @@
 package io.robe.auth.tokenbased.filter;
 
-import com.sun.jersey.spi.container.ContainerRequest;
-import com.sun.jersey.spi.container.ContainerResponse;
-import com.sun.jersey.spi.container.ContainerResponseFilter;
+import io.robe.auth.token.TokenManager;
 import io.robe.auth.tokenbased.Token;
-import io.robe.auth.tokenbased.TokenFactory;
 import io.robe.auth.tokenbased.configuration.TokenBasedAuthConfiguration;
 import org.joda.time.DateTime;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import javax.ws.rs.container.ContainerRequestContext;
+import javax.ws.rs.container.ContainerResponseContext;
+import javax.ws.rs.container.ContainerResponseFilter;
 import javax.ws.rs.core.Response;
+import java.io.IOException;
 
 
 /**
@@ -24,6 +25,7 @@ public class TokenBasedAuthResponseFilter implements ContainerResponseFilter {
 
     /**
      * Creates a valid token cookie template with the given configuration.
+     *
      * @param configuration
      */
     public TokenBasedAuthResponseFilter(TokenBasedAuthConfiguration configuration) {
@@ -44,42 +46,40 @@ public class TokenBasedAuthResponseFilter implements ContainerResponseFilter {
     /**
      * Checks the expiration date of token.
      * Renews and puts at header of response.
-     * @param request
-     * @param response
+     *
+     * @param requestContext
+     * @param responseContext
      * @return
      */
     @Override
-    public ContainerResponse filter(ContainerRequest request, ContainerResponse response) {
-        String authToken = extractAuthTokenFromCookieList(request.getHeaderValue("Cookie"));
+    public void filter(ContainerRequestContext requestContext, ContainerResponseContext responseContext) throws IOException {
+        String authToken = extractAuthTokenFromCookieList(requestContext.getHeaders().getFirst("Cookie"));
         if (authToken != null && authToken.length() != 0) {
             try {
-                Token token = TokenFactory.getInstance().createToken(authToken);
+                Token token = TokenManager.getInstance().createToken(authToken);
                 if (token.isExpired()) {
                     LOGGER.debug("ExpireDate : " + token.getExpirationDate().toString());
                     LOGGER.debug("Now: " + DateTime.now().toDate().toString());
-                    response.getHttpHeaders().putSingle("Set-Cookie", getTokenSentence(""));
-                    response.setStatusType(Response.Status.UNAUTHORIZED);
-                    response.setEntity("Token expired. Pleas login again.");
-                    LOGGER.info("Token expired. Pleas login again.");
+                    responseContext.getHeaders().putSingle("Set-Cookie", getTokenSentence(""));
+                    responseContext.setStatusInfo(Response.Status.UNAUTHORIZED);
+                    responseContext.setEntity("Token expired. Please login again.");
+                    LOGGER.info("Token expired. Please login again.");
                 } else {
                     token.setExpiration(token.getMaxAge());
-                    response.getHttpHeaders().putSingle("Set-Cookie", getTokenSentence(token.getTokenString()));
+                    responseContext.getHeaders().putSingle("Set-Cookie", getTokenSentence(token.getTokenString()));
                 }
 
             } catch (Exception e) {
                 LOGGER.error("Token re-creation failed", e.getMessage());
-                response.setStatusType(Response.Status.UNAUTHORIZED);
+                responseContext.setStatusInfo(Response.Status.UNAUTHORIZED);
 
             }
         }
-
-        return response;
-
-
     }
 
     /**
      * Combines the token and cookie sentence
+     *
      * @param authToken final cookie
      * @return
      */
@@ -89,6 +89,7 @@ public class TokenBasedAuthResponseFilter implements ContainerResponseFilter {
 
     /**
      * Extracts the accesstoken from cookies
+     *
      * @param cookieList
      * @return
      */
@@ -104,4 +105,5 @@ public class TokenBasedAuthResponseFilter implements ContainerResponseFilter {
         }
         return null;
     }
+
 }

@@ -1,6 +1,8 @@
 package io.robe.admin.resources;
 
 import com.google.common.base.Optional;
+import com.google.common.hash.Hashing;
+import com.google.common.io.BaseEncoding;
 import com.google.inject.Inject;
 import io.dropwizard.auth.Auth;
 import io.dropwizard.hibernate.UnitOfWork;
@@ -21,7 +23,6 @@ import io.robe.auth.tokenbased.BasicToken;
 import io.robe.common.exception.RobeRuntimeException;
 import io.robe.mail.MailItem;
 import io.robe.mail.MailManager;
-import org.apache.commons.codec.binary.Hex;
 import org.hibernate.FlushMode;
 import org.joda.time.DateTime;
 
@@ -33,8 +34,6 @@ import javax.ws.rs.core.UriInfo;
 import java.io.StringWriter;
 import java.io.Writer;
 import java.nio.charset.StandardCharsets;
-import java.security.MessageDigest;
-import java.security.NoSuchAlgorithmException;
 import java.util.*;
 
 import static org.hibernate.CacheMode.GET;
@@ -142,18 +141,12 @@ public class UserResource extends AbstractAuthResource<User> {
             mailItem.setTitle("Robe.io Password Change Request");
             MailManager.sendMail(mailItem);
         } else {
-            try {
-                String password = generateStrongPassword();
-                MessageDigest md = MessageDigest.getInstance("SHA-256");
-                md.update(password.getBytes(StandardCharsets.UTF_8));
-                entity.setPassword(Hex.encodeHexString(md.digest()));
-                UserDTO userDTO = new UserDTO(entity);
-                userDTO.setNewPassword(password);
-                return userDTO;
-
-            } catch (NoSuchAlgorithmException e) {
-                throw new RobeRuntimeException(e);
-            }
+            String password = generateStrongPassword();
+            //TODO:check
+            entity.setPassword(BaseEncoding.base16().encode(Hashing.sha256().hashString(password, StandardCharsets.UTF_8).asBytes()));
+            UserDTO userDTO = new UserDTO(entity);
+            userDTO.setNewPassword(password);
+            return userDTO;
         }
 
         return new UserDTO(entity);

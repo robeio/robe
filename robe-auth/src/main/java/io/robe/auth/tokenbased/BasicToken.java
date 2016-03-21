@@ -3,9 +3,8 @@ package io.robe.auth.tokenbased;
 import com.google.common.cache.Cache;
 import com.google.common.cache.CacheBuilder;
 import com.google.common.hash.Hashing;
+import com.google.common.io.BaseEncoding;
 import io.robe.auth.tokenbased.configuration.TokenBasedAuthConfiguration;
-import org.apache.commons.codec.DecoderException;
-import org.apache.commons.codec.binary.Hex;
 import org.jasypt.encryption.pbe.PooledPBEStringEncryptor;
 import org.joda.time.DateTime;
 import org.slf4j.Logger;
@@ -66,19 +65,13 @@ public class BasicToken implements Token {
      * @throws Exception
      */
     public BasicToken(String tokenString) throws Exception {
-        try {
-            tokenString = tokenString.replaceAll("\"", "");
-            tokenString = new String(Hex.decodeHex(tokenString.toCharArray()));
-            String[] parts = ENCRYPTOR.decrypt(tokenString).split(SEPARATOR);
-            this.userId = parts[0];
-            this.username = parts[1];
-            this.expireAt = new DateTime(Long.valueOf(parts[2]));
-            this.attributesHash = parts[3];
-        } catch (DecoderException e) {
-            LOGGER.error("Cant decode token: " + tokenString, e);
-            throw e;
-        }
-
+        tokenString = tokenString.replaceAll("\"", "");
+        tokenString = new String(BaseEncoding.base16().decode(tokenString));
+        String[] parts = ENCRYPTOR.decrypt(tokenString).split(SEPARATOR);
+        this.userId = parts[0];
+        this.username = parts[1];
+        this.expireAt = new DateTime(Long.valueOf(parts[2]));
+        this.attributesHash = parts[3];
     }
 
     /**
@@ -185,7 +178,7 @@ public class BasicToken implements Token {
 
         // Encrypt token data string
         String newTokenString = ENCRYPTOR.encrypt(dataString.toString());
-        newTokenString = Hex.encodeHexString(newTokenString.getBytes());
+        newTokenString = BaseEncoding.base16().encode(newTokenString.getBytes());
         tokenString = newTokenString;
         return newTokenString;
     }
@@ -237,5 +230,10 @@ public class BasicToken implements Token {
         result = 31 * result + username.hashCode();
         result = 31 * result + attributesHash.hashCode();
         return result;
+    }
+
+    @Override
+    public String getName() {
+        return "BasicToken";
     }
 }

@@ -1,14 +1,10 @@
 package io.robe.guice;
 
-import com.google.common.base.Function;
 import com.google.common.base.Preconditions;
 import com.google.inject.Guice;
 import com.google.inject.Injector;
 import com.google.inject.Module;
 import com.google.inject.Stage;
-import com.google.inject.servlet.GuiceFilter;
-import com.sun.jersey.api.core.ResourceConfig;
-import com.sun.jersey.spi.container.servlet.ServletContainer;
 import io.dropwizard.Configuration;
 import io.dropwizard.ConfiguredBundle;
 import io.dropwizard.setup.Bootstrap;
@@ -23,9 +19,6 @@ import org.reflections.util.FilterBuilder;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import javax.annotation.Nullable;
-import javax.servlet.DispatcherType;
-import java.util.EnumSet;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Set;
@@ -36,13 +29,13 @@ public class GuiceBundle<T extends Configuration & HasGuiceConfiguration> implem
     private static GuiceConfiguration configuration;
 
     private Reflections reflections;
-    private List<Module> modules = new LinkedList<Module>();
-    GuiceContainer container;
-    DropwizardEnvironmentModule deModule;
-    Class<T> type;
+    private List<Module> modules = new LinkedList<>();
+    private DropwizardEnvironmentModule deModule;
+    private Class<T> type;
 
     public GuiceBundle(List<Module> modules, Class<T> type) {
         Preconditions.checkNotNull(modules);
+        Preconditions.checkArgument(!modules.isEmpty());
         this.modules = modules;
         this.type = type;
 
@@ -59,12 +52,9 @@ public class GuiceBundle<T extends Configuration & HasGuiceConfiguration> implem
 
     @Override
     public void initialize(Bootstrap<?> bootstrap) {
-
-        container = new GuiceContainer();
-        JerseyContainerModule jerseyContainerModule = new JerseyContainerModule(container);
-        deModule = new DropwizardEnvironmentModule<T>(type);
+        deModule = new DropwizardEnvironmentModule<>(type);
+        modules.add(new JerseyModule());
         modules.add(deModule);
-        modules.add(jerseyContainerModule);
         injector = Guice.createInjector(Stage.PRODUCTION, modules);
 
     }
@@ -84,7 +74,9 @@ public class GuiceBundle<T extends Configuration & HasGuiceConfiguration> implem
             }
             GuiceBundle.configuration = configuration.getGuiceConfiguration();
             createReflections(configuration.getGuiceConfiguration().getScanPackages());
-            prepareContainer(configuration, environment);
+            JerseyUtil.registerGuiceBound(injector, environment.jersey());
+            JerseyUtil.registerGuiceFilter(environment);
+            deModule.setEnvironmentData(configuration, environment);
             findAndRunScanners(environment, injector);
 
         } catch (Exception e) {
@@ -93,29 +85,6 @@ public class GuiceBundle<T extends Configuration & HasGuiceConfiguration> implem
 
     }
 
-
-    /**
-     * Prepares a guice servlet container for jersey
-     *
-     * @param configuration
-     * @param environment   target environment.
-     */
-    private void prepareContainer(T configuration, Environment environment) {
-
-        container.setResourceConfig(environment.jersey().getResourceConfig());
-        environment.jersey().replace(new Function<ResourceConfig, ServletContainer>() {
-            @Nullable
-            @Override
-            public ServletContainer apply(ResourceConfig resourceConfig) {
-                return container;
-            }
-        });
-        environment.servlets().addFilter("GuiceFilter", GuiceFilter.class)
-                .addMappingForUrlPatterns(EnumSet.allOf(DispatcherType.class), true, environment.getApplicationContext().getContextPath() + "*");
-        deModule.setEnvironmentData(configuration, environment);
-
-
-    }
 
     /**
      * Creates a {@link org.reflections.Reflections} with the given packages (configuration)

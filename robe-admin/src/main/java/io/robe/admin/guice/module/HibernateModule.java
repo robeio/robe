@@ -2,7 +2,7 @@ package io.robe.admin.guice.module;
 
 import com.google.inject.AbstractModule;
 import com.google.inject.Provider;
-import io.robe.hibernate.HibernateBundle;
+import io.robe.hibernate.RobeHibernateBundle;
 import org.hibernate.SessionFactory;
 
 /**
@@ -10,18 +10,18 @@ import org.hibernate.SessionFactory;
  */
 public class HibernateModule extends AbstractModule {
 
-    private final HibernateBundle bundle;
+    private final RobeHibernateBundle bundle;
 
-    public HibernateModule(HibernateBundle bundle) {
+    public HibernateModule(RobeHibernateBundle bundle) {
         this.bundle = bundle;
     }
 
     @Override
     protected void configure() {
 
-        bind(HibernateBundle.class).toProvider(new Provider<HibernateBundle>() {
+        bind(RobeHibernateBundle.class).toProvider(new Provider<RobeHibernateBundle>() {
             @Override
-            public HibernateBundle get() {
+            public RobeHibernateBundle get() {
                 return bundle;
             }
         });

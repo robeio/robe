@@ -18,19 +18,15 @@ public class Menu extends BaseEntity {
     private String name;
 
     @OneToMany(mappedBy = "parentOid", fetch = FetchType.LAZY)
-    @OrderBy("itemOrder ASC")
+    @OrderBy("index ASC")
     private List<Menu> items = new LinkedList<Menu>();
 
-    @Column
-    private int itemOrder;
+    @Column(name = "itemIndex")
+    private int index;
 
 
     @Column
     private String parentOid;
-
-    @Transient
-    private boolean expanded = true;
-
 
     public String getCode() {
         return code;
@@ -64,19 +60,12 @@ public class Menu extends BaseEntity {
         this.parentOid = parentOid;
     }
 
-    public boolean isExpanded() {
-        return expanded;
+
+    public int getIndex() {
+        return index;
     }
 
-    public void setExpanded(boolean expanded) {
-        this.expanded = expanded;
-    }
-
-    public int getItemOrder() {
-        return itemOrder;
-    }
-
-    public void setItemOrder(int itemOrder) {
-        this.itemOrder = itemOrder;
+    public void setIndex(int index) {
+        this.index = index;
     }
 }

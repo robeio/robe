@@ -1,6 +1,6 @@
 package io.robe.admin.quartz.hibernate;
 
-import io.robe.hibernate.HibernateBundle;
+import io.robe.hibernate.RobeHibernateBundle;
 import io.robe.quartz.common.JobInfo;
 import io.robe.quartz.common.JobProvider;
 import io.robe.quartz.common.TriggerInfo;
@@ -14,9 +14,9 @@ import java.util.Iterator;
 public class HibernateJobProvider extends JobProvider {
 
 
-    private static HibernateBundle hibernateBundle;
+    private static RobeHibernateBundle hibernateBundle;
 
-    public static void setHibernateBundle(HibernateBundle hibernateBundle) {
+    public static void setHibernateBundle(RobeHibernateBundle hibernateBundle) {
         HibernateJobProvider.hibernateBundle = hibernateBundle;
     }
 

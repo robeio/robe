@@ -27,7 +27,7 @@ public class MenuDao extends BaseDao<Menu> {
     public List<Menu> findHierarchicalMenu() {
         Criteria criteria = currentSession().createCriteria(Menu.class);
         criteria.add(Restrictions.isNull("parentOid"));
-        criteria.addOrder(Order.desc("itemOrder"));
+        criteria.addOrder(Order.desc("index"));
         return list(criteria);
     }
 }
