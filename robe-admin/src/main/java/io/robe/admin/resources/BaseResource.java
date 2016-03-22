@@ -3,19 +3,13 @@ package io.robe.admin.resources;
 import com.google.inject.Inject;
 import io.dropwizard.auth.Auth;
 import io.dropwizard.hibernate.UnitOfWork;
+import io.dropwizard.jersey.PATCH;
 import io.robe.auth.Credentials;
 import io.robe.hibernate.dao.BaseDao;
 import io.robe.hibernate.entity.BaseEntity;
-import org.hibernate.CacheMode;
-import org.hibernate.FlushMode;
 
 import javax.validation.Valid;
-import javax.ws.rs.DELETE;
-import javax.ws.rs.GET;
-import javax.ws.rs.POST;
-import javax.ws.rs.PUT;
-import javax.ws.rs.Path;
-import javax.ws.rs.PathParam;
+import javax.ws.rs.*;
 import java.lang.reflect.ParameterizedType;
 import java.util.List;
 
@@ -31,35 +25,46 @@ public abstract class BaseResource<T extends BaseEntity> {
         this.entity = (Class<T>) ((ParameterizedType) getClass().getGenericSuperclass()).getActualTypeArguments()[0];
     }
 
-    @Path("all")
     @GET
     @UnitOfWork
     public List<T> getAll(@Auth Credentials credentials) {
         return dao.findAll(entity);
     }
 
-    @Path("{modelOid}")
+    @Path("{id}")
     @GET
     @UnitOfWork
-    public T get(@PathParam("modelOid") String modelOid, @Auth Credentials credentials) {
-        return dao.findById(entity, modelOid);
-    }
-
-    @PUT
-    @UnitOfWork
-    public T create(@Valid T model, @Auth Credentials credentials) {
-        return dao.create(model);
+    public T get(@Auth Credentials credentials, @PathParam("id") String id) {
+        return dao.findById(entity, id);
     }
 
     @POST
     @UnitOfWork
-    public T update(@Valid T model, @Auth Credentials credentials) {
+    public T create(@Auth Credentials credentials, @Valid T model) {
+        return dao.create(model);
+    }
+
+    @PUT
+    @UnitOfWork
+    @Path("{id}")
+    public T update(@Auth Credentials credentials, @PathParam("id") String id, @Valid T model) {
+        return dao.update(model);
+    }
+
+
+    @PATCH
+    @UnitOfWork
+    @Path("{id}")
+    public T merge(@Auth Credentials credentials,@PathParam("id") String id, T model) {
+
+        //TODO: copy model with out ID and null values.
         return dao.update(model);
     }
 
     @DELETE
     @UnitOfWork
-    public T delete(@Valid T model, @Auth Credentials credentials) {
+    @Path("{id}")
+    public T delete(@Auth Credentials credentials,@PathParam("id") String id, @Valid T model) {
         return dao.delete(model);
     }
 }
