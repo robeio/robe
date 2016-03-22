@@ -5,11 +5,13 @@ import io.dropwizard.auth.Auth;
 import io.dropwizard.hibernate.UnitOfWork;
 import io.dropwizard.jersey.PATCH;
 import io.robe.auth.Credentials;
+import io.robe.common.utils.FieldReflection;
 import io.robe.hibernate.dao.BaseDao;
 import io.robe.hibernate.entity.BaseEntity;
 
 import javax.validation.Valid;
 import javax.ws.rs.*;
+import javax.ws.rs.core.Response;
 import java.lang.reflect.ParameterizedType;
 import java.util.List;
 
@@ -55,16 +57,18 @@ public abstract class BaseResource<T extends BaseEntity> {
     @PATCH
     @UnitOfWork
     @Path("{id}")
-    public T merge(@Auth Credentials credentials,@PathParam("id") String id, T model) {
-
-        //TODO: copy model with out ID and null values.
+    public T merge(@Auth Credentials credentials, @PathParam("id") String id, T model) {
+        if (id.equals(model.getOid()))
+            throw new WebApplicationException(Response.status(412).build());
+        T dest = dao.findById(id);
+        FieldReflection.mergeRight(model, dest);
         return dao.update(model);
     }
 
     @DELETE
     @UnitOfWork
     @Path("{id}")
-    public T delete(@Auth Credentials credentials,@PathParam("id") String id, @Valid T model) {
+    public T delete(@Auth Credentials credentials, @PathParam("id") String id, @Valid T model) {
         return dao.delete(model);
     }
 }
