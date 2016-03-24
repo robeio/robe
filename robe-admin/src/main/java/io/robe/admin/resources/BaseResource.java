@@ -8,12 +8,15 @@ import io.robe.auth.Credentials;
 import io.robe.common.utils.FieldReflection;
 import io.robe.hibernate.dao.BaseDao;
 import io.robe.hibernate.entity.BaseEntity;
+import org.hibernate.FlushMode;
 
 import javax.validation.Valid;
 import javax.ws.rs.*;
 import javax.ws.rs.core.Response;
 import java.lang.reflect.ParameterizedType;
 import java.util.List;
+
+import static org.hibernate.CacheMode.GET;
 
 public abstract class BaseResource<T extends BaseEntity> {
 
@@ -28,14 +31,14 @@ public abstract class BaseResource<T extends BaseEntity> {
     }
 
     @GET
-    @UnitOfWork
+    @UnitOfWork(readOnly = true, cacheMode = GET, flushMode = FlushMode.MANUAL)
     public List<T> getAll(@Auth Credentials credentials) {
         return dao.findAll(entity);
     }
 
     @Path("{id}")
     @GET
-    @UnitOfWork
+    @UnitOfWork(readOnly = true, cacheMode = GET, flushMode = FlushMode.MANUAL)
     public T get(@Auth Credentials credentials, @PathParam("id") String id) {
         return dao.findById(entity, id);
     }
