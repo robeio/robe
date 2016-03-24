@@ -7,6 +7,7 @@ import io.robe.admin.hibernate.dao.ServiceDao;
 import io.robe.admin.hibernate.entity.Service;
 import io.robe.auth.Credentials;
 import io.robe.auth.data.entry.ServiceEntry;
+import io.robe.common.service.RobeService;
 import io.robe.guice.GuiceBundle;
 import io.robe.guice.GuiceConfiguration;
 import org.hibernate.FlushMode;
@@ -60,12 +61,23 @@ public class ServiceResource {
                 path = extractPath(method, path);
 
                 io.robe.admin.hibernate.entity.Service entity = serviceDao.findByPathAndMethod(path, ServiceEntry.Method.valueOf(httpMethod));
+                RobeService robeService = (RobeService) method.getAnnotation(RobeService.class);
+
                 if (entity != null) {
+                    if (robeService != null) {
+                        entity.setDescription(robeService.description());
+                        entity.setGroup(robeService.group());
+                        serviceDao.update(entity);
+                    }
                     continue;
                 }
                 entity = new io.robe.admin.hibernate.entity.Service();
                 entity.setPath(path);
                 entity.setMethod(io.robe.admin.hibernate.entity.Service.Method.valueOf(httpMethod));
+                if (robeService != null) {
+                    entity.setDescription(robeService.description());
+                    entity.setGroup(robeService.group());
+                }
                 serviceDao.create(entity);
                 count++;
 

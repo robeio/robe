@@ -15,7 +15,13 @@ public class Service extends BaseEntity implements ServiceEntry {
     private String path;
 
     @Enumerated(EnumType.STRING)
-    private Method method; // 0-GET,1-PUT,2-POST,3-DELETE,4-OPTIONS,
+    private Method method;
+
+    @Column(length = 20, name = "sGroup")
+    private String group;
+
+    @Column(length = 200, name = "sDescription")
+    private String description;
 
 
     public String getPath() {
@@ -32,5 +38,21 @@ public class Service extends BaseEntity implements ServiceEntry {
 
     public void setMethod(Method method) {
         this.method = method;
+    }
+
+    public String getGroup() {
+        return group;
+    }
+
+    public void setGroup(String group) {
+        this.group = group;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
     }
 }
