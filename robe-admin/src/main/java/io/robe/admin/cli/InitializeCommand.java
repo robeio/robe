@@ -7,6 +7,7 @@ import io.dropwizard.hibernate.UnitOfWork;
 import io.dropwizard.setup.Environment;
 import io.robe.admin.RobeConfiguration;
 import io.robe.admin.hibernate.entity.*;
+import io.robe.common.service.RobeService;
 import io.robe.guice.GuiceConfiguration;
 import io.robe.hibernate.RobeHibernateBundle;
 import net.sourceforge.argparse4j.inf.Namespace;
@@ -131,6 +132,11 @@ public class InitializeCommand<T extends RobeConfiguration> extends EnvironmentC
                         entity = new io.robe.admin.hibernate.entity.Service();
                         entity.setPath(path);
                         entity.setMethod(io.robe.admin.hibernate.entity.Service.Method.valueOf(httpMethod));
+                        RobeService robeService = (RobeService) method.getAnnotation(RobeService.class);
+                        if (robeService != null) {
+                            entity.setDescription(robeService.description());
+                            entity.setGroup(robeService.group());
+                        }
                         session.persist(entity);
                         session.persist(createPermission(false, entity.getOid(), role));
                         LOGGER.info("Service data and permission created: " + entity.getPath() + "-" + entity.getMethod());
