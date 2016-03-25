@@ -22,7 +22,7 @@ import java.util.Set;
 
 import static org.hibernate.CacheMode.GET;
 
-@Path("service")
+@Path("services")
 @Produces(MediaType.APPLICATION_JSON)
 @Consumes(MediaType.APPLICATION_JSON)
 public class ServiceResource {
@@ -31,11 +31,9 @@ public class ServiceResource {
     @Inject
     private ServiceDao serviceDao;
 
-    @Path("/all")
     @GET
     @UnitOfWork(readOnly = true, cacheMode = GET, flushMode = FlushMode.MANUAL)
     public List<Service> getAll(@Auth Credentials credentials) {
-
         return serviceDao.findAll(Service.class);
     }
 
@@ -43,7 +41,6 @@ public class ServiceResource {
     @GET
     @UnitOfWork
     public Response refreshServices(@Auth Credentials credentials) {
-
 
         GuiceConfiguration configuration = GuiceBundle.getConfiguration();
 

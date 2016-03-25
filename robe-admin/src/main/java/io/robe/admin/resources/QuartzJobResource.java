@@ -4,8 +4,8 @@ import com.google.inject.Inject;
 import io.dropwizard.auth.Auth;
 import io.dropwizard.hibernate.UnitOfWork;
 import io.robe.admin.hibernate.dao.QuartzJobDao;
-import io.robe.auth.Credentials;
 import io.robe.admin.quartz.hibernate.JobEntity;
+import io.robe.auth.Credentials;
 import org.hibernate.FlushMode;
 import org.hibernate.Hibernate;
 
@@ -15,15 +15,16 @@ import java.util.List;
 
 import static org.hibernate.CacheMode.GET;
 
-@Path("quartzJob")
+@Path("quartzjobs")
 @Consumes(MediaType.APPLICATION_JSON)
 @Produces(MediaType.APPLICATION_JSON)
 public class QuartzJobResource {
+
     @Inject
-    QuartzJobDao quartzJobDao;
+    private QuartzJobDao quartzJobDao;
 
     @GET
-    @UnitOfWork(readOnly = true, cacheMode = GET,flushMode = FlushMode.MANUAL)
+    @UnitOfWork(readOnly = true, cacheMode = GET, flushMode = FlushMode.MANUAL)
     public List<JobEntity> getAll(@Auth Credentials credentials) {
         List<JobEntity> jobEntities = quartzJobDao.findAll(JobEntity.class);
         for (JobEntity jobEntity : jobEntities) {

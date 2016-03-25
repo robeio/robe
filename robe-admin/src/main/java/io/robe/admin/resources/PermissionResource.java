@@ -23,17 +23,20 @@ import java.util.Set;
 
 import static org.hibernate.CacheMode.GET;
 
-@Path("permission")
+@Path("permissions")
 @Consumes(MediaType.APPLICATION_JSON)
 @Produces(MediaType.APPLICATION_JSON)
 public class PermissionResource {
 
     @Inject
-    RoleDao roleDao;
+    private RoleDao roleDao;
+
     @Inject
-    MenuDao menuDao;
+    private MenuDao menuDao;
+
     @Inject
-    PermissionDao permissionDao;
+    private PermissionDao permissionDao;
+
     @Inject
     private ServiceDao serviceDao;
 
