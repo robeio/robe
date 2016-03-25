@@ -15,36 +15,37 @@ import java.util.List;
 
 import static org.hibernate.CacheMode.GET;
 
-@Path("mailtemplate")
+@Path("mailtemplates")
 @Consumes(MediaType.APPLICATION_JSON)
 @Produces(MediaType.APPLICATION_JSON)
 public class MailTemplateResource {
+
     @Inject
-    MailTemplateDao mailTemplateDao;
+    private MailTemplateDao mailTemplateDao;
 
     @GET
-    @Path("/all")
     @UnitOfWork(readOnly = true, cacheMode = GET,flushMode = FlushMode.MANUAL)
     public List<MailTemplate> getAll() {
         return mailTemplateDao.findAll(MailTemplate.class);
     }
 
-    @PUT
+    @POST
     @UnitOfWork
-    public MailTemplate createTemplate(@Auth Credentials credentials, @Valid MailTemplate mailTemplate) {
+    public MailTemplate create(@Auth Credentials credentials, @Valid MailTemplate mailTemplate) {
         return mailTemplateDao.create(mailTemplate);
     }
 
-    @DELETE
+    @Path("{id}")
+    @PUT
     @UnitOfWork
-    public MailTemplate deleteTemplate(@Auth Credentials credentials, @Valid MailTemplate mailTemplate) {
-        return mailTemplateDao.delete(mailTemplate);
-    }
-
-    @POST
-    @UnitOfWork
-    public MailTemplate updateTemplate(@Auth Credentials credentials, @Valid MailTemplate mailTemplate) {
+    public MailTemplate update(@Auth Credentials credentials, @PathParam("id") String id, @Valid MailTemplate mailTemplate) {
         return mailTemplateDao.update(mailTemplate);
     }
 
+    @Path("{id}")
+    @DELETE
+    @UnitOfWork
+    public MailTemplate delete(@Auth Credentials credentials, @PathParam("id") String id, @Valid MailTemplate mailTemplate) {
+        return mailTemplateDao.delete(mailTemplate);
+    }
 }

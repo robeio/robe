@@ -24,21 +24,20 @@ import java.util.*;
 
 import static org.hibernate.CacheMode.GET;
 
-@Path("menu")
+@Path("menus")
 @Consumes(MediaType.APPLICATION_JSON)
 @Produces(MediaType.APPLICATION_JSON)
 public class MenuResource {
 
     @Inject
-    UserDao userDao;
+    private UserDao userDao;
 
     @Inject
-    MenuDao menuDao;
+    private MenuDao menuDao;
 
-    @Path("all")
     @GET
     @UnitOfWork(readOnly = true, cacheMode = GET, flushMode = FlushMode.MANUAL)
-    public List<Menu> getMenus(@Auth Credentials credentials) {
+    public List<Menu> getAll(@Auth Credentials credentials) {
 
         List<Menu> menus = new ArrayList<>();
         for (Menu menu : menuDao.findAll(Menu.class)) {
@@ -111,9 +110,9 @@ public class MenuResource {
         }
     }
 
+    @Path("movenode/{item}/{destination}")
     @POST
     @UnitOfWork
-    @Path("movenode/{item}/{destination}")
     public Menu move(@Auth Credentials credentials, @PathParam("item") String itemOid, @PathParam("destination") String destination) {
         String notValid = " is not valid.";
         Menu item = menuDao.findById(itemOid);
@@ -157,7 +156,7 @@ public class MenuResource {
         return ordered;
     }
 
-    @PUT
+    @POST
     @UnitOfWork
     public Menu create(@Auth Credentials credentials, @Valid Menu menu) {
         Optional<Menu> checkMenu = menuDao.findByCode(menu.getCode());
@@ -167,17 +166,18 @@ public class MenuResource {
         return menuDao.create(menu);
     }
 
-    @POST
+    @Path("{id}")
+    @PUT
     @UnitOfWork
-    public Menu update(@Auth Credentials credentials, Menu menu) {
+    public Menu update(@Auth Credentials credentials, @PathParam("id") String id, Menu menu) {
         return menuDao.update(menu);
 
     }
 
-
+    @Path("{id}")
     @DELETE
     @UnitOfWork
-    public Menu delete(@Auth Credentials credentials, Menu menu) {
+    public Menu delete(@Auth Credentials credentials, @PathParam("id") String id, @Valid Menu menu) {
         Menu delete = menuDao.findById(menu.getOid());
         Hibernate.initialize(delete.getItems());
         menuDao.merge(delete);

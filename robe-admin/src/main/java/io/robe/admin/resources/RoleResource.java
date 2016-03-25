@@ -22,21 +22,19 @@ import static com.google.common.base.Preconditions.checkNotNull;
 import static org.hibernate.CacheMode.GET;
 
 
-@Path("role")
+@Path("roles")
 @Consumes(MediaType.APPLICATION_JSON)
 @Produces(MediaType.APPLICATION_JSON)
 public class RoleResource {
 
-
     private static final String ALREADY_USED =  " already used by another role. Please use different code.";
 
     @Inject
-    RoleDao roleDao;
+    private RoleDao roleDao;
 
-    @Path("all")
     @GET
     @UnitOfWork(readOnly = true, cacheMode = GET,flushMode = FlushMode.MANUAL)
-    public List<Role> getRoles(@Auth Credentials credentials) {
+    public List<Role> getAll(@Auth Credentials credentials) {
         List<Role> roles = roleDao.findAll(Role.class);
         for (Role role : roles) {
             Hibernate.initialize(role.getRoles());
@@ -44,28 +42,19 @@ public class RoleResource {
         return roles;
     }
 
+    @Path("{id}")
     @GET
     @UnitOfWork(readOnly = true, cacheMode = GET,flushMode = FlushMode.MANUAL)
-    @Path("{userId}")
-    public Role get(@Auth Credentials credentials, @PathParam("userId") String id) {
+    public Role get(@Auth Credentials credentials, @PathParam("id") String id, @Valid RoleResource roleResource) {
         Role role = roleDao.findById(id);
         initializeItems(role.getRoles());
         return role;
     }
 
+    @Path("{id}")
     @PUT
     @UnitOfWork
-    public Role create(@Auth Credentials credentials, @Valid Role role) {
-        Optional<Role> checkRole = roleDao.findByName(role.getCode());
-        if (checkRole.isPresent()) {
-            throw new RobeRuntimeException("Code", role.getCode() + ALREADY_USED);
-        }
-        return roleDao.create(role);
-    }
-
-    @POST
-    @UnitOfWork
-    public Role update(@Auth Credentials credentials, Role role) {
+    public Role update(@Auth Credentials credentials, @PathParam("id") String id, @Valid Role role) {
 
         roleDao.detach(role);
         Optional<Role> checkRole = roleDao.findByNameAndNotEqualMe(role.getCode(), role.getOid());
@@ -80,21 +69,19 @@ public class RoleResource {
 
     }
 
-
-    @DELETE
+    @POST
     @UnitOfWork
-    public Role delete(@Auth Credentials credentials, Role role) {
-        Role roleCheck = roleDao.findById(role.getOid());
-        if (roleCheck != null) {
-            initializeItems(roleCheck.getRoles());
-            roleDao.delete(roleCheck);
+    public Role create(@Auth Credentials credentials, @Valid Role role) {
+        Optional<Role> checkRole = roleDao.findByName(role.getCode());
+        if (checkRole.isPresent()) {
+            throw new RobeRuntimeException("Code", role.getCode() + ALREADY_USED);
         }
-        return roleCheck;
+        return roleDao.create(role);
     }
 
+    @Path("group/{groupOid}/{roleOid}")
     @PUT
     @UnitOfWork
-    @Path("group/{groupOid}/{roleOid}")
     public Role createRoleGroup(@Auth Credentials credentials, @PathParam("groupOid") String groupOid, @PathParam("roleOid") String roleOid) {
         Role group = roleDao.findById(groupOid);
         checkNotNull(group, "groupOid mustn't be null");
@@ -138,9 +125,21 @@ public class RoleResource {
         return false;
     }
 
+    @Path("{id}")
     @DELETE
     @UnitOfWork
+    public Role delete(@Auth Credentials credentials, @PathParam("id") String id, @Valid Role role) {
+        Role roleCheck = roleDao.findById(role.getOid());
+        if (roleCheck != null) {
+            initializeItems(roleCheck.getRoles());
+            roleDao.delete(roleCheck);
+        }
+        return roleCheck;
+    }
+
     @Path("destroyRoleGroup/{groupOid}/{roleOid}")
+    @DELETE
+    @UnitOfWork
     public Role destroyRoleGroup(@Auth Credentials credentials, @PathParam("groupOid") String groupOid, @PathParam("roleOid") String roleOid) {
         Role group = roleDao.findById(groupOid);
         Role role = roleDao.findById(roleOid);

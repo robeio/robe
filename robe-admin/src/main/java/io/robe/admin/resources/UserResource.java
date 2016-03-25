@@ -38,22 +38,24 @@ import java.util.*;
 
 import static org.hibernate.CacheMode.GET;
 
-@Path("user")
+@Path("users")
 @Consumes(MediaType.APPLICATION_JSON)
 @Produces(MediaType.APPLICATION_JSON)
 public class UserResource extends AbstractAuthResource<User> {
+
     public static final String E_MAIL = "E-MAIL";
     public static final String TICKET = "TICKET";
 
-    UserDao userDao;
-    @Inject
-    RoleDao roleDao;
+    private UserDao userDao;
 
     @Inject
-    TicketDao ticketDao;
+    private RoleDao roleDao;
 
     @Inject
-    MailTemplateDao mailTemplateDao;
+    private TicketDao ticketDao;
+
+    @Inject
+    private MailTemplateDao mailTemplateDao;
 
     @Inject
     public UserResource(UserDao userDao) {
@@ -61,10 +63,9 @@ public class UserResource extends AbstractAuthResource<User> {
         this.userDao = userDao;
     }
 
-    @Path("all")
     @GET
     @UnitOfWork(readOnly = true, cacheMode = GET, flushMode = FlushMode.MANUAL)
-    public List<UserDTO> getUsers(@Auth Credentials credentials) {
+    public List<UserDTO> getAll(@Auth Credentials credentials) {
         List<User> entities = userDao.findAll(User.class);
         List<UserDTO> users = new LinkedList<UserDTO>();
         for (User entity : entities) {
@@ -74,87 +75,25 @@ public class UserResource extends AbstractAuthResource<User> {
         return users;
     }
 
+    @Path("{id}")
     @GET
     @UnitOfWork(readOnly = true, cacheMode = GET, flushMode = FlushMode.MANUAL)
-    @Path("{userId}")
-    public UserDTO get(@Auth Credentials credentials, @PathParam("userId") String id) {
+    public UserDTO get(@Auth Credentials credentials, @PathParam("id") String id) {
         return new UserDTO(userDao.findById(id));
     }
 
+    @Path("profile")
     @GET
     @UnitOfWork(readOnly = true, cacheMode = GET, flushMode = FlushMode.MANUAL)
-    @Path("profile")
     public UserDTO getByEmail(@Auth Credentials credentials) {
         User user = userDao.findByUsername(credentials.getUsername()).get();
         return new UserDTO(user);
     }
 
+    @Path("{id}")
     @PUT
     @UnitOfWork
-    public UserDTO create(@Auth Credentials credentials, @Valid UserDTO user, @Context UriInfo uriInfo) {
-        Optional<User> checkUser = userDao.findByUsername(user.getEmail());
-        if (checkUser.isPresent()) {
-            throw new RobeRuntimeException(E_MAIL, user.getEmail() + " already used by another user. Please use different e-mail.");
-        }
-        User entity = new User();
-        entity.setEmail(user.getEmail());
-        entity.setName(user.getName());
-        entity.setSurname(user.getSurname());
-        entity.setActive(user.isActive());
-        Role role = roleDao.findById(user.getRoleOid());
-        if (role == null) {
-            throw new RobeRuntimeException("Role", "Role can not be null.Please select role and try again");
-        }
-        entity.setRole(role);
-        entity.setPassword(UUID.randomUUID().toString());
-        entity = userDao.create(entity);
-
-        if (MailManager.hasConfiguration()) {
-            Ticket ticket = new Ticket();
-            ticket.setType(Ticket.Type.CHANGE_PASSWORD);
-            ticket.setUser(entity);
-            DateTime expire = DateTime.now().plusDays(5);
-            ticket.setExpirationDate(expire.toDate());
-            ticket = ticketDao.create(ticket);
-            String url = uriInfo.getBaseUri().toString();
-            String ticketUrl = url + "ticket/" + ticket.getOid();
-            MailItem mailItem = new MailItem();
-            Optional<MailTemplate> mailTemplateOptional = mailTemplateDao.findByCode(Ticket.Type.CHANGE_PASSWORD.name());
-            TemplateManager templateManager;
-            Map<String, Object> parameter = new HashMap<String, Object>();
-            Writer out = new StringWriter();
-            if (mailTemplateOptional.isPresent()) {
-                String body = mailTemplateOptional.get().getTemplate();
-                templateManager = new TemplateManager("robeTemplate", body);
-                parameter.put("name", entity.getName());
-                parameter.put("surname", entity.getSurname());
-            } else {
-                templateManager = new TemplateManager("ChangePasswordMail.ftl");
-            }
-
-            parameter.put("ticketUrl", ticketUrl);
-
-            templateManager.setParameter(parameter);
-            templateManager.process(out);
-            mailItem.setBody(out.toString());
-            mailItem.setReceivers(entity.getUsername());
-            mailItem.setTitle("Robe.io Password Change Request");
-            MailManager.sendMail(mailItem);
-        } else {
-            String password = generateStrongPassword();
-            //TODO:check
-            entity.setPassword(BaseEncoding.base16().encode(Hashing.sha256().hashString(password, StandardCharsets.UTF_8).asBytes()));
-            UserDTO userDTO = new UserDTO(entity);
-            userDTO.setNewPassword(password);
-            return userDTO;
-        }
-
-        return new UserDTO(entity);
-    }
-
-    @POST
-    @UnitOfWork
-    public UserDTO update(@Auth Credentials credentials, @Valid UserDTO user) {
+    public UserDTO update(@Auth Credentials credentials, @PathParam("id") String id, @Valid UserDTO user) {
         User entity = userDao.findById(user.getOid());
         if (entity == null) {
             throw new RobeRuntimeException("User", user.getOid() + ExceptionMessages.NOT_EXISTS.toString());
@@ -179,8 +118,8 @@ public class UserResource extends AbstractAuthResource<User> {
 
     }
 
-    @POST
     @Path("unblock")
+    @POST
     @UnitOfWork
     public UserDTO setActiveAndUnBlock(@Auth Credentials credentials, @Valid UserDTO user) {
         User entity = userDao.findById(user.getOid());
@@ -190,9 +129,8 @@ public class UserResource extends AbstractAuthResource<User> {
         return new UserDTO(entity);
     }
 
-
-    @POST
     @Path("updatePassword")
+    @POST
     @Consumes
     @UnitOfWork
     public UserDTO updatePassword(@Auth Credentials credentials,
@@ -212,16 +150,8 @@ public class UserResource extends AbstractAuthResource<User> {
         return new UserDTO(user);
     }
 
-    @DELETE
-    @UnitOfWork
-    public UserDTO delete(@Auth Credentials credentials, UserDTO user) {
-        User entity = userDao.findById(user.getOid());
-        userDao.delete(entity);
-        return user;
-    }
-
-    @POST
     @Path("emailRequest")
+    @POST
     @Consumes
     @UnitOfWork
     public User createUserByEmailRequest(@Auth Credentials credentials, @FormParam("email") String email, @FormParam("roleOid") String roleOid, @Context UriInfo uriInfo) {
@@ -284,9 +214,9 @@ public class UserResource extends AbstractAuthResource<User> {
         return entity;
     }
 
+    @Path("registerByMail")
     @POST
     @UnitOfWork
-    @Path("registerByMail")
     public UserDTO registerUserByMail(@Valid UserDTO user) {
 
         Ticket ticket = ticketDao.findById(user.getTicket());
@@ -311,9 +241,9 @@ public class UserResource extends AbstractAuthResource<User> {
 
     }
 
+    @Path("registerPassword")
     @POST
     @UnitOfWork
-    @Path("registerPassword")
     public UserDTO registerUserPassword(@Valid UserDTO user) {
 
         Ticket ticket = ticketDao.findById(user.getTicket());
@@ -339,5 +269,75 @@ public class UserResource extends AbstractAuthResource<User> {
 
     }
 
+    @POST
+    @UnitOfWork
+    public UserDTO create(@Auth Credentials credentials, @Valid UserDTO user, @Context UriInfo uriInfo) {
+        Optional<User> checkUser = userDao.findByUsername(user.getEmail());
+        if (checkUser.isPresent()) {
+            throw new RobeRuntimeException(E_MAIL, user.getEmail() + " already used by another user. Please use different e-mail.");
+        }
+        User entity = new User();
+        entity.setEmail(user.getEmail());
+        entity.setName(user.getName());
+        entity.setSurname(user.getSurname());
+        entity.setActive(user.isActive());
+        Role role = roleDao.findById(user.getRoleOid());
+        if (role == null) {
+            throw new RobeRuntimeException("Role", "Role can not be null.Please select role and try again");
+        }
+        entity.setRole(role);
+        entity.setPassword(UUID.randomUUID().toString());
+        entity = userDao.create(entity);
 
+        if (MailManager.hasConfiguration()) {
+            Ticket ticket = new Ticket();
+            ticket.setType(Ticket.Type.CHANGE_PASSWORD);
+            ticket.setUser(entity);
+            DateTime expire = DateTime.now().plusDays(5);
+            ticket.setExpirationDate(expire.toDate());
+            ticket = ticketDao.create(ticket);
+            String url = uriInfo.getBaseUri().toString();
+            String ticketUrl = url + "ticket/" + ticket.getOid();
+            MailItem mailItem = new MailItem();
+            Optional<MailTemplate> mailTemplateOptional = mailTemplateDao.findByCode(Ticket.Type.CHANGE_PASSWORD.name());
+            TemplateManager templateManager;
+            Map<String, Object> parameter = new HashMap<String, Object>();
+            Writer out = new StringWriter();
+            if (mailTemplateOptional.isPresent()) {
+                String body = mailTemplateOptional.get().getTemplate();
+                templateManager = new TemplateManager("robeTemplate", body);
+                parameter.put("name", entity.getName());
+                parameter.put("surname", entity.getSurname());
+            } else {
+                templateManager = new TemplateManager("ChangePasswordMail.ftl");
+            }
+
+            parameter.put("ticketUrl", ticketUrl);
+
+            templateManager.setParameter(parameter);
+            templateManager.process(out);
+            mailItem.setBody(out.toString());
+            mailItem.setReceivers(entity.getUsername());
+            mailItem.setTitle("Robe.io Password Change Request");
+            MailManager.sendMail(mailItem);
+        } else {
+            String password = generateStrongPassword();
+            //TODO:check
+            entity.setPassword(BaseEncoding.base16().encode(Hashing.sha256().hashString(password, StandardCharsets.UTF_8).asBytes()));
+            UserDTO userDTO = new UserDTO(entity);
+            userDTO.setNewPassword(password);
+            return userDTO;
+        }
+
+        return new UserDTO(entity);
+    }
+
+    @Path("{id}")
+    @DELETE
+    @UnitOfWork
+    public UserDTO delete(@Auth Credentials credentials, @PathParam("id") String id, @Valid UserDTO user) {
+        User entity = userDao.findById(user.getOid());
+        userDao.delete(entity);
+        return user;
+    }
 }
