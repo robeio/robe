@@ -16,6 +16,7 @@ import org.quartz.JobDetail;
 import org.quartz.SchedulerException;
 import org.quartz.Trigger;
 
+import javax.validation.Valid;
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 import java.util.List;
@@ -23,15 +24,16 @@ import java.util.List;
 import static org.hibernate.CacheMode.GET;
 
 
-@Path("trigger")
+@Path("triggers")
 @Consumes(MediaType.APPLICATION_JSON)
 @Produces(MediaType.APPLICATION_JSON)
 public class TriggerResource {
 
     @Inject
-    QuartzTriggerDao quartzTriggerDao;
+    private QuartzTriggerDao quartzTriggerDao;
+
     @Inject
-    QuartzJobDao quartzJobDao;
+    private QuartzJobDao quartzJobDao;
 
     @GET
     @UnitOfWork(readOnly = true, cacheMode = GET, flushMode = FlushMode.MANUAL)
@@ -39,29 +41,44 @@ public class TriggerResource {
         return quartzTriggerDao.findAll(TriggerEntity.class);
     }
 
-    @DELETE
+    @POST
     @UnitOfWork
-    public TriggerEntity delete(@Auth Credentials credentials, TriggerEntity triggerEntity) {
-        TriggerEntity entity = quartzTriggerDao.findById(triggerEntity.getOid());
+    public TriggerEntity create(TriggerEntity triggerEntity) {
 
-        try {
-            JobManager.getInstance().unScheduleJob(entity.getName(), entity.getGroup());
-        } catch (SchedulerException e) {
-            throw new RobeRuntimeException("ERROR", e.getLocalizedMessage());
-        }
-        return quartzTriggerDao.delete(entity);
+        JobEntity jobEntity = quartzJobDao.findById(triggerEntity.getJobId());
+
+        TriggerEntity entity = new TriggerEntity();
+
+        entity.setCron(triggerEntity.getCron());
+        entity.setName(triggerEntity.getName());
+        entity.setGroup(triggerEntity.getGroup());
+        entity.setType(triggerEntity.getType());
+        //TODO set default value -1 change another good way
+
+        entity.setStartTime(triggerEntity.getStartTime() == 0 ? -1 : triggerEntity.getStartTime());
+        entity.setEndTime(triggerEntity.getEndTime() == 0 ? -1 : triggerEntity.getStartTime());
+
+        entity.setJob(jobEntity);
+
+        entity = quartzTriggerDao.create(entity);
+
+        quartzTriggerDao.flush();
+
+        jobEntity.getTriggers().add(entity);
+        quartzJobDao.update(jobEntity);
+        return entity;
+
     }
 
-    @POST
-    @Path("/update")
+    @Path("{id}")
+    @PUT
     @UnitOfWork
-    public TriggerEntity update(@Auth Credentials credentials, TriggerEntity triggerEntity) {
+    public TriggerEntity update(@Auth Credentials credentials, @PathParam("id") String id, TriggerEntity triggerEntity) {
 
         TriggerEntity entity = quartzTriggerDao.findById(triggerEntity.getOid());
 
         try {
             JobManager.getInstance().unScheduleJob(entity.getName(), entity.getGroup());
-
             entity.setName(triggerEntity.getName());
             entity.setCron(triggerEntity.getCron());
             entity.setStartTime(triggerEntity.getStartTime());
@@ -86,8 +103,23 @@ public class TriggerResource {
     }
 
 
+    @Path("{id}")
+    @DELETE
+    @UnitOfWork
+    public TriggerEntity delete(@Auth Credentials credentials, @PathParam("id") String id, @Valid TriggerEntity triggerEntity) {
+        TriggerEntity entity = quartzTriggerDao.findById(triggerEntity.getOid());
+
+        try {
+            JobManager.getInstance().unScheduleJob(entity.getName(), entity.getGroup());
+        } catch (SchedulerException e) {
+            throw new RobeRuntimeException("ERROR", e.getLocalizedMessage());
+        }
+        return quartzTriggerDao.delete(entity);
+    }
+
+
     @POST
-    @Path("/run")
+    @Path("run")
     @UnitOfWork
     public TriggerEntity fireTrigger(@Auth Credentials credentials, TriggerEntity triggerEntity) {
 
@@ -109,7 +141,7 @@ public class TriggerResource {
     }
 
     @POST
-    @Path("/stop")
+    @Path("stop")
     @UnitOfWork
     public TriggerEntity stopTrigger(@Auth Credentials credentials, TriggerEntity triggerEntity) {
 
@@ -123,37 +155,6 @@ public class TriggerResource {
         entity.setActive(false);
 
         return quartzTriggerDao.update(entity);
-
-    }
-
-
-    @POST
-    @Path("/add")
-    @UnitOfWork
-    public TriggerEntity addTrigger(TriggerEntity triggerEntity) {
-
-        JobEntity jobEntity = quartzJobDao.findById(triggerEntity.getJobId());
-
-        TriggerEntity entity = new TriggerEntity();
-
-        entity.setCron(triggerEntity.getCron());
-        entity.setName(triggerEntity.getName());
-        entity.setGroup(triggerEntity.getGroup());
-        entity.setType(triggerEntity.getType());
-        //TODO set default value -1 change another good way
-
-        entity.setStartTime(triggerEntity.getStartTime() == 0 ? -1 : triggerEntity.getStartTime());
-        entity.setEndTime(triggerEntity.getEndTime() == 0 ? -1 : triggerEntity.getStartTime());
-
-        entity.setJob(jobEntity);
-
-        entity = quartzTriggerDao.create(entity);
-
-        quartzTriggerDao.flush();
-
-        jobEntity.getTriggers().add(entity);
-        quartzJobDao.update(jobEntity);
-        return entity;
 
     }
 

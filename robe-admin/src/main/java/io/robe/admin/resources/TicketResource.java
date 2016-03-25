@@ -15,18 +15,18 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.UriInfo;
 import java.util.Calendar;
 
-@Path("ticket")
+@Path("tickets")
 @Consumes(MediaType.TEXT_HTML)
 @Produces(MediaType.TEXT_HTML)
 public class TicketResource {
 
     @Inject
-    TicketDao ticketDao;
+    private TicketDao ticketDao;
 
     @GET
-    @Path("{ticketOid}")
+    @Path("{id}")
     @UnitOfWork
-    public View getView(@PathParam("ticketOid") String tickedOid, @Context UriInfo uriInfo) {
+    public View get(@PathParam("id") String tickedOid, @Context UriInfo uriInfo) {
 
         String url = uriInfo.getBaseUri().toString();
         Ticket ticket = ticketDao.findById(tickedOid);

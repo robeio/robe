@@ -18,22 +18,21 @@ import java.util.List;
 
 import static org.hibernate.CacheMode.GET;
 
-@Path("systemparameter")
+@Path("systemparameters")
 @Produces(MediaType.APPLICATION_JSON)
 @Consumes(MediaType.APPLICATION_JSON)
 public class SystemParameterResource {
 
     @Inject
-    SystemParameterDao systemParameterDao;
+    private SystemParameterDao systemParameterDao;
 
-    @Path("all")
     @GET
     @UnitOfWork(readOnly = true, cacheMode = GET, flushMode = FlushMode.MANUAL)
     public List<SystemParameter> getAll(@Auth Credentials credentials) {
         return systemParameterDao.findAll(SystemParameter.class);
     }
 
-    @PUT
+    @POST
     @UnitOfWork
     public SystemParameter create(@Auth Credentials credentials, @Valid SystemParameter systemParameter) {
         Optional<SystemParameter> parameter = systemParameterDao.findByKey(systemParameter.getKey());
@@ -43,7 +42,7 @@ public class SystemParameterResource {
         return systemParameterDao.create(systemParameter);
     }
 
-    @POST
+    @PUT
     @UnitOfWork(flushMode = FlushMode.MANUAL)
     public SystemParameter update(@Auth Credentials credentials, @Valid SystemParameter systemParameter) {
         systemParameter = systemParameterDao.update(systemParameter);
@@ -57,7 +56,8 @@ public class SystemParameterResource {
 
     @DELETE
     @UnitOfWork
-    public SystemParameter delete(@Auth Credentials credentials, @Valid SystemParameter systemParameter) {
+    @Path("{id}")
+    public SystemParameter delete(@Auth Credentials credentials, @PathParam("id") String id, @Valid SystemParameter systemParameter) {
         return systemParameterDao.delete(systemParameter);
     }
 
