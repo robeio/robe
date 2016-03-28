@@ -99,7 +99,7 @@ public class UserResource extends AbstractAuthResource<User> {
         if (MailManager.hasConfiguration()) {
             Ticket ticket = new Ticket();
             ticket.setType(Ticket.Type.CHANGE_PASSWORD);
-            ticket.setUser(entity);
+            ticket.setUserOid(entity.getOid());
             DateTime expire = DateTime.now().plusDays(5);
             ticket.setExpirationDate(expire.toDate());
             ticket = ticketDao.create(ticket);
@@ -244,7 +244,7 @@ public class UserResource extends AbstractAuthResource<User> {
 
         Ticket ticket = new Ticket();
         ticket.setType(Ticket.Type.REGISTER);
-        ticket.setUser(entity);
+        ticket.setUserOid(entity.getOid());
         DateTime expire = DateTime.now().plusDays(5);
         ticket.setExpirationDate(expire.toDate());
         ticket = ticketDao.create(ticket);
@@ -284,6 +284,7 @@ public class UserResource extends AbstractAuthResource<User> {
     public UserDTO registerUserByMail(@Valid UserDTO user) {
 
         Ticket ticket = ticketDao.findById(user.getTicket());
+
         if (ticket == null) {
             throw new RobeRuntimeException(TICKET, "Ticket not found");
         }
@@ -291,7 +292,7 @@ public class UserResource extends AbstractAuthResource<User> {
         if (ticket.getExpirationDate().getTime() < Calendar.getInstance().getTime().getTime()) {
             throw new RobeRuntimeException(TICKET, "Ticket date is expired");
         }
-        User entity = ticket.getUser();
+        User entity = userDao.findById(ticket.getUserOid());
         if (!entity.getUsername().equals(user.getUsername())) {
             throw new RobeRuntimeException(TICKET, "Tickets not belong to your email");
         }
@@ -317,7 +318,7 @@ public class UserResource extends AbstractAuthResource<User> {
         if (ticket.getExpirationDate().getTime() < Calendar.getInstance().getTime().getTime()) {
             throw new RobeRuntimeException(TICKET, "Ticket date is expired");
         }
-        User entity = ticket.getUser();
+        User entity = userDao.findById(ticket.getUserOid());
         if (!entity.getUsername().equals(user.getUsername())) {
             throw new RobeRuntimeException(TICKET, "Tickets not belong to your email");
         }

@@ -4,7 +4,9 @@ import com.google.inject.Inject;
 import io.dropwizard.hibernate.UnitOfWork;
 import io.dropwizard.views.View;
 import io.robe.admin.hibernate.dao.TicketDao;
+import io.robe.admin.hibernate.dao.UserDao;
 import io.robe.admin.hibernate.entity.Ticket;
+import io.robe.admin.hibernate.entity.User;
 import io.robe.admin.view.ChangePasswordView;
 import io.robe.admin.view.NotFoundView;
 import io.robe.admin.view.RegisterView;
@@ -23,6 +25,10 @@ public class TicketResource {
     @Inject
     private TicketDao ticketDao;
 
+    @Inject
+    private UserDao userDao;
+
+
     @GET
     @Path("{id}")
     @UnitOfWork
@@ -33,9 +39,11 @@ public class TicketResource {
         if (ticket != null) {
             if (ticket.getExpirationDate().getTime() > Calendar.getInstance().getTime().getTime()) {
                 if (ticket.getType().equals(Ticket.Type.CHANGE_PASSWORD)) {
-                    return new ChangePasswordView(tickedOid, ticket.getUser().getUsername(), url);
+                    User user = userDao.findById(ticket.getUserOid());
+                    return new ChangePasswordView(tickedOid, user.getUsername(), url);
                 } else if (ticket.getType().equals(Ticket.Type.REGISTER)) {
-                    return new RegisterView(ticket.getUser().getUsername(), tickedOid, url);
+                    User user = userDao.findById(ticket.getUserOid());
+                    return new RegisterView(user.getUsername(), tickedOid, url);
                 }
             } else {
                 return new NotFoundView("Your ticket expired");

@@ -2,14 +2,11 @@ package io.robe.admin.hibernate.entity;
 
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonManagedReference;
 import io.robe.auth.data.entry.UserEntry;
 import io.robe.hibernate.entity.BaseEntity;
 
 import javax.persistence.*;
-import java.util.ArrayList;
 import java.util.Date;
-import java.util.List;
 
 @Entity
 @Table
@@ -39,22 +36,9 @@ public class User extends BaseEntity implements UserEntry {
     @JoinColumn(name = "roleOid")
     private Role role;
 
-    @JsonIgnore
-    @JsonManagedReference("ticket")
-    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.LAZY, targetEntity = Ticket.class, orphanRemoval = true)
-    private List<Ticket> tickets = new ArrayList<Ticket>();
-
     @Column
     private Date lastLoginTime;
     private Date lastLogoutTime;
-
-    public List<Ticket> getTickets() {
-        return tickets;
-    }
-
-    public void setTickets(List<Ticket> tickets) {
-        this.tickets = tickets;
-    }
 
     public String getEmail() {
         return email;
@@ -93,14 +77,14 @@ public class User extends BaseEntity implements UserEntry {
         return active;
     }
 
+    public void setActive(boolean active) {
+        this.active = active;
+    }
+
     @JsonIgnore
     @Override
     public String getUserId() {
         return getOid();
-    }
-
-    public void setActive(boolean active) {
-        this.active = active;
     }
 
     public Role getRole() {
@@ -117,20 +101,20 @@ public class User extends BaseEntity implements UserEntry {
         return getEmail();
     }
 
-    public void setLastLoginTime(Date lastLoginTime) {
-        this.lastLoginTime = lastLoginTime;
-    }
-
     public Date getLastLoginTime() {
         return lastLoginTime;
     }
 
-    public void setLastLogoutTime(Date lastLogoutTime) {
-        this.lastLogoutTime = lastLogoutTime;
+    public void setLastLoginTime(Date lastLoginTime) {
+        this.lastLoginTime = lastLoginTime;
     }
 
     public Date getLastLogoutTime() {
         return lastLogoutTime;
+    }
+
+    public void setLastLogoutTime(Date lastLogoutTime) {
+        this.lastLogoutTime = lastLogoutTime;
     }
 
     public int getFailCount() {
@@ -151,7 +135,6 @@ public class User extends BaseEntity implements UserEntry {
         sb.append(", active=").append(active);
         sb.append(", failCount=").append(failCount);
         sb.append(", role=").append(role);
-        sb.append(", tickets=").append(tickets);
         sb.append(", lastLoginTime=").append(lastLoginTime);
         sb.append(", lastLogoutTime=").append(lastLogoutTime);
         sb.append('}');

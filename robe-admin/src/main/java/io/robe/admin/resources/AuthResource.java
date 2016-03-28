@@ -161,7 +161,7 @@ public class AuthResource extends AbstractAuthResource<User> {
             throw new RobeRuntimeException("ERROR", "Your e-mail address was not found in the system");
         }
 
-        Optional<Ticket> ticketOptional = ticketDao.findByUserAndExpirationDate(userOptional.get());
+        Optional<Ticket> ticketOptional = ticketDao.findByUserOidAndExpirationDate(userOptional.get().getOid());
 
         if (ticketOptional.isPresent()) {
             throw new RobeRuntimeException("ERROR", "Already opened your behalf tickets available");
@@ -173,7 +173,7 @@ public class AuthResource extends AbstractAuthResource<User> {
 
         Ticket ticket = new Ticket();
         ticket.setType(Ticket.Type.CHANGE_PASSWORD);
-        ticket.setUser(userOptional.get());
+        ticket.setUserOid(userOptional.get().getOid());
         DateTime expire = DateTime.now().plusDays(5);
         ticket.setExpirationDate(expire.toDate());
         ticket = ticketDao.create(ticket);

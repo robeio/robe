@@ -14,17 +14,15 @@ public class Ticket extends BaseEntity {
     private Type type;
     @Column
     private Date expirationDate;
+    @Column(length = 32)
+    private String userOid;
 
-    @ManyToOne(cascade = CascadeType.REFRESH, targetEntity = User.class)
-    @JoinColumn(name = "ticketUser")
-    private User user;
-
-    public User getUser() {
-        return user;
+    public String getUserOid() {
+        return userOid;
     }
 
-    public void setUser(User user) {
-        this.user = user;
+    public void setUserOid(String userOid) {
+        this.userOid = userOid;
     }
 
     public Type getType() {
