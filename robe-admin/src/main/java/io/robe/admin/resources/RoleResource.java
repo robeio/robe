@@ -27,13 +27,13 @@ import static org.hibernate.CacheMode.GET;
 @Produces(MediaType.APPLICATION_JSON)
 public class RoleResource {
 
-    private static final String ALREADY_USED =  " already used by another role. Please use different code.";
+    private static final String ALREADY_USED = " already used by another role. Please use different code.";
 
     @Inject
     private RoleDao roleDao;
 
     @GET
-    @UnitOfWork(readOnly = true, cacheMode = GET,flushMode = FlushMode.MANUAL)
+    @UnitOfWork(readOnly = true, cacheMode = GET, flushMode = FlushMode.MANUAL)
     public List<Role> getAll(@Auth Credentials credentials) {
         List<Role> roles = roleDao.findAll(Role.class);
         for (Role role : roles) {
@@ -44,8 +44,8 @@ public class RoleResource {
 
     @Path("{id}")
     @GET
-    @UnitOfWork(readOnly = true, cacheMode = GET,flushMode = FlushMode.MANUAL)
-    public Role get(@Auth Credentials credentials, @PathParam("id") String id, @Valid RoleResource roleResource) {
+    @UnitOfWork(readOnly = true, cacheMode = GET, flushMode = FlushMode.MANUAL)
+    public Role get(@Auth Credentials credentials, @PathParam("id") String id) {
         Role role = roleDao.findById(id);
         initializeItems(role.getRoles());
         return role;

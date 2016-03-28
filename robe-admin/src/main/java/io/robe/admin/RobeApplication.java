@@ -77,6 +77,7 @@ public class RobeApplication<T extends RobeConfiguration> extends Application<T>
         bootstrap.addBundle(new ViewBundle(ImmutableList.<ViewRenderer>of(new FreemarkerViewRenderer())));
         bootstrap.addBundle(new MailBundle<T>());
         bootstrap.addBundle(new AdvancedAssetBundle<T>());
+
     }
 
     /**
@@ -85,7 +86,7 @@ public class RobeApplication<T extends RobeConfiguration> extends Application<T>
      * @return
      */
     protected String[] getHibernateScanPackages() {
-        return new String[]{"io.robe.admin.hibernate.entity", "io.robe.quartz"};
+        return new String[]{"io.robe.admin", "io.robe.quartz"};
     }
 
 

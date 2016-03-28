@@ -43,8 +43,9 @@ public class SystemParameterResource {
     }
 
     @PUT
+    @Path("{id}")
     @UnitOfWork(flushMode = FlushMode.MANUAL)
-    public SystemParameter update(@Auth Credentials credentials, @Valid SystemParameter systemParameter) {
+    public SystemParameter update(@Auth Credentials credentials, @PathParam("id") String id, @Valid SystemParameter systemParameter) {
         systemParameter = systemParameterDao.update(systemParameter);
         try {
             systemParameterDao.flush();

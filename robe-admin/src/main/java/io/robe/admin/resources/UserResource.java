@@ -75,6 +75,70 @@ public class UserResource extends AbstractAuthResource<User> {
         return users;
     }
 
+
+    @POST
+    @UnitOfWork
+    public UserDTO create(@Auth Credentials credentials, @Valid UserDTO user, @Context UriInfo uriInfo) {
+        Optional<User> checkUser = userDao.findByUsername(user.getEmail());
+        if (checkUser.isPresent()) {
+            throw new RobeRuntimeException(E_MAIL, user.getEmail() + " already used by another user. Please use different e-mail.");
+        }
+        User entity = new User();
+        entity.setEmail(user.getEmail());
+        entity.setName(user.getName());
+        entity.setSurname(user.getSurname());
+        entity.setActive(user.isActive());
+        Role role = roleDao.findById(user.getRoleOid());
+        if (role == null) {
+            throw new RobeRuntimeException("Role", "Role can not be null.Please select role and try again");
+        }
+        entity.setRole(role);
+        entity.setPassword(UUID.randomUUID().toString());
+        entity = userDao.create(entity);
+
+        if (MailManager.hasConfiguration()) {
+            Ticket ticket = new Ticket();
+            ticket.setType(Ticket.Type.CHANGE_PASSWORD);
+            ticket.setUser(entity);
+            DateTime expire = DateTime.now().plusDays(5);
+            ticket.setExpirationDate(expire.toDate());
+            ticket = ticketDao.create(ticket);
+            String url = uriInfo.getBaseUri().toString();
+            String ticketUrl = url + "ticket/" + ticket.getOid();
+            MailItem mailItem = new MailItem();
+            Optional<MailTemplate> mailTemplateOptional = mailTemplateDao.findByCode(Ticket.Type.CHANGE_PASSWORD.name());
+            TemplateManager templateManager;
+            Map<String, Object> parameter = new HashMap<String, Object>();
+            Writer out = new StringWriter();
+            if (mailTemplateOptional.isPresent()) {
+                String body = mailTemplateOptional.get().getTemplate();
+                templateManager = new TemplateManager("robeTemplate", body);
+                parameter.put("name", entity.getName());
+                parameter.put("surname", entity.getSurname());
+            } else {
+                templateManager = new TemplateManager("ChangePasswordMail.ftl");
+            }
+
+            parameter.put("ticketUrl", ticketUrl);
+
+            templateManager.setParameter(parameter);
+            templateManager.process(out);
+            mailItem.setBody(out.toString());
+            mailItem.setReceivers(entity.getUsername());
+            mailItem.setTitle("Robe.io Password Change Request");
+            MailManager.sendMail(mailItem);
+        } else {
+            String password = generateStrongPassword();
+            //TODO:check
+            entity.setPassword(BaseEncoding.base16().encode(Hashing.sha256().hashString(password, StandardCharsets.UTF_8).asBytes()));
+            UserDTO userDTO = new UserDTO(entity);
+            userDTO.setNewPassword(password);
+            return userDTO;
+        }
+
+        return new UserDTO(entity);
+    }
+
     @Path("{id}")
     @GET
     @UnitOfWork(readOnly = true, cacheMode = GET, flushMode = FlushMode.MANUAL)
@@ -267,69 +331,6 @@ public class UserResource extends AbstractAuthResource<User> {
 
         return user;
 
-    }
-
-    @POST
-    @UnitOfWork
-    public UserDTO create(@Auth Credentials credentials, @Valid UserDTO user, @Context UriInfo uriInfo) {
-        Optional<User> checkUser = userDao.findByUsername(user.getEmail());
-        if (checkUser.isPresent()) {
-            throw new RobeRuntimeException(E_MAIL, user.getEmail() + " already used by another user. Please use different e-mail.");
-        }
-        User entity = new User();
-        entity.setEmail(user.getEmail());
-        entity.setName(user.getName());
-        entity.setSurname(user.getSurname());
-        entity.setActive(user.isActive());
-        Role role = roleDao.findById(user.getRoleOid());
-        if (role == null) {
-            throw new RobeRuntimeException("Role", "Role can not be null.Please select role and try again");
-        }
-        entity.setRole(role);
-        entity.setPassword(UUID.randomUUID().toString());
-        entity = userDao.create(entity);
-
-        if (MailManager.hasConfiguration()) {
-            Ticket ticket = new Ticket();
-            ticket.setType(Ticket.Type.CHANGE_PASSWORD);
-            ticket.setUser(entity);
-            DateTime expire = DateTime.now().plusDays(5);
-            ticket.setExpirationDate(expire.toDate());
-            ticket = ticketDao.create(ticket);
-            String url = uriInfo.getBaseUri().toString();
-            String ticketUrl = url + "ticket/" + ticket.getOid();
-            MailItem mailItem = new MailItem();
-            Optional<MailTemplate> mailTemplateOptional = mailTemplateDao.findByCode(Ticket.Type.CHANGE_PASSWORD.name());
-            TemplateManager templateManager;
-            Map<String, Object> parameter = new HashMap<String, Object>();
-            Writer out = new StringWriter();
-            if (mailTemplateOptional.isPresent()) {
-                String body = mailTemplateOptional.get().getTemplate();
-                templateManager = new TemplateManager("robeTemplate", body);
-                parameter.put("name", entity.getName());
-                parameter.put("surname", entity.getSurname());
-            } else {
-                templateManager = new TemplateManager("ChangePasswordMail.ftl");
-            }
-
-            parameter.put("ticketUrl", ticketUrl);
-
-            templateManager.setParameter(parameter);
-            templateManager.process(out);
-            mailItem.setBody(out.toString());
-            mailItem.setReceivers(entity.getUsername());
-            mailItem.setTitle("Robe.io Password Change Request");
-            MailManager.sendMail(mailItem);
-        } else {
-            String password = generateStrongPassword();
-            //TODO:check
-            entity.setPassword(BaseEncoding.base16().encode(Hashing.sha256().hashString(password, StandardCharsets.UTF_8).asBytes()));
-            UserDTO userDTO = new UserDTO(entity);
-            userDTO.setNewPassword(password);
-            return userDTO;
-        }
-
-        return new UserDTO(entity);
     }
 
     @Path("{id}")

@@ -50,6 +50,7 @@ public class InitializeCommand<T extends RobeConfiguration> extends EnvironmentC
         LOGGER.info("Initialize Starting...");
         LOGGER.info("Starting to create initial data.");
         execute(configuration);
+        System.exit(0);
     }
 
 

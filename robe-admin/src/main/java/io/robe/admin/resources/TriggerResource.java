@@ -118,10 +118,10 @@ public class TriggerResource {
     }
 
 
-    @POST
+    @PUT
     @Path("run")
     @UnitOfWork
-    public TriggerEntity fireTrigger(@Auth Credentials credentials, TriggerEntity triggerEntity) {
+    public TriggerEntity fire(@Auth Credentials credentials, TriggerEntity triggerEntity) {
 
         TriggerEntity entity = quartzTriggerDao.findById(triggerEntity.getOid());
         JobDetail jobDetail = JobProvider.convert2JobDetail(entity.getJob());
@@ -140,10 +140,10 @@ public class TriggerResource {
         return quartzTriggerDao.update(entity);
     }
 
-    @POST
+    @PUT
     @Path("stop")
     @UnitOfWork
-    public TriggerEntity stopTrigger(@Auth Credentials credentials, TriggerEntity triggerEntity) {
+    public TriggerEntity stop(@Auth Credentials credentials, TriggerEntity triggerEntity) {
 
         TriggerEntity entity = quartzTriggerDao.findById(triggerEntity.getOid());
         Trigger trigger = JobProvider.convert2Trigger(triggerEntity);

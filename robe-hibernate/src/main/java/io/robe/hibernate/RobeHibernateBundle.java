@@ -1,5 +1,6 @@
 package io.robe.hibernate;
 
+import com.fasterxml.jackson.datatype.hibernate4.Hibernate4Module;
 import com.google.common.collect.ImmutableList;
 import io.dropwizard.Configuration;
 import io.dropwizard.db.PooledDataSourceFactory;
@@ -43,7 +44,6 @@ public class RobeHibernateBundle<T extends Configuration & HasHibernateConfigura
             throw new RuntimeException("HibernateBundle is not created. Please call createInstance first.");
     }
 
-
     private static final ImmutableList<Class<?>> loadEntities(String[] packages, String[] entities) {
         Set<Class<?>> classes = new HashSet<>();
         if (packages != null) {
@@ -72,6 +72,18 @@ public class RobeHibernateBundle<T extends Configuration & HasHibernateConfigura
         return ImmutableList.<Class<?>>builder().add(BaseEntity.class).addAll(classes).build();
     }
 
+    /**
+     * read more https://github.com/dropwizard/dropwizard/issues/932
+     *
+     * @return Hibernate4Module
+     */
+
+    @Override
+    protected Hibernate4Module createHibernate4Module() {
+        Hibernate4Module module = new Hibernate4Module();
+        module.disable(Hibernate4Module.Feature.USE_TRANSIENT_ANNOTATION);
+        return module;
+    }
 
     public HibernateConfiguration getDatabaseConfiguration(T configuration) {
         return configuration.getHibernateConfiguration();
