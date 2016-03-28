@@ -2,7 +2,10 @@ package io.robe.admin.hibernate.entity;
 
 import io.robe.hibernate.entity.BaseEntity;
 
-import javax.persistence.*;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.Table;
+import javax.persistence.Transient;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -17,16 +20,15 @@ public class Menu extends BaseEntity {
     @Column(length = 50, nullable = false)
     private String name;
 
-    @OneToMany(mappedBy = "parentOid", fetch = FetchType.LAZY)
-    @OrderBy("index ASC")
-    private List<Menu> items = new LinkedList<Menu>();
-
     @Column(name = "itemIndex")
     private int index;
 
-
-    @Column
+    @Column(length = 32)
     private String parentOid;
+
+    @Transient
+    private List<Menu> items = new LinkedList<Menu>();
+
 
     public String getCode() {
         return code;

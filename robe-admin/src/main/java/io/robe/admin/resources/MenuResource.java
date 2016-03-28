@@ -38,14 +38,7 @@ public class MenuResource {
     @GET
     @UnitOfWork(readOnly = true, cacheMode = GET, flushMode = FlushMode.MANUAL)
     public List<Menu> getAll(@Auth Credentials credentials) {
-
-        List<Menu> menus = new ArrayList<>();
-        for (Menu menu : menuDao.findAll(Menu.class)) {
-            initializeItems(menu.getItems());
-            menus.add(menu);
-        }
-
-        return menus;
+        return menuDao.findAll(Menu.class);
     }
 
     private void getAllRolePermissions(Role parent, Set<Permission> rolePermissions) {
@@ -64,7 +57,8 @@ public class MenuResource {
         Set<Permission> permissions = new HashSet<Permission>();
         getAllRolePermissions(user.get().getRole(), permissions);
         Set<String> menuOids = new HashSet<String>();
-        List<Menu> items = menuDao.findHierarchicalMenu();
+        List<Menu> items = readMenuHierarchical(menuDao.findHierarchicalMenu());
+
         for (Permission permission : permissions) {
             if (permission.getType().equals(Permission.Type.MENU)) {
                 menuOids.add(permission.getRestrictedItemOid());
@@ -75,6 +69,16 @@ public class MenuResource {
         createMenuWithPermissions(menuOids, items, permittedItems);
 
         return permittedItems;
+    }
+
+
+    private List<Menu> readMenuHierarchical(List<Menu> items) {
+        for (Menu item : items) {
+            item.setItems(menuDao.findByParentOid(item.getOid()));
+            readMenuHierarchical(item.getItems());
+        }
+
+        return items;
     }
 
     private void createMenuWithPermissions(Set<String> permissions, List<Menu> items, List<MenuItem> permittedItems) {
@@ -95,19 +99,7 @@ public class MenuResource {
     @GET
     @UnitOfWork(readOnly = true, cacheMode = GET, flushMode = FlushMode.MANUAL)
     public List<Menu> getHierarchicalMenu(@Auth Credentials credentials) {
-        List<Menu> menus = menuDao.findHierarchicalMenu();
-        for (Menu menu : menus) {
-            initializeItems(menu.getItems());
-        }
-
-        return menus;
-    }
-
-    private void initializeItems(List<Menu> menus) {
-        for (Menu menu : menus) {
-            Hibernate.initialize(menu.getItems());
-            initializeItems(menu.getItems());
-        }
+        return readMenuHierarchical(menuDao.findHierarchicalMenu());
     }
 
     @Path("movenode/{item}/{destination}")
