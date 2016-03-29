@@ -11,8 +11,7 @@ import io.dropwizard.views.ViewRenderer;
 import io.dropwizard.views.freemarker.FreemarkerViewRenderer;
 import io.robe.admin.cli.InitializeCommand;
 import io.robe.admin.guice.module.HibernateModule;
-import io.robe.admin.hibernate.dao.ServiceDao;
-import io.robe.admin.hibernate.dao.UserDao;
+import io.robe.admin.hibernate.dao.*;
 import io.robe.assets.AdvancedAssetBundle;
 import io.robe.auth.token.TokenAuthBundle;
 import io.robe.auth.token.TokenAuthenticator;
@@ -110,7 +109,10 @@ public class RobeApplication<T extends RobeConfiguration> extends Application<T>
     public void run(T configuration, Environment environment) throws Exception {
         TokenFactory.authenticator = new TokenAuthenticator(
                 GuiceBundle.getInjector().getInstance(UserDao.class),
-                GuiceBundle.getInjector().getInstance(ServiceDao.class));
+                GuiceBundle.getInjector().getInstance(ServiceDao.class),
+                GuiceBundle.getInjector().getInstance(RoleDao.class),
+                GuiceBundle.getInjector().getInstance(PermissionDao.class),
+                GuiceBundle.getInjector().getInstance(RoleGroupDao.class));
         TokenFactory.tokenKey = configuration.getTokenBasedAuthConfiguration().getTokenKey();
         addExceptionMappers(environment);
         /**

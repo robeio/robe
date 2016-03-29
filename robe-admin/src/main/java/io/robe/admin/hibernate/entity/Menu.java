@@ -13,7 +13,6 @@ import java.util.List;
 @Table
 public class Menu extends BaseEntity {
 
-
     @Column(length = 50, nullable = false)
     private String code;
 
@@ -28,7 +27,6 @@ public class Menu extends BaseEntity {
 
     @Transient
     private List<Menu> items = new LinkedList<Menu>();
-
 
     public String getCode() {
         return code;

@@ -46,7 +46,7 @@ public class PermissionResource {
     @UnitOfWork(readOnly = true, cacheMode = GET, flushMode = FlushMode.MANUAL)
     public List<String> getRoleHierarchicalMenu(@Auth Credentials credentials, @PathParam("roleOid") String roleOid) {
         Role role = roleDao.findById(roleOid);
-        Set<Permission> permissions = role.getPermissions();
+        Set<Permission> permissions = (Set<Permission>) permissionDao.findByRoleId(role.getOid());
         List<String> menuOids = new LinkedList<String>();
         for (Permission permission : permissions) {
             if (permission.getType().equals(Permission.Type.MENU)) {
@@ -69,7 +69,7 @@ public class PermissionResource {
             if (permission == null) {
                 permission = new Permission();
             }
-            permission.setRole(role);
+            permission.setRoleOid(role.getOid());
             permission.setType(Permission.Type.MENU);
             permission.setpLevel((short) 7);
             permission.setRestrictedItemOid(itemOid);
@@ -84,7 +84,7 @@ public class PermissionResource {
     @UnitOfWork(readOnly = true, cacheMode = GET, flushMode = FlushMode.MANUAL)
     public List<String> getRoleServices(@Auth Credentials credentials, @PathParam("roleOid") String roleOid) {
         Role role = roleDao.findById(roleOid);
-        Set<Permission> permissions = role.getPermissions();
+        Set<Permission> permissions = (Set<Permission>) permissionDao.findByRoleId(role.getOid());
         List<String> serviceOids = new LinkedList<String>();
         for (Permission permission : permissions) {
             if (permission.getType().equals(Permission.Type.SERVICE)) {
@@ -107,7 +107,7 @@ public class PermissionResource {
             if (permission == null) {
                 permission = new Permission();
             }
-            permission.setRole(role);
+            permission.setRoleOid(role.getOid());
             permission.setType(Permission.Type.SERVICE);
             permission.setpLevel((short) 7);
             permission.setRestrictedItemOid(itemOid);

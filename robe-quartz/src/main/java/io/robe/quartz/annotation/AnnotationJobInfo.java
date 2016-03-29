@@ -42,6 +42,11 @@ public class AnnotationJobInfo implements JobInfo {
     }
 
     @Override
+    public void setTriggers(List<TriggerInfo> triggers) {
+        this.triggers = triggers;
+    }
+
+    @Override
     public Class<? extends Job> getJobClass() {
         return jobClass;
     }

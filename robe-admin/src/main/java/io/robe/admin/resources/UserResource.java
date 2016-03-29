@@ -92,7 +92,7 @@ public class UserResource extends AbstractAuthResource<User> {
         if (role == null) {
             throw new RobeRuntimeException("Role", "Role can not be null.Please select role and try again");
         }
-        entity.setRole(role);
+        entity.setRoleOid(role.getOid());
         entity.setPassword(UUID.randomUUID().toString());
         entity = userDao.create(entity);
 
@@ -171,7 +171,7 @@ public class UserResource extends AbstractAuthResource<User> {
         entity.setName(user.getName());
         entity.setSurname(user.getSurname());
         entity.setActive(user.isActive());
-        entity.setRole(role);
+        entity.setRoleOid(role.getOid());
 
         entity = userDao.update(entity);
         userDao.flush();
@@ -239,7 +239,7 @@ public class UserResource extends AbstractAuthResource<User> {
         if (role == null) {
             throw new RobeRuntimeException("Role", "Role " + ExceptionMessages.CANT_BE_NULL.toString());
         }
-        entity.setRole(role);
+        entity.setRoleOid(role.getOid());
         entity = userDao.create(entity);
 
         Ticket ticket = new Ticket();

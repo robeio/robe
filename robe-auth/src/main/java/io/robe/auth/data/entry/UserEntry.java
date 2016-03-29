@@ -9,6 +9,6 @@ public interface UserEntry {
 
     String getPassword();
 
-    RoleEntry getRole();
+    String getRoleId();
 
 }

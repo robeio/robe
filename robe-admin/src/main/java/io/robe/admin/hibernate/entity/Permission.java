@@ -19,20 +19,16 @@ public class Permission extends BaseEntity implements PermissionEntry {
     @Column(name = "pLevel")
     private short pLevel;
 
-    @ManyToOne
-    @JoinColumn(name = "roleOid", referencedColumnName = "oid")
-    private Role role;
+    @Column(length = 32)
+    private String roleOid;
 
-    @ManyToOne
-    @JoinColumn(name = "roleOid", nullable = false, referencedColumnName = "oid")
-    public Role getRole() {
-        return role;
+    public String getRoleOid() {
+        return roleOid;
     }
 
-    public void setRole(Role role) {
-        this.role = role;
+    public void setRoleOid(String roleOid) {
+        this.roleOid = roleOid;
     }
-
 
     public Type getType() {
         return type;

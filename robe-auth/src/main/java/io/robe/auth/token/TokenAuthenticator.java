@@ -3,12 +3,8 @@ package io.robe.auth.token;
 import com.google.common.base.Optional;
 import io.dropwizard.auth.AuthenticationException;
 import io.dropwizard.auth.Authenticator;
-import io.robe.auth.data.entry.PermissionEntry;
-import io.robe.auth.data.entry.RoleEntry;
-import io.robe.auth.data.entry.ServiceEntry;
-import io.robe.auth.data.entry.UserEntry;
-import io.robe.auth.data.store.ServiceStore;
-import io.robe.auth.data.store.UserStore;
+import io.robe.auth.data.entry.*;
+import io.robe.auth.data.store.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -25,6 +21,9 @@ public class TokenAuthenticator implements Authenticator<String, Token> {
 
     private final ServiceStore serviceStore;
     private final UserStore userStore;
+    private final RoleStore roleStore;
+    private final PermissionStore permissionStore;
+    private final RoleGroupStore roleGroupStore;
 
     /**
      * Creates an instance of TokenBasedAuthenticator with the store classes.
@@ -32,9 +31,12 @@ public class TokenAuthenticator implements Authenticator<String, Token> {
      * @param userStore    Store for getting user.
      * @param serviceStore Store for getting service info.
      */
-    public TokenAuthenticator(UserStore userStore, ServiceStore serviceStore) {
+    public TokenAuthenticator(UserStore userStore, ServiceStore serviceStore, RoleStore roleStore, PermissionStore permissionStore, RoleGroupStore roleGroupStore) {
         this.userStore = userStore;
         this.serviceStore = serviceStore;
+        this.roleStore = roleStore;
+        this.permissionStore = permissionStore;
+        this.roleGroupStore = roleGroupStore;
     }
 
     /**
@@ -66,7 +68,10 @@ public class TokenAuthenticator implements Authenticator<String, Token> {
                     Set<PermissionEntry> rolePermissions = new HashSet<PermissionEntry>();
 
                     //If user role is a group than add sub role permissions to group
-                    getAllRolePermissions(user.get().getRole(), rolePermissions);
+
+                    Optional<RoleEntry> role = (Optional<RoleEntry>) roleStore.findByRoleId(user.get().getRoleId());
+
+                    getAllRolePermissions(role.get(), rolePermissions);
 
                     for (PermissionEntry permission : rolePermissions) {
                         if (permission.getType().equals(PermissionEntry.Type.SERVICE)) {
@@ -102,9 +107,11 @@ public class TokenAuthenticator implements Authenticator<String, Token> {
      * @param rolePermissions list of all permissions of the given role.
      */
     private void getAllRolePermissions(RoleEntry parent, Set<PermissionEntry> rolePermissions) {
-        rolePermissions.addAll(parent.getPermissions());
-        for (RoleEntry role : parent.getRoles()) {
-            getAllRolePermissions(role, rolePermissions);
+        rolePermissions.addAll(permissionStore.findByRoleId(parent.getId()));
+        Set<RoleGroupEntry> roleGroupEntries = (Set<RoleGroupEntry>) roleGroupStore.findByGroupId(parent.getId());
+        for (RoleGroupEntry entry : roleGroupEntries) {
+            Optional<RoleEntry> role = (Optional<RoleEntry>) roleStore.findByRoleId(entry.getRoleId());
+            getAllRolePermissions(role.get(), rolePermissions);
         }
     }
 

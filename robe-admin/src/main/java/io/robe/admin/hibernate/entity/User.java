@@ -5,7 +5,9 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import io.robe.auth.data.entry.UserEntry;
 import io.robe.hibernate.entity.BaseEntity;
 
-import javax.persistence.*;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.Table;
 import java.util.Date;
 
 @Entity
@@ -31,14 +33,14 @@ public class User extends BaseEntity implements UserEntry {
     @Column(nullable = false)
     private int failCount = 0;
 
-    @JsonIgnore
-    @ManyToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name = "roleOid")
-    private Role role;
-
     @Column
     private Date lastLoginTime;
+
+    @Column
     private Date lastLogoutTime;
+
+    @Column(length = 32)
+    private String roleOid;
 
     public String getEmail() {
         return email;
@@ -47,7 +49,6 @@ public class User extends BaseEntity implements UserEntry {
     public void setEmail(String email) {
         this.email = email;
     }
-
 
     public String getName() {
         return name;
@@ -73,6 +74,20 @@ public class User extends BaseEntity implements UserEntry {
         this.password = password;
     }
 
+    public String getRoleOid() {
+        return roleOid;
+    }
+
+    public void setRoleOid(String roleOid) {
+        this.roleOid = roleOid;
+    }
+
+    @JsonIgnore
+    @Override
+    public String getRoleId() {
+        return getRoleOid();
+    }
+
     public boolean isActive() {
         return active;
     }
@@ -86,15 +101,6 @@ public class User extends BaseEntity implements UserEntry {
     public String getUserId() {
         return getOid();
     }
-
-    public Role getRole() {
-        return role;
-    }
-
-    public void setRole(Role role) {
-        this.role = role;
-    }
-
 
     @Override
     public String getUsername() {
@@ -123,21 +129,5 @@ public class User extends BaseEntity implements UserEntry {
 
     public void setFailCount(int failCount) {
         this.failCount = failCount;
-    }
-
-    @Override
-    public String toString() {
-        final StringBuilder sb = new StringBuilder("User{");
-        sb.append("email='").append(email).append('\'');
-        sb.append(", name='").append(name).append('\'');
-        sb.append(", surname='").append(surname).append('\'');
-        sb.append(", password='").append("******").append('\'');
-        sb.append(", active=").append(active);
-        sb.append(", failCount=").append(failCount);
-        sb.append(", role=").append(role);
-        sb.append(", lastLoginTime=").append(lastLoginTime);
-        sb.append(", lastLogoutTime=").append(lastLogoutTime);
-        sb.append('}');
-        return sb.toString();
     }
 }

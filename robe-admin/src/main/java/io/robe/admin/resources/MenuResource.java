@@ -6,12 +6,8 @@ import io.dropwizard.auth.Auth;
 import io.dropwizard.hibernate.UnitOfWork;
 import io.dropwizard.jersey.caching.CacheControl;
 import io.robe.admin.dto.MenuItem;
-import io.robe.admin.hibernate.dao.MenuDao;
-import io.robe.admin.hibernate.dao.UserDao;
-import io.robe.admin.hibernate.entity.Menu;
-import io.robe.admin.hibernate.entity.Permission;
-import io.robe.admin.hibernate.entity.Role;
-import io.robe.admin.hibernate.entity.User;
+import io.robe.admin.hibernate.dao.*;
+import io.robe.admin.hibernate.entity.*;
 import io.robe.auth.Credentials;
 import io.robe.common.exception.RobeRuntimeException;
 import org.hibernate.FlushMode;
@@ -35,6 +31,15 @@ public class MenuResource {
     @Inject
     private MenuDao menuDao;
 
+    @Inject
+    private RoleDao roleDao;
+
+    @Inject
+    private PermissionDao permissionDao;
+
+    @Inject
+    private RoleGroupDao roleGroupDao;
+
     @GET
     @UnitOfWork(readOnly = true, cacheMode = GET, flushMode = FlushMode.MANUAL)
     public List<Menu> getAll(@Auth Credentials credentials) {
@@ -42,8 +47,10 @@ public class MenuResource {
     }
 
     private void getAllRolePermissions(Role parent, Set<Permission> rolePermissions) {
-        rolePermissions.addAll(parent.getPermissions());
-        for (Role role : parent.getRoles()) {
+        rolePermissions.addAll(permissionDao.findByRoleOId(parent.getId()));
+        List<RoleGroup> roleGroupEntries = roleGroupDao.findByGroupOId(parent.getId());
+        for (RoleGroup entry : roleGroupEntries) {
+            Role role = roleDao.findById(entry.getRoleOid());
             getAllRolePermissions(role, rolePermissions);
         }
     }
@@ -55,7 +62,9 @@ public class MenuResource {
     public List<MenuItem> getUserHierarchicalMenu(@Auth Credentials credentials) {
         Optional<User> user = userDao.findByUsername(credentials.getUsername());
         Set<Permission> permissions = new HashSet<Permission>();
-        getAllRolePermissions(user.get().getRole(), permissions);
+
+        Role parent = roleDao.findById(user.get().getRoleOid());
+        getAllRolePermissions(parent, permissions);
         Set<String> menuOids = new HashSet<String>();
         List<Menu> items = readMenuHierarchical(menuDao.findHierarchicalMenu());
 

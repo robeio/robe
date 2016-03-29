@@ -22,7 +22,6 @@ import java.io.Console;
 import java.lang.reflect.Method;
 import java.nio.charset.StandardCharsets;
 import java.util.Arrays;
-import java.util.HashSet;
 import java.util.Scanner;
 import java.util.Set;
 
@@ -97,10 +96,17 @@ public class InitializeCommand<T extends RobeConfiguration> extends EnvironmentC
             Role all = new Role();
             all.setCode("all");
             all.setName("All");
-            all.setRoles(new HashSet<Role>());
-            all.getRoles().add(user);
-            all.getRoles().add(role);
             session.persist(all);
+
+            RoleGroup groupAllUser = new RoleGroup();
+            groupAllUser.setRoleOid(user.getOid());
+            groupAllUser.setGroupOid(all.getOid());
+            session.persist(groupAllUser);
+
+            RoleGroup groupAllAdmin = new RoleGroup();
+            groupAllAdmin.setRoleOid(role.getOid());
+            groupAllAdmin.setGroupOid(all.getOid());
+            session.persist(groupAllAdmin);
         }
 
         GuiceConfiguration guiceConfiguration = configuration.getGuiceConfiguration();
@@ -156,7 +162,7 @@ public class InitializeCommand<T extends RobeConfiguration> extends EnvironmentC
             user.setName(IO_ROBE_ADMIN);
             user.setSurname(IO_ROBE_ADMIN);
             user.setPassword(password);
-            user.setRole(role);
+            user.setRoleOid(role.getOid());
             session.persist(user);
 
         }
@@ -270,7 +276,7 @@ public class InitializeCommand<T extends RobeConfiguration> extends EnvironmentC
         permission.setpLevel((short) 7);
         permission.setType(b ? Permission.Type.MENU : Permission.Type.SERVICE);
         permission.setRestrictedItemOid(oid);
-        permission.setRole(role);
+        permission.setRoleOid(role.getOid());
         return permission;
     }
 

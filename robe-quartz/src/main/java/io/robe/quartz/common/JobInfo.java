@@ -12,7 +12,7 @@ public interface JobInfo {
 
     List<TriggerInfo> getTriggers();
 
+    public void setTriggers(List<TriggerInfo> triggers);
+
     Class<? extends Job> getJobClass();
-
-
 }

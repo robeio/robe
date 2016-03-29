@@ -4,9 +4,12 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import io.robe.auth.data.entry.RoleEntry;
 import io.robe.hibernate.entity.BaseEntity;
 
-import javax.persistence.*;
-import java.util.HashSet;
-import java.util.Set;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.Table;
+import javax.persistence.Transient;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Table
@@ -18,23 +21,15 @@ public class Role extends BaseEntity implements RoleEntry {
     @Column(length = 50)
     private String name;
 
-    @JsonIgnore
-    @OneToMany(mappedBy = "role", orphanRemoval = true)
-    private Set<Permission> permissions = new HashSet<Permission>();
-
-    @ManyToMany(targetEntity = Role.class)
-    @JoinTable(name = "Role_Group", joinColumns = @JoinColumn(name = "groupOid", referencedColumnName = "oid")
-            , inverseJoinColumns = @JoinColumn(name = "roleOid", referencedColumnName = "oid"))
-    private Set<Role> roles;
-
-    @JsonIgnore
-    @ManyToMany(targetEntity = Role.class)
-    @JoinTable(name = "Role_Group", joinColumns = @JoinColumn(name = "roleOid", referencedColumnName = "oid")
-            , inverseJoinColumns = @JoinColumn(name = "groupOid", referencedColumnName = "oid"))
-    private Set<Role> groups;
+    @Transient
+    private List<Role> roles = new ArrayList<>();
 
     public String getName() {
         return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
     }
 
     public String getCode() {
@@ -45,33 +40,17 @@ public class Role extends BaseEntity implements RoleEntry {
         this.code = code;
     }
 
-    public void setName(String name) {
-        this.name = name;
-
-    }
-
-    public Set<Permission> getPermissions() {
-        return permissions;
-    }
-
-    public void setPermissions(Set<Permission> permissions) {
-        this.permissions = permissions;
-    }
-
-
-    public Set<Role> getRoles() {
+    public List<Role> getRoles() {
         return roles;
     }
 
-    public Set<Role> getGroups() {
-        return groups;
-    }
-
-    public void setGroups(Set<Role> groups) {
-        this.groups = groups;
-    }
-
-    public void setRoles(Set<Role> roles) {
+    public void setRoles(List<Role> roles) {
         this.roles = roles;
+    }
+
+    @JsonIgnore
+    @Override
+    public String getId() {
+        return getOid();
     }
 }

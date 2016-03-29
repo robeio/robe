@@ -7,8 +7,6 @@ import io.robe.admin.hibernate.entity.User;
  */
 public class UserDTO extends User {
 
-
-    private String roleOid;
     private String username;
     private String ticket;
     private String newPassword;
@@ -33,9 +31,7 @@ public class UserDTO extends User {
         setSurname(entity.getSurname());
         setPassword(entity.getPassword());
         setActive(entity.isActive());
-        if (entity.getRole() != null) {
-            setRoleOid(entity.getRole().getOid());
-        }
+        setRoleOid(entity.getRoleOid());
     }
 
     public String getNewPassword() {
@@ -60,19 +56,5 @@ public class UserDTO extends User {
 
     public void setUsername(String username) {
         this.username = username;
-    }
-
-    /**
-     * @return Current roleOid
-     */
-    public String getRoleOid() {
-        return roleOid;
-    }
-
-    /**
-     * @param roleOid roleOid to set
-     */
-    public void setRoleOid(String roleOid) {
-        this.roleOid = roleOid;
     }
 }

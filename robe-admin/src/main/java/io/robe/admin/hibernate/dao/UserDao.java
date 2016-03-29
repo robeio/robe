@@ -26,16 +26,10 @@ public class UserDao extends BaseDao<User> implements UserStore {
     @Override
     public Optional<? extends UserEntry> changePassword(String username, String newPassword) {
         Optional<User> user = findByUsername(username);
-        if(user.isPresent()){
+        if (user.isPresent()) {
             user.get().setPassword(newPassword);
             persist(user.get());
         }
-        return  user;
-    }
-
-    public Optional<User> getByApiKey(String api) {
-        Criteria criteria = currentSession().createCriteria(User.class);
-        criteria.add(Restrictions.eq("api", api));
-        return Optional.fromNullable(uniqueResult(criteria));
+        return user;
     }
 }

@@ -4,12 +4,12 @@ import io.robe.hibernate.RobeHibernateBundle;
 import io.robe.quartz.common.JobInfo;
 import io.robe.quartz.common.JobProvider;
 import io.robe.quartz.common.TriggerInfo;
-import org.hibernate.Hibernate;
 import org.hibernate.Session;
 import org.hibernate.criterion.Restrictions;
 import org.quartz.Job;
 
 import java.util.Iterator;
+import java.util.List;
 
 public class HibernateJobProvider extends JobProvider {
 
@@ -19,9 +19,14 @@ public class HibernateJobProvider extends JobProvider {
         JobEntity quartzJob = (JobEntity) session.createCriteria(JobEntity.class).add(Restrictions.eq("jobClass", clazz)).uniqueResult();
         if (quartzJob == null)
             return null;
-        Hibernate.initialize(quartzJob.getTriggers());
+
+
+        List<TriggerInfo> triggerEntities = session.createCriteria(TriggerEntity.class).add(Restrictions.eq("jobOid", quartzJob.getOid())).list();
         session.close();
-        Iterator<TriggerInfo> iterator = quartzJob.getTriggers().iterator();
+
+        quartzJob.setTriggers(triggerEntities);
+
+        Iterator<TriggerInfo> iterator = triggerEntities.iterator();
 
         while (iterator.hasNext()) {
             TriggerInfo info = iterator.next();
