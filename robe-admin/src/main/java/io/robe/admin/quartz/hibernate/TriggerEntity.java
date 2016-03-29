@@ -21,24 +21,8 @@ public class TriggerEntity extends BaseEntity implements TriggerInfo {
     @Enumerated(EnumType.STRING)
     private Type type;
     private boolean active;
-    @ManyToOne(cascade = CascadeType.REFRESH, targetEntity = JobEntity.class)
-    @JoinColumn(name = "PARENTOID")
-    private JobEntity job;
-
-    @Transient
-    private String jobId;
-
-    public String getJobId() {
-        if (job != null) {
-            return job.getOid();
-        } else {
-            return jobId;
-        }
-    }
-
-    public void setJobId(String jobId) {
-        this.jobId = jobId;
-    }
+    @Column(length = 32)
+    private String jobOid;
 
     public boolean isActive() {
         return active;
@@ -120,12 +104,11 @@ public class TriggerEntity extends BaseEntity implements TriggerInfo {
         this.type = type;
     }
 
-
-    public JobEntity getJob() {
-        return job;
+    public String getJobOid() {
+        return jobOid;
     }
 
-    public void setJob(JobEntity job) {
-        this.job = job;
+    public void setJobOid(String jobOid) {
+        this.jobOid = jobOid;
     }
 }

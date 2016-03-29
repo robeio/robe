@@ -45,7 +45,7 @@ public class TriggerResource {
     @UnitOfWork
     public TriggerEntity create(TriggerEntity triggerEntity) {
 
-        JobEntity jobEntity = quartzJobDao.findById(triggerEntity.getJobId());
+        JobEntity jobEntity = quartzJobDao.findById(triggerEntity.getJobOid());
 
         TriggerEntity entity = new TriggerEntity();
 
@@ -58,7 +58,7 @@ public class TriggerResource {
         entity.setStartTime(triggerEntity.getStartTime() == 0 ? -1 : triggerEntity.getStartTime());
         entity.setEndTime(triggerEntity.getEndTime() == 0 ? -1 : triggerEntity.getStartTime());
 
-        entity.setJob(jobEntity);
+        entity.setJobOid(jobEntity.getOid());
 
         entity = quartzTriggerDao.create(entity);
 
@@ -89,7 +89,7 @@ public class TriggerResource {
             entity.setRepeatInterval(triggerEntity.getRepeatInterval());
             entity = quartzTriggerDao.update(entity);
 
-            JobDetail jobDetail = JobProvider.convert2JobDetail(entity.getJob());
+            JobDetail jobDetail = JobProvider.convert2JobDetail(quartzJobDao.findById(entity.getJobOid()));
             Trigger trigger = JobProvider.convert2Trigger(triggerEntity);
 
             JobManager.getInstance().scheduleJob(jobDetail, trigger);
@@ -124,7 +124,7 @@ public class TriggerResource {
     public TriggerEntity fire(@Auth Credentials credentials, TriggerEntity triggerEntity) {
 
         TriggerEntity entity = quartzTriggerDao.findById(triggerEntity.getOid());
-        JobDetail jobDetail = JobProvider.convert2JobDetail(entity.getJob());
+        JobDetail jobDetail = JobProvider.convert2JobDetail(quartzJobDao.findById(entity.getJobOid()));
         Trigger trigger = JobProvider.convert2Trigger(triggerEntity);
         try {
             if (!JobManager.getInstance().checkExists(entity.getName(), entity.getGroup())) {
