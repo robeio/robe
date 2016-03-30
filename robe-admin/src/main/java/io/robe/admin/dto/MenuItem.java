@@ -1,45 +1,35 @@
 package io.robe.admin.dto;
 
+import io.robe.admin.hibernate.entity.Menu;
+
 import java.util.LinkedList;
 import java.util.List;
 
-public class MenuItem {
-    private String text;
-    private String command;
+public class MenuItem extends Menu {
+
     private List<MenuItem> items = new LinkedList<MenuItem>();
-    private boolean expanded = true;
-    private int index;
 
+    public MenuItem() {
 
-    public MenuItem(String text, String command, int index) {
-        this.command = command;
-        this.text = text;
-        this.index = index;
     }
 
-    public int getIndex() {
-        return index;
-    }
-
-    public void setIndex(int index) {
-        this.index = index;
-    }
-
-    public String getText() {
-        return text;
-    }
-
-    public void setText(String text) {
-        this.text = text;
+    public MenuItem(String text, String path, String module, int index) {
+        setText(text);
+        setPath(path);
+        setModule(module);
+        setIndex(index);
     }
 
 
-    public String getCommand() {
-        return command;
-    }
-
-    public void setCommand(String command) {
-        this.command = command;
+    public MenuItem(Menu menu) {
+        setOid(menu.getOid());
+        setLastUpdated(menu.getLastUpdated());
+        setText(menu.getText());
+        setPath(menu.getPath());
+        setIndex(menu.getIndex());
+        setParentOid(menu.getParentOid());
+        setIcon(menu.getIcon());
+        setModule(menu.getModule());
     }
 
     public List<MenuItem> getItems() {
@@ -49,14 +39,4 @@ public class MenuItem {
     public void setItems(List<MenuItem> items) {
         this.items = items;
     }
-
-    public boolean isExpanded() {
-        return expanded;
-    }
-
-    public void setExpanded(boolean expanded) {
-        this.expanded = true;
-    }
-
-
 }

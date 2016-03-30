@@ -179,88 +179,88 @@ public class InitializeCommand<T extends RobeConfiguration> extends EnvironmentC
 
         LOGGER.info("Createting Menu and permissions");
         Menu root = new Menu();
-        root.setCode("root");
+        root.setPath("root");
         root.setIndex(1);
-        root.setName("Menü");
+        root.setText("Menü");
         session.persist(root);
         session.persist(createPermission(true, root.getOid(), role));
 
         Menu manager = new Menu();
-        manager.setCode("Manager");
+        manager.setPath("Manager");
         manager.setIndex(1);
-        manager.setName("Yönetici");
+        manager.setText("Yönetici");
         manager.setParentOid(root.getOid());
         session.persist(manager);
         session.persist(createPermission(true, manager.getOid(), role));
 
         Menu userProfileManagement = new Menu();
-        userProfileManagement.setCode("UserProfileManagement");
+        userProfileManagement.setPath("UserProfileManagement");
         userProfileManagement.setIndex(1);
-        userProfileManagement.setName("Profil Yönetimi");
+        userProfileManagement.setText("Profil Yönetimi");
         userProfileManagement.setParentOid(manager.getOid());
         session.persist(userProfileManagement);
         session.persist(createPermission(true, userProfileManagement.getOid(), role));
 
         Menu usermanagement = new Menu();
-        usermanagement.setCode("UserManagement");
+        usermanagement.setPath("UserManagement");
         usermanagement.setIndex(1);
-        usermanagement.setName("Kullanıcı Yönetimi");
+        usermanagement.setText("Kullanıcı Yönetimi");
         usermanagement.setParentOid(manager.getOid());
         session.persist(usermanagement);
         session.persist(createPermission(true, usermanagement.getOid(), role));
 
         Menu rolemanagement = new Menu();
-        rolemanagement.setCode("RoleManagement");
+        rolemanagement.setPath("RoleManagement");
         rolemanagement.setIndex(1);
-        rolemanagement.setName("Rol Yönetimi");
+        rolemanagement.setText("Rol Yönetimi");
         rolemanagement.setParentOid(manager.getOid());
         session.persist(rolemanagement);
         session.persist(createPermission(true, rolemanagement.getOid(), role));
 
         Menu menumanagement = new Menu();
-        menumanagement.setCode("MenuManagement");
+        menumanagement.setPath("MenuManagement");
         menumanagement.setIndex(1);
-        menumanagement.setName("Menü Yönetimi");
+        menumanagement.setText("Menü Yönetimi");
         menumanagement.setParentOid(manager.getOid());
         session.persist(menumanagement);
         session.persist(createPermission(true, menumanagement.getOid(), role));
 
         Menu permissionManagement = new Menu();
-        permissionManagement.setCode("PermissionManagement");
+        permissionManagement.setPath("PermissionManagement");
         permissionManagement.setIndex(1);
-        permissionManagement.setName("İzin Atama");
+        permissionManagement.setText("İzin Atama");
         permissionManagement.setParentOid(manager.getOid());
         session.persist(permissionManagement);
         session.persist(createPermission(true, permissionManagement.getOid(), role));
 
         Menu dash = new Menu();
-        dash.setCode("Dashboard");
+        dash.setPath("Dashboard");
         dash.setIndex(0);
-        dash.setName("Dash");
+        dash.setText("Dash");
         dash.setParentOid(manager.getOid());
         session.persist(dash);
         session.persist(createPermission(true, dash.getOid(), role));
 
         Menu mailTemplate = new Menu();
-        mailTemplate.setCode("MailTemplateManagement");
+        mailTemplate.setPath("MailTemplateManagement");
         mailTemplate.setIndex(0);
-        mailTemplate.setName("Mail Template Yönetimi");
+        mailTemplate.setText("Mail Template Yönetimi");
         mailTemplate.setParentOid(manager.getOid());
         session.persist(mailTemplate);
         session.persist(createPermission(true, mailTemplate.getOid(), role));
 
         Menu quartzJob = new Menu();
-        quartzJob.setCode("QuartzJobManagement");
+        quartzJob.setPath("QuartzJobManagement");
         quartzJob.setIndex(0);
-        quartzJob.setName("Quartz Job Manager");
+        quartzJob.setText("Quartz Job Manager");
         quartzJob.setParentOid(manager.getOid());
         session.persist(quartzJob);
         session.persist(createPermission(true, quartzJob.getOid(), role));
 
         Menu systemParameter = new Menu();
-        systemParameter.setCode("SystemParameter");
+        systemParameter.setPath("SystemParameter");
         systemParameter.setIndex(0);
-        systemParameter.setName("System Parameter");
+        systemParameter.setText("System Parameter");
         systemParameter.setParentOid(manager.getOid());
         session.persist(systemParameter);
         session.persist(createPermission(true, systemParameter.getOid(), role));

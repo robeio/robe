@@ -11,7 +11,6 @@ import io.robe.admin.hibernate.entity.*;
 import io.robe.auth.Credentials;
 import io.robe.common.exception.RobeRuntimeException;
 import org.hibernate.FlushMode;
-import org.hibernate.Hibernate;
 
 import javax.validation.Valid;
 import javax.ws.rs.*;
@@ -66,7 +65,9 @@ public class MenuResource {
         Role parent = roleDao.findById(user.get().getRoleOid());
         getAllRolePermissions(parent, permissions);
         Set<String> menuOids = new HashSet<String>();
-        List<Menu> items = readMenuHierarchical(menuDao.findHierarchicalMenu());
+
+        List<MenuItem> items = convertMenuToMenuItem(menuDao.findHierarchicalMenu());
+        items = readMenuHierarchical(items);
 
         for (Permission permission : permissions) {
             if (permission.getType().equals(Permission.Type.MENU)) {
@@ -81,18 +82,30 @@ public class MenuResource {
     }
 
 
-    private List<Menu> readMenuHierarchical(List<Menu> items) {
-        for (Menu item : items) {
-            item.setItems(menuDao.findByParentOid(item.getOid()));
+    private List<MenuItem> readMenuHierarchical(List<MenuItem> items) {
+        for (MenuItem item : items) {
+            List<Menu> menus = menuDao.findByParentOid(item.getOid());
+            item.setItems(convertMenuToMenuItem(menus));
             readMenuHierarchical(item.getItems());
         }
 
         return items;
     }
 
-    private void createMenuWithPermissions(Set<String> permissions, List<Menu> items, List<MenuItem> permittedItems) {
-        for (Menu item : items) {
-            MenuItem permittedItem = new MenuItem(item.getName(), item.getCode(), item.getIndex());
+    private List<MenuItem> convertMenuToMenuItem(List<Menu> menus) {
+
+        List<MenuItem> items = new ArrayList<>();
+
+        for (Menu menu : menus) {
+            items.add(new MenuItem(menu));
+        }
+
+        return items;
+    }
+
+    private void createMenuWithPermissions(Set<String> permissions, List<MenuItem> items, List<MenuItem> permittedItems) {
+        for (MenuItem item : items) {
+            MenuItem permittedItem = new MenuItem(item.getText(), item.getPath(), item.getModule(), item.getIndex());
             if (permissions.contains(item.getOid())) {
                 permittedItems.add(permittedItem);
             }
@@ -107,33 +120,17 @@ public class MenuResource {
     @Path("roots")
     @GET
     @UnitOfWork(readOnly = true, cacheMode = GET, flushMode = FlushMode.MANUAL)
-    public List<Menu> getHierarchicalMenu(@Auth Credentials credentials) {
-        return readMenuHierarchical(menuDao.findHierarchicalMenu());
+    public List<MenuItem> getHierarchicalMenu(@Auth Credentials credentials) {
+        List<MenuItem> items = readMenuHierarchical(convertMenuToMenuItem(menuDao.findHierarchicalMenu()));
+
+        return items;
     }
 
     @Path("movenode/{item}/{destination}")
     @POST
     @UnitOfWork
     public Menu move(@Auth Credentials credentials, @PathParam("item") String itemOid, @PathParam("destination") String destination) {
-        String notValid = " is not valid.";
-        Menu item = menuDao.findById(itemOid);
-        Hibernate.initialize(item.getItems());
-        Menu parent = menuDao.findById(destination);
-        if (parent == null) {
-            throw new RobeRuntimeException("destination", destination + notValid);
-        }
-        Hibernate.initialize(parent.getItems());
-        reorderIndexes(item, parent.getItems());
-        if (item == null) {
-            throw new RobeRuntimeException("item", itemOid + notValid);
-        } else if (itemOid.equals(destination)) {
-            item.setParentOid(null);
-        } else {
-            item.setParentOid(destination);
-        }
-        item = menuDao.update(item);
-        return item;
-
+        throw new RobeRuntimeException("ERROR", "Move not implemented yet!");
     }
 
     private ArrayList<Menu> reorderIndexes(Menu target, List<Menu> items) {
@@ -143,7 +140,7 @@ public class MenuResource {
         items.remove(target);
 
         for (Menu item : items) {
-            if (target.getCode().equals(item.getCode()))
+            if (target.getPath().equals(item.getPath()))
                 continue;
             if (index == targetIndex) {
                 ordered.add(target);
@@ -160,9 +157,9 @@ public class MenuResource {
     @POST
     @UnitOfWork
     public Menu create(@Auth Credentials credentials, @Valid Menu menu) {
-        Optional<Menu> checkMenu = menuDao.findByCode(menu.getCode());
+        Optional<Menu> checkMenu = menuDao.findByCode(menu.getPath());
         if (checkMenu.isPresent()) {
-            throw new RobeRuntimeException("Code", menu.getCode() + " already used by another menu. Please use different code.");
+            throw new RobeRuntimeException("Path", menu.getPath() + " already used by another menu. Please use different path.");
         }
         return menuDao.create(menu);
     }
@@ -180,13 +177,6 @@ public class MenuResource {
     @UnitOfWork
     public Menu delete(@Auth Credentials credentials, @PathParam("id") String id, @Valid Menu menu) {
         Menu delete = menuDao.findById(menu.getOid());
-        Hibernate.initialize(delete.getItems());
-        menuDao.merge(delete);
-        for (Menu child : delete.getItems()) {
-            Hibernate.initialize(child.getItems());
-            child.setParentOid(null);
-            menuDao.update(child);
-        }
         return menuDao.delete(delete);
     }
 }

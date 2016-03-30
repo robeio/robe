@@ -5,19 +5,16 @@ import io.robe.hibernate.entity.BaseEntity;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Table;
-import javax.persistence.Transient;
-import java.util.LinkedList;
-import java.util.List;
 
 @Entity
 @Table
 public class Menu extends BaseEntity {
 
     @Column(length = 50, nullable = false)
-    private String code;
+    private String text;
 
     @Column(length = 50, nullable = false)
-    private String name;
+    private String path;
 
     @Column(name = "itemIndex")
     private int index;
@@ -25,31 +22,34 @@ public class Menu extends BaseEntity {
     @Column(length = 32)
     private String parentOid;
 
-    @Transient
-    private List<Menu> items = new LinkedList<Menu>();
+    @Column
+    private String module;
 
-    public String getCode() {
-        return code;
+    @Column
+    private String icon;
+
+    public String getText() {
+        return text;
     }
 
-    public void setCode(String code) {
-        this.code = code;
+    public void setText(String text) {
+        this.text = text;
     }
 
-    public String getName() {
-        return name;
+    public String getPath() {
+        return path;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setPath(String path) {
+        this.path = path;
     }
 
-    public List<Menu> getItems() {
-        return items;
+    public int getIndex() {
+        return index;
     }
 
-    public void setItems(List<Menu> items) {
-        this.items = items;
+    public void setIndex(int index) {
+        this.index = index;
     }
 
     public String getParentOid() {
@@ -60,12 +60,19 @@ public class Menu extends BaseEntity {
         this.parentOid = parentOid;
     }
 
-
-    public int getIndex() {
-        return index;
+    public String getModule() {
+        return module;
     }
 
-    public void setIndex(int index) {
-        this.index = index;
+    public void setModule(String module) {
+        this.module = module;
+    }
+
+    public String getIcon() {
+        return icon;
+    }
+
+    public void setIcon(String icon) {
+        this.icon = icon;
     }
 }
