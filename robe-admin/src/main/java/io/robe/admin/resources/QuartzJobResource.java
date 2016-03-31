@@ -34,7 +34,7 @@ public class QuartzJobResource {
     @GET
     @UnitOfWork(readOnly = true, cacheMode = GET, flushMode = FlushMode.MANUAL)
     public JobEntity get(@Auth Credentials credentials, @PathParam("id") String id) {
-        JobEntity entity = quartzJobDao.findById(JobEntity.class, id);
+        JobEntity entity = quartzJobDao.findById(id);
         if (entity == null) {
             throw new WebApplicationException(Response.status(404).build());
         }
