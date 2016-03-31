@@ -8,8 +8,6 @@ import io.robe.admin.hibernate.entity.Language;
 import io.robe.auth.Credentials;
 import org.hibernate.CacheMode;
 import org.hibernate.FlushMode;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import javax.validation.Valid;
 import javax.ws.rs.*;
@@ -21,8 +19,6 @@ import java.util.List;
 @Consumes(MediaType.APPLICATION_JSON)
 @Produces(MediaType.APPLICATION_JSON)
 public class LanguageResource {
-
-    private static final Logger LOGGER = LoggerFactory.getLogger(LanguageResource.class);
 
     @Inject
     private LanguageDao languageDao;
