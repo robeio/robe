@@ -6,18 +6,15 @@ import io.dropwizard.hibernate.UnitOfWork;
 import io.robe.admin.hibernate.dao.LanguageDao;
 import io.robe.admin.hibernate.entity.Language;
 import io.robe.auth.Credentials;
-import io.robe.common.service.SearchParam;
-import io.robe.common.service.jersey.model.SearchModel;
 import org.hibernate.CacheMode;
 import org.hibernate.FlushMode;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import javax.ws.rs.Consumes;
-import javax.ws.rs.GET;
-import javax.ws.rs.Path;
-import javax.ws.rs.Produces;
+import javax.validation.Valid;
+import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.Response;
 import java.util.List;
 
 @Path("languages")
@@ -30,17 +27,56 @@ public class LanguageResource {
     @Inject
     private LanguageDao languageDao;
 
-    /**
-     * @param credentials auto fill by @{@link Auth} annotation.
-     * @param searchModel auto fill by @{@link SearchParam} annotation.
-     *                    example  _q=tr&_limit=5&_offset=0&_fields=name,code
-     * @return list of {@link Language}
-     */
-
-    // TODO io.robe.hibernate.dao.BaseDao not implemented yet for SearchModel.
     @GET
     @UnitOfWork(readOnly = true, cacheMode = CacheMode.GET, flushMode = FlushMode.MANUAL)
-    public List<Language> getAll(@Auth Credentials credentials, @SearchParam SearchModel searchModel) {
+    public List<Language> getAll(@Auth Credentials credentials) {
         return languageDao.findAll(Language.class);
     }
+
+    @Path("{id}")
+    @GET
+    @UnitOfWork(readOnly = true, cacheMode = CacheMode.GET, flushMode = FlushMode.MANUAL)
+    public Language get(@Auth Credentials credentials, @PathParam("id") String id) {
+
+        Language entity = languageDao.findById(id);
+        if (entity == null) {
+            throw new WebApplicationException(Response.status(404).build());
+        }
+        return entity;
+    }
+
+    @POST
+    @UnitOfWork
+    public Language create(@Auth Credentials credentials, @Valid Language model) {
+
+        return languageDao.create(model);
+
+    }
+
+    @Path("{id}")
+    @PUT
+    @UnitOfWork
+    public Language update(@Auth Credentials credentials, @PathParam("id") String id, @Valid Language model) {
+
+        if (!id.equals(model.getOid())) {
+            throw new WebApplicationException(Response.status(412).build());
+        }
+        return languageDao.update(model);
+    }
+
+    @Path("{id}")
+    @DELETE
+    @UnitOfWork
+    public Language delete(@Auth Credentials credentials, @PathParam("id") String id, @Valid Language model) {
+
+        if (!id.equals(model.getOid())) {
+            throw new WebApplicationException(Response.status(412).build());
+        }
+        Language entity = languageDao.findById(id);
+        if (entity == null) {
+            throw new WebApplicationException(Response.status(404).build());
+        }
+        return languageDao.delete(model);
+    }
+
 }
