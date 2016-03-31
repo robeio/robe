@@ -55,10 +55,8 @@ public class QuartzJobResource {
         if (!id.equals(model.getOid())) {
             throw new WebApplicationException(Response.status(412).build());
         }
-
         return quartzJobDao.update(model);
     }
-
 
     @DELETE
     @UnitOfWork
