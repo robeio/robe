@@ -24,7 +24,6 @@ public class QuartzJobResource {
     @Inject
     private QuartzJobDao quartzJobDao;
 
-
     @GET
     @UnitOfWork(readOnly = true, cacheMode = GET, flushMode = FlushMode.MANUAL)
     public List<JobEntity> getAll(@Auth Credentials credentials) {

@@ -26,7 +26,6 @@ public class TriggerResource {
     @Inject
     private QuartzTriggerDao quartzTriggerDao;
 
-
     @GET
     @UnitOfWork(readOnly = true, cacheMode = GET, flushMode = FlushMode.MANUAL)
     public List<TriggerEntity> getAll(@Auth Credentials credentials) {
