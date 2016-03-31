@@ -11,6 +11,7 @@ import org.hibernate.FlushMode;
 import javax.validation.Valid;
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.Response;
 import java.util.List;
 
 import static org.hibernate.CacheMode.GET;
@@ -24,28 +25,51 @@ public class MailTemplateResource {
     private MailTemplateDao mailTemplateDao;
 
     @GET
-    @UnitOfWork(readOnly = true, cacheMode = GET,flushMode = FlushMode.MANUAL)
+    @UnitOfWork(readOnly = true, cacheMode = GET, flushMode = FlushMode.MANUAL)
     public List<MailTemplate> getAll() {
         return mailTemplateDao.findAll(MailTemplate.class);
     }
 
+    @Path("(id)")
+    @GET
+    @UnitOfWork(readOnly = true, cacheMode = GET, flushMode = FlushMode.MANUAL)
+    public MailTemplate get(@Auth Credentials credentials, @PathParam("id") String id) {
+        MailTemplate entity = mailTemplateDao.findById(id);
+        if (entity == null) {
+            throw new WebApplicationException(Response.status(404).build());
+        }
+        return entity;
+    }
+
     @POST
     @UnitOfWork
-    public MailTemplate create(@Auth Credentials credentials, @Valid MailTemplate mailTemplate) {
-        return mailTemplateDao.create(mailTemplate);
+    public MailTemplate create(@Auth Credentials credentials, @Valid MailTemplate model) {
+        return mailTemplateDao.create(model);
     }
 
     @Path("{id}")
     @PUT
     @UnitOfWork
-    public MailTemplate update(@Auth Credentials credentials, @PathParam("id") String id, @Valid MailTemplate mailTemplate) {
-        return mailTemplateDao.update(mailTemplate);
+    public MailTemplate update(@Auth Credentials credentials, @PathParam("id") String id, @Valid MailTemplate model) {
+
+        if (!id.equals((model.getOid()))) {
+            throw new WebApplicationException(Response.status(412).build());
+        }
+        return mailTemplateDao.update(model);
     }
 
     @Path("{id}")
     @DELETE
     @UnitOfWork
-    public MailTemplate delete(@Auth Credentials credentials, @PathParam("id") String id, @Valid MailTemplate mailTemplate) {
-        return mailTemplateDao.delete(mailTemplate);
+    public MailTemplate delete(@Auth Credentials credentials, @PathParam("id") String id, @Valid MailTemplate model) {
+
+        if (!id.equals(model.getOid())) {
+            throw new WebApplicationException(Response.status(412).build());
+        }
+        MailTemplate entity = mailTemplateDao.findById(id);
+        if (entity == null) {
+            throw new WebApplicationException(Response.status(404).build());
+        }
+        return mailTemplateDao.delete(entity);
     }
 }
