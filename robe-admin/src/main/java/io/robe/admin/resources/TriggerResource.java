@@ -55,6 +55,10 @@ public class TriggerResource {
         if (!id.equals(model.getOid())) {
             throw new WebApplicationException(Response.status(412).build());
         }
+        TriggerEntity entity = quartzTriggerDao.findById(id);
+        if (entity == null) {
+            throw new WebApplicationException(Response.status(404).build());
+        }
 
         return quartzTriggerDao.update(model);
     }

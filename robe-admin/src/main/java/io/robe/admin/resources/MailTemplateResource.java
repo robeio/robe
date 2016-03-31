@@ -55,6 +55,10 @@ public class MailTemplateResource {
         if (!id.equals((model.getOid()))) {
             throw new WebApplicationException(Response.status(412).build());
         }
+        MailTemplate entity = mailTemplateDao.findById(id);
+        if (entity == null) {
+            throw new WebApplicationException(Response.status(404).build());
+        }
         return mailTemplateDao.update(model);
     }
 

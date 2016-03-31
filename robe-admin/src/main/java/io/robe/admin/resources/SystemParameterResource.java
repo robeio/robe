@@ -56,6 +56,10 @@ public class SystemParameterResource {
         if (!id.equals(model.getOid())) {
             throw new WebApplicationException(Response.status(412).build());
         }
+        SystemParameter entity = systemParameterDao.findById(id);
+        if (entity == null) {
+            throw new WebApplicationException(Response.status(404).build());
+        }
         return systemParameterDao.update(model);
     }
 

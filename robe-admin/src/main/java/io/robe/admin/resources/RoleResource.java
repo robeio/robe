@@ -55,6 +55,10 @@ public class RoleResource {
         if (!id.equals(model.getOid())) {
             throw new WebApplicationException(Response.status(412).build());
         }
+        Role entity = roleDao.findById(id);
+        if (entity == null) {
+            throw new WebApplicationException(Response.status(404).build());
+        }
         return roleDao.update(model);
     }
 

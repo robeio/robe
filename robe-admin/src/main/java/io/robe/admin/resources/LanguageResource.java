@@ -57,6 +57,10 @@ public class LanguageResource {
         if (!id.equals(model.getOid())) {
             throw new WebApplicationException(Response.status(412).build());
         }
+        Language entity = languageDao.findById(id);
+        if (entity == null) {
+            throw new WebApplicationException(Response.status(404).build());
+        }
         return languageDao.update(model);
     }
 

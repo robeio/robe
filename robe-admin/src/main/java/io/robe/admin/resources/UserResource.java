@@ -60,7 +60,10 @@ public class UserResource extends AbstractAuthResource<User> {
         if (!id.equals(model.getOid())) {
             throw new WebApplicationException(Response.status(412).build());
         }
-
+        User entity = userDao.findById(id);
+        if (entity == null) {
+            throw new WebApplicationException(Response.status(404).build());
+        }
         return userDao.update(model);
     }
 
