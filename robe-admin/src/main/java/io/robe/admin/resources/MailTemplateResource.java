@@ -30,7 +30,7 @@ public class MailTemplateResource {
         return mailTemplateDao.findAll(MailTemplate.class);
     }
 
-    @Path("(id)")
+    @Path("{id}")
     @GET
     @UnitOfWork(readOnly = true, cacheMode = GET, flushMode = FlushMode.MANUAL)
     public MailTemplate get(@Auth Credentials credentials, @PathParam("id") String id) {
@@ -51,7 +51,6 @@ public class MailTemplateResource {
     @PUT
     @UnitOfWork
     public MailTemplate update(@Auth Credentials credentials, @PathParam("id") String id, @Valid MailTemplate model) {
-
         if (!id.equals((model.getOid()))) {
             throw new WebApplicationException(Response.status(412).build());
         }
