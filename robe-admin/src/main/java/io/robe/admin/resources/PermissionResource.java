@@ -3,23 +3,16 @@ package io.robe.admin.resources;
 import com.google.inject.Inject;
 import io.dropwizard.auth.Auth;
 import io.dropwizard.hibernate.UnitOfWork;
-import io.robe.admin.hibernate.dao.MenuDao;
 import io.robe.admin.hibernate.dao.PermissionDao;
-import io.robe.admin.hibernate.dao.RoleDao;
-import io.robe.admin.hibernate.dao.ServiceDao;
-import io.robe.admin.hibernate.entity.Menu;
 import io.robe.admin.hibernate.entity.Permission;
-import io.robe.admin.hibernate.entity.Role;
-import io.robe.admin.hibernate.entity.Service;
 import io.robe.auth.Credentials;
-import io.robe.auth.token.BasicToken;
 import org.hibernate.FlushMode;
 
+import javax.validation.Valid;
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
-import java.util.LinkedList;
+import javax.ws.rs.core.Response;
 import java.util.List;
-import java.util.Set;
 
 import static org.hibernate.CacheMode.GET;
 
@@ -29,94 +22,57 @@ import static org.hibernate.CacheMode.GET;
 public class PermissionResource {
 
     @Inject
-    private RoleDao roleDao;
-
-    @Inject
-    private MenuDao menuDao;
-
-    @Inject
     private PermissionDao permissionDao;
 
-    @Inject
-    private ServiceDao serviceDao;
-
-
-    @Path("{roleOid}/menu")
     @GET
     @UnitOfWork(readOnly = true, cacheMode = GET, flushMode = FlushMode.MANUAL)
-    public List<String> getRoleHierarchicalMenu(@Auth Credentials credentials, @PathParam("roleOid") String roleOid) {
-        Role role = roleDao.findById(roleOid);
-        Set<Permission> permissions = (Set<Permission>) permissionDao.findByRoleId(role.getOid());
-        List<String> menuOids = new LinkedList<String>();
-        for (Permission permission : permissions) {
-            if (permission.getType().equals(Permission.Type.MENU)) {
-                menuOids.add(permission.getRestrictedItemOid());
-            }
-        }
-        return menuOids;
+    public List<Permission> getAll() {
+        return permissionDao.findAll(Permission.class);
     }
 
-    @Path("{roleOid}/menu")
-    @PUT
-    @UnitOfWork
-    public List<String> setRoleHierarchicalMenu(@Auth Credentials credentials, @PathParam("roleOid") String roleOid, List<String> items) {
-        Role role = roleDao.findById(roleOid);
-        List<String> menuOids = new LinkedList<String>();
-        permissionDao.deleteRestrictionsByRole(role, Permission.Type.MENU);
-        for (String itemOid : items) {
-            Menu menu = menuDao.findById(itemOid);
-            Permission permission = permissionDao.findByRoleAndItem(role, menu);
-            if (permission == null) {
-                permission = new Permission();
-            }
-            permission.setRoleOid(role.getOid());
-            permission.setType(Permission.Type.MENU);
-            permission.setpLevel((short) 7);
-            permission.setRestrictedItemOid(itemOid);
-            permissionDao.create(permission);
-
-        }
-        return menuOids;
-    }
-
-    @Path("{roleOid}/service")
+    @Path("{id}")
     @GET
     @UnitOfWork(readOnly = true, cacheMode = GET, flushMode = FlushMode.MANUAL)
-    public List<String> getRoleServices(@Auth Credentials credentials, @PathParam("roleOid") String roleOid) {
-        Role role = roleDao.findById(roleOid);
-        Set<Permission> permissions = (Set<Permission>) permissionDao.findByRoleId(role.getOid());
-        List<String> serviceOids = new LinkedList<String>();
-        for (Permission permission : permissions) {
-            if (permission.getType().equals(Permission.Type.SERVICE)) {
-                serviceOids.add(permission.getRestrictedItemOid());
-            }
+    public Permission get(@Auth Credentials credentials, @PathParam("id") String id) {
+        Permission entity = permissionDao.findById(id);
+        if (entity == null) {
+            throw new WebApplicationException(Response.status(404).build());
         }
-        return serviceOids;
+        return entity;
     }
 
-    @Path("{roleOid}/service")
+    @POST
+    @UnitOfWork
+    public Permission create(@Auth Credentials credentials, @Valid Permission model) {
+        return permissionDao.create(model);
+    }
+
+    @Path("{id}")
     @PUT
     @UnitOfWork
-    public List<String> setRoleService(@Auth Credentials credentials, @PathParam("roleOid") String roleOid, List<String> items) {
-        Role role = roleDao.findById(roleOid);
-        List<String> serviceOids = new LinkedList<String>();
-        permissionDao.deleteRestrictionsByRole(role, Permission.Type.SERVICE);
-        for (String itemOid : items) {
-            Service service = serviceDao.findById(itemOid);
-            Permission permission = permissionDao.findByRoleAndItem(role, service);
-            if (permission == null) {
-                permission = new Permission();
-            }
-            permission.setRoleOid(role.getOid());
-            permission.setType(Permission.Type.SERVICE);
-            permission.setpLevel((short) 7);
-            permission.setRestrictedItemOid(itemOid);
-            permissionDao.create(permission);
-
+    public Permission update(@Auth Credentials credentials, @PathParam("id") String id, @Valid Permission model) {
+        if (!id.equals((model.getOid()))) {
+            throw new WebApplicationException(Response.status(412).build());
         }
+        Permission entity = permissionDao.findById(id);
+        if (entity == null) {
+            throw new WebApplicationException(Response.status(404).build());
+        }
+        return permissionDao.update(model);
+    }
 
-        BasicToken.clearPermissionCache(credentials.getUsername());
+    @Path("{id}")
+    @DELETE
+    @UnitOfWork
+    public Permission delete(@Auth Credentials credentials, @PathParam("id") String id, @Valid Permission model) {
 
-        return serviceOids;
+        if (!id.equals(model.getOid())) {
+            throw new WebApplicationException(Response.status(412).build());
+        }
+        Permission entity = permissionDao.findById(id);
+        if (entity == null) {
+            throw new WebApplicationException(Response.status(404).build());
+        }
+        return permissionDao.delete(entity);
     }
 }

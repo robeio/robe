@@ -6,19 +6,13 @@ import io.dropwizard.hibernate.UnitOfWork;
 import io.robe.admin.hibernate.dao.ServiceDao;
 import io.robe.admin.hibernate.entity.Service;
 import io.robe.auth.Credentials;
-import io.robe.auth.data.entry.ServiceEntry;
-import io.robe.common.service.RobeService;
-import io.robe.guice.GuiceBundle;
-import io.robe.guice.GuiceConfiguration;
 import org.hibernate.FlushMode;
-import org.reflections.Reflections;
 
+import javax.validation.Valid;
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
-import java.lang.reflect.Method;
 import java.util.List;
-import java.util.Set;
 
 import static org.hibernate.CacheMode.GET;
 
@@ -33,76 +27,53 @@ public class ServiceResource {
 
     @GET
     @UnitOfWork(readOnly = true, cacheMode = GET, flushMode = FlushMode.MANUAL)
-    public List<Service> getAll(@Auth Credentials credentials) {
+    public List<Service> getAll() {
         return serviceDao.findAll(Service.class);
     }
 
-    @Path("refresh")
+    @Path("{id}")
     @GET
+    @UnitOfWork(readOnly = true, cacheMode = GET, flushMode = FlushMode.MANUAL)
+    public Service get(@Auth Credentials credentials, @PathParam("id") String id) {
+        Service entity = serviceDao.findById(id);
+        if (entity == null) {
+            throw new WebApplicationException(Response.status(404).build());
+        }
+        return entity;
+    }
+
+    @POST
     @UnitOfWork
-    public Response refreshServices(@Auth Credentials credentials) {
-
-        GuiceConfiguration configuration = GuiceBundle.getConfiguration();
-
-        Reflections reflections = new Reflections(configuration.getScanPackages(), this.getClass().getClassLoader());
-        Set<Class<?>> services = reflections.getTypesAnnotatedWith(Path.class);
-        int count = 0;
-        for (Class service : services) {
-            String parentPath = "/" + ((Path) service.getAnnotation(Path.class)).value();
-            for (Method method : service.getMethods()) {
-                String httpMethod = ifServiceGetHttpMethod(method);
-                if (httpMethod == null) {
-                    continue;
-                }
-                String path = parentPath;
-                path = extractPath(method, path);
-
-                io.robe.admin.hibernate.entity.Service entity = serviceDao.findByPathAndMethod(path, ServiceEntry.Method.valueOf(httpMethod));
-                RobeService robeService = (RobeService) method.getAnnotation(RobeService.class);
-
-                if (entity != null) {
-                    if (robeService != null) {
-                        entity.setDescription(robeService.description());
-                        entity.setGroup(robeService.group());
-                        serviceDao.update(entity);
-                    }
-                    continue;
-                }
-                entity = new io.robe.admin.hibernate.entity.Service();
-                entity.setPath(path);
-                entity.setMethod(io.robe.admin.hibernate.entity.Service.Method.valueOf(httpMethod));
-                if (robeService != null) {
-                    entity.setDescription(robeService.description());
-                    entity.setGroup(robeService.group());
-                }
-                serviceDao.create(entity);
-                count++;
-
-            }
-        }
-        return Response.ok(count).build();
+    public Service create(@Auth Credentials credentials, @Valid Service model) {
+        return serviceDao.create(model);
     }
 
-    private String extractPath(Method method, String path) {
-        if (method.getAnnotation(Path.class) != null) {
-            path += "/" + method.getAnnotation(Path.class).value();
-            path = path.replaceAll("//", "/");
+    @Path("{id}")
+    @PUT
+    @UnitOfWork
+    public Service update(@Auth Credentials credentials, @PathParam("id") String id, @Valid Service model) {
+        if (!id.equals((model.getOid()))) {
+            throw new WebApplicationException(Response.status(412).build());
         }
-        return path;
+        Service entity = serviceDao.findById(id);
+        if (entity == null) {
+            throw new WebApplicationException(Response.status(404).build());
+        }
+        return serviceDao.update(model);
     }
 
-    private String ifServiceGetHttpMethod(Method method) {
-        if (method.getAnnotation(GET.class) != null)
-            return "GET";
-        if (method.getAnnotation(PUT.class) != null)
-            return "PUT";
-        if (method.getAnnotation(POST.class) != null)
-            return "POST";
-        if (method.getAnnotation(DELETE.class) != null)
-            return "DELETE";
-        if (method.getAnnotation(OPTIONS.class) != null)
-            return "OPTIONS";
+    @Path("{id}")
+    @DELETE
+    @UnitOfWork
+    public Service delete(@Auth Credentials credentials, @PathParam("id") String id, @Valid Service model) {
 
-        return null;
+        if (!id.equals(model.getOid())) {
+            throw new WebApplicationException(Response.status(412).build());
+        }
+        Service entity = serviceDao.findById(id);
+        if (entity == null) {
+            throw new WebApplicationException(Response.status(404).build());
+        }
+        return serviceDao.delete(entity);
     }
 }
