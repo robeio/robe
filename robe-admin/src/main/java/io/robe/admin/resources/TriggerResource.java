@@ -4,7 +4,6 @@ import com.google.inject.Inject;
 import io.dropwizard.auth.Auth;
 import io.dropwizard.hibernate.UnitOfWork;
 import io.robe.admin.hibernate.dao.QuartzTriggerDao;
-import io.robe.admin.quartz.hibernate.JobEntity;
 import io.robe.admin.quartz.hibernate.TriggerEntity;
 import io.robe.auth.Credentials;
 import org.hibernate.FlushMode;
@@ -36,7 +35,7 @@ public class TriggerResource {
     @GET
     @UnitOfWork(readOnly = true, cacheMode = GET, flushMode = FlushMode.MANUAL)
     public TriggerEntity get(@Auth Credentials credentials, @PathParam("id") String id) {
-        TriggerEntity entity = quartzTriggerDao.findById(JobEntity.class, id);
+        TriggerEntity entity = quartzTriggerDao.findById(id);
         if (entity == null) {
             throw new WebApplicationException(Response.status(404).build());
         }
