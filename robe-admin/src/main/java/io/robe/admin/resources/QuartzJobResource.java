@@ -7,10 +7,11 @@ import io.robe.admin.hibernate.dao.QuartzJobDao;
 import io.robe.admin.quartz.hibernate.JobEntity;
 import io.robe.auth.Credentials;
 import org.hibernate.FlushMode;
-import org.hibernate.Hibernate;
 
+import javax.validation.Valid;
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.Response;
 import java.util.List;
 
 import static org.hibernate.CacheMode.GET;
@@ -26,18 +27,47 @@ public class QuartzJobResource {
     @GET
     @UnitOfWork(readOnly = true, cacheMode = GET, flushMode = FlushMode.MANUAL)
     public List<JobEntity> getAll(@Auth Credentials credentials) {
-        List<JobEntity> jobEntities = quartzJobDao.findAll(JobEntity.class);
-        for (JobEntity jobEntity : jobEntities) {
-            Hibernate.initialize(jobEntity.getTriggers());
+        return quartzJobDao.findAll(JobEntity.class);
+    }
+
+    @Path("{id}")
+    @GET
+    @UnitOfWork(readOnly = true, cacheMode = GET, flushMode = FlushMode.MANUAL)
+    public JobEntity get(@Auth Credentials credentials, @PathParam("id") String id) {
+        JobEntity entity = quartzJobDao.findById(JobEntity.class, id);
+        if (entity == null) {
+            throw new WebApplicationException(Response.status(404).build());
         }
-        return jobEntities;
+        return entity;
     }
 
     @POST
-    @Path("/update")
     @UnitOfWork
-    public JobEntity setCron(JobEntity quartzJob) {
-        quartzJobDao.update(quartzJob);
-        return quartzJob;
+    public JobEntity create(@Auth Credentials credentials, @Valid JobEntity model) {
+        return quartzJobDao.create(model);
+    }
+
+    @PUT
+    @UnitOfWork
+    @Path("{id}")
+    public JobEntity update(@Auth Credentials credentials, @PathParam("id") String id, @Valid JobEntity model) {
+        if (!id.equals(model.getOid())) {
+            throw new WebApplicationException(Response.status(412).build());
+        }
+        return quartzJobDao.update(model);
+    }
+
+    @DELETE
+    @UnitOfWork
+    @Path("{id}")
+    public JobEntity delete(@Auth Credentials credentials, @PathParam("id") String id, @Valid JobEntity model) {
+        if (!id.equals(model.getOid())) {
+            throw new WebApplicationException(Response.status(412).build());
+        }
+        JobEntity entity = quartzJobDao.findById(id);
+        if (entity == null) {
+            throw new WebApplicationException(Response.status(404).build());
+        }
+        return quartzJobDao.delete(entity);
     }
 }
