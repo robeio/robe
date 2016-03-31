@@ -45,26 +45,26 @@ public class SystemParameterResource {
 
     @POST
     @UnitOfWork
-    public SystemParameter create(@Auth Credentials credentials, @Valid SystemParameter systemParameter) {
-        return systemParameterDao.create(systemParameter);
+    public SystemParameter create(@Auth Credentials credentials, @Valid SystemParameter model) {
+        return systemParameterDao.create(model);
     }
 
     @PUT
     @Path("{id}")
     @UnitOfWork(flushMode = FlushMode.MANUAL)
-    public SystemParameter update(@Auth Credentials credentials, @PathParam("id") String id, @Valid SystemParameter systemParameter) {
-        if (!id.equals(systemParameter.getOid())) {
+    public SystemParameter update(@Auth Credentials credentials, @PathParam("id") String id, @Valid SystemParameter model) {
+        if (!id.equals(model.getOid())) {
             throw new WebApplicationException(Response.status(412).build());
         }
-        return systemParameterDao.update(systemParameter);
+        return systemParameterDao.update(model);
     }
 
     @DELETE
     @UnitOfWork
     @Path("{id}")
-    public SystemParameter delete(@Auth Credentials credentials, @PathParam("id") String id, @Valid SystemParameter systemParameter) {
+    public SystemParameter delete(@Auth Credentials credentials, @PathParam("id") String id, @Valid SystemParameter model) {
 
-        if (!id.equals(systemParameter.getOid())) {
+        if (!id.equals(model.getOid())) {
             throw new WebApplicationException(Response.status(412).build());
         }
         SystemParameter entity = systemParameterDao.findById(id);
