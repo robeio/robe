@@ -58,6 +58,8 @@ public class RoleResource {
             throw new WebApplicationException(Response.status(412).build());
         }
         Role entity = roleDao.findById(id);
+        roleDao.detach(entity);
+
         if (entity == null) {
             throw new WebApplicationException(Response.status(404).build());
         }
@@ -72,6 +74,7 @@ public class RoleResource {
         if (id.equals(model.getOid()))
             throw new WebApplicationException(Response.status(412).build());
         Role dest = roleDao.findById(id);
+        roleDao.detach(dest);
         if (dest == null) {
             throw new WebApplicationException(Response.status(404).build());
         }
