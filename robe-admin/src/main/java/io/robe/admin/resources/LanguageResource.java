@@ -3,9 +3,11 @@ package io.robe.admin.resources;
 import com.google.inject.Inject;
 import io.dropwizard.auth.Auth;
 import io.dropwizard.hibernate.UnitOfWork;
+import io.dropwizard.jersey.PATCH;
 import io.robe.admin.hibernate.dao.LanguageDao;
 import io.robe.admin.hibernate.entity.Language;
 import io.robe.auth.Credentials;
+import io.robe.common.utils.FieldReflection;
 import org.hibernate.CacheMode;
 import org.hibernate.FlushMode;
 
@@ -61,6 +63,21 @@ public class LanguageResource {
         if (entity == null) {
             throw new WebApplicationException(Response.status(404).build());
         }
+        return languageDao.update(model);
+    }
+
+    @Path("{id}")
+    @PATCH
+    @UnitOfWork
+    public Language merge(@Auth Credentials credentials, @PathParam("id") String id, Language model) {
+
+        if (id.equals(model.getOid()))
+            throw new WebApplicationException(Response.status(412).build());
+        Language dest = languageDao.findById(id);
+        if (dest == null) {
+            throw new WebApplicationException(Response.status(404).build());
+        }
+        FieldReflection.mergeRight(model, dest);
         return languageDao.update(model);
     }
 
