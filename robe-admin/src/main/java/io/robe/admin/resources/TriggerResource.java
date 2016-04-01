@@ -3,9 +3,11 @@ package io.robe.admin.resources;
 import com.google.inject.Inject;
 import io.dropwizard.auth.Auth;
 import io.dropwizard.hibernate.UnitOfWork;
+import io.dropwizard.jersey.PATCH;
 import io.robe.admin.hibernate.dao.QuartzTriggerDao;
 import io.robe.admin.quartz.hibernate.TriggerEntity;
 import io.robe.auth.Credentials;
+import io.robe.common.utils.FieldReflection;
 import org.hibernate.FlushMode;
 
 import javax.validation.Valid;
@@ -63,6 +65,19 @@ public class TriggerResource {
         return quartzTriggerDao.update(model);
     }
 
+    @PATCH
+    @UnitOfWork
+    @Path("{id}")
+    public TriggerEntity merge(@Auth Credentials credentials, @PathParam("id") String id, TriggerEntity model) {
+        if (id.equals(model.getOid()))
+            throw new WebApplicationException(Response.status(412).build());
+        TriggerEntity dest = quartzTriggerDao.findById(id);
+        if (dest == null) {
+            throw new WebApplicationException(Response.status(404).build());
+        }
+        FieldReflection.mergeRight(model, dest);
+        return quartzTriggerDao.update(model);
+    }
 
     @DELETE
     @UnitOfWork

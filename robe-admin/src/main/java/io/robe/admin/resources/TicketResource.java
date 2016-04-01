@@ -3,9 +3,11 @@ package io.robe.admin.resources;
 import com.google.inject.Inject;
 import io.dropwizard.auth.Auth;
 import io.dropwizard.hibernate.UnitOfWork;
+import io.dropwizard.jersey.PATCH;
 import io.robe.admin.hibernate.dao.TicketDao;
 import io.robe.admin.hibernate.entity.Ticket;
 import io.robe.auth.Credentials;
+import io.robe.common.utils.FieldReflection;
 import org.hibernate.FlushMode;
 
 import javax.validation.Valid;
@@ -58,6 +60,20 @@ public class TicketResource {
         if (entity == null) {
             throw new WebApplicationException(Response.status(404).build());
         }
+        return ticketDao.update(model);
+    }
+
+    @PATCH
+    @UnitOfWork
+    @Path("{id}")
+    public Ticket merge(@Auth Credentials credentials, @PathParam("id") String id, Ticket model) {
+        if (id.equals(model.getOid()))
+            throw new WebApplicationException(Response.status(412).build());
+        Ticket dest = ticketDao.findById(id);
+        if (ticketDao == null) {
+            throw new WebApplicationException(Response.status(404).build());
+        }
+        FieldReflection.mergeRight(model, dest);
         return ticketDao.update(model);
     }
 
