@@ -34,6 +34,7 @@ public class UserResource extends AbstractAuthResource<User> {
 
     /**
      * Returns all User as a collection with the related path.
+     *
      * @param credentials auto fill by @{@link Auth} annotation for authentication.
      * @return Returns all @{@link User} as a collection with the related path.
      */
@@ -44,6 +45,11 @@ public class UserResource extends AbstractAuthResource<User> {
         return userDao.findAll(User.class);
     }
 
+    /**
+     * @param credentials auto fill by @{@link Auth} annotation for authentication.
+     * @param id          This is  the oid of {@link User}
+     * @return Returns a single {@link User} related with the path and matches with the given id.
+     */
     @Path("{id}")
     @GET
     @UnitOfWork(readOnly = true, cacheMode = CacheMode.GET, flushMode = FlushMode.MANUAL)
