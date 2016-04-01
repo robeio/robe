@@ -13,11 +13,12 @@ public class MenuItem extends Menu {
 
     }
 
-    public MenuItem(String text, String path, String module, int index) {
+    public MenuItem(String text, String path, String module, int index, String icon) {
         setText(text);
         setPath(path);
         setModule(module);
         setIndex(index);
+        setIcon(icon);
     }
 
 

@@ -190,6 +190,7 @@ public class InitializeCommand<T extends RobeConfiguration> extends EnvironmentC
         manager.setIndex(1);
         manager.setText("Yönetici");
         manager.setParentOid(root.getOid());
+        manager.setIcon("fa-users");
         session.persist(manager);
         session.persist(createPermission(true, manager.getOid(), role));
 

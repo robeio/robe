@@ -108,7 +108,7 @@ public class MenuResource {
 
     private void createMenuWithPermissions(Set<String> permissions, List<MenuItem> items, List<MenuItem> permittedItems) {
         for (MenuItem item : items) {
-            MenuItem permittedItem = new MenuItem(item.getText(), item.getPath(), item.getModule(), item.getIndex());
+            MenuItem permittedItem = new MenuItem(item.getText(), item.getPath(), item.getModule(), item.getIndex(), item.getIcon());
             if (permissions.contains(item.getOid())) {
                 permittedItems.add(permittedItem);
             }
