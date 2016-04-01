@@ -57,6 +57,7 @@ public class MailTemplateResource {
             throw new WebApplicationException(Response.status(412).build());
         }
         MailTemplate entity = mailTemplateDao.findById(id);
+        mailTemplateDao.detach(entity);
         if (entity == null) {
             throw new WebApplicationException(Response.status(404).build());
         }
@@ -72,6 +73,7 @@ public class MailTemplateResource {
             throw new WebApplicationException(Response.status(412).build());
 
         MailTemplate dest = mailTemplateDao.findById(id);
+        mailTemplateDao.detach(dest);
         if (dest == null) {
             throw new WebApplicationException(Response.status(404).build());
         }
