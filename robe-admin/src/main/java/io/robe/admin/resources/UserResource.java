@@ -33,6 +33,7 @@ public class UserResource extends AbstractAuthResource<User> {
     }
 
     /**
+     * Returns all User as a collection with the related path.
      * @param credentials auto fill by @{@link Auth} annotation for authentication.
      * @return Returns all @{@link User} as a collection with the related path.
      */
