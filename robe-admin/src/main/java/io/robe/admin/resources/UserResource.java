@@ -3,10 +3,12 @@ package io.robe.admin.resources;
 import com.google.inject.Inject;
 import io.dropwizard.auth.Auth;
 import io.dropwizard.hibernate.UnitOfWork;
+import io.dropwizard.jersey.PATCH;
 import io.robe.admin.hibernate.dao.UserDao;
 import io.robe.admin.hibernate.entity.User;
 import io.robe.auth.AbstractAuthResource;
 import io.robe.auth.Credentials;
+import io.robe.common.utils.FieldReflection;
 import org.hibernate.CacheMode;
 import org.hibernate.FlushMode;
 
@@ -64,6 +66,20 @@ public class UserResource extends AbstractAuthResource<User> {
         if (entity == null) {
             throw new WebApplicationException(Response.status(404).build());
         }
+        return userDao.update(model);
+    }
+
+    @PATCH
+    @UnitOfWork
+    @Path("{id}")
+    public User merge(@Auth Credentials credentials, @PathParam("id") String id, User model) {
+        if (id.equals(model.getOid()))
+            throw new WebApplicationException(Response.status(412).build());
+        User dest = userDao.findById(id);
+        if (dest == null) {
+            throw new WebApplicationException(Response.status(404).build());
+        }
+        FieldReflection.mergeRight(model, dest);
         return userDao.update(model);
     }
 

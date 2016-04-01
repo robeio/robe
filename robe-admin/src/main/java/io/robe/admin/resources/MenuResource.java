@@ -3,9 +3,11 @@ package io.robe.admin.resources;
 import com.google.inject.Inject;
 import io.dropwizard.auth.Auth;
 import io.dropwizard.hibernate.UnitOfWork;
+import io.dropwizard.jersey.PATCH;
 import io.robe.admin.hibernate.dao.MenuDao;
 import io.robe.admin.hibernate.entity.Menu;
 import io.robe.auth.Credentials;
+import io.robe.common.utils.FieldReflection;
 import org.hibernate.FlushMode;
 
 import javax.validation.Valid;
@@ -58,6 +60,20 @@ public class MenuResource {
         if (entity == null) {
             throw new WebApplicationException(Response.status(404).build());
         }
+        return menuDao.update(model);
+    }
+
+    @PATCH
+    @UnitOfWork
+    @Path("{id}")
+    public Menu merge(@Auth Credentials credentials, @PathParam("id") String id, Menu model) {
+        if (id.equals(model.getOid()))
+            throw new WebApplicationException(Response.status(412).build());
+        Menu dest = menuDao.findById(id);
+        if (dest == null) {
+            throw new WebApplicationException(Response.status(404).build());
+        }
+        FieldReflection.mergeRight(model, dest);
         return menuDao.update(model);
     }
 

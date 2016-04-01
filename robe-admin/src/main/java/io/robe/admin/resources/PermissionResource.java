@@ -3,9 +3,11 @@ package io.robe.admin.resources;
 import com.google.inject.Inject;
 import io.dropwizard.auth.Auth;
 import io.dropwizard.hibernate.UnitOfWork;
+import io.dropwizard.jersey.PATCH;
 import io.robe.admin.hibernate.dao.PermissionDao;
 import io.robe.admin.hibernate.entity.Permission;
 import io.robe.auth.Credentials;
+import io.robe.common.utils.FieldReflection;
 import org.hibernate.FlushMode;
 
 import javax.validation.Valid;
@@ -58,6 +60,20 @@ public class PermissionResource {
         if (entity == null) {
             throw new WebApplicationException(Response.status(404).build());
         }
+        return permissionDao.update(model);
+    }
+
+    @PATCH
+    @UnitOfWork
+    @Path("{id}")
+    public Permission merge(@Auth Credentials credentials, @PathParam("id") String id, Permission model) {
+        if (id.equals(model.getOid()))
+            throw new WebApplicationException(Response.status(412).build());
+        Permission dest = permissionDao.findById(id);
+        if (dest == null) {
+            throw new WebApplicationException(Response.status(404).build());
+        }
+        FieldReflection.mergeRight(model, dest);
         return permissionDao.update(model);
     }
 
