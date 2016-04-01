@@ -63,6 +63,7 @@ public class UserResource extends AbstractAuthResource<User> {
             throw new WebApplicationException(Response.status(412).build());
         }
         User entity = userDao.findById(id);
+        userDao.detach(entity);
         if (entity == null) {
             throw new WebApplicationException(Response.status(404).build());
         }
@@ -76,6 +77,7 @@ public class UserResource extends AbstractAuthResource<User> {
         if (id.equals(model.getOid()))
             throw new WebApplicationException(Response.status(412).build());
         User dest = userDao.findById(id);
+        userDao.detach(dest);
         if (dest == null) {
             throw new WebApplicationException(Response.status(404).build());
         }

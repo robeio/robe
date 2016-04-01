@@ -23,7 +23,6 @@ public class User extends BaseEntity implements UserEntry {
     @Column(length = 50, nullable = false)
     private String surname;
 
-    @JsonIgnore
     @Column(length = 64, nullable = false)
     private String password;
 
@@ -102,6 +101,7 @@ public class User extends BaseEntity implements UserEntry {
         return getOid();
     }
 
+    @JsonIgnore
     @Override
     public String getUsername() {
         return getEmail();
