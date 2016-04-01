@@ -1,11 +1,14 @@
 package io.robe.admin.resources;
 
+import com.google.common.base.Optional;
 import com.google.inject.Inject;
 import io.dropwizard.auth.Auth;
 import io.dropwizard.hibernate.UnitOfWork;
 import io.dropwizard.jersey.PATCH;
-import io.robe.admin.hibernate.dao.MenuDao;
-import io.robe.admin.hibernate.entity.Menu;
+import io.dropwizard.jersey.caching.CacheControl;
+import io.robe.admin.dto.MenuItem;
+import io.robe.admin.hibernate.dao.*;
+import io.robe.admin.hibernate.entity.*;
 import io.robe.auth.Credentials;
 import io.robe.common.utils.FieldReflection;
 import org.hibernate.FlushMode;
@@ -14,7 +17,7 @@ import javax.validation.Valid;
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
-import java.util.List;
+import java.util.*;
 
 import static org.hibernate.CacheMode.GET;
 
@@ -26,10 +29,95 @@ public class MenuResource {
     @Inject
     private MenuDao menuDao;
 
+    @Inject
+    private RoleDao roleDao;
+
+    @Inject
+    private PermissionDao permissionDao;
+
+    @Inject
+    private RoleGroupDao roleGroupDao;
+
+    @Inject
+    private UserDao userDao;
+
     @GET
     @UnitOfWork(readOnly = true, cacheMode = GET, flushMode = FlushMode.MANUAL)
     public List<Menu> getAll() {
         return menuDao.findAll(Menu.class);
+    }
+
+
+    private void getAllRolePermissions(Role parent, Set<Permission> rolePermissions) {
+        rolePermissions.addAll(permissionDao.findByRoleOId(parent.getId()));
+        List<RoleGroup> roleGroupEntries = roleGroupDao.findByGroupOId(parent.getId());
+        for (RoleGroup entry : roleGroupEntries) {
+            Role role = roleDao.findById(entry.getRoleOid());
+            getAllRolePermissions(role, rolePermissions);
+        }
+    }
+
+    @Path("user")
+    @GET
+    @UnitOfWork(readOnly = true, cacheMode = GET, flushMode = FlushMode.MANUAL)
+    @CacheControl(noCache = true)
+    public List<MenuItem> getUserHierarchicalMenu(@Auth Credentials credentials) {
+        Optional<User> user = userDao.findByUsername(credentials.getUsername());
+        Set<Permission> permissions = new HashSet<Permission>();
+
+        Role parent = roleDao.findById(user.get().getRoleOid());
+        getAllRolePermissions(parent, permissions);
+        Set<String> menuOids = new HashSet<String>();
+
+        List<MenuItem> items = convertMenuToMenuItem(menuDao.findHierarchicalMenu());
+        items = readMenuHierarchical(items);
+
+        for (Permission permission : permissions) {
+            if (permission.getType().equals(Permission.Type.MENU)) {
+                menuOids.add(permission.getRestrictedItemOid());
+            }
+        }
+        List<MenuItem> permittedItems = new LinkedList<MenuItem>();
+
+        createMenuWithPermissions(menuOids, items, permittedItems);
+
+        return permittedItems;
+    }
+
+
+    private List<MenuItem> readMenuHierarchical(List<MenuItem> items) {
+        for (MenuItem item : items) {
+            List<Menu> menus = menuDao.findByParentOid(item.getOid());
+            item.setItems(convertMenuToMenuItem(menus));
+            readMenuHierarchical(item.getItems());
+        }
+
+        return items;
+    }
+
+    private List<MenuItem> convertMenuToMenuItem(List<Menu> menus) {
+
+        List<MenuItem> items = new ArrayList<>();
+
+        for (Menu menu : menus) {
+            items.add(new MenuItem(menu));
+        }
+
+        return items;
+    }
+
+    private void createMenuWithPermissions(Set<String> permissions, List<MenuItem> items, List<MenuItem> permittedItems) {
+        for (MenuItem item : items) {
+            MenuItem permittedItem = new MenuItem(item.getText(), item.getPath(), item.getModule(), item.getIndex());
+            if (permissions.contains(item.getOid())) {
+                permittedItems.add(permittedItem);
+            }
+            createMenuWithPermissions(permissions, item.getItems(), permittedItem.getItems());
+            //If any sub menu permitted add parent menu also.
+            if (!permittedItem.getItems().isEmpty() && !permittedItems.contains(permittedItem)) {
+                permittedItems.add(permittedItem);
+            }
+        }
     }
 
     @Path("{id}")
