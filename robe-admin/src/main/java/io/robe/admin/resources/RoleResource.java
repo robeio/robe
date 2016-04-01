@@ -7,6 +7,7 @@ import io.dropwizard.jersey.PATCH;
 import io.robe.admin.hibernate.dao.RoleDao;
 import io.robe.admin.hibernate.entity.Role;
 import io.robe.auth.Credentials;
+import io.robe.common.service.RobeService;
 import io.robe.common.utils.FieldReflection;
 import org.hibernate.FlushMode;
 
@@ -26,12 +27,27 @@ public class RoleResource {
     @Inject
     private RoleDao roleDao;
 
+    /**
+     * Returns all Role as a collection with the related path.
+     *
+     * @param credentials auto fill by {@link Auth} annotation for authentication.
+     * @return all {@link Role} as a collection
+     */
+    @RobeService(group = "Role", description = "Returns all Role as a collection with the related path.")
     @GET
     @UnitOfWork(readOnly = true, cacheMode = GET, flushMode = FlushMode.MANUAL)
     public List<Role> getAll(@Auth Credentials credentials) {
         return roleDao.findAll(Role.class);
     }
 
+    /**
+     * Return a single Role related with the path and matches with the given id.
+     *
+     * @param credentials auto fill by @{@link Auth} annotation for authentication.
+     * @param id          This is  the oid of {@link Role}
+     * @return a single {@link Role} related with the path and matches with the given id.
+     */
+    @RobeService(group = "Role", description = "Returns a single Role related with the path and matches with the given id.")
     @Path("{id}")
     @GET
     @UnitOfWork(readOnly = true, cacheMode = GET, flushMode = FlushMode.MANUAL)
@@ -43,12 +59,29 @@ public class RoleResource {
         return entity;
     }
 
+    /**
+     * Creates a single  related with the path and returns given Role path link at header Location=example/{id]
+     *
+     * @param credentials auto fill by @{@link Auth} annotation for authentication.
+     * @param model       This is the one model of {@link Role}
+     * @return Creates a single  related with the path and returns given {@link Role} path link at header Location=example/{id]
+     */
+    @RobeService(group = "Role", description = "Creates a single  related with the path and returns given Role path link at header Location=example/{id]")
     @POST
     @UnitOfWork
     public Role create(@Auth Credentials credentials, @Valid Role model) {
         return roleDao.create(model);
     }
 
+    /**
+     * Updates a single Role related with the path and matches with the given id. Payload holds the whole data.
+     *
+     * @param credentials auto fill by @{@link Auth} annotation for authentication.
+     * @param id          This is  the oid of {@link Role}
+     * @param model       This is the one model of {@link Role}
+     * @return Updates a single {@link Role} related with the path and matches with the given id.
+     */
+    @RobeService(group = "Role", description = "Updates a single Role related with the path and matches with the given id.")
     @Path("{id}")
     @PUT
     @UnitOfWork
@@ -66,6 +99,15 @@ public class RoleResource {
         return roleDao.update(model);
     }
 
+    /**
+     * Updates a single Role related with the path and matches with the given id. Payload will only containe update data . Version of the Role can be available at ETag in an If-Match header.
+     *
+     * @param credentials auto fill by @{@link Auth} annotation for authentication.
+     * @param id          This is  the oid of {@link Role}
+     * @param model       This is the one model of {@link Role}
+     * @return Updates a single {@link Role} related with the path and matches with the given id.
+     */
+    @RobeService(group = "Role", description = "Updates a single Role related with the path and matches with the given id.")
     @Path("{id}")
     @PATCH
     @UnitOfWork
@@ -82,6 +124,15 @@ public class RoleResource {
         return roleDao.update(model);
     }
 
+    /**
+     * Deletes a single Role for the related path and returns given Role path link at header Location=example/{id].
+     *
+     * @param credentials auto fill by @{@link Auth} annotation for authentication.
+     * @param id          This is  the oid of {@link Role}
+     * @param model       This is the one model of {@link Role}
+     * @return Deletes a single {@link Role} for the related path.
+     */
+    @RobeService(group = "Role", description = "Deletes a single Role for the related path.")
     @Path("{id}")
     @DELETE
     @UnitOfWork
