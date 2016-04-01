@@ -8,6 +8,7 @@ import io.robe.admin.hibernate.dao.UserDao;
 import io.robe.admin.hibernate.entity.User;
 import io.robe.auth.AbstractAuthResource;
 import io.robe.auth.Credentials;
+import io.robe.common.service.RobeService;
 import io.robe.common.utils.FieldReflection;
 import org.hibernate.CacheMode;
 import org.hibernate.FlushMode;
@@ -31,6 +32,11 @@ public class UserResource extends AbstractAuthResource<User> {
         this.userDao = userDao;
     }
 
+    /**
+     * @param credentials auto fill by @{@link Auth} annotation for authentication.
+     * @return Returns all @{@link User} as a collection with the related path.
+     */
+    @RobeService(group = "User", description = "Returns all User as a collection with the related path.")
     @GET
     @UnitOfWork(readOnly = true, cacheMode = CacheMode.GET, flushMode = FlushMode.MANUAL)
     public List<User> getAll(@Auth Credentials credentials) {

@@ -205,7 +205,7 @@ public class InitializeCommand<T extends RobeConfiguration> extends EnvironmentC
         session.persist(createPermission(true, dash.getOid(), role));
 
         Menu userManagement = new Menu();
-        userManagement.setPath("UserManagement");
+        userManagement.setPath("User");
         userManagement.setIndex(1);
         userManagement.setText("Kullanıcı Yönetimi");
         userManagement.setParentOid(manager.getOid());
