@@ -33,11 +33,12 @@ public class UserResource extends AbstractAuthResource<User> {
     }
 
     /**
-     * Returns all User as a collection with the related path.
+     * Returns all {@link User} as a collection with the related path.
      *
-     * @param credentials auto fill by @{@link Auth} annotation for authentication.
-     * @return Returns all @{@link User} as a collection with the related path.
+     * @param credentials Auto fill by {@link Auth} annotation for authentication.
+     * @return all {@link User} as a collection with the related path.
      */
+
     @RobeService(group = "User", description = "Returns all User as a collection with the related path.")
     @GET
     @UnitOfWork(readOnly = true, cacheMode = CacheMode.GET, flushMode = FlushMode.MANUAL)
@@ -46,10 +47,13 @@ public class UserResource extends AbstractAuthResource<User> {
     }
 
     /**
-     * @param credentials auto fill by @{@link Auth} annotation for authentication.
+     * Returns a single {@link User} related with the path and matches with the given id
+     *
+     * @param credentials Auto fill by {@link Auth} annotation for authentication.
      * @param id          This is  the oid of {@link User}
-     * @return Returns a single {@link User} related with the path and matches with the given id.
+     * @return a single {@link User} related with the path and matches with the given id
      */
+    @RobeService(group = "User", description = "Returns a single User related with the path and matches with the given id")
     @Path("{id}")
     @GET
     @UnitOfWork(readOnly = true, cacheMode = CacheMode.GET, flushMode = FlushMode.MANUAL)
@@ -61,12 +65,29 @@ public class UserResource extends AbstractAuthResource<User> {
         return entity;
     }
 
+    /**
+     * Creates a single {@link User} related with the path.
+     *
+     * @param credentials Auto fill by {@link Auth} annotation for authentication.
+     * @param model       This is the one model of {@link User}
+     * @return Creates a single {@link User} related with the path
+     */
+    @RobeService(group = "User", description = "Creates a single User related with the path")
     @POST
     @UnitOfWork
     public User create(@Auth Credentials credentials, @Valid User model) {
         return userDao.create(model);
     }
 
+    /**
+     * Updates a single {@link User} related with the path and matches with the given id. Payload holds the whole data.
+     *
+     * @param credentials Auto fill by {@link Auth} annotation for authentication.
+     * @param id          This is  the oid of {@link User}
+     * @param model       This is the one model of {@link User}
+     * @return Updates a single {@link User} related with the path and matches with the given id.
+     */
+    @RobeService(group = "User", description = "Updates a single User related with the path and matches with the given id.")
     @PUT
     @UnitOfWork
     @Path("{id}")
@@ -83,6 +104,17 @@ public class UserResource extends AbstractAuthResource<User> {
         return userDao.update(model);
     }
 
+    /**
+     * Updates a single {@link User} related with the path and matches with the given id.
+     * Payload will only contains update data.
+     * Version of the {@link User} can be available at ETag in an If-Match header.
+     *
+     * @param credentials Auto fill by {@link Auth} annotation for authentication.
+     * @param id          This is  the oid of {@link User}
+     * @param model       This is the one model of {@link User}
+     * @return Updates a single {@link User} related with the path and matches with the given id.
+     */
+    @RobeService(group = "User", description = "Updates a single User related with the path and matches with the given id.")
     @PATCH
     @UnitOfWork
     @Path("{id}")
@@ -98,6 +130,15 @@ public class UserResource extends AbstractAuthResource<User> {
         return userDao.update(model);
     }
 
+    /**
+     * Delete a single {@link User} for the related path.
+     *
+     * @param credentials Auto fill by {@link Auth} annotation for authentication.
+     * @param id          This is  the oid of {@link User}
+     * @param model       This is the one model of {@link User}
+     * @return deletes a single {@link User} for the related path.
+     */
+    @RobeService(group = "User", description = "Delete a single User for the related path")
     @DELETE
     @UnitOfWork
     @Path("{id}")
