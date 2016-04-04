@@ -94,7 +94,7 @@ public class UserResource extends AbstractAuthResource<User> {
      * @param model       data of {@link User}
      * @return Updates a single {@link User} matches with the given id.
      */
-    @RobeService(group = "User", description = "Updates a single {@link User} matches with the given id.")
+    @RobeService(group = "User", description = "Updates a single User matches with the given id.")
     @PUT
     @UnitOfWork
     @Path("{id}")
@@ -123,7 +123,7 @@ public class UserResource extends AbstractAuthResource<User> {
      * @param model       data of {@link User}
      * @return Updates a single {@link User} matches with the given id.
      */
-    @RobeService(group = "User", description = "Updates a single User related with the path and matches with the given id.")
+    @RobeService(group = "User", description = "Updates a single User matches with the given id.")
     @PATCH
     @UnitOfWork
     @Path("{id}")

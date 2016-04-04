@@ -10,6 +10,7 @@ import io.robe.admin.dto.MenuItem;
 import io.robe.admin.hibernate.dao.*;
 import io.robe.admin.hibernate.entity.*;
 import io.robe.auth.Credentials;
+import io.robe.common.service.RobeService;
 import io.robe.common.utils.FieldReflection;
 import org.hibernate.FlushMode;
 
@@ -41,9 +42,17 @@ public class MenuResource {
     @Inject
     private UserDao userDao;
 
+    /**
+     * Returns all {@link Menu}s as a collection.
+     *
+     * @param credentials injected by {@link Auth} annotation for authentication.
+     * @return all {@link Menu}s as a collection with.
+     */
+
+    @RobeService(group = "Menu", description = "Returns all Menu's as a collection.")
     @GET
     @UnitOfWork(readOnly = true, cacheMode = GET, flushMode = FlushMode.MANUAL)
-    public List<Menu> getAll() {
+    public List<Menu> getAll(@Auth Credentials credentials) {
         return menuDao.findAll(Menu.class);
     }
 
@@ -57,6 +66,14 @@ public class MenuResource {
         }
     }
 
+    /**
+     * get menu for logged user
+     *
+     * @param credentials injected by {@link Auth} annotation for authentication.
+     * @return user {@link MenuItem} as collection
+     */
+
+    @RobeService(group = "Menu", description = "Get menu for logged user")
     @Path("user")
     @GET
     @UnitOfWork(readOnly = true, cacheMode = GET, flushMode = FlushMode.MANUAL)
@@ -120,6 +137,18 @@ public class MenuResource {
         }
     }
 
+
+    /**
+     * Returns a single Menu matches with the given id.
+     * <p>
+     * Status Code:
+     * Not Found  404
+     *
+     * @param credentials injected by {@link Auth} annotation for authentication.
+     * @param id          This is the oid of {@link Menu}
+     * @return a {@link Menu} resource matches with the given id.
+     */
+    @RobeService(group = "Menu", description = "Returns a Menu resource matches with the given id.")
     @Path("{id}")
     @GET
     @UnitOfWork(readOnly = true, cacheMode = GET, flushMode = FlushMode.MANUAL)
@@ -131,12 +160,34 @@ public class MenuResource {
         return entity;
     }
 
+    /**
+     * Create a {@link Menu} resource.
+     *
+     * @param credentials injected by {@link Auth} annotation for authentication.
+     * @param model       data of {@link Menu}
+     * @return Create as a {@link Menu} resource.
+     */
+    @RobeService(group = "Menu", description = "Create a Menu resource.")
     @POST
     @UnitOfWork
     public Menu create(@Auth Credentials credentials, @Valid Menu model) {
         return menuDao.create(model);
     }
 
+
+    /**
+     * Updates a single {@link Menu} matches with the given id.
+     * <p>
+     * Status Code:
+     * Not Found  404
+     * Not Matches 412
+     *
+     * @param credentials injected by {@link Auth} annotation for authentication.
+     * @param id          This is the oid of {@link Menu}
+     * @param model       data of {@link Menu}
+     * @return Updates a single {@link Menu} matches with the given id.
+     */
+    @RobeService(group = "Menu", description = "Updates a single Menu matches with the given id.")
     @Path("{id}")
     @PUT
     @UnitOfWork
@@ -145,12 +196,27 @@ public class MenuResource {
             throw new WebApplicationException(Response.status(412).build());
         }
         Menu entity = menuDao.findById(id);
+        menuDao.detach(entity);
         if (entity == null) {
             throw new WebApplicationException(Response.status(404).build());
         }
         return menuDao.update(model);
     }
 
+
+    /**
+     * Updates a single {@link Menu} matches with the given id.
+     * <p>
+     * Status Code:
+     * Not Found  404
+     * Not Matches 412
+     *
+     * @param credentials injected by {@link Auth} annotation for authentication.
+     * @param id          This is the oid of {@link Menu}
+     * @param model       data of {@link Menu}
+     * @return Updates a single {@link Menu} matches with the given id.
+     */
+    @RobeService(group = "Menu", description = "Updates a single Menu matches with the given id.")
     @PATCH
     @UnitOfWork
     @Path("{id}")
@@ -158,6 +224,7 @@ public class MenuResource {
         if (id.equals(model.getOid()))
             throw new WebApplicationException(Response.status(412).build());
         Menu dest = menuDao.findById(id);
+        menuDao.detach(dest);
         if (dest == null) {
             throw new WebApplicationException(Response.status(404).build());
         }
@@ -165,6 +232,19 @@ public class MenuResource {
         return menuDao.update(model);
     }
 
+    /**
+     * Deletes a single {@link Menu} matches with the given id.
+     * <p>
+     * Status Code:
+     * Not Found  404
+     * Not Matches 412
+     *
+     * @param credentials injected by {@link Auth} annotation for authentication.
+     * @param id          This is the oid of {@link Menu}
+     * @param model       data of {@link Menu}
+     * @return delete a single {@link Menu} matches with the given id.
+     */
+    @RobeService(group = "Menu", description = "Deletes a single Menu matches with the given id.")
     @Path("{id}")
     @DELETE
     @UnitOfWork
