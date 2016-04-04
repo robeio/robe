@@ -13,7 +13,7 @@ public class Menu extends BaseEntity {
     @Column(length = 50, nullable = false)
     private String text;
 
-    @Column(length = 50, nullable = false)
+    @Column(length = 100, nullable = false)
     private String path;
 
     @Column(name = "itemIndex")
@@ -22,7 +22,7 @@ public class Menu extends BaseEntity {
     @Column(length = 32)
     private String parentOid;
 
-    @Column(length = 100, nullable = false)
+    @Column(length = 50, nullable = false)
     private String module;
 
     @Column(length = 30)

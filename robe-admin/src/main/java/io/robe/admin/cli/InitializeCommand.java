@@ -143,6 +143,8 @@ public class InitializeCommand<T extends RobeConfiguration> extends EnvironmentC
                         if (robeService != null) {
                             entity.setDescription(robeService.description());
                             entity.setGroup(robeService.group());
+                        } else {
+                            entity.setGroup("UNGROUPED");
                         }
                         session.persist(entity);
                         session.persist(createPermission(false, entity.getOid(), role));
@@ -182,6 +184,7 @@ public class InitializeCommand<T extends RobeConfiguration> extends EnvironmentC
         root.setPath("root");
         root.setIndex(1);
         root.setText("Menü");
+        root.setModule("Root");
         session.persist(root);
         session.persist(createPermission(true, root.getOid(), role));
 
@@ -191,97 +194,98 @@ public class InitializeCommand<T extends RobeConfiguration> extends EnvironmentC
         manager.setText("Yönetici");
         manager.setParentOid(root.getOid());
         manager.setIcon("fa-users");
+        manager.setModule("Manager");
         session.persist(manager);
         session.persist(createPermission(true, manager.getOid(), role));
 
         Menu dash = new Menu();
-        dash.setPath("Dashboard");
+        dash.setModule("Dashboard");
         dash.setIndex(0);
         dash.setText("DashBoard");
-        dash.setModule("app/modules/dash/Dash");
+        dash.setPath("app/modules/dash/Dash");
         dash.setIcon("fa-columns");
         dash.setParentOid(manager.getOid());
         session.persist(dash);
         session.persist(createPermission(true, dash.getOid(), role));
 
         Menu userManagement = new Menu();
-        userManagement.setPath("User");
+        userManagement.setModule("User");
         userManagement.setIndex(1);
         userManagement.setText("Kullanıcı Yönetimi");
         userManagement.setParentOid(manager.getOid());
         userManagement.setIcon("fa-users");
-        userManagement.setModule("app/modules/user/User");
+        userManagement.setPath("app/modules/user/User");
         session.persist(userManagement);
         session.persist(createPermission(true, userManagement.getOid(), role));
 
         Menu userProfileManagement = new Menu();
-        userProfileManagement.setPath("Profile");
+        userProfileManagement.setModule("Profile");
         userProfileManagement.setIndex(1);
         userProfileManagement.setText("Profil Yönetimi");
         userProfileManagement.setParentOid(manager.getOid());
-        userProfileManagement.setModule("app/modules/profile/Profile");
+        userProfileManagement.setPath("app/modules/profile/Profile");
         userProfileManagement.setIcon("fa-user");
         session.persist(userProfileManagement);
         session.persist(createPermission(true, userProfileManagement.getOid(), role));
 
         Menu mailTemplate = new Menu();
-        mailTemplate.setPath("MailTemplate");
+        mailTemplate.setModule("MailTemplate");
         mailTemplate.setIndex(0);
         mailTemplate.setText("Mail Template Yönetimi");
         mailTemplate.setParentOid(manager.getOid());
-        mailTemplate.setModule("app/modules/mailtemplate/MailTemplate");
+        mailTemplate.setPath("app/modules/mailtemplate/MailTemplate");
         mailTemplate.setIcon("fa-users");
         session.persist(mailTemplate);
         session.persist(createPermission(true, mailTemplate.getOid(), role));
 
         Menu menuManagement = new Menu();
-        menuManagement.setPath("Menu");
+        menuManagement.setModule("Menu");
         menuManagement.setIndex(1);
         menuManagement.setText("Menü Yönetimi");
         menuManagement.setParentOid(manager.getOid());
-        menuManagement.setModule("app/modules/menu/Menu");
+        menuManagement.setPath("app/modules/menu/Menu");
         menuManagement.setIcon("fa-users");
         session.persist(menuManagement);
         session.persist(createPermission(true, menuManagement.getOid(), role));
 
         Menu roleManagement = new Menu();
-        roleManagement.setPath("Role");
+        roleManagement.setModule("Role");
         roleManagement.setIndex(1);
         roleManagement.setText("Rol Yönetimi");
         roleManagement.setParentOid(manager.getOid());
-        roleManagement.setModule("app/modules/role/Role");
+        roleManagement.setPath("app/modules/role/Role");
         roleManagement.setIcon("fa-users");
         session.persist(roleManagement);
         session.persist(createPermission(true, roleManagement.getOid(), role));
 
         Menu permissionManagement = new Menu();
-        permissionManagement.setPath("Permission");
+        permissionManagement.setModule("Permission");
         permissionManagement.setIndex(1);
         permissionManagement.setText("İzin Atama");
         permissionManagement.setParentOid(manager.getOid());
-        permissionManagement.setModule("app/modules/permission/Permission");
+        permissionManagement.setPath("app/modules/permission/Permission");
         permissionManagement.setIcon("fa-users");
         session.persist(permissionManagement);
         session.persist(createPermission(true, permissionManagement.getOid(), role));
 
 
         Menu quartzJob = new Menu();
-        quartzJob.setPath("QuartzJob");
+        quartzJob.setModule("QuartzJob");
         quartzJob.setIndex(0);
         quartzJob.setText("İş Zamanlayıcı");
         quartzJob.setParentOid(manager.getOid());
-        quartzJob.setModule("app/modules/quartz/QuartzJob");
+        quartzJob.setPath("app/modules/quartz/QuartzJob");
         quartzJob.setIcon("fa-users");
         session.persist(quartzJob);
         session.persist(createPermission(true, quartzJob.getOid(), role));
 
         Menu systemParameter = new Menu();
-        systemParameter.setPath("SystemParameter");
+        systemParameter.setModule("SystemParameter");
         systemParameter.setIndex(0);
         systemParameter.setText("Sistem Parametre");
         systemParameter.setParentOid(manager.getOid());
         systemParameter.setIcon("fa-users");
-        systemParameter.setModule("app/modules/systemparameter/SystemParameter");
+        systemParameter.setPath("app/modules/systemparameter/SystemParameter");
         session.persist(systemParameter);
         session.persist(createPermission(true, systemParameter.getOid(), role));
 

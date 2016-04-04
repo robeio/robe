@@ -6,17 +6,22 @@ import io.dropwizard.hibernate.UnitOfWork;
 import io.dropwizard.jersey.PATCH;
 import io.robe.admin.hibernate.dao.ServiceDao;
 import io.robe.admin.hibernate.entity.Service;
-import io.robe.admin.hibernate.entity.SystemParameter;
 import io.robe.auth.Credentials;
+import io.robe.auth.data.entry.ServiceEntry;
 import io.robe.common.service.RobeService;
 import io.robe.common.utils.FieldReflection;
+import io.robe.guice.GuiceBundle;
+import io.robe.guice.GuiceConfiguration;
 import org.hibernate.FlushMode;
+import org.reflections.Reflections;
 
 import javax.validation.Valid;
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
+import java.lang.reflect.Method;
 import java.util.List;
+import java.util.Set;
 
 import static org.hibernate.CacheMode.GET;
 
@@ -31,6 +36,7 @@ public class ServiceResource {
 
     /**
      * Returns all {@link Service ) as a collection.
+     *
      * @param credentials Injected by {@link Auth} annotation for authentication.
      * @return all {@link Service} as a collection.
      */
@@ -48,7 +54,7 @@ public class ServiceResource {
      * Not Found  404
      *
      * @param credentials Injected by {@link Auth} annotation for authentication.
-     * @param id This is  the oid of {@link Service}
+     * @param id          This is  the oid of {@link Service}
      * @return {@link Service} resource matches with the given id.
      */
     @RobeService(group = "Service", description = "Return Service resource.")
@@ -65,8 +71,9 @@ public class ServiceResource {
 
     /**
      * Create {@link Service) resource and matches with the given id.
+     *
      * @param credentials Injected by {@link Auth} annotation for authentication.
-     * @param model This is the one model of {@link Service}
+     * @param model       This is the one model of {@link Service}
      * @return Create {@link Service) resource and return given Service path link at header Location=example/{id].
      */
     @RobeService(group = "Service", description = "Create Service resource and return given Service path link at header Location=example/{id].")
@@ -84,8 +91,8 @@ public class ServiceResource {
      * Not Matches 412
      *
      * @param credentials Injected by {@link Auth} annotation for authentication.
-     * @param id This is  the oid of {@link Service}
-     * @param model This is the one model of {@link Service}
+     * @param id          This is  the oid of {@link Service}
+     * @param model       This is the one model of {@link Service}
      * @return Update {@link Service} resource and matches with the given id.
      */
     @RobeService(group = "Service", description = "Update Service resource and matches with the given id.")
@@ -111,8 +118,8 @@ public class ServiceResource {
      * Not Matches 412
      *
      * @param credentials Injected by {@link Auth} annotation for authentication.
-     * @param id This is  the oid of {@link Service}
-     * @param model This is the one model of {@link Service}
+     * @param id          This is  the oid of {@link Service}
+     * @param model       This is the one model of {@link Service}
      * @return Update {@link Service) resource and matches with the given id.
      */
     @RobeService(group = "Service", description = "Update Service resource.")
@@ -138,8 +145,8 @@ public class ServiceResource {
      * Not Matches 412
      *
      * @param credentials Injected by {@link Auth} annotation for authentication.
-     * @param id This is  the oid of {@link Service}
-     * @param model This is the one model of {@link Service}
+     * @param id          This is  the oid of {@link Service}
+     * @param model       This is the one model of {@link Service}
      * @return Delete {@link Service) resource.
      */
     @RobeService(group = "Service", description = "Delete Service resource.")
@@ -156,5 +163,85 @@ public class ServiceResource {
             throw new WebApplicationException(Response.status(404).build());
         }
         return serviceDao.delete(entity);
+    }
+
+
+    /**
+     * refreshing service with description
+     *
+     * @param credentials Injected by {@link Auth} annotation for authentication.
+     * @return Response.OK
+     */
+
+    @Path("refresh")
+    @GET
+    @UnitOfWork
+    public Response refreshServices(@Auth Credentials credentials) {
+
+
+        GuiceConfiguration configuration = GuiceBundle.getConfiguration();
+
+        Reflections reflections = new Reflections(configuration.getScanPackages(), this.getClass().getClassLoader());
+        Set<Class<?>> services = reflections.getTypesAnnotatedWith(Path.class);
+        int count = 0;
+        for (Class service : services) {
+            String parentPath = "/" + ((Path) service.getAnnotation(Path.class)).value();
+            for (Method method : service.getMethods()) {
+                String httpMethod = ifServiceGetHttpMethod(method);
+                if (httpMethod == null) {
+                    continue;
+                }
+                String path = parentPath;
+                path = extractPath(method, path);
+
+                io.robe.admin.hibernate.entity.Service entity = serviceDao.findByPathAndMethod(path, ServiceEntry.Method.valueOf(httpMethod));
+                RobeService robeService = (RobeService) method.getAnnotation(RobeService.class);
+
+                if (entity != null) {
+                    if (robeService != null) {
+                        entity.setDescription(robeService.description());
+                        entity.setGroup(robeService.group());
+                        serviceDao.update(entity);
+                    }
+                    continue;
+                }
+                entity = new io.robe.admin.hibernate.entity.Service();
+                entity.setPath(path);
+                entity.setMethod(io.robe.admin.hibernate.entity.Service.Method.valueOf(httpMethod));
+                if (robeService != null) {
+                    entity.setDescription(robeService.description());
+                    entity.setGroup(robeService.group());
+                } else {
+                    entity.setGroup("UNGROUPED");
+                }
+                serviceDao.create(entity);
+                count++;
+
+            }
+        }
+        return Response.ok(count).build();
+    }
+
+    private String extractPath(Method method, String path) {
+        if (method.getAnnotation(Path.class) != null) {
+            path += "/" + method.getAnnotation(Path.class).value();
+            path = path.replaceAll("//", "/");
+        }
+        return path;
+    }
+
+    private String ifServiceGetHttpMethod(Method method) {
+        if (method.getAnnotation(GET.class) != null)
+            return "GET";
+        if (method.getAnnotation(PUT.class) != null)
+            return "PUT";
+        if (method.getAnnotation(POST.class) != null)
+            return "POST";
+        if (method.getAnnotation(DELETE.class) != null)
+            return "DELETE";
+        if (method.getAnnotation(OPTIONS.class) != null)
+            return "OPTIONS";
+
+        return null;
     }
 }
