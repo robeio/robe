@@ -10,16 +10,16 @@ import javax.persistence.*;
 public class Permission extends BaseEntity implements PermissionEntry {
 
     @Enumerated(EnumType.STRING)
-    @Column(name = "pType")
+    @Column(name = "pType",nullable = false)
     private Type type;
 
-    @Column(name = "restrictedItemOid", length = 32)
+    @Column(name = "restrictedItemOid", length = 32,nullable = false)
     private String restrictedItemOid;
 
-    @Column(name = "pLevel")
+    @Column(name = "pLevel",nullable = false)
     private short pLevel;
 
-    @Column(length = 32)
+    @Column(length = 32,nullable = false)
     private String roleOid;
 
     public String getRoleOid() {

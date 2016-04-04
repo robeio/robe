@@ -15,10 +15,10 @@ import java.util.List;
 @Table
 public class Role extends BaseEntity implements RoleEntry {
 
-    @Column(length = 20, unique = true)
+    @Column(length = 32, unique = true,nullable = false)
     private String code;
 
-    @Column(length = 50)
+    @Column(length = 50,nullable = false)
     private String name;
 
     @Transient

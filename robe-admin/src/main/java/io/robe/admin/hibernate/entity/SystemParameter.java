@@ -10,9 +10,9 @@ import javax.persistence.Table;
 @Table
 public class SystemParameter extends BaseEntity {
 
-    @Column(unique = true, name = "PARAMETER_KEY")
+    @Column(unique = true,nullable = false, name = "PARAMETER_KEY",length = 32)
     private String key;
-    @Column(name = "PARAMETER_VALUE")
+    @Column(name = "PARAMETER_VALUE",nullable = false, length = 32)
     private String value;
 
     public String getKey() {

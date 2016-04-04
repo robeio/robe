@@ -22,10 +22,10 @@ public class Menu extends BaseEntity {
     @Column(length = 32)
     private String parentOid;
 
-    @Column
+    @Column(length = 32, nullable = false)
     private String module;
 
-    @Column
+    @Column(length = 30)
     private String icon;
 
     public String getText() {

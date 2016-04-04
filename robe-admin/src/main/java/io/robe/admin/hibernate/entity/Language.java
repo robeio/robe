@@ -17,7 +17,7 @@ public class Language extends BaseEntity {
     @Column(name = "code", nullable = false)
     private Type code;
 
-    @Column(name = "name", nullable = false)
+    @Column(name = "name", nullable = false,length = 30)
     private String name;
 
     public String getName() {

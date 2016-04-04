@@ -9,12 +9,12 @@ import java.util.Date;
 @Table
 public class Ticket extends BaseEntity {
 
-    @Column(name = "ticketType")
+    @Column(name = "ticketType", nullable = false)
     @Enumerated(EnumType.STRING)
     private Type type;
     @Column
     private Date expirationDate;
-    @Column(length = 32)
+    @Column(length = 32, nullable = false)
     private String userOid;
 
     public String getUserOid() {

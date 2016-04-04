@@ -11,13 +11,14 @@ import javax.persistence.Enumerated;
 @Entity
 public class Service extends BaseEntity implements ServiceEntry {
 
-    @Column(length = 100)
+    @Column(length = 100, nullable = false)
     private String path;
 
+    @Column(nullable = false)
     @Enumerated(EnumType.STRING)
     private Method method;
 
-    @Column(length = 20, name = "sGroup")
+    @Column(length = 32, name = "sGroup", nullable = false)
     private String group;
 
     @Column(length = 200, name = "sDescription")

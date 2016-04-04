@@ -14,7 +14,7 @@ public class MailTemplate extends BaseEntity {
         EN;
     }
 
-    @Column(name = "code", nullable = true, length = 25)
+    @Column(name = "code", nullable = true, length = 32)
     private String code;
 
     @Enumerated(EnumType.STRING)
@@ -22,7 +22,8 @@ public class MailTemplate extends BaseEntity {
     private Type lang;
 
     @Column(name = "mailTemplate", nullable = false)
-    private String template;
+    @Lob
+    private char[] template;
 
     public String getCode() {
         return code;
@@ -40,11 +41,11 @@ public class MailTemplate extends BaseEntity {
         this.lang = lang;
     }
 
-    public String getTemplate() {
+    public char[] getTemplate() {
         return template;
     }
 
-    public void setTemplate(String template) {
+    public void setTemplate(char[] template) {
         this.template = template;
     }
 }
