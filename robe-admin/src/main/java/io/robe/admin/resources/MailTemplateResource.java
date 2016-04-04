@@ -28,12 +28,12 @@ public class MailTemplateResource {
     private MailTemplateDao mailTemplateDao;
 
     /**
-     * Returns all {@link MailTemplate} as a collection with the related path.
+     * Return all {@link MailTemplate}s as a collection.
      *
-     * @param credentials auto fill by @{@link Auth} annotation for authentication.
-     * @return all @{@link MailTemplate} as a collection with the related path.
+     * @param credentials Injected by @{@link Auth} annotation for authentication.
+     * @return all @{@link MailTemplate}s as a collection.
      */
-    @RobeService(group = "MailTemplate", description = "Returns all MailTemplate as a collection")
+    @RobeService(group = "MailTemplate", description = "Returns all mail templates as a collection")
     @GET
     @UnitOfWork(readOnly = true, cacheMode = GET, flushMode = FlushMode.MANUAL)
     public List<MailTemplate> getAll(@Auth Credentials credentials) {
@@ -41,13 +41,16 @@ public class MailTemplateResource {
     }
 
     /**
-     * Returns a single {@link MailTemplate} related with the path and matches with the given id
+     * Returns a {@link MailTemplate} resource with the given id
+     * <p>
+     * Status Code:
+     * Not Found  404
      *
-     * @param credentials auto fill by @{@link Auth} annotation for authentication.
+     * @param credentials Injected by @{@link Auth} annotation for authentication.
      * @param id          This is  the oid of {@link MailTemplate}
-     * @return a single @{@link MailTemplate} related with the path and matches with the given id.
+     * @return a @{@link MailTemplate} resource macthes with the given id.
      */
-    @RobeService(group = "MailTemplate", description = "Returns a single MailTemplate related with the path and matches with the given id.")
+    @RobeService(group = "MailTemplate", description = "Returns a mail template resource matches with the given id.")
     @Path("{id}")
     @GET
     @UnitOfWork(readOnly = true, cacheMode = GET, flushMode = FlushMode.MANUAL)
@@ -60,13 +63,17 @@ public class MailTemplateResource {
     }
 
     /**
-     * Creates a single {@link MailTemplate} related with the path.
+     * Creates a {@link MailTemplate} resource.
+     * <p>
+     * Status Code:
+     * Not Found  404
+     * Not Matches 412
      *
-     * @param credentials auto fill by @{@link Auth} annotation for authentication.
-     * @param model       This is the one model of {@link MailTemplate}
-     * @return Creates a single @{@link MailTemplate} related with the path
+     * @param credentials Injected by @{@link Auth} annotation for authentication.
+     * @param model       Data of {@link MailTemplate}
+     * @return Creates a @{@link MailTemplate} resource.
      */
-    @RobeService(group = "MailTemplate", description = "Creates a single MailTemplate related with the path")
+    @RobeService(group = "MailTemplate", description = "Creates a mail template resource.")
     @POST
     @UnitOfWork
     public MailTemplate create(@Auth Credentials credentials, @Valid MailTemplate model) {
@@ -74,14 +81,18 @@ public class MailTemplateResource {
     }
 
     /**
-     * Updates a single {@link MailTemplate} related with the path and matches with the given id. Payload holds the whole data.
+     * Updates a {@link MailTemplate} resource matches with the given id.
+     * <p>
+     * Status Code:
+     * Not Found  404
+     * Not Matches 412
      *
-     * @param credentials auto fill by @{@link Auth} annotation for authentication.
+     * @param credentials Injected by @{@link Auth} annotation for authentication.
      * @param id          This is  the oid of {@link MailTemplate}
-     * @param model       This is the one model of {@link MailTemplate}
-     * @return Updates a single @{@link MailTemplate} related with the path and matches with the given id.
+     * @param model       Data of {@link MailTemplate}
+     * @return Updates a @{@link MailTemplate} resource matches with the given id.
      */
-    @RobeService(group = "MailTemplate", description = "Updates a single MailTemplate related with the path and matches with the given id")
+    @RobeService(group = "MailTemplate", description = "Updates a mail template resource matches with the given id")
     @Path("{id}")
     @PUT
     @UnitOfWork
@@ -98,16 +109,18 @@ public class MailTemplateResource {
     }
 
     /**
-     * Updates a single {@link MailTemplate} related with the path and matches with the given id.
-     * Payload will only contains update data.
-     * Version of the {@link MailTemplate} can be available at ETag in an If-Match header.
+     * Updates a {@link MailTemplate} resource matches with the given id.
+     * <p>
+     * Status Code:
+     * Not Found  404
+     * Not Matches 412
      *
-     * @param credentials auto fill by @{@link Auth} annotation for authentication.
+     * @param credentials Injected by @{@link Auth} annotation for authentication.
      * @param id          This is  the oid of {@link MailTemplate}
-     * @param model       This is the one model of {@link MailTemplate}
-     * @return Updates a single @{@link MailTemplate} related with the path and matches with the given id.
+     * @param model       Data of {@link MailTemplate}
+     * @return Updates a @{@link MailTemplate} resource matches with the given id.
      */
-    @RobeService(group = "MailTemplate", description = "Updates a single @{@link MailTemplate} related with the path and matches with the given id")
+    @RobeService(group = "MailTemplate", description = "Updates a mail template resource matches with the given id.")
     @Path("{id}")
     @PATCH
     @UnitOfWork
@@ -126,14 +139,18 @@ public class MailTemplateResource {
     }
 
     /**
-     * Delete a single {@link MailTemplate} for the related path.
+     * Deletes a {@link MailTemplate} resource matches with the given id.
+     * <p>
+     * Status Code:
+     * Not Found  404
+     * Not Matches 412
      *
-     * @param credentials auto fill by @{@link Auth} annotation for authentication.
+     * @param credentials Injected by @{@link Auth} annotation for authentication.
      * @param id          This is  the oid of {@link MailTemplate}
-     * @param model       This is the one model of {@link MailTemplate}
-     * @return deletes a single @{@link MailTemplate} for the related path
+     * @param model       Data of {@link MailTemplate}
+     * @return deletes a @{@link MailTemplate} resource matches with the given id.
      */
-    @RobeService(group = "MailTemplate", description = "Deletes a single MailTemplate for the related path")
+    @RobeService(group = "MailTemplate", description = "Deletes a mail template resource matches with the given id.")
     @Path("{id}")
     @DELETE
     @UnitOfWork
