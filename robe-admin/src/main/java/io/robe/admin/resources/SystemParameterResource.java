@@ -30,23 +30,23 @@ public class SystemParameterResource {
     private SystemParameterDao systemParameterDao;
 
     /**
-     * Returns all SystemParameters as a collection with the related path.
-     * @param credentials auto fill by {@link Auth} annotation for authentication.
-     * @return all {@link SystemParameter} as a collection with the related path.
+     * Returns all {@link SystemParameter) as a collection.
+     * @param credentials Injected by {@link Auth} annotation for authentication.
+     * @return all {@link SystemParameter} as a collection.
      */
-    @RobeService(group = "SystemParameter", description = "Returns all SystemParameter as a collection with the related path.")
+    @RobeService(group = "SystemParameter", description = "Returns all SystemParameter as a collection.")
     @GET
     @UnitOfWork(readOnly = true, cacheMode = GET, flushMode = FlushMode.MANUAL)
     public List<SystemParameter> getAll(@Auth Credentials credentials) {
         return systemParameterDao.findAll(SystemParameter.class);
     }
     /**
-     * Return a single SystemParameter related with the path and matches with the given id.
-     * @param credentials auto fill by {@link Auth} annotation for authentication.
+     * Return {@link SystemParameter) resource and matches with the given id.
+     * @param credentials Injected by {@link Auth} annotation for authentication.
      * @param id This is  the oid of {@link SystemParameter}
-     * @return A single SystemParameter related with the path and matches with the given id.
+     * @return {@link SystemParameter} resource matches with the given id.
      */
-    @RobeService(group = "SystemParameter", description = "Return a single SystemParameter related with the path.")
+    @RobeService(group = "SystemParameter", description = "Return SystemParameter resource.")
     @Path("{id}")
     @GET
     @UnitOfWork(readOnly = true, cacheMode = CacheMode.GET, flushMode = FlushMode.MANUAL)
@@ -60,12 +60,12 @@ public class SystemParameterResource {
     }
 
     /**
-     * Creates a single SystemParameter related with the path.
-     * @param credentials auto fill by {@link Auth} annotation for authentication.
+     * Create {@link SystemParameter) resource.
+     * @param credentials Injected by {@link Auth} annotation for authentication.
      * @param model This is the one model of {@link SystemParameter}
-     * @return Creates a single {@link SystemParameter) related with the path and returns given SystemParameter path link at header Location=example/{id].
+     * @return Create {@link SystemParameter) resource and return given SystemParameter path link at header Location=example/{id].
      */
-    @RobeService(group = "SystemParameter", description = "Creates a single SystemParameter related with the path and returns given SystemParameter path link at header Location=example/{id].")
+    @RobeService(group = "SystemParameter", description = "Create SystemParameter resource and return given SystemParameter path link at header Location=example/{id].")
     @POST
     @UnitOfWork
     public SystemParameter create(@Auth Credentials credentials, @Valid SystemParameter model) {
@@ -73,13 +73,13 @@ public class SystemParameterResource {
     }
 
     /**
-     *
-     * @param credentials credentials auto fill by {@link Auth} annotation for authentication.
+     * Update {@link SystemParameter) resource and matches with the given id.
+     * @param credentials Injected by {@link Auth} annotation for authentication.
      * @param id This is  the oid of {@link SystemParameter}
      * @param model This is the one model of {@link SystemParameter}
-     * @return Updates a single {@link SystemParameter} related with the path and matches with the given id. Payload holds the whole data.
+     * @return Update {@link SystemParameter} resource and matches with the given id.
      */
-    @RobeService(group = "SystemParameter", description = "Updates a single SystemParameter related with the path and matches with the given id.")
+    @RobeService(group = "SystemParameter", description = "Update SystemParameter resource and matches with the given id.")
     @Path("{id}")
     @PUT
     @UnitOfWork(flushMode = FlushMode.MANUAL)
@@ -96,12 +96,13 @@ public class SystemParameterResource {
     }
 
     /**
-     * @param credentials credentials auto fill by {@link Auth} annotation for authentication.
+     * Update {@link SystemParameter) resource.
+     * @param credentials Injected by {@link Auth} annotation for authentication.
      * @param id This is  the oid of {@link SystemParameter}
      * @param model This is the one model of {@link SystemParameter}
-     * @return Updates a single {@link SystemParameter) related with the path and matches with the given id. Payload will only containe update data . Version of the SystemParameter can be available at ETag in an If-Match header.
+     * @return Update {@link SystemParameter) resource and matches with the given id.
      */
-    @RobeService(group = "SystemParameter", description = "Updates a single SystemParameter related with the path.")
+    @RobeService(group = "SystemParameter", description = "Update SystemParameter resource.")
     @Path("{id}")
     @PATCH
     @UnitOfWork
@@ -119,13 +120,13 @@ public class SystemParameterResource {
     }
 
     /**
-     *
-     * @param credentials credentials auto fill by {@link Auth} annotation for authentication.
+     * Delete {@link SystemParameter) resource.
+     * @param credentials Injected by {@link Auth} annotation for authentication.
      * @param id This is  the oid of {@link SystemParameter}
      * @param model This is the one model of {@link SystemParameter}
-     * @return Deletes a single {@link SystemParameter) for the related path.
+     * @return Delete {@link SystemParameter) resource.
      */
-    @RobeService(group = "SystemParameter", description = "Deletes a single SystemParameter for the related path.")
+    @RobeService(group = "SystemParameter", description = "Delete SystemParameter resource.")
     @Path("{id}")
     @DELETE
     @UnitOfWork

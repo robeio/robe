@@ -7,6 +7,7 @@ import io.dropwizard.jersey.PATCH;
 import io.robe.admin.hibernate.dao.QuartzTriggerDao;
 import io.robe.admin.quartz.hibernate.TriggerEntity;
 import io.robe.auth.Credentials;
+import io.robe.common.service.RobeService;
 import io.robe.common.utils.FieldReflection;
 import org.hibernate.FlushMode;
 
@@ -27,12 +28,30 @@ public class TriggerResource {
     @Inject
     private QuartzTriggerDao quartzTriggerDao;
 
+    /**
+     * Return all TriggerEntity as a collection
+     *
+     * @param credentials auto fill by {@link Auth} annotation for authentication.
+     * @return all {@link TriggerEntity} as a collection
+     */
+    @RobeService(group = "TriggerEntity", description = "Returns all TriggerEntity as a collection.")
     @GET
     @UnitOfWork(readOnly = true, cacheMode = GET, flushMode = FlushMode.MANUAL)
     public List<TriggerEntity> getAll(@Auth Credentials credentials) {
         return quartzTriggerDao.findAll(TriggerEntity.class);
     }
 
+    /**
+     * Return a TriggerEntity resource  with the matches given id.
+     * <p>
+     * Status Code:
+     * Not Found  404
+     *
+     * @param credentials auto fill by @{@link Auth} annotation for authentication.
+     * @param id          This is  the oid of {@link TriggerEntity}
+     * @return a  {@link TriggerEntity} resource with the matches given id.
+     */
+    @RobeService(group = "TriggerEntity", description = "Returns a TriggerEntity resource with the matches given id.")
     @Path("{id}")
     @GET
     @UnitOfWork(readOnly = true, cacheMode = GET, flushMode = FlushMode.MANUAL)
@@ -44,12 +63,33 @@ public class TriggerResource {
         return entity;
     }
 
+    /**
+     * Create a {@link TriggerEntity} resource.
+     *
+     * @param credentials auto fill by @{@link Auth} annotation for authentication.
+     * @param model       This is the one model of {@link TriggerEntity}
+     * @return create a {@link TriggerEntity} resource.
+     */
+    @RobeService(group = "TriggerEntity", description = "Create a TriggerEntity resource.")
     @POST
     @UnitOfWork
     public TriggerEntity create(@Auth Credentials credentials, @Valid TriggerEntity model) {
         return quartzTriggerDao.create(model);
     }
 
+    /**
+     * Update a TriggerEntity resource  with the matches given id.
+     * <p>
+     * Status Code:
+     * Not Found  404
+     * Not Matches 412
+     *
+     * @param credentials auto fill by @{@link Auth} annotation for authentication.
+     * @param id          This is  the oid of {@link TriggerEntity}
+     * @param model       This is the one model of {@link TriggerEntity}
+     * @return Update a  {@link TriggerEntity} resource with the matches given id.
+     */
+    @RobeService(group = "TriggerEntity", description = "Update a TriggerEntity resource with the matches given id.")
     @PUT
     @UnitOfWork
     @Path("{id}")
@@ -65,6 +105,19 @@ public class TriggerResource {
         return quartzTriggerDao.update(model);
     }
 
+    /**
+     * Update a TriggerEntity resource with the matches given id.
+     * <p>
+     * Status Code:
+     * Not Found  404
+     * Not Matches 412
+     *
+     * @param credentials auto fill by @{@link Auth} annotation for authentication.
+     * @param id          This is  the oid of {@link TriggerEntity}
+     * @param model       This is the one model of {@link TriggerEntity}
+     * @return Updates a  {@link TriggerEntity} resource with the matches given id.
+     */
+    @RobeService(group = "TriggerEntity", description = "Update a TriggerEntity resource with the matches given id.")
     @PATCH
     @UnitOfWork
     @Path("{id}")
@@ -79,6 +132,19 @@ public class TriggerResource {
         return quartzTriggerDao.update(model);
     }
 
+    /**
+     * Delete a TriggerEntity resource  with the matches given id.
+     * <p>
+     * Status Code:
+     * Not Found  404
+     * Not Matches 412
+     *
+     * @param credentials auto fill by @{@link Auth} annotation for authentication.
+     * @param id          This is  the oid of {@link TriggerEntity}
+     * @param model       This is the one model of {@link TriggerEntity}
+     * @return Delete a  {@link TriggerEntity} resource  with the matches given id.
+     */
+    @RobeService(group = "TriggerEntity", description = "Delete a TriggerEntity resource with the matches given id.")
     @DELETE
     @UnitOfWork
     @Path("{id}")
