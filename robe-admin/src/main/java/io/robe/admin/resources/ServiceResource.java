@@ -43,6 +43,10 @@ public class ServiceResource {
 
     /**
      * Return {@link Service) resource and matches with the given id.
+     * <p>
+     * Status Code:
+     * Not Found  404
+     *
      * @param credentials Injected by {@link Auth} annotation for authentication.
      * @param id This is  the oid of {@link Service}
      * @return {@link Service} resource matches with the given id.
@@ -74,6 +78,11 @@ public class ServiceResource {
 
     /**
      * Update {@link Service) resource and matches with the given id.
+     * <p>
+     * Status Code:
+     * Not Found  404
+     * Not Matches 412
+     *
      * @param credentials Injected by {@link Auth} annotation for authentication.
      * @param id This is  the oid of {@link Service}
      * @param model This is the one model of {@link Service}
@@ -96,6 +105,11 @@ public class ServiceResource {
 
     /**
      * Update {@link Service) resource and matches with the given id.
+     * <p>
+     * Status Code:
+     * Not Found  404
+     * Not Matches 412
+     *
      * @param credentials Injected by {@link Auth} annotation for authentication.
      * @param id This is  the oid of {@link Service}
      * @param model This is the one model of {@link Service}
@@ -118,6 +132,11 @@ public class ServiceResource {
 
     /**
      * Delete {@link Service) resource and matches with the given id.
+     * <p>
+     * Status Code:
+     * Not Found  404
+     * Not Matches 412
+     *
      * @param credentials Injected by {@link Auth} annotation for authentication.
      * @param id This is  the oid of {@link Service}
      * @param model This is the one model of {@link Service}
