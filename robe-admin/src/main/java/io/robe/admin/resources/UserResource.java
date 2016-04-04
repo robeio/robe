@@ -33,13 +33,13 @@ public class UserResource extends AbstractAuthResource<User> {
     }
 
     /**
-     * Returns all {@link User} as a collection with the related path.
+     * Returns all {@link User}s as a collection.
      *
-     * @param credentials Auto fill by {@link Auth} annotation for authentication.
-     * @return all {@link User} as a collection with the related path.
+     * @param credentials injected by {@link Auth} annotation for authentication.
+     * @return all {@link User}s as a collection with.
      */
 
-    @RobeService(group = "User", description = "Returns all User as a collection with the related path.")
+    @RobeService(group = "User", description = "Returns all Users as a collection.")
     @GET
     @UnitOfWork(readOnly = true, cacheMode = CacheMode.GET, flushMode = FlushMode.MANUAL)
     public List<User> getAll(@Auth Credentials credentials) {
@@ -47,13 +47,16 @@ public class UserResource extends AbstractAuthResource<User> {
     }
 
     /**
-     * Returns a single {@link User} related with the path and matches with the given id
+     * Returns a single User matches with the given id.
+     * <p>
+     * Status Code:
+     * Not Found  404
      *
-     * @param credentials Auto fill by {@link Auth} annotation for authentication.
-     * @param id          This is  the oid of {@link User}
-     * @return a single {@link User} related with the path and matches with the given id
+     * @param credentials injected by {@link Auth} annotation for authentication.
+     * @param id          This is the oid of {@link User}
+     * @return a {@link User} resource matches with the given id.
      */
-    @RobeService(group = "User", description = "Returns a single User related with the path and matches with the given id")
+    @RobeService(group = "User", description = "Returns a User resource matches with the given id.")
     @Path("{id}")
     @GET
     @UnitOfWork(readOnly = true, cacheMode = CacheMode.GET, flushMode = FlushMode.MANUAL)
@@ -66,13 +69,13 @@ public class UserResource extends AbstractAuthResource<User> {
     }
 
     /**
-     * Creates a single {@link User} related with the path.
+     * Create as a {@link User} resource.
      *
-     * @param credentials Auto fill by {@link Auth} annotation for authentication.
-     * @param model       This is the one model of {@link User}
-     * @return Creates a single {@link User} related with the path
+     * @param credentials injected by {@link Auth} annotation for authentication.
+     * @param model       data of {@link User}
+     * @return Create as a {@link User} resource.
      */
-    @RobeService(group = "User", description = "Creates a single User related with the path")
+    @RobeService(group = "User", description = "Create as a User resource.")
     @POST
     @UnitOfWork
     public User create(@Auth Credentials credentials, @Valid User model) {
@@ -80,14 +83,18 @@ public class UserResource extends AbstractAuthResource<User> {
     }
 
     /**
-     * Updates a single {@link User} related with the path and matches with the given id. Payload holds the whole data.
+     * Updates a single {@link User} matches with the given id.
+     * <p>
+     * Status Code:
+     * Not Found  404
+     * Not Matches 412
      *
-     * @param credentials Auto fill by {@link Auth} annotation for authentication.
-     * @param id          This is  the oid of {@link User}
-     * @param model       This is the one model of {@link User}
-     * @return Updates a single {@link User} related with the path and matches with the given id.
+     * @param credentials injected by {@link Auth} annotation for authentication.
+     * @param id          This is the oid of {@link User}
+     * @param model       data of {@link User}
+     * @return Updates a single {@link User} matches with the given id.
      */
-    @RobeService(group = "User", description = "Updates a single User related with the path and matches with the given id.")
+    @RobeService(group = "User", description = "Updates a single {@link User} matches with the given id.")
     @PUT
     @UnitOfWork
     @Path("{id}")
@@ -105,14 +112,16 @@ public class UserResource extends AbstractAuthResource<User> {
     }
 
     /**
-     * Updates a single {@link User} related with the path and matches with the given id.
-     * Payload will only contains update data.
-     * Version of the {@link User} can be available at ETag in an If-Match header.
+     * Updates a single {@link User} matches with the given id.
+     * <p>
+     * Status Code:
+     * Not Found  404
+     * Not Matches 412
      *
-     * @param credentials Auto fill by {@link Auth} annotation for authentication.
-     * @param id          This is  the oid of {@link User}
-     * @param model       This is the one model of {@link User}
-     * @return Updates a single {@link User} related with the path and matches with the given id.
+     * @param credentials injected by {@link Auth} annotation for authentication.
+     * @param id          This is the oid of {@link User}
+     * @param model       data of {@link User}
+     * @return Updates a single {@link User} matches with the given id.
      */
     @RobeService(group = "User", description = "Updates a single User related with the path and matches with the given id.")
     @PATCH
@@ -131,14 +140,18 @@ public class UserResource extends AbstractAuthResource<User> {
     }
 
     /**
-     * Delete a single {@link User} for the related path.
+     * Deletes a single {@link User} matches with the given id.
+     * <p>
+     * Status Code:
+     * Not Found  404
+     * Not Matches 412
      *
-     * @param credentials Auto fill by {@link Auth} annotation for authentication.
-     * @param id          This is  the oid of {@link User}
-     * @param model       This is the one model of {@link User}
-     * @return deletes a single {@link User} for the related path.
+     * @param credentials injected by {@link Auth} annotation for authentication.
+     * @param id          This is the oid of {@link User}
+     * @param model       data of {@link User}
+     * @return delete a single {@link User} matches with the given id.
      */
-    @RobeService(group = "User", description = "Delete a single User for the related path")
+    @RobeService(group = "User", description = "Deletes a single User matches with the given id.")
     @DELETE
     @UnitOfWork
     @Path("{id}")
