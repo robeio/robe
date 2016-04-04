@@ -177,7 +177,7 @@ public class InitializeCommand<T extends RobeConfiguration> extends EnvironmentC
         systemLanguageEN.setName("İngilizce");
         session.persist(systemLanguageEN);
 
-        LOGGER.info("Createting Menu and permissions");
+        LOGGER.info("Creating Menu and Permissions");
         Menu root = new Menu();
         root.setPath("root");
         root.setIndex(1);
