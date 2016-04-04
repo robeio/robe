@@ -7,6 +7,7 @@ import io.dropwizard.jersey.PATCH;
 import io.robe.admin.hibernate.dao.PermissionDao;
 import io.robe.admin.hibernate.entity.Permission;
 import io.robe.auth.Credentials;
+import io.robe.common.service.RobeService;
 import io.robe.common.utils.FieldReflection;
 import org.hibernate.FlushMode;
 
@@ -26,12 +27,30 @@ public class PermissionResource {
     @Inject
     private PermissionDao permissionDao;
 
+    /**
+     * Return all {@link Permission}s as a collection.
+     *
+     * @param credentials Injected by @{@link Auth} annotation for authentication.
+     * @return all @{@link Permission}s as a collection.
+     */
+    @RobeService(group = "Permission", description = "Return all permissions as a collection.")
     @GET
     @UnitOfWork(readOnly = true, cacheMode = GET, flushMode = FlushMode.MANUAL)
-    public List<Permission> getAll() {
+    public List<Permission> getAll(@Auth Credentials credentials) {
         return permissionDao.findAll(Permission.class);
     }
 
+    /**
+     * Returns a {@link Permission} resource with the given id
+     * <p>
+     * Status Code:
+     * Not Found  404
+     *
+     * @param credentials Injected by @{@link Auth} annotation for authentication.
+     * @param id          This is  the oid of {@link Permission}
+     * @return a @{@link Permission} resource macthes with the given id.
+     */
+    @RobeService(group = "Permission", description = "Returns a permission resource with the given id")
     @Path("{id}")
     @GET
     @UnitOfWork(readOnly = true, cacheMode = GET, flushMode = FlushMode.MANUAL)
@@ -43,12 +62,37 @@ public class PermissionResource {
         return entity;
     }
 
+    /**
+     * Creates a {@link Permission} resource.
+     * <p>
+     * Status Code:
+     * Not Found  404
+     * Not Matches 412
+     *
+     * @param credentials Injected by @{@link Auth} annotation for authentication.
+     * @param model       Data of {@link Permission}
+     * @return Creates a @{@link Permission} resource.
+     */
+    @RobeService(group = "Permission", description = "Creates a permission resource.")
     @POST
     @UnitOfWork
     public Permission create(@Auth Credentials credentials, @Valid Permission model) {
         return permissionDao.create(model);
     }
 
+    /**
+     * Updates a {@link Permission} resource matches with the given id.
+     * <p>
+     * Status Code:
+     * Not Found  404
+     * Not Matches 412
+     *
+     * @param credentials Injected by @{@link Auth} annotation for authentication.
+     * @param id          This is  the oid of {@link Permission}
+     * @param model       Data of {@link Permission}
+     * @return Updates a @{@link Permission} resource matches with the given id.
+     */
+    @RobeService(group = "Permission", description = "Updates a permission resource matches with the given id.")
     @Path("{id}")
     @PUT
     @UnitOfWork
@@ -63,6 +107,19 @@ public class PermissionResource {
         return permissionDao.update(model);
     }
 
+    /**
+     * Updates a {@link Permission} resource matches with the given id.
+     * <p>
+     * Status Code:
+     * Not Found  404
+     * Not Matches 412
+     *
+     * @param credentials Injected by @{@link Auth} annotation for authentication.
+     * @param id          This is  the oid of {@link Permission}
+     * @param model       Data of {@link Permission}
+     * @return Updates a @{@link Permission} resource matches with the given id.
+     */
+    @RobeService(group = "Permission", description = "Updates a permission resource matches with the given id.")
     @PATCH
     @UnitOfWork
     @Path("{id}")
@@ -77,6 +134,19 @@ public class PermissionResource {
         return permissionDao.update(model);
     }
 
+    /**
+     * Deletes a {@link Permission} resource matches with the given id.
+     * <p>
+     * Status Code:
+     * Not Found  404
+     * Not Matches 412
+     *
+     * @param credentials Injected by @{@link Auth} annotation for authentication.
+     * @param id          This is  the oid of {@link Permission}
+     * @param model       Data of {@link Permission}
+     * @return deletes a @{@link Permission} resource matches with the given id.
+     */
+    @RobeService(group = "Permission", description = "Deletes a permission resource matches with the given id.")
     @Path("{id}")
     @DELETE
     @UnitOfWork
