@@ -8,6 +8,7 @@ import java.util.Date;
 @Entity
 @Table
 public class ActionLog extends BaseEntity {
+
     @Column(nullable = false, length = 50)
     private String actionType;
 
@@ -15,10 +16,10 @@ public class ActionLog extends BaseEntity {
     @Column(nullable = false)
     private Date actionTime = new Date();
 
-    @Column(nullable = true, length = 255)
+    @Column
     private String description;
 
-    @Column(nullable = true)
+    @Column
     @Lob
     private String additionalData;
 

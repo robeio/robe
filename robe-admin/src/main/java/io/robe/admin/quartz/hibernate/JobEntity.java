@@ -1,19 +1,14 @@
 package io.robe.admin.quartz.hibernate;
 
 import io.robe.hibernate.entity.BaseEntity;
-import io.robe.quartz.common.JobInfo;
-import io.robe.quartz.common.TriggerInfo;
 import org.quartz.Job;
 
 import javax.persistence.Entity;
 import javax.persistence.Table;
-import javax.persistence.Transient;
-import java.util.ArrayList;
-import java.util.List;
 
 @Entity
 @Table
-public class JobEntity extends BaseEntity implements JobInfo {
+public class JobEntity extends BaseEntity {
 
     private String name;
 
@@ -21,10 +16,6 @@ public class JobEntity extends BaseEntity implements JobInfo {
 
     private String description;
 
-    @Transient
-    private List<TriggerInfo> triggers = new ArrayList<>();
-
-    @Override
     public String getName() {
         return name;
     }
@@ -33,7 +24,6 @@ public class JobEntity extends BaseEntity implements JobInfo {
         this.name = name;
     }
 
-    @Override
     public String getDescription() {
         return description;
     }
@@ -42,18 +32,7 @@ public class JobEntity extends BaseEntity implements JobInfo {
         this.description = description;
     }
 
-    @Override
-    public List<TriggerInfo> getTriggers() {
-        return triggers;
-    }
-
-    public void setTriggers(List<TriggerInfo> triggers) {
-        this.triggers = triggers;
-    }
-
-    @Override
     public Class<? extends Job> getJobClass() {
-
         return jobClass;
     }
 

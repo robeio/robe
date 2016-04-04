@@ -9,18 +9,11 @@ import javax.persistence.*;
 @Table
 public class MailTemplate extends BaseEntity {
 
-    public enum Type {
-        TR,
-        EN;
-    }
-
-    @Column(name = "code", nullable = true, length = 32)
+    @Column(name = "code", length = 32)
     private String code;
-
     @Enumerated(EnumType.STRING)
     @Column(name = "lang", nullable = false)
     private Type lang;
-
     @Column(name = "mailTemplate", nullable = false)
     @Lob
     private char[] template;
@@ -47,5 +40,10 @@ public class MailTemplate extends BaseEntity {
 
     public void setTemplate(char[] template) {
         this.template = template;
+    }
+
+    public enum Type {
+        TR,
+        EN;
     }
 }

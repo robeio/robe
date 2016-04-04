@@ -1,5 +1,6 @@
 package io.robe.admin.quartz.hibernate;
 
+import io.robe.admin.dto.JobEntityDTO;
 import io.robe.hibernate.RobeHibernateBundle;
 import io.robe.quartz.common.JobInfo;
 import io.robe.quartz.common.JobProvider;
@@ -20,11 +21,12 @@ public class HibernateJobProvider extends JobProvider {
         if (quartzJob == null)
             return null;
 
-
         List<TriggerInfo> triggerEntities = session.createCriteria(TriggerEntity.class).add(Restrictions.eq("jobOid", quartzJob.getOid())).list();
         session.close();
 
-        quartzJob.setTriggers(triggerEntities);
+        JobEntityDTO dto = new JobEntityDTO(quartzJob);
+
+        dto.setTriggers(triggerEntities);
 
         Iterator<TriggerInfo> iterator = triggerEntities.iterator();
 
@@ -40,6 +42,6 @@ public class HibernateJobProvider extends JobProvider {
             }
         }
 
-        return quartzJob;
+        return dto;
     }
 }

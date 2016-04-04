@@ -7,22 +7,16 @@ import io.robe.hibernate.entity.BaseEntity;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Table;
-import javax.persistence.Transient;
-import java.util.ArrayList;
-import java.util.List;
 
 @Entity
 @Table
 public class Role extends BaseEntity implements RoleEntry {
 
-    @Column(length = 32, unique = true,nullable = false)
+    @Column(length = 32, unique = true, nullable = false)
     private String code;
 
-    @Column(length = 50,nullable = false)
+    @Column(length = 50, nullable = false)
     private String name;
-
-    @Transient
-    private List<Role> roles = new ArrayList<>();
 
     public String getName() {
         return name;
@@ -38,14 +32,6 @@ public class Role extends BaseEntity implements RoleEntry {
 
     public void setCode(String code) {
         this.code = code;
-    }
-
-    public List<Role> getRoles() {
-        return roles;
-    }
-
-    public void setRoles(List<Role> roles) {
-        this.roles = roles;
     }
 
     @JsonIgnore
