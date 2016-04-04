@@ -200,6 +200,7 @@ public class MenuResource {
         if (entity == null) {
             throw new WebApplicationException(Response.status(404).build());
         }
+        FieldReflection.mergeRight(model, entity);
         return menuDao.update(model);
     }
 
