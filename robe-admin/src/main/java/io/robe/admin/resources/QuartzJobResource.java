@@ -7,6 +7,7 @@ import io.dropwizard.jersey.PATCH;
 import io.robe.admin.hibernate.dao.QuartzJobDao;
 import io.robe.admin.quartz.hibernate.JobEntity;
 import io.robe.auth.Credentials;
+import io.robe.common.service.RobeService;
 import io.robe.common.utils.FieldReflection;
 import org.hibernate.FlushMode;
 
@@ -26,12 +27,30 @@ public class QuartzJobResource {
     @Inject
     private QuartzJobDao quartzJobDao;
 
+    /**
+     * Return all JobEntity as a collection
+     *
+     * @param credentials auto fill by {@link Auth} annotation for authentication.
+     * @return all {@link JobEntity} as a collection
+     */
+    @RobeService(group = "JobEntity", description = "Returns all JobEntity as a collection.")
     @GET
     @UnitOfWork(readOnly = true, cacheMode = GET, flushMode = FlushMode.MANUAL)
     public List<JobEntity> getAll(@Auth Credentials credentials) {
         return quartzJobDao.findAll(JobEntity.class);
     }
 
+    /**
+     * Return a JobEntity resource  with the matches given id.
+     * <p>
+     * Status Code:
+     * Not Found  404
+     *
+     * @param credentials auto fill by @{@link Auth} annotation for authentication.
+     * @param id          This is  the oid of {@link JobEntity}
+     * @return a  {@link JobEntity} resource with the matches given id.
+     */
+    @RobeService(group = "JobEntity", description = "Returns a JobEntity resource with the matches given id.")
     @Path("{id}")
     @GET
     @UnitOfWork(readOnly = true, cacheMode = GET, flushMode = FlushMode.MANUAL)
@@ -43,12 +62,33 @@ public class QuartzJobResource {
         return entity;
     }
 
+    /**
+     * Create a {@link JobEntity} resource.
+     *
+     * @param credentials auto fill by @{@link Auth} annotation for authentication.
+     * @param model       This is the one model of {@link JobEntity}
+     * @return create a {@link JobEntity} resource.
+     */
+    @RobeService(group = "JobEntity", description = "Create a JobEntity resource.")
     @POST
     @UnitOfWork
     public JobEntity create(@Auth Credentials credentials, @Valid JobEntity model) {
         return quartzJobDao.create(model);
     }
 
+    /**
+     * Update a JobEntity resource  with the matches given id.
+     * <p>
+     * Status Code:
+     * Not Found  404
+     * Not Matches 412
+     *
+     * @param credentials auto fill by @{@link Auth} annotation for authentication.
+     * @param id          This is  the oid of {@link JobEntity}
+     * @param model       This is the one model of {@link JobEntity}
+     * @return Update a  {@link JobEntity} resource with the matches given id.
+     */
+    @RobeService(group = "JobEntity", description = "Update a JobEntity resource with the matches given id.")
     @PUT
     @UnitOfWork
     @Path("{id}")
@@ -63,6 +103,19 @@ public class QuartzJobResource {
         return quartzJobDao.update(model);
     }
 
+    /**
+     * Update a JobEntity resource with the matches given id.
+     * <p>
+     * Status Code:
+     * Not Found  404
+     * Not Matches 412
+     *
+     * @param credentials auto fill by @{@link Auth} annotation for authentication.
+     * @param id          This is  the oid of {@link JobEntity}
+     * @param model       This is the one model of {@link JobEntity}
+     * @return Updates a  {@link JobEntity} resource with the matches given id.
+     */
+    @RobeService(group = "JobEntity", description = "Update a JobEntity resource with the matches given id.")
     @PATCH
     @UnitOfWork
     @Path("{id}")
@@ -77,6 +130,19 @@ public class QuartzJobResource {
         return quartzJobDao.update(model);
     }
 
+    /**
+     * Delete a JobEntity resource  with the matches given id.
+     * <p>
+     * Status Code:
+     * Not Found  404
+     * Not Matches 412
+     *
+     * @param credentials auto fill by @{@link Auth} annotation for authentication.
+     * @param id          This is  the oid of {@link JobEntity}
+     * @param model       This is the one model of {@link JobEntity}
+     * @return Delete a  {@link JobEntity} resource  with the matches given id.
+     */
+    @RobeService(group = "JobEntity", description = "Delete a JobEntity resource with the matches given id.")
     @DELETE
     @UnitOfWork
     @Path("{id}")

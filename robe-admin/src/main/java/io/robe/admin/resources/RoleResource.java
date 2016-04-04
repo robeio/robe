@@ -28,12 +28,12 @@ public class RoleResource {
     private RoleDao roleDao;
 
     /**
-     * Returns all Role as a collection with the related path.
+     * Return all Role as a collection
      *
      * @param credentials auto fill by {@link Auth} annotation for authentication.
      * @return all {@link Role} as a collection
      */
-    @RobeService(group = "Role", description = "Returns all Role as a collection with the related path.")
+    @RobeService(group = "Role", description = "Returns all Role as a collection.")
     @GET
     @UnitOfWork(readOnly = true, cacheMode = GET, flushMode = FlushMode.MANUAL)
     public List<Role> getAll(@Auth Credentials credentials) {
@@ -41,13 +41,16 @@ public class RoleResource {
     }
 
     /**
-     * Return a single Role related with the path and matches with the given id.
+     * Return a Role resource  with the matches given id.
+     * <p>
+     * Status Code:
+     * Not Found  404
      *
      * @param credentials auto fill by @{@link Auth} annotation for authentication.
      * @param id          This is  the oid of {@link Role}
-     * @return a single {@link Role} related with the path and matches with the given id.
+     * @return a  {@link Role} resource with the matches given id.
      */
-    @RobeService(group = "Role", description = "Returns a single Role related with the path and matches with the given id.")
+    @RobeService(group = "Role", description = "Returns a Role resource with the matches given id.")
     @Path("{id}")
     @GET
     @UnitOfWork(readOnly = true, cacheMode = GET, flushMode = FlushMode.MANUAL)
@@ -60,13 +63,13 @@ public class RoleResource {
     }
 
     /**
-     * Creates a single  related with the path and returns given Role path link at header Location=example/{id]
+     * Create a {@link Role} resource.
      *
      * @param credentials auto fill by @{@link Auth} annotation for authentication.
      * @param model       This is the one model of {@link Role}
-     * @return Creates a single  related with the path and returns given {@link Role} path link at header Location=example/{id]
+     * @return create a {@link Role} resource.
      */
-    @RobeService(group = "Role", description = "Creates a single  related with the path and returns given Role path link at header Location=example/{id]")
+    @RobeService(group = "Role", description = "Create a Role resource.")
     @POST
     @UnitOfWork
     public Role create(@Auth Credentials credentials, @Valid Role model) {
@@ -74,14 +77,18 @@ public class RoleResource {
     }
 
     /**
-     * Updates a single Role related with the path and matches with the given id. Payload holds the whole data.
+     * Update a Role resource  with the matches given id.
+     * <p>
+     * Status Code:
+     * Not Found  404
+     * Not Matches 412
      *
      * @param credentials auto fill by @{@link Auth} annotation for authentication.
      * @param id          This is  the oid of {@link Role}
      * @param model       This is the one model of {@link Role}
-     * @return Updates a single {@link Role} related with the path and matches with the given id.
+     * @return Update a  {@link Role} resource with the matches given id.
      */
-    @RobeService(group = "Role", description = "Updates a single Role related with the path and matches with the given id.")
+    @RobeService(group = "Role", description = "Update a Role resource with the matches given id.")
     @Path("{id}")
     @PUT
     @UnitOfWork
@@ -100,14 +107,18 @@ public class RoleResource {
     }
 
     /**
-     * Updates a single Role related with the path and matches with the given id. Payload will only containe update data . Version of the Role can be available at ETag in an If-Match header.
+     * Update a Role resource with the matches given id.
+     * <p>
+     * Status Code:
+     * Not Found  404
+     * Not Matches 412
      *
      * @param credentials auto fill by @{@link Auth} annotation for authentication.
      * @param id          This is  the oid of {@link Role}
      * @param model       This is the one model of {@link Role}
-     * @return Updates a single {@link Role} related with the path and matches with the given id.
+     * @return Updates a  {@link Role} resource with the matches given id.
      */
-    @RobeService(group = "Role", description = "Updates a single Role related with the path and matches with the given id.")
+    @RobeService(group = "Role", description = "Update a Role resource with the matches given id.")
     @Path("{id}")
     @PATCH
     @UnitOfWork
@@ -125,14 +136,18 @@ public class RoleResource {
     }
 
     /**
-     * Deletes a single Role for the related path and returns given Role path link at header Location=example/{id].
+     * Delete a Role resource  with the matches given id.
+     * <p>
+     * Status Code:
+     * Not Found  404
+     * Not Matches 412
      *
      * @param credentials auto fill by @{@link Auth} annotation for authentication.
      * @param id          This is  the oid of {@link Role}
      * @param model       This is the one model of {@link Role}
-     * @return Deletes a single {@link Role} for the related path.
+     * @return Delete a  {@link Role} resource  with the matches given id.
      */
-    @RobeService(group = "Role", description = "Deletes a single Role for the related path.")
+    @RobeService(group = "Role", description = "Delete a Role resource with the matches given id.")
     @Path("{id}")
     @DELETE
     @UnitOfWork
