@@ -5,7 +5,9 @@ import io.dropwizard.auth.Auth;
 import io.dropwizard.hibernate.UnitOfWork;
 import io.dropwizard.jersey.PATCH;
 import io.robe.admin.hibernate.dao.QuartzJobDao;
+import io.robe.admin.hibernate.dao.QuartzTriggerDao;
 import io.robe.admin.quartz.hibernate.JobEntity;
+import io.robe.admin.quartz.hibernate.TriggerEntity;
 import io.robe.auth.Credentials;
 import io.robe.common.service.RobeService;
 import io.robe.common.utils.FieldReflection;
@@ -24,8 +26,28 @@ import static org.hibernate.CacheMode.GET;
 @Produces(MediaType.APPLICATION_JSON)
 public class QuartzJobResource {
 
+
+    @Inject
+    private QuartzTriggerDao quartzTriggerDao;
+
     @Inject
     private QuartzJobDao quartzJobDao;
+
+
+    /**
+     * Returns all Trigger as a collection with the matches given job id.
+     *
+     * @param credentials auto fill by {@link Auth} annotation for authentication.
+     * @return all {@link TriggerEntity} as a collection
+     */
+    @RobeService(group = "JobEntity", description = "Returns all Trigger as a collection with the matches given job id.")
+    @GET
+    @Path("{id}/triggers")
+    @UnitOfWork(readOnly = true, cacheMode = GET, flushMode = FlushMode.MANUAL)
+    public List<TriggerEntity> getJobTriggers(@Auth Credentials credentials, @PathParam("id") String id) {
+        return quartzTriggerDao.findByJobOid(id);
+    }
+
 
     /**
      * Return all JobEntity as a collection

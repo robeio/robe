@@ -98,6 +98,7 @@ public class TriggerResource {
             throw new WebApplicationException(Response.status(412).build());
         }
         TriggerEntity entity = quartzTriggerDao.findById(id);
+        quartzTriggerDao.detach(entity);
         if (entity == null) {
             throw new WebApplicationException(Response.status(404).build());
         }
@@ -125,6 +126,7 @@ public class TriggerResource {
         if (id.equals(model.getOid()))
             throw new WebApplicationException(Response.status(412).build());
         TriggerEntity dest = quartzTriggerDao.findById(id);
+        quartzTriggerDao.detach(dest);
         if (dest == null) {
             throw new WebApplicationException(Response.status(404).build());
         }
