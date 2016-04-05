@@ -1,6 +1,8 @@
 package io.robe.admin.hibernate.entity;
 
 import io.robe.hibernate.entity.BaseEntity;
+import org.hibernate.validator.constraints.Length;
+import org.hibernate.validator.constraints.NotEmpty;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -10,21 +12,29 @@ import javax.persistence.Table;
 @Table
 public class Menu extends BaseEntity {
 
+    @Length(max = 50)
+    @NotEmpty
     @Column(length = 50, nullable = false)
     private String text;
 
+    @Length(max = 100)
+    @NotEmpty
     @Column(length = 100, nullable = false)
     private String path;
+
 
     @Column(name = "itemIndex")
     private int index;
 
+    @Length(max = 32)
     @Column(length = 32)
     private String parentOid;
 
+    @Length(max = 50)
     @Column(length = 50)
     private String module;
 
+    @Length(max = 30)
     @Column(length = 30)
     private String icon;
 
