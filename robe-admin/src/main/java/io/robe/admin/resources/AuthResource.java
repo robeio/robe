@@ -118,7 +118,6 @@ public class AuthResource extends AbstractAuthResource<User> {
         actionLogDao.create(login);
     }
 
-
     /**
      * Log out
      *
