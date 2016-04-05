@@ -22,7 +22,7 @@ public class Menu extends BaseEntity {
     @Column(length = 32)
     private String parentOid;
 
-    @Column(length = 50, nullable = false)
+    @Column(length = 50)
     private String module;
 
     @Column(length = 30)
