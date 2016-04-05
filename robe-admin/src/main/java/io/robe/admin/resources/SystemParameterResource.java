@@ -6,7 +6,6 @@ import io.dropwizard.hibernate.UnitOfWork;
 import io.dropwizard.jersey.PATCH;
 import io.robe.admin.hibernate.dao.SystemParameterDao;
 import io.robe.admin.hibernate.entity.SystemParameter;
-import io.robe.admin.hibernate.entity.User;
 import io.robe.auth.Credentials;
 import io.robe.common.service.RobeService;
 import io.robe.common.utils.FieldReflection;
@@ -82,7 +81,7 @@ public class SystemParameterResource {
     @RobeService(group = "SystemParameter", description = "Update SystemParameter resource and matches with the given id.")
     @Path("{id}")
     @PUT
-    @UnitOfWork(flushMode = FlushMode.MANUAL)
+    @UnitOfWork
     public SystemParameter update(@Auth Credentials credentials, @PathParam("id") String id, @Valid SystemParameter model) {
         if (!id.equals(model.getOid())) {
             throw new WebApplicationException(Response.status(412).build());
