@@ -1,6 +1,8 @@
 package io.robe.admin.hibernate.entity;
 
 import io.robe.hibernate.entity.BaseEntity;
+import org.hibernate.validator.constraints.Length;
+import org.hibernate.validator.constraints.NotEmpty;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -10,8 +12,13 @@ import javax.persistence.Table;
 @Table
 public class SystemParameter extends BaseEntity {
 
+    @Length(min = 1, max = 32)
+    @NotEmpty
     @Column(unique = true,nullable = false, name = "PARAMETER_KEY",length = 32)
     private String key;
+
+    @Length(min = 2, max = 32)
+    @NotEmpty
     @Column(name = "PARAMETER_VALUE",nullable = false, length = 32)
     private String value;
 

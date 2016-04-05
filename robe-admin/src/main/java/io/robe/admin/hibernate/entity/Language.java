@@ -1,6 +1,8 @@
 package io.robe.admin.hibernate.entity;
 
 import io.robe.hibernate.entity.BaseEntity;
+import org.hibernate.validator.constraints.Length;
+import org.hibernate.validator.constraints.NotEmpty;
 
 import javax.persistence.*;
 
@@ -8,15 +10,12 @@ import javax.persistence.*;
 @Table
 public class Language extends BaseEntity {
 
-    public enum Type {
-        TR,
-        EN;
-    }
-
+    @NotEmpty
     @Enumerated(EnumType.STRING)
     @Column(name = "code", nullable = false)
     private Type code;
-
+    @Length(min = 2, max = 30)
+    @NotEmpty
     @Column(name = "name", nullable = false,length = 30)
     private String name;
 
@@ -34,5 +33,10 @@ public class Language extends BaseEntity {
 
     public void setCode(Type lang) {
         this.code = lang;
+    }
+
+    public enum Type {
+        TR,
+        EN;
     }
 }
