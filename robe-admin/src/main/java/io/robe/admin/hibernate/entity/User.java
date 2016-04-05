@@ -4,28 +4,43 @@ package io.robe.admin.hibernate.entity;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import io.robe.auth.data.entry.UserEntry;
 import io.robe.hibernate.entity.BaseEntity;
+import org.hibernate.validator.constraints.Length;
+import org.hibernate.validator.constraints.NotEmpty;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Table;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Pattern;
 import java.util.Date;
 
 @Entity
 @Table
 public class User extends BaseEntity implements UserEntry {
 
+    @Length(min = 5, max = 50)
+    @NotEmpty
+    @Pattern(regexp = "\\S+@\\S+\\.\\S+")
     @Column(unique = true, length = 50)
     private String email;
 
+    @Length(min = 3, max = 50)
+    @NotEmpty
     @Column(length = 50, nullable = false)
     private String name;
 
+
+    @NotEmpty
+    @Length(min = 2, max = 50)
     @Column(length = 50, nullable = false)
     private String surname;
 
+    @Length(min = 64, max = 64)
+    @NotEmpty
     @Column(length = 64, nullable = false)
     private String password;
 
+    @NotNull
     @Column(nullable = false)
     private boolean active;
 
@@ -38,6 +53,8 @@ public class User extends BaseEntity implements UserEntry {
     @Column
     private Date lastLogoutTime;
 
+    @Length(min = 32, max = 32)
+    @NotEmpty
     @Column(length = 32)
     private String roleOid;
 
