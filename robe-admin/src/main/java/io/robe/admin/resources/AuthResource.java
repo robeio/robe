@@ -29,6 +29,8 @@ import javax.ws.rs.core.Response;
 import java.util.HashMap;
 import java.util.Map;
 
+import static org.hibernate.CacheMode.GET;
+
 
 /**
  * Authentication Resource to provide standard Authentication services like login,change password....
@@ -139,4 +141,39 @@ public class AuthResource extends AbstractAuthResource<User> {
             return user.get();
         }
     }
+
+    @Path("profile")
+    @GET
+    @UnitOfWork(readOnly = true, cacheMode = GET, flushMode = FlushMode.MANUAL)
+    public User getProfile(@Auth Credentials credentials) {
+        Optional<User> user = userDao.findByUsername(credentials.getUsername());
+        if (!user.isPresent()) {
+            throw new WebApplicationException(Response.Status.UNAUTHORIZED);
+        } else
+            return user.get();
+    }
+
+    @POST
+    @UnitOfWork
+    @Path("password")
+    @Timed
+    public Response changePassword(@Context HttpServletRequest request, @Auth Credentials credentials, Map<String, String> credential) {
+
+        Optional<User> user = userDao.findByUsername(credentials.getUsername());
+        if (!user.isPresent()) {
+            throw new WebApplicationException(Response.Status.NOT_FOUND);
+        } else if (user.get().getPassword().equals(credential.get("password"))) {
+            if (credential.get("newpassword").equals(credential.get("newpasswordrpt"))) {
+                user.get().setPassword(credential.get("newpassword"));
+                return Response.status(Response.Status.OK).entity("Your password has been updated").build();
+            } else {
+                return Response.status(Response.Status.PRECONDITION_FAILED).entity("Your new password does not match.").build();
+            }
+
+        } else {
+            return Response.status(Response.Status.PRECONDITION_FAILED).entity("Your password is incorrect.").build();
+        }
+
+    }
+
 }
