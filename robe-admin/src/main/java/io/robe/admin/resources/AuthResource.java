@@ -141,6 +141,17 @@ public class AuthResource extends AbstractAuthResource<User> {
         }
     }
 
+
+    /**
+     * User Information Returns
+     * <p>
+     * Status Code:
+     * UNAUTHORIZED no have authentication.
+     *
+     * @param credentials injected by {@link Auth} annotation for authentication.
+     * @return {@link User}
+     * @throws Exception for not found user
+     */
     @Path("profile")
     @GET
     @UnitOfWork(readOnly = true, cacheMode = GET, flushMode = FlushMode.MANUAL)
@@ -152,18 +163,31 @@ public class AuthResource extends AbstractAuthResource<User> {
             return user.get();
     }
 
+    /**
+     * User Change Password
+     * <p>
+     * Status Code:
+     * NOT_FOUND not found user.
+     * PRECONDITION_FAILED change passsword error.
+     *
+     * @param request     HttpServletRequest
+     * @param passwords   password(SHA256),newpassword(SHA256) and newpasswordrpt(SHA256)
+     * @param credentials injected by {@link Auth} annotation for authentication.
+     * @return {@link Response}
+     * @throws Exception for not found user
+     */
     @POST
     @UnitOfWork
     @Path("password")
     @Timed
-    public Response changePassword(@Context HttpServletRequest request, @Auth Credentials credentials, Map<String, String> credential) {
+    public Response changePassword(@Context HttpServletRequest request, @Auth Credentials credentials, Map<String, String> passwords) {
 
         Optional<User> user = userDao.findByUsername(credentials.getUsername());
         if (!user.isPresent()) {
             throw new WebApplicationException(Response.Status.NOT_FOUND);
-        } else if (user.get().getPassword().equals(credential.get("password"))) {
-            if (credential.get("newpassword").equals(credential.get("newpasswordrpt"))) {
-                user.get().setPassword(credential.get("newpassword"));
+        } else if (user.get().getPassword().equals(passwords.get("password"))) {
+            if (passwords.get("newpassword").equals(passwords.get("newpasswordrpt"))) {
+                user.get().setPassword(passwords.get("newpassword"));
                 return Response.status(Response.Status.OK).entity("Your password has been updated").build();
             } else {
                 return Response.status(Response.Status.PRECONDITION_FAILED).entity("Your new password does not match.").build();
