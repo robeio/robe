@@ -1,6 +1,8 @@
 package io.robe.admin.hibernate.entity;
 
 import io.robe.hibernate.entity.BaseEntity;
+import org.hibernate.validator.constraints.Length;
+import org.hibernate.validator.constraints.NotEmpty;
 
 import javax.persistence.*;
 
@@ -9,11 +11,16 @@ import javax.persistence.*;
 @Table
 public class MailTemplate extends BaseEntity {
 
+    @Length(min = 1, max = 32)
     @Column(name = "code", length = 32)
     private String code;
+
+    @NotEmpty
     @Enumerated(EnumType.STRING)
     @Column(name = "lang", nullable = false)
     private Type lang;
+
+    @NotEmpty
     @Column(name = "mailTemplate", nullable = false)
     @Lob
     private char[] template;
