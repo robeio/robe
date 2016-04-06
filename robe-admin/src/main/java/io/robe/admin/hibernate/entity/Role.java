@@ -14,12 +14,12 @@ import javax.persistence.Table;
 @Table
 public class Role extends BaseEntity implements RoleEntry {
 
-    @Length(max = 32)
+    @Length(min = 2, max = 32)
     @NotEmpty
     @Column(length = 32, unique = true, nullable = false)
     private String code;
 
-    @Length(max = 50)
+    @Length(min = 3, max = 50)
     @NotEmpty
     @Column(length = 50, nullable = false)
     private String name;

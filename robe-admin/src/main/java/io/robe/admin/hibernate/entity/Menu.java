@@ -12,12 +12,12 @@ import javax.persistence.Table;
 @Table
 public class Menu extends BaseEntity {
 
-    @Length(max = 50)
+    @Length(min = 2, max = 50)
     @NotEmpty
     @Column(length = 50, nullable = false)
     private String text;
 
-    @Length(max = 100)
+    @Length(min =3, max = 100)
     @NotEmpty
     @Column(length = 100, nullable = false)
     private String path;
