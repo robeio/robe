@@ -12,7 +12,7 @@ import javax.validation.constraints.NotNull;
 @Table
 public class MailTemplate extends BaseEntity {
 
-    @Length(min = 1, max = 32)
+    @Length(max = 32)
     @Column(name = "code", length = 32)
     private String code;
 
