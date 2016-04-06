@@ -5,12 +5,13 @@ import org.hibernate.validator.constraints.Length;
 import org.hibernate.validator.constraints.NotEmpty;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotNull;
 
 @Entity(name = "Language")
 @Table
 public class Language extends BaseEntity {
 
-    @NotEmpty
+    @NotNull
     @Enumerated(EnumType.STRING)
     @Column(name = "code", nullable = false)
     private Type code;
