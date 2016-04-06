@@ -5,6 +5,7 @@ import org.hibernate.validator.constraints.Length;
 import org.hibernate.validator.constraints.NotEmpty;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotNull;
 
 
 @Entity
@@ -15,7 +16,7 @@ public class MailTemplate extends BaseEntity {
     @Column(name = "code", length = 32)
     private String code;
 
-    @NotEmpty
+    @NotNull
     @Enumerated(EnumType.STRING)
     @Column(name = "lang", nullable = false)
     private Type lang;
