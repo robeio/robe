@@ -33,15 +33,23 @@ public class InitializeCommand<T extends RobeConfiguration> extends EnvironmentC
     protected static String ADMIN = "Admin";
     protected RobeHibernateBundle hibernateBundle;
 
+
+    public InitializeCommand(Application<T> service, String name, String description) {
+        super(service, name, description);
+    }
+
     public InitializeCommand(Application<T> service, RobeHibernateBundle hibernateBundle) {
         this(service, "initialize", "Runs Hibernate and initialize required columns", hibernateBundle);
     }
 
     public InitializeCommand(Application<T> service, String name, String description, RobeHibernateBundle hibernateBundle) {
         super(service, name, description);
-        this.hibernateBundle = hibernateBundle;
+        setHibernateBundle(hibernateBundle);
     }
 
+    public void setHibernateBundle(RobeHibernateBundle hibernateBundle) {
+        this.hibernateBundle = hibernateBundle;
+    }
 
     @Override
     @UnitOfWork
