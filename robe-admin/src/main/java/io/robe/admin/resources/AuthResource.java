@@ -72,7 +72,7 @@ public class AuthResource extends AbstractAuthResource<User> {
     @UnitOfWork(flushMode = FlushMode.ALWAYS)
     @Path("login")
     @Timed
-    public Response login(@Context HttpServletRequest request, Map<String, String> credentials) throws Exception {
+        public Response login(@Context HttpServletRequest request, Map<String, String> credentials) throws Exception {
 
         Optional<User> user = userDao.findByUsername(credentials.get("username"));
         if (!user.isPresent()) {
@@ -186,8 +186,8 @@ public class AuthResource extends AbstractAuthResource<User> {
         if (!user.isPresent()) {
             throw new WebApplicationException(Response.Status.NOT_FOUND);
         } else if (user.get().getPassword().equals(passwords.get("password"))) {
-            if (passwords.get("newpassword").equals(passwords.get("newpasswordrpt"))) {
-                user.get().setPassword(passwords.get("newpassword"));
+            if (passwords.get("newPassword").equals(passwords.get("newPasswordRepart"))) {
+                user.get().setPassword(passwords.get("newPassword"));
                 return Response.status(Response.Status.OK).entity("Your password has been updated").build();
             } else {
                 return Response.status(Response.Status.PRECONDITION_FAILED).entity("Your new password does not match.").build();
