@@ -15,6 +15,8 @@ import io.robe.admin.hibernate.entity.Service;
 import io.robe.auth.Credentials;
 import io.robe.auth.token.BasicToken;
 import io.robe.common.service.RobeService;
+import io.robe.common.service.SearchParam;
+import io.robe.common.service.jersey.model.SearchModel;
 import io.robe.common.utils.FieldReflection;
 import org.hibernate.FlushMode;
 import org.json.JSONObject;
@@ -163,8 +165,8 @@ public class PermissionResource {
     @RobeService(group = "Permission", description = "Return all permissions as a collection.")
     @GET
     @UnitOfWork(readOnly = true, cacheMode = GET, flushMode = FlushMode.MANUAL)
-    public List<Permission> getAll(@Auth Credentials credentials) {
-        return permissionDao.findAll();
+    public List<Permission> getAll(@Auth Credentials credentials, @SearchParam SearchModel search) {
+        return permissionDao.findAll(search);
     }
 
     /**

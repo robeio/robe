@@ -9,6 +9,8 @@ import io.robe.admin.hibernate.entity.Service;
 import io.robe.auth.Credentials;
 import io.robe.auth.data.entry.ServiceEntry;
 import io.robe.common.service.RobeService;
+import io.robe.common.service.SearchParam;
+import io.robe.common.service.jersey.model.SearchModel;
 import io.robe.common.utils.FieldReflection;
 import io.robe.guice.GuiceBundle;
 import io.robe.guice.GuiceConfiguration;
@@ -43,8 +45,8 @@ public class ServiceResource {
     @RobeService(group = "Service", description = "Returns all Services as a collection.")
     @GET
     @UnitOfWork(readOnly = true, cacheMode = GET, flushMode = FlushMode.MANUAL)
-    public List<Service> getAll() {
-        return serviceDao.findAll();
+    public List<Service> getAll(@SearchParam SearchModel search) {
+        return serviceDao.findAll(search);
     }
 
     /**

@@ -11,6 +11,8 @@ import io.robe.admin.hibernate.dao.*;
 import io.robe.admin.hibernate.entity.*;
 import io.robe.auth.Credentials;
 import io.robe.common.service.RobeService;
+import io.robe.common.service.SearchParam;
+import io.robe.common.service.jersey.model.SearchModel;
 import io.robe.common.utils.FieldReflection;
 import org.hibernate.FlushMode;
 
@@ -52,8 +54,8 @@ public class MenuResource {
     @RobeService(group = "Menu", description = "Returns all Menu's as a collection.")
     @GET
     @UnitOfWork(readOnly = true, cacheMode = GET, flushMode = FlushMode.MANUAL)
-    public List<Menu> getAll(@Auth Credentials credentials) {
-        return menuDao.findAll();
+    public List<Menu> getAll(@Auth Credentials credentials, @SearchParam SearchModel search) {
+        return menuDao.findAll(search);
     }
 
 
