@@ -43,7 +43,7 @@ public class UserResource extends AbstractAuthResource<User> {
     @GET
     @UnitOfWork(readOnly = true, cacheMode = CacheMode.GET, flushMode = FlushMode.MANUAL)
     public List<User> getAll(@Auth Credentials credentials) {
-        return userDao.findAll(User.class);
+        return userDao.findAll();
     }
 
     /**

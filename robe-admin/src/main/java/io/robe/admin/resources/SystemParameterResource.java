@@ -30,6 +30,7 @@ public class SystemParameterResource {
 
     /**
      * Returns all {@link SystemParameter) as a collection.
+     *
      * @param credentials Injected by {@link Auth} annotation for authentication.
      * @return all {@link SystemParameter} as a collection.
      */
@@ -37,12 +38,14 @@ public class SystemParameterResource {
     @GET
     @UnitOfWork(readOnly = true, cacheMode = GET, flushMode = FlushMode.MANUAL)
     public List<SystemParameter> getAll(@Auth Credentials credentials) {
-        return systemParameterDao.findAll(SystemParameter.class);
+        return systemParameterDao.findAll();
     }
+
     /**
      * Return {@link SystemParameter) resource and matches with the given id.
+     *
      * @param credentials Injected by {@link Auth} annotation for authentication.
-     * @param id This is  the oid of {@link SystemParameter}
+     * @param id          This is  the oid of {@link SystemParameter}
      * @return {@link SystemParameter} resource matches with the given id.
      */
     @RobeService(group = "SystemParameter", description = "Return SystemParameter resource.")
@@ -60,8 +63,9 @@ public class SystemParameterResource {
 
     /**
      * Create {@link SystemParameter) resource.
+     *
      * @param credentials Injected by {@link Auth} annotation for authentication.
-     * @param model This is the one model of {@link SystemParameter}
+     * @param model       This is the one model of {@link SystemParameter}
      * @return Create {@link SystemParameter) resource and return given SystemParameter path link at header Location=example/{id].
      */
     @RobeService(group = "SystemParameter", description = "Create SystemParameter resource and return given SystemParameter path link at header Location=example/{id].")
@@ -73,9 +77,10 @@ public class SystemParameterResource {
 
     /**
      * Update {@link SystemParameter) resource and matches with the given id.
+     *
      * @param credentials Injected by {@link Auth} annotation for authentication.
-     * @param id This is  the oid of {@link SystemParameter}
-     * @param model This is the one model of {@link SystemParameter}
+     * @param id          This is  the oid of {@link SystemParameter}
+     * @param model       This is the one model of {@link SystemParameter}
      * @return Update {@link SystemParameter} resource and matches with the given id.
      */
     @RobeService(group = "SystemParameter", description = "Update SystemParameter resource and matches with the given id.")
@@ -96,9 +101,10 @@ public class SystemParameterResource {
 
     /**
      * Update {@link SystemParameter) resource.
+     *
      * @param credentials Injected by {@link Auth} annotation for authentication.
-     * @param id This is  the oid of {@link SystemParameter}
-     * @param model This is the one model of {@link SystemParameter}
+     * @param id          This is  the oid of {@link SystemParameter}
+     * @param model       This is the one model of {@link SystemParameter}
      * @return Update {@link SystemParameter) resource and matches with the given id.
      */
     @RobeService(group = "SystemParameter", description = "Update SystemParameter resource.")
@@ -120,9 +126,10 @@ public class SystemParameterResource {
 
     /**
      * Delete {@link SystemParameter) resource.
+     *
      * @param credentials Injected by {@link Auth} annotation for authentication.
-     * @param id This is  the oid of {@link SystemParameter}
-     * @param model This is the one model of {@link SystemParameter}
+     * @param id          This is  the oid of {@link SystemParameter}
+     * @param model       This is the one model of {@link SystemParameter}
      * @return Delete {@link SystemParameter) resource.
      */
     @RobeService(group = "SystemParameter", description = "Delete SystemParameter resource.")

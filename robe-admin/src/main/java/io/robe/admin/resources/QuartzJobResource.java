@@ -59,7 +59,7 @@ public class QuartzJobResource {
     @GET
     @UnitOfWork(readOnly = true, cacheMode = GET, flushMode = FlushMode.MANUAL)
     public List<JobEntity> getAll(@Auth Credentials credentials) {
-        return quartzJobDao.findAll(JobEntity.class);
+        return quartzJobDao.findAll();
     }
 
     /**

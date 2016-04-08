@@ -6,7 +6,6 @@ import io.dropwizard.hibernate.UnitOfWork;
 import io.dropwizard.jersey.PATCH;
 import io.robe.admin.hibernate.dao.LanguageDao;
 import io.robe.admin.hibernate.entity.Language;
-import io.robe.admin.hibernate.entity.SystemParameter;
 import io.robe.auth.Credentials;
 import io.robe.common.service.RobeService;
 import io.robe.common.utils.FieldReflection;
@@ -29,6 +28,7 @@ public class LanguageResource {
 
     /**
      * Returns all (@Link Language) as a collection.
+     *
      * @param credentials Injected by (@Link Auth) annotation for authentication.
      * @return all (@Link Language) as a collection.
      */
@@ -36,17 +36,17 @@ public class LanguageResource {
     @GET
     @UnitOfWork(readOnly = true, cacheMode = CacheMode.GET, flushMode = FlushMode.MANUAL)
     public List<Language> getAll(@Auth Credentials credentials) {
-        return languageDao.findAll(Language.class);
+        return languageDao.findAll();
     }
 
     /**
      * Return {@link Language ) resource and matches with the given id.
-     *  <p>
+     * <p>
      * Status Code:
      * Not Found  404
      *
      * @param credentials Injected by {@link Auth} annotation for authentication.
-     * @param id This is  the oid of {@link Language}
+     * @param id          This is  the oid of {@link Language}
      * @return {@link Language} resource matches with the given id.
      */
     @RobeService(group = "Language", description = "Return Language resource.")
@@ -64,8 +64,9 @@ public class LanguageResource {
 
     /**
      * Create {@link Language) resource and matches with the given id.
+     *
      * @param credentials Injected by {@link Auth} annotation for authentication.
-     * @param model This is the one model of {@link Language}
+     * @param model       This is the one model of {@link Language}
      * @return Create {@link Language) resource and return given Language path link at header Location=example/{id].
      */
     @RobeService(group = "Language", description = "Create Language resource and return given Language path link at header Location=example/{id].")
@@ -79,14 +80,14 @@ public class LanguageResource {
 
     /**
      * Update {@link Language) resource and matches with the given id.
-     *  <p>
+     * <p>
      * Status Code:
      * Not Found  404
      * Not Matches 412
      *
      * @param credentials Injected by {@link Auth} annotation for authentication.
-     * @param id This is  the oid of {@link Language}
-     * @param model This is the one model of {@link Language}
+     * @param id          This is  the oid of {@link Language}
+     * @param model       This is the one model of {@link Language}
      * @return Update {@link Language} resource and matches with the given id.
      */
     @RobeService(group = "Language", description = "Update Language resource and matches with the given id.")
@@ -113,8 +114,8 @@ public class LanguageResource {
      * Not Matches 412
      *
      * @param credentials Injected by {@link Auth} annotation for authentication.
-     * @param id This is  the oid of {@link Language}
-     * @param model This is the one model of {@link Language}
+     * @param id          This is  the oid of {@link Language}
+     * @param model       This is the one model of {@link Language}
      * @return Update {@link Language) resource and matches with the given id.
      */
     @RobeService(group = "Language", description = "Update Language resource.")
@@ -141,8 +142,8 @@ public class LanguageResource {
      * Not Matches 412
      *
      * @param credentials Injected by {@link Auth} annotation for authentication.
-     * @param id This is  the oid of {@link Language}
-     * @param model This is the one model of {@link Language}
+     * @param id          This is  the oid of {@link Language}
+     * @param model       This is the one model of {@link Language}
      * @return Delete {@link Language) resource.
      */
     @RobeService(group = "Language", description = "Delete Language resource.")

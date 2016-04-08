@@ -44,7 +44,7 @@ public class ServiceResource {
     @GET
     @UnitOfWork(readOnly = true, cacheMode = GET, flushMode = FlushMode.MANUAL)
     public List<Service> getAll() {
-        return serviceDao.findAll(Service.class);
+        return serviceDao.findAll();
     }
 
     /**
@@ -167,7 +167,22 @@ public class ServiceResource {
 
 
     /**
+     * @param credentials Injected by {@link Auth} annotation for authentication.
+     * @return collection of {@link Service} groups
+     */
+    @RobeService(group = "Permission", description = "Get all services group for permission")
+    @Path("groups")
+    @GET
+    @UnitOfWork
+    public List<Service> listGroups(@Auth Credentials credentials) {
+        return serviceDao.findServiceByGroups();
+    }
+
+
+    /**
      * refreshing service with description
+     * <p>
+     * TODO exception handler
      *
      * @param credentials Injected by {@link Auth} annotation for authentication.
      * @return Response.OK

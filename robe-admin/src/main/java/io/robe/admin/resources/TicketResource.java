@@ -37,7 +37,7 @@ public class TicketResource {
     @GET
     @UnitOfWork(readOnly = true, cacheMode = GET, flushMode = FlushMode.MANUAL)
     public List<Ticket> getAll(@Auth Credentials credentials) {
-        return ticketDao.findAll(Ticket.class);
+        return ticketDao.findAll();
     }
 
     /**

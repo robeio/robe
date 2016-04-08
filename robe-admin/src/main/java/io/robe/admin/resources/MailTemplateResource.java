@@ -36,7 +36,7 @@ public class MailTemplateResource {
     @GET
     @UnitOfWork(readOnly = true, cacheMode = GET, flushMode = FlushMode.MANUAL)
     public List<MailTemplate> getAll(@Auth Credentials credentials) {
-        return mailTemplateDao.findAll(MailTemplate.class);
+        return mailTemplateDao.findAll();
     }
 
     /**

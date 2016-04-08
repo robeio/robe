@@ -9,6 +9,7 @@ import io.robe.common.utils.FieldReflection;
 import io.robe.hibernate.dao.BaseDao;
 import io.robe.hibernate.entity.BaseEntity;
 import org.hibernate.FlushMode;
+import org.quartz.Job;
 
 import javax.validation.Valid;
 import javax.ws.rs.*;
@@ -18,12 +19,11 @@ import java.util.List;
 
 import static org.hibernate.CacheMode.GET;
 
-public abstract class BaseResource<T extends BaseEntity> {
-
-    @Inject
-    private BaseDao<T> dao;
+public abstract class BaseResource<T extends BaseEntity> implements Job {
 
     private final Class<T> entity;
+    @Inject
+    private BaseDao<T> dao;
 
     @SuppressWarnings("unchecked")
     protected BaseResource() {
@@ -33,7 +33,7 @@ public abstract class BaseResource<T extends BaseEntity> {
     @GET
     @UnitOfWork(readOnly = true, cacheMode = GET, flushMode = FlushMode.MANUAL)
     public List<T> getAll(@Auth Credentials credentials) {
-        return dao.findAll(entity);
+        return dao.findAll();
     }
 
     @Path("{id}")

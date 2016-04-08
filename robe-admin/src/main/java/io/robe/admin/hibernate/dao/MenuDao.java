@@ -1,6 +1,5 @@
 package io.robe.admin.hibernate.dao;
 
-import com.google.common.base.Optional;
 import com.google.inject.Inject;
 import io.robe.admin.hibernate.entity.Menu;
 import io.robe.hibernate.dao.BaseDao;
@@ -18,10 +17,12 @@ public class MenuDao extends BaseDao<Menu> {
         super(sessionFactory);
     }
 
-    public Optional<Menu> findByCode(String code) {
+
+    public List<Menu> findByModule(List<String> names) {
         Criteria criteria = currentSession().createCriteria(Menu.class);
-        criteria.add(Restrictions.eq("code", code));
-        return Optional.fromNullable(uniqueResult(criteria));
+        criteria.add(Restrictions.in("module", names));
+        criteria.addOrder(Order.asc("index"));
+        return list(criteria);
     }
 
     public List<Menu> findHierarchicalMenu() {

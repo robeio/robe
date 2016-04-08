@@ -38,7 +38,7 @@ public class TriggerResource {
     @GET
     @UnitOfWork(readOnly = true, cacheMode = GET, flushMode = FlushMode.MANUAL)
     public List<TriggerEntity> getAll(@Auth Credentials credentials) {
-        return quartzTriggerDao.findAll(TriggerEntity.class);
+        return quartzTriggerDao.findAll();
     }
 
     /**

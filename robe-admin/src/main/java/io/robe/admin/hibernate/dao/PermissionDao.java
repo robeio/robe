@@ -2,7 +2,6 @@ package io.robe.admin.hibernate.dao;
 
 import com.google.inject.Inject;
 import io.robe.admin.hibernate.entity.Permission;
-import io.robe.admin.hibernate.entity.Role;
 import io.robe.auth.data.entry.PermissionEntry;
 import io.robe.auth.data.store.PermissionStore;
 import io.robe.hibernate.dao.BaseDao;
@@ -22,9 +21,9 @@ public class PermissionDao extends BaseDao<Permission> implements PermissionStor
         super(sessionFactory);
     }
 
-    public Permission findByRoleAndItem(Role role, BaseEntity restrictedItem) {
+    public Permission findByRoleAndItem(String roleOid, BaseEntity restrictedItem) {
         Criteria criteria = currentSession().createCriteria(Permission.class);
-        criteria.add(Restrictions.eq("role", role));
+        criteria.add(Restrictions.eq("roleOid", roleOid));
         criteria.add(Restrictions.eq("restrictedItemOid", restrictedItem.getOid()));
         return uniqueResult(criteria);
     }
@@ -35,9 +34,9 @@ public class PermissionDao extends BaseDao<Permission> implements PermissionStor
         return list(criteria);
     }
 
-    public void deleteRestrictionsByRole(Role role, Permission.Type type) {
+    public void deleteRestrictionsByRole(String roleOid, Permission.Type type) {
         Criteria criteria = currentSession().createCriteria(Permission.class);
-        criteria.add(Restrictions.eq("role", role));
+        criteria.add(Restrictions.eq("roleOid", roleOid));
         criteria.add(Restrictions.eq("type", type));
         List<Permission> permissions = list(criteria);
         for (Permission permission : permissions) {

@@ -17,7 +17,7 @@ public class Menu extends BaseEntity {
     @Column(length = 50, nullable = false)
     private String text;
 
-    @Length(min =3, max = 100)
+    @Length(min = 3, max = 100)
     @NotEmpty
     @Column(length = 100, nullable = false)
     private String path;

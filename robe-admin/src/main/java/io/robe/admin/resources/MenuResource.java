@@ -53,7 +53,7 @@ public class MenuResource {
     @GET
     @UnitOfWork(readOnly = true, cacheMode = GET, flushMode = FlushMode.MANUAL)
     public List<Menu> getAll(@Auth Credentials credentials) {
-        return menuDao.findAll(Menu.class);
+        return menuDao.findAll();
     }
 
 

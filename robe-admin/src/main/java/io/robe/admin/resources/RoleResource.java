@@ -4,17 +4,20 @@ import com.google.inject.Inject;
 import io.dropwizard.auth.Auth;
 import io.dropwizard.hibernate.UnitOfWork;
 import io.dropwizard.jersey.PATCH;
-import io.robe.admin.hibernate.dao.RoleDao;
-import io.robe.admin.hibernate.entity.Role;
+import io.robe.admin.hibernate.dao.*;
+import io.robe.admin.hibernate.entity.*;
 import io.robe.auth.Credentials;
+import io.robe.auth.data.entry.PermissionEntry;
 import io.robe.common.service.RobeService;
 import io.robe.common.utils.FieldReflection;
 import org.hibernate.FlushMode;
+import org.json.JSONObject;
 
 import javax.validation.Valid;
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
+import java.util.ArrayList;
 import java.util.List;
 
 import static org.hibernate.CacheMode.GET;
@@ -27,6 +30,78 @@ public class RoleResource {
     @Inject
     private RoleDao roleDao;
 
+    @Inject
+    private PermissionDao permissionDao;
+
+    @Inject
+    private RoleGroupDao roleGroupDao;
+
+    @Inject
+    private ServiceDao serviceDao;
+
+    @Inject
+    private MenuDao menuDao;
+
+
+    /**
+     * Returns all services and menus collection with the matches given Role id.
+     *
+     * @param credentials Injected by {@link Auth} annotation for authentication.
+     * @param id          This is Role oid
+     * @return JSONObject (MENU and SERVICE)
+     */
+
+    @RobeService(group = "Permission", description = "Returns all services and menus collection with the matches given Role id.")
+    @GET
+    @Path("{id}/services/groups")
+    @UnitOfWork(readOnly = true, cacheMode = GET, flushMode = FlushMode.MANUAL)
+    public String getServicesGroupByRole(@Auth Credentials credentials, @PathParam("id") String id) {
+
+        List<Permission> permissions = new ArrayList<>();
+
+        List<Service> services = new ArrayList<>();
+        List<Menu> menus = new ArrayList<>();
+
+        Role role = roleDao.findById(id);
+
+        getAllRolePermissions(role, permissions);
+
+        for (Permission permission : permissions) {
+            if (permission.getType().equals(PermissionEntry.Type.SERVICE)) {
+                Service service = serviceDao.findById(permission.getRestrictedItemOid());
+                if (service != null) {
+                    if (services.indexOf(service) == -1) {
+                        services.add(service);
+                    }
+                }
+
+            } else if (permission.getType().equals(PermissionEntry.Type.MENU)) {
+
+                Menu menu = menuDao.findById(permission.getRestrictedItemOid());
+                if (menu != null) {
+                    if (menus.indexOf(menu) == -1) {
+                        menus.add(menu);
+                    }
+                }
+            }
+        }
+
+        JSONObject response = new JSONObject();
+        response.put("MENU", menus);
+        response.put("SERVICE", services);
+
+        return response.toString();
+    }
+
+    private void getAllRolePermissions(Role parent, List<Permission> rolePermissions) {
+        rolePermissions.addAll(permissionDao.findByRoleOId(parent.getId()));
+        List<RoleGroup> roleGroupEntries = roleGroupDao.findByGroupOId(parent.getId());
+        for (RoleGroup entry : roleGroupEntries) {
+            Role role = roleDao.findById(entry.getRoleId());
+            getAllRolePermissions(role, rolePermissions);
+        }
+    }
+
     /**
      * Return all Role as a collection
      *
@@ -37,7 +112,7 @@ public class RoleResource {
     @GET
     @UnitOfWork(readOnly = true, cacheMode = GET, flushMode = FlushMode.MANUAL)
     public List<Role> getAll(@Auth Credentials credentials) {
-        return roleDao.findAll(Role.class);
+        return roleDao.findAll();
     }
 
     /**
