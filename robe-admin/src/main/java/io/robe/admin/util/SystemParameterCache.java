@@ -15,7 +15,7 @@ public class SystemParameterCache {
     public static void fillCache() {
         SystemParameterDao dao = GuiceBundle.getInjector().getInstance(SystemParameterDao.class);
 
-        List<SystemParameter> parameters = dao.findAll(SystemParameter.class);
+        List<SystemParameter> parameters = dao.findAll();
 
         for (SystemParameter parameter : parameters)
             cache.put(parameter.getKey(), parameter.getValue());
