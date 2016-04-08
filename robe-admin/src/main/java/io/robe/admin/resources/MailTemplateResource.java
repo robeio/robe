@@ -8,6 +8,8 @@ import io.robe.admin.hibernate.dao.MailTemplateDao;
 import io.robe.admin.hibernate.entity.MailTemplate;
 import io.robe.auth.Credentials;
 import io.robe.common.service.RobeService;
+import io.robe.common.service.SearchParam;
+import io.robe.common.service.jersey.model.SearchModel;
 import io.robe.common.utils.FieldReflection;
 import org.hibernate.FlushMode;
 
@@ -35,8 +37,8 @@ public class MailTemplateResource {
     @RobeService(group = "MailTemplate", description = "Returns all MailTemplate as a collection.")
     @GET
     @UnitOfWork(readOnly = true, cacheMode = GET, flushMode = FlushMode.MANUAL)
-    public List<MailTemplate> getAll(@Auth Credentials credentials) {
-        return mailTemplateDao.findAll();
+    public List<MailTemplate> getAll(@Auth Credentials credentials, @SearchParam SearchModel search) {
+        return mailTemplateDao.findAll(search);
     }
 
     /**

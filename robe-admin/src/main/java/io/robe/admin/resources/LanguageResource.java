@@ -8,6 +8,8 @@ import io.robe.admin.hibernate.dao.LanguageDao;
 import io.robe.admin.hibernate.entity.Language;
 import io.robe.auth.Credentials;
 import io.robe.common.service.RobeService;
+import io.robe.common.service.SearchParam;
+import io.robe.common.service.jersey.model.SearchModel;
 import io.robe.common.utils.FieldReflection;
 import org.hibernate.CacheMode;
 import org.hibernate.FlushMode;
@@ -35,8 +37,8 @@ public class LanguageResource {
     @RobeService(group = "Language", description = "Returns all Languages as a collection.")
     @GET
     @UnitOfWork(readOnly = true, cacheMode = CacheMode.GET, flushMode = FlushMode.MANUAL)
-    public List<Language> getAll(@Auth Credentials credentials) {
-        return languageDao.findAll();
+    public List<Language> getAll(@Auth Credentials credentials, @SearchParam SearchModel search) {
+        return languageDao.findAll(search);
     }
 
     /**

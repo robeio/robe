@@ -10,6 +10,8 @@ import io.robe.admin.quartz.hibernate.JobEntity;
 import io.robe.admin.quartz.hibernate.TriggerEntity;
 import io.robe.auth.Credentials;
 import io.robe.common.service.RobeService;
+import io.robe.common.service.SearchParam;
+import io.robe.common.service.jersey.model.SearchModel;
 import io.robe.common.utils.FieldReflection;
 import org.hibernate.FlushMode;
 
@@ -58,8 +60,8 @@ public class QuartzJobResource {
     @RobeService(group = "JobEntity", description = "Returns all JobEntity as a collection.")
     @GET
     @UnitOfWork(readOnly = true, cacheMode = GET, flushMode = FlushMode.MANUAL)
-    public List<JobEntity> getAll(@Auth Credentials credentials) {
-        return quartzJobDao.findAll();
+    public List<JobEntity> getAll(@Auth Credentials credentials, @SearchParam SearchModel search) {
+        return quartzJobDao.findAll(search);
     }
 
     /**

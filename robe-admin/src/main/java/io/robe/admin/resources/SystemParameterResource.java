@@ -8,6 +8,8 @@ import io.robe.admin.hibernate.dao.SystemParameterDao;
 import io.robe.admin.hibernate.entity.SystemParameter;
 import io.robe.auth.Credentials;
 import io.robe.common.service.RobeService;
+import io.robe.common.service.SearchParam;
+import io.robe.common.service.jersey.model.SearchModel;
 import io.robe.common.utils.FieldReflection;
 import org.hibernate.CacheMode;
 import org.hibernate.FlushMode;
@@ -37,8 +39,8 @@ public class SystemParameterResource {
     @RobeService(group = "SystemParameter", description = "Returns all SystemParameter as a collection.")
     @GET
     @UnitOfWork(readOnly = true, cacheMode = GET, flushMode = FlushMode.MANUAL)
-    public List<SystemParameter> getAll(@Auth Credentials credentials) {
-        return systemParameterDao.findAll();
+    public List<SystemParameter> getAll(@Auth Credentials credentials, @SearchParam SearchModel search) {
+        return systemParameterDao.findAll(search);
     }
 
     /**

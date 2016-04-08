@@ -9,6 +9,8 @@ import io.robe.admin.hibernate.entity.*;
 import io.robe.auth.Credentials;
 import io.robe.auth.data.entry.PermissionEntry;
 import io.robe.common.service.RobeService;
+import io.robe.common.service.SearchParam;
+import io.robe.common.service.jersey.model.SearchModel;
 import io.robe.common.utils.FieldReflection;
 import org.hibernate.FlushMode;
 
@@ -113,8 +115,8 @@ public class RoleResource {
     @RobeService(group = "Role", description = "Returns all Role as a collection.")
     @GET
     @UnitOfWork(readOnly = true, cacheMode = GET, flushMode = FlushMode.MANUAL)
-    public List<Role> getAll(@Auth Credentials credentials) {
-        return roleDao.findAll();
+    public List<Role> getAll(@Auth Credentials credentials, @SearchParam SearchModel search) {
+        return roleDao.findAll(search);
     }
 
     /**

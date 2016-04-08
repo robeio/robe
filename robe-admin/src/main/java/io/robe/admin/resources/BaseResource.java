@@ -5,6 +5,8 @@ import io.dropwizard.auth.Auth;
 import io.dropwizard.hibernate.UnitOfWork;
 import io.dropwizard.jersey.PATCH;
 import io.robe.auth.Credentials;
+import io.robe.common.service.SearchParam;
+import io.robe.common.service.jersey.model.SearchModel;
 import io.robe.common.utils.FieldReflection;
 import io.robe.hibernate.dao.BaseDao;
 import io.robe.hibernate.entity.BaseEntity;
@@ -32,8 +34,8 @@ public abstract class BaseResource<T extends BaseEntity> implements Job {
 
     @GET
     @UnitOfWork(readOnly = true, cacheMode = GET, flushMode = FlushMode.MANUAL)
-    public List<T> getAll(@Auth Credentials credentials) {
-        return dao.findAll();
+    public List<T> getAll(@Auth Credentials credentials, @SearchParam SearchModel search) {
+        return dao.findAll(search);
     }
 
     @Path("{id}")

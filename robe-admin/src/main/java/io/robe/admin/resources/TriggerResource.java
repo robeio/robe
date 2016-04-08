@@ -8,6 +8,8 @@ import io.robe.admin.hibernate.dao.QuartzTriggerDao;
 import io.robe.admin.quartz.hibernate.TriggerEntity;
 import io.robe.auth.Credentials;
 import io.robe.common.service.RobeService;
+import io.robe.common.service.SearchParam;
+import io.robe.common.service.jersey.model.SearchModel;
 import io.robe.common.utils.FieldReflection;
 import org.hibernate.FlushMode;
 
@@ -37,8 +39,8 @@ public class TriggerResource {
     @RobeService(group = "TriggerEntity", description = "Returns all TriggerEntity as a collection.")
     @GET
     @UnitOfWork(readOnly = true, cacheMode = GET, flushMode = FlushMode.MANUAL)
-    public List<TriggerEntity> getAll(@Auth Credentials credentials) {
-        return quartzTriggerDao.findAll();
+    public List<TriggerEntity> getAll(@Auth Credentials credentials, @SearchParam SearchModel search) {
+        return quartzTriggerDao.findAll(search);
     }
 
     /**
