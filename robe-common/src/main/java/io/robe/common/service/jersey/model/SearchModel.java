@@ -1,7 +1,5 @@
 package io.robe.common.service.jersey.model;
 
-import java.util.List;
-
 /**
  * A data class for holding search query parameters as a auto
  * filled easy to access data structure.
@@ -10,55 +8,68 @@ public class SearchModel {
     /**
      * Full text search parameter
      */
-    private List<String> q;
+    private String q;
 
     /**
      * Starting index for the paged fetches.
      */
-    private String offset;
+    private Integer offset;
     /**
      * Maximum number of results per page.
      */
-    private String limit;
+    private Integer limit;
 
     /**
      * on response fields
      */
 
-    private String fields;
+    private String[] fields;
+
+    /**
+     * Fieds for sorting + for asc and - for desc ordering followed  by field name Forex. +fieldName
+     */
+    private String[] sort;
 
     public SearchModel() {
     }
 
-    public List<String> getQ() {
+    public String getQ() {
         return q;
     }
 
-    public void setQ(List<String> q) {
+    public void setQ(String q) {
         this.q = q;
     }
 
-    public String getOffset() {
+    public Integer getOffset() {
         return offset;
     }
 
-    public void setOffset(String offset) {
+    public void setOffset(Integer offset) {
         this.offset = offset;
     }
 
-    public String getLimit() {
+    public Integer getLimit() {
         return limit;
     }
 
-    public void setLimit(String limit) {
+    public void setLimit(Integer limit) {
         this.limit = limit;
     }
 
-    public String getFields() {
+    public String[] getFields() {
         return fields;
     }
 
-    public void setFields(String fields) {
+    public void setFields(String[] fields) {
         this.fields = fields;
+    }
+
+    public String[] getSort() {
+        return sort;
+    }
+
+    public void setSort(String[] sort) {
+        this.sort = sort;
     }
 }

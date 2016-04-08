@@ -41,14 +41,19 @@ public class SearchFactory extends AbstractContainerRequestValueFactory<SearchMo
 
             for (Map.Entry<String, List<String>> param : queryParameters.entrySet()) {
 
+                if (param.getValue().get(0) == null)
+                    continue;
                 if ("_q".equalsIgnoreCase(param.getKey())) {
-                    searchModel.setQ(param.getValue());
+                    searchModel.setQ(param.getValue().get(0));
                 } else if ("_limit".equalsIgnoreCase(param.getKey())) {
-                    searchModel.setLimit(param.getValue().get(0));
+                    searchModel.setLimit(Integer.parseInt(param.getValue().get(0)));
                 } else if ("_offset".equalsIgnoreCase(param.getKey())) {
-                    searchModel.setOffset(param.getValue().get(0));
+                    searchModel.setOffset(Integer.parseInt(param.getValue().get(0)));
                 } else if ("_fields".equalsIgnoreCase(param.getKey())) {
-                    searchModel.setFields(param.getValue().get(0));
+                    if (param.getValue().get(0) != null)
+                        searchModel.setFields(param.getValue().get(0).split(","));
+                } else if ("_sort".equalsIgnoreCase(param.getKey())) {
+                    searchModel.setSort(param.getValue().get(0).split(","));
                 }
             }
         }

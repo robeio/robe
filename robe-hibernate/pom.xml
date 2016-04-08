@@ -28,6 +28,15 @@
             <groupId>com.google.inject</groupId>
             <artifactId>guice</artifactId>
         </dependency>
+        <dependency>
+            <groupId>io.robe</groupId>
+            <artifactId>robe-common</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>io.robe</groupId>
+            <artifactId>robe-common</artifactId>
+            <version>0.5.0.0</version>
+        </dependency>
     </dependencies>
 
 </project>

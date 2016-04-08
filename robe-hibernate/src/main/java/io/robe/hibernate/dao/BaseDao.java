@@ -3,11 +3,14 @@ package io.robe.hibernate.dao;
 import com.google.common.base.Preconditions;
 import com.google.inject.Inject;
 import io.dropwizard.hibernate.AbstractDAO;
+import io.robe.common.service.jersey.model.SearchModel;
 import io.robe.hibernate.entity.BaseEntity;
 import org.hibernate.Criteria;
 import org.hibernate.SessionFactory;
+import org.hibernate.criterion.*;
 
 import java.io.Serializable;
+import java.lang.reflect.Field;
 import java.util.List;
 
 /**
@@ -29,13 +32,24 @@ public class BaseDao<T extends BaseEntity> extends AbstractDAO<T> {
     }
 
     /**
+     * Returns modified list of the entities regarding to the search model.
      * {@inheritDoc}
      *
-     * @param t Type of the desired Entities.
      * @return List of entities.
      */
-    public List<T> findAll(Class<T> t) {
-        Criteria criteria = currentSession().createCriteria(t);
+    public List<T> findAll(SearchModel search) {
+        Criteria criteria = buildCriteria(search);
+        return criteria.list();
+    }
+
+
+    /**
+     * {@inheritDoc}
+     *
+     * @return List of entities.
+     */
+    public List<T> findAll() {
+        Criteria criteria = criteria();
         return list(criteria);
     }
 
@@ -121,4 +135,47 @@ public class BaseDao<T extends BaseEntity> extends AbstractDAO<T> {
         return entity;
     }
 
+    /**
+     * Creates a criteria from the given search model.
+     *
+     * @param search model
+     * @return criteria
+     */
+    protected final Criteria buildCriteria(SearchModel search) {
+
+        Criteria criteria = criteria();
+        if (search.getFields() != null && search.getFields().length != 0) {
+            ProjectionList projectionList = Projections.projectionList();
+            for (String fieldName : search.getFields()) {
+                projectionList.add(Projections.property(fieldName), fieldName);
+            }
+            criteria.setProjection(projectionList);
+        }
+        if (search.getOffset() != null) {
+            criteria.setFirstResult(search.getOffset());
+        }
+        if (search.getLimit() != null) {
+            criteria.setMaxResults(search.getLimit());
+        }
+        if (search.getSort() != null && search.getSort().length != 0) {
+            for (String fieldName : search.getSort()) {
+                if (fieldName.startsWith(" ") || fieldName.startsWith("+")) {
+                    criteria.addOrder(Order.asc(fieldName.substring(1)));
+                } else if (fieldName.startsWith("-")) {
+                    criteria.addOrder(Order.desc(fieldName.substring(1)));
+                }
+            }
+
+        }
+        if (search.getQ() != null && !search.getQ().isEmpty()) {
+            Field[] fields = this.getEntityClass().getDeclaredFields();
+            Criterion[] fieldLikes = new Criterion[fields.length];
+            int i = 0;
+            for (Field field : fields) {
+                fieldLikes[i++] = Restrictions.ilike(field.getName(), search.getQ(), MatchMode.ANYWHERE);
+            }
+            criteria.add(Restrictions.or(fieldLikes));
+        }
+        return criteria;
+    }
 }
