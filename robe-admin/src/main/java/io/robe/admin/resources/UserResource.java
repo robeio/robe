@@ -9,6 +9,8 @@ import io.robe.admin.hibernate.entity.User;
 import io.robe.auth.AbstractAuthResource;
 import io.robe.auth.Credentials;
 import io.robe.common.service.RobeService;
+import io.robe.common.service.SearchParam;
+import io.robe.common.service.jersey.model.SearchModel;
 import io.robe.common.utils.FieldReflection;
 import org.hibernate.CacheMode;
 import org.hibernate.FlushMode;
@@ -42,8 +44,8 @@ public class UserResource extends AbstractAuthResource<User> {
     @RobeService(group = "User", description = "Returns all Users as a collection.")
     @GET
     @UnitOfWork(readOnly = true, cacheMode = CacheMode.GET, flushMode = FlushMode.MANUAL)
-    public List<User> getAll(@Auth Credentials credentials) {
-        return userDao.findAll();
+    public List<User> getAll(@Auth Credentials credentials, @SearchParam SearchModel search) {
+        return userDao.findAll(search);
     }
 
     /**

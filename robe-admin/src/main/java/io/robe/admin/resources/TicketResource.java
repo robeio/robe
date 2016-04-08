@@ -8,6 +8,8 @@ import io.robe.admin.hibernate.dao.TicketDao;
 import io.robe.admin.hibernate.entity.Ticket;
 import io.robe.auth.Credentials;
 import io.robe.common.service.RobeService;
+import io.robe.common.service.SearchParam;
+import io.robe.common.service.jersey.model.SearchModel;
 import io.robe.common.utils.FieldReflection;
 import org.hibernate.FlushMode;
 
@@ -36,8 +38,8 @@ public class TicketResource {
     @RobeService(group = "QuartzJob", description = "Return all tickets as a collection.")
     @GET
     @UnitOfWork(readOnly = true, cacheMode = GET, flushMode = FlushMode.MANUAL)
-    public List<Ticket> getAll(@Auth Credentials credentials) {
-        return ticketDao.findAll();
+    public List<Ticket> getAll(@Auth Credentials credentials, @SearchParam SearchModel search) {
+        return ticketDao.findAll(search);
     }
 
     /**
