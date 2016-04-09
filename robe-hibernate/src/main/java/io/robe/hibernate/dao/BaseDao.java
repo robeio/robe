@@ -11,6 +11,7 @@ import org.hibernate.criterion.*;
 
 import java.io.Serializable;
 import java.lang.reflect.Field;
+import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -172,8 +173,10 @@ public class BaseDao<T extends BaseEntity> extends AbstractDAO<T> {
             Criterion[] fieldLikes = new Criterion[fields.length];
             int i = 0;
             for (Field field : fields) {
-                fieldLikes[i++] = Restrictions.ilike(field.getName(), search.getQ(), MatchMode.ANYWHERE);
+                if (field.getType().equals(String.class))
+                    fieldLikes[i++] = Restrictions.ilike(field.getName(), search.getQ(), MatchMode.ANYWHERE);
             }
+            fieldLikes = Arrays.copyOf(fieldLikes, i);
             criteria.add(Restrictions.or(fieldLikes));
         }
         return criteria;
