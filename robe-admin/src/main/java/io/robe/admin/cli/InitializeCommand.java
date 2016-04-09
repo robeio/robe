@@ -209,7 +209,7 @@ public class InitializeCommand<T extends RobeConfiguration> extends EnvironmentC
         Menu dash = new Menu();
         dash.setModule("Dashboard");
         dash.setIndex(0);
-        dash.setText("DashBoard");
+        dash.setText("Sistem Bilgileri");
         dash.setPath("app/modules/dash/Dash");
         dash.setIcon("fa-tachometer");
         dash.setParentOid(manager.getOid());
@@ -229,7 +229,7 @@ public class InitializeCommand<T extends RobeConfiguration> extends EnvironmentC
         Menu userProfileManagement = new Menu();
         userProfileManagement.setModule("Profile");
         userProfileManagement.setIndex(1);
-        userProfileManagement.setText("Profil Yönetimi");
+        userProfileManagement.setText("Profil Bilgileri Yönetimi");
         userProfileManagement.setParentOid(manager.getOid());
         userProfileManagement.setPath("app/modules/profile/Profile");
         userProfileManagement.setIcon("fa-user");
@@ -239,7 +239,7 @@ public class InitializeCommand<T extends RobeConfiguration> extends EnvironmentC
         Menu mailTemplate = new Menu();
         mailTemplate.setModule("MailTemplate");
         mailTemplate.setIndex(0);
-        mailTemplate.setText("Mail Template Yönetimi");
+        mailTemplate.setText("Mail Şablon Yönetimi");
         mailTemplate.setParentOid(manager.getOid());
         mailTemplate.setPath("app/modules/mailtemplate/MailTemplate");
         mailTemplate.setIcon("fa-envelope");
@@ -269,7 +269,7 @@ public class InitializeCommand<T extends RobeConfiguration> extends EnvironmentC
         Menu permissionManagement = new Menu();
         permissionManagement.setModule("Permission");
         permissionManagement.setIndex(1);
-        permissionManagement.setText("İzin Atama");
+        permissionManagement.setText("İzin Yönetimi");
         permissionManagement.setParentOid(manager.getOid());
         permissionManagement.setPath("app/modules/permission/Permission");
         permissionManagement.setIcon("fa-check-square-o");
@@ -280,7 +280,7 @@ public class InitializeCommand<T extends RobeConfiguration> extends EnvironmentC
         Menu quartzJob = new Menu();
         quartzJob.setModule("QuartzJob");
         quartzJob.setIndex(0);
-        quartzJob.setText("İş Zamanlayıcı");
+        quartzJob.setText("İş Zamanlama Yönetimi");
         quartzJob.setParentOid(manager.getOid());
         quartzJob.setPath("app/modules/quartz/QuartzJob");
         quartzJob.setIcon("fa-bell");
@@ -290,7 +290,7 @@ public class InitializeCommand<T extends RobeConfiguration> extends EnvironmentC
         Menu systemParameter = new Menu();
         systemParameter.setModule("SystemParameter");
         systemParameter.setIndex(0);
-        systemParameter.setText("Sistem Parametre");
+        systemParameter.setText("Sistem Parametre Yönetimi");
         systemParameter.setParentOid(manager.getOid());
         systemParameter.setIcon("fa-steam");
         systemParameter.setPath("app/modules/systemparameter/SystemParameter");
