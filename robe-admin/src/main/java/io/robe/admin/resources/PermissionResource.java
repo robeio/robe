@@ -19,14 +19,15 @@ import io.robe.common.service.SearchParam;
 import io.robe.common.service.jersey.model.SearchModel;
 import io.robe.common.utils.FieldReflection;
 import org.hibernate.FlushMode;
-import org.json.JSONObject;
 
 import javax.validation.Valid;
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import static org.hibernate.CacheMode.GET;
 
@@ -87,7 +88,7 @@ public class PermissionResource {
     @Path("selected")
     @POST
     @UnitOfWork(flushMode = FlushMode.MANUAL)
-    public String getServicesByServiceGroup(@Auth Credentials credentials, List<String> names) {
+    public Map<String, Object> getServicesByServiceGroup(@Auth Credentials credentials, List<String> names) {
 
         List<Service> services = new ArrayList<>();
 
@@ -95,11 +96,11 @@ public class PermissionResource {
             services.addAll(serviceDao.findServiceByGroup(group));
         }
 
-        JSONObject response = new JSONObject();
+        Map<String, Object> response = new HashMap<>();
         response.put("MENU", menuDao.findByModule(names));
         response.put("SERVICE", services);
 
-        return response.toString();
+        return response;
     }
 
     /**

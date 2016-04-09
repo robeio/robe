@@ -13,14 +13,15 @@ import io.robe.common.service.SearchParam;
 import io.robe.common.service.jersey.model.SearchModel;
 import io.robe.common.utils.FieldReflection;
 import org.hibernate.FlushMode;
-import org.json.JSONObject;
 
 import javax.validation.Valid;
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import static org.hibernate.CacheMode.GET;
 
@@ -57,7 +58,7 @@ public class RoleResource {
     @GET
     @Path("{id}/services/groups")
     @UnitOfWork(readOnly = true, cacheMode = GET, flushMode = FlushMode.MANUAL)
-    public String getServicesGroupByRole(@Auth Credentials credentials, @PathParam("id") String id) {
+    public Map<String, Object> getServicesGroupByRole(@Auth Credentials credentials, @PathParam("id") String id) {
 
         List<Permission> permissions = new ArrayList<>();
 
@@ -88,11 +89,12 @@ public class RoleResource {
             }
         }
 
-        JSONObject response = new JSONObject();
+
+        Map<String, Object> response = new HashMap<>();
         response.put("MENU", menus);
         response.put("SERVICE", services);
 
-        return response.toString();
+        return response;
     }
 
     private void getAllRolePermissions(Role parent, List<Permission> rolePermissions) {
