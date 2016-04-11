@@ -13,6 +13,7 @@ import java.io.Serializable;
 import java.lang.reflect.Field;
 import java.util.Arrays;
 import java.util.List;
+import java.util.concurrent.ConcurrentHashMap;
 
 /**
  * Basic Dao Class which limits {@link io.dropwizard.hibernate.AbstractDAO} to take
@@ -21,6 +22,9 @@ import java.util.List;
  * @param <T> Type of the entity parameter.
  */
 public class BaseDao<T extends BaseEntity> extends AbstractDAO<T> {
+
+    private static final ConcurrentHashMap<String, Field[]> fieldCache = new ConcurrentHashMap<>();
+
 
     /**
      * Constructor with session factory injection by guice
@@ -169,7 +173,7 @@ public class BaseDao<T extends BaseEntity> extends AbstractDAO<T> {
 
         }
         if (search.getQ() != null && !search.getQ().isEmpty()) {
-            Field[] fields = this.getEntityClass().getDeclaredFields();
+            Field[] fields = getCachedFields(this.getEntityClass());
             Criterion[] fieldLikes = new Criterion[fields.length];
             int i = 0;
             for (Field field : fields) {
@@ -181,4 +185,12 @@ public class BaseDao<T extends BaseEntity> extends AbstractDAO<T> {
         }
         return criteria;
     }
+
+    private Field[] getCachedFields(Class<T> entityClass) {
+        if (!fieldCache.containsKey(entityClass.getName())) {
+            fieldCache.put(entityClass.getName(), entityClass.getDeclaredFields());
+        }
+        return fieldCache.get(entityClass.getName());
+    }
 }
+
