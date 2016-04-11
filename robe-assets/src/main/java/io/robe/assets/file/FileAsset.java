@@ -44,7 +44,6 @@ public class FileAsset {
     /**
      * Generates hash (MD5) from http path and last modification date
      *
-     * @return
      */
     public void generateMD5() {
         md5 = Hashing.md5().hashString(asset.getPath() + asset.lastModified(), StandardCharsets.UTF_8).toString();
