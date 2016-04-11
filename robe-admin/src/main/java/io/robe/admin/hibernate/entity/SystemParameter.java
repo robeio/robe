@@ -17,7 +17,7 @@ public class SystemParameter extends BaseEntity {
     @Column(unique = true,nullable = false, name = "PARAMETER_KEY",length = 32)
     private String key;
 
-    @Length(min = 2, max = 32)
+    @Length(min = 1, max = 32)
     @NotEmpty
     @Column(name = "PARAMETER_VALUE",nullable = false, length = 32)
     private String value;
