@@ -1,7 +1,6 @@
 package io.robe.admin.hibernate.dao;
 
 import com.google.common.base.Optional;
-import com.google.inject.Inject;
 import io.robe.admin.hibernate.entity.Role;
 import io.robe.auth.data.entry.RoleEntry;
 import io.robe.auth.data.store.RoleStore;
@@ -9,6 +8,8 @@ import io.robe.hibernate.dao.BaseDao;
 import org.hibernate.Criteria;
 import org.hibernate.SessionFactory;
 import org.hibernate.criterion.Restrictions;
+
+import javax.inject.Inject;
 
 public class RoleDao extends BaseDao<Role> implements RoleStore {
 

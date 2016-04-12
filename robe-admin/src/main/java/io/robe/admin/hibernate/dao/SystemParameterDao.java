@@ -1,7 +1,7 @@
 package io.robe.admin.hibernate.dao;
 
 import com.google.common.base.Optional;
-import com.google.inject.Inject;
+import javax.inject.Inject;
 import io.robe.admin.hibernate.entity.SystemParameter;
 import io.robe.hibernate.dao.BaseDao;
 import org.hibernate.Criteria;

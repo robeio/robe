@@ -14,7 +14,7 @@ public class Constants {
     public static final List<ImportDeclaration> resourceImports = new ArrayList<ImportDeclaration>();
 
     static {
-        resourceImports.add(new ImportDeclaration(new NameExpr("com.google.inject.Inject"), false, false));
+        resourceImports.add(new ImportDeclaration(new NameExpr("javax.inject.Inject"), false, false));
         resourceImports.add(new ImportDeclaration(new NameExpr("io.dropwizard.auth.Auth"), false, false));
         resourceImports.add(new ImportDeclaration(new NameExpr("io.dropwizard.hibernate.UnitOfWork"), false, false));
         resourceImports.add(new ImportDeclaration(new NameExpr("io.robe.auth.Credentials"), false, false));
@@ -34,7 +34,7 @@ public class Constants {
     public static final List<ImportDeclaration> daoImports = new ArrayList<ImportDeclaration>();
 
     static {
-        daoImports.add(new ImportDeclaration(new NameExpr("com.google.inject.Inject"), false, false));
+        daoImports.add(new ImportDeclaration(new NameExpr("javax.inject.Inject"), false, false));
         daoImports.add(new ImportDeclaration(new NameExpr("org.hibernate.SessionFactory"), false, false));
         daoImports.add(new ImportDeclaration(new NameExpr("io.robe.hibernate.dao.BaseDao"), false, false));
         daoImports.add(new ImportDeclaration(new NameExpr("org.hibernate.criterion.Restrictions"), false, false));

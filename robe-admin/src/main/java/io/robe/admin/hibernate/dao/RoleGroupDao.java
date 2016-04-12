@@ -1,6 +1,6 @@
 package io.robe.admin.hibernate.dao;
 
-import com.google.inject.Inject;
+import javax.inject.Inject;
 import io.robe.admin.hibernate.entity.RoleGroup;
 import io.robe.auth.data.entry.RoleGroupEntry;
 import io.robe.auth.data.store.RoleGroupStore;

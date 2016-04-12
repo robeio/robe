@@ -1,6 +1,6 @@
 package io.robe.admin.resources;
 
-import com.google.inject.Inject;
+import javax.inject.Inject;
 import io.dropwizard.auth.Auth;
 import io.dropwizard.hibernate.UnitOfWork;
 import io.dropwizard.jersey.PATCH;

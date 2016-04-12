@@ -1,6 +1,6 @@
 package io.robe.admin.hibernate.dao;
 
-import com.google.inject.Inject;
+import javax.inject.Inject;
 import io.robe.admin.hibernate.entity.Permission;
 import io.robe.auth.data.entry.PermissionEntry;
 import io.robe.auth.data.store.PermissionStore;

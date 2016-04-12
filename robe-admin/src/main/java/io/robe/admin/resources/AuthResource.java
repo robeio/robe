@@ -2,7 +2,6 @@ package io.robe.admin.resources;
 
 import com.codahale.metrics.annotation.Timed;
 import com.google.common.base.Optional;
-import com.google.inject.Inject;
 import io.dropwizard.auth.Auth;
 import io.dropwizard.hibernate.UnitOfWork;
 import io.robe.admin.hibernate.dao.ActionLogDao;
@@ -21,6 +20,7 @@ import org.joda.time.DateTime;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import javax.inject.Inject;
 import javax.servlet.http.HttpServletRequest;
 import javax.ws.rs.*;
 import javax.ws.rs.core.Context;
@@ -72,7 +72,7 @@ public class AuthResource extends AbstractAuthResource<User> {
     @UnitOfWork(flushMode = FlushMode.ALWAYS)
     @Path("login")
     @Timed
-        public Response login(@Context HttpServletRequest request, Map<String, String> credentials) throws Exception {
+    public Response login(@Context HttpServletRequest request, Map<String, String> credentials) throws Exception {
 
         Optional<User> user = userDao.findByUsername(credentials.get("username"));
         if (!user.isPresent()) {

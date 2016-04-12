@@ -23,6 +23,7 @@ import io.robe.hibernate.RobeHibernateBundle;
 import io.robe.mail.MailBundle;
 import io.robe.quartz.QuartzBundle;
 import org.eclipse.jetty.servlets.CrossOriginFilter;
+import org.glassfish.jersey.media.multipart.MultiPartFeature;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -96,6 +97,7 @@ public class RobeApplication<T extends RobeConfiguration> extends Application<T>
     private void addGuiceBundle(Bootstrap<T> bootstrap, RobeHibernateBundle hibernateBundle) {
         List<Module> modules = new LinkedList<>();
         modules.add(new HibernateModule(hibernateBundle));
+
         bootstrap.addBundle(new GuiceBundle<T>(modules, bootstrap.getApplication().getConfigurationClass()));
     }
 
@@ -128,6 +130,9 @@ public class RobeApplication<T extends RobeConfiguration> extends Application<T>
         final FilterRegistration.Dynamic cors =
                 environment.servlets().addFilter("CORS", CrossOriginFilter.class);
 
+        environment.jersey().register(MultiPartFeature.class);
+
+
         // Configure CORS parameters
         cors.setInitParameter("allowedOrigins", "*");
         cors.setInitParameter("allowedHeaders", "X-Requested-With,Content-Type,Accept,Origin");
@@ -135,6 +140,7 @@ public class RobeApplication<T extends RobeConfiguration> extends Application<T>
 
         // Add URL mapping
         cors.addMappingForUrlPatterns(EnumSet.allOf(DispatcherType.class), true, "/*");
+
     }
 
     private void addExceptionMappers(Environment environment) {

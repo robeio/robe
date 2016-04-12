@@ -1,6 +1,6 @@
 package io.robe.admin.hibernate.dao;
 
-import com.google.inject.Inject;
+import javax.inject.Inject;
 import io.robe.admin.hibernate.entity.Menu;
 import io.robe.hibernate.dao.BaseDao;
 import org.hibernate.Criteria;

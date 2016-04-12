@@ -1,7 +1,6 @@
 package io.robe.hibernate.dao;
 
 import com.google.common.base.Preconditions;
-import com.google.inject.Inject;
 import io.dropwizard.hibernate.AbstractDAO;
 import io.robe.common.service.jersey.model.SearchModel;
 import io.robe.hibernate.entity.BaseEntity;
@@ -9,6 +8,7 @@ import org.hibernate.Criteria;
 import org.hibernate.SessionFactory;
 import org.hibernate.criterion.*;
 
+import javax.inject.Inject;
 import java.io.Serializable;
 import java.lang.reflect.Field;
 import java.util.Arrays;

@@ -1,6 +1,5 @@
 package io.robe.admin.resources;
 
-import com.google.inject.Inject;
 import io.dropwizard.auth.Auth;
 import io.dropwizard.hibernate.UnitOfWork;
 import io.dropwizard.jersey.PATCH;
@@ -13,6 +12,7 @@ import io.robe.hibernate.entity.BaseEntity;
 import org.hibernate.FlushMode;
 import org.quartz.Job;
 
+import javax.inject.Inject;
 import javax.validation.Valid;
 import javax.ws.rs.*;
 import javax.ws.rs.core.Response;
