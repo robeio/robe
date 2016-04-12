@@ -51,6 +51,14 @@ public class RobeExceptionMapper implements ExceptionMapper<Exception> {
             }
             return Response.status(we.getResponse().getStatus()).type(MediaType.APPLICATION_JSON).build();
         } else {
+
+            if (e.getClass().getName().equals("org.hibernate.exception.ConstraintViolationException")) {
+                if (e.getCause() != null && e.getCause().getMessage() != null) {
+                    BasicPair error = new BasicPair("Unique Field Error", e.getCause().getMessage());
+                    return Response.status(409).entity(error).type(MediaType.APPLICATION_JSON).build();
+                }
+            }
+
             LOGGER.error("Exception", e);
             BasicPair[] errors = new BasicPair[1];
             errors[0] = new BasicPair("Server Error", e.getMessage());
