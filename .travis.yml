@@ -1,9 +1,11 @@
 language: java
-sudo: required
 jdk:
   - oraclejdk7
 script: mvn clean verify -DskipTests=true
+before_install:
+  - echo ${env.GPG_SECRET_KEYS} | base64 --decode | gpg --import
+  - echo ${env.GPG_OWNERTRUST} | base64 --decode | gpg --import-ownertrust
 
 after_success:
-  - echo "<settings><servers><server><id>ossrh</id><username>\${env.OSSRH_USER}</username><password>\${env.OSSRH_PASS}</password></server></servers></settings>" > ~/settings.xml
+  - echo "<settings><servers><server><id>ossrh</id><username>\${env.OSSRH_USER}</username><password>\${env.OSSRH_PASS}</password></server></servers><profiles><id>ossrh</id><activation><activeByDefault>true</activeByDefault></activation><properties><gpg.executable>gpg</gpg.executable><gpg.keyname>AB667336</gpg.keyname><gpg.passphrase>\${env.GPGPASSPHRASE}</gpg.passphrase><properties></settings>" > ~/settings.xml                                                                                                                              <profile>
   - mvn deploy -DperformRelease=true --settings ~/settings.xml
