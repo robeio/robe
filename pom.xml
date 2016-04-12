@@ -330,7 +330,6 @@
             <id>release-sign-artifacts</id>
             <properties>
                 <gpg.executable>gpg</gpg.executable>
-                <gpg.keyname>${env.GPGKEYNAME}</gpg.keyname>
                 <gpg.passphrase>${env.GPGPASSPHRASE}</gpg.passphrase>
                 <gpg.defaultKeyring>false</gpg.defaultKeyring>
                 <gpg.publicKeyring>${env.GPG_DIR}/pubring.gpg</gpg.publicKeyring>
