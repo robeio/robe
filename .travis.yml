@@ -1,5 +1,4 @@
 language: java
-sudo: required
 jdk:
   - oraclejdk7
 script: mvn clean verify -DskipTests=true
