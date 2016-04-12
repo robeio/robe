@@ -4,7 +4,6 @@ import com.google.common.cache.Cache;
 import com.google.common.cache.CacheBuilder;
 import com.google.common.net.HttpHeaders;
 import com.google.common.net.MediaType;
-import io.robe.assets.file.FileAsset;
 
 import javax.servlet.ServletException;
 import javax.servlet.ServletOutputStream;
@@ -84,11 +83,12 @@ public class FileAssetServlet extends HttpServlet {
             final StringBuilder builder = new StringBuilder(req.getServletPath());
 
             // If http is empty redirect to index http.
+
+
             if (req.getPathInfo() != null) {
                 builder.append(req.getPathInfo());
             } else {
-                builder.insert(0, req.getContextPath());
-                builder.append("/").append(getIndexFile());
+                builder.insert(0, req.getContextPath()).append("/");
                 resp.sendRedirect(builder.toString());
                 return;
             }
@@ -96,8 +96,19 @@ public class FileAssetServlet extends HttpServlet {
             String assetPath = builder.toString();
             //Get from cache if not available load it.
             FileAsset asset = cache.getIfPresent(assetPath);
-            if (asset == null ) {
-                asset = loadAsset(assetPath);
+            try{
+                if (asset == null ) {
+                    asset = loadAsset(assetPath);
+                }}catch (RuntimeException e){
+
+            }
+            if (asset == null){
+                if(!assetPath.contains(".")){
+                    builder.delete(builder.lastIndexOf("/"),builder.length());
+                    builder.append("/").append(getIndexFile());
+                    asset = loadAsset(builder.toString());
+                }
+
             }
             //If still it is null it means nothing to load.
             if (asset == null) {

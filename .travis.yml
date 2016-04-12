@@ -1,0 +1,9 @@
+language: java
+sudo: required
+jdk:
+  - oraclejdk7
+script: mvn clean verify -DskipTests=true
+
+after_success:
+  - echo "<settings><servers><server><id>ossrh</id><username>\${env.OSSRH_USER}</username><password>\${env.OSSRH_PASS}</password></server></servers></settings>" > ~/settings.xml
+  - mvn deploy -DperformRelease=true --settings ~/settings.xml
