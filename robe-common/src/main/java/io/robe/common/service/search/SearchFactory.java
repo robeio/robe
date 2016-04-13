@@ -54,6 +54,8 @@ public class SearchFactory extends AbstractContainerRequestValueFactory<SearchMo
                         searchModel.setFields(param.getValue().get(0).split(","));
                 } else if ("_sort".equalsIgnoreCase(param.getKey())) {
                     searchModel.setSort(param.getValue().get(0).split(","));
+                } else if ("_filter".equalsIgnoreCase(param.getKey())) {
+                    searchModel.setFilter(param.getValue().get(0));
                 }
             }
         }

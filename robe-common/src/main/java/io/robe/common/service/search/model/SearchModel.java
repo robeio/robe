@@ -29,6 +29,7 @@ public class SearchModel {
      * Fieds for sorting + for asc and - for desc ordering followed  by field name Forex. +fieldName
      */
     private String[] sort;
+    private String filter;
 
     public SearchModel() {
     }
@@ -71,5 +72,13 @@ public class SearchModel {
 
     public void setSort(String[] sort) {
         this.sort = sort;
+    }
+
+    public void setFilter(String filter) {
+        this.filter = filter;
+    }
+
+    public String getFilter() {
+        return filter;
     }
 }
