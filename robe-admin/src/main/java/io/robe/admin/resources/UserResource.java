@@ -44,7 +44,7 @@ public class UserResource extends AbstractAuthResource<User> {
     @RobeService(group = "User", description = "Returns all Users as a collection.")
     @GET
     @UnitOfWork(readOnly = true, cacheMode = CacheMode.GET, flushMode = FlushMode.MANUAL)
-    public List<User> getAll(/*@Auth Credentials credentials,*/ @SearchParam SearchModel search) {
+    public List<User> getAll(@Auth Credentials credentials, @SearchParam SearchModel search) {
         return userDao.findAll(search);
     }
 
