@@ -1,4 +1,4 @@
-package io.robe.common.service.jersey.model;
+package io.robe.common.service.search.model;
 
 /**
  * A data class for holding search query parameters as a auto

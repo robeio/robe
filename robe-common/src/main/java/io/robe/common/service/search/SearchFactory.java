@@ -1,6 +1,6 @@
-package io.robe.common.service.jersey;
+package io.robe.common.service.search;
 
-import io.robe.common.service.jersey.model.SearchModel;
+import io.robe.common.service.search.model.SearchModel;
 import org.glassfish.jersey.server.internal.inject.AbstractContainerRequestValueFactory;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

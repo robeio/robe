@@ -2,7 +2,9 @@ package io.robe.hibernate.dao;
 
 import com.google.common.base.Preconditions;
 import io.dropwizard.hibernate.AbstractDAO;
-import io.robe.common.service.jersey.model.SearchModel;
+import io.robe.common.service.search.SearchFrom;
+import io.robe.common.service.search.SearchIgnore;
+import io.robe.common.service.search.model.SearchModel;
 import io.robe.hibernate.entity.BaseEntity;
 import org.hibernate.Criteria;
 import org.hibernate.SessionFactory;
@@ -177,8 +179,17 @@ public class BaseDao<T extends BaseEntity> extends AbstractDAO<T> {
             Criterion[] fieldLikes = new Criterion[fields.length];
             int i = 0;
             for (Field field : fields) {
-                if (field.getType().equals(String.class))
-                    fieldLikes[i++] = Restrictions.ilike(field.getName(), search.getQ(), MatchMode.ANYWHERE);
+                SearchFrom searchFrom = field.getAnnotation(SearchFrom.class);
+                if (searchFrom != null) {
+                    List<String> result = getRemoteMatches(searchFrom, search.getQ());
+                    for (String id : result) {
+                        fieldLikes[i++] = Restrictions.eq(field.getName(), id);
+                    }
+                } else if (field.getType().equals(String.class)) {
+                    if (field.getAnnotation(SearchIgnore.class) == null) {
+                        fieldLikes[i++] = Restrictions.ilike(field.getName(), search.getQ(), MatchMode.ANYWHERE);
+                    }
+                }
             }
             fieldLikes = Arrays.copyOf(fieldLikes, i);
             criteria.add(Restrictions.or(fieldLikes));
@@ -186,7 +197,25 @@ public class BaseDao<T extends BaseEntity> extends AbstractDAO<T> {
         return criteria;
     }
 
-    private Field[] getCachedFields(Class<T> entityClass) {
+    private List<String> getRemoteMatches(SearchFrom from, String searchQ) {
+        Criteria criteria = currentSession().createCriteria(from.entity());
+        Field[] fields = getCachedFields(from.entity());
+        Criterion[] fieldLikes = new Criterion[fields.length];
+        int i = 0;
+        for (Field field : fields) {
+            if (field.getName().equals(from.target())) {
+                if (field.getAnnotation(SearchIgnore.class) == null) {
+                    fieldLikes[i++] = Restrictions.ilike(field.getName(), searchQ, MatchMode.ANYWHERE);
+                }
+            }
+        }
+        fieldLikes = Arrays.copyOf(fieldLikes, i);
+        criteria.add(Restrictions.or(fieldLikes));
+        criteria.setProjection(Projections.property(from.id()));
+        return criteria.list();
+    }
+
+    private Field[] getCachedFields(Class<?> entityClass) {
         if (!fieldCache.containsKey(entityClass.getName())) {
             fieldCache.put(entityClass.getName(), entityClass.getDeclaredFields());
         }

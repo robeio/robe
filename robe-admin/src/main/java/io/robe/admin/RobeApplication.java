@@ -17,7 +17,7 @@ import io.robe.auth.token.TokenAuthBundle;
 import io.robe.auth.token.TokenAuthenticator;
 import io.robe.auth.token.jersey.TokenFactory;
 import io.robe.common.exception.RobeExceptionMapper;
-import io.robe.common.service.jersey.SearchFactoryProvider;
+import io.robe.common.service.search.SearchFactoryProvider;
 import io.robe.guice.GuiceBundle;
 import io.robe.hibernate.RobeHibernateBundle;
 import io.robe.mail.MailBundle;

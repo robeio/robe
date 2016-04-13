@@ -9,8 +9,8 @@ import io.robe.admin.hibernate.entity.*;
 import io.robe.auth.Credentials;
 import io.robe.auth.data.entry.PermissionEntry;
 import io.robe.common.service.RobeService;
-import io.robe.common.service.SearchParam;
-import io.robe.common.service.jersey.model.SearchModel;
+import io.robe.common.service.search.SearchParam;
+import io.robe.common.service.search.model.SearchModel;
 import io.robe.common.utils.FieldReflection;
 import org.hibernate.FlushMode;
 
