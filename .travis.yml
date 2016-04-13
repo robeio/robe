@@ -2,10 +2,14 @@ language: java
 jdk:
   - oraclejdk7
 script: mvn clean verify -DskipTests=true
-before_install:
-  - echo ${env.GPG_SECRET_KEYS} | base64 --decode | gpg --import
-  - echo ${env.GPG_OWNERTRUST} | base64 --decode | gpg --import-ownertrust
+
 
 after_success:
-  - echo "<settings><servers><server><id>ossrh</id><username>\${env.OSSRH_USER}</username><password>\${env.OSSRH_PASS}</password></server></servers><profiles><id>ossrh</id><activation><activeByDefault>true</activeByDefault></activation><properties><gpg.executable>gpg</gpg.executable><gpg.keyname>AB667336</gpg.keyname><gpg.passphrase>\${env.GPGPASSPHRASE}</gpg.passphrase><properties></settings>" > ~/settings.xml                                                                                                                              <profile>
-  - mvn deploy -DperformRelease=true --settings ~/settings.xml
+  - openssl aes-256-cbc -pass pass:$ENCRYPTION_PASSWORD -in $GPG_DIR/pubring.gpg.enc -out ~/pubring.gpg -d
+  - openssl aes-256-cbc -pass pass:$ENCRYPTION_PASSWORD -in $GPG_DIR/secring.gpg.enc -out ~/secring.gpg -d
+  - echo "<settings><servers><server><id>ossrh</id><username>\${env.OSSRH_USER}</username><password>\${env.OSSRH_PASS}</password></server></servers><profiles><profile><id>ossrh</id><activation><activeByDefault>true</activeByDefault></activation><properties><gpg.executable>gpg</gpg.executable><gpg.passphrase>\${env.GPGPASSPHRASE}</gpg.passphrase></properties></profile></profiles></settings>" > ~/settings.xml
+  - mvn clean deploy -DperformRelease=true -DskipTests=true --settings ~/settings.xml
+
+env:
+  global:
+  - GPG_DIR="`pwd`/deploy"
