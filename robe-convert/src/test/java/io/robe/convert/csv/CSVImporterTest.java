@@ -22,7 +22,6 @@ public class CSVImporterTest {
         for (SamplePojo importedPojo : list) {
             SamplePojo ref = TestData.getData().get(index++);
             assert importedPojo.equals(ref);
-            System.out.println(ref);
         }
     }
 
@@ -37,7 +36,6 @@ public class CSVImporterTest {
         for (SamplePojo importedPojo : list) {
             SamplePojo ref = TestData.getData().get(index++);
             assert importedPojo.equals(ref);
-            System.out.println(ref);
         }
     }
 

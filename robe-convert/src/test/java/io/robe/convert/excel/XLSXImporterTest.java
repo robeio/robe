@@ -19,7 +19,6 @@ public class XLSXImporterTest {
         for (SamplePojo item : list) {
             SamplePojo ref = TestData.getData().get(index++);
             assert item.equals(ref);
-            System.out.println(ref);
         }
     }
 
@@ -33,7 +32,6 @@ public class XLSXImporterTest {
         for (SamplePojo item : list) {
             SamplePojo ref = TestData.getData().get(index++);
             assert item.equals(ref);
-            System.out.println(ref);
         }
     }
 }
