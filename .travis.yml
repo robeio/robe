@@ -4,7 +4,7 @@ jdk:
 script: mvn clean verify -DskipTests=true
 
 before_install:
-  - pip install --user runloop
+  - pip install python
   - pip install codecov
 after_success:
   - openssl aes-256-cbc -pass pass:$ENCRYPTION_PASSWORD -in $GPG_DIR/pubring.gpg.enc -out ~/pubring.gpg -d
