@@ -106,7 +106,7 @@ public class SearchModel {
     }
 
     @JsonIgnore
-    public void addFiler(String field, String operator, String value) {
+    public void addFilter(String field, String operator, String value) {
         if (this.filter == null || this.filter.isEmpty()) {
             this.filter = field + operator + value;
         } else {
