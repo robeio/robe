@@ -2,6 +2,7 @@ package io.robe.hibernate.dao;
 
 import com.google.common.base.Preconditions;
 import io.dropwizard.hibernate.AbstractDAO;
+import io.robe.common.service.headers.ResponseHeadersUtil;
 import io.robe.common.service.search.SearchFrom;
 import io.robe.common.service.search.SearchIgnore;
 import io.robe.common.service.search.model.SearchModel;
@@ -47,8 +48,13 @@ public class BaseDao<T extends BaseEntity> extends AbstractDAO<T> {
      * @return List of entities.
      */
     public List<T> findAll(SearchModel search) {
-        Criteria criteria = buildCriteria(search);
-        return criteria.list();
+        List<T> list = buildCriteria(search).list();
+        search.setLimit(null);
+        search.setOffset(null);
+        long totalCount = (Long) buildCriteria(search).setProjection(Projections.rowCount()).uniqueResult();
+        search.setTotalCount(totalCount);
+        ResponseHeadersUtil.addTotalCount(search);
+        return list;
     }
 
 

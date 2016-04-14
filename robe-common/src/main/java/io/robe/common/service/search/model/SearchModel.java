@@ -1,5 +1,7 @@
 package io.robe.common.service.search.model;
 
+import javax.servlet.http.HttpServletResponse;
+
 /**
  * A data class for holding search query parameters as a auto
  * filled easy to access data structure.
@@ -30,6 +32,8 @@ public class SearchModel {
      */
     private String[] sort;
     private String filter;
+    private long totalCount;
+    private HttpServletResponse response;
 
     public SearchModel() {
     }
@@ -80,5 +84,21 @@ public class SearchModel {
 
     public String getFilter() {
         return filter;
+    }
+
+    public void setTotalCount(long totalCount) {
+        this.totalCount = totalCount;
+    }
+
+    public long getTotalCount() {
+        return totalCount;
+    }
+
+    public void setResponse(HttpServletResponse response) {
+        this.response = response;
+    }
+
+    public HttpServletResponse getResponse() {
+        return response;
     }
 }

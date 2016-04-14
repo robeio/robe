@@ -5,6 +5,7 @@ import org.glassfish.jersey.server.internal.inject.AbstractContainerRequestValue
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import javax.servlet.http.HttpServletResponse;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MultivaluedMap;
 import javax.ws.rs.core.UriInfo;
@@ -19,6 +20,9 @@ public class SearchFactory extends AbstractContainerRequestValueFactory<SearchMo
     @Context
     private UriInfo uriInfo;
 
+    @Context
+    private HttpServletResponse response;
+
     public SearchFactory() {
     }
 
@@ -32,6 +36,8 @@ public class SearchFactory extends AbstractContainerRequestValueFactory<SearchMo
     public SearchModel provide() {
 
         SearchModel searchModel = new SearchModel();
+
+        searchModel.setResponse(response);
 
         String method = getContainerRequest().getMethod();
 

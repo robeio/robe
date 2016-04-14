@@ -30,8 +30,8 @@ logging:
      # The default level of all loggers. Can be OFF, ERROR, WARN, INFO, DEBUG, TRACE, or ALL.
      level: INFO
      # Logger-specific levels.
-     #loggers:
-      #org.hibernate.SQL: ALL
+     loggers:
+      org.hibernate.SQL: ALL
 
 guice:
   scanPackages: [io.robe]
@@ -40,7 +40,7 @@ guice:
 quartz:
   instanceName: QuartzScheduler
   threadPoolClass: org.quartz.simpl.SimpleThreadPool
-  threadCount: 10
+  threadCount: 1
   threadPriority: 8
   providers: [io.robe.quartz.annotation,io.robe.admin.quartz]
   scanPackages: []
@@ -65,7 +65,7 @@ auth:
   path: /
   maxage: 1000 #s
   secure: false
-  poolSize: 4 # parallel with cpu cores
+  poolSize: 1 # parallel with cpu cores
   algorithm: PBEWithMD5AndTripleDES
   serverPassword: auto # auto for uuid, if it is cluster use custom password
 
