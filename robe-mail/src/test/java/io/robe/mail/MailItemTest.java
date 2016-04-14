@@ -101,13 +101,15 @@ public class MailItemTest {
     public void constructorAndToString() throws Exception {
         MailItem item1 = new MailItem("title", "body", (DataSource) null, "sender", "receiver");
         MailItem item2 = new MailItem("title", "body", (DataSource) null , "sender", Arrays.asList("receiver"));
+        item1.setId("1");
+        item2.setId("1");
         assertEquals(item1, item2);
 
         MailItem item3 = new MailItem("title", "body", (List<DataSource>) null, "sender", "receiver");
         MailItem item4 = new MailItem("title", "body", (List<DataSource>) null , "sender", Arrays.asList("receiver"));
+        item3.setId("1");
+        item4.setId("1");
         assertEquals(item3, item4);
-        item1.setId("1");
-        item2.setId("1");
         assertEquals(item1.toString(),item2.toString());
     }
 }
