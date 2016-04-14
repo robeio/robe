@@ -1,6 +1,8 @@
 # Robe.io
 ---
- 
+[![Build Status](https://travis-ci.org/robeio/robe.svg?branch=master)](https://travis-ci.org/robeio/robe)
+[![codecov.io](https://codecov.io/github/robeio/robe/coverage.svg?branch=master)](https://codecov.io/github/robeio/robe?branch=master)
+
 ### A brand new robe for Dropwizard.
 ## Motivation
 Robe is a perspective which eliminates the complications and problems occurred in a software development chain by following the approach of Dropwizard.
