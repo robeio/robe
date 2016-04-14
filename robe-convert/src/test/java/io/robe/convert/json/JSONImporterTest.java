@@ -6,6 +6,8 @@ import org.junit.Test;
 
 import java.util.List;
 
+import static org.junit.Assert.assertEquals;
+
 public class JSONImporterTest {
     private static final String ENCODING_UTF_16 = "UTF-16LE";
 
@@ -17,9 +19,9 @@ public class JSONImporterTest {
 
         assert list.size() == TestData.getData().size();
         int index = 0;
-        for (SamplePojo importedPojo : list) {
+        for (SamplePojo item : list) {
             SamplePojo ref = TestData.getData().get(index++);
-            assert importedPojo.equals(ref);
+            assertEquals(ref, item);
         }
     }
 
@@ -31,9 +33,9 @@ public class JSONImporterTest {
 
         assert list.size() == TestData.getData().size();
         int index = 0;
-        for (SamplePojo importedPojo : list) {
+        for (SamplePojo item : list) {
             SamplePojo ref = TestData.getData().get(index++);
-            assert importedPojo.equals(ref);
+            assertEquals(ref, item);
         }
     }
 }
