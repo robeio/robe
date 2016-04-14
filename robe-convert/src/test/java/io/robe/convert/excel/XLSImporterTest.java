@@ -12,12 +12,10 @@ public class XLSImporterTest {
         XLSImporter<SamplePojo> xlsImporter = new XLSImporter(SamplePojo.class, false);
         List<SamplePojo> list = xlsImporter.importStream(XLSImporterTest.class.getClassLoader().getResourceAsStream("sample.xls"));
         assert list.size() == TestData.getData().size();
-
         int index = 0;
         for (SamplePojo item : list) {
             SamplePojo ref = TestData.getData().get(index++);
             assert item.equals(ref);
-            System.out.println(ref);
         }
     }
 
@@ -26,12 +24,10 @@ public class XLSImporterTest {
         XLSImporter<SamplePojo> xlsImporter = new XLSImporter(SamplePojo.class, true);
         List<SamplePojo> list = xlsImporter.importStream(XLSImporterTest.class.getClassLoader().getResourceAsStream("sampleWithTitle.xls"));
         assert list.size() == TestData.getData().size();
-
         int index = 0;
         for (SamplePojo item : list) {
             SamplePojo ref = TestData.getData().get(index++);
             assert item.equals(ref);
-            System.out.println(ref);
         }
     }
 }

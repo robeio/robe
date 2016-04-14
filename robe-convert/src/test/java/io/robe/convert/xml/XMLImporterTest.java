@@ -22,7 +22,6 @@ public class XMLImporterTest {
         for (SamplePojo item : list) {
             SamplePojo ref = TestData.getData().get(index++);
             assert item.equals(ref);
-            System.out.println(ref);
         }
 
     }
@@ -33,7 +32,7 @@ public class XMLImporterTest {
         OnItemHandler<SamplePojo> handler = new OnItemHandler<SamplePojo>() {
             @Override
             public void onItem(SamplePojo samplePojo) {
-                System.out.println(samplePojo.toString());
+
             }
         };
         importer.importStream(XMLImporterTest.class.getClassLoader().getResourceAsStream("sample.xml"), handler);
@@ -51,7 +50,6 @@ public class XMLImporterTest {
         for (SamplePojo item : list) {
             SamplePojo ref = TestData.getData().get(index++);
             assert item.equals(ref);
-            System.out.println(ref);
         }
 
     }
@@ -62,7 +60,6 @@ public class XMLImporterTest {
         OnItemHandler<SamplePojo> handler = new OnItemHandler<SamplePojo>() {
             @Override
             public void onItem(SamplePojo samplePojo) {
-                System.out.println(samplePojo.toString());
             }
         };
         importer.importStream(XMLImporterTest.class.getClassLoader().getResourceAsStream("sampleUTF16.xml"), handler, ENCODING_UTF_16);

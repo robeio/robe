@@ -21,7 +21,6 @@ public class TSVImporterTest {
         for (SamplePojo item : list) {
             SamplePojo ref = TestData.getData().get(index++);
             assert item.equals(ref);
-            System.out.println(ref);
         }
     }
 
@@ -36,7 +35,6 @@ public class TSVImporterTest {
         for (SamplePojo item : list) {
             SamplePojo ref = TestData.getData().get(index++);
             assert item.equals(ref);
-            System.out.println(ref);
         }
     }
 

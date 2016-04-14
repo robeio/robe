@@ -20,7 +20,6 @@ public class JSONImporterTest {
         for (SamplePojo importedPojo : list) {
             SamplePojo ref = TestData.getData().get(index++);
             assert importedPojo.equals(ref);
-            System.out.println(ref);
         }
     }
 
@@ -35,7 +34,6 @@ public class JSONImporterTest {
         for (SamplePojo importedPojo : list) {
             SamplePojo ref = TestData.getData().get(index++);
             assert importedPojo.equals(ref);
-            System.out.println(ref);
         }
     }
 }
