@@ -1,5 +1,8 @@
 package io.robe.common.service.search.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import org.apache.commons.lang3.StringUtils;
+
 import javax.servlet.http.HttpServletResponse;
 
 /**
@@ -78,27 +81,52 @@ public class SearchModel {
         this.sort = sort;
     }
 
-    public void setFilter(String filter) {
-        this.filter = filter;
-    }
-
     public String getFilter() {
         return filter;
     }
 
-    public void setTotalCount(long totalCount) {
-        this.totalCount = totalCount;
+    public void setFilter(String filter) {
+        this.filter = filter;
     }
 
     public long getTotalCount() {
         return totalCount;
     }
 
-    public void setResponse(HttpServletResponse response) {
-        this.response = response;
+    public void setTotalCount(long totalCount) {
+        this.totalCount = totalCount;
     }
 
     public HttpServletResponse getResponse() {
         return response;
+    }
+
+    public void setResponse(HttpServletResponse response) {
+        this.response = response;
+    }
+
+    @JsonIgnore
+    public void addFiler(String field, String operator, String value) {
+        if (this.filter == null || this.filter.isEmpty()) {
+            this.filter = field + operator + value;
+        } else {
+            String[] fields = this.filter.split(",");
+
+            boolean find = false;
+            for (int i = 0; i < fields.length; i++) {
+                String f = fields[i];
+                if (f.contains(field)) {
+                    fields[i] = field + operator + value;
+                    find = true;
+                    break;
+                }
+            }
+            if (find) {
+                this.filter = StringUtils.join(fields, ",");
+            } else {
+                this.filter = this.filter + "," + field + operator + value;
+            }
+
+        }
     }
 }
