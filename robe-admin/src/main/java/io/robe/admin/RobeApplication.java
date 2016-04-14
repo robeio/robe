@@ -4,6 +4,7 @@ import com.google.common.collect.ImmutableList;
 import com.google.inject.Module;
 import io.dropwizard.Application;
 import io.dropwizard.hibernate.UnitOfWork;
+import io.dropwizard.jersey.jackson.JsonProcessingExceptionMapper;
 import io.dropwizard.setup.Bootstrap;
 import io.dropwizard.setup.Environment;
 import io.dropwizard.views.ViewBundle;
@@ -126,6 +127,7 @@ public class RobeApplication<T extends RobeConfiguration> extends Application<T>
 
     private void addExceptionMappers(Environment environment) {
         environment.jersey().register(new RobeExceptionMapper());
+        environment.jersey().register(new JsonProcessingExceptionMapper(true));
     }
 
 }

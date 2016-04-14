@@ -1,6 +1,7 @@
 # HTTP-specific options.
 server:
   type: simple
+  registerDefaultExceptionMappers: false
   applicationContextPath: /robe
   adminContextPath: /admin
   connector:
