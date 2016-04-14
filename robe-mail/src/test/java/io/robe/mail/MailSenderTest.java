@@ -56,7 +56,7 @@ public class MailSenderTest {
         try {
             mailSender.sendMessage(mailItem);
         } catch (MessagingException e) {
-            e.printStackTrace();
+            System.out.println(e.getMessage());
             if (e instanceof AuthenticationFailedException) {
                 // TODO ignore this because Username and Password not accepted.
                 assert true;
