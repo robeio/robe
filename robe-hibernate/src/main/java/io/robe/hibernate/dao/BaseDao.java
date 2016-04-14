@@ -256,7 +256,7 @@ public class BaseDao<T extends BaseEntity> extends AbstractDAO<T> {
                 case ">=":
                     fieldFilters[i++] = Restrictions.ge(params[0], value);
                     break;
-                case "%":
+                case "~=":
                     fieldFilters[i++] = Restrictions.ilike(params[0], params[2], MatchMode.ANYWHERE);
                     break;
             }
@@ -312,7 +312,7 @@ public class BaseDao<T extends BaseEntity> extends AbstractDAO<T> {
                         case '!':
                         case '<':
                         case '>':
-                        case '%':
+                        case '~':
                             //Jump to operation
                             op[oIndex++] = chars[i];
                             part = 1;
@@ -346,6 +346,7 @@ public class BaseDao<T extends BaseEntity> extends AbstractDAO<T> {
 
     private Field[] getCachedFields(Class<?> entityClass) {
         if (!fieldCache.containsKey(entityClass.getName())) {
+
             fieldCache.put(entityClass.getName(), entityClass.getDeclaredFields());
         }
         return fieldCache.get(entityClass.getName());
