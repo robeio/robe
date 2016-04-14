@@ -98,7 +98,7 @@ public class MailItemTest {
     }
 
     @Test
-    public void constructorAndToString() throws Exception {
+    public void constructorAndToStringAndHash() throws Exception {
         MailItem item1 = new MailItem("title", "body", (DataSource) null, "sender", "receiver");
         MailItem item2 = new MailItem("title", "body", (DataSource) null , "sender", Arrays.asList("receiver"));
         item1.setId("1");
@@ -111,5 +111,6 @@ public class MailItemTest {
         item4.setId("1");
         assertEquals(item3, item4);
         assertEquals(item1.toString(),item2.toString());
+        assertEquals(item1.hashCode(),item2.hashCode());
     }
 }
