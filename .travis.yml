@@ -1,7 +1,6 @@
 language: java
 jdk:
   - oraclejdk7
-script: mvn clean verify
 
 before_install:
   - export TZ=Europe/Istanbul
