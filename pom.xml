@@ -87,7 +87,7 @@
     </modules>
 
     <properties>
-        <project.version>0.5.0.0-1000</project.version>
+        <project.version>0.5.0.0.1001</project.version>
         <dropwizard.version>0.9.2</dropwizard.version>
         <project.version>0.5.0.0</project.version>
         <mysql.version>5.1.38</mysql.version>
