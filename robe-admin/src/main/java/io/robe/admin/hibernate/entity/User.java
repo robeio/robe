@@ -3,6 +3,8 @@ package io.robe.admin.hibernate.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import io.robe.auth.data.entry.UserEntry;
+import io.robe.common.service.search.SearchFrom;
+import io.robe.common.service.search.SearchIgnore;
 import io.robe.hibernate.entity.BaseEntity;
 import org.hibernate.validator.constraints.Length;
 import org.hibernate.validator.constraints.NotEmpty;
@@ -35,6 +37,7 @@ public class User extends BaseEntity implements UserEntry {
     @Column(length = 50, nullable = false)
     private String surname;
 
+    @SearchIgnore
     @Length(min = 64, max = 64)
     @NotEmpty
     @Column(length = 64, nullable = false)
@@ -53,6 +56,8 @@ public class User extends BaseEntity implements UserEntry {
     @Column
     private Date lastLogoutTime;
 
+    @SearchIgnore
+    @SearchFrom(entity = Role.class, target = "name", id = "oid")
     @Length(min = 32, max = 32)
     @NotEmpty
     @Column(length = 32)

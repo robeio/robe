@@ -1,7 +1,6 @@
-package io.robe.common.service.jersey;
+package io.robe.common.service.search;
 
-import io.robe.common.service.SearchParam;
-import io.robe.common.service.jersey.model.SearchModel;
+import io.robe.common.service.search.model.SearchModel;
 import org.glassfish.hk2.api.Factory;
 import org.glassfish.hk2.api.InjectionResolver;
 import org.glassfish.hk2.api.ServiceLocator;

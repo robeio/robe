@@ -1,7 +1,13 @@
-# Robe.io
----
- 
+
+# robe.io
+
 ### A brand new robe for Dropwizard.
+
+[![Build Status](https://travis-ci.org/robeio/robe.svg?branch=master)](https://travis-ci.org/robeio/robe)
+[![codecov.io](https://codecov.io/github/robeio/robe/coverage.svg?branch=master)](https://codecov.io/github/robeio/robe?branch=master)
+![codecov.io](https://codecov.io/github/robeio/robe/branch.svg?branch=master)
+
+
 ## Motivation
 Robe is a perspective which eliminates the complications and problems occurred in a software development chain by following the approach of Dropwizard.
 Robe solves these complication by including various production ready libraries along with Dropwizard.
@@ -35,7 +41,9 @@ This module handles mail template creation, mail queue operations and mail authe
 This module handles admin operations which are assigned to the administrators. These operations allows controlling UI, users, roles, permissions, mails and scheduled tasks. AdminPanel is developed with KendoUI and allows the user to observe server metric information. In case of a need in changing the UI, the developer can place their application's menus in this panel. 
 
 
-**To be continued ...**
 ---
 
 [Robe](http://www.robe.io), supported by [**Atlassian**](https://www.atlassian.com/), [**IntelliJ**](https://www.jetbrains.com/idea) and [**BrowserStack**](http://www.browserstack.com/).
+
+<img src="./docs/robe.png" alt="logo" width="200">
+

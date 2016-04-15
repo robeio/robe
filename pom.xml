@@ -7,7 +7,8 @@
 
     <groupId>io.robe</groupId>
     <artifactId>robe-parent</artifactId>
-    <version>0.5.0.0</version>
+    <version>${project.version}</version>
+
     <packaging>pom</packaging>
     <name>Robe Project</name>
     <url>www.robe.io</url>
@@ -86,8 +87,8 @@
     </modules>
 
     <properties>
+        <project.version>0.5.0.0-1001</project.version>
         <dropwizard.version>0.9.2</dropwizard.version>
-        <project.version>0.5.0.0</project.version>
         <mysql.version>5.1.38</mysql.version>
         <beanutils.version>1.9.0</beanutils.version>
         <commons.version>1.10</commons.version>
@@ -103,6 +104,46 @@
 
     <dependencyManagement>
         <dependencies>
+            <dependency>
+                <groupId>io.robe</groupId>
+                <artifactId>robe-common</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>io.robe</groupId>
+                <artifactId>robe-servlet</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>io.robe</groupId>
+                <artifactId>robe-guice</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>io.robe</groupId>
+                <artifactId>robe-mail</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>io.robe</groupId>
+                <artifactId>robe-assets</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>io.robe</groupId>
+                <artifactId>robe-auth</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>io.robe</groupId>
+                <artifactId>robe-hibernate</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>io.robe</groupId>
+                <artifactId>robe-quartz</artifactId>
+                <version>${project.version}</version>
+            </dependency>
             <dependency>
                 <groupId>io.dropwizard</groupId>
                 <artifactId>dropwizard-core</artifactId>
@@ -433,7 +474,25 @@
                     <encoding>UTF-8</encoding>
                 </configuration>
             </plugin>
-
+            <plugin>
+                <groupId>org.jacoco</groupId>
+                <artifactId>jacoco-maven-plugin</artifactId>
+                <version>0.7.6.201602180812</version>
+                <executions>
+                    <execution>
+                        <goals>
+                            <goal>prepare-agent</goal>
+                        </goals>
+                    </execution>
+                    <execution>
+                        <id>report</id>
+                        <phase>test</phase>
+                        <goals>
+                            <goal>report</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
 
         </plugins>
     </build>

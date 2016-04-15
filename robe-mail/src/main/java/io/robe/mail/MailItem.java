@@ -124,16 +124,48 @@ public class MailItem {
     }
 
     @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof MailItem)) return false;
+
+        MailItem item = (MailItem) o;
+
+        if (id != null ? !id.equals(item.id) : item.id != null) return false;
+        if (title != null ? !title.equals(item.title) : item.title != null) return false;
+        if (body != null ? !body.equals(item.body) : item.body != null) return false;
+        if (attachments != null ? !attachments.equals(item.attachments) : item.attachments != null) return false;
+        if (sender != null ? !sender.equals(item.sender) : item.sender != null) return false;
+        if (receivers != null ? !receivers.equals(item.receivers) : item.receivers != null) return false;
+        if (event != null ? !event.equals(item.event) : item.event != null) return false;
+        return headers != null ? headers.equals(item.headers) : item.headers == null;
+
+    }
+
+    @Override
+    public int hashCode() {
+        int result = id != null ? id.hashCode() : 0;
+        result = 31 * result + (title != null ? title.hashCode() : 0);
+        result = 31 * result + (body != null ? body.hashCode() : 0);
+        result = 31 * result + (attachments != null ? attachments.hashCode() : 0);
+        result = 31 * result + (sender != null ? sender.hashCode() : 0);
+        result = 31 * result + (receivers != null ? receivers.hashCode() : 0);
+        result = 31 * result + (event != null ? event.hashCode() : 0);
+        result = 31 * result + (headers != null ? headers.hashCode() : 0);
+        return result;
+    }
+
+    @Override
     public String toString() {
-        return "MailItem{" +
-                "id='" + id + '\'' +
-                ", title='" + title + '\'' +
-                ", body='" + body + '\'' +
-                ", attachments=" + attachments +
-                ", sender='" + sender + '\'' +
-                ", receivers=" + receivers +
-                ", event=" + event +
-                ", headers=" + headers +
-                '}';
+        final StringBuilder sb = new StringBuilder("MailItem{");
+        sb.append("id='").append(id).append('\'');
+        sb.append(", title='").append(title).append('\'');
+        sb.append(", body='").append(body).append('\'');
+        sb.append(", attachments=").append(attachments);
+        sb.append(", sender='").append(sender).append('\'');
+        sb.append(", receivers=").append(receivers);
+        sb.append(", event=").append(event);
+        sb.append(", headers=").append(headers);
+        sb.append('}');
+        return sb.toString();
     }
 }

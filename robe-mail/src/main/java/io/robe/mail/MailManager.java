@@ -61,7 +61,6 @@ public class MailManager {
         try {
             return sender.getConfiguration() != null;
         } catch (Exception e) {
-            e.printStackTrace();
             return false;
         }
     }

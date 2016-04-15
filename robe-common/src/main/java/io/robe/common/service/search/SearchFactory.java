@@ -1,10 +1,9 @@
-package io.robe.common.service.jersey;
+package io.robe.common.service.search;
 
-import io.robe.common.service.jersey.model.SearchModel;
+import io.robe.common.service.search.model.SearchModel;
 import org.glassfish.jersey.server.internal.inject.AbstractContainerRequestValueFactory;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
+import javax.servlet.http.HttpServletResponse;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MultivaluedMap;
 import javax.ws.rs.core.UriInfo;
@@ -14,10 +13,12 @@ import java.util.Map;
 
 public class SearchFactory extends AbstractContainerRequestValueFactory<SearchModel> {
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(SearchFactory.class);
 
     @Context
     private UriInfo uriInfo;
+
+    @Context
+    private HttpServletResponse response;
 
     public SearchFactory() {
     }
@@ -32,6 +33,8 @@ public class SearchFactory extends AbstractContainerRequestValueFactory<SearchMo
     public SearchModel provide() {
 
         SearchModel searchModel = new SearchModel();
+
+        searchModel.setResponse(response);
 
         String method = getContainerRequest().getMethod();
 
@@ -54,6 +57,8 @@ public class SearchFactory extends AbstractContainerRequestValueFactory<SearchMo
                         searchModel.setFields(param.getValue().get(0).split(","));
                 } else if ("_sort".equalsIgnoreCase(param.getKey())) {
                     searchModel.setSort(param.getValue().get(0).split(","));
+                } else if ("_filter".equalsIgnoreCase(param.getKey())) {
+                    searchModel.setFilter(param.getValue().get(0));
                 }
             }
         }

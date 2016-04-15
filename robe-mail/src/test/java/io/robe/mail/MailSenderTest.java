@@ -55,13 +55,10 @@ public class MailSenderTest {
 
         try {
             mailSender.sendMessage(mailItem);
+        } catch (AuthenticationFailedException | NullPointerException e) {
+            assert true;
         } catch (MessagingException e) {
-            e.printStackTrace();
-            if (e instanceof AuthenticationFailedException) {
-                // TODO ignore this because Username and Password not accepted.
-                assert true;
-            }
-
+            assert false;
         }
 
     }
