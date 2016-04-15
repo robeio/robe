@@ -113,4 +113,11 @@ public class MailItemTest {
         assertEquals(item1.toString(),item2.toString());
         assertEquals(item1.hashCode(),item2.hashCode());
     }
+
+    @Test
+    public void equalsTest(){
+        MailItem item1 = new MailItem("title", "body", (DataSource) null, "sender", "receiver");
+        assertEquals(item1, item1);
+
+    }
 }
