@@ -10,13 +10,15 @@ import io.robe.hibernate.entity.BaseEntity;
 import org.hibernate.Criteria;
 import org.hibernate.SessionFactory;
 import org.hibernate.criterion.*;
-import org.hibernate.transform.BasicTransformerAdapter;
+import org.hibernate.transform.Transformers;
 
 import javax.inject.Inject;
 import java.io.Serializable;
 import java.lang.reflect.Field;
 import java.math.BigDecimal;
-import java.util.*;
+import java.util.Arrays;
+import java.util.Date;
+import java.util.List;
 import java.util.concurrent.ConcurrentHashMap;
 
 /**
@@ -211,16 +213,7 @@ public class BaseDao<T extends BaseEntity> extends AbstractDAO<T> {
                 projectionList.add(Projections.property(fieldName), fieldName);
             }
             criteria.setProjection(projectionList);
-            criteria.setResultTransformer(new BasicTransformerAdapter() {
-                @Override
-                public Object transformTuple(Object[] tuple, String[] aliases) {
-                    Map<String, Object> response = new HashMap<String, Object>();
-                    for (short i = 0; i < tuple.length; i++) {
-                        response.put(aliases[i], tuple[i]);
-                    }
-                    return response;
-                }
-            });
+            criteria.setResultTransformer(Transformers.ALIAS_TO_ENTITY_MAP);
         }
         if (search.getOffset() != null) {
             criteria.setFirstResult(search.getOffset());
