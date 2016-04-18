@@ -8,6 +8,7 @@ import javax.mail.util.ByteArrayDataSource;
 import java.util.*;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotEquals;
 
 @FixMethodOrder
 public class MailItemTest {
@@ -112,5 +113,15 @@ public class MailItemTest {
         assertEquals(item3, item4);
         assertEquals(item1.toString(),item2.toString());
         assertEquals(item1.hashCode(),item2.hashCode());
+    }
+
+    @Test
+    public void equalsTest(){
+        MailItem item1 = new MailItem("title", "body", (DataSource) null, "sender", "receiver");
+        assertEquals(item1, item1);
+
+        Object item2 = new Object();
+        assertNotEquals(item1,item2);
+
     }
 }
