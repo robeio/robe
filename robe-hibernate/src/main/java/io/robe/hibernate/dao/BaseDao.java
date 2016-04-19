@@ -16,6 +16,7 @@ import javax.inject.Inject;
 import java.io.Serializable;
 import java.lang.reflect.Field;
 import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
@@ -233,23 +234,21 @@ public class BaseDao<T extends BaseEntity> extends AbstractDAO<T> {
         }
         if (search.getQ() != null && !search.getQ().isEmpty()) {
             Field[] fields = getCachedFields(this.getEntityClass());
-            Criterion[] fieldLikes = new Criterion[fields.length];
-            int i = 0;
+            List<Criterion> fieldLikes = new ArrayList<>(fields.length);
             for (Field field : fields) {
                 SearchFrom searchFrom = field.getAnnotation(SearchFrom.class);
                 if (searchFrom != null) {
                     List<String> result = addRemoteMatchCriterias(searchFrom, search.getQ());
                     for (String id : result) {
-                        fieldLikes[i++] = Restrictions.eq(field.getName(), id);
+                        fieldLikes.add(Restrictions.eq(field.getName(), id));
                     }
                 } else if (field.getType().equals(String.class)) {
                     if (field.getAnnotation(SearchIgnore.class) == null) {
-                        fieldLikes[i++] = Restrictions.ilike(field.getName(), search.getQ(), MatchMode.ANYWHERE);
+                        fieldLikes.add(Restrictions.ilike(field.getName(), search.getQ(), MatchMode.ANYWHERE));
                     }
                 }
             }
-            fieldLikes = Arrays.copyOf(fieldLikes, i);
-            criteria.add(Restrictions.or(fieldLikes));
+            criteria.add(Restrictions.or(fieldLikes.toArray(new Criterion[]{})));
         }
         if (search.getFilter() != null) {
             Field[] fields = getCachedFields(this.getEntityClass());
