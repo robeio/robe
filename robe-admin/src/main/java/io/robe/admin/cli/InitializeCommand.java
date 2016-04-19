@@ -31,6 +31,7 @@ public class InitializeCommand<T extends RobeConfiguration> extends EnvironmentC
     private static final Logger LOGGER = LoggerFactory.getLogger(InitializeCommand.class);
     protected static String IO_ROBE_ADMIN = "io/robe/admin";
     protected static String ADMIN = "Admin";
+    protected static String EMAIL = "admin@robe.io";
     protected RobeHibernateBundle hibernateBundle;
 
 
@@ -163,11 +164,11 @@ public class InitializeCommand<T extends RobeConfiguration> extends EnvironmentC
             }
         }
 
-        LOGGER.info("Creating admin user. U:admin@robe.io");
-        User user = (User) session.createCriteria(User.class).add(Restrictions.eq("email", "admin@robe.io")).uniqueResult();
+        LOGGER.info("Creating admin user. U:" + EMAIL);
+        User user = (User) session.createCriteria(User.class).add(Restrictions.eq("email", EMAIL)).uniqueResult();
         if (user == null) {
             user = new User();
-            user.setEmail("admin@robe.io");
+            user.setEmail(EMAIL);
             user.setActive(true);
             user.setName(IO_ROBE_ADMIN);
             user.setSurname(IO_ROBE_ADMIN);
