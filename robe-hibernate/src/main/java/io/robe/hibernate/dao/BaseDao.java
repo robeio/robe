@@ -10,11 +10,13 @@ import io.robe.hibernate.entity.BaseEntity;
 import org.hibernate.Criteria;
 import org.hibernate.SessionFactory;
 import org.hibernate.criterion.*;
+import org.hibernate.transform.Transformers;
 
 import javax.inject.Inject;
 import java.io.Serializable;
 import java.lang.reflect.Field;
 import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
@@ -41,6 +43,55 @@ public class BaseDao<T extends BaseEntity> extends AbstractDAO<T> {
         super(sessionFactory);
     }
 
+    private static String[] parseFilterExp(String filter) {
+        char[] chars = filter.toCharArray();
+        char[] name = new char[chars.length];
+        char[] op = new char[2];
+        char[] value = new char[chars.length];
+        int nIndex = 0;
+        int oIndex = 0;
+        int vIndex = 0;
+        short part = 0;
+        for (int i = 0; i < chars.length; i++) {
+            switch (part) {
+                case 0://Filling name
+                    switch (chars[i]) {
+                        case '=':
+                        case '!':
+                        case '<':
+                        case '>':
+                        case '~':
+                            //Jump to operation
+                            op[oIndex++] = chars[i];
+                            part = 1;
+                            break;
+                        default:
+                            name[nIndex++] = chars[i];
+                    }
+                    break;
+                case 1://Filling op
+                    switch (chars[i]) {
+                        case '=':
+                            op[oIndex++] = chars[i];
+                            break;
+                        default:
+                            //Jump to value
+                            value[vIndex++] = chars[i];
+                            part = 2;
+                    }
+                    break;
+                case 2://Filling value
+                    value[vIndex++] = chars[i];
+                    break;
+            }
+        }
+
+        return new String[]{
+                new String(name, 0, nIndex),
+                new String(op, 0, oIndex),
+                new String(value, 0, vIndex)};
+    }
+
     /**
      * Returns modified list of the entities regarding to the search model.
      * {@inheritDoc}
@@ -57,7 +108,6 @@ public class BaseDao<T extends BaseEntity> extends AbstractDAO<T> {
         return list;
     }
 
-
     /**
      * {@inheritDoc}
      *
@@ -67,7 +117,6 @@ public class BaseDao<T extends BaseEntity> extends AbstractDAO<T> {
         Criteria criteria = criteria();
         return list(criteria);
     }
-
 
     /**
      * {@inheritDoc}
@@ -165,6 +214,7 @@ public class BaseDao<T extends BaseEntity> extends AbstractDAO<T> {
                 projectionList.add(Projections.property(fieldName), fieldName);
             }
             criteria.setProjection(projectionList);
+            criteria.setResultTransformer(Transformers.ALIAS_TO_ENTITY_MAP);
         }
         if (search.getOffset() != null) {
             criteria.setFirstResult(search.getOffset());
@@ -184,28 +234,27 @@ public class BaseDao<T extends BaseEntity> extends AbstractDAO<T> {
         }
         if (search.getQ() != null && !search.getQ().isEmpty()) {
             Field[] fields = getCachedFields(this.getEntityClass());
-            Criterion[] fieldLikes = new Criterion[fields.length];
-            int i = 0;
+            List<Criterion> fieldLikes = new ArrayList<>(fields.length);
             for (Field field : fields) {
                 SearchFrom searchFrom = field.getAnnotation(SearchFrom.class);
                 if (searchFrom != null) {
                     List<String> result = addRemoteMatchCriterias(searchFrom, search.getQ());
                     for (String id : result) {
-                        fieldLikes[i++] = Restrictions.eq(field.getName(), id);
+                        fieldLikes.add(Restrictions.eq(field.getName(), id));
                     }
                 } else if (field.getType().equals(String.class)) {
                     if (field.getAnnotation(SearchIgnore.class) == null) {
-                        fieldLikes[i++] = Restrictions.ilike(field.getName(), search.getQ(), MatchMode.ANYWHERE);
+                        fieldLikes.add(Restrictions.ilike(field.getName(), search.getQ(), MatchMode.ANYWHERE));
                     }
                 }
             }
-            fieldLikes = Arrays.copyOf(fieldLikes, i);
-            criteria.add(Restrictions.or(fieldLikes));
+            criteria.add(Restrictions.or(fieldLikes.toArray(new Criterion[]{})));
         }
         if (search.getFilter() != null) {
             Field[] fields = getCachedFields(this.getEntityClass());
             criteria.add(addFilterCriterias(fields, search.getFilter()));
         }
+
 
         return criteria;
     }
@@ -299,55 +348,6 @@ public class BaseDao<T extends BaseEntity> extends AbstractDAO<T> {
 
         }
         return null;
-    }
-
-    private static String[] parseFilterExp(String filter) {
-        char[] chars = filter.toCharArray();
-        char[] name = new char[chars.length];
-        char[] op = new char[2];
-        char[] value = new char[chars.length];
-        int nIndex = 0;
-        int oIndex = 0;
-        int vIndex = 0;
-        short part = 0;
-        for (int i = 0; i < chars.length; i++) {
-            switch (part) {
-                case 0://Filling name
-                    switch (chars[i]) {
-                        case '=':
-                        case '!':
-                        case '<':
-                        case '>':
-                        case '~':
-                            //Jump to operation
-                            op[oIndex++] = chars[i];
-                            part = 1;
-                            break;
-                        default:
-                            name[nIndex++] = chars[i];
-                    }
-                    break;
-                case 1://Filling op
-                    switch (chars[i]) {
-                        case '=':
-                            op[oIndex++] = chars[i];
-                            break;
-                        default:
-                            //Jump to value
-                            value[vIndex++] = chars[i];
-                            part = 2;
-                    }
-                    break;
-                case 2://Filling value
-                    value[vIndex++] = chars[i];
-                    break;
-            }
-        }
-
-        return new String[]{
-                new String(name, 0, nIndex),
-                new String(op, 0, oIndex),
-                new String(value, 0, vIndex)};
     }
 
     private Field[] getCachedFields(Class<?> entityClass) {
