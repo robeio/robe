@@ -1,8 +1,8 @@
 package io.robe.auth.token.jersey;
 
+import io.robe.auth.token.Token;
 import io.robe.auth.token.TokenManager;
 import io.robe.auth.token.configuration.TokenBasedAuthConfiguration;
-import io.robe.auth.token.Token;
 import org.joda.time.DateTime;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -66,7 +66,8 @@ public class TokenBasedAuthResponseFilter implements ContainerResponseFilter {
                     LOGGER.info("Token expired. Please login again.");
                 } else {
                     token.setExpiration(token.getMaxAge());
-                    responseContext.getHeaders().putSingle("Set-Cookie", getTokenSentence(token.getTokenString()));
+                    if (!"authentication/logout".equals(requestContext.getUriInfo().getPath()))
+                        responseContext.getHeaders().putSingle("Set-Cookie", getTokenSentence(token.getTokenString()));
                 }
 
             } catch (Exception e) {
