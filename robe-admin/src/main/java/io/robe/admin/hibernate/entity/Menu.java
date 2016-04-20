@@ -1,5 +1,7 @@
 package io.robe.admin.hibernate.entity;
 
+import io.robe.common.service.search.SearchFrom;
+import io.robe.common.service.search.SearchIgnore;
 import io.robe.hibernate.entity.BaseEntity;
 import org.hibernate.validator.constraints.Length;
 import org.hibernate.validator.constraints.NotEmpty;
@@ -26,6 +28,8 @@ public class Menu extends BaseEntity {
     @Column(name = "itemIndex")
     private int index;
 
+    @SearchIgnore
+    @SearchFrom(entity = Menu.class, target = "text", id = "oid")
     @Length(max = 32)
     @Column(length = 32)
     private String parentOid;
