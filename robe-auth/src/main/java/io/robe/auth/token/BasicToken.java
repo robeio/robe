@@ -102,6 +102,11 @@ public class BasicToken implements Token {
         cache.cleanUp();
     }
 
+    public static void clearAllPermissionCache() {
+        cache.invalidateAll();
+        cache.cleanUp();
+    }
+
     public static Set<String> getCurrentUsernames() {
         cache.cleanUp();
         return cache.asMap().keySet();
