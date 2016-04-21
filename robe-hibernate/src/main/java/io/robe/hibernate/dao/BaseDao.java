@@ -16,10 +16,7 @@ import javax.inject.Inject;
 import java.io.Serializable;
 import java.lang.reflect.Field;
 import java.math.BigDecimal;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Date;
-import java.util.List;
+import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 
 /**
@@ -350,10 +347,22 @@ public class BaseDao<T extends BaseEntity> extends AbstractDAO<T> {
         return null;
     }
 
+    private static List<Field> getAllFields(List<Field> fields, Class<?> type) {
+        fields.addAll(Arrays.asList(type.getDeclaredFields()));
+        if (type.getSuperclass() != null) {
+            fields = getAllFields(fields, type.getSuperclass());
+        }
+        return fields;
+    }
+
     private Field[] getCachedFields(Class<?> entityClass) {
         if (!fieldCache.containsKey(entityClass.getName())) {
+            List<Field> fields = new LinkedList<>();
+            getAllFields(fields, entityClass);
+            Field[] fieldArr = new Field[fields.size()];
+            fields.toArray(fieldArr);
 
-            fieldCache.put(entityClass.getName(), entityClass.getDeclaredFields());
+            fieldCache.put(entityClass.getName(), fieldArr);
         }
         return fieldCache.get(entityClass.getName());
     }
