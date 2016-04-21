@@ -1,5 +1,6 @@
 package io.robe.admin.hibernate.entity;
 
+import io.robe.common.service.search.SearchIgnore;
 import io.robe.hibernate.entity.BaseEntity;
 
 import javax.persistence.*;
@@ -14,6 +15,7 @@ public class Ticket extends BaseEntity {
     private Type type;
     @Column
     private Date expirationDate;
+    @SearchIgnore
     @Column(length = 32, nullable = false)
     private String userOid;
 

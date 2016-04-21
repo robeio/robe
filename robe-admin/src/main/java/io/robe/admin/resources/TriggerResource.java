@@ -36,7 +36,7 @@ public class TriggerResource {
      * @param credentials auto fill by {@link Auth} annotation for authentication.
      * @return all {@link TriggerEntity} as a collection
      */
-    @RobeService(group = "TriggerEntity", description = "Returns all TriggerEntity as a collection.")
+    @RobeService(group = "QuartzJob", description = "Returns all TriggerEntity as a collection.")
     @GET
     @UnitOfWork(readOnly = true, cacheMode = GET, flushMode = FlushMode.MANUAL)
     public List<TriggerEntity> getAll(@Auth Credentials credentials, @SearchParam SearchModel search) {
@@ -53,7 +53,7 @@ public class TriggerResource {
      * @param id          This is  the oid of {@link TriggerEntity}
      * @return a  {@link TriggerEntity} resource with the matches given id.
      */
-    @RobeService(group = "TriggerEntity", description = "Returns a TriggerEntity resource with the matches given id.")
+    @RobeService(group = "QuartzJob", description = "Returns a TriggerEntity resource with the matches given id.")
     @Path("{id}")
     @GET
     @UnitOfWork(readOnly = true, cacheMode = GET, flushMode = FlushMode.MANUAL)
@@ -72,7 +72,7 @@ public class TriggerResource {
      * @param model       This is the one model of {@link TriggerEntity}
      * @return create a {@link TriggerEntity} resource.
      */
-    @RobeService(group = "TriggerEntity", description = "Create a TriggerEntity resource.")
+    @RobeService(group = "QuartzJob", description = "Create a TriggerEntity resource.")
     @POST
     @UnitOfWork
     public TriggerEntity create(@Auth Credentials credentials, @Valid TriggerEntity model) {
@@ -91,7 +91,7 @@ public class TriggerResource {
      * @param model       This is the one model of {@link TriggerEntity}
      * @return Update a  {@link TriggerEntity} resource with the matches given id.
      */
-    @RobeService(group = "TriggerEntity", description = "Update a TriggerEntity resource with the matches given id.")
+    @RobeService(group = "QuartzJob", description = "Update a TriggerEntity resource with the matches given id.")
     @PUT
     @UnitOfWork
     @Path("{id}")
@@ -120,7 +120,7 @@ public class TriggerResource {
      * @param model       This is the one model of {@link TriggerEntity}
      * @return Updates a  {@link TriggerEntity} resource with the matches given id.
      */
-    @RobeService(group = "TriggerEntity", description = "Update a TriggerEntity resource with the matches given id.")
+    @RobeService(group = "QuartzJob", description = "Update a TriggerEntity resource with the matches given id.")
     @PATCH
     @UnitOfWork
     @Path("{id}")
@@ -148,7 +148,7 @@ public class TriggerResource {
      * @param model       This is the one model of {@link TriggerEntity}
      * @return Delete a  {@link TriggerEntity} resource  with the matches given id.
      */
-    @RobeService(group = "TriggerEntity", description = "Delete a TriggerEntity resource with the matches given id.")
+    @RobeService(group = "QuartzJob", description = "Delete a TriggerEntity resource with the matches given id.")
     @DELETE
     @UnitOfWork
     @Path("{id}")

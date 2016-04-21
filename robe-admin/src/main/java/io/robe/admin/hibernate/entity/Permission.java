@@ -1,6 +1,7 @@
 package io.robe.admin.hibernate.entity;
 
 import io.robe.auth.data.entry.PermissionEntry;
+import io.robe.common.service.search.SearchIgnore;
 import io.robe.hibernate.entity.BaseEntity;
 
 import javax.persistence.*;
@@ -13,6 +14,7 @@ public class Permission extends BaseEntity implements PermissionEntry {
     @Column(name = "pType",nullable = false)
     private Type type;
 
+    @SearchIgnore
     @Column(name = "restrictedItemOid", length = 32,nullable = false)
     private String restrictedItemOid;
 
