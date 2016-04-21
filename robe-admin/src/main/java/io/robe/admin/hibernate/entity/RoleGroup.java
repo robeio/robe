@@ -3,6 +3,7 @@ package io.robe.admin.hibernate.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import io.robe.auth.data.entry.RoleGroupEntry;
+import io.robe.common.service.search.SearchIgnore;
 import io.robe.hibernate.entity.BaseEntity;
 
 import javax.persistence.Column;
@@ -13,9 +14,10 @@ import javax.persistence.Table;
 @Table
 public class RoleGroup extends BaseEntity implements RoleGroupEntry {
 
+    @SearchIgnore
     @Column(length = 32)
     private String roleOid;
-
+    @SearchIgnore
     @Column(length = 32)
     private String groupOid;
 
