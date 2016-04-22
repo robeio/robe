@@ -129,4 +129,29 @@ public class SearchModel {
 
         }
     }
+
+    @JsonIgnore
+    public void addSort(String field, String operator) {
+        if (this.sort == null) {
+            this.sort = new String[1];
+            this.sort[0] = operator + field;
+        } else {
+            boolean find = false;
+            for (int i = 0; i < this.sort.length; i++) {
+                String f = this.sort[i];
+                if (f.contains(field)) {
+                    this.sort[i] = field + operator;
+                    find = true;
+                    break;
+                }
+            }
+            if (!find) {
+                String[] array = new String[this.sort.length + 1];
+                System.arraycopy(this.sort, 0, array, 0, this.sort.length);
+                array[this.sort.length + 1] = operator + field;
+                this.sort = array;
+            }
+
+        }
+    }
 }
