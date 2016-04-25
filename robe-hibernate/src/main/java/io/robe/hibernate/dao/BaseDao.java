@@ -5,6 +5,7 @@ import io.dropwizard.hibernate.AbstractDAO;
 import io.robe.common.service.headers.ResponseHeadersUtil;
 import io.robe.common.service.search.SearchFrom;
 import io.robe.common.service.search.SearchIgnore;
+import io.robe.common.service.search.SearchableEnum;
 import io.robe.common.service.search.model.SearchModel;
 import io.robe.hibernate.entity.BaseEntity;
 import org.hibernate.Criteria;
@@ -239,9 +240,22 @@ public class BaseDao<T extends BaseEntity> extends AbstractDAO<T> {
                     for (String id : result) {
                         fieldLikes.add(Restrictions.eq(field.getName(), id));
                     }
-                } else if (field.getType().equals(String.class)) {
+                } else if (field.getType().equals(String.class) ) {
                     if (field.getAnnotation(SearchIgnore.class) == null) {
-                        fieldLikes.add(Restrictions.ilike(field.getName(), search.getQ(), MatchMode.ANYWHERE));
+                        if(field.isEnumConstant()) {
+                            fieldLikes.add(Restrictions.ilike(field.getName(), search.getQ(), MatchMode.ANYWHERE));
+
+                        }else{
+                            fieldLikes.add(Restrictions.ilike(field.getName(), search.getQ(), MatchMode.ANYWHERE));
+                        }
+                    }
+                } else if(field.getType().isEnum() && SearchableEnum.class.isAssignableFrom(field.getType())){
+                    SearchableEnum[] enums = (SearchableEnum[]) field.getType().getEnumConstants();
+
+                    for (SearchableEnum anEnum : enums){
+                        if(anEnum.getText().toLowerCase().contains(search.getQ().toLowerCase())){
+                            fieldLikes.add(Restrictions.eq(field.getName(), anEnum));
+                        }
                     }
                 }
             }
