@@ -4,6 +4,7 @@ import com.google.common.hash.Hashing;
 import io.dropwizard.Application;
 import io.dropwizard.cli.EnvironmentCommand;
 import io.dropwizard.hibernate.UnitOfWork;
+import io.dropwizard.jersey.PATCH;
 import io.dropwizard.setup.Environment;
 import io.robe.admin.RobeConfiguration;
 import io.robe.admin.hibernate.entity.*;
@@ -318,14 +319,16 @@ public class InitializeCommand<T extends RobeConfiguration> extends EnvironmentC
                 method.getAnnotation(PUT.class) != null ||
                 method.getAnnotation(POST.class) != null ||
                 method.getAnnotation(DELETE.class) != null ||
-                method.getAnnotation(OPTIONS.class) != null;
+                method.getAnnotation(OPTIONS.class) != null ||
+                method.getAnnotation(PATCH.class) != null;
     }
 
     protected String getHttpMethodType(Method method) {
         return method.getAnnotation(GET.class) != null ? "GET" :
                 method.getAnnotation(POST.class) != null ? "POST" :
-                        method.getAnnotation(PUT.class) != null ? "PUT" :
-                                method.getAnnotation(DELETE.class) != null ? "DELETE" :
-                                        method.getAnnotation(OPTIONS.class) != null ? "OPTIONS" : "";
+                        method.getAnnotation(PATCH.class) != null ? "PATCH" :
+                                method.getAnnotation(PUT.class) != null ? "PUT" :
+                                        method.getAnnotation(DELETE.class) != null ? "DELETE" :
+                                                method.getAnnotation(OPTIONS.class) != null ? "OPTIONS" : "";
     }
 }
