@@ -1,6 +1,5 @@
 package io.robe.admin.hibernate.dao;
 
-import javax.inject.Inject;
 import io.robe.admin.hibernate.entity.Menu;
 import io.robe.hibernate.dao.BaseDao;
 import org.hibernate.Criteria;
@@ -8,6 +7,7 @@ import org.hibernate.SessionFactory;
 import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Restrictions;
 
+import javax.inject.Inject;
 import java.util.List;
 
 public class MenuDao extends BaseDao<Menu> {
@@ -18,9 +18,9 @@ public class MenuDao extends BaseDao<Menu> {
     }
 
 
-    public List<Menu> findByModule(List<String> names) {
+    public List<Menu> findByModule(String names) {
         Criteria criteria = currentSession().createCriteria(Menu.class);
-        criteria.add(Restrictions.in("module", names));
+        criteria.add(Restrictions.eq("module", names));
         criteria.addOrder(Order.asc("index"));
         return list(criteria);
     }
