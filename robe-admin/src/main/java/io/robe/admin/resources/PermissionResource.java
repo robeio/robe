@@ -81,24 +81,19 @@ public class PermissionResource {
 
     /**
      * @param credentials Injected by {@link Auth} annotation for authentication.
-     * @param names       This names of Permission Group
+     * @param code       This names of Permission Group Code
      * @return JSONObject (MENU and SERVICE)
      */
     @RobeService(group = "Permission", description = "On select group list service and menu service")
-    @Path("selected")
+    @Path("group/{groupCode}")
     @POST
     @UnitOfWork(flushMode = FlushMode.MANUAL)
-    public Map<String, Object> getServicesByServiceGroup(@Auth Credentials credentials, List<String> names) {
+    public Map<String, Object> getServicesByServiceGroup(@Auth Credentials credentials, @PathParam("groupCode") String code) {
 
-        List<Service> services = new ArrayList<>();
-
-        for (String group : names) {
-            services.addAll(serviceDao.findServiceByGroup(group));
-        }
 
         Map<String, Object> response = new HashMap<>();
-        response.put("MENU", menuDao.findByModule(names));
-        response.put("SERVICE", services);
+        response.put("menu", menuDao.findByModule(code));
+        response.put("service", serviceDao.findServiceByGroup(code));
 
         return response;
     }

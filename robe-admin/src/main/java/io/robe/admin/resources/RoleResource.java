@@ -1,6 +1,5 @@
 package io.robe.admin.resources;
 
-import javax.inject.Inject;
 import io.dropwizard.auth.Auth;
 import io.dropwizard.hibernate.UnitOfWork;
 import io.dropwizard.jersey.PATCH;
@@ -14,6 +13,7 @@ import io.robe.common.service.search.model.SearchModel;
 import io.robe.common.utils.FieldReflection;
 import org.hibernate.FlushMode;
 
+import javax.inject.Inject;
 import javax.validation.Valid;
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
@@ -56,9 +56,9 @@ public class RoleResource {
 
     @RobeService(group = "Permission", description = "Returns all services and menus collection with the matches given Role id.")
     @GET
-    @Path("{id}/services/groups")
+    @Path("{id}/permissions")
     @UnitOfWork(readOnly = true, cacheMode = GET, flushMode = FlushMode.MANUAL)
-    public Map<String, Object> getServicesGroupByRole(@Auth Credentials credentials, @PathParam("id") String id) {
+    public Map<String, Object> getRolePermissions(@Auth Credentials credentials, @PathParam("id") String id) {
 
         List<Permission> permissions = new ArrayList<>();
 
@@ -91,8 +91,8 @@ public class RoleResource {
 
 
         Map<String, Object> response = new HashMap<>();
-        response.put("MENU", menus);
-        response.put("SERVICE", services);
+        response.put("menu", menus);
+        response.put("service", services);
 
         return response;
     }
