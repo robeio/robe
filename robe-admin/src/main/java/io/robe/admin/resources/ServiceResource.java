@@ -1,6 +1,5 @@
 package io.robe.admin.resources;
 
-import javax.inject.Inject;
 import io.dropwizard.auth.Auth;
 import io.dropwizard.hibernate.UnitOfWork;
 import io.dropwizard.jersey.PATCH;
@@ -17,6 +16,7 @@ import io.robe.guice.GuiceConfiguration;
 import org.hibernate.FlushMode;
 import org.reflections.Reflections;
 
+import javax.inject.Inject;
 import javax.validation.Valid;
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
@@ -230,7 +230,10 @@ public class ServiceResource {
                     entity.setGroup(robeService.group());
                 } else {
                     entity.setGroup("UNGROUPED");
+                    entity.setDescription("");
+
                 }
+                entity.setDescription(entity.getDescription() + " (" + entity.getMethod() + " " + entity.getPath() + ")");
                 serviceDao.create(entity);
                 count++;
 
@@ -256,6 +259,8 @@ public class ServiceResource {
             return "POST";
         if (method.getAnnotation(DELETE.class) != null)
             return "DELETE";
+        if (method.getAnnotation(PATCH.class) != null)
+            return "PATCH";
         if (method.getAnnotation(OPTIONS.class) != null)
             return "OPTIONS";
 

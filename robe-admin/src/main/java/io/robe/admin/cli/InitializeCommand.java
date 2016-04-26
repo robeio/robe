@@ -155,7 +155,10 @@ public class InitializeCommand<T extends RobeConfiguration> extends EnvironmentC
                             entity.setGroup(robeService.group());
                         } else {
                             entity.setGroup("UNGROUPED");
+                            entity.setDescription("");
+
                         }
+                        entity.setDescription(entity.getDescription() +" ("+ entity.getMethod() + " " + entity.getPath() +")");
                         session.persist(entity);
                         session.persist(createPermission(false, entity.getOid(), role));
                         LOGGER.info("Service data and permission created: " + entity.getPath() + "-" + entity.getMethod());

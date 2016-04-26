@@ -5,6 +5,7 @@ public interface ServiceEntry {
         GET,
         PUT,
         POST,
+        PATCH,
         DELETE,
         OPTIONS;
     }
