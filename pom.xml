@@ -7,7 +7,7 @@
 
     <groupId>io.robe</groupId>
     <artifactId>robe-parent</artifactId>
-    <version>0.5.0.0-1009</version>
+    <version>0.5.0.0-1010</version>
 
     <packaging>pom</packaging>
     <name>Robe Project</name>
@@ -71,6 +71,7 @@
             <url>https://oss.sonatype.org/service/local/staging/deploy/maven2/</url>
         </repository>
     </distributionManagement>
+
 
     <modules>
         <module>robe-admin</module>
@@ -382,6 +383,7 @@
                     <value>true</value>
                 </property>
             </activation>
+
             <build>
                 <plugins>
                     <plugin>
@@ -434,6 +436,30 @@
                                 </goals>
                             </execution>
                         </executions>
+                    </plugin>
+                </plugins>
+            </build>
+        </profile>
+        <profile>
+            <id>bintray</id>
+            <activation>
+                <property>
+                    <name>bintray</name>
+                    <value>true</value>
+                </property>
+            </activation>
+            <distributionManagement>
+                <repository>
+                    <id>bintray-robeio-maven</id>
+                    <url>https://api.bintray.com/maven/robeio/maven/robe/;publish=1</url>
+                </repository>
+            </distributionManagement>
+            <build>
+                <plugins>
+                    <plugin>
+                        <groupId>org.apache.maven.plugins</groupId>
+                        <artifactId>maven-release-plugin</artifactId>
+                        <version>2.5.3</version>
                     </plugin>
                 </plugins>
             </build>
