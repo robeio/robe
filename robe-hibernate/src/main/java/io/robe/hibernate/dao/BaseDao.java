@@ -225,7 +225,8 @@ public class BaseDao<T extends BaseEntity> extends AbstractDAO<T> {
      */
     protected final Criteria buildCriteria(SearchModel search, Class<? extends BaseEntity> clazz) {
 
-        Criteria criteria = criteria();
+        Criteria criteria = this.currentSession().createCriteria(clazz);
+
         if (search.getFields() != null && search.getFields().length != 0) {
             ProjectionList projectionList = Projections.projectionList();
             for (String fieldName : search.getFields()) {
@@ -260,20 +261,20 @@ public class BaseDao<T extends BaseEntity> extends AbstractDAO<T> {
                     for (String id : result) {
                         fieldLikes.add(Restrictions.eq(field.getName(), id));
                     }
-                } else if (field.getType().equals(String.class) ) {
+                } else if (field.getType().equals(String.class)) {
                     if (field.getAnnotation(SearchIgnore.class) == null) {
-                        if(field.isEnumConstant()) {
+                        if (field.isEnumConstant()) {
                             fieldLikes.add(Restrictions.ilike(field.getName(), search.getQ(), MatchMode.ANYWHERE));
 
-                        }else{
+                        } else {
                             fieldLikes.add(Restrictions.ilike(field.getName(), search.getQ(), MatchMode.ANYWHERE));
                         }
                     }
-                } else if(field.getType().isEnum() && SearchableEnum.class.isAssignableFrom(field.getType())){
+                } else if (field.getType().isEnum() && SearchableEnum.class.isAssignableFrom(field.getType())) {
                     SearchableEnum[] enums = (SearchableEnum[]) field.getType().getEnumConstants();
 
-                    for (SearchableEnum anEnum : enums){
-                        if(anEnum.getText().toLowerCase().contains(search.getQ().toLowerCase())){
+                    for (SearchableEnum anEnum : enums) {
+                        if (anEnum.getText().toLowerCase().contains(search.getQ().toLowerCase())) {
                             fieldLikes.add(Restrictions.eq(field.getName(), anEnum));
                         }
                     }
