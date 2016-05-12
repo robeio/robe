@@ -20,7 +20,7 @@ import java.io.IOException;
 public class TokenBasedAuthResponseFilter implements ContainerResponseFilter {
     private static final Logger LOGGER = LoggerFactory.getLogger(TokenBasedAuthResponseFilter.class);
     private static String tokenKey;
-    private static String cookieSentence;
+    private static String cookieSentence = "";
 
 
     /**
@@ -32,8 +32,10 @@ public class TokenBasedAuthResponseFilter implements ContainerResponseFilter {
         this.tokenKey = configuration.getTokenKey();
         String domain = configuration.getDomain();
         String path = configuration.getPath();
-
-        cookieSentence = ";path=" + path + ";" + "domain=" + domain + ";";
+        if (path != null && !path.equals(""))
+            cookieSentence = ";path=" + path;
+        if (domain != null && !domain.equals(""))
+            cookieSentence = ";domain=" + domain + ";";
         if (configuration.getMaxage() > 0l) {
             cookieSentence = ";max-age=" + configuration.getMaxage() + cookieSentence;
         }
