@@ -90,6 +90,14 @@ public class BaseDao<T extends BaseEntity> extends AbstractDAO<T> {
                 new String(value, 0, vIndex)};
     }
 
+    private static List<Field> getAllFields(List<Field> fields, Class<?> type) {
+        fields.addAll(Arrays.asList(type.getDeclaredFields()));
+        if (type.getSuperclass() != null) {
+            fields = getAllFields(fields, type.getSuperclass());
+        }
+        return fields;
+    }
+
     /**
      * Returns modified list of the entities regarding to the search model.
      * {@inheritDoc}
@@ -201,11 +209,24 @@ public class BaseDao<T extends BaseEntity> extends AbstractDAO<T> {
      * Creates a criteria from the given search model.
      *
      * @param search model
-     * @return criteria
+     * @return
      */
-    protected final Criteria buildCriteria(SearchModel search) {
 
-        Criteria criteria = criteria();
+    protected final Criteria buildCriteria(SearchModel search) {
+        return this.buildCriteria(search, this.getEntityClass());
+    }
+
+    /**
+     * Creates a criteria from the given search model.
+     *
+     * @param search
+     * @param clazz  of extends {@link BaseEntity}
+     * @return
+     */
+    protected final Criteria buildCriteria(SearchModel search, Class<? extends BaseEntity> clazz) {
+
+        Criteria criteria = this.currentSession().createCriteria(clazz);
+
         if (search.getFields() != null && search.getFields().length != 0) {
             ProjectionList projectionList = Projections.projectionList();
             for (String fieldName : search.getFields()) {
@@ -231,7 +252,7 @@ public class BaseDao<T extends BaseEntity> extends AbstractDAO<T> {
 
         }
         if (search.getQ() != null && !search.getQ().isEmpty()) {
-            Field[] fields = getCachedFields(this.getEntityClass());
+            Field[] fields = getCachedFields(clazz);
             List<Criterion> fieldLikes = new ArrayList<>(fields.length);
             for (Field field : fields) {
                 SearchFrom searchFrom = field.getAnnotation(SearchFrom.class);
@@ -240,20 +261,20 @@ public class BaseDao<T extends BaseEntity> extends AbstractDAO<T> {
                     for (String id : result) {
                         fieldLikes.add(Restrictions.eq(field.getName(), id));
                     }
-                } else if (field.getType().equals(String.class) ) {
+                } else if (field.getType().equals(String.class)) {
                     if (field.getAnnotation(SearchIgnore.class) == null) {
-                        if(field.isEnumConstant()) {
+                        if (field.isEnumConstant()) {
                             fieldLikes.add(Restrictions.ilike(field.getName(), search.getQ(), MatchMode.ANYWHERE));
 
-                        }else{
+                        } else {
                             fieldLikes.add(Restrictions.ilike(field.getName(), search.getQ(), MatchMode.ANYWHERE));
                         }
                     }
-                } else if(field.getType().isEnum() && SearchableEnum.class.isAssignableFrom(field.getType())){
+                } else if (field.getType().isEnum() && SearchableEnum.class.isAssignableFrom(field.getType())) {
                     SearchableEnum[] enums = (SearchableEnum[]) field.getType().getEnumConstants();
 
-                    for (SearchableEnum anEnum : enums){
-                        if(anEnum.getText().toLowerCase().contains(search.getQ().toLowerCase())){
+                    for (SearchableEnum anEnum : enums) {
+                        if (anEnum.getText().toLowerCase().contains(search.getQ().toLowerCase())) {
                             fieldLikes.add(Restrictions.eq(field.getName(), anEnum));
                         }
                     }
@@ -262,7 +283,7 @@ public class BaseDao<T extends BaseEntity> extends AbstractDAO<T> {
             criteria.add(Restrictions.or(fieldLikes.toArray(new Criterion[]{})));
         }
         if (search.getFilter() != null) {
-            Field[] fields = getCachedFields(this.getEntityClass());
+            Field[] fields = getCachedFields(clazz);
             criteria.add(addFilterCriterias(fields, search.getFilter()));
         }
 
@@ -359,14 +380,6 @@ public class BaseDao<T extends BaseEntity> extends AbstractDAO<T> {
 
         }
         return null;
-    }
-
-    private static List<Field> getAllFields(List<Field> fields, Class<?> type) {
-        fields.addAll(Arrays.asList(type.getDeclaredFields()));
-        if (type.getSuperclass() != null) {
-            fields = getAllFields(fields, type.getSuperclass());
-        }
-        return fields;
     }
 
     private Field[] getCachedFields(Class<?> entityClass) {
