@@ -59,6 +59,7 @@ public class BaseDao<T extends BaseEntity> extends AbstractDAO<T> {
                         case '<':
                         case '>':
                         case '~':
+                        case '|':
                             //Jump to operation
                             op[oIndex++] = chars[i];
                             part = 1;
@@ -318,7 +319,14 @@ public class BaseDao<T extends BaseEntity> extends AbstractDAO<T> {
             Object value = null;
             for (Field field : fields) {
                 if (field.getName().equals(params[0])) {
-                    value = castValue(field, params[2]);
+                    if (params[1].equals("|=")) {
+                        String[] svalues = params[2].split("\\|");
+                        LinkedList<Object> lvalues = new LinkedList<>();
+                        for (String svalue : svalues)
+                            lvalues.add(castValue(field, svalue));
+                        value = lvalues;
+                    } else
+                        value = castValue(field, params[2]);
                     break;
                 }
             }
@@ -346,6 +354,9 @@ public class BaseDao<T extends BaseEntity> extends AbstractDAO<T> {
                 case "~=":
                     fieldFilters[i++] = Restrictions.ilike(params[0], params[2], MatchMode.ANYWHERE);
                     break;
+                case "|=":
+                    fieldFilters[i++] = Restrictions.in(params[0], (Collection) value);
+                    break;
             }
         }
         fieldFilters = Arrays.copyOf(fieldFilters, i);
@@ -372,7 +383,7 @@ public class BaseDao<T extends BaseEntity> extends AbstractDAO<T> {
                 return Integer.parseInt(value);
             case "java.lang.Long":
             case "long":
-                Long.parseLong(value);
+                return Long.parseLong(value);
             case "java.lang.String":
                 return value;
             case "java.util.Date":
