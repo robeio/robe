@@ -366,8 +366,8 @@ public class BaseDao<T extends BaseEntity> extends AbstractDAO<T> {
     }
 
     private Object castValue(Field field, String value) {
-        if (field.isEnumConstant())
-            return value;
+        if ((field.getType() instanceof Class && ((Class<?>) field.getType()).isEnum()))
+            return Enum.valueOf((Class<? extends Enum>) field.getType(), value);
 
         switch (field.getType().getName()) {
             case "java.math.BigDecimal":
