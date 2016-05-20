@@ -33,17 +33,26 @@ public class TokenBasedAuthResponseFilter implements ContainerResponseFilter {
         String domain = configuration.getDomain();
         String path = configuration.getPath();
         if (path != null && !path.equals(""))
-            cookieSentence = ";path=" + path;
+            cookieSentence += ";path=" + path;
         if (domain != null && !domain.equals(""))
-            cookieSentence = ";domain=" + domain + ";";
+            cookieSentence += ";domain=" + domain + ";";
         if (configuration.getMaxage() > 0l) {
-            cookieSentence = ";max-age=" + configuration.getMaxage() + cookieSentence;
+            cookieSentence += ";max-age=" + configuration.getMaxage();
         }
         if (configuration.isSecure()) {
-            cookieSentence = cookieSentence + "secure;";
+            cookieSentence += "secure;";
         }
     }
 
+    /**
+     * Combines the token and cookie sentence
+     *
+     * @param authToken final cookie
+     * @return
+     */
+    public static String getTokenSentence(String authToken) {
+        return tokenKey + "=" + authToken + cookieSentence;
+    }
 
     /**
      * Checks the expiration date of token.
@@ -78,16 +87,6 @@ public class TokenBasedAuthResponseFilter implements ContainerResponseFilter {
 
             }
         }
-    }
-
-    /**
-     * Combines the token and cookie sentence
-     *
-     * @param authToken final cookie
-     * @return
-     */
-    public static String getTokenSentence(String authToken) {
-        return tokenKey + "=" + authToken + cookieSentence;
     }
 
     /**
