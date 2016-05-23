@@ -31,6 +31,7 @@ public class TokenBasedAuthResponseFilter implements ContainerResponseFilter {
         this.tokenKey = configuration.getTokenKey();
         String domain = configuration.getDomain();
         String path = configuration.getPath();
+        cookieSentence = "";
         if (path != null && !path.equals(""))
             cookieSentence += ";path=" + path;
         if (domain != null && !domain.equals(""))
