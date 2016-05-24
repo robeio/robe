@@ -12,7 +12,7 @@ import java.io.OutputStream;
 import java.util.List;
 
 public class XMLExporterTest {
-    @Test
+    //@Test
     public void testExportStream() throws Exception {
 
         File outputFile = FileUtil.getRandomTempFile();
