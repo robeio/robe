@@ -14,7 +14,8 @@ import java.util.HashMap;
 public class MailSenderTest {
     private MailSender mailSender;
 
-    @Before
+
+    //@Before
     public void initialize() {
 
         /**
@@ -43,7 +44,7 @@ public class MailSenderTest {
 
     }
 
-    @Test
+    //@Test
     public void sendMail() {
 
         MailItem mailItem = new MailItem();
