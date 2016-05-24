@@ -88,6 +88,9 @@ public class TokenBasedAuthResponseFilter implements ContainerResponseFilter {
      * @return
      */
     public static String getTokenSentence(String authToken) {
+        if(cookieSentence == null){
+            cookieSentence = "";
+        }
         return tokenKey + "=" + authToken + cookieSentence;
     }
 
