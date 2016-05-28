@@ -7,6 +7,7 @@ import io.robe.common.service.search.SearchFrom;
 import io.robe.common.service.search.SearchIgnore;
 import io.robe.common.service.search.SearchableEnum;
 import io.robe.common.service.search.model.SearchModel;
+import io.robe.common.utils.StringsOperations;
 import io.robe.hibernate.entity.BaseEntity;
 import org.hibernate.Criteria;
 import org.hibernate.SessionFactory;
@@ -204,6 +205,37 @@ public class BaseDao<T extends BaseEntity> extends AbstractDAO<T> {
     public T detach(T entity) {
         currentSession().evict(entity);
         return entity;
+    }
+
+
+    public Object getWithSearchFromData(T entity) throws IllegalAccessException {
+        Field[] fields = getCachedFields(getEntityClass());
+        HashMap<String, Object> output = new HashMap<>(fields.length + 5);
+        for (Field field : fields) {
+            field.setAccessible(true);
+            output.put(field.getName(), field.get(entity));
+            if (field.get(entity) == null)
+                continue;
+            SearchFrom searchFrom = field.getAnnotation(SearchFrom.class);
+            if (searchFrom != null) {
+                Object result = getSearchFromData(searchFrom, field.get(entity));
+                output.put(
+                        (field.getName() + StringsOperations.capitalizeFirstChar(searchFrom.target())),
+                        result);
+            } else if (field.getType().isEnum() && SearchableEnum.class.isAssignableFrom(field.getType())) {
+                SearchableEnum enumField = (SearchableEnum) field.get(entity);
+                output.put(field.getName() + "Text", enumField.getText());
+            }
+            field.setAccessible(false);
+        }
+        return output;
+    }
+
+    private Object getSearchFromData(SearchFrom from, Object id) {
+        Criteria criteria = currentSession().createCriteria(from.entity());
+        criteria.add(Restrictions.eq(from.id(), id));
+        criteria.setProjection(Projections.property(from.target()));
+        return criteria.uniqueResult();
     }
 
     /**
