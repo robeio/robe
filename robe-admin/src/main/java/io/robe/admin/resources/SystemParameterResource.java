@@ -1,6 +1,8 @@
 package io.robe.admin.resources;
 
 import javax.inject.Inject;
+
+import com.google.common.base.Optional;
 import io.dropwizard.auth.Auth;
 import io.dropwizard.hibernate.UnitOfWork;
 import io.dropwizard.jersey.PATCH;
@@ -19,6 +21,7 @@ import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import java.util.List;
+import java.util.Map;
 
 import static org.hibernate.CacheMode.GET;
 
@@ -75,6 +78,42 @@ public class SystemParameterResource {
     @UnitOfWork
     public SystemParameter create(@Auth Credentials credentials, @Valid SystemParameter model) {
         return systemParameterDao.create(model);
+    }
+
+    /**
+     * Create or update {@link SystemParameter) resource.
+     *
+     * @param credentials Injected by {@link Auth} annotation for authentication.
+     * @param model       This is the one model of {@link SystemParameter}
+     * @return Create {@link SystemParameter) resource and return given SystemParameter path link at header Location=example/{id].
+     */
+    @RobeService(group = "SystemParameter", description = "Create or update SystemParameter resource.")
+    @POST
+    @Path("admin")
+    @UnitOfWork
+    public Map<String, String> bulkSaveOrUpdate(Map<String, String> values) {
+
+        for (Map.Entry<String, String> entry : values.entrySet()) {
+
+
+            Optional<SystemParameter> parameterDao = systemParameterDao.findByKey(entry.getKey());
+
+            SystemParameter parameter = null;
+
+            if (!parameterDao.isPresent()) {
+                parameter = new SystemParameter();
+                parameter.setKey(entry.getKey());
+                parameter.setValue(entry.getValue());
+            } else {
+                parameter=parameterDao.get();
+                parameter.setValue(entry.getValue());
+            }
+
+            systemParameterDao.update(parameter);
+        }
+
+
+        return values;
     }
 
     /**
