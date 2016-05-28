@@ -214,6 +214,8 @@ public class BaseDao<T extends BaseEntity> extends AbstractDAO<T> {
         for (Field field : fields) {
             field.setAccessible(true);
             output.put(field.getName(), field.get(entity));
+            if (field.get(entity) == null)
+                continue;
             SearchFrom searchFrom = field.getAnnotation(SearchFrom.class);
             if (searchFrom != null) {
                 Object result = getSearchFromData(searchFrom, field.get(entity));
