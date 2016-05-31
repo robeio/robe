@@ -13,8 +13,11 @@ import org.hibernate.Criteria;
 import org.hibernate.SessionFactory;
 import org.hibernate.criterion.*;
 import org.hibernate.transform.Transformers;
+import org.hibernate.type.StringType;
+import org.hibernate.type.Type;
 
 import javax.inject.Inject;
+import javax.persistence.Column;
 import java.io.Serializable;
 import java.lang.reflect.Field;
 import java.math.BigDecimal;
@@ -114,6 +117,49 @@ public class BaseDao<T extends BaseEntity> extends AbstractDAO<T> {
         search.setTotalCount(totalCount);
         ResponseHeadersUtil.addTotalCount(search);
         return list;
+    }
+
+    /**
+     * Returns modified list of the entities regarding to the search model.
+     * {@inheritDoc}
+     *
+     * @return List of entities.
+     */
+    public List<T> findAllWithSearchFrom(SearchModel search) {
+        List<T> list = addSearchFromProjection(buildCriteria(search)).list();
+        search.setLimit(null);
+        search.setOffset(null);
+        long totalCount = (Long) buildCriteria(search).setProjection(Projections.rowCount()).uniqueResult();
+        search.setTotalCount(totalCount);
+        ResponseHeadersUtil.addTotalCount(search);
+        return list;
+    }
+
+    public Criteria addSearchFromProjection(Criteria criteria) {
+        Field[] fields = getCachedFields(getEntityClass());
+        ProjectionList projectionList = Projections.projectionList();
+        for (Field field : fields) {
+            field.setAccessible(true);
+            SearchFrom searchFrom = field.getAnnotation(SearchFrom.class);
+            if (searchFrom != null) {
+                String alias = field.getName() + StringsOperations.capitalizeFirstChar(searchFrom.target());
+                StringBuilder sqlBuilder = new StringBuilder("(select ");
+                sqlBuilder.append(searchFrom.target())
+                        .append(" from ").append(searchFrom.entity().getSimpleName())
+                        .append(" where ").append(searchFrom.id()).append('=').append(field.getName()).append(") as ").append(alias);
+                projectionList.add(Projections.alias(Projections.sqlProjection(sqlBuilder.toString(),
+                        new String[]{alias}, new Type[]{new StringType()}), alias));
+            } else {
+                if (field.getAnnotation(Column.class) != null)
+                    projectionList.add(Projections.property(field.getName()), field.getName());
+            }
+
+            field.setAccessible(false);
+        }
+        criteria.setProjection(projectionList);
+        criteria.setResultTransformer(Transformers.ALIAS_TO_ENTITY_MAP);
+
+        return criteria;
     }
 
     /**
