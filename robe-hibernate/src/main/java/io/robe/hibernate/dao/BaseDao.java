@@ -149,6 +149,7 @@ public class BaseDao<T extends BaseEntity> extends AbstractDAO<T> {
                         .append(" where ").append(searchFrom.id()).append('=').append(field.getName()).append(") as ").append(alias);
                 projectionList.add(Projections.alias(Projections.sqlProjection(sqlBuilder.toString(),
                         new String[]{alias}, new Type[]{new StringType()}), alias));
+                projectionList.add(Projections.property(field.getName()), field.getName());
             } else {
                 if (field.getAnnotation(Column.class) != null)
                     projectionList.add(Projections.property(field.getName()), field.getName());
