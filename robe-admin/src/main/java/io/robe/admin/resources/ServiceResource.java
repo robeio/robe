@@ -1,11 +1,11 @@
 package io.robe.admin.resources;
 
-import io.dropwizard.auth.Auth;
 import io.dropwizard.hibernate.UnitOfWork;
 import io.dropwizard.jersey.PATCH;
 import io.robe.admin.hibernate.dao.ServiceDao;
 import io.robe.admin.hibernate.entity.Service;
 import io.robe.auth.Credentials;
+import io.robe.auth.RobeAuth;
 import io.robe.auth.data.entry.ServiceEntry;
 import io.robe.common.service.RobeService;
 import io.robe.common.service.search.SearchParam;
@@ -39,13 +39,13 @@ public class ServiceResource {
     /**
      * Returns all {@link Service ) as a collection.
      *
-     * @param credentials Injected by {@link Auth} annotation for authentication.
+     * @param credentials Injected by {@link RobeAuth } annotation for authentication.
      * @return all {@link Service} as a collection.
      */
     @RobeService(group = "Service", description = "Returns all Services as a collection.")
     @GET
     @UnitOfWork(readOnly = true, cacheMode = GET, flushMode = FlushMode.MANUAL)
-    public List<Service> getAll(@SearchParam SearchModel search) {
+    public List<Service> getAll(@RobeAuth Credentials credentials, @SearchParam SearchModel search) {
         return serviceDao.findAll(search);
     }
 
@@ -55,7 +55,7 @@ public class ServiceResource {
      * Status Code:
      * Not Found  404
      *
-     * @param credentials Injected by {@link Auth} annotation for authentication.
+     * @param credentials Injected by {@link RobeAuth} annotation for authentication.
      * @param id          This is  the oid of {@link Service}
      * @return {@link Service} resource matches with the given id.
      */
@@ -63,7 +63,7 @@ public class ServiceResource {
     @Path("{id}")
     @GET
     @UnitOfWork(readOnly = true, cacheMode = GET, flushMode = FlushMode.MANUAL)
-    public Service get(@Auth Credentials credentials, @PathParam("id") String id) {
+    public Service get(@RobeAuth Credentials credentials, @PathParam("id") String id) {
         Service entity = serviceDao.findById(id);
         if (entity == null) {
             throw new WebApplicationException(Response.status(404).build());
@@ -74,14 +74,14 @@ public class ServiceResource {
     /**
      * Create {@link Service) resource and matches with the given id.
      *
-     * @param credentials Injected by {@link Auth} annotation for authentication.
+     * @param credentials Injected by {@link RobeAuth} annotation for authentication.
      * @param model       This is the one model of {@link Service}
      * @return Create {@link Service) resource and return given Service path link at header Location=example/{id].
      */
     @RobeService(group = "Service", description = "Create Service resource and return given Service path link at header Location=example/{id].")
     @POST
     @UnitOfWork
-    public Service create(@Auth Credentials credentials, @Valid Service model) {
+    public Service create(@RobeAuth Credentials credentials, @Valid Service model) {
         return serviceDao.create(model);
     }
 
@@ -92,7 +92,7 @@ public class ServiceResource {
      * Not Found  404
      * Not Matches 412
      *
-     * @param credentials Injected by {@link Auth} annotation for authentication.
+     * @param credentials Injected by {@link RobeAuth} annotation for authentication.
      * @param id          This is  the oid of {@link Service}
      * @param model       This is the one model of {@link Service}
      * @return Update {@link Service} resource and matches with the given id.
@@ -101,7 +101,7 @@ public class ServiceResource {
     @Path("{id}")
     @PUT
     @UnitOfWork
-    public Service update(@Auth Credentials credentials, @PathParam("id") String id, @Valid Service model) {
+    public Service update(@RobeAuth Credentials credentials, @PathParam("id") String id, @Valid Service model) {
         if (!id.equals((model.getOid()))) {
             throw new WebApplicationException(Response.status(412).build());
         }
@@ -119,7 +119,7 @@ public class ServiceResource {
      * Not Found  404
      * Not Matches 412
      *
-     * @param credentials Injected by {@link Auth} annotation for authentication.
+     * @param credentials Injected by {@link RobeAuth} annotation for authentication.
      * @param id          This is  the oid of {@link Service}
      * @param model       This is the one model of {@link Service}
      * @return Update {@link Service) resource and matches with the given id.
@@ -128,7 +128,7 @@ public class ServiceResource {
     @PATCH
     @UnitOfWork
     @Path("{id}")
-    public Service merge(@Auth Credentials credentials, @PathParam("id") String id, Service model) {
+    public Service merge(@RobeAuth Credentials credentials, @PathParam("id") String id, Service model) {
         if (id.equals(model.getOid()))
             throw new WebApplicationException(Response.status(412).build());
         Service dest = serviceDao.findById(id);
@@ -146,7 +146,7 @@ public class ServiceResource {
      * Not Found  404
      * Not Matches 412
      *
-     * @param credentials Injected by {@link Auth} annotation for authentication.
+     * @param credentials Injected by {@link RobeAuth} annotation for authentication.
      * @param id          This is  the oid of {@link Service}
      * @param model       This is the one model of {@link Service}
      * @return Delete {@link Service) resource.
@@ -155,7 +155,7 @@ public class ServiceResource {
     @Path("{id}")
     @DELETE
     @UnitOfWork
-    public Service delete(@Auth Credentials credentials, @PathParam("id") String id, @Valid Service model) {
+    public Service delete(@RobeAuth Credentials credentials, @PathParam("id") String id, @Valid Service model) {
 
         if (!id.equals(model.getOid())) {
             throw new WebApplicationException(Response.status(412).build());
@@ -169,14 +169,14 @@ public class ServiceResource {
 
 
     /**
-     * @param credentials Injected by {@link Auth} annotation for authentication.
+     * @param credentials Injected by {@link RobeAuth} annotation for authentication.
      * @return collection of {@link Service} groups
      */
     @RobeService(group = "Permission", description = "Get all services group for permission")
     @Path("groups")
     @GET
     @UnitOfWork
-    public List<Service> listGroups(@Auth Credentials credentials) {
+    public List<Service> listGroups(@RobeAuth Credentials credentials) {
         return serviceDao.findServiceByGroups();
     }
 
@@ -186,14 +186,14 @@ public class ServiceResource {
      * <p>
      * TODO exception handler
      *
-     * @param credentials Injected by {@link Auth} annotation for authentication.
+     * @param credentials Injected by {@link RobeAuth} annotation for authentication.
      * @return Response.OK
      */
 
     @Path("refresh")
     @GET
     @UnitOfWork
-    public Response refreshServices(@Auth Credentials credentials) {
+    public Response refreshServices(@RobeAuth Credentials credentials) {
 
 
         GuiceConfiguration configuration = GuiceBundle.getConfiguration();

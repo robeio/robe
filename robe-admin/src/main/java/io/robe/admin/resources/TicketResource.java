@@ -1,18 +1,18 @@
 package io.robe.admin.resources;
 
-import javax.inject.Inject;
-import io.dropwizard.auth.Auth;
 import io.dropwizard.hibernate.UnitOfWork;
 import io.dropwizard.jersey.PATCH;
 import io.robe.admin.hibernate.dao.TicketDao;
 import io.robe.admin.hibernate.entity.Ticket;
 import io.robe.auth.Credentials;
+import io.robe.auth.RobeAuth;
 import io.robe.common.service.RobeService;
 import io.robe.common.service.search.SearchParam;
 import io.robe.common.service.search.model.SearchModel;
 import io.robe.common.utils.FieldReflection;
 import org.hibernate.FlushMode;
 
+import javax.inject.Inject;
 import javax.validation.Valid;
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
@@ -32,13 +32,13 @@ public class TicketResource {
     /**
      * Return all {@link Ticket}s as a collection.
      *
-     * @param credentials Injected by @{@link Auth} annotation for authentication.
+     * @param credentials Injected by @{@link RobeAuth} annotation for authentication.
      * @return all @{@link Ticket}s as a collection.
      */
     @RobeService(group = "QuartzJob", description = "Return all tickets as a collection.")
     @GET
     @UnitOfWork(readOnly = true, cacheMode = GET, flushMode = FlushMode.MANUAL)
-    public List<Ticket> getAll(@Auth Credentials credentials, @SearchParam SearchModel search) {
+    public List<Ticket> getAll(@RobeAuth Credentials credentials, @SearchParam SearchModel search) {
         return ticketDao.findAll(search);
     }
 
@@ -48,7 +48,7 @@ public class TicketResource {
      * Status Code:
      * Not Found  404
      *
-     * @param credentials Injected by @{@link Auth} annotation for authentication.
+     * @param credentials Injected by @{@link RobeAuth} annotation for authentication.
      * @param id          This is  the oid of {@link Ticket}
      * @return a @{@link Ticket} resource macthes with the given id.
      */
@@ -56,7 +56,7 @@ public class TicketResource {
     @Path("{id}")
     @GET
     @UnitOfWork(readOnly = true, cacheMode = GET, flushMode = FlushMode.MANUAL)
-    public Ticket get(@Auth Credentials credentials, @PathParam("id") String id) {
+    public Ticket get(@RobeAuth Credentials credentials, @PathParam("id") String id) {
         Ticket entity = ticketDao.findById(id);
         if (entity == null) {
             throw new WebApplicationException(Response.status(404).build());
@@ -71,14 +71,14 @@ public class TicketResource {
      * Not Found  404
      * Not Matches 412
      *
-     * @param credentials Injected by @{@link Auth} annotation for authentication.
+     * @param credentials Injected by @{@link RobeAuth} annotation for authentication.
      * @param model       Data of {@link Ticket}
      * @return Creates a @{@link Ticket} resource.
      */
     @RobeService(group = "QuartzJob", description = "Creates a ticket resource.")
     @POST
     @UnitOfWork
-    public Ticket create(@Auth Credentials credentials, @Valid Ticket model) {
+    public Ticket create(@RobeAuth Credentials credentials, @Valid Ticket model) {
         return ticketDao.create(model);
     }
 
@@ -89,7 +89,7 @@ public class TicketResource {
      * Not Found  404
      * Not Matches 412
      *
-     * @param credentials Injected by @{@link Auth} annotation for authentication.
+     * @param credentials Injected by @{@link RobeAuth} annotation for authentication.
      * @param id          This is  the oid of {@link Ticket}
      * @param model       Data of {@link Ticket}
      * @return Updates a @{@link Ticket} resource matches with the given id.
@@ -98,7 +98,7 @@ public class TicketResource {
     @Path("{id}")
     @PUT
     @UnitOfWork
-    public Ticket update(@Auth Credentials credentials, @PathParam("id") String id, @Valid Ticket model) {
+    public Ticket update(@RobeAuth Credentials credentials, @PathParam("id") String id, @Valid Ticket model) {
         if (!id.equals((model.getOid()))) {
             throw new WebApplicationException(Response.status(412).build());
         }
@@ -116,7 +116,7 @@ public class TicketResource {
      * Not Found  404
      * Not Matches 412
      *
-     * @param credentials Injected by @{@link Auth} annotation for authentication.
+     * @param credentials Injected by @{@link RobeAuth} annotation for authentication.
      * @param id          This is  the oid of {@link Ticket}
      * @param model       Data of {@link Ticket}
      * @return Updates a @{@link Ticket} resource matches with the given id.
@@ -125,7 +125,7 @@ public class TicketResource {
     @PATCH
     @UnitOfWork
     @Path("{id}")
-    public Ticket merge(@Auth Credentials credentials, @PathParam("id") String id, Ticket model) {
+    public Ticket merge(@RobeAuth Credentials credentials, @PathParam("id") String id, Ticket model) {
         if (id.equals(model.getOid()))
             throw new WebApplicationException(Response.status(412).build());
         Ticket dest = ticketDao.findById(id);
@@ -143,7 +143,7 @@ public class TicketResource {
      * Not Found  404
      * Not Matches 412
      *
-     * @param credentials Injected by @{@link Auth} annotation for authentication.
+     * @param credentials Injected by @{@link RobeAuth} annotation for authentication.
      * @param id          This is  the oid of {@link Ticket}
      * @param model       Data of {@link Ticket}
      * @return deletes a @{@link Ticket} resource matches with the given id.
@@ -152,7 +152,7 @@ public class TicketResource {
     @Path("{id}")
     @DELETE
     @UnitOfWork
-    public Ticket delete(@Auth Credentials credentials, @PathParam("id") String id, @Valid Ticket model) {
+    public Ticket delete(@RobeAuth Credentials credentials, @PathParam("id") String id, @Valid Ticket model) {
 
         if (!id.equals(model.getOid())) {
             throw new WebApplicationException(Response.status(412).build());

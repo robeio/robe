@@ -1,11 +1,11 @@
 package io.robe.admin.resources;
 
-import io.dropwizard.auth.Auth;
 import io.dropwizard.hibernate.UnitOfWork;
 import io.dropwizard.jersey.PATCH;
 import io.robe.admin.hibernate.dao.QuartzTriggerDao;
 import io.robe.admin.quartz.hibernate.TriggerEntity;
 import io.robe.auth.Credentials;
+import io.robe.auth.RobeAuth;
 import io.robe.common.service.RobeService;
 import io.robe.common.service.search.SearchParam;
 import io.robe.common.service.search.model.SearchModel;
@@ -33,13 +33,13 @@ public class TriggerResource {
     /**
      * Return all TriggerEntity as a collection
      *
-     * @param credentials auto fill by {@link Auth} annotation for authentication.
+     * @param credentials auto fill by {@link RobeAuth} annotation for authentication.
      * @return all {@link TriggerEntity} as a collection
      */
     @RobeService(group = "QuartzJob", description = "Returns all TriggerEntity as a collection.")
     @GET
     @UnitOfWork(readOnly = true, cacheMode = GET, flushMode = FlushMode.MANUAL)
-    public List<TriggerEntity> getAll(@Auth Credentials credentials, @SearchParam SearchModel search) {
+    public List<TriggerEntity> getAll(@RobeAuth Credentials credentials, @SearchParam SearchModel search) {
         return quartzTriggerDao.findAll(search);
     }
 
@@ -49,7 +49,7 @@ public class TriggerResource {
      * Status Code:
      * Not Found  404
      *
-     * @param credentials auto fill by @{@link Auth} annotation for authentication.
+     * @param credentials auto fill by @{@link RobeAuth} annotation for authentication.
      * @param id          This is  the oid of {@link TriggerEntity}
      * @return a  {@link TriggerEntity} resource with the matches given id.
      */
@@ -57,7 +57,7 @@ public class TriggerResource {
     @Path("{id}")
     @GET
     @UnitOfWork(readOnly = true, cacheMode = GET, flushMode = FlushMode.MANUAL)
-    public TriggerEntity get(@Auth Credentials credentials, @PathParam("id") String id) {
+    public TriggerEntity get(@RobeAuth Credentials credentials, @PathParam("id") String id) {
         TriggerEntity entity = quartzTriggerDao.findById(id);
         if (entity == null) {
             throw new WebApplicationException(Response.status(404).build());
@@ -68,14 +68,14 @@ public class TriggerResource {
     /**
      * Create a {@link TriggerEntity} resource.
      *
-     * @param credentials auto fill by @{@link Auth} annotation for authentication.
+     * @param credentials auto fill by @{@link RobeAuth} annotation for authentication.
      * @param model       This is the one model of {@link TriggerEntity}
      * @return create a {@link TriggerEntity} resource.
      */
     @RobeService(group = "QuartzJob", description = "Create a TriggerEntity resource.")
     @POST
     @UnitOfWork
-    public TriggerEntity create(@Auth Credentials credentials, @Valid TriggerEntity model) {
+    public TriggerEntity create(@RobeAuth Credentials credentials, @Valid TriggerEntity model) {
         return quartzTriggerDao.create(model);
     }
 
@@ -86,7 +86,7 @@ public class TriggerResource {
      * Not Found  404
      * Not Matches 412
      *
-     * @param credentials auto fill by @{@link Auth} annotation for authentication.
+     * @param credentials auto fill by @{@link RobeAuth} annotation for authentication.
      * @param id          This is  the oid of {@link TriggerEntity}
      * @param model       This is the one model of {@link TriggerEntity}
      * @return Update a  {@link TriggerEntity} resource with the matches given id.
@@ -95,7 +95,7 @@ public class TriggerResource {
     @PUT
     @UnitOfWork
     @Path("{id}")
-    public TriggerEntity update(@Auth Credentials credentials, @PathParam("id") String id, @Valid TriggerEntity model) {
+    public TriggerEntity update(@RobeAuth Credentials credentials, @PathParam("id") String id, @Valid TriggerEntity model) {
         if (!id.equals(model.getOid())) {
             throw new WebApplicationException(Response.status(412).build());
         }
@@ -115,7 +115,7 @@ public class TriggerResource {
      * Not Found  404
      * Not Matches 412
      *
-     * @param credentials auto fill by @{@link Auth} annotation for authentication.
+     * @param credentials auto fill by @{@link RobeAuth} annotation for authentication.
      * @param id          This is  the oid of {@link TriggerEntity}
      * @param model       This is the one model of {@link TriggerEntity}
      * @return Updates a  {@link TriggerEntity} resource with the matches given id.
@@ -124,7 +124,7 @@ public class TriggerResource {
     @PATCH
     @UnitOfWork
     @Path("{id}")
-    public TriggerEntity merge(@Auth Credentials credentials, @PathParam("id") String id, TriggerEntity model) {
+    public TriggerEntity merge(@RobeAuth Credentials credentials, @PathParam("id") String id, TriggerEntity model) {
         if (id.equals(model.getOid()))
             throw new WebApplicationException(Response.status(412).build());
         TriggerEntity dest = quartzTriggerDao.findById(id);
@@ -143,7 +143,7 @@ public class TriggerResource {
      * Not Found  404
      * Not Matches 412
      *
-     * @param credentials auto fill by @{@link Auth} annotation for authentication.
+     * @param credentials auto fill by @{@link RobeAuth} annotation for authentication.
      * @param id          This is  the oid of {@link TriggerEntity}
      * @param model       This is the one model of {@link TriggerEntity}
      * @return Delete a  {@link TriggerEntity} resource  with the matches given id.
@@ -152,7 +152,7 @@ public class TriggerResource {
     @DELETE
     @UnitOfWork
     @Path("{id}")
-    public TriggerEntity delete(@Auth Credentials credentials, @PathParam("id") String id, @Valid TriggerEntity model) {
+    public TriggerEntity delete(@RobeAuth Credentials credentials, @PathParam("id") String id, @Valid TriggerEntity model) {
         if (!id.equals(model.getOid())) {
             throw new WebApplicationException(Response.status(412).build());
         }

@@ -2,7 +2,6 @@ package io.robe.admin.resources;
 
 import com.codahale.metrics.annotation.Timed;
 import com.google.common.base.Optional;
-import io.dropwizard.auth.Auth;
 import io.dropwizard.hibernate.UnitOfWork;
 import io.robe.admin.hibernate.dao.ActionLogDao;
 import io.robe.admin.hibernate.dao.UserDao;
@@ -11,6 +10,7 @@ import io.robe.admin.hibernate.entity.User;
 import io.robe.admin.util.SystemParameterCache;
 import io.robe.auth.AbstractAuthResource;
 import io.robe.auth.Credentials;
+import io.robe.auth.RobeAuth;
 import io.robe.auth.token.BasicToken;
 import io.robe.auth.token.Token;
 import io.robe.auth.token.TokenManager;
@@ -121,7 +121,7 @@ public class AuthResource extends AbstractAuthResource<User> {
     /**
      * Log out
      *
-     * @param credentials injected by {@link Auth} annotation for authentication.
+     * @param credentials injected by {@link RobeAuth} annotation for authentication.
      * @return {@link User} when logout
      * @throws Exception for clear permission cache
      */
@@ -130,7 +130,7 @@ public class AuthResource extends AbstractAuthResource<User> {
     @UnitOfWork
     @Path("logout")
     @Timed
-    public User logout(@Auth Credentials credentials) throws Exception {
+    public User logout(@RobeAuth Credentials credentials) throws Exception {
         Optional<User> user = userDao.findByUsername(credentials.getUsername());
         if (!user.isPresent()) {
             throw new WebApplicationException(Response.Status.UNAUTHORIZED);
@@ -148,14 +148,14 @@ public class AuthResource extends AbstractAuthResource<User> {
      * Status Code:
      * UNAUTHORIZED no have authentication.
      *
-     * @param credentials injected by {@link Auth} annotation for authentication.
+     * @param credentials injected by {@link RobeAuth} annotation for authentication.
      * @return {@link User}
      * @throws Exception for not found user
      */
     @Path("profile")
     @GET
     @UnitOfWork(readOnly = true, cacheMode = GET, flushMode = FlushMode.MANUAL)
-    public User getProfile(@Auth Credentials credentials) {
+    public User getProfile(@RobeAuth Credentials credentials) {
         Optional<User> user = userDao.findByUsername(credentials.getUsername());
         if (!user.isPresent()) {
             throw new WebApplicationException(Response.Status.UNAUTHORIZED);
@@ -172,7 +172,7 @@ public class AuthResource extends AbstractAuthResource<User> {
      *
      * @param request     HttpServletRequest
      * @param passwords   password(SHA256),newpassword(SHA256) and newpasswordrpt(SHA256)
-     * @param credentials injected by {@link Auth} annotation for authentication.
+     * @param credentials injected by {@link RobeAuth} annotation for authentication.
      * @return {@link Response}
      * @throws Exception for not found user
      */
@@ -180,7 +180,7 @@ public class AuthResource extends AbstractAuthResource<User> {
     @UnitOfWork
     @Path("password")
     @Timed
-    public Response changePassword(@Context HttpServletRequest request, @Auth Credentials credentials, Map<String, String> passwords) {
+    public Response changePassword(@Context HttpServletRequest request, @RobeAuth Credentials credentials, Map<String, String> passwords) {
 
         Optional<User> user = userDao.findByUsername(credentials.getUsername());
         if (!user.isPresent()) {

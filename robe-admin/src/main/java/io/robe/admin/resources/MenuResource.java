@@ -1,7 +1,6 @@
 package io.robe.admin.resources;
 
 import com.google.common.base.Optional;
-import io.dropwizard.auth.Auth;
 import io.dropwizard.hibernate.UnitOfWork;
 import io.dropwizard.jersey.PATCH;
 import io.dropwizard.jersey.caching.CacheControl;
@@ -9,6 +8,7 @@ import io.robe.admin.dto.MenuItem;
 import io.robe.admin.hibernate.dao.*;
 import io.robe.admin.hibernate.entity.*;
 import io.robe.auth.Credentials;
+import io.robe.auth.RobeAuth;
 import io.robe.common.service.RobeService;
 import io.robe.common.service.search.SearchParam;
 import io.robe.common.service.search.model.SearchModel;
@@ -47,14 +47,14 @@ public class MenuResource {
     /**
      * Returns all {@link Menu}s as a collection.
      *
-     * @param credentials injected by {@link Auth} annotation for authentication.
+     * @param credentials injected by {@link RobeAuth} annotation for authentication.
      * @return all {@link Menu}s as a collection with.
      */
 
     @RobeService(group = "Menu", description = "Returns all Menu's as a collection.")
     @GET
     @UnitOfWork(readOnly = true, cacheMode = GET, flushMode = FlushMode.MANUAL)
-    public List<Menu> getAll(@Auth Credentials credentials, @SearchParam SearchModel search) {
+    public List<Menu> getAll(@RobeAuth Credentials credentials, @SearchParam SearchModel search) {
         return menuDao.findAll(search);
     }
 
@@ -71,7 +71,7 @@ public class MenuResource {
     /**
      * get menu for logged user
      *
-     * @param credentials injected by {@link Auth} annotation for authentication.
+     * @param credentials injected by {@link RobeAuth} annotation for authentication.
      * @return user {@link MenuItem} as collection
      */
 
@@ -80,7 +80,7 @@ public class MenuResource {
     @GET
     @UnitOfWork(readOnly = true, cacheMode = GET, flushMode = FlushMode.MANUAL)
     @CacheControl(noCache = true)
-    public List<MenuItem> getUserHierarchicalMenu(@Auth Credentials credentials) {
+    public List<MenuItem> getUserHierarchicalMenu(@RobeAuth Credentials credentials) {
         Optional<User> user = userDao.findByUsername(credentials.getUsername());
         Set<Permission> permissions = new HashSet<Permission>();
 
@@ -146,7 +146,7 @@ public class MenuResource {
      * Status Code:
      * Not Found  404
      *
-     * @param credentials injected by {@link Auth} annotation for authentication.
+     * @param credentials injected by {@link RobeAuth} annotation for authentication.
      * @param id          This is the oid of {@link Menu}
      * @return a {@link Menu} resource matches with the given id.
      */
@@ -154,7 +154,7 @@ public class MenuResource {
     @Path("{id}")
     @GET
     @UnitOfWork(readOnly = true, cacheMode = GET, flushMode = FlushMode.MANUAL)
-    public Menu get(@Auth Credentials credentials, @PathParam("id") String id) {
+    public Menu get(@RobeAuth Credentials credentials, @PathParam("id") String id) {
         Menu entity = menuDao.findById(id);
         if (entity == null) {
             throw new WebApplicationException(Response.status(404).build());
@@ -165,14 +165,14 @@ public class MenuResource {
     /**
      * Create a {@link Menu} resource.
      *
-     * @param credentials injected by {@link Auth} annotation for authentication.
+     * @param credentials injected by {@link RobeAuth} annotation for authentication.
      * @param model       data of {@link Menu}
      * @return Create as a {@link Menu} resource.
      */
     @RobeService(group = "Menu", description = "Create a Menu resource.")
     @POST
     @UnitOfWork
-    public Menu create(@Auth Credentials credentials, @Valid Menu model) {
+    public Menu create(@RobeAuth Credentials credentials, @Valid Menu model) {
         return menuDao.create(model);
     }
 
@@ -184,7 +184,7 @@ public class MenuResource {
      * Not Found  404
      * Not Matches 412
      *
-     * @param credentials injected by {@link Auth} annotation for authentication.
+     * @param credentials injected by {@link RobeAuth} annotation for authentication.
      * @param id          This is the oid of {@link Menu}
      * @param model       data of {@link Menu}
      * @return Updates a single {@link Menu} matches with the given id.
@@ -193,7 +193,7 @@ public class MenuResource {
     @Path("{id}")
     @PUT
     @UnitOfWork
-    public Menu update(@Auth Credentials credentials, @PathParam("id") String id, @Valid Menu model) {
+    public Menu update(@RobeAuth Credentials credentials, @PathParam("id") String id, @Valid Menu model) {
         if (!id.equals((model.getOid()))) {
             throw new WebApplicationException(Response.status(412).build());
         }
@@ -213,7 +213,7 @@ public class MenuResource {
      * Not Found  404
      * Not Matches 412
      *
-     * @param credentials injected by {@link Auth} annotation for authentication.
+     * @param credentials injected by {@link RobeAuth} annotation for authentication.
      * @param id          This is the oid of {@link Menu}
      * @param model       data of {@link Menu}
      * @return Updates a single {@link Menu} matches with the given id.
@@ -222,7 +222,7 @@ public class MenuResource {
     @PATCH
     @UnitOfWork
     @Path("{id}")
-    public Menu merge(@Auth Credentials credentials, @PathParam("id") String id, Menu model) {
+    public Menu merge(@RobeAuth Credentials credentials, @PathParam("id") String id, Menu model) {
         if (id.equals(model.getOid()))
             throw new WebApplicationException(Response.status(412).build());
         Menu dest = menuDao.findById(id);
@@ -241,7 +241,7 @@ public class MenuResource {
      * Not Found  404
      * Not Matches 412
      *
-     * @param credentials injected by {@link Auth} annotation for authentication.
+     * @param credentials injected by {@link RobeAuth} annotation for authentication.
      * @param id          This is the oid of {@link Menu}
      * @param model       data of {@link Menu}
      * @return delete a single {@link Menu} matches with the given id.
@@ -250,7 +250,7 @@ public class MenuResource {
     @Path("{id}")
     @DELETE
     @UnitOfWork
-    public Menu delete(@Auth Credentials credentials, @PathParam("id") String id, @Valid Menu model) {
+    public Menu delete(@RobeAuth Credentials credentials, @PathParam("id") String id, @Valid Menu model) {
 
         if (!id.equals(model.getOid())) {
             throw new WebApplicationException(Response.status(412).build());

@@ -1,6 +1,6 @@
 package io.robe.auth.token.jersey;
 
-import io.dropwizard.auth.Auth;
+import io.robe.auth.RobeAuth;
 import io.robe.auth.token.TokenAuthenticator;
 import org.glassfish.hk2.api.InjectionResolver;
 import org.glassfish.hk2.api.TypeLiteral;
@@ -27,7 +27,7 @@ public class TokenFeature implements Feature {
                         .to(ValueFactoryProvider.class)
                         .in(Singleton.class);
                 bind(TokenParamInjectionResolver.class)
-                        .to(new TypeLiteral<InjectionResolver<Auth>>() {
+                        .to(new TypeLiteral<InjectionResolver<RobeAuth>>() {
                         })
                         .in(Singleton.class);
             }

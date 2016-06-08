@@ -1,12 +1,12 @@
 package io.robe.admin.resources;
 
-import io.dropwizard.auth.Auth;
 import io.dropwizard.hibernate.UnitOfWork;
 import io.dropwizard.jersey.PATCH;
 import io.robe.admin.hibernate.dao.UserDao;
 import io.robe.admin.hibernate.entity.User;
 import io.robe.auth.AbstractAuthResource;
 import io.robe.auth.Credentials;
+import io.robe.auth.RobeAuth;
 import io.robe.common.service.RobeService;
 import io.robe.common.service.search.SearchParam;
 import io.robe.common.service.search.model.SearchModel;
@@ -37,14 +37,14 @@ public class UserResource extends AbstractAuthResource<User> {
     /**
      * Returns all {@link User}s as a collection.
      *
-     * @param credentials injected by {@link Auth} annotation for authentication.
+     * @param credentials injected by {@link RobeAuth} annotation for authentication.
      * @return all {@link User}s as a collection with.
      */
 
     @RobeService(group = "User", description = "Returns all Users as a collection.")
     @GET
     @UnitOfWork(readOnly = true, cacheMode = CacheMode.GET, flushMode = FlushMode.MANUAL)
-    public List<User> getAll(@Auth Credentials credentials, @SearchParam SearchModel search) {
+    public List<User> getAll(@RobeAuth Credentials credentials, @SearchParam SearchModel search) {
         return userDao.findAll(search);
     }
 
@@ -54,7 +54,7 @@ public class UserResource extends AbstractAuthResource<User> {
      * Status Code:
      * Not Found  404
      *
-     * @param credentials injected by {@link Auth} annotation for authentication.
+     * @param credentials injected by {@link RobeAuth} annotation for authentication.
      * @param id          This is the oid of {@link User}
      * @return a {@link User} resource matches with the given id.
      */
@@ -62,7 +62,7 @@ public class UserResource extends AbstractAuthResource<User> {
     @Path("{id}")
     @GET
     @UnitOfWork(readOnly = true, cacheMode = CacheMode.GET, flushMode = FlushMode.MANUAL)
-    public User get(@Auth Credentials credentials, @PathParam("id") String id) {
+    public User get(@RobeAuth Credentials credentials, @PathParam("id") String id) {
         User entity = userDao.findById(id);
         if (entity == null) {
             throw new WebApplicationException(Response.status(404).build());
@@ -73,14 +73,14 @@ public class UserResource extends AbstractAuthResource<User> {
     /**
      * Create as a {@link User} resource.
      *
-     * @param credentials injected by {@link Auth} annotation for authentication.
+     * @param credentials injected by {@link RobeAuth} annotation for authentication.
      * @param model       data of {@link User}
      * @return Create as a {@link User} resource.
      */
     @RobeService(group = "User", description = "Create as a User resource.")
     @POST
     @UnitOfWork
-    public User create(@Auth Credentials credentials, @Valid User model) {
+    public User create(@RobeAuth Credentials credentials, @Valid User model) {
         return userDao.create(model);
     }
 
@@ -91,7 +91,7 @@ public class UserResource extends AbstractAuthResource<User> {
      * Not Found  404
      * Not Matches 412
      *
-     * @param credentials injected by {@link Auth} annotation for authentication.
+     * @param credentials injected by {@link RobeAuth} annotation for authentication.
      * @param id          This is the oid of {@link User}
      * @param model       data of {@link User}
      * @return Updates a single {@link User} matches with the given id.
@@ -100,7 +100,7 @@ public class UserResource extends AbstractAuthResource<User> {
     @PUT
     @UnitOfWork
     @Path("{id}")
-    public User update(@Auth Credentials credentials, @PathParam("id") String id, @Valid User model) {
+    public User update(@RobeAuth Credentials credentials, @PathParam("id") String id, @Valid User model) {
 
         if (!id.equals(model.getOid())) {
             throw new WebApplicationException(Response.status(412).build());
@@ -120,7 +120,7 @@ public class UserResource extends AbstractAuthResource<User> {
      * Not Found  404
      * Not Matches 412
      *
-     * @param credentials injected by {@link Auth} annotation for authentication.
+     * @param credentials injected by {@link RobeAuth} annotation for authentication.
      * @param id          This is the oid of {@link User}
      * @param model       data of {@link User}
      * @return Updates a single {@link User} matches with the given id.
@@ -129,7 +129,7 @@ public class UserResource extends AbstractAuthResource<User> {
     @PATCH
     @UnitOfWork
     @Path("{id}")
-    public User merge(@Auth Credentials credentials, @PathParam("id") String id, User model) {
+    public User merge(@RobeAuth Credentials credentials, @PathParam("id") String id, User model) {
         if (id.equals(model.getOid()))
             throw new WebApplicationException(Response.status(412).build());
         User dest = userDao.findById(id);
@@ -148,7 +148,7 @@ public class UserResource extends AbstractAuthResource<User> {
      * Not Found  404
      * Not Matches 412
      *
-     * @param credentials injected by {@link Auth} annotation for authentication.
+     * @param credentials injected by {@link RobeAuth} annotation for authentication.
      * @param id          This is the oid of {@link User}
      * @param model       data of {@link User}
      * @return delete a single {@link User} matches with the given id.
@@ -157,7 +157,7 @@ public class UserResource extends AbstractAuthResource<User> {
     @DELETE
     @UnitOfWork
     @Path("{id}")
-    public User delete(@Auth Credentials credentials, @PathParam("id") String id, @Valid User model) {
+    public User delete(@RobeAuth Credentials credentials, @PathParam("id") String id, @Valid User model) {
         if (!id.equals(model.getOid())) {
             throw new WebApplicationException(Response.status(412).build());
         }

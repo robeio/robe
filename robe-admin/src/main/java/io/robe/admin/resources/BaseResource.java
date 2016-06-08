@@ -1,9 +1,9 @@
 package io.robe.admin.resources;
 
-import io.dropwizard.auth.Auth;
 import io.dropwizard.hibernate.UnitOfWork;
 import io.dropwizard.jersey.PATCH;
 import io.robe.auth.Credentials;
+import io.robe.auth.RobeAuth;
 import io.robe.common.service.search.SearchParam;
 import io.robe.common.service.search.model.SearchModel;
 import io.robe.common.utils.FieldReflection;
@@ -34,27 +34,27 @@ public abstract class BaseResource<T extends BaseEntity> implements Job {
 
     @GET
     @UnitOfWork(readOnly = true, cacheMode = GET, flushMode = FlushMode.MANUAL)
-    public List<T> getAll(@Auth Credentials credentials, @SearchParam SearchModel search) {
+    public List<T> getAll(@RobeAuth Credentials credentials, @SearchParam SearchModel search) {
         return dao.findAll(search);
     }
 
     @Path("{id}")
     @GET
     @UnitOfWork(readOnly = true, cacheMode = GET, flushMode = FlushMode.MANUAL)
-    public T get(@Auth Credentials credentials, @PathParam("id") String id) {
+    public T get(@RobeAuth Credentials credentials, @PathParam("id") String id) {
         return dao.findById(entity, id);
     }
 
     @POST
     @UnitOfWork
-    public T create(@Auth Credentials credentials, @Valid T model) {
+    public T create(@RobeAuth Credentials credentials, @Valid T model) {
         return dao.create(model);
     }
 
     @PUT
     @UnitOfWork
     @Path("{id}")
-    public T update(@Auth Credentials credentials, @PathParam("id") String id, @Valid T model) {
+    public T update(@RobeAuth Credentials credentials, @PathParam("id") String id, @Valid T model) {
         return dao.update(model);
     }
 
@@ -62,7 +62,7 @@ public abstract class BaseResource<T extends BaseEntity> implements Job {
     @PATCH
     @UnitOfWork
     @Path("{id}")
-    public T merge(@Auth Credentials credentials, @PathParam("id") String id, T model) {
+    public T merge(@RobeAuth Credentials credentials, @PathParam("id") String id, T model) {
         if (id.equals(model.getOid()))
             throw new WebApplicationException(Response.status(412).build());
         T dest = dao.findById(id);
@@ -73,7 +73,7 @@ public abstract class BaseResource<T extends BaseEntity> implements Job {
     @DELETE
     @UnitOfWork
     @Path("{id}")
-    public T delete(@Auth Credentials credentials, @PathParam("id") String id, @Valid T model) {
+    public T delete(@RobeAuth Credentials credentials, @PathParam("id") String id, @Valid T model) {
         return dao.delete(model);
     }
 }

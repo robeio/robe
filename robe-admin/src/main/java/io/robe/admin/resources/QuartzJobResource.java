@@ -1,7 +1,5 @@
 package io.robe.admin.resources;
 
-import javax.inject.Inject;
-import io.dropwizard.auth.Auth;
 import io.dropwizard.hibernate.UnitOfWork;
 import io.dropwizard.jersey.PATCH;
 import io.robe.admin.hibernate.dao.QuartzJobDao;
@@ -9,12 +7,14 @@ import io.robe.admin.hibernate.dao.QuartzTriggerDao;
 import io.robe.admin.quartz.hibernate.JobEntity;
 import io.robe.admin.quartz.hibernate.TriggerEntity;
 import io.robe.auth.Credentials;
+import io.robe.auth.RobeAuth;
 import io.robe.common.service.RobeService;
 import io.robe.common.service.search.SearchParam;
 import io.robe.common.service.search.model.SearchModel;
 import io.robe.common.utils.FieldReflection;
 import org.hibernate.FlushMode;
 
+import javax.inject.Inject;
 import javax.validation.Valid;
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
@@ -39,14 +39,14 @@ public class QuartzJobResource {
     /**
      * Returns all Trigger as a collection with the matches given job id.
      *
-     * @param credentials auto fill by {@link Auth} annotation for authentication.
+     * @param credentials auto fill by {@link RobeAuth} annotation for authentication.
      * @return all {@link TriggerEntity} as a collection
      */
     @RobeService(group = "JobEntity", description = "Returns all Trigger as a collection with the matches given job id.")
     @GET
     @Path("{id}/triggers")
     @UnitOfWork(readOnly = true, cacheMode = GET, flushMode = FlushMode.MANUAL)
-    public List<TriggerEntity> getJobTriggers(@Auth Credentials credentials, @PathParam("id") String id) {
+    public List<TriggerEntity> getJobTriggers(@RobeAuth Credentials credentials, @PathParam("id") String id) {
         return quartzTriggerDao.findByJobOid(id);
     }
 
@@ -54,13 +54,13 @@ public class QuartzJobResource {
     /**
      * Return all JobEntity as a collection
      *
-     * @param credentials auto fill by {@link Auth} annotation for authentication.
+     * @param credentials auto fill by {@link RobeAuth} annotation for authentication.
      * @return all {@link JobEntity} as a collection
      */
     @RobeService(group = "JobEntity", description = "Returns all JobEntity as a collection.")
     @GET
     @UnitOfWork(readOnly = true, cacheMode = GET, flushMode = FlushMode.MANUAL)
-    public List<JobEntity> getAll(@Auth Credentials credentials, @SearchParam SearchModel search) {
+    public List<JobEntity> getAll(@RobeAuth Credentials credentials, @SearchParam SearchModel search) {
         return quartzJobDao.findAll(search);
     }
 
@@ -70,7 +70,7 @@ public class QuartzJobResource {
      * Status Code:
      * Not Found  404
      *
-     * @param credentials auto fill by @{@link Auth} annotation for authentication.
+     * @param credentials auto fill by @{@link RobeAuth} annotation for authentication.
      * @param id          This is  the oid of {@link JobEntity}
      * @return a  {@link JobEntity} resource with the matches given id.
      */
@@ -78,7 +78,7 @@ public class QuartzJobResource {
     @Path("{id}")
     @GET
     @UnitOfWork(readOnly = true, cacheMode = GET, flushMode = FlushMode.MANUAL)
-    public JobEntity get(@Auth Credentials credentials, @PathParam("id") String id) {
+    public JobEntity get(@RobeAuth Credentials credentials, @PathParam("id") String id) {
         JobEntity entity = quartzJobDao.findById(id);
         if (entity == null) {
             throw new WebApplicationException(Response.status(404).build());
@@ -89,14 +89,14 @@ public class QuartzJobResource {
     /**
      * Create a {@link JobEntity} resource.
      *
-     * @param credentials auto fill by @{@link Auth} annotation for authentication.
+     * @param credentials auto fill by @{@link RobeAuth} annotation for authentication.
      * @param model       This is the one model of {@link JobEntity}
      * @return create a {@link JobEntity} resource.
      */
     @RobeService(group = "JobEntity", description = "Create a JobEntity resource.")
     @POST
     @UnitOfWork
-    public JobEntity create(@Auth Credentials credentials, @Valid JobEntity model) {
+    public JobEntity create(@RobeAuth Credentials credentials, @Valid JobEntity model) {
         return quartzJobDao.create(model);
     }
 
@@ -107,7 +107,7 @@ public class QuartzJobResource {
      * Not Found  404
      * Not Matches 412
      *
-     * @param credentials auto fill by @{@link Auth} annotation for authentication.
+     * @param credentials auto fill by @{@link RobeAuth} annotation for authentication.
      * @param id          This is  the oid of {@link JobEntity}
      * @param model       This is the one model of {@link JobEntity}
      * @return Update a  {@link JobEntity} resource with the matches given id.
@@ -116,7 +116,7 @@ public class QuartzJobResource {
     @PUT
     @UnitOfWork
     @Path("{id}")
-    public JobEntity update(@Auth Credentials credentials, @PathParam("id") String id, @Valid JobEntity model) {
+    public JobEntity update(@RobeAuth Credentials credentials, @PathParam("id") String id, @Valid JobEntity model) {
         if (!id.equals(model.getOid())) {
             throw new WebApplicationException(Response.status(412).build());
         }
@@ -134,7 +134,7 @@ public class QuartzJobResource {
      * Not Found  404
      * Not Matches 412
      *
-     * @param credentials auto fill by @{@link Auth} annotation for authentication.
+     * @param credentials auto fill by @{@link RobeAuth} annotation for authentication.
      * @param id          This is  the oid of {@link JobEntity}
      * @param model       This is the one model of {@link JobEntity}
      * @return Updates a  {@link JobEntity} resource with the matches given id.
@@ -143,7 +143,7 @@ public class QuartzJobResource {
     @PATCH
     @UnitOfWork
     @Path("{id}")
-    public JobEntity merge(@Auth Credentials credentials, @PathParam("id") String id, JobEntity model) {
+    public JobEntity merge(@RobeAuth Credentials credentials, @PathParam("id") String id, JobEntity model) {
         if (id.equals(model.getOid()))
             throw new WebApplicationException(Response.status(412).build());
         JobEntity dest = quartzJobDao.findById(id);
@@ -161,7 +161,7 @@ public class QuartzJobResource {
      * Not Found  404
      * Not Matches 412
      *
-     * @param credentials auto fill by @{@link Auth} annotation for authentication.
+     * @param credentials auto fill by @{@link RobeAuth} annotation for authentication.
      * @param id          This is  the oid of {@link JobEntity}
      * @param model       This is the one model of {@link JobEntity}
      * @return Delete a  {@link JobEntity} resource  with the matches given id.
@@ -170,7 +170,7 @@ public class QuartzJobResource {
     @DELETE
     @UnitOfWork
     @Path("{id}")
-    public JobEntity delete(@Auth Credentials credentials, @PathParam("id") String id, @Valid JobEntity model) {
+    public JobEntity delete(@RobeAuth Credentials credentials, @PathParam("id") String id, @Valid JobEntity model) {
         if (!id.equals(model.getOid())) {
             throw new WebApplicationException(Response.status(412).build());
         }

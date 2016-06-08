@@ -1,11 +1,11 @@
 package io.robe.admin.resources;
 
-import io.dropwizard.auth.Auth;
 import io.dropwizard.hibernate.UnitOfWork;
 import io.dropwizard.jersey.PATCH;
 import io.robe.admin.hibernate.dao.*;
 import io.robe.admin.hibernate.entity.*;
 import io.robe.auth.Credentials;
+import io.robe.auth.RobeAuth;
 import io.robe.auth.data.entry.PermissionEntry;
 import io.robe.common.service.RobeService;
 import io.robe.common.service.search.SearchParam;
@@ -49,7 +49,7 @@ public class RoleResource {
     /**
      * Returns all services and menus collection with the matches given Role id.
      *
-     * @param credentials Injected by {@link Auth} annotation for authentication.
+     * @param credentials Injected by {@link RobeAuth} annotation for authentication.
      * @param id          This is Role oid
      * @return JSONObject (MENU and SERVICE)
      */
@@ -58,7 +58,7 @@ public class RoleResource {
     @GET
     @Path("{id}/permissions")
     @UnitOfWork(readOnly = true, cacheMode = GET, flushMode = FlushMode.MANUAL)
-    public Map<String, Object> getRolePermissions(@Auth Credentials credentials, @PathParam("id") String id) {
+    public Map<String, Object> getRolePermissions(@RobeAuth Credentials credentials, @PathParam("id") String id) {
 
         List<Permission> permissions = new ArrayList<>();
 
@@ -109,13 +109,13 @@ public class RoleResource {
     /**
      * Return all Role as a collection
      *
-     * @param credentials auto fill by {@link Auth} annotation for authentication.
+     * @param credentials auto fill by {@link RobeAuth} annotation for authentication.
      * @return all {@link Role} as a collection
      */
     @RobeService(group = "Role", description = "Returns all Role as a collection.")
     @GET
     @UnitOfWork(readOnly = true, cacheMode = GET, flushMode = FlushMode.MANUAL)
-    public List<Role> getAll(@Auth Credentials credentials, @SearchParam SearchModel search) {
+    public List<Role> getAll(@RobeAuth Credentials credentials, @SearchParam SearchModel search) {
         return roleDao.findAll(search);
     }
 
@@ -125,7 +125,7 @@ public class RoleResource {
      * Status Code:
      * Not Found  404
      *
-     * @param credentials auto fill by @{@link Auth} annotation for authentication.
+     * @param credentials auto fill by @{@link RobeAuth} annotation for authentication.
      * @param id          This is  the oid of {@link Role}
      * @return a  {@link Role} resource with the matches given id.
      */
@@ -133,7 +133,7 @@ public class RoleResource {
     @Path("{id}")
     @GET
     @UnitOfWork(readOnly = true, cacheMode = GET, flushMode = FlushMode.MANUAL)
-    public Role get(@Auth Credentials credentials, @PathParam("id") String id) {
+    public Role get(@RobeAuth Credentials credentials, @PathParam("id") String id) {
         Role entity = roleDao.findById(id);
         if (entity == null) {
             throw new WebApplicationException(Response.status(404).build());
@@ -144,14 +144,14 @@ public class RoleResource {
     /**
      * Create a {@link Role} resource.
      *
-     * @param credentials auto fill by @{@link Auth} annotation for authentication.
+     * @param credentials auto fill by @{@link RobeAuth} annotation for authentication.
      * @param model       This is the one model of {@link Role}
      * @return create a {@link Role} resource.
      */
     @RobeService(group = "Role", description = "Create a Role resource.")
     @POST
     @UnitOfWork
-    public Role create(@Auth Credentials credentials, @Valid Role model) {
+    public Role create(@RobeAuth Credentials credentials, @Valid Role model) {
         return roleDao.create(model);
     }
 
@@ -162,7 +162,7 @@ public class RoleResource {
      * Not Found  404
      * Not Matches 412
      *
-     * @param credentials auto fill by @{@link Auth} annotation for authentication.
+     * @param credentials auto fill by @{@link RobeAuth} annotation for authentication.
      * @param id          This is  the oid of {@link Role}
      * @param model       This is the one model of {@link Role}
      * @return Update a  {@link Role} resource with the matches given id.
@@ -171,7 +171,7 @@ public class RoleResource {
     @Path("{id}")
     @PUT
     @UnitOfWork
-    public Role update(@Auth Credentials credentials, @PathParam("id") String id, @Valid Role model) {
+    public Role update(@RobeAuth Credentials credentials, @PathParam("id") String id, @Valid Role model) {
 
         if (!id.equals(model.getOid())) {
             throw new WebApplicationException(Response.status(412).build());
@@ -192,7 +192,7 @@ public class RoleResource {
      * Not Found  404
      * Not Matches 412
      *
-     * @param credentials auto fill by @{@link Auth} annotation for authentication.
+     * @param credentials auto fill by @{@link RobeAuth} annotation for authentication.
      * @param id          This is  the oid of {@link Role}
      * @param model       This is the one model of {@link Role}
      * @return Updates a  {@link Role} resource with the matches given id.
@@ -201,7 +201,7 @@ public class RoleResource {
     @Path("{id}")
     @PATCH
     @UnitOfWork
-    public Role merge(@Auth Credentials credentials, @PathParam("id") String id, Role model) {
+    public Role merge(@RobeAuth Credentials credentials, @PathParam("id") String id, Role model) {
 
         if (id.equals(model.getOid()))
             throw new WebApplicationException(Response.status(412).build());
@@ -221,7 +221,7 @@ public class RoleResource {
      * Not Found  404
      * Not Matches 412
      *
-     * @param credentials auto fill by @{@link Auth} annotation for authentication.
+     * @param credentials auto fill by @{@link RobeAuth} annotation for authentication.
      * @param id          This is  the oid of {@link Role}
      * @param model       This is the one model of {@link Role}
      * @return Delete a  {@link Role} resource  with the matches given id.
@@ -230,7 +230,7 @@ public class RoleResource {
     @Path("{id}")
     @DELETE
     @UnitOfWork
-    public Role delete(@Auth Credentials credentials, @PathParam("id") String id, @Valid Role model) {
+    public Role delete(@RobeAuth Credentials credentials, @PathParam("id") String id, @Valid Role model) {
         if (!id.equals(model.getOid())) {
             throw new WebApplicationException(Response.status(412).build());
         }

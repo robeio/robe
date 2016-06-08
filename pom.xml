@@ -7,7 +7,7 @@
 
     <groupId>io.robe</groupId>
     <artifactId>robe-parent</artifactId>
-    <version>0.5.0.0-1019</version>
+    <version>0.5.0.0-1020</version>
 
     <packaging>pom</packaging>
     <name>Robe Project</name>

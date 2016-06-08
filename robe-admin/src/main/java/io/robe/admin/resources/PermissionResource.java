@@ -1,6 +1,5 @@
 package io.robe.admin.resources;
 
-import io.dropwizard.auth.Auth;
 import io.dropwizard.hibernate.UnitOfWork;
 import io.dropwizard.jersey.PATCH;
 import io.robe.admin.dto.MenuItem;
@@ -12,6 +11,7 @@ import io.robe.admin.hibernate.entity.Menu;
 import io.robe.admin.hibernate.entity.Permission;
 import io.robe.admin.hibernate.entity.Service;
 import io.robe.auth.Credentials;
+import io.robe.auth.RobeAuth;
 import io.robe.auth.token.BasicToken;
 import io.robe.common.service.RobeService;
 import io.robe.common.service.search.SearchParam;
@@ -49,14 +49,14 @@ public class PermissionResource {
     /**
      * get hierarchical menu service for permission
      *
-     * @param credentials Injected by {@link Auth} annotation for authentication.
+     * @param credentials Injected by {@link RobeAuth} annotation for authentication.
      * @return collection of hierarchical {@link MenuItem}
      */
     @RobeService(group = "Permission", description = "Get hierarchical menu service for permission")
     @Path("menus")
     @GET
     @UnitOfWork(readOnly = true, cacheMode = GET, flushMode = FlushMode.MANUAL)
-    public List<MenuItem> getHierarchicalMenu(@Auth Credentials credentials) {
+    public List<MenuItem> getHierarchicalMenu(@RobeAuth Credentials credentials) {
         return readMenuHierarchical(convertMenuToMenuItem(menuDao.findHierarchicalMenu()));
     }
 
@@ -80,15 +80,15 @@ public class PermissionResource {
     }
 
     /**
-     * @param credentials Injected by {@link Auth} annotation for authentication.
-     * @param code       This names of Permission Group Code
+     * @param credentials Injected by {@link RobeAuth} annotation for authentication.
+     * @param code        This names of Permission Group Code
      * @return JSONObject (MENU and SERVICE)
      */
     @RobeService(group = "Permission", description = "On select group list service and menu service")
     @Path("group/{groupCode}")
     @POST
     @UnitOfWork(flushMode = FlushMode.MANUAL)
-    public Map<String, Object> getServicesByServiceGroup(@Auth Credentials credentials, @PathParam("groupCode") String code) {
+    public Map<String, Object> getServicesByServiceGroup(@RobeAuth Credentials credentials, @PathParam("groupCode") String code) {
 
 
         Map<String, Object> response = new HashMap<>();
@@ -99,7 +99,7 @@ public class PermissionResource {
     }
 
     /**
-     * @param credentials Injected by {@link Auth} annotation for authentication.
+     * @param credentials Injected by {@link RobeAuth} annotation for authentication.
      * @param updateDto   include selected menu and service
      * @param roleOid     selected oid of {@link io.robe.admin.hibernate.entity.Role}
      * @return OK.
@@ -108,7 +108,7 @@ public class PermissionResource {
     @POST
     @UnitOfWork
     @Path("{roleOid}")
-    public Response createOrUpdateServiceAndMenu(@Auth Credentials credentials, @Valid PermissionUpdateDto updateDto, @PathParam("roleOid") String roleOid) {
+    public Response createOrUpdateServiceAndMenu(@RobeAuth Credentials credentials, @Valid PermissionUpdateDto updateDto, @PathParam("roleOid") String roleOid) {
 
         // delete old menu
         permissionDao.deleteRestrictionsByRole(roleOid, Permission.Type.MENU);
@@ -155,13 +155,13 @@ public class PermissionResource {
     /**
      * Return all {@link Permission}s as a collection.
      *
-     * @param credentials Injected by @{@link Auth} annotation for authentication.
+     * @param credentials Injected by @{@link RobeAuth} annotation for authentication.
      * @return all @{@link Permission}s as a collection.
      */
     @RobeService(group = "Permission", description = "Return all permissions as a collection.")
     @GET
     @UnitOfWork(readOnly = true, cacheMode = GET, flushMode = FlushMode.MANUAL)
-    public List<Permission> getAll(@Auth Credentials credentials, @SearchParam SearchModel search) {
+    public List<Permission> getAll(@RobeAuth Credentials credentials, @SearchParam SearchModel search) {
         return permissionDao.findAll(search);
     }
 
@@ -171,7 +171,7 @@ public class PermissionResource {
      * Status Code:
      * Not Found  404
      *
-     * @param credentials Injected by @{@link Auth} annotation for authentication.
+     * @param credentials Injected by @{@link RobeAuth} annotation for authentication.
      * @param id          This is  the oid of {@link Permission}
      * @return a @{@link Permission} resource macthes with the given id.
      */
@@ -179,7 +179,7 @@ public class PermissionResource {
     @Path("{id}")
     @GET
     @UnitOfWork(readOnly = true, cacheMode = GET, flushMode = FlushMode.MANUAL)
-    public Permission get(@Auth Credentials credentials, @PathParam("id") String id) {
+    public Permission get(@RobeAuth Credentials credentials, @PathParam("id") String id) {
         Permission entity = permissionDao.findById(id);
         if (entity == null) {
             throw new WebApplicationException(Response.status(404).build());
@@ -194,14 +194,14 @@ public class PermissionResource {
      * Not Found  404
      * Not Matches 412
      *
-     * @param credentials Injected by @{@link Auth} annotation for authentication.
+     * @param credentials Injected by @{@link RobeAuth} annotation for authentication.
      * @param model       Data of {@link Permission}
      * @return Creates a @{@link Permission} resource.
      */
     @RobeService(group = "Permission", description = "Creates a permission resource.")
     @POST
     @UnitOfWork
-    public Permission create(@Auth Credentials credentials, @Valid Permission model) {
+    public Permission create(@RobeAuth Credentials credentials, @Valid Permission model) {
         return permissionDao.create(model);
     }
 
@@ -212,7 +212,7 @@ public class PermissionResource {
      * Not Found  404
      * Not Matches 412
      *
-     * @param credentials Injected by @{@link Auth} annotation for authentication.
+     * @param credentials Injected by @{@link RobeAuth} annotation for authentication.
      * @param id          This is  the oid of {@link Permission}
      * @param model       Data of {@link Permission}
      * @return Updates a @{@link Permission} resource matches with the given id.
@@ -221,7 +221,7 @@ public class PermissionResource {
     @Path("{id}")
     @PUT
     @UnitOfWork
-    public Permission update(@Auth Credentials credentials, @PathParam("id") String id, @Valid Permission model) {
+    public Permission update(@RobeAuth Credentials credentials, @PathParam("id") String id, @Valid Permission model) {
         if (!id.equals((model.getOid()))) {
             throw new WebApplicationException(Response.status(412).build());
         }
@@ -239,7 +239,7 @@ public class PermissionResource {
      * Not Found  404
      * Not Matches 412
      *
-     * @param credentials Injected by @{@link Auth} annotation for authentication.
+     * @param credentials Injected by @{@link RobeAuth} annotation for authentication.
      * @param id          This is  the oid of {@link Permission}
      * @param model       Data of {@link Permission}
      * @return Updates a @{@link Permission} resource matches with the given id.
@@ -248,7 +248,7 @@ public class PermissionResource {
     @PATCH
     @UnitOfWork
     @Path("{id}")
-    public Permission merge(@Auth Credentials credentials, @PathParam("id") String id, Permission model) {
+    public Permission merge(@RobeAuth Credentials credentials, @PathParam("id") String id, Permission model) {
         if (id.equals(model.getOid()))
             throw new WebApplicationException(Response.status(412).build());
         Permission dest = permissionDao.findById(id);
@@ -266,7 +266,7 @@ public class PermissionResource {
      * Not Found  404
      * Not Matches 412
      *
-     * @param credentials Injected by @{@link Auth} annotation for authentication.
+     * @param credentials Injected by @{@link RobeAuth} annotation for authentication.
      * @param id          This is  the oid of {@link Permission}
      * @param model       Data of {@link Permission}
      * @return deletes a @{@link Permission} resource matches with the given id.
@@ -275,7 +275,7 @@ public class PermissionResource {
     @Path("{id}")
     @DELETE
     @UnitOfWork
-    public Permission delete(@Auth Credentials credentials, @PathParam("id") String id, @Valid Permission model) {
+    public Permission delete(@RobeAuth Credentials credentials, @PathParam("id") String id, @Valid Permission model) {
 
         if (!id.equals(model.getOid())) {
             throw new WebApplicationException(Response.status(412).build());

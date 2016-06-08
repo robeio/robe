@@ -1,12 +1,11 @@
 package io.robe.admin.resources;
 
-import javax.inject.Inject;
-import io.dropwizard.auth.Auth;
 import io.dropwizard.hibernate.UnitOfWork;
 import io.dropwizard.jersey.PATCH;
 import io.robe.admin.hibernate.dao.LanguageDao;
 import io.robe.admin.hibernate.entity.Language;
 import io.robe.auth.Credentials;
+import io.robe.auth.RobeAuth;
 import io.robe.common.service.RobeService;
 import io.robe.common.service.search.SearchParam;
 import io.robe.common.service.search.model.SearchModel;
@@ -14,6 +13,7 @@ import io.robe.common.utils.FieldReflection;
 import org.hibernate.CacheMode;
 import org.hibernate.FlushMode;
 
+import javax.inject.Inject;
 import javax.validation.Valid;
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
@@ -37,7 +37,7 @@ public class LanguageResource {
     @RobeService(group = "Language", description = "Returns all Languages as a collection.")
     @GET
     @UnitOfWork(readOnly = true, cacheMode = CacheMode.GET, flushMode = FlushMode.MANUAL)
-    public List<Language> getAll(@Auth Credentials credentials, @SearchParam SearchModel search) {
+    public List<Language> getAll(@RobeAuth Credentials credentials, @SearchParam SearchModel search) {
         return languageDao.findAll(search);
     }
 
@@ -55,7 +55,7 @@ public class LanguageResource {
     @Path("{id}")
     @GET
     @UnitOfWork(readOnly = true, cacheMode = CacheMode.GET, flushMode = FlushMode.MANUAL)
-    public Language get(@Auth Credentials credentials, @PathParam("id") String id) {
+    public Language get(@RobeAuth Credentials credentials, @PathParam("id") String id) {
 
         Language entity = languageDao.findById(id);
         if (entity == null) {
@@ -67,14 +67,14 @@ public class LanguageResource {
     /**
      * Create {@link Language) resource and matches with the given id.
      *
-     * @param credentials Injected by {@link Auth} annotation for authentication.
+     * @param credentials Injected by {@link RobeAuth} annotation for authentication.
      * @param model       This is the one model of {@link Language}
      * @return Create {@link Language) resource and return given Language path link at header Location=example/{id].
      */
     @RobeService(group = "Language", description = "Create Language resource and return given Language path link at header Location=example/{id].")
     @POST
     @UnitOfWork
-    public Language create(@Auth Credentials credentials, @Valid Language model) {
+    public Language create(@RobeAuth Credentials credentials, @Valid Language model) {
 
         return languageDao.create(model);
 
@@ -87,7 +87,7 @@ public class LanguageResource {
      * Not Found  404
      * Not Matches 412
      *
-     * @param credentials Injected by {@link Auth} annotation for authentication.
+     * @param credentials Injected by {@link RobeAuth} annotation for authentication.
      * @param id          This is  the oid of {@link Language}
      * @param model       This is the one model of {@link Language}
      * @return Update {@link Language} resource and matches with the given id.
@@ -96,7 +96,7 @@ public class LanguageResource {
     @Path("{id}")
     @PUT
     @UnitOfWork
-    public Language update(@Auth Credentials credentials, @PathParam("id") String id, @Valid Language model) {
+    public Language update(@RobeAuth Credentials credentials, @PathParam("id") String id, @Valid Language model) {
 
         if (!id.equals(model.getOid())) {
             throw new WebApplicationException(Response.status(412).build());
@@ -115,7 +115,7 @@ public class LanguageResource {
      * Not Found  404
      * Not Matches 412
      *
-     * @param credentials Injected by {@link Auth} annotation for authentication.
+     * @param credentials Injected by {@link RobeAuth} annotation for authentication.
      * @param id          This is  the oid of {@link Language}
      * @param model       This is the one model of {@link Language}
      * @return Update {@link Language) resource and matches with the given id.
@@ -124,7 +124,7 @@ public class LanguageResource {
     @Path("{id}")
     @PATCH
     @UnitOfWork
-    public Language merge(@Auth Credentials credentials, @PathParam("id") String id, Language model) {
+    public Language merge(@RobeAuth Credentials credentials, @PathParam("id") String id, Language model) {
 
         if (id.equals(model.getOid()))
             throw new WebApplicationException(Response.status(412).build());
@@ -143,7 +143,7 @@ public class LanguageResource {
      * Not Found  404
      * Not Matches 412
      *
-     * @param credentials Injected by {@link Auth} annotation for authentication.
+     * @param credentials Injected by {@link RobeAuth} annotation for authentication.
      * @param id          This is  the oid of {@link Language}
      * @param model       This is the one model of {@link Language}
      * @return Delete {@link Language) resource.
@@ -152,7 +152,7 @@ public class LanguageResource {
     @Path("{id}")
     @DELETE
     @UnitOfWork
-    public Language delete(@Auth Credentials credentials, @PathParam("id") String id, @Valid Language model) {
+    public Language delete(@RobeAuth Credentials credentials, @PathParam("id") String id, @Valid Language model) {
 
         if (!id.equals(model.getOid())) {
             throw new WebApplicationException(Response.status(412).build());

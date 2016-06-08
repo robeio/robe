@@ -1,6 +1,6 @@
 package io.robe.auth.token.jersey;
 
-import io.dropwizard.auth.Auth;
+import io.robe.auth.RobeAuth;
 import io.robe.auth.token.Token;
 import org.glassfish.hk2.api.Factory;
 import org.glassfish.hk2.api.InjectionResolver;
@@ -18,24 +18,20 @@ import java.security.Principal;
 
 public class TokenFactoryProvider extends AbstractValueFactoryProvider {
 
-    private final TokenFactory tokenFactory;
-
     @Inject
     public TokenFactoryProvider(
             final MultivaluedParameterExtractorProvider extractorProvider,
-            ServiceLocator locator,
-            TokenFactory tokenFactory) {
+            ServiceLocator locator) {
 
         super(extractorProvider, locator, Parameter.Source.UNKNOWN);
-        this.tokenFactory = tokenFactory;
     }
 
     @Override
     protected Factory<?> createValueFactory(Parameter parameter) {
         Class<?> paramType = parameter.getRawType();
-        Auth annotation = parameter.getAnnotation(Auth.class);
+        RobeAuth annotation = parameter.getAnnotation(RobeAuth.class);
         if (annotation != null && paramType.isAssignableFrom(Token.class)) {
-            return tokenFactory;
+            return new TokenFactory<>(annotation.required());
         }
         return null;
     }
@@ -62,7 +58,7 @@ public class TokenFactoryProvider extends AbstractValueFactoryProvider {
         protected void configure() {
             bind(new PrincipalClassProvider<>(principalClass)).to(PrincipalClassProvider.class);
             bind(TokenFactoryProvider.class).to(ValueFactoryProvider.class).in(Singleton.class);
-            bind(TokenParamInjectionResolver.class).to(new TypeLiteral<InjectionResolver<Auth>>() {
+            bind(TokenParamInjectionResolver.class).to(new TypeLiteral<InjectionResolver<RobeAuth>>() {
             }).in(Singleton.class);
         }
     }

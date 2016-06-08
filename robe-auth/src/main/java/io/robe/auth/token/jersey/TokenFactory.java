@@ -2,11 +2,11 @@ package io.robe.auth.token.jersey;
 
 import com.google.common.base.Optional;
 import com.google.common.hash.Hashing;
+import io.dropwizard.auth.AuthenticationException;
 import io.dropwizard.auth.Authenticator;
 import io.robe.auth.Credentials;
 import io.robe.auth.token.Token;
 import io.robe.auth.token.TokenManager;
-import io.robe.auth.token.configuration.TokenBasedAuthConfiguration;
 import org.glassfish.jersey.server.internal.inject.AbstractContainerRequestValueFactory;
 import org.glassfish.jersey.uri.UriTemplate;
 import org.slf4j.Logger;
@@ -26,48 +26,92 @@ public class TokenFactory<T extends Token> extends AbstractContainerRequestValue
 
     public static String tokenKey;
 
+    private boolean required = true;
+
+    public TokenFactory(boolean required) {
+        this.required = required;
+    }
+
     public TokenFactory() {
     }
 
-    /**
-     * {@inheritDoc}
-     *
-     * @param authenticator The authenticator which will be used with Authenticate controls.
-     */
-    protected TokenFactory(Authenticator<String, Token> authenticator, TokenBasedAuthConfiguration configuration) {
-        this.authenticator = authenticator;
-        this.tokenKey = configuration.getTokenKey();
+    public static Credentials createEmptyCredentials() {
+
+        return new Credentials() {
+            @Override
+            public String getUserId() {
+                return null;
+            }
+
+            @Override
+            public String getUsername() {
+                return null;
+            }
+
+            @Override
+            public String getName() {
+                return null;
+            }
+        };
     }
 
+    public boolean isRequired() {
+        return required;
+    }
+
+    public void setRequired(boolean required) {
+        this.required = required;
+    }
 
     @Override
     public Credentials provide() {
         Cookie tokenCookie = getContainerRequest().getCookies().get(tokenKey);
 
-        if (tokenCookie == null) {
-            throw new WebApplicationException(Response.Status.UNAUTHORIZED);
-        } else if (nullOrEmpty(tokenCookie.getValue())) {
-            throw new WebApplicationException(Response.Status.UNAUTHORIZED);
-        } else {
-            try {
-                if (!isRealOwnerOfToken(tokenCookie)) {
-                    throw new WebApplicationException(Response.Status.UNAUTHORIZED);
-                }
-                Optional<Token> result = authenticator.authenticate(tokenCookie.getValue());
+        if (isRequired()) {
 
-                if (!result.isPresent()) {
-                    throw new WebApplicationException(Response.Status.UNAUTHORIZED);
-                } else if (!isAuthorized(result.get(), getContainerRequest().getUriInfo().getMatchedTemplates(), getContainerRequest().getMethod())) {
-                    throw new WebApplicationException(Response.Status.FORBIDDEN);
-                } else {
-                    return result.get();
+
+            if (tokenCookie == null) {
+                throw new WebApplicationException(Response.Status.UNAUTHORIZED);
+            } else if (nullOrEmpty(tokenCookie.getValue())) {
+                throw new WebApplicationException(Response.Status.UNAUTHORIZED);
+            } else {
+                try {
+                    if (!isRealOwnerOfToken(tokenCookie)) {
+                        throw new WebApplicationException(Response.Status.UNAUTHORIZED);
+                    }
+                    Optional<Token> result = authenticator.authenticate(tokenCookie.getValue());
+
+                    if (!result.isPresent()) {
+                        throw new WebApplicationException(Response.Status.UNAUTHORIZED);
+                    } else if (!isAuthorized(result.get(), getContainerRequest().getUriInfo().getMatchedTemplates(), getContainerRequest().getMethod())) {
+                        throw new WebApplicationException(Response.Status.FORBIDDEN);
+                    } else {
+                        return result.get();
+                    }
+                } catch (io.dropwizard.auth.AuthenticationException e) {
+                    LOGGER.error("Authentication Exception  by Dropwizard", e);
+                    throw new WebApplicationException(Response.Status.PRECONDITION_FAILED);
+                } catch (InstantiationException | InvocationTargetException | IllegalAccessException e) {
+                    LOGGER.error("Authentication Exception  (Is Real ownwer of token) ", e);
+                    throw new WebApplicationException(Response.Status.PRECONDITION_FAILED);
                 }
-            } catch (io.dropwizard.auth.AuthenticationException e) {
-                LOGGER.error("Authentication Exception  by Dropwizard", e);
-                throw new WebApplicationException(Response.Status.PRECONDITION_FAILED);
-            } catch (InstantiationException | InvocationTargetException | IllegalAccessException e) {
-                LOGGER.error("Authentication Exception  (Is Real ownwer of token) ", e);
-                throw new WebApplicationException(Response.Status.PRECONDITION_FAILED);
+            }
+        } else {
+            if (tokenCookie == null) {
+                return createEmptyCredentials();
+            } else {
+                try {
+                    Optional<Token> result = authenticator.authenticate(tokenCookie.getValue());
+                    if (result.isPresent()) {
+                        return result.get();
+                    } else {
+                        return createEmptyCredentials();
+                    }
+                } catch (AuthenticationException e) {
+                    // TODO ignore this error
+                    return createEmptyCredentials();
+                }
+
             }
         }
     }
