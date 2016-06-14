@@ -142,14 +142,16 @@ public class BaseDao<T extends BaseEntity> extends AbstractDAO<T> {
             field.setAccessible(true);
             SearchFrom searchFrom = field.getAnnotation(SearchFrom.class);
             if (searchFrom != null) {
-                String alias = field.getName() + StringsOperations.capitalizeFirstChar(searchFrom.target());
-                StringBuilder sqlBuilder = new StringBuilder("(select ");
-                sqlBuilder.append(searchFrom.target())
-                        .append(" from ").append(searchFrom.entity().getSimpleName())
-                        .append(" where ").append(searchFrom.id()).append('=').append(field.getName()).append(") as ").append(alias);
-                projectionList.add(Projections.alias(Projections.sqlProjection(sqlBuilder.toString(),
-                        new String[]{alias}, new Type[]{new StringType()}), alias));
-                projectionList.add(Projections.property(field.getName()), field.getName());
+                for (String target : searchFrom.target()) {
+                    String alias = field.getName() + StringsOperations.capitalizeFirstChar(target);
+                    StringBuilder sqlBuilder = new StringBuilder("(select ");
+                    sqlBuilder.append(target)
+                            .append(" from ").append(searchFrom.entity().getSimpleName())
+                            .append(" where ").append(searchFrom.id()).append('=').append(field.getName()).append(") as ").append(alias);
+                    projectionList.add(Projections.alias(Projections.sqlProjection(sqlBuilder.toString(),
+                            new String[]{alias}, new Type[]{new StringType()}), alias));
+                    projectionList.add(Projections.property(field.getName()), field.getName());
+                }
             } else {
                 if (field.getAnnotation(Column.class) != null)
                     projectionList.add(Projections.property(field.getName()), field.getName());
@@ -265,10 +267,12 @@ public class BaseDao<T extends BaseEntity> extends AbstractDAO<T> {
                 continue;
             SearchFrom searchFrom = field.getAnnotation(SearchFrom.class);
             if (searchFrom != null) {
-                Object result = getSearchFromData(searchFrom, field.get(entity));
-                output.put(
-                        (field.getName() + StringsOperations.capitalizeFirstChar(searchFrom.target())),
-                        result);
+                for (String target : searchFrom.target()) {
+                    Object result = getSearchFromData(searchFrom, field.get(entity));
+                    output.put(
+                            (field.getName() + StringsOperations.capitalizeFirstChar(target)),
+                            result);
+                }
             } else if (field.getType().isEnum() && SearchableEnum.class.isAssignableFrom(field.getType())) {
                 SearchableEnum enumField = (SearchableEnum) field.get(entity);
                 output.put(field.getName() + "Text", enumField.getText());
@@ -281,7 +285,9 @@ public class BaseDao<T extends BaseEntity> extends AbstractDAO<T> {
     private Object getSearchFromData(SearchFrom from, Object id) {
         Criteria criteria = currentSession().createCriteria(from.entity());
         criteria.add(Restrictions.eq(from.id(), id));
-        criteria.setProjection(Projections.property(from.target()));
+        for (String target : from.target()) {
+            criteria.setProjection(Projections.property(target));
+        }
         return criteria.uniqueResult();
     }
 
