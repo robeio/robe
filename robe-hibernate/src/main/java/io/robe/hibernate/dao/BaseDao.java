@@ -383,9 +383,11 @@ public class BaseDao<T extends BaseEntity> extends AbstractDAO<T> {
         Criterion[] fieldLikes = new Criterion[fields.length];
         int i = 0;
         for (Field field : fields) {
-            if (field.getName().equals(from.target())) {
-                if (field.getAnnotation(SearchIgnore.class) == null) {
-                    fieldLikes[i++] = Restrictions.ilike(field.getName(), searchQ, MatchMode.ANYWHERE);
+            for (String target : from.target()) {
+                if (field.getName().equals(target)) {
+                    if (field.getAnnotation(SearchIgnore.class) == null) {
+                        fieldLikes[i++] = Restrictions.ilike(field.getName(), searchQ, MatchMode.ANYWHERE);
+                    }
                 }
             }
         }
