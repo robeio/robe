@@ -13,4 +13,6 @@ public @interface SearchFrom {
     String[] target();
 
     String id() default "oid";
+
+    String localId() default "";
 }

@@ -18,6 +18,7 @@ import org.hibernate.type.Type;
 
 import javax.inject.Inject;
 import javax.persistence.Column;
+import javax.persistence.Transient;
 import java.io.Serializable;
 import java.lang.reflect.Field;
 import java.math.BigDecimal;
@@ -145,12 +146,22 @@ public class BaseDao<T extends BaseEntity> extends AbstractDAO<T> {
                 for (String target : searchFrom.target()) {
                     String alias = field.getName() + StringsOperations.capitalizeFirstChar(target);
                     StringBuilder sqlBuilder = new StringBuilder("(select ");
-                    sqlBuilder.append(target)
-                            .append(" from ").append(searchFrom.entity().getSimpleName())
-                            .append(" where ").append(searchFrom.id()).append('=').append(field.getName()).append(") as ").append(alias);
+                    if (searchFrom.localId().isEmpty())
+                        sqlBuilder.append(target);
+                    else
+                        sqlBuilder.append("group_concat(").append(target).append(")");
+
+                    sqlBuilder.append(" from ").append(searchFrom.entity().getSimpleName());
+                    if (searchFrom.localId().isEmpty()) {
+                        sqlBuilder.append(" where ").append(searchFrom.id()).append('=').append(field.getName()).append(") as ").append(alias);
+                    } else {
+                        sqlBuilder.append(" where ").append(searchFrom.id()).append('=').append("this_.").append(searchFrom.localId()).append(") as ").append(alias);
+                    }
                     projectionList.add(Projections.alias(Projections.sqlProjection(sqlBuilder.toString(),
                             new String[]{alias}, new Type[]{new StringType()}), alias));
-                    projectionList.add(Projections.property(field.getName()), field.getName());
+                    if (searchFrom.localId().isEmpty()) {
+                        projectionList.add(Projections.property(field.getName()), field.getName());
+                    }
                 }
             } else {
                 if (field.getAnnotation(Column.class) != null)
@@ -345,7 +356,11 @@ public class BaseDao<T extends BaseEntity> extends AbstractDAO<T> {
                 if (searchFrom != null) {
                     List<String> result = addRemoteMatchCriterias(searchFrom, search.getQ());
                     for (String id : result) {
-                        fieldLikes.add(Restrictions.eq(field.getName(), id));
+                        if (searchFrom.localId().isEmpty())
+                            fieldLikes.add(Restrictions.eq(field.getName(), id));
+                        else
+                            fieldLikes.add(Restrictions.eq(searchFrom.localId(), id));
+
                     }
                 } else if (field.getType().equals(String.class)) {
                     if (field.getAnnotation(SearchIgnore.class) == null) {
@@ -404,8 +419,11 @@ public class BaseDao<T extends BaseEntity> extends AbstractDAO<T> {
         for (String filter : filters) {
             String[] params = parseFilterExp(filter);
             Object value = null;
+
+            fieldsLoop:
             for (Field field : fields) {
-                if (field.getName().equals(params[0])) {
+                SearchFrom searchFrom = field.getAnnotation(SearchFrom.class);
+                if (field.getName().equals(params[0]) && field.getAnnotation(Transient.class) == null) {
                     if (params[1].equals("|=")) {
                         String[] svalues = params[2].split("\\|");
                         LinkedList<Object> lvalues = new LinkedList<>();
@@ -415,6 +433,21 @@ public class BaseDao<T extends BaseEntity> extends AbstractDAO<T> {
                     } else
                         value = castValue(field, params[2]);
                     break;
+                } else if (searchFrom != null && params[0].startsWith(field.getName())) {
+                    String filterTarget = params[0].replace(field.getName(), "").toLowerCase(Locale.ENGLISH);
+                    for (String target : searchFrom.target()) {
+                        if (filterTarget.equals(target)) {
+                            Criteria criteria = currentSession().createCriteria(searchFrom.entity());
+                            criteria.add(Restrictions.eq(filterTarget, params[2]));
+                            criteria.setProjection(Projections.property(searchFrom.id()));
+                            params[0] = searchFrom.localId();
+
+                            for (Object result : criteria.list()) {
+                                value = result.toString();
+                                break fieldsLoop;
+                            }
+                        }
+                    }
                 }
             }
             if (value == null)
