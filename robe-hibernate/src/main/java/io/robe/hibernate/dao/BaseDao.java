@@ -1,6 +1,7 @@
 package io.robe.hibernate.dao;
 
-import com.google.common.base.Preconditions;
+import com.google.common.base.*;
+import com.google.common.base.Optional;
 import io.dropwizard.hibernate.AbstractDAO;
 import io.robe.common.service.headers.ResponseHeadersUtil;
 import io.robe.common.service.search.SearchFrom;
@@ -418,7 +419,7 @@ public class BaseDao<T extends BaseEntity> extends AbstractDAO<T> {
         int i = 0;
         for (String filter : filters) {
             String[] params = parseFilterExp(filter);
-            Object value = null;
+            Optional value = null;
 
             fieldsLoop:
             for (Field field : fields) {
@@ -429,9 +430,9 @@ public class BaseDao<T extends BaseEntity> extends AbstractDAO<T> {
                         LinkedList<Object> lvalues = new LinkedList<>();
                         for (String svalue : svalues)
                             lvalues.add(castValue(field, svalue));
-                        value = lvalues;
+                        value = Optional.fromNullable(lvalues);
                     } else
-                        value = castValue(field, params[2]);
+                        value = Optional.fromNullable(castValue(field, params[2]));
                     break;
                 } else if (searchFrom != null && params[0].startsWith(field.getName())) {
                     String filterTarget = params[0].replace(field.getName(), "").toLowerCase(Locale.ENGLISH);
@@ -443,7 +444,7 @@ public class BaseDao<T extends BaseEntity> extends AbstractDAO<T> {
                             params[0] = searchFrom.localId();
 
                             for (Object result : criteria.list()) {
-                                value = result.toString();
+                                value = Optional.fromNullable(result.toString());
                                 break fieldsLoop;
                             }
                         }
@@ -452,30 +453,37 @@ public class BaseDao<T extends BaseEntity> extends AbstractDAO<T> {
             }
             if (value == null)
                 continue;
+
             switch (params[1]) {
                 case "=":
-                    fieldFilters[i++] = Restrictions.eq(params[0], value);
+                    if (value.isPresent())
+                        fieldFilters[i++] = Restrictions.eq(params[0], value.get());
+                    else
+                        fieldFilters[i++] = Restrictions.isNull(params[0]);
                     break;
                 case "!=":
-                    fieldFilters[i++] = Restrictions.ne(params[0], value);
+                    if (value.isPresent())
+                        fieldFilters[i++] = Restrictions.ne(params[0], value.get());
+                    else
+                        fieldFilters[i++] = Restrictions.isNotNull(params[0]);
                     break;
                 case "<":
-                    fieldFilters[i++] = Restrictions.lt(params[0], value);
+                    fieldFilters[i++] = Restrictions.lt(params[0], value.get());
                     break;
                 case "<=":
-                    fieldFilters[i++] = Restrictions.le(params[0], value);
+                    fieldFilters[i++] = Restrictions.le(params[0], value.get());
                     break;
                 case ">":
-                    fieldFilters[i++] = Restrictions.gt(params[0], value);
+                    fieldFilters[i++] = Restrictions.gt(params[0], value.get());
                     break;
                 case ">=":
-                    fieldFilters[i++] = Restrictions.ge(params[0], value);
+                    fieldFilters[i++] = Restrictions.ge(params[0], value.get());
                     break;
                 case "~=":
                     fieldFilters[i++] = Restrictions.ilike(params[0], params[2], MatchMode.ANYWHERE);
                     break;
                 case "|=":
-                    fieldFilters[i++] = Restrictions.in(params[0], (Collection) value);
+                    fieldFilters[i++] = Restrictions.in(params[0], (Collection) value.get());
                     break;
             }
         }
@@ -488,6 +496,8 @@ public class BaseDao<T extends BaseEntity> extends AbstractDAO<T> {
     private Object castValue(Field field, String value) {
         if ((field.getType() instanceof Class && ((Class<?>) field.getType()).isEnum()))
             return Enum.valueOf((Class<? extends Enum>) field.getType(), value);
+        if ("null".equals(value))
+            return null;
 
         switch (field.getType().getName()) {
             case "java.math.BigDecimal":
