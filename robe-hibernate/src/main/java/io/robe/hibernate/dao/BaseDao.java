@@ -451,10 +451,10 @@ public class BaseDao<T extends BaseEntity> extends AbstractDAO<T> {
                                 criteria.add(Restrictions.ilike(filterTarget, params[2], MatchMode.ANYWHERE));
 
                             criteria.setProjection(Projections.property(searchFrom.id()));
-
-                            for (Object result : criteria.list()) {
-                                value = Optional.fromNullable(result.toString());
-                                params[1] = "=";
+                            List list = criteria.list();
+                            if (!list.isEmpty()) {
+                                value = Optional.fromNullable(list);
+                                params[1] = "|=";
                                 break fieldsLoop;
                             }
                             value = Optional.of("");
