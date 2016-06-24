@@ -439,14 +439,25 @@ public class BaseDao<T extends BaseEntity> extends AbstractDAO<T> {
                     for (String target : searchFrom.target()) {
                         if (filterTarget.equals(target)) {
                             Criteria criteria = currentSession().createCriteria(searchFrom.entity());
-                            criteria.add(Restrictions.eq(filterTarget, params[2]));
+
+                            if (searchFrom.localId().isEmpty())
+                                params[0] = field.getName();
+                            else
+                                params[0] = searchFrom.localId();
+
+                            if (params[1].equals("="))
+                                criteria.add(Restrictions.eq(filterTarget, params[2]));
+                            else if (params[1].equals("~="))
+                                criteria.add(Restrictions.ilike(filterTarget, params[2], MatchMode.ANYWHERE));
+
                             criteria.setProjection(Projections.property(searchFrom.id()));
-                            params[0] = searchFrom.localId();
 
                             for (Object result : criteria.list()) {
                                 value = Optional.fromNullable(result.toString());
+                                params[1] = "=";
                                 break fieldsLoop;
                             }
+                            value = Optional.of("");
                         }
                     }
                 }
