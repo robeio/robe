@@ -43,18 +43,17 @@ public abstract class Converter {
      */
     protected final Collection<FieldEntry> getFields(Class clazz) {
         LinkedList<FieldEntry> fieldList = new LinkedList<>();
+        if (clazz.getSuperclass() != null) {
+            LinkedList<FieldEntry> parentFieldList = getParrentFields(clazz.getSuperclass());
+            for (FieldEntry fieldEntry : parentFieldList)
+                fieldList.add(fieldEntry);
+        }
         for (Field field : clazz.getDeclaredFields()) {
             Convert cfAnn = field.getAnnotation(Convert.class);
             if (isSuitable(cfAnn)) {
                 fieldList.add(new FieldEntry(cfAnn.order(), field));
             }
         }
-        if (clazz.getSuperclass() != null) {
-            LinkedList<FieldEntry> parentFieldList = getParrentFields(clazz.getSuperclass());
-            for (FieldEntry fieldEntry : parentFieldList)
-                fieldList.add(fieldEntry);
-        }
-
         Collections.sort(fieldList, new Comparator<FieldEntry>() {
             public int compare(FieldEntry o1, FieldEntry o2) {
                 return o1.compareTo(o2);
