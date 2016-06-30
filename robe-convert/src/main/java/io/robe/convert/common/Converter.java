@@ -42,18 +42,8 @@ public abstract class Converter {
      * @return ordered list of fields.
      */
     protected final Collection<FieldEntry> getFields(Class clazz) {
-        LinkedList<FieldEntry> fieldList = new LinkedList<>();
-        if (clazz.getSuperclass() != null) {
-            LinkedList<FieldEntry> parentFieldList = getParrentFields(clazz.getSuperclass());
-            for (FieldEntry fieldEntry : parentFieldList)
-                fieldList.add(fieldEntry);
-        }
-        for (Field field : clazz.getDeclaredFields()) {
-            Convert cfAnn = field.getAnnotation(Convert.class);
-            if (isSuitable(cfAnn)) {
-                fieldList.add(new FieldEntry(cfAnn.order(), field));
-            }
-        }
+        LinkedList<FieldEntry> fieldList = getAllFields(clazz);
+
         Collections.sort(fieldList, new Comparator<FieldEntry>() {
             public int compare(FieldEntry o1, FieldEntry o2) {
                 return o1.compareTo(o2);
@@ -62,14 +52,19 @@ public abstract class Converter {
         return fieldList;
     }
 
-    protected final LinkedList<FieldEntry> getParrentFields(Class clazz) {
+    protected final LinkedList<FieldEntry> getAllFields(Class clazz) {
         LinkedList<FieldEntry> fieldList = new LinkedList<>();
+
+        if (clazz.getSuperclass() != null) {
+            fieldList = getAllFields(clazz.getSuperclass());
+        }
         for (Field field : clazz.getDeclaredFields()) {
             Convert cfAnn = field.getAnnotation(Convert.class);
             if (isSuitable(cfAnn)) {
                 fieldList.add(new FieldEntry(cfAnn.order(), field));
             }
         }
+
         return fieldList;
     }
 
