@@ -1,7 +1,7 @@
 package io.robe.hibernate.dao;
 
-import com.google.common.base.*;
 import com.google.common.base.Optional;
+import com.google.common.base.Preconditions;
 import io.dropwizard.hibernate.AbstractDAO;
 import io.robe.common.service.headers.ResponseHeadersUtil;
 import io.robe.common.service.search.SearchFrom;
@@ -435,7 +435,7 @@ public class BaseDao<T extends BaseEntity> extends AbstractDAO<T> {
                         value = Optional.fromNullable(castValue(field, params[2]));
                     break;
                 } else if (searchFrom != null && params[0].startsWith(field.getName())) {
-                    String filterTarget = params[0].replace(field.getName(), "").toLowerCase(Locale.ENGLISH);
+                    String filterTarget = StringsOperations.unCapitalizeFirstChar(params[0].replace(field.getName(), ""));
                     for (String target : searchFrom.target()) {
                         if (filterTarget.equals(target)) {
                             Criteria criteria = currentSession().createCriteria(searchFrom.entity());
