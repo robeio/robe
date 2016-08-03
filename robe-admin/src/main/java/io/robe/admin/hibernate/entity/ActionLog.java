@@ -26,6 +26,9 @@ public class ActionLog extends BaseEntity {
     @Column
     private boolean positive;
 
+    @Column
+    private String remoteAddr;
+
     public ActionLog() {
 
     }
@@ -41,11 +44,20 @@ public class ActionLog extends BaseEntity {
         this.positive = positive;
     }
 
-    public ActionLog(String actionType, String description, String additionalData, boolean positive) {
+    public ActionLog(String actionType, String description, String additionalData, boolean positive, String remoteAddr) {
         this.actionType = actionType;
         this.description = description;
         this.additionalData = additionalData;
         this.positive = positive;
+        this.remoteAddr = remoteAddr;
+    }
+
+    public String getRemoteAddr() {
+        return remoteAddr;
+    }
+
+    public void setRemoteAddr(String remoteAddr) {
+        this.remoteAddr = remoteAddr;
     }
 
     public String getActionType() {
