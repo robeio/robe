@@ -130,13 +130,14 @@ public class AuthResource extends AbstractAuthResource<User> {
     @UnitOfWork
     @Path("logout")
     @Timed
-    public User logout(@RobeAuth Credentials credentials) throws Exception {
+    public User logout(@RobeAuth Credentials credentials, @Context HttpServletRequest request) throws Exception {
         Optional<User> user = userDao.findByUsername(credentials.getUsername());
         if (!user.isPresent()) {
             throw new WebApplicationException(Response.Status.UNAUTHORIZED);
         } else {
             BasicToken.clearPermissionCache(credentials.getUsername());
             user.get().setLastLogoutTime(DateTime.now().toDate());
+            logAction(new ActionLog("LOGOUT", null, user.get().toString(), true, request.getRemoteAddr()));
             return user.get();
         }
     }
