@@ -10,6 +10,7 @@ import org.hibernate.SessionFactory;
 import org.hibernate.criterion.Restrictions;
 
 import javax.inject.Inject;
+import java.util.List;
 
 public class UserDao extends BaseDao<User> implements UserStore {
 
@@ -22,6 +23,12 @@ public class UserDao extends BaseDao<User> implements UserStore {
         Criteria criteria = currentSession().createCriteria(User.class);
         criteria.add(Restrictions.eq("email", username));
         return Optional.fromNullable(uniqueResult(criteria));
+    }
+
+    public List<User> findByRoleId(String roleId) {
+        Criteria criteria = currentSession().createCriteria(User.class);
+        criteria.add(Restrictions.eq("roleOid", roleId));
+        return criteria.list();
     }
 
     @Override
