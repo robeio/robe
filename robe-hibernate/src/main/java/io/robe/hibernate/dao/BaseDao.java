@@ -438,6 +438,12 @@ public class BaseDao<T extends BaseEntity> extends AbstractDAO<T> {
                     String filterTarget = StringsOperations.unCapitalizeFirstChar(params[0].replace(field.getName(), ""));
                     for (String target : searchFrom.target()) {
                         if (filterTarget.equals(target)) {
+                            Field filterField = null;
+                            try {
+                                filterField = searchFrom.entity().getDeclaredField(filterTarget);
+                            } catch (NoSuchFieldException e) {
+                                e.printStackTrace();
+                            }
                             Criteria criteria = currentSession().createCriteria(searchFrom.entity());
 
                             if (searchFrom.localId().isEmpty())
@@ -445,9 +451,15 @@ public class BaseDao<T extends BaseEntity> extends AbstractDAO<T> {
                             else
                                 params[0] = searchFrom.localId();
 
-                            if (params[1].equals("="))
-                                criteria.add(Restrictions.eq(filterTarget, params[2]));
-                            else if (params[1].equals("~="))
+                            if (params[1].equals("=")) {
+
+                                if (SearchableEnum.class.isAssignableFrom(filterField.getType())) {
+                                    Enum anEnum = Enum.valueOf((Class<? extends Enum>) filterField.getType(), params[2]);
+                                    criteria.add(Restrictions.eq(filterTarget, anEnum));
+                                } else
+                                    criteria.add(Restrictions.eq(filterTarget, params[2]));
+
+                            } else if (params[1].equals("~="))
                                 criteria.add(Restrictions.ilike(filterTarget, params[2], MatchMode.ANYWHERE));
 
                             criteria.setProjection(Projections.property(searchFrom.id()));
