@@ -402,7 +402,15 @@ public class BaseDao<T extends BaseEntity> extends AbstractDAO<T> {
             for (String target : from.target()) {
                 if (field.getName().equals(target)) {
                     if (field.getAnnotation(SearchIgnore.class) == null) {
-                        fieldLikes[i++] = Restrictions.ilike(field.getName(), searchQ, MatchMode.ANYWHERE);
+                        if (SearchableEnum.class.isAssignableFrom(field.getType())) {
+                            try {
+                                Enum anEnum = Enum.valueOf((Class<? extends Enum>) field.getType(), searchQ);
+                                fieldLikes[i++] = Restrictions.eq(field.getName(), anEnum);
+                            } catch (IllegalArgumentException e) {
+                                continue;
+                            }
+                        } else
+                            fieldLikes[i++] = Restrictions.ilike(field.getName(), searchQ, MatchMode.ANYWHERE);
                     }
                 }
             }
@@ -438,38 +446,37 @@ public class BaseDao<T extends BaseEntity> extends AbstractDAO<T> {
                     String filterTarget = StringsOperations.unCapitalizeFirstChar(params[0].replace(field.getName(), ""));
                     for (String target : searchFrom.target()) {
                         if (filterTarget.equals(target)) {
-                            Field filterField = null;
                             try {
-                                filterField = searchFrom.entity().getDeclaredField(filterTarget);
-                            } catch (NoSuchFieldException e) {
-                                e.printStackTrace();
-                            }
-                            Criteria criteria = currentSession().createCriteria(searchFrom.entity());
+                                Field filterField = searchFrom.entity().getDeclaredField(filterTarget);
+                                Criteria criteria = currentSession().createCriteria(searchFrom.entity());
 
-                            if (searchFrom.localId().isEmpty())
-                                params[0] = field.getName();
-                            else
-                                params[0] = searchFrom.localId();
-
-                            if (params[1].equals("=")) {
+                                if (searchFrom.localId().isEmpty())
+                                    params[0] = field.getName();
+                                else
+                                    params[0] = searchFrom.localId();
 
                                 if (SearchableEnum.class.isAssignableFrom(filterField.getType())) {
                                     Enum anEnum = Enum.valueOf((Class<? extends Enum>) filterField.getType(), params[2]);
                                     criteria.add(Restrictions.eq(filterTarget, anEnum));
-                                } else
+                                } else if (params[1].equals("=")) {
                                     criteria.add(Restrictions.eq(filterTarget, params[2]));
+                                } else if (params[1].equals("~="))
+                                    criteria.add(Restrictions.ilike(filterTarget, params[2], MatchMode.ANYWHERE));
 
-                            } else if (params[1].equals("~="))
-                                criteria.add(Restrictions.ilike(filterTarget, params[2], MatchMode.ANYWHERE));
+                                criteria.setProjection(Projections.property(searchFrom.id()));
+                                List list = criteria.list();
+                                if (!list.isEmpty()) {
+                                    value = Optional.fromNullable(list);
+                                    params[1] = "|=";
+                                    break fieldsLoop;
+                                }
+                                value = Optional.of("");
 
-                            criteria.setProjection(Projections.property(searchFrom.id()));
-                            List list = criteria.list();
-                            if (!list.isEmpty()) {
-                                value = Optional.fromNullable(list);
-                                params[1] = "|=";
-                                break fieldsLoop;
+                            } catch (NoSuchFieldException e) {
+                                continue;
+                            } catch (IllegalArgumentException e) {
+                                continue;
                             }
-                            value = Optional.of("");
                         }
                     }
                 }
