@@ -9,6 +9,7 @@ import io.robe.common.service.search.SearchIgnore;
 import io.robe.common.service.search.SearchableEnum;
 import io.robe.common.service.search.model.SearchModel;
 import io.robe.common.utils.StringsOperations;
+import io.robe.hibernate.RobeHibernateBundle;
 import io.robe.hibernate.entity.BaseEntity;
 import org.hibernate.Criteria;
 import org.hibernate.SessionFactory;
@@ -35,7 +36,8 @@ import java.util.concurrent.ConcurrentHashMap;
 public class BaseDao<T extends BaseEntity> extends AbstractDAO<T> {
 
     private static final ConcurrentHashMap<String, Field[]> fieldCache = new ConcurrentHashMap<>();
-
+    @Inject
+    RobeHibernateBundle bundle;
 
     /**
      * Constructor with session factory injection by guice
@@ -115,6 +117,7 @@ public class BaseDao<T extends BaseEntity> extends AbstractDAO<T> {
         List<T> list = buildCriteria(search).list();
         search.setLimit(null);
         search.setOffset(null);
+        search.setSort(null);
         long totalCount = (Long) buildCriteria(search).setProjection(Projections.rowCount()).uniqueResult();
         search.setTotalCount(totalCount);
         ResponseHeadersUtil.addTotalCount(search);
@@ -131,6 +134,7 @@ public class BaseDao<T extends BaseEntity> extends AbstractDAO<T> {
         List<T> list = addSearchFromProjection(buildCriteria(search)).list();
         search.setLimit(null);
         search.setOffset(null);
+        search.setSort(null);
         long totalCount = (Long) buildCriteria(search).setProjection(Projections.rowCount()).uniqueResult();
         search.setTotalCount(totalCount);
         ResponseHeadersUtil.addTotalCount(search);
@@ -152,7 +156,12 @@ public class BaseDao<T extends BaseEntity> extends AbstractDAO<T> {
                     else
                         sqlBuilder.append("group_concat(").append(target).append(")");
 
-                    sqlBuilder.append(" from ").append(searchFrom.entity().getSimpleName());
+                    String prefix = bundle.getConfiguration().getProperty("hibernate.prefix");
+                    if (prefix != null)
+                        sqlBuilder.append(" from ").append(prefix).append(searchFrom.entity().getSimpleName());
+                    else
+                        sqlBuilder.append(" from ").append(searchFrom.entity().getSimpleName());
+
                     if (searchFrom.localId().isEmpty()) {
                         sqlBuilder.append(" where ").append(searchFrom.id()).append('=').append(field.getName()).append(") as ").append(alias);
                     } else {

@@ -24,6 +24,8 @@ public class RobeHibernateBundle<T extends Configuration & HasHibernateConfigura
     private static final Logger LOGGER = LoggerFactory.getLogger(RobeHibernateBundle.class);
 
     private static RobeHibernateBundle instance;
+    private org.hibernate.cfg.Configuration configuration;
+
 
     private RobeHibernateBundle(ImmutableList<Class<?>> entities, SessionFactoryFactory sessionFactoryFactory) {
         super(entities, sessionFactoryFactory);
@@ -96,7 +98,11 @@ public class RobeHibernateBundle<T extends Configuration & HasHibernateConfigura
 
 
     protected void configure(org.hibernate.cfg.Configuration configuration) {
+        this.configuration = configuration;
+    }
 
+    public org.hibernate.cfg.Configuration getConfiguration() {
+        return configuration;
     }
 
 }
