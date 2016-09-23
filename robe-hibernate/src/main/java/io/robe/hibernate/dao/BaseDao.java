@@ -10,7 +10,7 @@ import io.robe.common.service.search.SearchableEnum;
 import io.robe.common.service.search.model.SearchModel;
 import io.robe.common.utils.StringsOperations;
 import io.robe.hibernate.RobeHibernateBundle;
-import io.robe.hibernate.entity.BaseEntity;
+import io.robe.hibernate.entity.RobeEntity;
 import org.hibernate.Criteria;
 import org.hibernate.SessionFactory;
 import org.hibernate.criterion.*;
@@ -33,7 +33,7 @@ import java.util.concurrent.ConcurrentHashMap;
  *
  * @param <T> Type of the entity parameter.
  */
-public class BaseDao<T extends BaseEntity> extends AbstractDAO<T> {
+public class BaseDao<T extends RobeEntity> extends AbstractDAO<T> {
 
     private static final ConcurrentHashMap<String, Field[]> fieldCache = new ConcurrentHashMap<>();
     @Inject
@@ -213,7 +213,7 @@ public class BaseDao<T extends BaseEntity> extends AbstractDAO<T> {
      * @return returns the result.
      */
     @SuppressWarnings("unchecked")
-    public T findById(Class<? extends BaseEntity> clazz, Serializable oid) {
+    public T findById(Class<? extends RobeEntity> clazz, Serializable oid) {
         return (T) currentSession().get(clazz, Preconditions.checkNotNull(oid));
     }
 
@@ -327,10 +327,10 @@ public class BaseDao<T extends BaseEntity> extends AbstractDAO<T> {
      * Creates a criteria from the given search model.
      *
      * @param search
-     * @param clazz  of extends {@link BaseEntity}
+     * @param clazz  of extends {@link RobeEntity}
      * @return
      */
-    protected final Criteria buildCriteria(SearchModel search, Class<? extends BaseEntity> clazz) {
+    protected final Criteria buildCriteria(SearchModel search, Class<? extends RobeEntity> clazz) {
 
         Criteria criteria = this.currentSession().createCriteria(clazz);
 

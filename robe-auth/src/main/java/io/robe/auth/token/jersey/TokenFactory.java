@@ -1,6 +1,5 @@
 package io.robe.auth.token.jersey;
 
-import com.google.common.base.Optional;
 import com.google.common.hash.Hashing;
 import io.dropwizard.auth.AuthenticationException;
 import io.dropwizard.auth.Authenticator;
@@ -18,6 +17,7 @@ import javax.ws.rs.core.Response;
 import java.lang.reflect.InvocationTargetException;
 import java.nio.charset.StandardCharsets;
 import java.util.List;
+import java.util.Optional;
 
 public class TokenFactory<T extends Token> extends AbstractContainerRequestValueFactory<Credentials> {
     private static final Logger LOGGER = LoggerFactory.getLogger(TokenFactory.class);

@@ -1,6 +1,6 @@
 package io.robe.hibernate;
 
-import com.fasterxml.jackson.datatype.hibernate4.Hibernate4Module;
+import com.fasterxml.jackson.datatype.hibernate5.Hibernate5Module;
 import com.google.common.collect.ImmutableList;
 import io.dropwizard.Configuration;
 import io.dropwizard.db.PooledDataSourceFactory;
@@ -81,9 +81,9 @@ public class RobeHibernateBundle<T extends Configuration & HasHibernateConfigura
      */
 
     @Override
-    protected Hibernate4Module createHibernate4Module() {
-        Hibernate4Module module = new Hibernate4Module();
-        module.disable(Hibernate4Module.Feature.USE_TRANSIENT_ANNOTATION);
+    protected Hibernate5Module createHibernate5Module() {
+        Hibernate5Module module = new Hibernate5Module();
+        module.disable(Hibernate5Module.Feature.USE_TRANSIENT_ANNOTATION);
         return module;
     }
 

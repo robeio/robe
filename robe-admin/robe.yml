@@ -3,11 +3,10 @@ server:
   type: simple
   registerDefaultExceptionMappers: false
   applicationContextPath: /robe
-  adminContextPath: /admin
+  adminContextPath: /rest
   connector:
     type: http
     port: 8080
-
 
 hibernate:
    database:
@@ -16,7 +15,7 @@ hibernate:
      # the username
      user: root
      # the password
-     password:
+     password: 2550373
      # the JDBC URL
      url: jdbc:mysql://localhost:3306/robe?autoReconnect=true&useSSL=false
      # Properties
@@ -71,8 +70,8 @@ auth:
   serverPassword: auto # auto for uuid, if it is cluster use custom password
 
 assets:
- - resourcePath: /Users/serayuzgur/Development/hermes/hermes-admin/hermes-admin-ui
-   uriPath:      /admin-ui/
+ - resourcePath: /Users/kamilbukum/DEV/robe/robe-react-admin/build
+   uriPath:      /ui/
    indexFile:    index.html
    assetsName:   io.robe.admin.ui
    cached:       true

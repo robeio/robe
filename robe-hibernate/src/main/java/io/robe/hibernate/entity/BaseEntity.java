@@ -4,15 +4,13 @@ import io.robe.common.service.search.SearchIgnore;
 import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.*;
-import java.io.Serializable;
 
 /**
  * An abstract Entity implementation. All entities have to extend this class.
  * Standard fields (oid,lastupdated) will be added to your entity.
  */
 @MappedSuperclass
-public abstract class BaseEntity implements Serializable {
-
+public abstract class BaseEntity implements RobeEntity<String>{
 
     @SearchIgnore
     private static final long serialVersionUID = 1914842698571907341L;
@@ -44,6 +42,11 @@ public abstract class BaseEntity implements Serializable {
 
     public void setOid(String oid) {
         this.oid = oid;
+    }
+
+    @Override
+    public String getId() {
+        return this.oid;
     }
 
     public long getLastUpdated() {

@@ -1,6 +1,5 @@
 package io.robe.admin.hibernate.dao;
 
-import com.google.common.base.Optional;
 import javax.inject.Inject;
 import io.robe.admin.hibernate.entity.Service;
 import io.robe.auth.data.store.ServiceStore;
@@ -12,6 +11,7 @@ import org.hibernate.criterion.Restrictions;
 import org.hibernate.transform.Transformers;
 
 import java.util.List;
+import java.util.Optional;
 
 public class ServiceDao extends BaseDao<Service> implements ServiceStore {
 
@@ -21,7 +21,7 @@ public class ServiceDao extends BaseDao<Service> implements ServiceStore {
     }
 
     public Optional<Service> findByCode(String code) {
-        return Optional.fromNullable(findById(code));
+        return Optional.ofNullable(findById(code));
     }
 
     public Service findByPathAndMethod(String path, Service.Method method) {

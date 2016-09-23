@@ -1,6 +1,5 @@
 package io.robe.admin.resources;
 
-import com.google.common.base.Optional;
 import io.dropwizard.hibernate.UnitOfWork;
 import io.dropwizard.jersey.PATCH;
 import io.dropwizard.jersey.caching.CacheControl;

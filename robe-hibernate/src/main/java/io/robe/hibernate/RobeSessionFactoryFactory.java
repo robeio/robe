@@ -19,7 +19,7 @@ public class RobeSessionFactoryFactory extends SessionFactoryFactory {
     private void determineNamingStrategy(Configuration configuration) {
         String prefix = configuration.getProperty("hibernate.prefix");
         if (prefix != null) {
-            configuration.setNamingStrategy(new RobeHibernateNamingStrategy(prefix));
+            configuration.setPhysicalNamingStrategy(new RobeHibernateNamingStrategy(prefix));
             LOGGER.info("Table Prefix: ", prefix);
         }
 
@@ -27,7 +27,7 @@ public class RobeSessionFactoryFactory extends SessionFactoryFactory {
         if (namingStrategy != null) {
             LOGGER.warn("Hibernate.prefix property will be ignored, cause: another type of naming strategy selected");
             try {
-                configuration.setNamingStrategy((NamingStrategy) Class.forName(namingStrategy).newInstance());
+                configuration.setPhysicalNamingStrategy(new RobeHibernateNamingStrategy(prefix));
             } catch (Exception e) {
                 LOGGER.error("Can't set Hibernate Naming Strategy", e);
             }

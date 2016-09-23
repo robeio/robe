@@ -1,7 +1,6 @@
 package io.robe.admin.resources;
 
 import com.codahale.metrics.annotation.Timed;
-import com.google.common.base.Optional;
 import io.dropwizard.hibernate.UnitOfWork;
 import io.robe.admin.hibernate.dao.ActionLogDao;
 import io.robe.admin.hibernate.dao.UserDao;
@@ -28,6 +27,7 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Optional;
 
 import static org.hibernate.CacheMode.GET;
 

@@ -1,6 +1,5 @@
 package io.robe.admin.hibernate.dao;
 
-import com.google.common.base.Optional;
 import io.robe.admin.hibernate.entity.User;
 import io.robe.auth.data.entry.UserEntry;
 import io.robe.auth.data.store.UserStore;
@@ -11,6 +10,7 @@ import org.hibernate.criterion.Restrictions;
 
 import javax.inject.Inject;
 import java.util.List;
+import java.util.Optional;
 
 public class UserDao extends BaseDao<User> implements UserStore {
 
@@ -22,7 +22,7 @@ public class UserDao extends BaseDao<User> implements UserStore {
     public Optional<User> findByUsername(String username) {
         Criteria criteria = currentSession().createCriteria(User.class);
         criteria.add(Restrictions.eq("email", username));
-        return Optional.fromNullable(uniqueResult(criteria));
+        return Optional.ofNullable(uniqueResult(criteria));
     }
 
     public List<User> findByRoleId(String roleId) {
