@@ -1,7 +1,7 @@
 package io.robe.auth.token.jersey;
 
 import io.robe.auth.RobeAuth;
-import io.robe.auth.token.Token;
+import io.robe.auth.token.BasicToken;
 import org.glassfish.hk2.api.Factory;
 import org.glassfish.hk2.api.InjectionResolver;
 import org.glassfish.hk2.api.ServiceLocator;
@@ -30,7 +30,7 @@ public class TokenFactoryProvider extends AbstractValueFactoryProvider {
     protected Factory<?> createValueFactory(Parameter parameter) {
         Class<?> paramType = parameter.getRawType();
         RobeAuth annotation = parameter.getAnnotation(RobeAuth.class);
-        if (annotation != null && paramType.isAssignableFrom(Token.class)) {
+        if (annotation != null && paramType.isAssignableFrom(BasicToken.class)) {
             return new TokenFactory<>(annotation.required());
         }
         return null;

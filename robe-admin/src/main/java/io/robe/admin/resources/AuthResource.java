@@ -11,8 +11,6 @@ import io.robe.auth.AbstractAuthResource;
 import io.robe.auth.Credentials;
 import io.robe.auth.RobeAuth;
 import io.robe.auth.token.BasicToken;
-import io.robe.auth.token.Token;
-import io.robe.auth.token.TokenManager;
 import io.robe.auth.token.jersey.TokenBasedAuthResponseFilter;
 import org.hibernate.FlushMode;
 import org.joda.time.DateTime;
@@ -84,7 +82,8 @@ public class AuthResource extends AbstractAuthResource<User> {
             attributes.put("userAgent", request.getHeader("User-Agent"));
             attributes.put("remoteAddr", request.getRemoteAddr());
 
-            Token token = TokenManager.getInstance().createToken(user.get().getUserId(), user.get().getEmail(), DateTime.now(), attributes);
+
+            BasicToken token = new BasicToken(user.get().getUserId(), user.get().getEmail(), DateTime.now(), attributes);
             token.setExpiration(token.getMaxAge());
             credentials.remove("password");
             credentials.put("domain", TokenBasedAuthResponseFilter.getTokenSentence("dummy"));
