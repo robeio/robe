@@ -1,11 +1,37 @@
 package io.robe.common.utils;
 
+import io.robe.common.TestUtils;
 import org.junit.Test;
+
+import java.lang.reflect.InvocationTargetException;
 
 /**
  * Created by serayuzgur on 22/03/16.
  */
 public class FieldReflectionTest {
+    @Test
+    public void testCopy() throws Exception {
+        Sample src = new Sample(true, Byte.MIN_VALUE, 2, Short.MAX_VALUE, 4, 5, 'c', "Test");
+        Sample dest = new Sample();
+        FieldReflection.copy(src, dest);
+        assert src.equals(dest);
+
+    }
+
+    @Test
+    public void testMergeRight() throws Exception {
+        Sample src = new Sample(true, Byte.MIN_VALUE, 2, Short.MAX_VALUE, 4, 5, 'c', null);
+        Sample dest = new Sample(false, Byte.MAX_VALUE, 3, Short.MIN_VALUE, 3, 4, 'b', "Test");
+        FieldReflection.mergeRight(src, dest);
+        src.setName("Test");
+        assert src.equals(dest);
+    }
+
+    @Test
+    public void constructor() throws IllegalAccessException, InvocationTargetException, InstantiationException, NoSuchMethodException {
+        TestUtils.privateConstructor(FieldReflection.class);
+    }
+
     static class Sample {
         private boolean bool;
         private byte b;
@@ -127,23 +153,5 @@ public class FieldReflectionTest {
             result = 31 * result + (name != null ? name.hashCode() : 0);
             return result;
         }
-    }
-
-    @Test
-    public void testCopy() throws Exception {
-        Sample src = new Sample(true, Byte.MIN_VALUE, 2, Short.MAX_VALUE, 4, 5, 'c', "Test");
-        Sample dest = new Sample();
-        FieldReflection.copy(src, dest);
-        assert src.equals(dest);
-
-    }
-
-    @Test
-    public void testMergeRight() throws Exception {
-        Sample src = new Sample(true, Byte.MIN_VALUE, 2, Short.MAX_VALUE, 4, 5, 'c', null);
-        Sample dest = new Sample(false, Byte.MAX_VALUE, 3, Short.MIN_VALUE, 3, 4, 'b', "Test");
-        FieldReflection.mergeRight(src, dest);
-        src.setName("Test");
-        assert src.equals(dest);
     }
 }
