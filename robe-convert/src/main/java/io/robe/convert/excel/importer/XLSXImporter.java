@@ -21,7 +21,7 @@ public class XLSXImporter<T> extends ExcelImporter<T> {
 
     @Override
     public List<T> importStream(InputStream inputStream) throws Exception {
-        return importStream(inputStream, new XSSFWorkbook(inputStream));
+        return importStream(new XSSFWorkbook(inputStream));
     }
 
     @Override
@@ -32,12 +32,12 @@ public class XLSXImporter<T> extends ExcelImporter<T> {
 
     @Override
     public void importStream(InputStream inputStream, OnItemHandler handler) throws Exception {
-        importStream(inputStream, new XSSFWorkbook(inputStream), handler);
+        importStream(new XSSFWorkbook(inputStream), handler);
     }
 
     @Override
     public void importStream(InputStream inputStream, OnItemHandler handler, String charSetName) throws Exception {
         LOGGER.warn("Charset" + charSetName + " ignored, Apache poi detects encoding dynamically");
-        importStream(inputStream, new XSSFWorkbook(inputStream), handler);
+        importStream(new XSSFWorkbook(inputStream), handler);
     }
 }

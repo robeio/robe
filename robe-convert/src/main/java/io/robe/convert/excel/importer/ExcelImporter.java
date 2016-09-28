@@ -31,18 +31,18 @@ public abstract class ExcelImporter<T> extends Importer<T> {
     }
 
 
-    public List<T> importStream(InputStream inputStream, Workbook workbook) throws Exception {
+    public List<T> importStream(Workbook workbook) throws Exception {
 
         final List<T> list = new LinkedList<T>();
 
         DefaultOnItemHandler handler = new DefaultOnItemHandler(list);
 
-        this.importStream(inputStream, workbook, handler);
+        this.importStream(workbook, handler);
 
         return list;
     }
 
-    public void importStream(InputStream inputStream, Workbook workbook, OnItemHandler handler) throws Exception {
+    public void importStream(Workbook workbook, OnItemHandler handler) throws Exception {
 
         Collection<FieldEntry> fields = getFields(getDataClass());
 
@@ -67,7 +67,7 @@ public abstract class ExcelImporter<T> extends Importer<T> {
 
                         Object cellData;
                         if (cell != null) {
-                            if (!(field.getType() instanceof Class && (field.getType()).isEnum())) {
+                            if (!(field.getType() != null && (field.getType()).isEnum())) {
                                 if(cell.getCellType() != Cell.CELL_TYPE_STRING)
                                     cell.setCellType(Cell.CELL_TYPE_STRING);
 
