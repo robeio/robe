@@ -30,9 +30,15 @@ public class PermissionTest {
         assertEquals("1234561234567890123456789", entity.getRestrictedItemOid());
     }
 
-
+    @Test
     public void getpLevel() throws Exception {
         entity.setpLevel((short) 12);
         assertEquals((short) 12, entity.getpLevel());
+    }
+
+    @Test
+    public void getRestrictedItemId() throws Exception {
+        entity.setRestrictedItemOid("1234561234567890123456789");
+        assertEquals("1234561234567890123456789", entity.getRestrictedItemId());
     }
 }
