@@ -15,4 +15,12 @@ public class StringsOperationsTest {
 
     }
 
+    @Test
+    public void unCapitalizeFirstChar() throws Exception {
+        String expected = "id";
+        String data = "Id";
+        Assert.assertEquals(expected, StringsOperations.unCapitalizeFirstChar(data));
+
+    }
+
 }
