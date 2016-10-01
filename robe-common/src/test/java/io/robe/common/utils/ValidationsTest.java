@@ -13,7 +13,9 @@ public class ValidationsTest {
 
     @Test
     public void isEmptyOrNull() throws Exception {
-        assertTrue(Validations.isEmptyOrNull(null));
-        assertTrue(Validations.isEmptyOrNull(" "));
+        Validations validations = new Validations();
+
+        assertTrue(validations.isEmptyOrNull(null));
+        assertTrue(validations.isEmptyOrNull(" "));
     }
 }
