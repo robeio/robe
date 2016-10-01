@@ -148,7 +148,7 @@ public class SearchModel {
             if (!find) {
                 String[] array = new String[this.sort.length + 1];
                 System.arraycopy(this.sort, 0, array, 0, this.sort.length);
-                array[this.sort.length + 1] = operator + field;
+                array[this.sort.length] = operator + field;
                 this.sort = array;
             }
 
