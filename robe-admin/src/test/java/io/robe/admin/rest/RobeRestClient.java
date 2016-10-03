@@ -1,6 +1,6 @@
 package io.robe.admin.rest;
 
-import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.JavaType;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import io.robe.admin.rest.http.HttpRequest;
 import io.robe.admin.rest.http.HttpRequestImpl;
@@ -31,7 +31,7 @@ public class RobeRestClient<E, I> {
     /**
      *  holds resource list of entity type.
      */
-    private final TypeReference<List<E>> listType;
+    private final JavaType listType;
 
 
     private HttpRequest httpRequest;
@@ -42,10 +42,7 @@ public class RobeRestClient<E, I> {
      * @param url
      */
     public RobeRestClient(Class<E> type, String url){
-        this.listType =  new TypeReference<List<E>>() {};
-        this.type = type;
-        this.baseUrl = "http://127.0.0.1:8080/robe/" + url;
-        this.httpRequest = new HttpRequestImpl();
+        this(new HttpRequestImpl(), type, url);
     }
     /**
      *
@@ -53,7 +50,8 @@ public class RobeRestClient<E, I> {
      * @param url
      */
     public RobeRestClient(HttpRequest httpRequest, Class<E> type, String url){
-        this.listType =  new TypeReference<List<E>>() {};
+        listType = MAPPER.getTypeFactory().
+                constructCollectionType(List.class, type);
         this.type = type;
         this.baseUrl = "http://127.0.0.1:8080/robe/" + url;
         this.httpRequest = httpRequest;

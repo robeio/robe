@@ -116,8 +116,6 @@ public class HttpRequestImpl implements HttpRequest {
         }
 
         Request.Builder requestBuilder = new Request.Builder().url(url);
-        //setHeaderToRequest(builder, headerMap);
-        requestBuilder.header("Content-Type", "application/json");
         return request(requestBuilder);
     }
 
