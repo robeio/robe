@@ -42,6 +42,7 @@ public class RobeApplication<T extends RobeConfiguration> extends Application<T>
 
 
     private static final Logger LOGGER = LoggerFactory.getLogger(RobeApplication.class);
+    private InitializeCommand initCommand;
     public static void main(String[] args) throws Exception {
 
         RobeApplication application = new RobeApplication();
@@ -71,7 +72,8 @@ public class RobeApplication<T extends RobeConfiguration> extends Application<T>
         addGuiceBundle(bootstrap, hibernateBundle);
         bootstrap.addBundle(hibernateBundle);
         bootstrap.addBundle(new TokenAuthBundle<T>());
-        bootstrap.addCommand(new InitializeCommand(this, hibernateBundle));
+        initCommand = new InitializeCommand(this, hibernateBundle);
+        bootstrap.addCommand(initCommand);
         bootstrap.addBundle(new QuartzBundle<T>());
         bootstrap.addBundle(new ViewBundle());
         bootstrap.addBundle(new ViewBundle(ImmutableList.<ViewRenderer>of(new FreemarkerViewRenderer())));
@@ -129,6 +131,9 @@ public class RobeApplication<T extends RobeConfiguration> extends Application<T>
         environment.getApplicationContext().addServlet(
                 new NonblockingServletHolder(new MetricsServlet()), "/metrics/*");
 
+        if("TEST".equals(System.getProperty("env"))) {
+            initCommand.execute(configuration);
+        }
     }
 
     private void addExceptionMappers(Environment environment) {
@@ -136,4 +141,7 @@ public class RobeApplication<T extends RobeConfiguration> extends Application<T>
         environment.jersey().register(new JsonProcessingExceptionMapper(true));
     }
 
+    protected InitializeCommand getInitCommand() {
+        return initCommand;
+    }
 }

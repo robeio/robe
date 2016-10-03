@@ -1,5 +1,6 @@
 package io.robe.hibernate.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import io.robe.common.service.search.SearchIgnore;
 import org.hibernate.annotations.GenericGenerator;
 
@@ -42,11 +43,6 @@ public abstract class BaseEntity implements RobeEntity<String>{
 
     public void setOid(String oid) {
         this.oid = oid;
-    }
-
-    @Override
-    public String getId() {
-        return this.oid;
     }
 
     public long getLastUpdated() {

@@ -198,6 +198,11 @@
                 <artifactId>dropwizard-views-freemarker</artifactId>
                 <version>${dropwizard.version}</version>
             </dependency>
+            <dependency>
+                <groupId>io.dropwizard</groupId>
+                <artifactId>dropwizard-testing</artifactId>
+                <version>${dropwizard.version}</version>
+            </dependency>
             <!--Database drivers-->
             <dependency>
                 <groupId>mysql</groupId>
@@ -366,6 +371,12 @@
                 <artifactId>hk2-locator</artifactId>
                 <version>${hk2.version}</version>
             </dependency>
+            <!-- https://mvnrepository.com/artifact/com.h2database/h2 -->
+            <dependency>
+                <groupId>com.h2database</groupId>
+                <artifactId>h2</artifactId>
+                <version>1.4.192</version>
+            </dependency>
         </dependencies>
     </dependencyManagement>
 
@@ -373,6 +384,11 @@
         <dependency>
             <groupId>junit</groupId>
             <artifactId>junit</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>io.dropwizard</groupId>
+            <artifactId>dropwizard-testing</artifactId>
+            <scope>test</scope>
         </dependency>
     </dependencies>
 

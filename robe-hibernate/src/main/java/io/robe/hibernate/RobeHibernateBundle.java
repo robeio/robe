@@ -23,15 +23,14 @@ import java.util.Set;
 public class RobeHibernateBundle<T extends Configuration & HasHibernateConfiguration> extends HibernateBundle<T> {
     private static final Logger LOGGER = LoggerFactory.getLogger(RobeHibernateBundle.class);
 
-    private static RobeHibernateBundle instance;
+    protected static RobeHibernateBundle instance;
     private org.hibernate.cfg.Configuration configuration;
 
-
-    private RobeHibernateBundle(ImmutableList<Class<?>> entities, SessionFactoryFactory sessionFactoryFactory) {
+    protected RobeHibernateBundle(ImmutableList<Class<?>> entities, SessionFactoryFactory sessionFactoryFactory) {
         super(entities, sessionFactoryFactory);
     }
 
-    public static final RobeHibernateBundle createInstance(String[] packages, String[] entities) {
+    public static RobeHibernateBundle createInstance(String[] packages, String[] entities) {
         if (instance == null)
             instance = new RobeHibernateBundle(loadEntities(packages, entities), new RobeSessionFactoryFactory());
         else
@@ -46,7 +45,7 @@ public class RobeHibernateBundle<T extends Configuration & HasHibernateConfigura
             throw new RuntimeException("HibernateBundle is not created. Please call createInstance first.");
     }
 
-    private static final ImmutableList<Class<?>> loadEntities(String[] packages, String[] entities) {
+    protected static final ImmutableList<Class<?>> loadEntities(String[] packages, String[] entities) {
         Set<Class<?>> classes = new HashSet<>();
         if (packages != null) {
             for (String packageName : packages) {

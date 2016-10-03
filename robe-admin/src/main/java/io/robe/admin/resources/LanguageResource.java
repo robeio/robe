@@ -105,6 +105,7 @@ public class LanguageResource {
         if (entity == null) {
             throw new WebApplicationException(Response.status(404).build());
         }
+        languageDao.detach(entity);
         return languageDao.update(model);
     }
 
@@ -161,7 +162,7 @@ public class LanguageResource {
         if (entity == null) {
             throw new WebApplicationException(Response.status(404).build());
         }
-        return languageDao.delete(model);
+        return languageDao.delete(entity);
     }
 
 }

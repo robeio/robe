@@ -73,14 +73,19 @@ public class InitializeCommand<T extends RobeConfiguration> extends EnvironmentC
 
         String password;
 
-        if (console != null) {
-            // read password from server console
-            password = new String(console.readPassword());
+        if("TEST".equals(System.getProperty("env"))) {
+                password = "123123";
         } else {
-            // read password from idea console
-            Scanner scan = new Scanner(System.in);
-            password = scan.nextLine();
+            if (console != null) {
+                // read password from server console
+                password = new String(console.readPassword());
+            } else {
+                // read password from idea console
+                Scanner scan = new Scanner(System.in);
+                password = scan.nextLine();
+            }
         }
+
 
         password = Hashing.sha256().hashString(password, StandardCharsets.UTF_8).toString();
         System.out.println("creating password " + password);
