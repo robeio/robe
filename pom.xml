@@ -97,7 +97,7 @@
         <mail.version>1.4.7</mail.version>
         <quartz.version>2.2.2</quartz.version>
         <guice.version>4.0</guice.version>
-        <hk2.version>2.5.0-b18</hk2.version>
+        <hk2.version>2.4.0-b31</hk2.version>
         <reflections.version>0.9.10</reflections.version>
         <google.guava.version>19.0</google.guava.version>
         <javax.persistence.api.version>1.0.2</javax.persistence.api.version>
