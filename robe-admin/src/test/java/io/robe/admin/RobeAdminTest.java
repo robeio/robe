@@ -41,8 +41,4 @@ public class RobeAdminTest {
             System.err.println("Login Failed ! Result : " + responseMap);
         }
     }
-    @AfterClass
-    public static void afterClass(){
-        System.exit(1);
-    }
 }
