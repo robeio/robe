@@ -15,7 +15,7 @@ import java.util.Set;
 /**
  * Authenticator implementation for token based authentication.
  */
-public class TokenAuthenticator implements Authenticator<String, Token> {
+public class TokenAuthenticator implements Authenticator<String, BasicToken> {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(TokenAuthenticator.class);
 
@@ -47,12 +47,12 @@ public class TokenAuthenticator implements Authenticator<String, Token> {
      * @throws AuthenticationException
      */
     @Override
-    public Optional<Token> authenticate(String tokenString) throws AuthenticationException {
+    public Optional<BasicToken> authenticate(String tokenString) throws AuthenticationException {
         tokenString = tokenString.replaceAll("\"", "");
         LOGGER.debug("Authenticating from database:  " + tokenString);
         try {
             // Decode tokenString and get user
-            Token token = TokenManager.getInstance().createToken(tokenString);
+            BasicToken token = new BasicToken(tokenString);
 
             Optional<UserEntry> user = (Optional<UserEntry>) userStore.findByUsername(token.getUsername());
             if (!user.isPresent()) {
@@ -86,9 +86,6 @@ public class TokenAuthenticator implements Authenticator<String, Token> {
                 } else {
                     LOGGER.debug("Loading Permissions from Cache: " + tokenString);
                 }
-
-                //Set Token to the thread local for future access.
-                TokenManager.setCurrentLoginToken(token);
 
                 return Optional.ofNullable(token);
             }

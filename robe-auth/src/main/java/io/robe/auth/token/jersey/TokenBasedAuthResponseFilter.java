@@ -1,7 +1,6 @@
 package io.robe.auth.token.jersey;
 
-import io.robe.auth.token.Token;
-import io.robe.auth.token.TokenManager;
+import io.robe.auth.token.BasicToken;
 import io.robe.auth.token.configuration.TokenBasedAuthConfiguration;
 import org.joda.time.DateTime;
 import org.slf4j.Logger;
@@ -67,7 +66,7 @@ public class TokenBasedAuthResponseFilter implements ContainerResponseFilter {
         String authToken = extractAuthTokenFromCookieList(requestContext.getHeaders().getFirst("Cookie"));
         if (authToken != null && authToken.length() != 0) {
             try {
-                Token token = TokenManager.getInstance().createToken(authToken);
+                BasicToken token = new BasicToken(authToken);
                 if (token.isExpired()) {
                     LOGGER.debug("ExpireDate : " + token.getExpirationDate().toString());
                     LOGGER.debug("Now: " + DateTime.now().toDate().toString());

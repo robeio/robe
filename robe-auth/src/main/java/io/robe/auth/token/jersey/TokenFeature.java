@@ -19,9 +19,8 @@ public class TokenFeature implements Feature {
             @Override
             public void configure() {
                 bind(TokenAuthenticator.class)
-                        .to(TokenAuthenticator.class)
                         .in(Singleton.class);
-                bind(TokenFactory.class).to(TokenFactory.class)
+                bind(TokenFactory.class)
                         .in(Singleton.class);
                 bind(TokenFactoryProvider.class)
                         .to(ValueFactoryProvider.class)

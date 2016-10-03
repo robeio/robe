@@ -11,11 +11,11 @@ import java.util.concurrent.ConcurrentHashMap;
  */
 public class FieldReflection {
 
+    private static final ConcurrentHashMap<Class<?>, ImmutableSet<Field>> cache = new ConcurrentHashMap<>();
+
     private FieldReflection() {
 
     }
-
-    private static final ConcurrentHashMap<Class<?>, ImmutableSet<Field>> cache = new ConcurrentHashMap();
 
     private static final ImmutableSet<Field> get(Class<?> clazz) {
         if (!cache.containsKey(clazz)) {

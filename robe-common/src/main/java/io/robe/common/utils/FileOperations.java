@@ -18,26 +18,29 @@ public class FileOperations {
 
     }
 
-
     /**
-     * Writes inputstream to a temporary file under OS's native temp folder with a unique name.
+     * Writes input stream to a temporary file under OS's native temp folder with a unique name.
      *
      * @param in InputStream from any source.
      * @return File instance of temporary file.
      * @throws java.io.IOException
      */
     public static File writeToTemp(InputStream in) throws IOException {
+        return writeFileToDirectory(in, TEMP_DIR);
+    }
 
+
+    public static File writeFileToDirectory(InputStream in, String path) throws IOException {
         //Create an unique name and replace all unwanted chars.
         String tempName = UUID.randomUUID().toString().replaceAll("-", "");
 
         //Create new temp file under OS's temp folder with a random name
-        File tempFile = new File(TEMP_DIR, tempName + ".tmp");
-        if (!tempFile.createNewFile()) {
-            throw new IOException("Can not create temp file :" + tempFile.getParent());
-        } else if (in == null) {
-            return tempFile;
-        }
+        File tempFile = new File(path, tempName + ".tmp");
+
+        if (tempFile.createNewFile())
+            if (in == null) {
+                return tempFile;
+            }
         //Write file with a 1024 byte buffer.
         try (FileOutputStream tempOS = new FileOutputStream(tempFile)) {
             byte[] buf = new byte[1024];

@@ -12,7 +12,7 @@
     <packaging>pom</packaging>
     <name>Robe Project</name>
     <url>www.robe.io</url>
-    <description>A Brand new ROBE for Dropwizard. www.dropwizard.io</description>
+    <description>A Brand new ROBE for Dropwizard. www.robe.io</description>
 
     <licenses>
         <license>
@@ -89,7 +89,7 @@
 
     <properties>
         <project.version>0.5.0.0-1008</project.version>
-        <dropwizard.version>1.0.1</dropwizard.version>
+        <dropwizard.version>1.0.2</dropwizard.version>
         <mysql.version>5.1.38</mysql.version>
         <beanutils.version>1.9.0</beanutils.version>
         <commons.version>1.10</commons.version>
@@ -97,12 +97,24 @@
         <mail.version>1.4.7</mail.version>
         <quartz.version>2.2.2</quartz.version>
         <guice.version>4.0</guice.version>
-        <hk2.version>2.4.0-b31</hk2.version>
+        <hk2.version>2.5.0-b18</hk2.version>
         <reflections.version>0.9.10</reflections.version>
+        <google.guava.version>19.0</google.guava.version>
+        <javax.persistence.api.version>1.0.2</javax.persistence.api.version>
+        <org.jasypt.version>1.9.1</org.jasypt.version>
+        <jackson.core.asl.version>1.9.13</jackson.core.asl.version>
+        <apache.ant.version>1.9.3</apache.ant.version>
+        <freemarker.version>2.3.19</freemarker.version>
+        <javaparser.version>1.0.11</javaparser.version>
+        <junit.version>4.11</junit.version>
+        <supercsv.version>2.1.0</supercsv.version>
+        <apache.poi.version>3.10-FINAL</apache.poi.version>
+        <jackson.dataformat.xml.version>2.3.1</jackson.dataformat.xml.version>
+        <woodstox.core.asl.version>4.3.0</woodstox.core.asl.version>
+        <javax.inject.version>1</javax.inject.version>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
     </properties>
-
 
     <dependencyManagement>
         <dependencies>
@@ -177,7 +189,6 @@
                 <artifactId>dropwizard-auth</artifactId>
                 <version>${dropwizard.version}</version>
             </dependency>
-
             <dependency>
                 <groupId>io.dropwizard</groupId>
                 <artifactId>dropwizard-views</artifactId>
@@ -209,7 +220,6 @@
                 <artifactId>mysql-connector-java</artifactId>
                 <version>${mysql.version}</version>
             </dependency>
-
             <!--Common operations -->
             <dependency>
                 <groupId>commons-beanutils</groupId>
@@ -221,7 +231,6 @@
                 <artifactId>commons-codec</artifactId>
                 <version>${commons.version}</version>
             </dependency>
-
             <!--Password policy-->
             <dependency>
                 <groupId>edu.vt.middleware</groupId>
@@ -233,7 +242,6 @@
                 <artifactId>mail</artifactId>
                 <version>${mail.version}</version>
             </dependency>
-
             <!-- Timed Operations - Quartz -->
             <dependency>
                 <groupId>org.quartz-scheduler</groupId>
@@ -255,7 +263,6 @@
                 <artifactId>guice</artifactId>
                 <version>${guice.version}</version>
             </dependency>
-
             <dependency>
                 <groupId>com.google.inject.extensions</groupId>
                 <artifactId>guice-servlet</artifactId>
@@ -288,73 +295,68 @@
             <dependency>
                 <groupId>org.jasypt</groupId>
                 <artifactId>jasypt</artifactId>
-                <version>1.9.1</version>
+                <version>${org.jasypt.version}</version>
                 <classifier>lite</classifier>
             </dependency>
             <dependency>
                 <groupId>com.google.guava</groupId>
                 <artifactId>guava</artifactId>
-                <version>19.0</version>
+                <version>${google.guava.version}</version>
             </dependency>
-
             <dependency>
                 <groupId>javax.persistence</groupId>
                 <artifactId>persistence-api</artifactId>
-                <version>1.0.2</version>
+                <version>${javax.persistence.api.version}</version>
             </dependency>
-
             <dependency>
                 <groupId>org.codehaus.jackson</groupId>
                 <artifactId>jackson-core-asl</artifactId>
-                <version>1.9.13</version>
+                <version>${jackson.core.asl.version}</version>
             </dependency>
             <dependency>
                 <groupId>org.apache.ant</groupId>
                 <artifactId>ant</artifactId>
-                <version>1.9.3</version>
+                <version>${apache.ant.version}</version>
             </dependency>
             <dependency>
                 <groupId>org.freemarker</groupId>
                 <artifactId>freemarker</artifactId>
-                <version>2.3.19</version>
+                <version>${freemarker.version}</version>
             </dependency>
             <dependency>
                 <groupId>com.google.code.javaparser</groupId>
                 <artifactId>javaparser</artifactId>
-                <version>1.0.11</version>
+                <version>${javaparser.version}</version>
             </dependency>
-
             <dependency>
                 <groupId>junit</groupId>
                 <artifactId>junit</artifactId>
-                <version>4.11</version>
+                <version>${junit.version}</version>
             </dependency>
             <dependency>
                 <groupId>net.sf.supercsv</groupId>
                 <artifactId>super-csv</artifactId>
-                <version>2.1.0</version>
+                <version>${supercsv.version}</version>
             </dependency>
             <dependency>
                 <groupId>org.apache.poi</groupId>
                 <artifactId>poi-ooxml</artifactId>
-                <version>3.10-FINAL</version>
+                <version>${apache.poi.version}</version>
             </dependency>
-
             <dependency>
                 <groupId>com.fasterxml.jackson.dataformat</groupId>
                 <artifactId>jackson-dataformat-xml</artifactId>
-                <version>2.3.1</version>
+                <version>${jackson.dataformat.xml.version}</version>
             </dependency>
-
             <dependency>
                 <groupId>org.codehaus.woodstox</groupId>
                 <artifactId>woodstox-core-asl</artifactId>
-                <version>4.3.0</version>
+                <version>${woodstox.core.asl.version}</version>
             </dependency>
             <dependency>
                 <groupId>javax.inject</groupId>
                 <artifactId>javax.inject</artifactId>
-                <version>1</version>
+                <version>${javax.inject.version}</version>
             </dependency>
             <dependency>
                 <groupId>org.glassfish.hk2</groupId>
@@ -391,7 +393,6 @@
             <scope>test</scope>
         </dependency>
     </dependencies>
-
 
     <profiles>
         <profile>
