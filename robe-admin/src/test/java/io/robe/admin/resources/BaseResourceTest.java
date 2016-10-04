@@ -8,6 +8,7 @@ import io.robe.admin.rest.http.HttpRequestImpl;
 import io.robe.hibernate.entity.BaseEntity;
 import org.junit.Assert;
 import org.junit.Before;
+import org.junit.BeforeClass;
 import org.junit.Test;
 
 import java.util.List;
@@ -19,7 +20,7 @@ import static org.junit.Assert.assertTrue;
  */
 public abstract class BaseResourceTest<T extends BaseEntity> extends RobeAdminTest {
 
-    private RobeRestClient<T, String> entityClient;
+    protected RobeRestClient<T, String> entityClient;
 
     public abstract String getPath();
 
@@ -33,9 +34,11 @@ public abstract class BaseResourceTest<T extends BaseEntity> extends RobeAdminTe
 
     @Before
     public void before() {
-        HttpRequest authRequest = new HttpRequestImpl(RobeAdminTest.getCookie());
-        entityClient = new RobeRestClient<>(authRequest, getClazz(), getPath());
-    }
+        if(entityClient == null) {
+            HttpRequest authRequest = new HttpRequestImpl(RobeAdminTest.getCookie());
+            entityClient = new RobeRestClient<>(authRequest, getClazz(), getPath());
+        }
+    };
 
     @Test
     public void getAll() throws Exception {
