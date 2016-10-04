@@ -10,11 +10,13 @@ import org.hibernate.engine.jdbc.env.spi.JdbcEnvironment;
  * read from robe.yml -hibernate.prefix
  */
 public class RobeHibernateNamingStrategy implements PhysicalNamingStrategy {
+
     private String prefix;
 
     public RobeHibernateNamingStrategy(String prefix) {
-        this.prefix = (prefix == null ? "": prefix).trim();
+        this.prefix = (prefix == null ? "" : prefix).trim();
     }
+
     @Override
     public Identifier toPhysicalCatalogName(Identifier identifier, JdbcEnvironment jdbcEnv) {
         return convert(identifier);
@@ -42,26 +44,15 @@ public class RobeHibernateNamingStrategy implements PhysicalNamingStrategy {
 
     private String transformToPluralForm(String tableNameInSingularForm) {
         StringBuilder pluralForm = new StringBuilder();
-
         pluralForm.append(tableNameInSingularForm);
-        pluralForm.append(prefix);
-
+        pluralForm.append(this.prefix);
         return pluralForm.toString();
     }
 
     private Identifier convert(Identifier identifier) {
-
-        if(prefix == null) {
-            prefix = "";
-        }
         if (identifier == null || StringUtils.isBlank(identifier.getText())) {
             return identifier;
         }
-        StringBuilder pluralForm = new StringBuilder();
-
-        pluralForm.append(identifier.getText());
-        pluralForm.append(prefix);
-
-        return Identifier.toIdentifier(pluralForm.toString());
+        return Identifier.toIdentifier(transformToPluralForm(identifier.getText()));
     }
 }

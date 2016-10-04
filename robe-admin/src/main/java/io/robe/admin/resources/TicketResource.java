@@ -22,8 +22,8 @@ import java.util.List;
 import static org.hibernate.CacheMode.GET;
 
 @Path("tickets")
-@Consumes(MediaType.TEXT_HTML)
-@Produces(MediaType.TEXT_HTML)
+@Consumes(MediaType.APPLICATION_JSON)
+@Produces(MediaType.APPLICATION_JSON)
 public class TicketResource {
 
     @Inject
