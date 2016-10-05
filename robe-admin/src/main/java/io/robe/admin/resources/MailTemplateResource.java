@@ -92,10 +92,10 @@ public class MailTemplateResource {
             throw new WebApplicationException(Response.status(412).build());
         }
         MailTemplate entity = mailTemplateDao.findById(id);
-        mailTemplateDao.detach(entity);
         if (entity == null) {
             throw new WebApplicationException(Response.status(404).build());
         }
+        mailTemplateDao.detach(entity);
         return mailTemplateDao.update(model);
     }
 
@@ -113,16 +113,15 @@ public class MailTemplateResource {
     @UnitOfWork
     public MailTemplate merge(@RobeAuth Credentials credentials, @PathParam("id") String id, MailTemplate model) {
 
-        if (id.equals(model.getOid()))
+        if (!id.equals(model.getOid()))
             throw new WebApplicationException(Response.status(412).build());
 
         MailTemplate dest = mailTemplateDao.findById(id);
-        mailTemplateDao.detach(dest);
         if (dest == null) {
             throw new WebApplicationException(Response.status(404).build());
         }
         FieldReflection.mergeRight(model, dest);
-        return mailTemplateDao.update(model);
+        return mailTemplateDao.update(dest);
     }
 
     /**

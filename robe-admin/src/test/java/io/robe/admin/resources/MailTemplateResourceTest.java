@@ -2,10 +2,15 @@ package io.robe.admin.resources;
 
 import io.robe.admin.hibernate.entity.MailTemplate;
 import org.junit.Assert;
+import org.junit.FixMethodOrder;
+import org.junit.runners.MethodSorters;
 
 /**
  * Created by hasanmumin on 04/10/16.
  */
+
+@FixMethodOrder(MethodSorters.NAME_ASCENDING)
+
 public class MailTemplateResourceTest extends BaseResourceTest<MailTemplate> {
     @Override
     public String getPath() {
@@ -25,6 +30,13 @@ public class MailTemplateResourceTest extends BaseResourceTest<MailTemplate> {
     }
 
     @Override
+    public void assertEquals(MailTemplate mergeInstance, MailTemplate original, MailTemplate response) {
+        Assert.assertEquals(mergeInstance.getCode(), response.getCode());
+        Assert.assertEquals(original.getLanguage(), response.getLanguage());
+        Assert.assertEquals(new String(original.getTemplate()), new String(response.getTemplate()));
+    }
+
+    @Override
     public MailTemplate instance() {
 
         MailTemplate mailTemplate = new MailTemplate();
@@ -39,5 +51,13 @@ public class MailTemplateResourceTest extends BaseResourceTest<MailTemplate> {
         response.setLanguage(MailTemplate.Type.TR);
         response.setTemplate("new template".toCharArray());
         return response;
+    }
+
+    @Override
+    public MailTemplate mergeInstance() {
+
+        MailTemplate mailTemplate = new MailTemplate();
+        mailTemplate.setCode("CODE1");
+        return mailTemplate;
     }
 }

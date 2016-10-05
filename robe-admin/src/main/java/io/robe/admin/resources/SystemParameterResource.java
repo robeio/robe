@@ -131,10 +131,10 @@ public class SystemParameterResource {
             throw new WebApplicationException(Response.status(412).build());
         }
         SystemParameter entity = systemParameterDao.findById(id);
-        systemParameterDao.detach(entity);
         if (entity == null) {
             throw new WebApplicationException(Response.status(404).build());
         }
+        systemParameterDao.detach(entity);
         return systemParameterDao.update(model);
     }
 
@@ -152,15 +152,14 @@ public class SystemParameterResource {
     @UnitOfWork
     public SystemParameter merge(@RobeAuth Credentials credentials, @PathParam("id") String id, SystemParameter model) {
 
-        if (id.equals(model.getOid()))
+        if (!id.equals(model.getOid()))
             throw new WebApplicationException(Response.status(412).build());
         SystemParameter dest = systemParameterDao.findById(id);
-        systemParameterDao.detach(dest);
         if (dest == null) {
             throw new WebApplicationException(Response.status(404).build());
         }
         FieldReflection.mergeRight(model, dest);
-        return systemParameterDao.update(model);
+        return systemParameterDao.update(dest);
     }
 
     /**

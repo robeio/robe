@@ -197,10 +197,11 @@ public class MenuResource {
             throw new WebApplicationException(Response.status(412).build());
         }
         Menu entity = menuDao.findById(id);
-        menuDao.detach(entity);
+
         if (entity == null) {
             throw new WebApplicationException(Response.status(404).build());
         }
+        menuDao.detach(entity);
         return menuDao.update(model);
     }
 
@@ -222,15 +223,14 @@ public class MenuResource {
     @UnitOfWork
     @Path("{id}")
     public Menu merge(@RobeAuth Credentials credentials, @PathParam("id") String id, Menu model) {
-        if (id.equals(model.getOid()))
+        if (!id.equals(model.getOid()))
             throw new WebApplicationException(Response.status(412).build());
         Menu dest = menuDao.findById(id);
-        menuDao.detach(dest);
         if (dest == null) {
             throw new WebApplicationException(Response.status(404).build());
         }
         FieldReflection.mergeRight(model, dest);
-        return menuDao.update(model);
+        return menuDao.update(dest);
     }
 
     /**

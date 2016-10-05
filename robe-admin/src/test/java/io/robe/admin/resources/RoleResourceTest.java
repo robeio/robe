@@ -21,6 +21,13 @@ public class RoleResourceTest extends BaseResourceTest<Role> {
     @Override
     public void assertEquals(Role model, Role response) {
         Assert.assertEquals(model.getName(), response.getName());
+        Assert.assertEquals(model.getCode(), response.getCode());
+    }
+
+    @Override
+    public void assertEquals(Role mergeInstance, Role original, Role response) {
+        Assert.assertEquals(mergeInstance.getName(), response.getName());
+        Assert.assertEquals(original.getCode(), response.getCode());
     }
 
     @Override
@@ -36,5 +43,13 @@ public class RoleResourceTest extends BaseResourceTest<Role> {
     public Role update(Role response) {
         response.setName("Name-1");
         return response;
+    }
+
+    @Override
+    public Role mergeInstance() {
+
+        Role role = new Role();
+        role.setName("Name-2");
+        return role;
     }
 }
