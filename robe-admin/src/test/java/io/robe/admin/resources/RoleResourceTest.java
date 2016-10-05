@@ -20,7 +20,7 @@ public class RoleResourceTest extends BaseResourceTest<Role> {
 
     @Override
     public void assertEquals(Role model, Role response) {
-        Assert.assertEquals(model, response);
+        Assert.assertEquals(model.getName(), response.getName());
     }
 
     @Override
