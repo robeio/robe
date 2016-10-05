@@ -27,6 +27,14 @@ public class MenuResourceTest extends BaseResourceTest<Menu> {
     }
 
     @Override
+    public void assertEquals(Menu mergeInstance, Menu original, Menu response) {
+        Assert.assertEquals(mergeInstance.getIcon(), response.getIcon());
+        Assert.assertEquals(original.getIndex(), response.getIndex());
+        Assert.assertEquals(original.getPath(), response.getPath());
+        Assert.assertEquals(original.getText(), response.getText());
+    }
+
+    @Override
     public Menu instance() {
 
         Menu menu = new Menu();
@@ -42,5 +50,13 @@ public class MenuResourceTest extends BaseResourceTest<Menu> {
     public Menu update(Menu response) {
         response.setText("Custome Menu-1");
         return response;
+    }
+
+    @Override
+    public Menu mergeInstance() {
+
+        Menu menu = new Menu();
+        menu.setIcon("icon-1");
+        return menu;
     }
 }

@@ -177,11 +177,10 @@ public class RoleResource {
             throw new WebApplicationException(Response.status(412).build());
         }
         Role entity = roleDao.findById(id);
-        roleDao.detach(entity);
-
         if (entity == null) {
             throw new WebApplicationException(Response.status(404).build());
         }
+        roleDao.detach(entity);
         return roleDao.update(model);
     }
 
@@ -203,15 +202,14 @@ public class RoleResource {
     @UnitOfWork
     public Role merge(@RobeAuth Credentials credentials, @PathParam("id") String id, Role model) {
 
-        if (id.equals(model.getOid()))
+        if (!id.equals(model.getOid()))
             throw new WebApplicationException(Response.status(412).build());
         Role dest = roleDao.findById(id);
-        roleDao.detach(dest);
         if (dest == null) {
             throw new WebApplicationException(Response.status(404).build());
         }
         FieldReflection.mergeRight(model, dest);
-        return roleDao.update(model);
+        return roleDao.update(dest);
     }
 
     /**

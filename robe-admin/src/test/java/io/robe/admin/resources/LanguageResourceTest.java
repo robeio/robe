@@ -27,6 +27,13 @@ public class LanguageResourceTest extends BaseResourceTest<Language> {
     }
 
     @Override
+    public void assertEquals(Language mergeInstance, Language original, Language response) {
+        Assert.assertEquals(mergeInstance.getName(), response.getName());
+        Assert.assertEquals(original.getCode(), response.getCode());
+
+    }
+
+    @Override
     public Language instance() {
         Language language = new Language();
         language.setCode(Language.Type.EN);
@@ -38,5 +45,14 @@ public class LanguageResourceTest extends BaseResourceTest<Language> {
     public Language update(Language response) {
         response.setName("LANG_NAME_1");
         return response;
+    }
+
+    @Override
+    public Language mergeInstance() {
+
+        Language language = new Language();
+        language.setName("NEW_NAME");
+
+        return language;
     }
 }

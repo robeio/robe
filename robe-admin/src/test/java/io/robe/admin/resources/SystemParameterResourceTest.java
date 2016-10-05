@@ -25,6 +25,12 @@ public class SystemParameterResourceTest extends BaseResourceTest<SystemParamete
     }
 
     @Override
+    public void assertEquals(SystemParameter mergeInstance, SystemParameter original, SystemParameter response) {
+        Assert.assertEquals(response.getKey(), response.getKey());
+        Assert.assertEquals(mergeInstance.getValue(), response.getValue());
+    }
+
+    @Override
     public SystemParameter instance() {
 
         SystemParameter systemParameter = new SystemParameter();
@@ -41,5 +47,12 @@ public class SystemParameterResourceTest extends BaseResourceTest<SystemParamete
         response.setValue("VALUE-1");
 
         return response;
+    }
+
+    @Override
+    public SystemParameter mergeInstance() {
+        SystemParameter systemParameter = new SystemParameter();
+        systemParameter.setValue("VALUE-2");
+        return systemParameter;
     }
 }

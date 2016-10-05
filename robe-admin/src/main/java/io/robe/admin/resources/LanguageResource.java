@@ -47,7 +47,7 @@ public class LanguageResource {
      * Status Code:
      * Not Found  404
      *
-     * @param credentials Injected by {@link Auth} annotation for authentication.
+     * @param credentials Injected by {@link RobeAuth} annotation for authentication.
      * @param id          This is  the oid of {@link Language}
      * @return {@link Language} resource matches with the given id.
      */
@@ -75,9 +75,7 @@ public class LanguageResource {
     @POST
     @UnitOfWork
     public Language create(@RobeAuth Credentials credentials, @Valid Language model) {
-
         return languageDao.create(model);
-
     }
 
     /**
@@ -127,14 +125,16 @@ public class LanguageResource {
     @UnitOfWork
     public Language merge(@RobeAuth Credentials credentials, @PathParam("id") String id, Language model) {
 
-        if (id.equals(model.getOid()))
+        if (!id.equals(model.getOid()))
             throw new WebApplicationException(Response.status(412).build());
         Language dest = languageDao.findById(id);
+
         if (dest == null) {
             throw new WebApplicationException(Response.status(404).build());
         }
+
         FieldReflection.mergeRight(model, dest);
-        return languageDao.update(model);
+        return languageDao.update(dest);
     }
 
     /**
