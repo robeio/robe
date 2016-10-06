@@ -144,7 +144,7 @@ public class QuartzJobResource {
     @UnitOfWork
     @Path("{id}")
     public JobEntity merge(@RobeAuth Credentials credentials, @PathParam("id") String id, JobEntity model) {
-        if (id.equals(model.getOid()))
+        if (!id.equals(model.getOid()))
             throw new WebApplicationException(Response.status(412).build());
         JobEntity dest = quartzJobDao.findById(id);
         if (dest == null) {

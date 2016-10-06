@@ -129,7 +129,7 @@ public class ServiceResource {
     @UnitOfWork
     @Path("{id}")
     public Service merge(@RobeAuth Credentials credentials, @PathParam("id") String id, Service model) {
-        if (id.equals(model.getOid()))
+        if (!id.equals(model.getOid()))
             throw new WebApplicationException(Response.status(412).build());
         Service dest = serviceDao.findById(id);
         if (dest == null) {

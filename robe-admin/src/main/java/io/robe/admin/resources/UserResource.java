@@ -130,15 +130,14 @@ public class UserResource extends AbstractAuthResource<User> {
     @UnitOfWork
     @Path("{id}")
     public User merge(@RobeAuth Credentials credentials, @PathParam("id") String id, User model) {
-        if (id.equals(model.getOid()))
+        if (!id.equals(model.getOid()))
             throw new WebApplicationException(Response.status(412).build());
         User dest = userDao.findById(id);
-        userDao.detach(dest);
         if (dest == null) {
             throw new WebApplicationException(Response.status(404).build());
         }
         FieldReflection.mergeRight(model, dest);
-        return userDao.update(model);
+        return userDao.update(dest);
     }
 
     /**

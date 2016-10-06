@@ -249,7 +249,7 @@ public class PermissionResource {
     @UnitOfWork
     @Path("{id}")
     public Permission merge(@RobeAuth Credentials credentials, @PathParam("id") String id, Permission model) {
-        if (id.equals(model.getOid()))
+        if (!id.equals(model.getOid()))
             throw new WebApplicationException(Response.status(412).build());
         Permission dest = permissionDao.findById(id);
         if (dest == null) {

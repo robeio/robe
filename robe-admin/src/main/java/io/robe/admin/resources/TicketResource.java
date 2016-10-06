@@ -126,7 +126,7 @@ public class TicketResource {
     @UnitOfWork
     @Path("{id}")
     public Ticket merge(@RobeAuth Credentials credentials, @PathParam("id") String id, Ticket model) {
-        if (id.equals(model.getOid()))
+        if (!id.equals(model.getOid()))
             throw new WebApplicationException(Response.status(412).build());
         Ticket dest = ticketDao.findById(id);
         if (ticketDao == null) {

@@ -125,7 +125,7 @@ public class TriggerResource {
     @UnitOfWork
     @Path("{id}")
     public TriggerEntity merge(@RobeAuth Credentials credentials, @PathParam("id") String id, TriggerEntity model) {
-        if (id.equals(model.getOid()))
+        if (!id.equals(model.getOid()))
             throw new WebApplicationException(Response.status(412).build());
         TriggerEntity dest = quartzTriggerDao.findById(id);
         quartzTriggerDao.detach(dest);

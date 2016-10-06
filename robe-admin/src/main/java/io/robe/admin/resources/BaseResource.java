@@ -63,9 +63,12 @@ public abstract class BaseResource<T extends BaseEntity> implements Job {
     @UnitOfWork
     @Path("{id}")
     public T merge(@RobeAuth Credentials credentials, @PathParam("id") String id, T model) {
-        if (id.equals(model.getOid()))
+        if (!id.equals(model.getOid()))
             throw new WebApplicationException(Response.status(412).build());
         T dest = dao.findById(id);
+        if (dest == null)
+            throw new WebApplicationException(Response.status(404).build());
+
         FieldReflection.mergeRight(model, dest);
         return dao.update(model);
     }
