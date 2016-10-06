@@ -48,87 +48,76 @@ public abstract class BaseResourceTest<T extends BaseEntity> extends RobeAdminTe
 
     @Test
     public void getAll() throws Exception {
-        Response<List<T>> response = entityClient.getAll();
-        Assert.assertTrue(response != null);
+        Response<List<T>> response = this.getAllFrom();
+        Assert.assertTrue(response != null);// TODO change
     }
 
     @Test
     public void get() throws Exception {
-        T model = instance();
-        Response<T> create = entityClient.create(model);
-        model.setOid(create.getData().getOid());
-        assertEquals(model, create.getData());
-        Response<T> get = entityClient.get(model.getOid());
-        assertEquals(model, get.getData());
-        entityClient.delete(model.getOid(), model);
+        T data = this.createFrom().getData();
+        this.assertEquals(instance(), data);
+        Response<T> get = this.getFrom(data.getOid());
+        this.assertEquals(data, get.getData());
+        this.deleteFrom(data);
     }
 
     @Test
     public void create() throws Exception {
-        T model = instance();
-        Response<T> response = entityClient.create(model);
-        model.setOid(response.getData().getOid());
-        assertEquals(model, response.getData());
-        entityClient.delete(model.getOid(), model);
+        T data = this.createFrom().getData();
+        this.assertEquals(instance(), data);
+        this.deleteFrom(data);
     }
 
 
     @Test
     public void update() throws Exception {
-        T model = instance();
-        Response<T> response = entityClient.create(model);
-        T data = response.getData();
-        data = update(data);
-        response = entityClient.update(data.getOid(), data);
-        assertEquals(data, response.getData());
-        entityClient.delete(data.getOid(), data);
+        T data = this.createFrom().getData();
+        this.assertEquals(instance(), data);
+        data = this.update(data);
+        Response<T> response = this.updateFrom(data);
+        this.assertEquals(data, response.getData());
+        this.deleteFrom(data);
     }
 
     @Test
     public void updateShouldThrowWebApplicationException1() throws Exception {
-        T model = instance();
-        Response<T> response = entityClient.create(model);
-        T data = response.getData();
-        data = update(data);
+        T data = this.createFrom().getData();
+        this.assertEquals(instance(), data);
+        data = this.update(data);
         try {
-            response = entityClient.update(UUID.randomUUID().toString(), data);
+            this.updateFrom(this.randomUUID(), data);
             assertTrue("Sending wrong 'oid', but is not throw exception", false);
         } catch (Exception e) {
             assertTrue("wrong 'oid' throw exception", true);
         }
-        entityClient.delete(data.getOid(), data);
+        this.deleteFrom(data);
     }
 
     @Test
     public void updateShouldThrowWebApplicationException2() throws Exception {
-        T model = instance();
-        Response<T> response = entityClient.create(model);
-        T data = response.getData();
-        data = update(data);
+        T data = this.createFrom().getData();
+        this.assertEquals(instance(), data);
+        data = this.update(data);
         String correctOid = data.getOid();
         try {
-            String wrongOid = UUID.randomUUID().toString();
-            data.setOid(wrongOid);
-            response = entityClient.update(data.getOid(), data);
+            data.setOid(this.randomUUID());
+            this.updateFrom(data);
             assertTrue("Sending wrong 'oid', but is not throw exception", false);
         } catch (Exception e) {
             assertTrue("wrong 'oid' throw exception", true);
         }
 
         data.setOid(correctOid);
-        entityClient.delete(data.getOid(), data);
+        this.deleteFrom(data);
     }
 
 
     @Test
     public void delete() throws Exception {
-        T model = instance();
-        Response<T> response = entityClient.create(model);
-        model = response.getData();
-
-        entityClient.delete(model.getOid(), model);
+        T data = this.createFrom().getData();
+        this.deleteFrom(data);
         try {
-            response = entityClient.get(model.getOid());
+            this.getFrom(data.getOid());
             assertTrue("Entity deleted from database. Thats why it can't be exist on database !", false);
         } catch (Exception e) {
             assertTrue("Entity deleted from database.", true);
@@ -137,93 +126,115 @@ public abstract class BaseResourceTest<T extends BaseEntity> extends RobeAdminTe
 
     @Test
     public void deleteShouldThrowWebApplicationException1() throws Exception {
-        T model = instance();
-        Response<T> response = entityClient.create(model);
-        model = response.getData();
-
+        T data = this.createFrom().getData();
         try {
-            response = entityClient.delete(UUID.randomUUID().toString(), model);
+            this.deleteFrom(this.randomUUID(), data);
             assertTrue("Entity deleted from database. Thats why it can't be exist on database !", false);
         } catch (Exception e) {
             assertTrue("Entity deleted from database.", true);
-            entityClient.delete(model.getOid(), model);
+            this.deleteFrom(data);
         }
     }
 
     @Test
     public void deleteShouldThrowWebApplicationException2() throws Exception {
-        T model = instance();
-        Response<T> response = entityClient.create(model);
-        model = response.getData();
-
-        String correctOid = model.getOid();
+        T data = this.createFrom().getData();
+        this.assertEquals(instance(), data);
+        String correctOid = data.getOid();
         try {
-
-            String wrongOid = UUID.randomUUID().toString();
-            model.setOid(wrongOid);
-            response = entityClient.delete(model.getOid(), model);
+            data.setOid(this.randomUUID());
+            this.deleteFrom(data);
             assertTrue("Entity deleted from database. Thats why it can't be exist on database !", false);
         } catch (Exception e) {
             assertTrue("Entity deleted from database.", true);
-
-            model.setOid(correctOid);
-            entityClient.delete(model.getOid(), model);
         }
+
+        data.setOid(correctOid);
+        this.deleteFrom(data);
     }
 
     @Test
     public void merge() throws Exception {
-        T model = instance();
-        Response<T> response = entityClient.create(model);
-        T data = response.getData();
-
-        assertEquals(model, data);
-
-        T merge = mergeInstance();
+        T data = this.createFrom().getData();
+        this.assertEquals(instance(), data);
+        T merge = this.mergeInstance();
         merge.setOid(data.getOid());
-        response = entityClient.merge(merge.getOid(), merge);
-
-        assertEquals(merge, data, response.getData());
-
-        entityClient.delete(data.getOid(), data);
+        Response<T> response = this.mergeFrom(merge);
+        this.assertEquals(merge, data, response.getData());
+        this.deleteFrom(data);
     }
 
     @Test
     public void mergeShouldThrowWebApplicationException1() throws Exception {
-        T model = instance();
-        Response<T> response = entityClient.create(model);
-        T data = response.getData();
-        assertEquals(model, data);
+        T data = this.createFrom().getData();
+        this.assertEquals(instance(), data);
         T merge = mergeInstance();
         try {
-            String wrongOid = UUID.randomUUID().toString();
             merge.setOid(data.getOid());
-            response = entityClient.merge(wrongOid, merge);
+            this.mergeFrom(this.randomUUID(), merge);
             assertTrue("Sending wrong 'oid', but is not throw exception", false);
         } catch (Exception e) {
             assertTrue("wrong 'oid' throw exception", true);
-            entityClient.delete(data.getOid(), data);
         }
+        this.deleteFrom(data);
     }
 
     @Test
     public void mergeShouldThrowWebApplicationException2() throws Exception {
-        T model = instance();
-        Response<T> response = entityClient.create(model);
-        T data = response.getData();
-
-        assertEquals(model, data);
-
+        T data = createFrom().getData();
+        assertEquals(instance(), data);
         T merge = mergeInstance();
         try {
-            String wrongOid = UUID.randomUUID().toString();
-            merge.setOid(wrongOid);
-            response = entityClient.merge(merge.getOid(), merge);
+            merge.setOid(this.randomUUID());
+            this.mergeFrom(merge);
             assertTrue("Sending wrong 'oid', but is not throw exception", false);
         } catch (Exception e) {
             assertTrue("wrong 'oid' throw exception", true);
-            entityClient.delete(data.getOid(), data);
         }
+        this.deleteFrom(data);
     }
 
+    protected String randomUUID() {
+        return UUID.randomUUID().toString();
+    }
+
+    protected Response<T> createFrom(T model) throws Exception {
+        return entityClient.create(model);
+    }
+
+    protected Response<T> createFrom() throws Exception {
+        return createFrom(instance());
+    }
+
+    protected Response<T> deleteFrom(T model) throws Exception {
+        return deleteFrom(model.getOid(), model);
+    }
+
+    protected Response<T> deleteFrom(String oid, T model) throws Exception {
+        return entityClient.delete(oid, model);
+    }
+
+    protected Response<T> updateFrom(T model) throws Exception {
+        return updateFrom(model.getOid(), model);
+    }
+
+    protected Response<T> updateFrom(String oid, T model) throws Exception {
+        return entityClient.update(oid, model);
+    }
+
+    protected Response<T> mergeFrom(T model) throws Exception {
+        return mergeFrom(model.getOid(), model);
+    }
+
+    protected Response<T> mergeFrom(String oid, T model) throws Exception {
+        return entityClient.merge(oid, model);
+    }
+
+    protected Response<T> getFrom(String oid) throws Exception {
+        return entityClient.get(oid);
+    }
+
+    protected Response<List<T>> getAllFrom() throws Exception {
+        return entityClient.getAll();
+    }
 }
