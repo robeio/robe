@@ -24,9 +24,8 @@ public class HttpClient implements HttpRequest {
     @Override
     public TestResponse post(TestRequest testRequest) throws IOException {
         Request.Builder requestBuilder = buildRequest(testRequest);
-        if(testRequest.hasBody()) {
-            requestBuilder.post(RequestBody.create(MediaType.parse(testRequest.getContentType()), testRequest.getEntity()));
-        }
+        String entity = testRequest.hasBody() ? testRequest.getEntity() : "";
+        requestBuilder.post(RequestBody.create(MediaType.parse(testRequest.getContentType()), entity));
         Response response = okHttpClient.newCall(requestBuilder.build()).execute();
         return TestResponse.fromResponse(testRequest, response);
     }
@@ -41,9 +40,8 @@ public class HttpClient implements HttpRequest {
     @Override
     public TestResponse put(TestRequest testRequest) throws IOException {
         Request.Builder requestBuilder = buildRequest(testRequest);
-        if(testRequest.hasBody()) {
-            requestBuilder.put(RequestBody.create(MediaType.parse(testRequest.getContentType()), testRequest.getEntity()));
-        }
+        String entity = testRequest.hasBody() ? testRequest.getEntity() : "";
+        requestBuilder.put(RequestBody.create(MediaType.parse(testRequest.getContentType()), entity));
         Response response = okHttpClient.newCall(requestBuilder.build()).execute();
         return TestResponse.fromResponse(testRequest, response);
     }
@@ -51,9 +49,8 @@ public class HttpClient implements HttpRequest {
     @Override
     public TestResponse delete(TestRequest testRequest) throws IOException {
         Request.Builder requestBuilder = buildRequest(testRequest);
-        if(testRequest.hasBody()) {
-            requestBuilder.delete(RequestBody.create(MediaType.parse(testRequest.getContentType()), testRequest.getEntity()));
-        }
+        String entity = testRequest.hasBody() ? testRequest.getEntity() : "";
+        requestBuilder.delete(RequestBody.create(MediaType.parse(testRequest.getContentType()), entity));
         Response response = okHttpClient.newCall(requestBuilder.build()).execute();
         return TestResponse.fromResponse(testRequest, response);
     }
@@ -61,9 +58,8 @@ public class HttpClient implements HttpRequest {
     @Override
     public TestResponse patch(TestRequest testRequest) throws IOException {
         Request.Builder requestBuilder = buildRequest(testRequest);
-        if(testRequest.hasBody()) {
-            requestBuilder.patch(RequestBody.create(MediaType.parse(testRequest.getContentType()), testRequest.getEntity()));
-        }
+        String entity = testRequest.hasBody() ? testRequest.getEntity() : "";
+        requestBuilder.patch(RequestBody.create(MediaType.parse(testRequest.getContentType()), entity));
         Response response = okHttpClient.newCall(requestBuilder.build()).execute();
         return TestResponse.fromResponse(testRequest, response);
     }
