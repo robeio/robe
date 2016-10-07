@@ -68,6 +68,14 @@ public class TestResponse {
         this.cookies = cookies;
     }
 
+    public String getHeader(String name) {
+        return headers.get(name);
+    }
+
+    public String getCookie(String name) {
+        return cookies.get(name);
+    }
+
     public static TestResponse fromResponse(TestRequest testRequest, Response response) throws IOException {
         TestResponse testResponse = new TestResponse();
         Map<String, String> headers = new HashMap<>();
