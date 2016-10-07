@@ -1,13 +1,11 @@
 package io.robe.admin.resources;
 
 import io.robe.admin.RobeAdminTest;
-import io.robe.admin.rest.Response;
-import io.robe.admin.rest.RobeRestClient;
-import io.robe.admin.rest.http.HttpRequest;
-import io.robe.admin.rest.http.HttpRequestImpl;
+import io.robe.admin.util.request.HttpClient;
+import io.robe.admin.util.request.TestRequest;
+import io.robe.admin.util.request.TestResponse;
 import io.robe.hibernate.entity.BaseEntity;
 import org.junit.Assert;
-import org.junit.Before;
 import org.junit.Test;
 
 import java.util.List;
@@ -20,7 +18,9 @@ import static org.junit.Assert.assertTrue;
  */
 public abstract class BaseResourceTest<T extends BaseEntity> extends RobeAdminTest {
 
-    protected RobeRestClient<T, String> entityClient;
+    private final String baseUrl = "http://127.0.0.1:8080/robe/" + getPath();
+
+    protected HttpClient client = HttpClient.getClient();
 
     public abstract String getPath();
 
@@ -36,34 +36,25 @@ public abstract class BaseResourceTest<T extends BaseEntity> extends RobeAdminTe
 
     public abstract T mergeInstance();
 
-    @Before
-    public void before() {
-        if (entityClient == null) {
-            HttpRequest authRequest = new HttpRequestImpl(RobeAdminTest.getCookie());
-            entityClient = new RobeRestClient<>(authRequest, getClazz(), getPath());
-        }
-    }
-
-    ;
 
     @Test
     public void getAll() throws Exception {
-        Response<List<T>> response = this.getAllFrom();
+        List<T> response = this.getAllFrom();
         Assert.assertTrue(response != null);// TODO change
     }
 
     @Test
     public void get() throws Exception {
-        T data = this.createFrom().getData();
+        T data = this.createFrom();
         this.assertEquals(instance(), data);
-        Response<T> get = this.getFrom(data.getOid());
-        this.assertEquals(data, get.getData());
+        T get = this.getFrom(data.getOid());
+        this.assertEquals(data, get);
         this.deleteFrom(data);
     }
 
     @Test
     public void create() throws Exception {
-        T data = this.createFrom().getData();
+        T data = this.createFrom();
         this.assertEquals(instance(), data);
         this.deleteFrom(data);
     }
@@ -71,17 +62,17 @@ public abstract class BaseResourceTest<T extends BaseEntity> extends RobeAdminTe
 
     @Test
     public void update() throws Exception {
-        T data = this.createFrom().getData();
+        T data = this.createFrom();
         this.assertEquals(instance(), data);
         data = this.update(data);
-        Response<T> response = this.updateFrom(data);
-        this.assertEquals(data, response.getData());
+        T response = this.updateFrom(data);
+        this.assertEquals(data, response);
         this.deleteFrom(data);
     }
 
     @Test
     public void updateShouldThrowWebApplicationException1() throws Exception {
-        T data = this.createFrom().getData();
+        T data = this.createFrom();
         this.assertEquals(instance(), data);
         data = this.update(data);
         try {
@@ -95,7 +86,7 @@ public abstract class BaseResourceTest<T extends BaseEntity> extends RobeAdminTe
 
     @Test
     public void updateShouldThrowWebApplicationException2() throws Exception {
-        T data = this.createFrom().getData();
+        T data = this.createFrom();
         this.assertEquals(instance(), data);
         data = this.update(data);
         String correctOid = data.getOid();
@@ -114,7 +105,7 @@ public abstract class BaseResourceTest<T extends BaseEntity> extends RobeAdminTe
 
     @Test
     public void delete() throws Exception {
-        T data = this.createFrom().getData();
+        T data = this.createFrom();
         this.deleteFrom(data);
         try {
             this.getFrom(data.getOid());
@@ -126,7 +117,7 @@ public abstract class BaseResourceTest<T extends BaseEntity> extends RobeAdminTe
 
     @Test
     public void deleteShouldThrowWebApplicationException1() throws Exception {
-        T data = this.createFrom().getData();
+        T data = this.createFrom();
         try {
             this.deleteFrom(this.randomUUID(), data);
             assertTrue("Entity deleted from database. Thats why it can't be exist on database !", false);
@@ -138,7 +129,7 @@ public abstract class BaseResourceTest<T extends BaseEntity> extends RobeAdminTe
 
     @Test
     public void deleteShouldThrowWebApplicationException2() throws Exception {
-        T data = this.createFrom().getData();
+        T data = this.createFrom();
         this.assertEquals(instance(), data);
         String correctOid = data.getOid();
         try {
@@ -155,18 +146,18 @@ public abstract class BaseResourceTest<T extends BaseEntity> extends RobeAdminTe
 
     @Test
     public void merge() throws Exception {
-        T data = this.createFrom().getData();
+        T data = this.createFrom();
         this.assertEquals(instance(), data);
         T merge = this.mergeInstance();
         merge.setOid(data.getOid());
-        Response<T> response = this.mergeFrom(merge);
-        this.assertEquals(merge, data, response.getData());
+        T response = this.mergeFrom(merge);
+        this.assertEquals(merge, data, response);
         this.deleteFrom(data);
     }
 
     @Test
     public void mergeShouldThrowWebApplicationException1() throws Exception {
-        T data = this.createFrom().getData();
+        T data = this.createFrom();
         this.assertEquals(instance(), data);
         T merge = mergeInstance();
         try {
@@ -181,7 +172,7 @@ public abstract class BaseResourceTest<T extends BaseEntity> extends RobeAdminTe
 
     @Test
     public void mergeShouldThrowWebApplicationException2() throws Exception {
-        T data = createFrom().getData();
+        T data = createFrom();
         assertEquals(instance(), data);
         T merge = mergeInstance();
         try {
@@ -198,43 +189,49 @@ public abstract class BaseResourceTest<T extends BaseEntity> extends RobeAdminTe
         return UUID.randomUUID().toString();
     }
 
-    protected Response<T> createFrom(T model) throws Exception {
-        return entityClient.create(model);
+    protected T createFrom(T model) throws Exception {
+        TestResponse response = client.post(new TestRequest.Builder(baseUrl).entity(model).build());
+        return response.get(getClazz());
     }
 
-    protected Response<T> createFrom() throws Exception {
+    protected T createFrom() throws Exception {
         return createFrom(instance());
     }
 
-    protected Response<T> deleteFrom(T model) throws Exception {
+    protected T deleteFrom(T model) throws Exception {
         return deleteFrom(model.getOid(), model);
     }
 
-    protected Response<T> deleteFrom(String oid, T model) throws Exception {
-        return entityClient.delete(oid, model);
+    protected T deleteFrom(String oid, T model) throws Exception {
+        TestResponse response = client.delete(new TestRequest.Builder(baseUrl).endpoint(oid).entity(model).build());
+        return response.get(getClazz());
     }
 
-    protected Response<T> updateFrom(T model) throws Exception {
+    protected T updateFrom(T model) throws Exception {
         return updateFrom(model.getOid(), model);
     }
 
-    protected Response<T> updateFrom(String oid, T model) throws Exception {
-        return entityClient.update(oid, model);
+    protected T updateFrom(String oid, T model) throws Exception {
+        TestResponse response = client.put(new TestRequest.Builder(baseUrl).endpoint(oid).entity(model).build());
+        return response.get(getClazz());
     }
 
-    protected Response<T> mergeFrom(T model) throws Exception {
+    protected T mergeFrom(T model) throws Exception {
         return mergeFrom(model.getOid(), model);
     }
 
-    protected Response<T> mergeFrom(String oid, T model) throws Exception {
-        return entityClient.merge(oid, model);
+    protected T mergeFrom(String oid, T model) throws Exception {
+        TestResponse response = client.patch(new TestRequest.Builder(baseUrl).endpoint(oid).entity(model).build());
+        return response.get(getClazz());
     }
 
-    protected Response<T> getFrom(String oid) throws Exception {
-        return entityClient.get(oid);
+    protected T getFrom(String oid) throws Exception {
+        TestResponse response = client.get(new TestRequest.Builder(baseUrl).endpoint(oid).build());
+        return response.get(getClazz());
     }
 
-    protected Response<List<T>> getAllFrom() throws Exception {
-        return entityClient.getAll();
+    protected List<T> getAllFrom() throws Exception {
+        TestResponse response = client.get(new TestRequest.Builder(baseUrl).build());
+        return response.list(getClazz());
     }
 }

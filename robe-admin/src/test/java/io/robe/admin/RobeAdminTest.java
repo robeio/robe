@@ -1,43 +1,26 @@
 package io.robe.admin;
 
 
-import io.robe.admin.rest.Response;
-
-import java.util.Map;
+import io.dropwizard.testing.junit.DropwizardAppRule;
+import io.robe.admin.util.request.Authenticator;
+import org.junit.BeforeClass;
+import org.junit.ClassRule;
 
 /**
  * Created by kamilbukum on 22/09/16.
  */
-
 public class RobeAdminTest {
 
-    private static String cookie;
-
-    public static String getCookie() {
-        return cookie;
+    static {
+        System.setProperty("env", "TEST");
     }
 
-    static  {
-        try {
-            System.setProperty("env", "TEST");
-            RobeApplicationTest.main(new String[]{"server", "robe_test.yml"});
-            String username = "admin@robe.io";
-            String password = "123123";
-            Response<Map<String, String>> responseMap = RobeApplicationTest.login(username, password);
-            if (responseMap.getStatus() == 200) {
-                for (Map.Entry<String, String> entry : responseMap.getHeaderMap().entrySet()) {
-                    System.out.println("---------- " + entry.getKey() + " -------------");
-                    System.out.println(entry.getValue());
-                    System.out.println("-----------------------------------------------");
-                    if ("Set-Cookie".equals(entry.getKey())) {
-                        cookie = entry.getValue();
-                    }
-                }
-            } else {
-                System.err.println("Login Failed ! Result : " + responseMap);
-            }
-        }catch (Exception e) {
-            throw new RuntimeException("Application couldn't started ! Detail ", e);
-        }
+    @ClassRule
+    public static final DropwizardAppRule<RobeConfiguration> RULE = new DropwizardAppRule(RobeApplication.class, "robe.yml");
+
+    @BeforeClass
+    public static void login() throws Exception {
+        Authenticator.login("admin@robe.io", "123123");
     }
+
 }
