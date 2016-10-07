@@ -186,7 +186,7 @@ public class AuthResource extends AbstractAuthResource<User> {
         if (!user.isPresent()) {
             throw new WebApplicationException(Response.Status.NOT_FOUND);
         } else if (user.get().getPassword().equals(passwords.get("password"))) {
-            if (passwords.get("newPassword").equals(passwords.get("newPasswordRepart"))) {
+            if (passwords.get("newPassword").equals(passwords.get("newPasswordRepeat"))) {
                 user.get().setPassword(passwords.get("newPassword"));
                 return Response.status(Response.Status.OK).entity("Your password has been updated").build();
             } else {
