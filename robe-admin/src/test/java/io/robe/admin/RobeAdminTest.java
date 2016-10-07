@@ -1,10 +1,8 @@
 package io.robe.admin;
 
 
-import io.dropwizard.testing.junit.DropwizardAppRule;
+import io.dropwizard.testing.ResourceHelpers;
 import io.robe.admin.util.request.Authenticator;
-import org.junit.BeforeClass;
-import org.junit.ClassRule;
 
 /**
  * Created by kamilbukum on 22/09/16.
@@ -12,15 +10,15 @@ import org.junit.ClassRule;
 public class RobeAdminTest {
 
     static {
-        System.setProperty("env", "TEST");
-    }
-
-    @ClassRule
-    public static final DropwizardAppRule<RobeConfiguration> RULE = new DropwizardAppRule(RobeApplication.class, "robe.yml");
-
-    @BeforeClass
-    public static void login() throws Exception {
-        Authenticator.login("admin@robe.io", "123123");
+        try {
+            System.setProperty("env", "TEST");
+            RobeApplication.main(new String[]{"server", ResourceHelpers.resourceFilePath("robe_test.yml")});
+            String username = "admin@robe.io";
+            String password = "123123";
+            Authenticator.login(username, password);
+        } catch (Exception e) {
+            throw new RuntimeException("Application couldn't started ! Detail ", e);
+        }
     }
 
 }
