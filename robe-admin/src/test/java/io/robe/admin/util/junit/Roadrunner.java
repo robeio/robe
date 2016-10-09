@@ -20,12 +20,9 @@ public class Roadrunner extends BlockJUnit4ClassRunner {
     protected List<FrameworkMethod> computeTestMethods() {
         List<FrameworkMethod> methods = super.computeTestMethods();
         Collections.sort(methods, (o1, o2) -> {
-            if (o1.getMethod().isAnnotationPresent(Order.class) && o2.getMethod().isAnnotationPresent(Order.class)) {
-                Order order1 = o1.getAnnotation(Order.class);
-                Order order2 = o2.getAnnotation(Order.class);
-                return Integer.compare(order1.order(), order2.order());
-            }
-            return -1;
+            int order1 = o1.getMethod().isAnnotationPresent(Order.class) ? o1.getAnnotation(Order.class).order() : Integer.MAX_VALUE;
+            int order2 = o2.getMethod().isAnnotationPresent(Order.class) ? o2.getAnnotation(Order.class).order() : Integer.MAX_VALUE;
+            return Integer.compare(order1, order2);
         });
         return methods;
     }
