@@ -73,8 +73,8 @@ public class InitializeCommand<T extends RobeConfiguration> extends EnvironmentC
 
         String password;
 
-        if("TEST".equals(System.getProperty("env"))) {
-                password = "123123";
+        if ("TEST".equals(System.getProperty("env"))) {
+            password = "123123";
         } else {
             if (console != null) {
                 // read password from server console
@@ -163,7 +163,7 @@ public class InitializeCommand<T extends RobeConfiguration> extends EnvironmentC
                             entity.setDescription("");
 
                         }
-                        entity.setDescription(entity.getDescription() +" ("+ entity.getMethod() + " " + entity.getPath() +")");
+                        entity.setDescription(entity.getDescription() + " (" + entity.getMethod() + " " + entity.getPath() + ")");
                         session.persist(entity);
                         session.persist(createPermission(false, entity.getOid(), role));
                         LOGGER.info("Service data and permission created: " + entity.getPath() + "-" + entity.getMethod());
@@ -315,7 +315,7 @@ public class InitializeCommand<T extends RobeConfiguration> extends EnvironmentC
 
     protected Permission createPermission(boolean b, String oid, Role role) {
         Permission permission = new Permission();
-        permission.setpLevel((short) 7);
+        permission.setPriorityLevel((short) 7);
         permission.setType(b ? Permission.Type.MENU : Permission.Type.SERVICE);
         permission.setRestrictedItemOid(oid);
         permission.setRoleOid(role.getOid());

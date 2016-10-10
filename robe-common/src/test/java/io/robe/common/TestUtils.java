@@ -2,7 +2,6 @@ package io.robe.common;
 
 import com.thoughtworks.paranamer.AdaptiveParanamer;
 import com.thoughtworks.paranamer.Paranamer;
-import io.robe.common.dto.BasicPair;
 import io.robe.common.utils.StringsOperations;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -62,7 +61,7 @@ public class TestUtils {
         }
     }
 
-    public static void defaultMethods(Class clazz) throws IllegalAccessException, InstantiationException {
+    public static void defaultMethods(Class<?> clazz) throws IllegalAccessException, InstantiationException {
 
         Object instance = clazz.newInstance();
         Field[] allFields = clazz.getDeclaredFields();
@@ -80,13 +79,13 @@ public class TestUtils {
             String fieldName = fieldNames[i];
             Class parameterType = parameters[i];
             try {
-                Method fieldSetter = BasicPair.class.getMethod("set" + StringsOperations.capitalizeFirstChar(fieldName), parameterType);
+                Method fieldSetter = clazz.getMethod("set" + StringsOperations.capitalizeFirstChar(fieldName), parameterType);
 
                 Object value = getDefaultValueByType(parameterType.getTypeName(), i);
 
                 fieldSetter.invoke(instance, value);
 
-                Method fieldGetter = BasicPair.class.getMethod("get" + StringsOperations.capitalizeFirstChar(fieldName));
+                Method fieldGetter = clazz.getMethod("get" + StringsOperations.capitalizeFirstChar(fieldName));
 
                 Object result = fieldGetter.invoke(instance);
 

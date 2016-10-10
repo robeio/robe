@@ -123,7 +123,7 @@ public class PermissionResource {
             }
             permission.setRoleOid(roleOid);
             permission.setType(Permission.Type.MENU);
-            permission.setpLevel((short) 7);
+            permission.setPriorityLevel((short) 7);
             permission.setRestrictedItemOid(itemOid);
             permissionDao.create(permission);
         }
@@ -140,7 +140,7 @@ public class PermissionResource {
             }
             permission.setRoleOid(roleOid);
             permission.setType(Permission.Type.SERVICE);
-            permission.setpLevel((short) 7);
+            permission.setPriorityLevel((short) 7);
             permission.setRestrictedItemOid(itemOid);
             permissionDao.create(permission);
 

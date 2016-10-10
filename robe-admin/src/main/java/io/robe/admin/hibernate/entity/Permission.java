@@ -11,17 +11,17 @@ import javax.persistence.*;
 public class Permission extends BaseEntity implements PermissionEntry {
 
     @Enumerated(EnumType.STRING)
-    @Column(name = "pType",nullable = false)
+    @Column(name = "pType", nullable = false)
     private Type type;
 
     @SearchIgnore
-    @Column(name = "restrictedItemOid", length = 32,nullable = false)
+    @Column(name = "restrictedItemOid", length = 32, nullable = false)
     private String restrictedItemOid;
 
-    @Column(name = "pLevel",nullable = false)
-    private short pLevel;
+    @Column(nullable = false)
+    private short priorityLevel;
 
-    @Column(length = 32,nullable = false)
+    @Column(length = 32, nullable = false)
     private String roleOid;
 
     public String getRoleOid() {
@@ -48,12 +48,12 @@ public class Permission extends BaseEntity implements PermissionEntry {
         this.restrictedItemOid = restrictedItemOid;
     }
 
-    public short getpLevel() {
-        return pLevel;
+    public short getPriorityLevel() {
+        return priorityLevel;
     }
 
-    public void setpLevel(short pLevel) {
-        this.pLevel = pLevel;
+    public void setPriorityLevel(short priorityLevel) {
+        this.priorityLevel = priorityLevel;
     }
 
     @Override

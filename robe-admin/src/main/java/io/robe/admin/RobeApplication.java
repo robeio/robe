@@ -43,6 +43,7 @@ public class RobeApplication<T extends RobeConfiguration> extends Application<T>
 
     private static final Logger LOGGER = LoggerFactory.getLogger(RobeApplication.class);
     private InitializeCommand initCommand;
+
     public static void main(String[] args) throws Exception {
 
         RobeApplication application = new RobeApplication();
@@ -131,8 +132,8 @@ public class RobeApplication<T extends RobeConfiguration> extends Application<T>
         environment.getApplicationContext().addServlet(
                 new NonblockingServletHolder(new MetricsServlet()), "/metrics/*");
 
-        if("TEST".equals(System.getProperty("env"))) {
-            initCommand.execute(configuration);
+        if ("TEST".equals(System.getProperty("env"))) {
+            getInitCommand().execute(configuration);
         }
     }
 
