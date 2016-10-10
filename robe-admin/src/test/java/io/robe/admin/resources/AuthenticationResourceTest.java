@@ -5,9 +5,11 @@ import io.robe.admin.RobeAdminTest;
 import io.robe.admin.hibernate.entity.User;
 import io.robe.admin.util.junit.Order;
 import io.robe.admin.util.junit.Roadrunner;
+import io.robe.admin.util.request.Authenticator;
 import io.robe.admin.util.request.HttpClient;
 import io.robe.admin.util.request.TestRequest;
 import io.robe.admin.util.request.TestResponse;
+import org.junit.AfterClass;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -31,8 +33,8 @@ public class AuthenticationResourceTest extends RobeAdminTest {
     private final String tokenHeaderName = "auth-token";
     private static String TOKEN;
 
-    private final String username = "admin@robe.io";
-    private final String password = Hashing.sha256().hashString("123123", StandardCharsets.UTF_8).toString();
+    private static final String USERNAME = "admin@robe.io";
+    private static String PASSWORD = Hashing.sha256().hashString("123123", StandardCharsets.UTF_8).toString();
 
     @Before
     public void checkIfAuthTokenPresent() throws Exception {
@@ -45,8 +47,8 @@ public class AuthenticationResourceTest extends RobeAdminTest {
     @Order
     public void login() throws Exception {
         Map<String, String> credentials = new HashMap<>();
-        credentials.put("username", username);
-        credentials.put("password", password);
+        credentials.put("username", USERNAME);
+        credentials.put("password", PASSWORD);
         TestRequest request = requestBuilder.entity(credentials).endpoint("login").build();
         TestResponse response = client.post(request);
         assertEquals(response.getStatus(), 200);
@@ -62,8 +64,8 @@ public class AuthenticationResourceTest extends RobeAdminTest {
         assertEquals(response.getStatus(), 200);
         User user = response.get(User.class);
         assertNotNull(user);
-        assertEquals(user.getEmail(), username);
-        assertEquals(user.getPassword(), password);
+        assertEquals(user.getEmail(), USERNAME);
+        assertEquals(user.getPassword(), PASSWORD);
     }
 
     @Test
@@ -71,12 +73,13 @@ public class AuthenticationResourceTest extends RobeAdminTest {
     public void changePassword() throws Exception {
         String newPassword = Hashing.sha256().hashString("321321", StandardCharsets.UTF_8).toString();
         Map<String, String> passwords = new HashMap<>();
-        passwords.put("password", password);
+        passwords.put("password", PASSWORD);
         passwords.put("newPassword", newPassword);
         passwords.put("newPasswordRepeat", newPassword);
         TestRequest request = requestBuilder.endpoint("password").entity(passwords).header(tokenHeaderName, TOKEN).build();
         TestResponse response = client.post(request);
         assertEquals(response.getStatus(), 200);
+        PASSWORD = newPassword;
     }
 
     @Test
@@ -86,6 +89,11 @@ public class AuthenticationResourceTest extends RobeAdminTest {
         TestResponse response = client.post(request);
         assertEquals(response.getStatus(), 200);
         assertEquals(response.getCookie("auth-token"), "");
+    }
+
+    @AfterClass
+    public static void loginAgain() throws Exception {
+        Authenticator.login(USERNAME, "321321");
     }
 
 }
