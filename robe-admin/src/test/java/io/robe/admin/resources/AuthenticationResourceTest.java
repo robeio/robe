@@ -79,7 +79,6 @@ public class AuthenticationResourceTest extends RobeAdminTest {
         TestRequest request = requestBuilder.endpoint("password").entity(passwords).header(tokenHeaderName, TOKEN).build();
         TestResponse response = client.post(request);
         assertEquals(response.getStatus(), 200);
-        PASSWORD = newPassword;
     }
 
     @Test
