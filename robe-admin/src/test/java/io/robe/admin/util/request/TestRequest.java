@@ -2,6 +2,7 @@ package io.robe.admin.util.request;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import io.robe.common.service.search.model.SearchModel;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -23,14 +24,14 @@ public class TestRequest {
     private Map<String, String> cookies = new HashMap<>();
     private Map<String, String> headers = new HashMap<>();
 
-    private TestRequest(String baseUrl, String endpoint, String entity, String contentType, Map<String, String> queryParams, Map<String, String> cookies, Map<String, String> headers) {
-        this.baseUrl = baseUrl;
-        this.endpoint = endpoint;
-        this.entity = entity;
-        this.contentType = contentType;
-        this.queryParams = queryParams;
-        this.cookies = cookies;
-        this.headers = headers;
+    private TestRequest(Builder builder) {
+        this.baseUrl = builder.baseUrl;
+        this.endpoint = builder.endpoint;
+        this.entity = builder.entity;
+        this.contentType = builder.contentType;
+        this.queryParams = builder.queryParams;
+        this.cookies = builder.cookies;
+        this.headers = builder.headers;
     }
 
     public String getBaseUrl() {
@@ -118,6 +119,28 @@ public class TestRequest {
             return this;
         }
 
+        public Builder search(SearchModel searchModel) {
+            if(searchModel.getQ() != null) {
+                this.query("_q", searchModel.getQ());
+            }
+            if(searchModel.getFields() != null) {
+                this.query("_fields", String.join(",", searchModel.getFields()));
+            }
+            if(searchModel.getLimit() != null) {
+                this.query("_limit", searchModel.getLimit().toString());
+            }
+            if(searchModel.getOffset() != null) {
+                this.query("_offset", searchModel.getOffset().toString());
+            }
+            if(searchModel.getSort() != null) {
+                this.query("_sort", String.join(",", searchModel.getSort()));
+            }
+            if(searchModel.getFilter() != null) {
+                this.query("_filter", searchModel.getFilter());
+            }
+            return this;
+        }
+
         public Builder contentType(String contentType) {
             this.contentType = contentType;
             return this;
@@ -144,7 +167,7 @@ public class TestRequest {
         }
 
         public TestRequest build() {
-            return new TestRequest(this.baseUrl, this.endpoint, this.entity, this.contentType, this.queryParams, this.cookies, this.headers);
+            return new TestRequest(this);
         }
 
     }
