@@ -10,9 +10,9 @@ public class ChangePasswordView extends View {
     private BasicPair mail;
     private BasicPair url;
 
-    public ChangePasswordView(String tickedOid, String mail, String url) {
+    public ChangePasswordView(String ticket, String mail, String url) {
         super("ChangePassword.ftl");
-        this.ticket = new BasicPair("tickedOid", tickedOid);
+        this.ticket = new BasicPair("ticket", ticket);
         this.mail = new BasicPair("mail", mail);
         this.url = new BasicPair("url", url);
     }

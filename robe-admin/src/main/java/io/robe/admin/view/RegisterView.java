@@ -10,10 +10,10 @@ public class RegisterView extends View {
     private BasicPair ticket;
     private BasicPair url;
 
-    public RegisterView(String mail, String ticketOid, String url) {
+    public RegisterView(String mail, String ticket, String url) {
         super("Register.ftl");
         this.mail = new BasicPair("mail", mail);
-        this.ticket = new BasicPair("ticket", ticketOid);
+        this.ticket = new BasicPair("ticket", ticket);
         this.url = new BasicPair("url", url);
     }
 
