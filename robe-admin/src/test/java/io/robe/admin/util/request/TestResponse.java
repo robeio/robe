@@ -113,8 +113,19 @@ public class TestResponse {
         Map<String, String> cookieMap = new HashMap<>();
         for(String cookie : cookies) {
             String[] cookieEntry = cookie.split("=");
-            if(cookieEntry.length > 1)
-                cookieMap.put(cookieEntry[0], cookieEntry[1]);
+            if(cookieEntry.length == 0)
+                continue;
+            String cookieName = null;
+            String cookieValue = null;
+            if(cookieEntry.length == 1) {
+                cookieName = cookieEntry[0];
+                cookieValue = "";
+            }
+            if(cookieEntry.length == 2) {
+                cookieName = cookieEntry[0];
+                cookieValue = cookieEntry[1];
+            }
+            cookieMap.put(cookieName, cookieValue);
         }
         return cookieMap;
     }
