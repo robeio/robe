@@ -5,9 +5,13 @@ import io.robe.admin.RobeAdminTest;
 import io.robe.admin.hibernate.entity.User;
 import io.robe.admin.util.junit.Roadrunner;
 import io.robe.admin.util.junit.Order;
+import io.robe.admin.util.request.Authenticator;
 import io.robe.admin.util.request.HttpClient;
 import io.robe.admin.util.request.TestRequest;
 import io.robe.admin.util.request.TestResponse;
+import io.robe.auth.Credentials;
+import org.junit.Before;
+import org.junit.BeforeClass;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
@@ -32,6 +36,13 @@ public class AuthenticationResourceTest extends RobeAdminTest {
 
     private final String username = "admin@robe.io";
     private final String password = Hashing.sha256().hashString("123123", StandardCharsets.UTF_8).toString();
+
+    @Before
+    public void loggin() throws Exception {
+        if (TOKEN == null) {
+            login();
+        }
+    }
 
     @Test
     @Order
@@ -72,11 +83,21 @@ public class AuthenticationResourceTest extends RobeAdminTest {
     public void changePassword() throws Exception {
         String newPassword = Hashing.sha256().hashString("321321", StandardCharsets.UTF_8).toString();
         Map<String, String> passwords = new HashMap<>();
+
         passwords.put("password", password);
         passwords.put("newPassword", newPassword);
         passwords.put("newPasswordRepeat", newPassword);
+
         TestRequest request = requestBuilder.endpoint("authentication/password").entity(passwords).header(tokenHeaderName, TOKEN).build();
         TestResponse response = client.post(request);
+        assertEquals(response.getStatus(), 200);
+
+        passwords.put("password", newPassword);
+        passwords.put("newPassword", password);
+        passwords.put("newPasswordRepeat", password);
+
+        request = requestBuilder.endpoint("authentication/password").entity(passwords).header(tokenHeaderName, TOKEN).build();
+        response = client.post(request);
         assertEquals(response.getStatus(), 200);
     }
 
