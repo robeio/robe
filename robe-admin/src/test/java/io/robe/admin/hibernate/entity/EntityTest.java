@@ -42,7 +42,8 @@ public class EntityTest {
                 return i % 2 == 0;
             case "java.util.Date":
                 return new DateTime().plusMinutes(i).toDate();
-
+            case "long":
+                return (long) i;
             default: {
                 LOGGER.info("please handle {}", type.getTypeName());
             }
@@ -71,6 +72,9 @@ public class EntityTest {
                 Method fieldSetter = clazz.getMethod("set" + StringsOperations.capitalizeFirstChar(fieldName), parameterType);
 
                 Object value = getDefaultValueByType(parameterType, i);
+
+                if (value == null)
+                    continue;
 
                 fieldSetter.invoke(instance, value);
 
@@ -133,9 +137,9 @@ public class EntityTest {
     }
 
     @Test
-    public void entityGetterSetterTest() {
+    public void hibernateEntityGetterSetterTest() {
 
-        Reflections reflections = new Reflections("io.robe.admin.hibernate.entity", RobeApplication.class.getClassLoader());
+        Reflections reflections = new Reflections("io.robe.admin.hibernate.entity", "io.robe.admin.quartz.hibernate", RobeApplication.class.getClassLoader());
         Set<Class<?>> classes = reflections.getTypesAnnotatedWith(javax.persistence.Entity.class);
 
 
@@ -147,6 +151,5 @@ public class EntityTest {
                 LOGGER.error(e.getMessage());
             }
         }
-
     }
 }
