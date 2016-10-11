@@ -109,6 +109,7 @@ public class ServiceResource {
         if (entity == null) {
             throw new WebApplicationException(Response.status(404).build());
         }
+        serviceDao.detach(entity);
         return serviceDao.update(model);
     }
 
@@ -136,7 +137,7 @@ public class ServiceResource {
             throw new WebApplicationException(Response.status(404).build());
         }
         FieldReflection.mergeRight(model, dest);
-        return serviceDao.update(model);
+        return serviceDao.update(dest);
     }
 
     /**
