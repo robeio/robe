@@ -3,7 +3,6 @@ package io.robe.admin.util;
 import freemarker.template.Configuration;
 import freemarker.template.Template;
 import freemarker.template.TemplateException;
-import io.robe.common.exception.RobeRuntimeException;
 
 import java.io.IOException;
 import java.io.Writer;
@@ -37,7 +36,7 @@ public class TemplateManager {
         try {
             template = new Template(templateName, templateBody, cfg);
         } catch (IOException e) {
-            throw new RobeRuntimeException("Template Exception", e);
+            throw new RuntimeException("Template Exception", e);
         }
     }
 
@@ -46,7 +45,7 @@ public class TemplateManager {
         try {
             template = cfg.getTemplate(templateName);
         } catch (IOException e) {
-            throw new RobeRuntimeException("Template Exception", e);
+            throw new RuntimeException("Template Exception", e);
         }
     }
 
@@ -60,13 +59,13 @@ public class TemplateManager {
 
     public void process(Writer out) {
         if (template == null) {
-            throw new RobeRuntimeException("Template Exception", "Template can not be null");
+            throw new RuntimeException("Template can not be null");
         }
 
         try {
             template.process(parameter, out);
-        } catch (TemplateException | IOException e) {
-            throw new RobeRuntimeException("Template Exception", e);
+        } catch (IOException | TemplateException e) {
+            throw new RuntimeException("Template Exception", e);
         }
     }
 }
