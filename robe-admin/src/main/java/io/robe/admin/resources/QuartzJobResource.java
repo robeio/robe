@@ -124,6 +124,7 @@ public class QuartzJobResource {
         if (entity == null) {
             throw new WebApplicationException(Response.status(404).build());
         }
+        quartzJobDao.detach(entity);
         return quartzJobDao.update(model);
     }
 
@@ -151,7 +152,7 @@ public class QuartzJobResource {
             throw new WebApplicationException(Response.status(404).build());
         }
         FieldReflection.mergeRight(model, dest);
-        return quartzJobDao.update(model);
+        return quartzJobDao.update(dest);
     }
 
     /**
