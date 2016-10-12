@@ -1,6 +1,5 @@
 package io.robe.admin.resources;
 
-import com.google.common.base.Optional;
 import io.dropwizard.hibernate.UnitOfWork;
 import io.dropwizard.jersey.PATCH;
 import io.robe.admin.hibernate.dao.SystemParameterDao;
@@ -21,6 +20,7 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 import static org.hibernate.CacheMode.GET;
 
