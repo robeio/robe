@@ -1,5 +1,6 @@
 package io.robe.common.dto;
 
+import org.junit.Assert;
 import org.junit.Test;
 
 /**
@@ -8,7 +9,10 @@ import org.junit.Test;
 public class BasicPairTest {
 
     @Test
-    public void constructor() {
-
+    public void instance() {
+        BasicPair basicPair = new BasicPair("foo", "bar");
+        Assert.assertEquals(basicPair.getName(), "foo");
+        Assert.assertEquals(basicPair.getValue(), "bar");
     }
+
 }

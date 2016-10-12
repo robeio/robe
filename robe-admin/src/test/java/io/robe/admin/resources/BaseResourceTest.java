@@ -18,9 +18,11 @@ import static org.junit.Assert.assertTrue;
  */
 public abstract class BaseResourceTest<T extends BaseEntity> extends RobeAdminTest {
 
-    private final String baseUrl = "http://127.0.0.1:8080/robe/" + getPath();
+    public static final String BASE_URL = "http://127.0.0.1:8080/robe/";
 
-    protected HttpClient client = HttpClient.getClient();
+    protected final HttpClient client = HttpClient.getClient();
+
+    protected final TestRequest.Builder requestBuilder = new TestRequest.Builder(BASE_URL + getPath());
 
     public abstract String getPath();
 
@@ -190,7 +192,7 @@ public abstract class BaseResourceTest<T extends BaseEntity> extends RobeAdminTe
     }
 
     protected T createFrom(T model) throws Exception {
-        TestResponse response = client.post(new TestRequest.Builder(baseUrl).entity(model).build());
+        TestResponse response = client.post(requestBuilder.entity(model).build());
         return response.get(getClazz());
     }
 
@@ -203,7 +205,7 @@ public abstract class BaseResourceTest<T extends BaseEntity> extends RobeAdminTe
     }
 
     protected T deleteFrom(String oid, T model) throws Exception {
-        TestResponse response = client.delete(new TestRequest.Builder(baseUrl).endpoint(oid).entity(model).build());
+        TestResponse response = client.delete(requestBuilder.endpoint(oid).entity(model).build());
         return response.get(getClazz());
     }
 
@@ -212,7 +214,7 @@ public abstract class BaseResourceTest<T extends BaseEntity> extends RobeAdminTe
     }
 
     protected T updateFrom(String oid, T model) throws Exception {
-        TestResponse response = client.put(new TestRequest.Builder(baseUrl).endpoint(oid).entity(model).build());
+        TestResponse response = client.put(requestBuilder.endpoint(oid).entity(model).build());
         return response.get(getClazz());
     }
 
@@ -221,17 +223,17 @@ public abstract class BaseResourceTest<T extends BaseEntity> extends RobeAdminTe
     }
 
     protected T mergeFrom(String oid, T model) throws Exception {
-        TestResponse response = client.patch(new TestRequest.Builder(baseUrl).endpoint(oid).entity(model).build());
+        TestResponse response = client.patch(requestBuilder.endpoint(oid).entity(model).build());
         return response.get(getClazz());
     }
 
     protected T getFrom(String oid) throws Exception {
-        TestResponse response = client.get(new TestRequest.Builder(baseUrl).endpoint(oid).build());
+        TestResponse response = client.get(requestBuilder.endpoint(oid).build());
         return response.get(getClazz());
     }
 
     protected List<T> getAllFrom() throws Exception {
-        TestResponse response = client.get(new TestRequest.Builder(baseUrl).build());
+        TestResponse response = client.get(requestBuilder.build());
         return response.list(getClazz());
     }
 }
