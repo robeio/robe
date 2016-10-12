@@ -71,6 +71,7 @@ public abstract class BaseDaoTest<T extends BaseEntity, D extends BaseDao<T>> ex
         T instance = this.createFrom();
         assertEquals(instance, instance);
         T update = this.update(instance);
+        update = this.updateFrom(update);
         T entity = this.findByIdFrom(update.getOid());
         assertEquals(update, entity);
         this.deleteFrom(update);
@@ -87,7 +88,9 @@ public abstract class BaseDaoTest<T extends BaseEntity, D extends BaseDao<T>> ex
     }
 
     protected T deleteFrom(T instance) {
-        return dao.delete(instance);
+        T response = dao.delete(instance);
+        dao.flush();
+        return response;
     }
 
     protected T createFrom() {
@@ -95,7 +98,15 @@ public abstract class BaseDaoTest<T extends BaseEntity, D extends BaseDao<T>> ex
     }
 
     protected T createFrom(T instance) {
-        return dao.create(instance);
+        T response = dao.create(instance);
+        dao.flush();
+        return response;
+    }
+
+    protected T updateFrom(T instance) {
+        T response = dao.update(instance);
+        dao.flush();
+        return response;
     }
 
     protected T findByIdFrom(String oid) {
