@@ -106,10 +106,10 @@ public class UserResource extends AbstractAuthResource<User> {
             throw new WebApplicationException(Response.status(412).build());
         }
         User entity = userDao.findById(id);
-        userDao.detach(entity);
         if (entity == null) {
             throw new WebApplicationException(Response.status(404).build());
         }
+        userDao.detach(entity);
         return userDao.update(model);
     }
 
