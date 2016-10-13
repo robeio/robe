@@ -128,12 +128,12 @@ public class TriggerResource {
         if (!id.equals(model.getOid()))
             throw new WebApplicationException(Response.status(412).build());
         TriggerEntity dest = quartzTriggerDao.findById(id);
-        quartzTriggerDao.detach(dest);
         if (dest == null) {
             throw new WebApplicationException(Response.status(404).build());
         }
+        quartzTriggerDao.detach(dest);
         FieldReflection.mergeRight(model, dest);
-        return quartzTriggerDao.update(model);
+        return quartzTriggerDao.update(dest);
     }
 
     /**
