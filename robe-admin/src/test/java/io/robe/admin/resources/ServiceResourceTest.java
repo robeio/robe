@@ -1,8 +1,13 @@
 package io.robe.admin.resources;
 
 import io.robe.admin.hibernate.entity.Service;
+import io.robe.admin.util.request.TestRequest;
+import io.robe.admin.util.request.TestResponse;
 import io.robe.auth.data.entry.ServiceEntry;
 import org.junit.Assert;
+import org.junit.Test;
+
+import java.io.IOException;
 
 /**
  * Created by hasanmumin on 11/10/2016.
@@ -56,4 +61,20 @@ public class ServiceResourceTest extends BaseResourceTest<Service> {
         service.setDescription("escription updated again");
         return service;
     }
+
+    @Test
+    public void refresh() throws IOException {
+        TestRequest request = requestBuilder.endpoint("refresh").build();
+        TestResponse response = client.get(request);
+        Assert.assertEquals(response.getStatus(), 200);
+    }
+
+    @Test
+    public void groups() throws IOException {
+        TestRequest request = requestBuilder.endpoint("groups").build();
+        TestResponse response = client.get(request);
+        Assert.assertEquals(response.getStatus(), 200);
+        Assert.assertTrue(response.list(getClazz()).size() > 0);
+    }
+
 }
