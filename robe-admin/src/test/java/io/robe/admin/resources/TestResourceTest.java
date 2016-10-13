@@ -1,18 +1,15 @@
 package io.robe.admin.resources;
 
-
 import io.robe.admin.hibernate.entity.Language;
 import org.junit.Assert;
 
 /**
- * Created by kamilbukum on 27/09/16.
+ * Created by hasanmumin on 13/10/2016.
  */
-
-public class LanguageResourceTest extends BaseResourceTest<Language> {
-
+public class TestResourceTest extends BaseResourceTest<Language> {
     @Override
     public String getPath() {
-        return "languages";
+        return "tests";
     }
 
     @Override
@@ -35,23 +32,21 @@ public class LanguageResourceTest extends BaseResourceTest<Language> {
     @Override
     public Language instance() {
         Language language = new Language();
+        language.setName("TEST");
         language.setCode(Language.Type.EN);
-        language.setName("LANG_NAME");
         return language;
     }
 
     @Override
     public Language update(Language response) {
-        response.setName("LANG_NAME_1");
+        response.setName("TEST-1");
         return response;
     }
 
     @Override
     public Language mergeInstance() {
-
         Language language = new Language();
-        language.setName("NEW_NAME");
-
+        language.setName("TEST-2");
         return language;
     }
 }
