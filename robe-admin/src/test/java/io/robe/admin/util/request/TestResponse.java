@@ -123,15 +123,10 @@ public class TestResponse {
     }
 
     public <T> T get(Class<T> resultType) throws IOException {
-
-        if (this.data == null || this.data.equals(""))
-            return null;
         return OBJECT_MAPPER.readValue(this.data, resultType);
     }
 
     public <T> List<T> list(Class<T> resultType) throws IOException {
-        if (this.data == null || this.data.equals(""))
-            return null;
         return OBJECT_MAPPER.readValue(this.data, OBJECT_MAPPER.getTypeFactory().constructCollectionType(List.class, resultType));
     }
 
