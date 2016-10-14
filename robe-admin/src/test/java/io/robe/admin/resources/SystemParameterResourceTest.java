@@ -1,7 +1,13 @@
 package io.robe.admin.resources;
 
 import io.robe.admin.hibernate.entity.SystemParameter;
+import io.robe.admin.util.request.TestRequest;
+import io.robe.admin.util.request.TestResponse;
 import org.junit.Assert;
+import org.junit.Test;
+
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * Created by hasanmumin on 05/10/2016.
@@ -54,5 +60,21 @@ public class SystemParameterResourceTest extends BaseResourceTest<SystemParamete
         SystemParameter systemParameter = new SystemParameter();
         systemParameter.setValue("VALUE-2");
         return systemParameter;
+    }
+
+    @Test
+    public void bulkSaveOrUpdate() throws Exception {
+
+        SystemParameter parameter = super.createFrom();
+
+        Map<String, String> values = new HashMap<>();
+        values.put("KEY", "VALUE_CHANGED");
+        values.put("KEY2", "VALUE-2");
+        TestRequest request = requestBuilder.endpoint("admin").entity(values).build();
+        TestResponse response = client.post(request);
+        Map result = response.get(Map.class);
+        Assert.assertTrue(result.size() == 2);
+
+        super.deleteFrom(parameter);
     }
 }
