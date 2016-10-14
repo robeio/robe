@@ -26,7 +26,7 @@ public class TestRequest {
 
     private TestRequest(Builder builder) {
         this.baseUrl = builder.baseUrl;
-        this.endpoint = builder.endpoint.toString();
+        this.endpoint = builder.endpoint;
         this.entity = builder.entity;
         this.contentType = builder.contentType;
         this.queryParams = builder.queryParams;
@@ -93,7 +93,7 @@ public class TestRequest {
     public static class Builder {
 
         private String baseUrl;
-        private StringBuilder endpoint;
+        private String endpoint;
         private String entity;
         private String contentType;
         private Map<String, String> queryParams = new HashMap<>();
@@ -107,11 +107,10 @@ public class TestRequest {
         public Builder(String baseUrl, String contentType) {
             this.baseUrl = baseUrl;
             this.contentType = contentType;
-            this.endpoint = new StringBuilder();
         }
 
         public Builder endpoint(String endpoint) {
-            this.endpoint.append(endpoint);
+            this.endpoint = endpoint;
             return this;
         }
 

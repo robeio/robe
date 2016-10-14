@@ -62,7 +62,7 @@ public class QuartzJobResourceTest extends BaseResourceTest<JobEntity> {
     public void getJobTriggers() throws Exception {
 
         JobEntity entity = super.createFrom();
-        TestRequest request = requestBuilder.endpoint(entity.getOid()).endpoint("/triggers").build();
+        TestRequest request = requestBuilder.endpoint(entity.getOid() + "/triggers").build();
         try {
             TestResponse response = client.get(request);// TODO add trigger and handle response.
         } catch (Exception e) {
