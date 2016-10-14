@@ -20,6 +20,48 @@ public class TestResponse {
     private Map<String, String> headers;
     private Map<String, String> cookies;
 
+    public static TestResponse fromResponse(TestRequest testRequest, Response response) throws IOException {
+        TestResponse testResponse = new TestResponse();
+        Map<String, String> headers = new HashMap<>();
+        Set<String> headerNames = response.headers().names();
+        Iterator<String> headerNamesIterator = headerNames.iterator();
+        while (headerNamesIterator.hasNext()) {
+            String headerName = headerNamesIterator.next();
+            headers.put(headerName, response.header(headerName));
+        }
+        testResponse.setHeaders(headers);
+        testResponse.setCookies(mapCookies(response.header("Set-Cookie")));
+        testResponse.setData(response.body().string());
+        testResponse.setStatus(response.code());
+        testResponse.setTestRequest(testRequest);
+        return testResponse;
+    }
+
+    private static Map<String, String> mapCookies(String cookieHeader) {
+        if (cookieHeader == null) {
+            return new HashMap<>();
+        }
+        String[] cookies = cookieHeader.split(";");
+        Map<String, String> cookieMap = new HashMap<>();
+        for (String cookie : cookies) {
+            String[] cookieEntry = cookie.split("=");
+            if (cookieEntry.length == 0)
+                continue;
+            String cookieName = null;
+            String cookieValue = null;
+            if (cookieEntry.length == 1) {
+                cookieName = cookieEntry[0];
+                cookieValue = "";
+            }
+            if (cookieEntry.length == 2) {
+                cookieName = cookieEntry[0];
+                cookieValue = cookieEntry[1];
+            }
+            cookieMap.put(cookieName, cookieValue);
+        }
+        return cookieMap;
+    }
+
     public TestRequest getTestRequest() {
         return testRequest;
     }
@@ -76,58 +118,21 @@ public class TestResponse {
         return cookies.get(name);
     }
 
-    public static TestResponse fromResponse(TestRequest testRequest, Response response) throws IOException {
-        TestResponse testResponse = new TestResponse();
-        Map<String, String> headers = new HashMap<>();
-        Set<String> headerNames = response.headers().names();
-        Iterator<String> headerNamesIterator = headerNames.iterator();
-        while(headerNamesIterator.hasNext()) {
-            String headerName = headerNamesIterator.next();
-            headers.put(headerName, response.header(headerName));
-        }
-        testResponse.setHeaders(headers);
-        testResponse.setCookies(mapCookies(response.header("Set-Cookie")));
-        testResponse.setData(response.body().string());
-        testResponse.setStatus(response.code());
-        testResponse.setTestRequest(testRequest);
-        return testResponse;
-    }
-
     public String asIs() {
         return this.data;
     }
 
     public <T> T get(Class<T> resultType) throws IOException {
+
+        if (this.data == null || this.data.equals(""))
+            return null;
         return OBJECT_MAPPER.readValue(this.data, resultType);
     }
 
     public <T> List<T> list(Class<T> resultType) throws IOException {
+        if (this.data == null || this.data.equals(""))
+            return null;
         return OBJECT_MAPPER.readValue(this.data, OBJECT_MAPPER.getTypeFactory().constructCollectionType(List.class, resultType));
-    }
-
-    private static Map<String, String> mapCookies(String cookieHeader) {
-        if(cookieHeader == null) {
-            return new HashMap<>();
-        }
-        String[] cookies = cookieHeader.split(";");
-        Map<String, String> cookieMap = new HashMap<>();
-        for(String cookie : cookies) {
-            String[] cookieEntry = cookie.split("=");
-            if(cookieEntry.length == 0)
-                continue;
-            String cookieName = null;
-            String cookieValue = null;
-            if(cookieEntry.length == 1) {
-                cookieName = cookieEntry[0];
-                cookieValue = "";
-            }
-            if(cookieEntry.length == 2) {
-                cookieName = cookieEntry[0];
-                cookieValue = cookieEntry[1];
-            }
-            cookieMap.put(cookieName, cookieValue);
-        }
-        return cookieMap;
     }
 
 }

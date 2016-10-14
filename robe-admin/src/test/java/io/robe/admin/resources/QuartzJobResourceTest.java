@@ -2,7 +2,10 @@ package io.robe.admin.resources;
 
 import io.robe.admin.job.SampleJob;
 import io.robe.admin.quartz.hibernate.JobEntity;
+import io.robe.admin.util.request.TestRequest;
+import io.robe.admin.util.request.TestResponse;
 import org.junit.Assert;
+import org.junit.Test;
 
 /**
  * Created by hasanmumin on 12/10/2016.
@@ -53,5 +56,16 @@ public class QuartzJobResourceTest extends BaseResourceTest<JobEntity> {
         JobEntity instance = new JobEntity();
         instance.setDescription("Description updated again");
         return instance;
+    }
+
+    @Test
+    public void getJobTriggers() throws Exception {
+
+        JobEntity entity = super.createFrom();
+        TestRequest request = requestBuilder.endpoint(entity.getOid()).endpoint("/triggers").build();
+        TestResponse response = client.get(request);
+
+        // TODO add trigger and handle response.
+        super.deleteFrom(entity);
     }
 }

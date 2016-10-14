@@ -26,7 +26,7 @@ public class TestRequest {
 
     private TestRequest(Builder builder) {
         this.baseUrl = builder.baseUrl;
-        this.endpoint = builder.endpoint;
+        this.endpoint = builder.endpoint.toString();
         this.entity = builder.entity;
         this.contentType = builder.contentType;
         this.queryParams = builder.queryParams;
@@ -75,14 +75,14 @@ public class TestRequest {
     }
 
     public String getRequestUrl() {
-        if(this.endpoint == null) {
+        if (this.endpoint == null) {
             this.endpoint = "";
         }
         String requestUrl = this.baseUrl.endsWith("/") ? this.baseUrl + this.endpoint : this.baseUrl + "/" + this.endpoint;
-        if(!this.queryParams.isEmpty()) {
+        if (!this.queryParams.isEmpty()) {
             List<String> queryParts = new ArrayList<>();
             requestUrl += "?";
-            for(Map.Entry<String, String> queryParam : this.getQueryParams().entrySet()) {
+            for (Map.Entry<String, String> queryParam : this.getQueryParams().entrySet()) {
                 queryParts.add(queryParam.getKey() + "=" + queryParam.getValue());
             }
             requestUrl += String.join("&", queryParts);
@@ -93,7 +93,7 @@ public class TestRequest {
     public static class Builder {
 
         private String baseUrl;
-        private String endpoint;
+        private StringBuilder endpoint;
         private String entity;
         private String contentType;
         private Map<String, String> queryParams = new HashMap<>();
@@ -107,10 +107,11 @@ public class TestRequest {
         public Builder(String baseUrl, String contentType) {
             this.baseUrl = baseUrl;
             this.contentType = contentType;
+            this.endpoint = new StringBuilder();
         }
 
         public Builder endpoint(String endpoint) {
-            this.endpoint = endpoint;
+            this.endpoint.append(endpoint);
             return this;
         }
 
@@ -120,22 +121,22 @@ public class TestRequest {
         }
 
         public Builder search(SearchModel searchModel) {
-            if(searchModel.getQ() != null) {
+            if (searchModel.getQ() != null) {
                 this.query("_q", searchModel.getQ());
             }
-            if(searchModel.getFields() != null) {
+            if (searchModel.getFields() != null) {
                 this.query("_fields", String.join(",", searchModel.getFields()));
             }
-            if(searchModel.getLimit() != null) {
+            if (searchModel.getLimit() != null) {
                 this.query("_limit", searchModel.getLimit().toString());
             }
-            if(searchModel.getOffset() != null) {
+            if (searchModel.getOffset() != null) {
                 this.query("_offset", searchModel.getOffset().toString());
             }
-            if(searchModel.getSort() != null) {
+            if (searchModel.getSort() != null) {
                 this.query("_sort", String.join(",", searchModel.getSort()));
             }
-            if(searchModel.getFilter() != null) {
+            if (searchModel.getFilter() != null) {
                 this.query("_filter", searchModel.getFilter());
             }
             return this;
