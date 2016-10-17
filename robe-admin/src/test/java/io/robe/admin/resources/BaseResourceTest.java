@@ -1,12 +1,15 @@
 package io.robe.admin.resources;
 
 import io.robe.admin.RobeAdminTest;
+import io.robe.admin.util.junit.Order;
+import io.robe.admin.util.junit.Roadrunner;
 import io.robe.admin.util.request.HttpClient;
 import io.robe.admin.util.request.TestRequest;
 import io.robe.admin.util.request.TestResponse;
 import io.robe.hibernate.entity.BaseEntity;
 import org.junit.Assert;
 import org.junit.Test;
+import org.junit.runner.RunWith;
 
 import java.util.List;
 import java.util.UUID;
@@ -16,13 +19,12 @@ import static org.junit.Assert.assertTrue;
 /**
  * Created by hasanmumin on 03/10/16.
  */
+@RunWith(Roadrunner.class)
 public abstract class BaseResourceTest<T extends BaseEntity> extends RobeAdminTest {
 
     public static final String BASE_URL = "http://127.0.0.1:8080/robe/";
 
     protected final HttpClient client = HttpClient.getClient();
-
-    protected final TestRequest.Builder requestBuilder = new TestRequest.Builder(BASE_URL + getPath());
 
     public abstract String getPath();
 
@@ -38,14 +40,19 @@ public abstract class BaseResourceTest<T extends BaseEntity> extends RobeAdminTe
 
     public abstract T mergeInstance();
 
+    protected TestRequest.Builder getRequestBuilder() {
+        return new TestRequest.Builder(BASE_URL + getPath());
+    }
 
     @Test
+    @Order
     public void getAll() throws Exception {
         List<T> response = this.getAllFrom();
         Assert.assertTrue(response != null);// TODO change
     }
 
     @Test
+    @Order(order = 2)
     public void get() throws Exception {
         T data = this.createFrom();
         this.assertEquals(instance(), data);
@@ -55,6 +62,7 @@ public abstract class BaseResourceTest<T extends BaseEntity> extends RobeAdminTe
     }
 
     @Test
+    @Order(order = 3)
     public void create() throws Exception {
         T data = this.createFrom();
         this.assertEquals(instance(), data);
@@ -63,6 +71,7 @@ public abstract class BaseResourceTest<T extends BaseEntity> extends RobeAdminTe
 
 
     @Test
+    @Order(order = 4)
     public void update() throws Exception {
         T data = this.createFrom();
         this.assertEquals(instance(), data);
@@ -73,6 +82,32 @@ public abstract class BaseResourceTest<T extends BaseEntity> extends RobeAdminTe
     }
 
     @Test
+    @Order(order = 5)
+    public void merge() throws Exception {
+        T data = this.createFrom();
+        this.assertEquals(instance(), data);
+        T merge = this.mergeInstance();
+        merge.setOid(data.getOid());
+        T response = this.mergeFrom(merge);
+        this.assertEquals(merge, data, response);
+        this.deleteFrom(data);
+    }
+
+    @Test
+    @Order(order = 6)
+    public void delete() throws Exception {
+        T data = this.createFrom();
+        this.deleteFrom(data);
+        try {
+            this.getFrom(data.getOid());
+            assertTrue("Entity deleted from database. Thats why it can't be exist on database !", false);
+        } catch (Exception e) {
+            assertTrue("Entity deleted from database.", true);
+        }
+    }
+
+    @Test
+    @Order(order = 7)
     public void updateShouldThrowWebApplicationException1() throws Exception {
         T data = this.createFrom();
         this.assertEquals(instance(), data);
@@ -87,6 +122,7 @@ public abstract class BaseResourceTest<T extends BaseEntity> extends RobeAdminTe
     }
 
     @Test
+    @Order(order = 8)
     public void updateShouldThrowWebApplicationException2() throws Exception {
         T data = this.createFrom();
         this.assertEquals(instance(), data);
@@ -104,20 +140,8 @@ public abstract class BaseResourceTest<T extends BaseEntity> extends RobeAdminTe
         this.deleteFrom(data);
     }
 
-
     @Test
-    public void delete() throws Exception {
-        T data = this.createFrom();
-        this.deleteFrom(data);
-        try {
-            this.getFrom(data.getOid());
-            assertTrue("Entity deleted from database. Thats why it can't be exist on database !", false);
-        } catch (Exception e) {
-            assertTrue("Entity deleted from database.", true);
-        }
-    }
-
-    @Test
+    @Order(order = 10)
     public void deleteShouldThrowWebApplicationException1() throws Exception {
         T data = this.createFrom();
         try {
@@ -130,6 +154,7 @@ public abstract class BaseResourceTest<T extends BaseEntity> extends RobeAdminTe
     }
 
     @Test
+    @Order(order = 11)
     public void deleteShouldThrowWebApplicationException2() throws Exception {
         T data = this.createFrom();
         this.assertEquals(instance(), data);
@@ -147,17 +172,7 @@ public abstract class BaseResourceTest<T extends BaseEntity> extends RobeAdminTe
     }
 
     @Test
-    public void merge() throws Exception {
-        T data = this.createFrom();
-        this.assertEquals(instance(), data);
-        T merge = this.mergeInstance();
-        merge.setOid(data.getOid());
-        T response = this.mergeFrom(merge);
-        this.assertEquals(merge, data, response);
-        this.deleteFrom(data);
-    }
-
-    @Test
+    @Order(order = 12)
     public void mergeShouldThrowWebApplicationException1() throws Exception {
         T data = this.createFrom();
         this.assertEquals(instance(), data);
@@ -173,6 +188,7 @@ public abstract class BaseResourceTest<T extends BaseEntity> extends RobeAdminTe
     }
 
     @Test
+    @Order(order = 13)
     public void mergeShouldThrowWebApplicationException2() throws Exception {
         T data = createFrom();
         assertEquals(instance(), data);
@@ -192,7 +208,7 @@ public abstract class BaseResourceTest<T extends BaseEntity> extends RobeAdminTe
     }
 
     protected T createFrom(T model) throws Exception {
-        TestResponse response = client.post(requestBuilder.entity(model).build());
+        TestResponse response = client.post(getRequestBuilder().entity(model).build());
         return response.get(getClazz());
     }
 
@@ -205,7 +221,7 @@ public abstract class BaseResourceTest<T extends BaseEntity> extends RobeAdminTe
     }
 
     protected T deleteFrom(String oid, T model) throws Exception {
-        TestResponse response = client.delete(requestBuilder.endpoint(oid).entity(model).build());
+        TestResponse response = client.delete(getRequestBuilder().endpoint(oid).entity(model).build());
         return response.get(getClazz());
     }
 
@@ -214,7 +230,7 @@ public abstract class BaseResourceTest<T extends BaseEntity> extends RobeAdminTe
     }
 
     protected T updateFrom(String oid, T model) throws Exception {
-        TestResponse response = client.put(requestBuilder.endpoint(oid).entity(model).build());
+        TestResponse response = client.put(getRequestBuilder().endpoint(oid).entity(model).build());
         return response.get(getClazz());
     }
 
@@ -223,17 +239,17 @@ public abstract class BaseResourceTest<T extends BaseEntity> extends RobeAdminTe
     }
 
     protected T mergeFrom(String oid, T model) throws Exception {
-        TestResponse response = client.patch(requestBuilder.endpoint(oid).entity(model).build());
+        TestResponse response = client.patch(getRequestBuilder().endpoint(oid).entity(model).build());
         return response.get(getClazz());
     }
 
     protected T getFrom(String oid) throws Exception {
-        TestResponse response = client.get(requestBuilder.endpoint(oid).build());
+        TestResponse response = client.get(getRequestBuilder().endpoint(oid).build());
         return response.get(getClazz());
     }
 
     protected List<T> getAllFrom() throws Exception {
-        TestResponse response = client.get(requestBuilder.build());
+        TestResponse response = client.get(getRequestBuilder().build());
         return response.list(getClazz());
     }
 }
