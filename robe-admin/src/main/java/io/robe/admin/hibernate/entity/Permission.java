@@ -1,5 +1,6 @@
 package io.robe.admin.hibernate.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import io.robe.auth.data.entry.PermissionEntry;
 import io.robe.common.service.search.SearchIgnore;
 import io.robe.hibernate.entity.BaseEntity;
@@ -57,6 +58,7 @@ public class Permission extends BaseEntity implements PermissionEntry {
     }
 
     @Override
+    @JsonIgnore
     public String getRestrictedItemId() {
         return getRestrictedItemOid();
     }
