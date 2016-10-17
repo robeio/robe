@@ -70,7 +70,7 @@ public class RoleResourceTest extends BaseResourceTest<Role> {
         RoleDao roleDao = new RoleDao(sessionFactory);
         Role role = roleDao.findByCode("all");
         Assert.assertTrue(role != null);
-        TestRequest request = requestBuilder.endpoint(role.getId() + "/permissions").build();
+        TestRequest request = getRequestBuilder().endpoint(role.getId() + "/permissions").build();
         TestResponse response = client.get(request);
         Map result = response.get(Map.class);
 

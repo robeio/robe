@@ -64,14 +64,14 @@ public class ServiceResourceTest extends BaseResourceTest<Service> {
 
     @Test
     public void refresh() throws IOException {
-        TestRequest request = requestBuilder.endpoint("refresh").build();
+        TestRequest request = getRequestBuilder().endpoint("refresh").build();
         TestResponse response = client.get(request);
         Assert.assertEquals(response.getStatus(), 200);
     }
 
     @Test
     public void groups() throws IOException {
-        TestRequest request = requestBuilder.endpoint("groups").build();
+        TestRequest request = getRequestBuilder().endpoint("groups").build();
         TestResponse response = client.get(request);
         Assert.assertEquals(response.getStatus(), 200);
         Assert.assertTrue(response.list(getClazz()).size() > 0);

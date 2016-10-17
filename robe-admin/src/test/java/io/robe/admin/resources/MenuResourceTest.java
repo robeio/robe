@@ -69,7 +69,7 @@ public class MenuResourceTest extends BaseResourceTest<Menu> {
 
     @Test
     public void getUserHierarchicalMenu() throws IOException {
-        TestRequest request = requestBuilder.endpoint("user").build();
+        TestRequest request = getRequestBuilder().endpoint("user").build();
         TestResponse response = client.get(request);
         Assert.assertEquals(response.getStatus(), 200);
         List<MenuItem> menuItems = response.list(MenuItem.class);

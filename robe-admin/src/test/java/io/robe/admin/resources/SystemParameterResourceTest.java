@@ -70,7 +70,7 @@ public class SystemParameterResourceTest extends BaseResourceTest<SystemParamete
         Map<String, String> values = new HashMap<>();
         values.put("KEY", "VALUE_CHANGED");
         values.put("KEY2", "VALUE-2");
-        TestRequest request = requestBuilder.endpoint("admin").entity(values).build();
+        TestRequest request = getRequestBuilder().endpoint("admin").entity(values).build();
         TestResponse response = client.post(request);
         Map result = response.get(Map.class);
         Assert.assertTrue(result.size() == 2);

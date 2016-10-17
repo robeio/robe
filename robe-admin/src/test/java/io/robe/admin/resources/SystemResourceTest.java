@@ -99,7 +99,7 @@ public class SystemResourceTest extends BaseResourceTest {
 
     @Test
     public void getHeapDump() throws IOException {
-        TestRequest request = requestBuilder.endpoint("heapdump").build();
+        TestRequest request = getRequestBuilder().endpoint("heapdump").build();
 
 
         try {
