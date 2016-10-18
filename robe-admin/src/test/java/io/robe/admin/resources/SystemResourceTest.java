@@ -1,5 +1,7 @@
 package io.robe.admin.resources;
 
+import io.robe.admin.util.request.TestRequest;
+import io.robe.admin.util.request.TestResponse;
 import io.robe.hibernate.entity.BaseEntity;
 import org.junit.Assert;
 import org.junit.Test;
@@ -97,13 +99,13 @@ public class SystemResourceTest extends BaseResourceTest {
 
     @Test
     public void getHeapDump() throws IOException {
-        
-//        try {
-//        TestRequest request = getRequestBuilder().endpoint("heapdump").build();
-//            TestResponse response = client.get(request); // TODO handle this response file
-//        } catch (Exception e) {
-//            // TODO ignore ?
-//        }
+
+        try {
+            TestRequest request = getRequestBuilder().endpoint("heapdump").build();
+            TestResponse response = client.get(request); // TODO handle this response file
+        } catch (Exception e) {
+            // TODO ignore ?
+        }
 
         Assert.assertTrue(true);
     }
