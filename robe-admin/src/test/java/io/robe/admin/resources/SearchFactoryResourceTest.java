@@ -102,7 +102,6 @@ public class SearchFactoryResourceTest extends BaseResourceTest<Language> {
     @Test
     public void search() throws Exception {
 
-
         SearchModel model = new SearchModel();
         model.setFields(new String[]{"name", "code"});
         model.addFilter("name", "=", "NAME");
