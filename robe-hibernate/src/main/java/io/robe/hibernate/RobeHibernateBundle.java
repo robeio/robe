@@ -59,7 +59,6 @@ public class RobeHibernateBundle<T extends Configuration & HasHibernateConfigura
                 try {
                     LOGGER.info("Loading Entity: " + entity);
                     Class entityClass = Class.forName(entity);
-                    classes.add(BaseEntity.class);
                     if (entityClass.isAnnotationPresent(Entity.class)) {
                         classes.add(entityClass);
                     } else {
