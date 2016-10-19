@@ -44,8 +44,8 @@ public class RobeHibernateNamingStrategy implements PhysicalNamingStrategy {
 
     private String transformToPluralForm(String tableNameInSingularForm) {
         StringBuilder pluralForm = new StringBuilder();
-        pluralForm.append(tableNameInSingularForm);
         pluralForm.append(this.prefix);
+        pluralForm.append(tableNameInSingularForm);
         return pluralForm.toString();
     }
 
