@@ -120,6 +120,10 @@ public class TestRequest {
         }
 
         public Builder search(SearchModel searchModel) {
+
+            if (searchModel == null)
+                return this;
+
             if (searchModel.getQ() != null) {
                 this.query("_q", searchModel.getQ());
             }
