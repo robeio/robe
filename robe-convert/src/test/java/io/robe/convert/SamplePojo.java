@@ -33,11 +33,20 @@ public class SamplePojo {
     @Convert
     private SampleEnum sampleEnum;
 
+    @Convert(title = "Boolean", type = Convert.Type.BOOL)
+    private String active;
+
+    @Convert(title = "Byte", type = Convert.Type.BYTE)
+    private String anByte;
+
+
+
+
     public SamplePojo() {
 
     }
 
-    public SamplePojo(int id, String name, String surname, long longid, double doubleid, BigDecimal big, Date date2, SampleEnum sampleEnum) {
+    public SamplePojo(int id, String name, String surname, long longid, double doubleid, BigDecimal big, Date date2, SampleEnum sampleEnum, String active, String anByte) {
         this.id = id;
         this.name = name;
         this.surname = surname;
@@ -46,6 +55,24 @@ public class SamplePojo {
         this.big = big;
         this.date2 = date2;
         this.sampleEnum = sampleEnum;
+        this.active = active;
+        this.anByte = anByte;
+    }
+
+    public String getAnByte() {
+        return anByte;
+    }
+
+    public void setAnByte(String anByte) {
+        this.anByte = anByte;
+    }
+
+    public String getActive() {
+        return active;
+    }
+
+    public void setActive(String active) {
+        this.active = active;
     }
 
     public int getId() {

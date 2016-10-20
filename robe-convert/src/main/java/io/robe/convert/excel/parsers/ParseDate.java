@@ -22,10 +22,15 @@ public class ParseDate implements IsParser {
      */
     @Override
     public Object parse(Object o, Field field) {
+
+        if (o == null || o.toString().trim().length() == 0)
+            return null;
+
         Date date = null;
         String columnValue = o.toString();
-        JsonFormat jsonFormat = field.getAnnotation(JsonFormat.class);
-        if (columnValue != null && columnValue.length() > 1) {
+
+        if (columnValue.length() > 1) {
+            JsonFormat jsonFormat = field.getAnnotation(JsonFormat.class);
             if (jsonFormat != null) {
                 try {
                     date = formatWithGivenPattern(columnValue, jsonFormat.pattern());
@@ -41,8 +46,8 @@ public class ParseDate implements IsParser {
 
     @Override
     public void setCell(Object o, Cell cell, Field field) {
-        Date date = (Date) o;
-        if (date != null) {
+        if (o != null) {
+            Date date = (Date) o;
             cell.setCellValue(date);
             String format = field.getAnnotation(JsonFormat.class).pattern();
             cell.setCellValue(new SimpleDateFormat(format).format(date));

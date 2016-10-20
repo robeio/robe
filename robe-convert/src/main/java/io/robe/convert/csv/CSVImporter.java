@@ -3,7 +3,6 @@ package io.robe.convert.csv;
 import io.robe.convert.common.Importer;
 import io.robe.convert.common.OnItemHandler;
 import org.supercsv.cellprocessor.ift.CellProcessor;
-import org.supercsv.io.CsvBeanReader;
 import org.supercsv.io.ICsvBeanReader;
 import org.supercsv.prefs.CsvPreference;
 
@@ -22,7 +21,7 @@ public class CSVImporter<T> extends Importer<T> {
     private CellProcessor[] processors = null;
 
     public CSVImporter(Class dataClass) {
-        this(dataClass, CsvPreference.EXCEL_PREFERENCE.STANDARD_PREFERENCE);
+        this(dataClass, CsvPreference.STANDARD_PREFERENCE);
     }
 
     public CSVImporter(Class dataClass, CsvPreference preference) {

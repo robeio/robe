@@ -16,17 +16,17 @@ public enum Parsers {
     private final String type;
     private final Class<? extends IsParser> parser;
 
+    Parsers(String type, Class<? extends IsParser> parser) {
+        this.type = type;
+        this.parser = parser;
+    }
+
     public IsParser getParser() {
         try {
             return parser.newInstance();
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
-    }
-
-    private Parsers(String type, Class<? extends IsParser> parser) {
-        this.type = type;
-        this.parser = parser;
     }
 
     @Override

@@ -9,7 +9,6 @@ import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.Workbook;
 
-import java.io.InputStream;
 import java.lang.reflect.Field;
 import java.util.*;
 
@@ -68,7 +67,7 @@ public abstract class ExcelImporter<T> extends Importer<T> {
                         Object cellData;
                         if (cell != null) {
                             if (!(field.getType() != null && (field.getType()).isEnum())) {
-                                if(cell.getCellType() != Cell.CELL_TYPE_STRING)
+                                if (cell.getCellType() != Cell.CELL_TYPE_STRING)
                                     cell.setCellType(Cell.CELL_TYPE_STRING);
 
                                 cellData = Parsers.valueOf(field.getType().getSimpleName().toUpperCase(Locale.ENGLISH)).getParser().parse(cell.getStringCellValue(), field);
@@ -107,7 +106,7 @@ public abstract class ExcelImporter<T> extends Importer<T> {
                         }
                     }
                 } catch (Exception e) {
-                    e.printStackTrace();
+                    throw e;
                 }
             }
 
