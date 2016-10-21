@@ -85,6 +85,7 @@
         <module>robe-convert</module>
         <module>robe-assets</module>
         <module>robe-servlet</module>
+        <module>robe-test</module>
     </modules>
 
     <properties>
@@ -156,6 +157,11 @@
             <dependency>
                 <groupId>io.robe</groupId>
                 <artifactId>robe-quartz</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>io.robe</groupId>
+                <artifactId>robe-test</artifactId>
                 <version>${project.version}</version>
             </dependency>
             <dependency>

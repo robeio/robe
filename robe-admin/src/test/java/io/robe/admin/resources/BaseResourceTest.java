@@ -1,12 +1,12 @@
 package io.robe.admin.resources;
 
 import io.robe.admin.RobeAdminTest;
-import io.robe.admin.util.junit.Order;
-import io.robe.admin.util.junit.Roadrunner;
-import io.robe.admin.util.request.HttpClient;
-import io.robe.admin.util.request.TestRequest;
-import io.robe.admin.util.request.TestResponse;
 import io.robe.hibernate.entity.BaseEntity;
+import io.robe.test.Order;
+import io.robe.test.Roadrunner;
+import io.robe.test.request.HttpClient;
+import io.robe.test.request.TestRequest;
+import io.robe.test.request.TestResponse;
 import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;

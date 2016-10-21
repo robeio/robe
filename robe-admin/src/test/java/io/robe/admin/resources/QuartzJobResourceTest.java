@@ -2,8 +2,8 @@ package io.robe.admin.resources;
 
 import io.robe.admin.job.SampleJob;
 import io.robe.admin.quartz.hibernate.JobEntity;
-import io.robe.admin.util.request.TestRequest;
-import io.robe.admin.util.request.TestResponse;
+import io.robe.test.request.TestRequest;
+import io.robe.test.request.TestResponse;
 import org.junit.Assert;
 import org.junit.Test;
 

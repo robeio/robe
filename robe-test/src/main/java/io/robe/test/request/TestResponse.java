@@ -1,4 +1,4 @@
-package io.robe.admin.util.request;
+package io.robe.test.request;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import okhttp3.Response;

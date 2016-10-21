@@ -1,4 +1,4 @@
-package io.robe.admin.util.request;
+package io.robe.test.request;
 
 import java.io.IOException;
 

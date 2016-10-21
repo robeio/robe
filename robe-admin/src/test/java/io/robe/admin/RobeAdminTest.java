@@ -2,7 +2,7 @@ package io.robe.admin;
 
 
 import io.dropwizard.testing.ResourceHelpers;
-import io.robe.admin.util.request.Authenticator;
+import io.robe.admin.util.Authenticator;
 
 /**
  * Created by kamilbukum on 22/09/16.

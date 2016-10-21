@@ -1,9 +1,9 @@
 package io.robe.admin.resources;
 
 import io.robe.admin.hibernate.entity.Language;
-import io.robe.admin.util.request.TestRequest;
-import io.robe.admin.util.request.TestResponse;
 import io.robe.common.service.search.model.SearchModel;
+import io.robe.test.request.TestRequest;
+import io.robe.test.request.TestResponse;
 import org.junit.Test;
 
 /**

@@ -1,4 +1,4 @@
-package io.robe.admin.util.request;
+package io.robe.test.request;
 
 import okhttp3.*;
 
@@ -10,14 +10,25 @@ import java.util.Map;
  */
 public class HttpClient implements HttpRequest {
 
-    private final OkHttpClient okHttpClient = new OkHttpClient.Builder().addInterceptor(new AuthenticationInterceptor()).build();
+    private final OkHttpClient okHttpClient;
 
-    private static final HttpClient INSTANCE = new HttpClient();
+    private static HttpClient INSTANCE;
 
-    private HttpClient() {
+    private HttpClient(Interceptor interceptor) {
+        okHttpClient = new OkHttpClient.Builder().addInterceptor(interceptor).build();;
+    }
+
+    public static HttpClient getClient(Interceptor interceptor) {
+        if(INSTANCE == null) {
+            INSTANCE = new HttpClient(interceptor);
+        }
+        return INSTANCE;
     }
 
     public static HttpClient getClient() {
+        if(INSTANCE == null) {
+            INSTANCE = new HttpClient(new AuthenticationInterceptor());
+        }
         return INSTANCE;
     }
 

@@ -1,4 +1,4 @@
-package io.robe.admin.util.junit;
+package io.robe.test;
 
 import org.junit.runners.BlockJUnit4ClassRunner;
 import org.junit.runners.model.FrameworkMethod;

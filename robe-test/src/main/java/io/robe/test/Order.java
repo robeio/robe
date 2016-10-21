@@ -1,4 +1,4 @@
-package io.robe.admin.util.junit;
+package io.robe.test;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;

@@ -1,4 +1,4 @@
-package io.robe.admin.util.request;
+package io.robe.test.request;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -120,10 +120,9 @@ public class TestRequest {
         }
 
         public Builder search(SearchModel searchModel) {
-
-            if (searchModel == null)
+            if (searchModel == null) {
                 return this;
-
+            }
             if (searchModel.getQ() != null) {
                 this.query("_q", searchModel.getQ());
             }

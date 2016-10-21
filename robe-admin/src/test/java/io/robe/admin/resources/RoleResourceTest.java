@@ -2,9 +2,9 @@ package io.robe.admin.resources;
 
 import io.robe.admin.hibernate.dao.RoleDao;
 import io.robe.admin.hibernate.entity.Role;
-import io.robe.admin.util.request.TestRequest;
-import io.robe.admin.util.request.TestResponse;
 import io.robe.hibernate.RobeHibernateBundle;
+import io.robe.test.request.TestRequest;
+import io.robe.test.request.TestResponse;
 import org.hibernate.SessionFactory;
 import org.hibernate.context.internal.ManagedSessionContext;
 import org.junit.Assert;
