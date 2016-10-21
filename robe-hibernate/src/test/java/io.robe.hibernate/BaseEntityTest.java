@@ -1,5 +1,6 @@
-package io.robe.hibernate.entity;
+package io.robe.hibernate;
 
+import io.robe.hibernate.entity.BaseEntity;
 import org.junit.Assert;
 import org.junit.Test;
 
