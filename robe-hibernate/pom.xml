@@ -33,6 +33,11 @@
             <groupId>io.robe</groupId>
             <artifactId>robe-common</artifactId>
         </dependency>
+        <dependency>
+            <groupId>io.robe</groupId>
+            <artifactId>robe-test</artifactId>
+            <scope>test</scope>
+        </dependency>
     </dependencies>
 
 </project>
