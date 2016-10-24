@@ -2,7 +2,6 @@ package io.robe.test.request;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import io.robe.common.service.search.model.SearchModel;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -119,28 +118,29 @@ public class TestRequest {
             return this;
         }
 
-        public Builder search(SearchModel searchModel) {
-            if (searchModel == null) {
-                return this;
-            }
-            if (searchModel.getQ() != null) {
-                this.query("_q", searchModel.getQ());
-            }
-            if (searchModel.getFields() != null) {
-                this.query("_fields", String.join(",", searchModel.getFields()));
-            }
-            if (searchModel.getLimit() != null) {
-                this.query("_limit", searchModel.getLimit().toString());
-            }
-            if (searchModel.getOffset() != null) {
-                this.query("_offset", searchModel.getOffset().toString());
-            }
-            if (searchModel.getSort() != null) {
-                this.query("_sort", String.join(",", searchModel.getSort()));
-            }
-            if (searchModel.getFilter() != null) {
-                this.query("_filter", searchModel.getFilter());
-            }
+        // TODO search model should add to
+        public Builder search(Object searchModel) {
+//            if (searchModel == null) {
+//                return this;
+//            }
+//            if (searchModel.getQ() != null) {
+//                this.query("_q", searchModel.getQ());
+//            }
+//            if (searchModel.getFields() != null) {
+//                this.query("_fields", String.join(",", searchModel.getFields()));
+//            }
+//            if (searchModel.getLimit() != null) {
+//                this.query("_limit", searchModel.getLimit().toString());
+//            }
+//            if (searchModel.getOffset() != null) {
+//                this.query("_offset", searchModel.getOffset().toString());
+//            }
+//            if (searchModel.getSort() != null) {
+//                this.query("_sort", String.join(",", searchModel.getSort()));
+//            }
+//            if (searchModel.getFilter() != null) {
+//                this.query("_filter", searchModel.getFilter());
+//            }
             return this;
         }
 
