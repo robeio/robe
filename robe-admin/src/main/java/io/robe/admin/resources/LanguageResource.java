@@ -28,6 +28,16 @@ public class LanguageResource {
     @Inject
     private LanguageDao languageDao;
 
+
+    @GET
+    @UnitOfWork
+    @Path("example")
+    public Language example() {
+        Language language = new Language();
+        language.setName("Name");
+        return languageDao.create(language);
+    }
+
     /**
      * Returns all (@Link Language) as a collection.
      *

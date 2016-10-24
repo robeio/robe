@@ -186,12 +186,6 @@
             </dependency>
             <dependency>
                 <groupId>io.dropwizard</groupId>
-                <artifactId>dropwizard-testing</artifactId>
-                <version>${dropwizard.version}</version>
-                <scope>test</scope>
-            </dependency>
-            <dependency>
-                <groupId>io.dropwizard</groupId>
                 <artifactId>dropwizard-auth</artifactId>
                 <version>${dropwizard.version}</version>
             </dependency>
