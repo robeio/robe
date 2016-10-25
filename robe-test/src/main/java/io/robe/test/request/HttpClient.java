@@ -15,7 +15,7 @@ public class HttpClient implements HttpRequest {
     private static HttpClient INSTANCE;
 
     private HttpClient(Interceptor interceptor) {
-        okHttpClient = new OkHttpClient.Builder().addInterceptor(interceptor).build();;
+        okHttpClient = new OkHttpClient.Builder().addInterceptor(interceptor).build();
     }
 
     public static HttpClient getClient(Interceptor interceptor) {
