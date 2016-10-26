@@ -187,16 +187,6 @@ public class InitializeCommand<T extends RobeConfiguration> extends EnvironmentC
 
         }
 
-        LOGGER.info("Creating languages : TR & EN");
-        Language systemLanguageTR = new Language();
-        systemLanguageTR.setCode(Language.Type.TR);
-        systemLanguageTR.setName("Türkçe");
-        session.persist(systemLanguageTR);
-        Language systemLanguageEN = new Language();
-        systemLanguageEN.setCode(Language.Type.EN);
-        systemLanguageEN.setName("İngilizce");
-        session.persist(systemLanguageEN);
-
         LOGGER.info("Creating Menu and Permissions");
         Menu root = new Menu();
         root.setPath("root");

@@ -81,7 +81,6 @@
         <module>robe-auth</module>
         <module>robe-common</module>
         <module>robe-quartz</module>
-        <module>robe-crud</module>
         <module>robe-convert</module>
         <module>robe-assets</module>
         <module>robe-servlet</module>
