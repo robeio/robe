@@ -3,7 +3,6 @@ package io.robe.hibernate;
 import io.dropwizard.hibernate.SessionFactoryFactory;
 import io.robe.hibernate.conf.RobeHibernateNamingStrategy;
 import org.hibernate.cfg.Configuration;
-import org.hibernate.cfg.NamingStrategy;
 import org.hibernate.service.ServiceRegistry;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

@@ -17,6 +17,8 @@ public class RobeSessionFactoryFactoryTest {
         RobeSessionFactoryFactory factory = new RobeSessionFactoryFactory();
         when(configuration.getProperty("hibernate.prefix")).thenReturn("P_");
         factory.configure(configuration, null);
+        when(configuration.getProperty("hibernate.prefix")).thenReturn(null);
+        factory.configure(configuration, null);
     }
 
 }
