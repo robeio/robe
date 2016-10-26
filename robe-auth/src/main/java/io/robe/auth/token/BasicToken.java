@@ -11,6 +11,7 @@ import org.joda.time.DateTime;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.lang.reflect.Field;
 import java.nio.charset.StandardCharsets;
 import java.util.Date;
 import java.util.Map;
@@ -40,6 +41,15 @@ public class BasicToken implements Credentials {
     private String tokenString;
     private int maxAge;
 
+    static {
+        try {
+            Field field = Class.forName("javax.crypto.JceSecurity").getDeclaredField("isRestricted");
+            field.setAccessible(true);
+            field.set(null, java.lang.Boolean.FALSE);
+        } catch (Exception ex) {
+            throw new RuntimeException(ex);
+        }
+    }
 
     /**
      * Creates an access token with the given parameters.
