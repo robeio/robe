@@ -16,7 +16,6 @@ public class RobeSessionFactoryFactoryTest {
         Configuration configuration = mock(Configuration.class);
         RobeSessionFactoryFactory factory = new RobeSessionFactoryFactory();
         when(configuration.getProperty("hibernate.prefix")).thenReturn("P_");
-        when(configuration.getProperty("hibernate.namingStrategy")).thenReturn("P_");
         factory.configure(configuration, null);
     }
 
