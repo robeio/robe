@@ -1,6 +1,7 @@
 package io.robe.test.request;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import java.util.ArrayList;
@@ -118,29 +119,29 @@ public class TestRequest {
             return this;
         }
 
-        // TODO search model should add to
-        public Builder search(Object searchModel) {
-//            if (searchModel == null) {
-//                return this;
-//            }
-//            if (searchModel.getQ() != null) {
-//                this.query("_q", searchModel.getQ());
-//            }
-//            if (searchModel.getFields() != null) {
-//                this.query("_fields", String.join(",", searchModel.getFields()));
-//            }
-//            if (searchModel.getLimit() != null) {
-//                this.query("_limit", searchModel.getLimit().toString());
-//            }
-//            if (searchModel.getOffset() != null) {
-//                this.query("_offset", searchModel.getOffset().toString());
-//            }
-//            if (searchModel.getSort() != null) {
-//                this.query("_sort", String.join(",", searchModel.getSort()));
-//            }
-//            if (searchModel.getFilter() != null) {
-//                this.query("_filter", searchModel.getFilter());
-//            }
+        public Builder search(Object searchModel) throws IllegalArgumentException {
+            if (searchModel == null) {
+                return this;
+            }
+            Map<String, Object> search = OBJECT_MAPPER.convertValue(searchModel, new TypeReference<Map>(){});
+            if (search.get("q") != null) {
+                this.query("_q", search.get("q").toString());
+            }
+            if (search.get("fields") != null) {
+                this.query("_fields", String.join(",", (List) search.get("fields")));
+            }
+            if (search.get("limit") != null) {
+                this.query("_limit", search.get("limit").toString());
+            }
+            if (search.get("offset") != null) {
+                this.query("_offset", search.get("offset").toString());
+            }
+            if (search.get("sort") != null) {
+                this.query("_sort", String.join(",", (List) search.get("sort")));
+            }
+            if (search.get("filter") != null) {
+                this.query("_filter", search.get("filter").toString());
+            }
             return this;
         }
 
