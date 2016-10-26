@@ -13,6 +13,7 @@ public class BasicPairTest {
         BasicPair basicPair = new BasicPair("foo", "bar");
         Assert.assertEquals(basicPair.getName(), "foo");
         Assert.assertEquals(basicPair.getValue(), "bar");
+        Assert.assertTrue(basicPair.equals(basicPair));
     }
 
 }
