@@ -19,7 +19,7 @@ import io.robe.assets.AdvancedAssetBundle;
 import io.robe.auth.token.TokenAuthBundle;
 import io.robe.auth.token.TokenAuthenticator;
 import io.robe.auth.token.jersey.TokenFactory;
-import io.robe.common.exception.DataExceptionMapper;
+import io.robe.common.exception.RobeExceptionMapper;
 import io.robe.common.service.search.SearchFactoryProvider;
 import io.robe.guice.GuiceBundle;
 import io.robe.hibernate.RobeHibernateBundle;
@@ -138,7 +138,7 @@ public class RobeApplication<T extends RobeConfiguration> extends Application<T>
     }
 
     private void addExceptionMappers(Environment environment) {
-        environment.jersey().register(new DataExceptionMapper());
+        environment.jersey().register(new RobeExceptionMapper());
         environment.jersey().register(new JsonProcessingExceptionMapper(true));
     }
 
