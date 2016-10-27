@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.apache.commons.lang3.StringUtils;
 
 import javax.servlet.http.HttpServletResponse;
+import java.util.Arrays;
 
 /**
  * A data class for holding search query parameters as a auto
@@ -130,6 +131,37 @@ public class SearchModel {
         }
     }
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        SearchModel model = (SearchModel) o;
+
+        if (totalCount != model.totalCount) return false;
+        if (q != null ? !q.equals(model.q) : model.q != null) return false;
+        if (offset != null ? !offset.equals(model.offset) : model.offset != null) return false;
+        if (limit != null ? !limit.equals(model.limit) : model.limit != null) return false;
+        // Probably incorrect - comparing Object[] arrays with Arrays.equals
+        if (!Arrays.equals(fields, model.fields)) return false;
+        // Probably incorrect - comparing Object[] arrays with Arrays.equals
+        if (!Arrays.equals(sort, model.sort)) return false;
+        return filter != null ? filter.equals(model.filter) : model.filter == null;
+
+    }
+
+    @Override
+    public int hashCode() {
+        int result = q != null ? q.hashCode() : 0;
+        result = 31 * result + (offset != null ? offset.hashCode() : 0);
+        result = 31 * result + (limit != null ? limit.hashCode() : 0);
+        result = 31 * result + Arrays.hashCode(fields);
+        result = 31 * result + Arrays.hashCode(sort);
+        result = 31 * result + (filter != null ? filter.hashCode() : 0);
+        result = 31 * result + (int) (totalCount ^ (totalCount >>> 32));
+        return result;
+    }
+
     @JsonIgnore
     public void addSort(String field, String operator) {
         if (this.sort == null) {
@@ -153,5 +185,7 @@ public class SearchModel {
             }
 
         }
+
+
     }
 }

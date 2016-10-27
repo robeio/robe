@@ -1,6 +1,8 @@
 package io.robe.common.service.search;
 
 import io.robe.common.service.search.model.SearchModel;
+import org.glassfish.jersey.server.ContainerRequest;
+import org.glassfish.jersey.server.Uri;
 import org.glassfish.jersey.server.internal.inject.AbstractContainerRequestValueFactory;
 
 import javax.servlet.http.HttpServletResponse;
@@ -13,7 +15,6 @@ import java.util.Map;
 
 public class SearchFactory extends AbstractContainerRequestValueFactory<SearchModel> {
 
-
     @Context
     private UriInfo uriInfo;
 
@@ -23,12 +24,14 @@ public class SearchFactory extends AbstractContainerRequestValueFactory<SearchMo
     public SearchFactory() {
     }
 
+    public UriInfo getUriInfo() {
+        return uriInfo;
+    }
     /**
      * implemented just to GET method.
      *
      * @return SearchModel
      */
-
     @Override
     public SearchModel provide() {
 
@@ -36,11 +39,11 @@ public class SearchFactory extends AbstractContainerRequestValueFactory<SearchMo
 
         searchModel.setResponse(response);
 
-        String method = getContainerRequest().getMethod();
+        String method = getMethod();
 
         if ("GET".equals(method)) {
 
-            MultivaluedMap<String, String> queryParameters = uriInfo.getQueryParameters();
+            MultivaluedMap<String, String> queryParameters = getUriInfo().getQueryParameters();
 
             for (Map.Entry<String, List<String>> param : queryParameters.entrySet()) {
 
@@ -62,8 +65,10 @@ public class SearchFactory extends AbstractContainerRequestValueFactory<SearchMo
                 }
             }
         }
-
-
         return searchModel;
+    }
+
+    public String getMethod() {
+        return getContainerRequest().getMethod();
     }
 }

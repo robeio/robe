@@ -34,6 +34,11 @@
             <artifactId>dropwizard-hibernate</artifactId>
             <scope>test</scope>
         </dependency>
+        <dependency>
+            <groupId>io.robe</groupId>
+            <artifactId>robe-test</artifactId>
+            <scope>test</scope>
+        </dependency>
 
     </dependencies>
     <reporting>
