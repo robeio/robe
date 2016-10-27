@@ -3,7 +3,7 @@ package io.robe.convert.xml.parsers;
 import org.junit.Test;
 
 import static io.robe.convert.xml.ParserUtil.getParser;
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
 
 public class ParseBoolTest {
 
@@ -22,6 +22,7 @@ public class ParseBoolTest {
         Boolean actual = (Boolean) parseBool.parse(getParser("<bool>false</bool>"), null);
         assertEquals(expected, actual);
     }
+
     @Test
     public void parseEmpty() throws Exception {
         Boolean expected = false;
