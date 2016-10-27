@@ -3,9 +3,6 @@ package io.robe.convert.xml;
 import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.dataformat.xml.XmlFactory;
 
-/**
- * Created by serayuzgur on 27/10/16.
- */
 public class ParserUtil {
 
     public static JsonParser getParser(String xml) throws Exception {

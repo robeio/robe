@@ -5,9 +5,6 @@ import org.junit.Test;
 import static io.robe.convert.xml.ParserUtil.getParser;
 import static org.junit.Assert.assertEquals;
 
-/**
- * Created by serayuzgur on 27/10/16.
- */
 public class ParseBoolTest {
 
     @Test
