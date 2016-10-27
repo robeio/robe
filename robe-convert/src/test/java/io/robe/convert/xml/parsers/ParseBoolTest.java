@@ -1,15 +1,10 @@
 package io.robe.convert.xml.parsers;
 
-import com.fasterxml.jackson.core.JsonParser;
-import com.fasterxml.jackson.dataformat.xml.XmlFactory;
 import org.junit.Test;
 
 import static io.robe.convert.xml.ParserUtil.getParser;
 import static org.junit.Assert.*;
 
-/**
- * Created by serayuzgur on 27/10/16.
- */
 public class ParseBoolTest {
 
     @Test
