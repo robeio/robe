@@ -49,55 +49,7 @@ public class BaseDao<T extends RobeEntity> extends AbstractDAO<T> {
         super(sessionFactory);
     }
 
-    private static String[] parseFilterExp(String filter) {
-        char[] chars = filter.toCharArray();
-        char[] name = new char[chars.length];
-        char[] op = new char[2];
-        char[] value = new char[chars.length];
-        int nIndex = 0;
-        int oIndex = 0;
-        int vIndex = 0;
-        short part = 0;
-        for (int i = 0; i < chars.length; i++) {
-            switch (part) {
-                case 0://Filling name
-                    switch (chars[i]) {
-                        case '=':
-                        case '!':
-                        case '<':
-                        case '>':
-                        case '~':
-                        case '|':
-                            //Jump to operation
-                            op[oIndex++] = chars[i];
-                            part = 1;
-                            break;
-                        default:
-                            name[nIndex++] = chars[i];
-                    }
-                    break;
-                case 1://Filling op
-                    switch (chars[i]) {
-                        case '=':
-                            op[oIndex++] = chars[i];
-                            break;
-                        default:
-                            //Jump to value
-                            value[vIndex++] = chars[i];
-                            part = 2;
-                    }
-                    break;
-                case 2://Filling value
-                    value[vIndex++] = chars[i];
-                    break;
-            }
-        }
 
-        return new String[]{
-                new String(name, 0, nIndex),
-                new String(op, 0, oIndex),
-                new String(value, 0, vIndex)};
-    }
 
     private static List<Field> getAllFields(List<Field> fields, Class<?> type) {
         fields.addAll(Arrays.asList(type.getDeclaredFields()));
@@ -118,7 +70,9 @@ public class BaseDao<T extends RobeEntity> extends AbstractDAO<T> {
         search.setLimit(null);
         search.setOffset(null);
         search.setSort(null);
-        long totalCount = (Long) buildCriteria(search).setProjection(Projections.rowCount()).uniqueResult();
+        Criteria criteria =  buildCriteria(search);
+        criteria.setProjection(Projections.rowCount());
+        long totalCount = (Long)criteria.uniqueResult();
         search.setTotalCount(totalCount);
         ResponseHeadersUtil.addTotalCount(search);
         return list;
@@ -141,7 +95,7 @@ public class BaseDao<T extends RobeEntity> extends AbstractDAO<T> {
         return list;
     }
 
-    public Criteria addSearchFromProjection(Criteria criteria) {
+    private Criteria addSearchFromProjection(Criteria criteria) {
         Field[] fields = getCachedFields(getEntityClass());
         ProjectionList projectionList = Projections.projectionList();
         for (Field field : fields) {
@@ -430,29 +384,27 @@ public class BaseDao<T extends RobeEntity> extends AbstractDAO<T> {
         return criteria.list();
     }
 
-    public Conjunction addFilterCriterias(Field[] fields, String filterParam) {
-        String[] filters = filterParam.split(",");
+    public Conjunction addFilterCriterias(Field[] fields, String[][] filters) {
         Criterion[] fieldFilters = new Criterion[filters.length];
         int i = 0;
-        for (String filter : filters) {
-            String[] params = parseFilterExp(filter);
+        for (String[] filter : filters) {
             Optional value = null;
 
             fieldsLoop:
             for (Field field : fields) {
                 SearchFrom searchFrom = field.getAnnotation(SearchFrom.class);
-                if (field.getName().equals(params[0]) && field.getAnnotation(Transient.class) == null) {
-                    if (params[1].equals("|=")) {
-                        String[] svalues = params[2].split("\\|");
+                if (field.getName().equals(filter[0]) && field.getAnnotation(Transient.class) == null) {
+                    if (filter[1].equals("|=")) {
+                        String[] svalues = filter[2].split("\\|");
                         LinkedList<Object> lvalues = new LinkedList<>();
                         for (String svalue : svalues)
                             lvalues.add(castValue(field, svalue));
                         value = Optional.fromNullable(lvalues);
                     } else
-                        value = Optional.fromNullable(castValue(field, params[2]));
+                        value = Optional.fromNullable(castValue(field, filter[2]));
                     break;
-                } else if (searchFrom != null && params[0].startsWith(field.getName())) {
-                    String filterTarget = StringsOperations.unCapitalizeFirstChar(params[0].replace(field.getName(), ""));
+                } else if (searchFrom != null && filter[0].startsWith(field.getName())) {
+                    String filterTarget = StringsOperations.unCapitalizeFirstChar(filter[0].replace(field.getName(), ""));
                     for (String target : searchFrom.target()) {
                         if (filterTarget.equals(target)) {
                             try {
@@ -460,23 +412,23 @@ public class BaseDao<T extends RobeEntity> extends AbstractDAO<T> {
                                 Criteria criteria = currentSession().createCriteria(searchFrom.entity());
 
                                 if (searchFrom.localId().isEmpty())
-                                    params[0] = field.getName();
+                                    filter[0] = field.getName();
                                 else
-                                    params[0] = searchFrom.localId();
+                                    filter[0] = searchFrom.localId();
 
                                 if (SearchableEnum.class.isAssignableFrom(filterField.getType())) {
-                                    Enum anEnum = Enum.valueOf((Class<? extends Enum>) filterField.getType(), params[2]);
+                                    Enum anEnum = Enum.valueOf((Class<? extends Enum>) filterField.getType(), filter[2]);
                                     criteria.add(Restrictions.eq(filterTarget, anEnum));
-                                } else if (params[1].equals("=")) {
-                                    criteria.add(Restrictions.eq(filterTarget, params[2]));
-                                } else if (params[1].equals("~="))
-                                    criteria.add(Restrictions.ilike(filterTarget, params[2], MatchMode.ANYWHERE));
+                                } else if (filter[1].equals("=")) {
+                                    criteria.add(Restrictions.eq(filterTarget, filter[2]));
+                                } else if (filter[1].equals("~="))
+                                    criteria.add(Restrictions.ilike(filterTarget, filter[2], MatchMode.ANYWHERE));
 
                                 criteria.setProjection(Projections.property(searchFrom.id()));
                                 List list = criteria.list();
                                 if (!list.isEmpty()) {
                                     value = Optional.fromNullable(list);
-                                    params[1] = "|=";
+                                    filter[1] = "|=";
                                     break fieldsLoop;
                                 }
                                 value = Optional.of("");
@@ -493,36 +445,36 @@ public class BaseDao<T extends RobeEntity> extends AbstractDAO<T> {
             if (value == null)
                 continue;
 
-            switch (params[1]) {
+            switch (filter[1]) {
                 case "=":
                     if (value.isPresent())
-                        fieldFilters[i++] = Restrictions.eq(params[0], value.get());
+                        fieldFilters[i++] = Restrictions.eq(filter[0], value.get());
                     else
-                        fieldFilters[i++] = Restrictions.isNull(params[0]);
+                        fieldFilters[i++] = Restrictions.isNull(filter[0]);
                     break;
                 case "!=":
                     if (value.isPresent())
-                        fieldFilters[i++] = Restrictions.ne(params[0], value.get());
+                        fieldFilters[i++] = Restrictions.ne(filter[0], value.get());
                     else
-                        fieldFilters[i++] = Restrictions.isNotNull(params[0]);
+                        fieldFilters[i++] = Restrictions.isNotNull(filter[0]);
                     break;
                 case "<":
-                    fieldFilters[i++] = Restrictions.lt(params[0], value.get());
+                    fieldFilters[i++] = Restrictions.lt(filter[0], value.get());
                     break;
                 case "<=":
-                    fieldFilters[i++] = Restrictions.le(params[0], value.get());
+                    fieldFilters[i++] = Restrictions.le(filter[0], value.get());
                     break;
                 case ">":
-                    fieldFilters[i++] = Restrictions.gt(params[0], value.get());
+                    fieldFilters[i++] = Restrictions.gt(filter[0], value.get());
                     break;
                 case ">=":
-                    fieldFilters[i++] = Restrictions.ge(params[0], value.get());
+                    fieldFilters[i++] = Restrictions.ge(filter[0], value.get());
                     break;
                 case "~=":
-                    fieldFilters[i++] = Restrictions.ilike(params[0], params[2], MatchMode.ANYWHERE);
+                    fieldFilters[i++] = Restrictions.ilike(filter[0], filter[2], MatchMode.ANYWHERE);
                     break;
                 case "|=":
-                    fieldFilters[i++] = Restrictions.in(params[0], (Collection) value.get());
+                    fieldFilters[i++] = Restrictions.in(filter[0], (Collection) value.get());
                     break;
             }
         }

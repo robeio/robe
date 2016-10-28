@@ -24,7 +24,7 @@ public class SearchFactoryTest {
         expected.setLimit(10);
         expected.setFields(new String[]{"field1", "field2"});
         expected.setSort(new String[]{"+field1", "-field2"});
-        expected.setFilter("field1=1");
+        expected.setFilterExpression("field1=1");
 
         MultivaluedMap<String, String> queryParameters = new MultivaluedHashMap<>();
         queryParameters.put("_q", Lists.newArrayList("qparam"));

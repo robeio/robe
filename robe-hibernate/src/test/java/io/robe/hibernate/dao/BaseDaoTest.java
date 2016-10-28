@@ -29,7 +29,7 @@ public class BaseDaoTest {
         expected.setLimit(10);
         expected.setFields(new String[]{"name", "time", "count"});
         expected.setSort(new String[]{"+day", "-time"});
-        expected.setFilter("status=ACTIVE");
+        expected.setFilterExpression("status=ACTIVE");
         expected.setResponse(mock(HttpServletResponse.class));
         return expected;
     }
