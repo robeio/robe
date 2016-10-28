@@ -197,7 +197,36 @@ public class SearchModel {
             }
 
         }
+    }
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
 
+        SearchModel model = (SearchModel) o;
+
+        if (totalCount != model.totalCount) return false;
+        if (q != null ? !q.equals(model.q) : model.q != null) return false;
+        if (offset != null ? !offset.equals(model.offset) : model.offset != null) return false;
+        if (limit != null ? !limit.equals(model.limit) : model.limit != null) return false;
+        // Probably incorrect - comparing Object[] arrays with Arrays.equals
+        if (!Arrays.equals(fields, model.fields)) return false;
+        // Probably incorrect - comparing Object[] arrays with Arrays.equals
+        if (!Arrays.equals(sort, model.sort)) return false;
+        return Arrays.deepEquals(filter, model.filter);
+
+    }
+
+    @Override
+    public int hashCode() {
+        int result = q != null ? q.hashCode() : 0;
+        result = 31 * result + (offset != null ? offset.hashCode() : 0);
+        result = 31 * result + (limit != null ? limit.hashCode() : 0);
+        result = 31 * result + Arrays.hashCode(fields);
+        result = 31 * result + Arrays.hashCode(sort);
+        result = 31 * result + Arrays.deepHashCode(filter);
+        result = 31 * result + (int) (totalCount ^ (totalCount >>> 32));
+        return result;
     }
 }
