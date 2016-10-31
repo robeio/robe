@@ -9,7 +9,8 @@ public enum Parsers {
     INTEGER("java.lang.Integer", ParseInt.class),
     LONG("java.lang.Long", ParseLong.class),
     STRING("java.lang.String", ParseString.class),
-    CHAR("java.lang.String", ParseChar.class),
+    CHAR("char", ParseChar.class),
+    CHARACTER("java.lang.Character", ParseChar.class),
     DATE("java.util.Date", ParseDate.class),
     ENUM("java.util.Enum", ParseEnum.class);
 
@@ -19,10 +20,12 @@ public enum Parsers {
 
     public IsParser getParser() {
         try {
-            return (parser == null) ? null : parser.newInstance();
+            return parser.newInstance();
         } catch (Exception e) {
-            throw new RuntimeException(e);
-        }    }
+            e.printStackTrace();
+           return null;
+        }
+    }
 
     private Parsers(String type, Class<? extends IsParser> parser) {
         this.type = type;
