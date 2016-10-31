@@ -43,22 +43,18 @@ public class ParseDateTest {
         assertEquals(expected, actual);
     }
 
-    @Test
+    @Test(expected = RuntimeException.class)
     public void parseNoFormat() throws Exception {
-        Date expected = null;
         Field field = getClass().getField("testDateNoPattern");
         ParseDate parseDate = new ParseDate();
-        Date actual = parseDate.parse(ParserUtil.getParser("<date>2016-10-31 09:10:12.2</date>"), field);
-        assertEquals(expected, actual);
+        parseDate.parse(ParserUtil.getParser("<date>2016-10-31 09:10:12.2</date>"), field);
     }
 
-    @Test
+    @Test(expected = RuntimeException.class)
     public void parseWrongFormat() throws Exception {
-        Date expected = null;
         Field field = getClass().getField("testDate");
         ParseDate parseDate = new ParseDate();
-        Date actual = (Date) parseDate.parse(ParserUtil.getParser("<date>2016-10-3109:10:12</date>"), field);
-        assertEquals(expected, actual);
+        parseDate.parse(ParserUtil.getParser("<date>2016-10-3109:10:12</date>"), field);
     }
 
 }
