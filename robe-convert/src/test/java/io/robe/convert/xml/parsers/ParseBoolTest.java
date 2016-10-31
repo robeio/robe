@@ -31,4 +31,11 @@ public class ParseBoolTest {
         assertEquals(expected, actual);
     }
 
+    @Test
+    public void parseSpace() throws Exception {
+        Boolean expected = null;
+        ParseBool parseBool = new ParseBool();
+        Boolean actual = (Boolean) parseBool.parse(getParser("<bool>   </bool>"), null);
+        assertEquals(expected, actual);
+    }
 }

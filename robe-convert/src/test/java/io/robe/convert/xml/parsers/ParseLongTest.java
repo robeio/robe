@@ -22,4 +22,12 @@ public class ParseLongTest {
         assertEquals(expected, actual);
     }
 
+    @Test
+    public void parseSpace() throws Exception {
+        Long expected = null;
+        ParseLong parseInt = new ParseLong();
+        Long actual = (Long) parseInt.parse(getParser("<long>   </long>"), null);
+        assertEquals(expected, actual);
+    }
+
 }

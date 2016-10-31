@@ -43,4 +43,12 @@ public class ParseCharTest {
         assertEquals(expected, actual);
     }
 
+    @Test
+    public void parseSpace() throws Exception {
+        Object expected = null;
+        ParseChar parseChar = new ParseChar();
+        Object actual = parseChar.parse(ParserUtil.getParser("<char>   </char>"), null);
+        assertEquals(expected, actual);
+    }
+
 }

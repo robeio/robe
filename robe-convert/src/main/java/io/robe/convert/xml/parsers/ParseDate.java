@@ -12,6 +12,9 @@ public class ParseDate implements IsParser {
     @Override
     public Object parse(JsonParser parser, Field field) throws IOException {
         try {
+            boolean isValid = parser.getValueAsString() != null && !parser.getValueAsString().trim().isEmpty();
+            if (!isValid)
+                return null;
             String format = field.getAnnotation(JsonFormat.class).pattern();
             return new SimpleDateFormat(format).parse(parser.getValueAsString());
         } catch (ParseException e) {

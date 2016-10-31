@@ -28,6 +28,15 @@ public class ParseEnumTest {
         assertEquals(expected, actual);
     }
 
+    @Test
+    public void parseSpace() throws Exception {
+        TestEnum expected = null;
+        Field field = getClass().getField("testEnum");
+        ParseEnum parseEnum = new ParseEnum();
+        TestEnum actual = (TestEnum) parseEnum.parse(getParser("<enum>   </enum>"), field);
+        assertEquals(expected, actual);
+    }
+
     private enum TestEnum {
         ON,
         OFF

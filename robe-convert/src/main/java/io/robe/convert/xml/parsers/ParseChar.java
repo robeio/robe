@@ -9,10 +9,8 @@ public class ParseChar implements IsParser {
     @Override
     public Object parse(JsonParser parser, Field field) throws IOException {
 
-        String value = parser.getValueAsString();
-        if (value == null)
-            return null;
+        boolean isValid = parser.getValueAsString() != null && !parser.getValueAsString().trim().isEmpty();
 
-        return value.charAt(0);
+        return isValid ? parser.getValueAsString().charAt(0) : null;
     }
 }

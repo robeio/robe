@@ -22,4 +22,12 @@ public class ParseDoubleTest {
         assertEquals(expected, actual);
     }
 
+    @Test
+    public void parseSpace() throws Exception {
+        Double expected = null;
+        ParseDouble parseDouble = new ParseDouble();
+        Double actual = (Double) parseDouble.parse(getParser("<double>   </double>"), null);
+        assertEquals(expected, actual);
+    }
+
 }

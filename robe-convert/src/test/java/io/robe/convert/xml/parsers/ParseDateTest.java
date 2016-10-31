@@ -35,6 +35,15 @@ public class ParseDateTest {
     }
 
     @Test
+    public void parseSpace() throws Exception {
+        Date expected = null;
+        Field field = getClass().getField("testDate");
+        ParseDate parseDate = new ParseDate();
+        Date actual = (Date) parseDate.parse(ParserUtil.getParser("<date>   </date>"), field);
+        assertEquals(expected, actual);
+    }
+
+    @Test
     public void parseNoFormat() throws Exception {
         Date expected = null;
         Field field = getClass().getField("testDateNoPattern");
