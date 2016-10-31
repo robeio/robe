@@ -23,4 +23,13 @@ public class ParseStringTest {
         assertEquals(expected, actual);
     }
 
+    @Test
+    public void parseSpace() throws Exception {
+        String expected = null;
+        ParseString parseString = new ParseString();
+        String actual = (String) parseString.parse(getParser("<string>   </string>"), null);
+        assertEquals(expected, actual);
+    }
+
+
 }

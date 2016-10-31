@@ -21,4 +21,13 @@ public class ParseIntTest {
         Integer actual = (Integer) parseInt.parse(getParser("<int></int>"), null);
         assertEquals(expected, actual);
     }
+
+
+    @Test
+    public void parseSpace() throws Exception {
+        Integer expected = null;
+        ParseInt parseInt = new ParseInt();
+        Integer actual = (Integer) parseInt.parse(getParser("<int>   </int>"), null);
+        assertEquals(expected, actual);
+    }
 }

@@ -23,5 +23,12 @@ public class ParseBigDecimalTest {
         BigDecimal actual = (BigDecimal) parseBigDecimal.parse(getParser("<bigdec></bigdec>"), null);
         assertEquals(expected, actual);
     }
+    @Test
+    public void parseSpace() throws Exception {
+        BigDecimal expected = null;
+        ParseBigDecimal parseBigDecimal = new ParseBigDecimal();
+        BigDecimal actual = (BigDecimal) parseBigDecimal.parse(getParser("<bigdec>  </bigdec>"), null);
+        assertEquals(expected, actual);
+    }
 
 }

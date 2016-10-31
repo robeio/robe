@@ -9,10 +9,8 @@ import java.math.BigDecimal;
 public class ParseBigDecimal implements IsParser {
     @Override
     public Object parse(JsonParser parser, Field field) throws IOException {
-        try {
-            return new BigDecimal(parser.getValueAsString());
-        }catch (NullPointerException e){
-            return  null;
-        }
+        boolean isValid = parser.getValueAsString() != null && !parser.getValueAsString().trim().isEmpty();
+        return isValid ? new BigDecimal(parser.getValueAsString()) : null;
+
     }
 }
