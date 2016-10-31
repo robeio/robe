@@ -19,9 +19,9 @@ public class ParseBigDecimalTest {
 
     @Test
     public void parse() throws Exception {
-        BigDecimal actual = (BigDecimal) parseBigDecimal.parse(null, null);
+        BigDecimal actual = parseBigDecimal.parse(null, null);
         assertEquals(null, actual);
-        actual = (BigDecimal) parseBigDecimal.parse("123.12", null);
+        actual = parseBigDecimal.parse("123.12", null);
         assertEquals(expected, actual);
     }
 

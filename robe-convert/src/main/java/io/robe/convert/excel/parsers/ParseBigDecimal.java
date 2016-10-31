@@ -5,19 +5,18 @@ import org.apache.poi.ss.usermodel.Cell;
 import java.lang.reflect.Field;
 import java.math.BigDecimal;
 
-public class ParseBigDecimal implements IsParser {
+public class ParseBigDecimal implements IsParser<BigDecimal> {
     @Override
-    public Object parse(Object o, Field field) {
+    public BigDecimal parse(Object o, Field field) {
         if (o == null)
             return null;
         return BigDecimal.valueOf(Double.valueOf(o.toString()));
     }
 
     @Override
-    public void setCell(Object o, Cell cell, Field field) {
-        BigDecimal bigDecimal = (BigDecimal) o;
-        if (bigDecimal != null) {
-            cell.setCellValue(bigDecimal.doubleValue());
+    public void setCell(BigDecimal o, Cell cell, Field field) {
+        if (o != null) {
+            cell.setCellValue(o.doubleValue());
         }
     }
 }

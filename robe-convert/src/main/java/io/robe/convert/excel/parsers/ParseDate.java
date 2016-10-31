@@ -8,7 +8,7 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
-public class ParseDate implements IsParser {
+public class ParseDate implements IsParser<Date> {
 
     /**
      * First it checks is there any annotation class for parsing operations,
@@ -21,7 +21,7 @@ public class ParseDate implements IsParser {
      * @return Valid date after parsing with pattern
      */
     @Override
-    public Object parse(Object o, Field field) {
+    public Date parse(Object o, Field field) {
 
         if (o == null || o.toString().trim().length() == 0)
             return null;
@@ -45,13 +45,11 @@ public class ParseDate implements IsParser {
     }
 
     @Override
-    public void setCell(Object o, Cell cell, Field field) {
+    public void setCell(Date o, Cell cell, Field field) {
 
-        Date date = (Date) o;
-        if (date != null) {
-            cell.setCellValue(date);
+        if (o != null) {
             String format = field.getAnnotation(JsonFormat.class).pattern();
-            cell.setCellValue(new SimpleDateFormat(format).format(date));
+            cell.setCellValue(new SimpleDateFormat(format).format(o));
         }
     }
 

@@ -16,14 +16,14 @@ public class ParseBoolTest {
     @Test
     public void parse() throws Exception {
 
-        Boolean actual = (Boolean) parseBool.parse(null, null);
+        Boolean actual = parseBool.parse(null, null);
         assertEquals(null, actual);
 
-        actual = (Boolean) parseBool.parse("true", null);
+        actual = parseBool.parse("true", null);
 
         assertEquals(true, actual);
 
-        actual = (Boolean) parseBool.parse("false", null);
+        actual = parseBool.parse("false", null);
 
         assertEquals(false, actual);
     }

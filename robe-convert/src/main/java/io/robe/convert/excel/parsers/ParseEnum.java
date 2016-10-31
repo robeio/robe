@@ -6,10 +6,10 @@ import java.lang.reflect.Field;
 
 import static java.lang.Enum.valueOf;
 
-public class ParseEnum implements IsParser {
+public class ParseEnum implements IsParser<Enum> {
 
     @Override
-    public Object parse(Object o, Field field) {
+    public Enum parse(Object o, Field field) {
         if (!field.getType().isEnum())
             return null;
         Class<? extends Enum> type = (Class<? extends Enum>) field.getType();
@@ -18,10 +18,9 @@ public class ParseEnum implements IsParser {
     }
 
     @Override
-    public void setCell(Object o, Cell cell, Field field) {
-        Enum anEnum = (Enum) o;
-        if (anEnum != null) {
-            cell.setCellValue(anEnum.name());
+    public void setCell(Enum o, Cell cell, Field field) {
+        if (o != null) {
+            cell.setCellValue(o.name());
         }
     }
 

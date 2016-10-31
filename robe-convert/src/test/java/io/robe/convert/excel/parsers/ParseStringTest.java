@@ -8,17 +8,17 @@ import static org.junit.Assert.assertEquals;
 
 public class ParseStringTest {
 
-    private Object expected = "robe";
+    private String expected = "robe";
     private ParseString parseString = new ParseString();
 
     @Test
     public void parse() throws Exception {
 
-        String actual = (String) parseString.parse(null, null);
+        String actual = parseString.parse(null, null);
 
         assertEquals(null, actual);
 
-        actual = (String) parseString.parse(expected, null);
+        actual = parseString.parse(expected, null);
         assertEquals(expected, actual);
     }
 

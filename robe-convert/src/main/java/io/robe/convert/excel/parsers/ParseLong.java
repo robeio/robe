@@ -4,9 +4,9 @@ import org.apache.poi.ss.usermodel.Cell;
 
 import java.lang.reflect.Field;
 
-public class ParseLong implements IsParser {
+public class ParseLong implements IsParser<Long> {
     @Override
-    public Object parse(Object o, Field field) {
+    public Long parse(Object o, Field field) {
         Long l = null;
 
         int ind = ((String) o).indexOf(".");
@@ -21,10 +21,9 @@ public class ParseLong implements IsParser {
     }
 
     @Override
-    public void setCell(Object o, Cell cell, Field field) {
-        Long aLong = (Long) o;
-        if (aLong != null) {
-            cell.setCellValue(aLong);
+    public void setCell(Long o, Cell cell, Field field) {
+        if (o != null) {
+            cell.setCellValue(o);
         }
     }
 }

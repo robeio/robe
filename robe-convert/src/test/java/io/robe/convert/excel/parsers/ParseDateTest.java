@@ -25,9 +25,9 @@ public class ParseDateTest {
 
     @Test
     public void parse() throws Exception {
-        Date actual = (Date) parseDate.parse(null, null);
+        Date actual =  parseDate.parse(null, null);
         assertEquals(null, actual);
-        actual = (Date) parseDate.parse(expected, this.getClass().getDeclaredField("jsonFormatField"));
+        actual =  parseDate.parse(expected, this.getClass().getDeclaredField("jsonFormatField"));
         assertEquals(new SimpleDateFormat("dd.MM.yyyy").parse(expected), actual);
     }
 

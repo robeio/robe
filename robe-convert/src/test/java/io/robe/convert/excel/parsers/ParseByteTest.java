@@ -15,11 +15,11 @@ public class ParseByteTest {
     @Test
     public void parse() throws Exception {
 
-        Byte actual = (Byte) parseByte.parse(null, null);
+        Byte actual =  parseByte.parse(null, null);
 
         assertEquals(null, actual);
 
-        actual = (Byte) parseByte.parse(expected, null);
+        actual =  parseByte.parse(expected, null);
 
         assertEquals(Byte.valueOf(expected), actual);
 

@@ -15,10 +15,10 @@ public class ParseDoubleTest {
 
     @Test
     public void parse() throws Exception {
-        Double actual = (Double) parseDouble.parse(null, null);
+        Double actual =  parseDouble.parse(null, null);
         assertEquals(null, actual);
 
-        actual = (Double) parseDouble.parse("123.12", null);
+        actual =  parseDouble.parse("123.12", null);
         assertEquals(expected, actual);
     }
 
