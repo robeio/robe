@@ -11,7 +11,7 @@ public class ParseStringTest {
     public void parse() throws Exception {
         String expected = "42";
         ParseString parseString = new ParseString();
-        String actual = (String) parseString.parse(getParser("<string>42</string>"), null);
+        String actual = parseString.parse(getParser("<string>42</string>"), null);
         assertEquals(expected, actual);
     }
 
@@ -19,7 +19,7 @@ public class ParseStringTest {
     public void parseEmpty() throws Exception {
         String expected = null;
         ParseString parseString = new ParseString();
-        String actual = (String) parseString.parse(getParser("<string></string>"), null);
+        String actual = parseString.parse(getParser("<string></string>"), null);
         assertEquals(expected, actual);
     }
 
@@ -27,7 +27,7 @@ public class ParseStringTest {
     public void parseSpace() throws Exception {
         String expected = null;
         ParseString parseString = new ParseString();
-        String actual = (String) parseString.parse(getParser("<string>   </string>"), null);
+        String actual = parseString.parse(getParser("<string>   </string>"), null);
         assertEquals(expected, actual);
     }
 

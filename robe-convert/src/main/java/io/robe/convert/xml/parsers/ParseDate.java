@@ -7,16 +7,19 @@ import java.io.IOException;
 import java.lang.reflect.Field;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.Locale;
 
-public class ParseDate implements IsParser {
+public class ParseDate implements IsParser<Date> {
     @Override
-    public Object parse(JsonParser parser, Field field) throws IOException {
+    public Date parse(JsonParser parser, Field field) throws IOException {
         try {
             boolean isValid = parser.getValueAsString() != null && !parser.getValueAsString().trim().isEmpty();
             if (!isValid)
                 return null;
             String format = field.getAnnotation(JsonFormat.class).pattern();
-            return new SimpleDateFormat(format).parse(parser.getValueAsString());
+            return new SimpleDateFormat(format, Locale.getDefault()).parse(parser.getValueAsString());
         } catch (ParseException e) {
             e.printStackTrace();
             return null;

@@ -8,6 +8,8 @@ import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.util.List;
 
+import static org.junit.Assert.assertEquals;
+
 public class XMLExporterTest {
     @Test
     public void testExportStream() throws Exception {
@@ -24,7 +26,7 @@ public class XMLExporterTest {
 
         for (SamplePojo item : list) {
             SamplePojo ref = TestData.getData().get(index++);
-            assert item.equals(ref);
+            assertEquals(ref,item);
         }
     }
 }

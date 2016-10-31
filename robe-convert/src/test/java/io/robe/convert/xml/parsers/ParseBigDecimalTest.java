@@ -13,21 +13,23 @@ public class ParseBigDecimalTest {
     public void parse() throws Exception {
         BigDecimal expected = new BigDecimal("1000000000000000000000000.012");
         ParseBigDecimal parseBigDecimal = new ParseBigDecimal();
-        BigDecimal actual = (BigDecimal) parseBigDecimal.parse(getParser("<bigdec>1000000000000000000000000.012</bigdec>"), null);
+        BigDecimal actual = parseBigDecimal.parse(getParser("<bigdec>1000000000000000000000000.012</bigdec>"), null);
         assertEquals(expected, actual);
     }
+
     @Test
     public void parseEmpty() throws Exception {
         BigDecimal expected = null;
         ParseBigDecimal parseBigDecimal = new ParseBigDecimal();
-        BigDecimal actual = (BigDecimal) parseBigDecimal.parse(getParser("<bigdec></bigdec>"), null);
+        BigDecimal actual = parseBigDecimal.parse(getParser("<bigdec></bigdec>"), null);
         assertEquals(expected, actual);
     }
+
     @Test
     public void parseSpace() throws Exception {
         BigDecimal expected = null;
         ParseBigDecimal parseBigDecimal = new ParseBigDecimal();
-        BigDecimal actual = (BigDecimal) parseBigDecimal.parse(getParser("<bigdec>  </bigdec>"), null);
+        BigDecimal actual = parseBigDecimal.parse(getParser("<bigdec>  </bigdec>"), null);
         assertEquals(expected, actual);
     }
 

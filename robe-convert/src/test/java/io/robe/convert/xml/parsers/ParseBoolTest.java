@@ -11,7 +11,7 @@ public class ParseBoolTest {
     public void parseTrue() throws Exception {
         Boolean expected = true;
         ParseBool parseBool = new ParseBool();
-        Boolean actual = (Boolean) parseBool.parse(getParser("<bool>true</bool>"), null);
+        Boolean actual =parseBool.parse(getParser("<bool>true</bool>"), null);
         assertEquals(expected, actual);
     }
 
@@ -19,7 +19,7 @@ public class ParseBoolTest {
     public void parseFalse() throws Exception {
         Boolean expected = false;
         ParseBool parseBool = new ParseBool();
-        Boolean actual = (Boolean) parseBool.parse(getParser("<bool>false</bool>"), null);
+        Boolean actual = parseBool.parse(getParser("<bool>false</bool>"), null);
         assertEquals(expected, actual);
     }
 
@@ -27,7 +27,7 @@ public class ParseBoolTest {
     public void parseEmpty() throws Exception {
         Boolean expected = null;
         ParseBool parseBool = new ParseBool();
-        Boolean actual = (Boolean) parseBool.parse(getParser("<bool></bool>"), null);
+        Boolean actual = parseBool.parse(getParser("<bool></bool>"), null);
         assertEquals(expected, actual);
     }
 
@@ -35,7 +35,8 @@ public class ParseBoolTest {
     public void parseSpace() throws Exception {
         Boolean expected = null;
         ParseBool parseBool = new ParseBool();
-        Boolean actual = (Boolean) parseBool.parse(getParser("<bool>   </bool>"), null);
+        Boolean actual = parseBool.parse(getParser("<bool>   </bool>"), null);
         assertEquals(expected, actual);
     }
+
 }

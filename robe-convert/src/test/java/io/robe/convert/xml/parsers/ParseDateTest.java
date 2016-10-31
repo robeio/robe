@@ -21,7 +21,7 @@ public class ParseDateTest {
         Date expected = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.S").parse("2016-10-31 09:10:12.2");
         Field field = getClass().getField("testDate");
         ParseDate parseDate = new ParseDate();
-        Date actual = (Date) parseDate.parse(ParserUtil.getParser("<date>2016-10-31 09:10:12.2</date>"), field);
+        Date actual = parseDate.parse(ParserUtil.getParser("<date>2016-10-31 09:10:12.2</date>"), field);
         assertEquals(expected, actual);
     }
 
@@ -30,7 +30,7 @@ public class ParseDateTest {
         Date expected = null;
         Field field = getClass().getField("testDate");
         ParseDate parseDate = new ParseDate();
-        Date actual = (Date) parseDate.parse(ParserUtil.getParser("<date></date>"), field);
+        Date actual = parseDate.parse(ParserUtil.getParser("<date></date>"), field);
         assertEquals(expected, actual);
     }
 
@@ -39,7 +39,7 @@ public class ParseDateTest {
         Date expected = null;
         Field field = getClass().getField("testDate");
         ParseDate parseDate = new ParseDate();
-        Date actual = (Date) parseDate.parse(ParserUtil.getParser("<date>   </date>"), field);
+        Date actual = parseDate.parse(ParserUtil.getParser("<date>   </date>"), field);
         assertEquals(expected, actual);
     }
 
@@ -48,7 +48,7 @@ public class ParseDateTest {
         Date expected = null;
         Field field = getClass().getField("testDateNoPattern");
         ParseDate parseDate = new ParseDate();
-        Date actual = (Date) parseDate.parse(ParserUtil.getParser("<date>2016-10-31 09:10:12.2</date>"), field);
+        Date actual = parseDate.parse(ParserUtil.getParser("<date>2016-10-31 09:10:12.2</date>"), field);
         assertEquals(expected, actual);
     }
 

@@ -10,7 +10,7 @@ public class ParseLongTest {
     public void parse() throws Exception {
         Long expected = 42l;
         ParseLong parseInt = new ParseLong();
-        Long actual = (Long) parseInt.parse(getParser("<long>42</long>"), null);
+        Long actual =  parseInt.parse(getParser("<long>42</long>"), null);
         assertEquals(expected, actual);
     }
 
@@ -18,7 +18,7 @@ public class ParseLongTest {
     public void parseEmpty() throws Exception {
         Long expected = null;
         ParseLong parseInt = new ParseLong();
-        Long actual = (Long) parseInt.parse(getParser("<long></long>"), null);
+        Long actual =  parseInt.parse(getParser("<long></long>"), null);
         assertEquals(expected, actual);
     }
 
@@ -26,7 +26,7 @@ public class ParseLongTest {
     public void parseSpace() throws Exception {
         Long expected = null;
         ParseLong parseInt = new ParseLong();
-        Long actual = (Long) parseInt.parse(getParser("<long>   </long>"), null);
+        Long actual = parseInt.parse(getParser("<long>   </long>"), null);
         assertEquals(expected, actual);
     }
 

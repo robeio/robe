@@ -10,7 +10,7 @@ public class ParseDoubleTest {
     public void parse() throws Exception {
         Double expected = 12d;
         ParseDouble parseDouble = new ParseDouble();
-        Double actual = (Double) parseDouble.parse(getParser("<double>12.00</double>"), null);
+        Double actual = parseDouble.parse(getParser("<double>12.00</double>"), null);
         assertEquals(expected, actual);
     }
 
@@ -18,7 +18,7 @@ public class ParseDoubleTest {
     public void parseEmpty() throws Exception {
         Double expected = null;
         ParseDouble parseDouble = new ParseDouble();
-        Double actual = (Double) parseDouble.parse(getParser("<double></double>"), null);
+        Double actual = parseDouble.parse(getParser("<double></double>"), null);
         assertEquals(expected, actual);
     }
 
@@ -26,7 +26,7 @@ public class ParseDoubleTest {
     public void parseSpace() throws Exception {
         Double expected = null;
         ParseDouble parseDouble = new ParseDouble();
-        Double actual = (Double) parseDouble.parse(getParser("<double>   </double>"), null);
+        Double actual = parseDouble.parse(getParser("<double>   </double>"), null);
         assertEquals(expected, actual);
     }
 

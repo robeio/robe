@@ -10,7 +10,7 @@ public class ParseIntTest {
     public void parse() throws Exception {
         Integer expected = 42;
         ParseInt parseInt = new ParseInt();
-        Integer actual = (Integer) parseInt.parse(getParser("<int>42</int>"), null);
+        Integer actual = parseInt.parse(getParser("<int>42</int>"), null);
         assertEquals(expected, actual);
     }
 
@@ -18,7 +18,7 @@ public class ParseIntTest {
     public void parseEmpty() throws Exception {
         Integer expected = null;
         ParseInt parseInt = new ParseInt();
-        Integer actual = (Integer) parseInt.parse(getParser("<int></int>"), null);
+        Integer actual = parseInt.parse(getParser("<int></int>"), null);
         assertEquals(expected, actual);
     }
 
@@ -27,7 +27,7 @@ public class ParseIntTest {
     public void parseSpace() throws Exception {
         Integer expected = null;
         ParseInt parseInt = new ParseInt();
-        Integer actual = (Integer) parseInt.parse(getParser("<int>   </int>"), null);
+        Integer actual = parseInt.parse(getParser("<int>   </int>"), null);
         assertEquals(expected, actual);
     }
 }
