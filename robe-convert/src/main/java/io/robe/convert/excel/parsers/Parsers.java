@@ -1,23 +1,24 @@
 package io.robe.convert.excel.parsers;
 
 public enum Parsers {
-    BIGDECIMAL("java.math.BigDecimal", ParseBigDecimal.class),
-    BOOLEAN("java.lang.Boolean", ParseBool.class),
-    BYTE("java.lang.Byte", ParseByte.class),
-    DOUBLE("java.lang.Double", ParseDouble.class),
-    INT("int", ParseInt.class),
-    INTEGER("java.lang.Integer", ParseInt.class),
-    LONG("java.lang.Long", ParseLong.class),
-    STRING("java.lang.String", ParseString.class),
-    DATE("java.util.Date", ParseDate.class),
-    ENUM("java.lang.String", ParseEnum.class);
+
+    BIGDECIMAL(ParseBigDecimal.class),
+    BOOLEAN(ParseBool.class),
+    BYTE(ParseChar.class),
+    DOUBLE(ParseDouble.class),
+    INT(ParseInt.class),
+    INTEGER(ParseInt.class),
+    LONG(ParseLong.class),
+    STRING(ParseString.class),
+    CHAR(ParseChar.class),
+    CHARACTER(ParseChar.class),
+    DATE(ParseDate.class),
+    ENUM(ParseEnum.class);
 
 
-    private final String type;
     private final Class<? extends IsParser> parser;
 
-    Parsers(String type, Class<? extends IsParser> parser) {
-        this.type = type;
+    Parsers(Class<? extends IsParser> parser) {
         this.parser = parser;
     }
 
@@ -29,8 +30,4 @@ public enum Parsers {
         }
     }
 
-    @Override
-    public String toString() {
-        return type;
-    }
 }

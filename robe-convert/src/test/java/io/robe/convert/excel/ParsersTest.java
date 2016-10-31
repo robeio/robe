@@ -1,25 +1,47 @@
 package io.robe.convert.excel;
 
+import io.robe.convert.excel.parsers.IsParser;
+import io.robe.convert.excel.parsers.*;
 import io.robe.convert.excel.parsers.Parsers;
 import org.junit.Assert;
+import org.junit.BeforeClass;
 import org.junit.Test;
 
-/**
- * Created by hasanmumin on 20/10/2016.
- */
+import java.util.HashMap;
+import java.util.Map;
+
+import static org.junit.Assert.assertTrue;
+
+
 public class ParsersTest {
+    private static HashMap<String, Class<? extends IsParser>> parserMap = new HashMap<>();
+
+    @BeforeClass
+    public static void createHashmap() {
+        parserMap.put("BIGDECIMAL", ParseBigDecimal.class);
+        parserMap.put("BOOLEAN", ParseBool.class);
+        parserMap.put("BYTE", ParseChar.class);
+        parserMap.put("DOUBLE", ParseDouble.class);
+        parserMap.put("INT", ParseInt.class);
+        parserMap.put("INTEGER", ParseInt.class);
+        parserMap.put("LONG", ParseLong.class);
+        parserMap.put("STRING", ParseString.class);
+        parserMap.put("CHAR", ParseChar.class);
+        parserMap.put("CHARACTER", ParseChar.class);
+        parserMap.put("DATE", ParseDate.class);
+        parserMap.put("ENUM", ParseEnum.class);
+    }
 
     @Test
-    public void toStringTest() {
-        Assert.assertTrue(Parsers.BIGDECIMAL.toString().equals("java.math.BigDecimal"));
-        Assert.assertTrue(Parsers.BOOLEAN.toString().equals("java.lang.Boolean"));
-        Assert.assertTrue(Parsers.BYTE.toString().equals("java.lang.Byte"));
-        Assert.assertTrue(Parsers.DOUBLE.toString().equals("java.lang.Double"));
-        Assert.assertTrue(Parsers.INT.toString().equals("int"));
-        Assert.assertTrue(Parsers.INTEGER.toString().equals("java.lang.Integer"));
-        Assert.assertTrue(Parsers.LONG.toString().equals("java.lang.Long"));
-        Assert.assertTrue(Parsers.STRING.toString().equals("java.lang.String"));
-        Assert.assertTrue(Parsers.DATE.toString().equals("java.util.Date"));
-        Assert.assertTrue(Parsers.ENUM.toString().equals("java.lang.String"));
+    public void getParser() throws Exception {
+        for (Map.Entry<String, Class<? extends IsParser>> entry : parserMap.entrySet()) {
+            assert (Parsers.valueOf(entry.getKey()).getParser().getClass().equals(entry.getValue()));
+        }
     }
+
+    @Test(expected = IllegalArgumentException.class)
+    public void getParserNull() throws Exception {
+        assertTrue(Parsers.valueOf("invalidParser").getParser() == null);
+    }
+
 }

@@ -37,13 +37,6 @@ public class ParsersTest {
     @Test(expected=IllegalArgumentException.class)
     public void getParserNull() throws Exception {
         assertTrue(Parsers.valueOf("invalidParser").getParser() == null);
-
-    }
-
-    @Test
-    public void toStringTest() throws Exception {
-        assertTrue(Parsers.valueOf("INT").toString().equals("int"));
-
     }
 
 }
