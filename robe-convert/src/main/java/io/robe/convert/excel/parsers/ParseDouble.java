@@ -7,8 +7,10 @@ import java.lang.reflect.Field;
 public class ParseDouble implements IsParser {
     @Override
     public Object parse(Object o, Field field) {
-        Double d = Double.valueOf(o.toString());
-        return d;
+
+        if (o == null)
+            return null;
+        return Double.valueOf(o.toString());
     }
 
     @Override
