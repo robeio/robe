@@ -25,7 +25,7 @@ public class ParseBoolTest {
 
     @Test
     public void parseEmpty() throws Exception {
-        Boolean expected = false;
+        Boolean expected = null;
         ParseBool parseBool = new ParseBool();
         Boolean actual = (Boolean) parseBool.parse(getParser("<bool></bool>"), null);
         assertEquals(expected, actual);
