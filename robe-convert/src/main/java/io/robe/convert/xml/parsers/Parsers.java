@@ -20,9 +20,10 @@ public enum Parsers {
 
     public IsParser getParser() {
         try {
-            return (parser == null) ? null : parser.newInstance();
+            return parser.newInstance();
         } catch (Exception e) {
-            throw new RuntimeException(e);
+            e.printStackTrace();
+           return null;
         }
     }
 
