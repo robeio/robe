@@ -8,6 +8,7 @@ import java.lang.reflect.Field;
 public class ParseDouble implements IsParser {
     @Override
     public Object parse(JsonParser parser, Field field) throws IOException {
-        return new Double(parser.getValueAsDouble());
+        boolean isValid = parser.getValueAsString() != null && !parser.getValueAsString().isEmpty();
+        return isValid ? new Double(parser.getValueAsDouble()) : null;
     }
 }
