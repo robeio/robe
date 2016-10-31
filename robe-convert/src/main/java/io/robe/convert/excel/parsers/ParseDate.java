@@ -46,8 +46,9 @@ public class ParseDate implements IsParser {
 
     @Override
     public void setCell(Object o, Cell cell, Field field) {
-        if (o != null) {
-            Date date = (Date) o;
+
+        Date date = (Date) o;
+        if (date != null) {
             cell.setCellValue(date);
             String format = field.getAnnotation(JsonFormat.class).pattern();
             cell.setCellValue(new SimpleDateFormat(format).format(date));
