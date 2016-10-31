@@ -7,12 +7,7 @@ import java.lang.reflect.Field;
 public class ParseByte implements IsParser<Byte> {
     @Override
     public Byte parse(Object o, Field field) {
-        Byte b = null;
-        if (o instanceof String) {
-            b = Byte.valueOf(o.toString());
-        }
-
-        return b;
+        return isValid(o) ? Byte.valueOf(o.toString()) : null;
     }
 
     @Override

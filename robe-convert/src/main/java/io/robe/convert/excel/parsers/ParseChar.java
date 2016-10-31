@@ -7,11 +7,7 @@ import java.lang.reflect.Field;
 public class ParseChar implements IsParser<Character> {
     @Override
     public Character parse(Object o, Field field) {
-        Character b = null;
-        if (o instanceof String) {
-            b = o.toString().charAt(0);
-        }
-        return b;
+        return isValid(o) ? o.toString().charAt(0) : null;
     }
 
     @Override

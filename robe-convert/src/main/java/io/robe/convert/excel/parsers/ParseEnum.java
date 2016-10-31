@@ -10,11 +10,8 @@ public class ParseEnum implements IsParser<Enum> {
 
     @Override
     public Enum parse(Object o, Field field) {
-        if (!field.getType().isEnum())
-            return null;
-        Class<? extends Enum> type = (Class<? extends Enum>) field.getType();
-        Enum anEnum = valueOf(type, o.toString());
-        return anEnum;
+        Class<? extends Enum> enumClass = (Class<? extends Enum>) field.getType();
+        return isValid(o) ? valueOf(enumClass, o.toString()) : null;
     }
 
     @Override

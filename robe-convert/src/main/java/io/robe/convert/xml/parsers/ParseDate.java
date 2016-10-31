@@ -13,16 +13,17 @@ import java.util.Locale;
 public class ParseDate implements IsParser<Date> {
     @Override
     public Date parse(JsonParser parser, Field field) throws IOException {
+        if (!isValid(parser)) {
+            return null;
+        }
+        JsonFormat formatAnn = field.getAnnotation(JsonFormat.class);
+        if (formatAnn == null) {
+            throw new RuntimeException("JsonFormat with pattern needed for: " + field.getName());
+        }
         try {
-            if (!isValid(parser))
-                return null;
-            String format = field.getAnnotation(JsonFormat.class).pattern();
-            return new SimpleDateFormat(format, Locale.getDefault()).parse(parser.getValueAsString());
+            return new SimpleDateFormat(formatAnn.pattern(), Locale.getDefault()).parse(parser.getValueAsString());
         } catch (ParseException e) {
-            e.printStackTrace();
-            return null;
-        } catch (NullPointerException e) {
-            return null;
+            throw new RuntimeException("JsonFormat with pattern is wrong for: " + field.getName() + " pattern: " + formatAnn.pattern());
         }
     }
 }

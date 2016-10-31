@@ -7,13 +7,7 @@ import java.lang.reflect.Field;
 public class ParseBool implements IsParser<Boolean> {
     @Override
     public Boolean parse(Object o, Field field) {
-        Boolean b = null;
-
-        if (o instanceof String) {
-            b = Boolean.valueOf(o.toString());
-        }
-
-        return b;
+        return isValid(o) ? Boolean.valueOf(o.toString()) : null;
     }
 
     @Override

@@ -7,9 +7,7 @@ import java.lang.reflect.Field;
 public class ParseDouble implements IsParser<Double> {
     @Override
     public Double parse(Object o, Field field) {
-        if (o == null)
-            return null;
-        return Double.valueOf(o.toString());
+        return isValid(o) ? Double.valueOf(o.toString()) : null;
     }
 
     @Override

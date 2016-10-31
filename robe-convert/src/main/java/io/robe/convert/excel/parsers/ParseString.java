@@ -7,9 +7,7 @@ import java.lang.reflect.Field;
 public class ParseString implements IsParser<String> {
     @Override
     public String parse(Object o, Field field) {
-        if (o == null)
-            return null;
-        return String.valueOf(o.toString());
+        return isValid(o) ? String.valueOf(o.toString()) : null;
     }
 
     @Override
