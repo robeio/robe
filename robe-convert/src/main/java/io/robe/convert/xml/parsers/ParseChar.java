@@ -8,6 +8,11 @@ import java.lang.reflect.Field;
 public class ParseChar implements IsParser {
     @Override
     public Object parse(JsonParser parser, Field field) throws IOException {
-        return parser.getValueAsString().charAt(0);
+
+        String value = parser.getValueAsString();
+        if (value == null)
+            return null;
+
+        return value.charAt(0);
     }
 }
