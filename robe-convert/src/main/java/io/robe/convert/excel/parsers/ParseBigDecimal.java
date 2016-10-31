@@ -8,14 +8,15 @@ import java.math.BigDecimal;
 public class ParseBigDecimal implements IsParser {
     @Override
     public Object parse(Object o, Field field) {
-        BigDecimal bd = BigDecimal.valueOf(Double.valueOf(o.toString()));
-        return bd;
+        if (o == null)
+            return null;
+        return BigDecimal.valueOf(Double.valueOf(o.toString()));
     }
 
     @Override
     public void setCell(Object o, Cell cell, Field field) {
-        BigDecimal bigDecimal = (BigDecimal) o;
-        if (bigDecimal != null) {
+        if (o != null) {
+            BigDecimal bigDecimal = (BigDecimal) o;
             cell.setCellValue(bigDecimal.doubleValue());
         }
     }
