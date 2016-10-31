@@ -17,8 +17,8 @@ public class ParseByte implements IsParser {
 
     @Override
     public void setCell(Object o, Cell cell, Field field) {
-        Byte aByte = (Byte) o;
-        if (aByte != null) {
+        if (o != null) {
+            Byte aByte = (Byte) o;
             cell.setCellValue(aByte);
         }
     }

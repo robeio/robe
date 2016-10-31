@@ -6,9 +6,6 @@ import org.junit.Test;
 
 import static org.junit.Assert.assertEquals;
 
-/**
- * Created by hasanmumin on 27/10/2016.
- */
 public class ParseStringTest {
 
     private Object expected = "robe";
