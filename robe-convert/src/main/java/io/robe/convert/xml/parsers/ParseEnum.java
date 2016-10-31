@@ -10,7 +10,9 @@ import static java.lang.Enum.valueOf;
 public class ParseEnum implements IsParser {
     @Override
     public Object parse(JsonParser parser, Field field) throws IOException {
+        boolean isValid = parser.getValueAsString() != null && !parser.getValueAsString().isEmpty();
+
         Class<? extends Enum> enumClass = (Class<? extends Enum>) field.getType();
-        return valueOf(enumClass, parser.getValueAsString());
+        return isValid ? valueOf(enumClass, parser.getValueAsString()): null;
     }
 }

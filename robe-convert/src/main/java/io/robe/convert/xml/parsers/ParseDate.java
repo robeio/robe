@@ -11,11 +11,13 @@ import java.text.SimpleDateFormat;
 public class ParseDate implements IsParser {
     @Override
     public Object parse(JsonParser parser, Field field) throws IOException {
-        String format = field.getAnnotation(JsonFormat.class).pattern();
         try {
+            String format = field.getAnnotation(JsonFormat.class).pattern();
             return new SimpleDateFormat(format).parse(parser.getValueAsString());
         } catch (ParseException e) {
             e.printStackTrace();
+            return null;
+        } catch (NullPointerException e) {
             return null;
         }
     }
