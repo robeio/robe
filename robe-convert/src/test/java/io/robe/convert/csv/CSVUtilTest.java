@@ -17,7 +17,6 @@ import static org.junit.Assert.assertNotNull;
 
 public class CSVUtilTest {
 
-
     @Test
     public void convertFieldsToCellProcessors() throws Exception {
         Collection<Converter.FieldEntry> entries = new LinkedList<>();
