@@ -93,4 +93,58 @@ public class SearchModelTest {
         assertArrayEquals(new String[]{"+field", "+field1"}, model.getSort());
     }
 
+    @Test
+    public void hashCodeTest() {
+
+        SearchModel model1 = new SearchModel();
+        SearchModel model2 = new SearchModel();
+        this.check(model1, model2);
+
+        String[] fields = new String[]{"field1", "field2"};
+        model1.setFields(fields);
+        model2.setFields(fields);
+        this.check(model1, model2);
+
+        Integer offset = 0;
+        model1.setOffset(offset);
+        model2.setOffset(offset);
+        this.check(model1, model2);
+
+        Integer limit = 10;
+        model1.setLimit(limit);
+        model2.setLimit(limit);
+        this.check(model1, model2);
+
+        String q = "query";
+        model1.setQ(q);
+        model2.setQ(q);
+        this.check(model1, model2);
+
+        String[] sort = new String[]{"field1+", "field2-"};
+        model1.setSort(sort);
+        model2.setSort(sort);
+        this.check(model1, model2);
+
+        long totalCount = 30;
+        model1.setTotalCount(totalCount);
+        model2.setTotalCount(totalCount);
+        this.check(model1, model2);
+
+        HttpServletResponse httpServletResponse = new Response(null, null);
+        model1.setResponse(httpServletResponse);
+        model2.setResponse(httpServletResponse);
+        this.check(model1, model2);
+
+        String[][] filter = new String[][]{new String[]{"field1", "=", "val"}};
+        model1.setFilter(filter);
+        model2.setFilter(filter);
+
+
+    }
+
+    public void check(SearchModel model1, SearchModel model2) {
+        assertEquals(model1.hashCode(), model2.hashCode());
+        assertEquals(model1, model2);
+    }
+
 }
