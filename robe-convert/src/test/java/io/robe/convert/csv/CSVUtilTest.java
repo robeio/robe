@@ -9,6 +9,7 @@ import org.supercsv.cellprocessor.ift.CellProcessor;
 
 import java.lang.reflect.Field;
 import java.util.Collection;
+import java.util.Date;
 import java.util.LinkedList;
 
 import static org.junit.Assert.assertEquals;
@@ -41,10 +42,20 @@ public class CSVUtilTest {
         Field[] fields = SamplePojo.class.getFields();
         for (int i = 0; i < fields.length; i++) {
             CellProcessorAdaptor adapter = CSVUtil.decideAdaptor(fields[i]);
-            if(!fields[i].getType().getTypeName().equals(String.class.getName())){
+            if (!fields[i].getType().getTypeName().equals(String.class.getName())) {
                 assertNotNull(adapter);
             }
         }
+    }
+
+    @Convert
+    public Date failDate;
+
+    @Test(expected = RuntimeException.class)
+    public void decideAdaptorDateError() throws Exception {
+        Field field = getClass().getField("failDate");
+        CellProcessorAdaptor adapter = CSVUtil.decideAdaptor(field);
+        assertNotNull(adapter);
     }
 
 }
