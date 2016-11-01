@@ -39,7 +39,10 @@ public class SamplePojo {
     @Convert(title = "Byte", type = Convert.Type.BYTE)
     private String anByte;
 
+    @Convert(ignore = true)
+    private String ignoreString;
 
+    private String noConvertString;
 
 
     public SamplePojo() {
