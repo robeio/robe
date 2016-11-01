@@ -22,11 +22,9 @@ public class CSVUtil {
         for (Converter.FieldEntry fieldEntry : fields) {
             Field field = fieldEntry.getValue();
             Convert an = field.getAnnotation(Convert.class);
-            if(an == null){
-                continue;
-            }
+
             CellProcessorAdaptor a = decideAdaptor(field);
-            CellProcessor p = null;
+            CellProcessor p;
             if (an.optional()) {
                 if (a != null) {
                     p = new Optional(a);

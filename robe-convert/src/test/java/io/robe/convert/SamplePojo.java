@@ -8,7 +8,7 @@ import java.util.Date;
 
 public class SamplePojo {
 
-    @Convert(order = 0, unique = true, title = "Kullanıcı Id")
+    @Convert(order = 0, unique = true, title = "Kullanıcı Id", optional = false)
     private int id;
 
     @Convert(order = 0)
