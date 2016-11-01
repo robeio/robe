@@ -28,4 +28,12 @@ public class CSVExporterTest {
             assert importedPojo.equals(ref);
         }
     }
+
+    @Test(expected = NullPointerException.class)
+    public void testExportNullIterator() throws Exception {
+
+        ByteArrayOutputStream os = new ByteArrayOutputStream();
+        CSVExporter<SamplePojo> exporter = new CSVExporter(SamplePojo.class);
+        exporter.exportStream(os, null);
+    }
 }
