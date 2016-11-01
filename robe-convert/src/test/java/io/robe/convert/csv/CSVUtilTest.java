@@ -38,7 +38,7 @@ public class CSVUtilTest {
 
     @Test
     public void decideAdaptor() throws Exception {
-        Field[] fields = SamplePojo.class.getDeclaredFields();
+        Field[] fields = SamplePojo.class.getFields();
         for (int i = 0; i < fields.length; i++) {
             CellProcessorAdaptor adapter = CSVUtil.decideAdaptor(fields[i]);
             if(!fields[i].getType().getTypeName().equals(String.class.getName())){
