@@ -3,19 +3,18 @@ package io.robe.convert.csv.parsers;
 import org.supercsv.cellprocessor.*;
 
 public enum Parsers {
-    BIGDECIMAL("java.math.BigDecimal", ParseBigDecimal.class),
-    BOOLEAN("java.lang.Boolean", ParseBool.class),
-    BYTE("java.lang.Byte", ParseChar.class),
-    DOUBLE("java.lang.Double", ParseDouble.class),
-    INT("int", ParseInt.class),
-    INTEGER("java.lang.Integer", ParseInt.class),
-    LONG("java.lang.Long", ParseLong.class),
-    STRING("java.lang.String", null),
-    CHAR("java.lang.String", ParseChar.class),
-    ENUM("java.lang.Enum", ParseEnum.class);
+    BIGDECIMAL(ParseBigDecimal.class),
+    BOOLEAN(ParseBool.class),
+    BYTE(ParseChar.class),
+    DOUBLE(ParseDouble.class),
+    INT(ParseInt.class),
+    INTEGER(ParseInt.class),
+    LONG(ParseLong.class),
+    STRING(null),
+    CHAR(ParseChar.class),
+    CHARACTER(ParseChar.class),
+    ENUM(ParseEnum.class);
 
-
-    private final String type;
     private final Class<? extends CellProcessorAdaptor> parser;
 
     public CellProcessorAdaptor getParser() {
@@ -37,13 +36,8 @@ public enum Parsers {
         }
     }
 
-    private Parsers(String type, Class<? extends CellProcessorAdaptor> parser) {
-        this.type = type;
+    Parsers(Class<? extends CellProcessorAdaptor> parser) {
         this.parser = parser;
     }
 
-    @Override
-    public String toString() {
-        return type;
-    }
 }
