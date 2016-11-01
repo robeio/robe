@@ -41,6 +41,61 @@ public class SearchModel {
     public SearchModel() {
     }
 
+    private static String[][] parseFilterExp(String filters) {
+        String[] filterArr = filters.split(",");
+        String[][] parsed = new String[filterArr.length][3];
+        int parsedIndex = 0;
+        for (String filter : filterArr) {
+            char[] chars = filter.toCharArray();
+            char[] name = new char[chars.length];
+            char[] op = new char[2];
+            char[] value = new char[chars.length];
+            int nIndex = 0;
+            int oIndex = 0;
+            int vIndex = 0;
+            short part = 0;
+            for (int i = 0; i < chars.length; i++) {
+                switch (part) {
+                    case 0://Filling name
+                        switch (chars[i]) {
+                            case '=':
+                            case '!':
+                            case '<':
+                            case '>':
+                            case '~':
+                            case '|':
+                                //Jump to operation
+                                op[oIndex++] = chars[i];
+                                part = 1;
+                                break;
+                            default:
+                                name[nIndex++] = chars[i];
+                        }
+                        break;
+                    case 1://Filling op
+                        switch (chars[i]) {
+                            case '=':
+                                op[oIndex++] = chars[i];
+                                break;
+                            default:
+                                //Jump to value
+                                value[vIndex++] = chars[i];
+                                part = 2;
+                        }
+                        break;
+                    case 2://Filling value
+                        value[vIndex++] = chars[i];
+                        break;
+                }
+            }
+            parsed[parsedIndex++] = new String[]{
+                    new String(name, 0, nIndex),
+                    new String(op, 0, oIndex),
+                    new String(value, 0, vIndex)};
+        }
+        return parsed;
+    }
+
     public String getQ() {
         return q;
     }
@@ -115,63 +170,8 @@ public class SearchModel {
             this.filter = new String[][]{new String[]{field, operator, value}};
         } else {
             this.filter = Arrays.copyOf(this.filter, this.filter.length + 1);
-            this.filter[filter.length-1] = new String[]{field, operator, value};
+            this.filter[filter.length - 1] = new String[]{field, operator, value};
         }
-    }
-
-    private static String[][] parseFilterExp(String filters) {
-        String[] filterArr = filters.split(",");
-        String[][] parsed = new String[filterArr.length][3];
-        int parsedIndex = 0;
-        for (String filter : filterArr) {
-            char[] chars = filter.toCharArray();
-            char[] name = new char[chars.length];
-            char[] op = new char[2];
-            char[] value = new char[chars.length];
-            int nIndex = 0;
-            int oIndex = 0;
-            int vIndex = 0;
-            short part = 0;
-            for (int i = 0; i < chars.length; i++) {
-                switch (part) {
-                    case 0://Filling name
-                        switch (chars[i]) {
-                            case '=':
-                            case '!':
-                            case '<':
-                            case '>':
-                            case '~':
-                            case '|':
-                                //Jump to operation
-                                op[oIndex++] = chars[i];
-                                part = 1;
-                                break;
-                            default:
-                                name[nIndex++] = chars[i];
-                        }
-                        break;
-                    case 1://Filling op
-                        switch (chars[i]) {
-                            case '=':
-                                op[oIndex++] = chars[i];
-                                break;
-                            default:
-                                //Jump to value
-                                value[vIndex++] = chars[i];
-                                part = 2;
-                        }
-                        break;
-                    case 2://Filling value
-                        value[vIndex++] = chars[i];
-                        break;
-                }
-            }
-            parsed[parsedIndex++] = new String[]{
-                    new String(name, 0, nIndex),
-                    new String(op, 0, oIndex),
-                    new String(value, 0, vIndex)};
-        }
-        return parsed;
     }
 
     @JsonIgnore
@@ -183,16 +183,15 @@ public class SearchModel {
             boolean find = false;
             for (int i = 0; i < this.sort.length; i++) {
                 String f = this.sort[i];
-                if (f.contains(field)) {
-                    this.sort[i] = field + operator;
+                if (field.equals(f.substring(1, f.length()))) {
+                    this.sort[i] = operator + field;
                     find = true;
                     break;
                 }
             }
             if (!find) {
-                String[] array = new String[this.sort.length + 1];
-                System.arraycopy(this.sort, 0, array, 0, this.sort.length);
-                array[this.sort.length + 1] = operator + field;
+                String[] array = Arrays.copyOf(this.sort, this.sort.length + 1);
+                array[this.sort.length] = operator + field;
                 this.sort = array;
             }
 
