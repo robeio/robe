@@ -3,15 +3,14 @@ package io.robe.common.service.search;
 import com.google.common.collect.Lists;
 import io.robe.common.service.search.model.SearchModel;
 import org.junit.Test;
-import org.mockito.invocation.InvocationOnMock;
 
 import javax.ws.rs.core.MultivaluedHashMap;
 import javax.ws.rs.core.MultivaluedMap;
 import javax.ws.rs.core.UriInfo;
 
+import static org.junit.Assert.assertEquals;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
-import static org.junit.Assert.*;
 
 public class SearchFactoryTest {
 
@@ -33,6 +32,7 @@ public class SearchFactoryTest {
         queryParameters.put("_fields", Lists.newArrayList("field1,field2"));
         queryParameters.put("_sort", Lists.newArrayList("+field1,-field2"));
         queryParameters.put("_filter", Lists.newArrayList("field1=1"));
+        queryParameters.put("_none", Lists.newArrayList("none"));
 
         UriInfo uriInfo = mock(UriInfo.class);
         when(uriInfo.getQueryParameters()).thenReturn(queryParameters);
@@ -40,6 +40,10 @@ public class SearchFactoryTest {
         when(factory.getUriInfo()).thenReturn(uriInfo);
         when(factory.getMethod()).thenReturn("GET");
         when(factory.provide()).thenCallRealMethod();
+
+        assertEquals(uriInfo, factory.getUriInfo());
+        assertEquals("GET", factory.getMethod());
+
         SearchModel actual = factory.provide();
 
         assertEquals(expected, actual);
