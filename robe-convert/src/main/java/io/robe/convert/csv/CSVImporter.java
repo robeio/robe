@@ -46,7 +46,7 @@ public class CSVImporter<T> extends Importer<T> {
         try {
             this.importStream(inputStream, handler, charSetName);
         } catch (Exception e) {
-            e.printStackTrace();
+            throw e;
         }
         return list;
     }
