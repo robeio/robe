@@ -8,10 +8,10 @@ public class ParseInt implements IsParser<Integer> {
     @Override
     public Integer parse(Object o, Field field) {
         if (isValid(o)) {
-            Integer i = null;
-            int ind = ((String) o).indexOf(".");
+            Integer i;
+            int ind = o.toString().indexOf(".");
             if (ind != -1) {
-                o = ((String) o).substring(0, ind);
+                o = o.toString().substring(0, ind);
             }
             i = Integer.valueOf(o.toString());
             return i;
