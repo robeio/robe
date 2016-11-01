@@ -21,12 +21,10 @@ public class ParseIntTest {
         Integer actual = parseInt.parse(null, null);
         assertEquals(null, actual);
 
-
         actual = parseInt.parse(expected, null);
         assertEquals(expected, actual);
 
         actual = parseInt.parse(expectedWithDot, null);
-
         assertEquals(Integer.valueOf(expectedWithDot.intValue()), actual);
 
     }
@@ -38,7 +36,6 @@ public class ParseIntTest {
         assertEquals("", cell.getStringCellValue());
 
         parseInt.setCell(expected, cell, null);
-
         assertEquals(Double.valueOf(expected.toString()), cell.getNumericCellValue(), 0.01);
     }
 
