@@ -61,6 +61,10 @@ public class SearchModelTest {
         model.setResponse(httpServletResponse);
         assertEquals(httpServletResponse, model.getResponse());
 
+        String[][] filter = new String[][]{new String[]{"field1", "=", "val"}};
+        model.setFilter(filter);
+        assertArrayEquals(filter, model.getFilter());
+
     }
 
     @Test
