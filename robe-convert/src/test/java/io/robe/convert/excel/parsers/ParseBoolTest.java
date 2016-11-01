@@ -33,6 +33,9 @@ public class ParseBoolTest {
 
         Cell cell = CellGenerateUtil.create();
 
+        parseBool.setCell(null, cell, null);
+        assertEquals("", cell.getStringCellValue());
+
         parseBool.setCell(true, cell, null);
         assertEquals(true, cell.getBooleanCellValue());
     }
