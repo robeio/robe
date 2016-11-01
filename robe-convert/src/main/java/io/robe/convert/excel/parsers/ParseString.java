@@ -13,7 +13,7 @@ public class ParseString implements IsParser<String> {
     @Override
     public void setCell(String o, Cell cell, Field field) {
         if (o != null) {
-            cell.setCellValue(o.toString());
+            cell.setCellValue(o);
         }
     }
 }

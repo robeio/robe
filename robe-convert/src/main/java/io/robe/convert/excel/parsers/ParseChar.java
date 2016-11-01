@@ -13,7 +13,7 @@ public class ParseChar implements IsParser<Character> {
     @Override
     public void setCell(Character o, Cell cell, Field field) {
         if (o != null) {
-            cell.setCellValue(o);
+            cell.setCellValue(o.toString());
         }
     }
 }
