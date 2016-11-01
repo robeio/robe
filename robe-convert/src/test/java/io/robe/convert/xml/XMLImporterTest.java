@@ -5,6 +5,7 @@ import io.robe.convert.TestData;
 import io.robe.convert.common.OnItemHandler;
 import org.junit.Test;
 
+import java.io.IOException;
 import java.util.List;
 
 public class XMLImporterTest {
@@ -63,6 +64,18 @@ public class XMLImporterTest {
             }
         };
         importer.importStream(XMLImporterTest.class.getClassLoader().getResourceAsStream("sampleUTF16.xml"), handler, ENCODING_UTF_16);
+
+    }
+
+    @Test(expected = IOException.class)
+    public void testImportStreamWithError() throws Exception {
+        XMLImporter<SamplePojo> importer = new XMLImporter<>(SamplePojo.class);
+        OnItemHandler<SamplePojo> handler = new OnItemHandler<SamplePojo>() {
+            @Override
+            public void onItem(SamplePojo samplePojo) {
+            }
+        };
+        importer.importStream(XMLImporterTest.class.getClassLoader().getResourceAsStream("sampleError.xml"), handler);
 
     }
 
