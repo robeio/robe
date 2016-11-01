@@ -77,14 +77,14 @@ public abstract class Converter {
      */
     protected final Map<String, Field> getFieldMap(Class clazz) {
         Map<String, Field> fieldList = new HashMap<String, Field>();
-        for (Field field : clazz.getDeclaredFields()) {
+        for (FieldEntry entry : getAllFields(clazz)) {
+            Field field = entry.getValue();
             Annotation fieldAnnotation = field.getAnnotation(Convert.class);
             Convert fieldMappingProperties = (Convert) fieldAnnotation;
             if (fieldMappingProperties != null) {
                 fieldList.put(field.getName(), field);
             }
         }
-
         return fieldList;
 
     }
