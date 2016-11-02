@@ -1,6 +1,5 @@
 package io.robe.hibernate.entity;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import io.robe.common.service.search.SearchIgnore;
 import org.hibernate.annotations.GenericGenerator;
 
@@ -11,7 +10,7 @@ import javax.persistence.*;
  * Standard fields (oid,lastupdated) will be added to your entity.
  */
 @MappedSuperclass
-public abstract class BaseEntity implements RobeEntity<String>{
+public abstract class BaseEntity implements RobeEntity<String> {
 
     @SearchIgnore
     private static final long serialVersionUID = 1914842698571907341L;
