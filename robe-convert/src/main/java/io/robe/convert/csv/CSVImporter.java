@@ -3,6 +3,7 @@ package io.robe.convert.csv;
 import io.robe.convert.common.Importer;
 import io.robe.convert.common.OnItemHandler;
 import org.supercsv.cellprocessor.ift.CellProcessor;
+import org.supercsv.io.CsvBeanReader;
 import org.supercsv.io.ICsvBeanReader;
 import org.supercsv.prefs.CsvPreference;
 
