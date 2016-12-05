@@ -1,0 +1,29 @@
+*.class
+
+# Package Files #
+*.jar
+*.war
+*.ear
+
+# Eclipse
+.classpath
+.project
+.settings/
+
+# Intellij
+.idea/
+*.iml
+*.iws
+
+# Mac
+.DS_Store
+
+# Maven
+log/
+target/
+
+# netbeans
+nbactions.xml
+
+#!robe-crud/disk/robe-crud-html-gui.jar
+#!robe-crud/disk/robe-crud-java-gui.jar
