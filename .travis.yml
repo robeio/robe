@@ -3,7 +3,7 @@ jdk:
   - oraclejdk8
 
 before_install:
-  - export TZ=Europe/Istanbul
+  - export TZ=Asia/Baghdad
   - pip install --user codecov
 after_success:
   - openssl aes-256-cbc -pass pass:$ENCRYPTION_PASSWORD -in $GPG_DIR/pubring.gpg.enc -out ~/pubring.gpg -d
