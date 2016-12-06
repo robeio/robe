@@ -2,7 +2,7 @@ package io.robe.common;
 
 import com.thoughtworks.paranamer.AdaptiveParanamer;
 import com.thoughtworks.paranamer.Paranamer;
-import io.robe.common.utils.StringsOperations;
+import io.robe.common.utils.Strings;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -47,7 +47,7 @@ public class TestUtils {
 
                 for (int i = 0; i < names.length; i++) {
                     String name = names[i];
-                    Method fieldGetter = clazz.getMethod("get" + StringsOperations.capitalizeFirstChar(name));
+                    Method fieldGetter = clazz.getMethod("get" + Strings.capitalizeFirstChar(name));
                     Object value = fieldGetter.invoke(instance);
                     assertTrue(value.equals(arr[i]));
                 }
@@ -79,13 +79,13 @@ public class TestUtils {
             String fieldName = fieldNames[i];
             Class parameterType = parameters[i];
             try {
-                Method fieldSetter = clazz.getMethod("set" + StringsOperations.capitalizeFirstChar(fieldName), parameterType);
+                Method fieldSetter = clazz.getMethod("set" + Strings.capitalizeFirstChar(fieldName), parameterType);
 
                 Object value = getDefaultValueByType(parameterType.getTypeName(), i);
 
                 fieldSetter.invoke(instance, value);
 
-                Method fieldGetter = clazz.getMethod("get" + StringsOperations.capitalizeFirstChar(fieldName));
+                Method fieldGetter = clazz.getMethod("get" + Strings.capitalizeFirstChar(fieldName));
 
                 Object result = fieldGetter.invoke(instance);
 

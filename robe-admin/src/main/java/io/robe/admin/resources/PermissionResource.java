@@ -16,7 +16,7 @@ import io.robe.auth.token.BasicToken;
 import io.robe.common.service.RobeService;
 import io.robe.common.service.search.SearchParam;
 import io.robe.common.service.search.model.SearchModel;
-import io.robe.common.utils.FieldReflection;
+import io.robe.common.utils.reflection.Fields;
 import org.hibernate.FlushMode;
 
 import javax.inject.Inject;
@@ -159,7 +159,7 @@ public class PermissionResource {
     @GET
     @UnitOfWork(readOnly = true, cacheMode = GET, flushMode = FlushMode.MANUAL)
     public List<Permission> getAll(@RobeAuth Credentials credentials, @SearchParam SearchModel search) {
-        return permissionDao.findAll(search);
+        return permissionDao.findAllStrict(search);
     }
 
     /**
@@ -253,7 +253,7 @@ public class PermissionResource {
         if (dest == null) {
             throw new WebApplicationException(Response.status(404).build());
         }
-        FieldReflection.mergeRight(model, dest);
+        Fields.mergeRight(model, dest);
         return permissionDao.update(dest);
     }
 

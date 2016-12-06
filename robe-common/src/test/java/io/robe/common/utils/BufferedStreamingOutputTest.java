@@ -1,5 +1,6 @@
 package io.robe.common.utils;
 
+import io.robe.common.service.stream.BufferedStreamingOutput;
 import org.junit.Assert;
 import org.junit.Test;
 
@@ -16,7 +17,7 @@ public class BufferedStreamingOutputTest {
 
         String testSentence = "robe";
         ByteArrayInputStream inputStream = new ByteArrayInputStream(testSentence.getBytes("UTF-8"));
-        File file = FileOperations.writeToTemp(inputStream);
+        File file = Files.writeToTemp(inputStream);
         BufferedInputStream bufferedInputStream = new BufferedInputStream(new FileInputStream(file));
         StreamingOutput stream = new BufferedStreamingOutput(bufferedInputStream, 5);
 

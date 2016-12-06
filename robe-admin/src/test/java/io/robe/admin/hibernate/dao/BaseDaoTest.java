@@ -114,6 +114,6 @@ public abstract class BaseDaoTest<T extends BaseEntity, D extends BaseDao<T>> ex
     }
 
     protected List<T> findByAll() {
-        return dao.findAll();
+        return dao.findAllStrict();
     }
 }

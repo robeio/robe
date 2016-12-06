@@ -9,7 +9,7 @@ import io.robe.auth.RobeAuth;
 import io.robe.common.service.RobeService;
 import io.robe.common.service.search.SearchParam;
 import io.robe.common.service.search.model.SearchModel;
-import io.robe.common.utils.FieldReflection;
+import io.robe.common.utils.reflection.Fields;
 import org.hibernate.FlushMode;
 
 import javax.inject.Inject;
@@ -40,7 +40,7 @@ public class TriggerResource {
     @GET
     @UnitOfWork(readOnly = true, cacheMode = GET, flushMode = FlushMode.MANUAL)
     public List<TriggerEntity> getAll(@RobeAuth Credentials credentials, @SearchParam SearchModel search) {
-        return quartzTriggerDao.findAll(search);
+        return quartzTriggerDao.findAllStrict(search);
     }
 
     /**
@@ -130,7 +130,7 @@ public class TriggerResource {
         if (dest == null) {
             throw new WebApplicationException(Response.status(404).build());
         }
-        FieldReflection.mergeRight(model, dest);
+        Fields.mergeRight(model, dest);
         return quartzTriggerDao.update(dest);
     }
 

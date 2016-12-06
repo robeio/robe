@@ -10,7 +10,7 @@ import io.robe.auth.data.entry.PermissionEntry;
 import io.robe.common.service.RobeService;
 import io.robe.common.service.search.SearchParam;
 import io.robe.common.service.search.model.SearchModel;
-import io.robe.common.utils.FieldReflection;
+import io.robe.common.utils.reflection.Fields;
 import org.hibernate.FlushMode;
 
 import javax.inject.Inject;
@@ -116,7 +116,7 @@ public class RoleResource {
     @GET
     @UnitOfWork(readOnly = true, cacheMode = GET, flushMode = FlushMode.MANUAL)
     public List<Role> getAll(@RobeAuth Credentials credentials, @SearchParam SearchModel search) {
-        return roleDao.findAll(search);
+        return roleDao.findAllStrict(search);
     }
 
     /**
@@ -208,7 +208,7 @@ public class RoleResource {
         if (dest == null) {
             throw new WebApplicationException(Response.status(404).build());
         }
-        FieldReflection.mergeRight(model, dest);
+        Fields.mergeRight(model, dest);
         return roleDao.update(dest);
     }
 

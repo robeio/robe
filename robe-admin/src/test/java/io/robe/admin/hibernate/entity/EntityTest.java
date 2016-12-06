@@ -3,7 +3,7 @@ package io.robe.admin.hibernate.entity;
 import com.thoughtworks.paranamer.AdaptiveParanamer;
 import com.thoughtworks.paranamer.Paranamer;
 import io.robe.admin.RobeApplication;
-import io.robe.common.utils.StringsOperations;
+import io.robe.common.utils.Strings;
 import org.joda.time.DateTime;
 import org.junit.Test;
 import org.reflections.Reflections;
@@ -69,7 +69,7 @@ public class EntityTest {
             String fieldName = fieldNames[i];
             Class parameterType = parameters[i];
             try {
-                Method fieldSetter = clazz.getMethod("set" + StringsOperations.capitalizeFirstChar(fieldName), parameterType);
+                Method fieldSetter = clazz.getMethod("set" + Strings.capitalizeFirstChar(fieldName), parameterType);
 
                 Object value = getDefaultValueByType(parameterType, i);
 
@@ -81,9 +81,9 @@ public class EntityTest {
                 Method fieldGetter;
 
                 if (parameterType.getTypeName().equals("boolean")) {
-                    fieldGetter = clazz.getMethod("is" + StringsOperations.capitalizeFirstChar(fieldName));
+                    fieldGetter = clazz.getMethod("is" + Strings.capitalizeFirstChar(fieldName));
                 } else {
-                    fieldGetter = clazz.getMethod("get" + StringsOperations.capitalizeFirstChar(fieldName));
+                    fieldGetter = clazz.getMethod("get" + Strings.capitalizeFirstChar(fieldName));
                 }
 
                 Object result = fieldGetter.invoke(instance);
@@ -118,9 +118,9 @@ public class EntityTest {
 
                     Method fieldGetter;
                     if (parameters[i].getType().getTypeName().equals("boolean")) {
-                        fieldGetter = clazz.getMethod("is" + StringsOperations.capitalizeFirstChar(name));
+                        fieldGetter = clazz.getMethod("is" + Strings.capitalizeFirstChar(name));
                     } else {
-                        fieldGetter = clazz.getMethod("get" + StringsOperations.capitalizeFirstChar(name));
+                        fieldGetter = clazz.getMethod("get" + Strings.capitalizeFirstChar(name));
                     }
 
                     Object value = fieldGetter.invoke(instance);

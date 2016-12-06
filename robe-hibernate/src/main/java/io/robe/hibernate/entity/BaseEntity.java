@@ -10,7 +10,7 @@ import javax.persistence.*;
  * Standard fields (oid,lastupdated) will be added to your entity.
  */
 @MappedSuperclass
-public abstract class BaseEntity implements RobeEntity<String> {
+public abstract class BaseEntity implements RobeEntity {
 
     @SearchIgnore
     private static final long serialVersionUID = 1914842698571907341L;

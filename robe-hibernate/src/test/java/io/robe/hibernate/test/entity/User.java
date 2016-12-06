@@ -1,8 +1,5 @@
-package io.robe.admin.hibernate.entity;
+package io.robe.hibernate.test.entity;
 
-
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import io.robe.auth.data.entry.UserEntry;
 import io.robe.common.service.search.SearchFrom;
 import io.robe.common.service.search.SearchIgnore;
 import io.robe.hibernate.entity.BaseEntity;
@@ -12,13 +9,14 @@ import org.hibernate.validator.constraints.NotEmpty;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
 import java.util.Date;
 
 @Entity
 @Table
-public class User extends BaseEntity implements UserEntry {
+public class User extends BaseEntity {
 
     @Length(min = 5, max = 50)
     @NotEmpty
@@ -38,7 +36,6 @@ public class User extends BaseEntity implements UserEntry {
     private String surname;
 
     @SearchIgnore
-    @Length(min = 64, max = 64)
     @NotEmpty
     @Column(length = 64, nullable = false)
     private String password;
@@ -62,6 +59,10 @@ public class User extends BaseEntity implements UserEntry {
     @NotEmpty
     @Column(length = 32)
     private String roleOid;
+
+    @Transient
+    private String exampleTransient;
+
 
     public String getEmail() {
         return email;
@@ -99,16 +100,6 @@ public class User extends BaseEntity implements UserEntry {
         return roleOid;
     }
 
-    public void setRoleOid(String roleOid) {
-        this.roleOid = roleOid;
-    }
-
-    @JsonIgnore
-    @Override
-    public String getRoleId() {
-        return getRoleOid();
-    }
-
     public boolean isActive() {
         return active;
     }
@@ -117,17 +108,6 @@ public class User extends BaseEntity implements UserEntry {
         this.active = active;
     }
 
-    @JsonIgnore
-    @Override
-    public String getUserId() {
-        return getOid();
-    }
-
-    @JsonIgnore
-    @Override
-    public String getUsername() {
-        return getEmail();
-    }
 
     public Date getLastLoginTime() {
         return lastLoginTime;
@@ -153,19 +133,15 @@ public class User extends BaseEntity implements UserEntry {
         this.failCount = failCount;
     }
 
+    public void setRoleOid(String roleOid) {
+        this.roleOid = roleOid;
+    }
 
-    @Override
-    public String toString() {
-        return "User{" +
-                "email='" + email + '\'' +
-                ", name='" + name + '\'' +
-                ", surname='" + surname + '\'' +
-                ", password='" + password + '\'' +
-                ", active=" + active +
-                ", failCount=" + failCount +
-                ", lastLoginTime=" + lastLoginTime +
-                ", lastLogoutTime=" + lastLogoutTime +
-                ", roleOid='" + roleOid + '\'' +
-                '}';
+    public void setExampleTransient(String exampleTransient) {
+        this.exampleTransient = exampleTransient;
+    }
+
+    public String getExampleTransient() {
+        return exampleTransient;
     }
 }

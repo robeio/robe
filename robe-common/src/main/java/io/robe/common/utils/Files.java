@@ -9,12 +9,12 @@ import java.util.UUID;
 /**
  * Util Class for all file operations.
  */
-public class FileOperations {
+public class Files {
 
     public static final String JAVA_IO_TMP_DIR = "java.io.tmpdir";
     public static final String TEMP_DIR = System.getProperty(JAVA_IO_TMP_DIR);
 
-    private FileOperations() {
+    private Files() {
 
     }
 

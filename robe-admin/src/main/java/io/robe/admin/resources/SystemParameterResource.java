@@ -9,7 +9,7 @@ import io.robe.auth.RobeAuth;
 import io.robe.common.service.RobeService;
 import io.robe.common.service.search.SearchParam;
 import io.robe.common.service.search.model.SearchModel;
-import io.robe.common.utils.FieldReflection;
+import io.robe.common.utils.reflection.Fields;
 import org.hibernate.CacheMode;
 import org.hibernate.FlushMode;
 
@@ -42,7 +42,7 @@ public class SystemParameterResource {
     @GET
     @UnitOfWork(readOnly = true, cacheMode = GET, flushMode = FlushMode.MANUAL)
     public List<SystemParameter> getAll(@RobeAuth Credentials credentials, @SearchParam SearchModel search) {
-        return systemParameterDao.findAll(search);
+        return systemParameterDao.findAllStrict(search);
     }
 
     /**
@@ -158,7 +158,7 @@ public class SystemParameterResource {
         if (dest == null) {
             throw new WebApplicationException(Response.status(404).build());
         }
-        FieldReflection.mergeRight(model, dest);
+        Fields.mergeRight(model, dest);
         return systemParameterDao.update(dest);
     }
 

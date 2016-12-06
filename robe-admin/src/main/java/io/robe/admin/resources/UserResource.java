@@ -10,7 +10,7 @@ import io.robe.auth.RobeAuth;
 import io.robe.common.service.RobeService;
 import io.robe.common.service.search.SearchParam;
 import io.robe.common.service.search.model.SearchModel;
-import io.robe.common.utils.FieldReflection;
+import io.robe.common.utils.reflection.Fields;
 import org.hibernate.CacheMode;
 import org.hibernate.FlushMode;
 
@@ -45,7 +45,7 @@ public class UserResource extends AbstractAuthResource<User> {
     @GET
     @UnitOfWork(readOnly = true, cacheMode = CacheMode.GET, flushMode = FlushMode.MANUAL)
     public List<User> getAll(@RobeAuth Credentials credentials, @SearchParam SearchModel search) {
-        return userDao.findAll(search);
+        return userDao.findAllStrict(search);
     }
 
     /**
@@ -136,7 +136,7 @@ public class UserResource extends AbstractAuthResource<User> {
         if (dest == null) {
             throw new WebApplicationException(Response.status(404).build());
         }
-        FieldReflection.mergeRight(model, dest);
+        Fields.mergeRight(model, dest);
         return userDao.update(dest);
     }
 

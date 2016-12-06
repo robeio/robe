@@ -3,9 +3,9 @@ package io.robe.common.utils;
 /**
  * Provides frequently needed methods for string operations.
  */
-public final class StringsOperations {
+public final class Strings {
 
-    private StringsOperations() {
+    private Strings() {
     }
 
     /**

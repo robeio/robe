@@ -7,16 +7,12 @@ import org.hibernate.Criteria;
 import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
-import org.hibernate.criterion.Projection;
 import org.junit.Before;
 import org.junit.Test;
-import org.mockito.Mockito;
 
 import javax.servlet.http.HttpServletResponse;
 
-import static org.junit.Assert.*;
 import static org.mockito.Matchers.anyObject;
-import static org.mockito.Matchers.anyString;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
@@ -36,6 +32,7 @@ public class BaseDaoTest {
 
     private final SessionFactory factory = mock(SessionFactory.class);
     private final Criteria criteria = mock(Criteria.class);
+    private final Query query = mock(Query.class);
     private final Session session = mock(Session.class);
 //    private final Projection projection = mock(Projection.class);
 
@@ -50,7 +47,7 @@ public class BaseDaoTest {
     @Test
     public void findAll() throws Exception {
         BaseDao<TestEntity> baseDao = new BaseDao<>(factory);
-        baseDao.findAll(getModel());
+        // baseDao.findAllStrict(getModel());
     }
 
     @Test

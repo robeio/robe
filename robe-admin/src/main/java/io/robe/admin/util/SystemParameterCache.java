@@ -21,7 +21,7 @@ public class SystemParameterCache {
         ManagedSessionContext.bind(sessionFactory.openSession());
         SystemParameterDao dao = new SystemParameterDao(sessionFactory);
 
-        List<SystemParameter> parameters = dao.findAll();
+        List<SystemParameter> parameters = dao.findAllStrict();
 
         for (SystemParameter parameter : parameters) {
             cache.put(parameter.getKey(), parameter.getValue());

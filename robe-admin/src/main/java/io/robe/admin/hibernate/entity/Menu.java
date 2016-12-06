@@ -29,7 +29,7 @@ public class Menu extends BaseEntity {
     private int index;
 
     @SearchIgnore
-    @SearchFrom(entity = Menu.class, target = "text", id = "oid")
+    @SearchFrom(entity = Menu.class, filter = "text")
     @Length(max = 32)
     @Column(length = 32)
     private String parentOid;

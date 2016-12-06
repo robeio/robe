@@ -1,4 +1,4 @@
-package io.robe.common.utils;
+package io.robe.common.service.stream;
 
 import javax.ws.rs.WebApplicationException;
 import javax.ws.rs.core.StreamingOutput;
