@@ -65,6 +65,7 @@ public class Fields {
 
     public static void getAllFieldsAsMap(Map<String, Field> fieldMap, Class<?> type) {
         for(Field field: type.getDeclaredFields()) {
+            field.setAccessible(true);
             fieldMap.putIfAbsent(field.getName(), field);
             if(type.getSuperclass() != null) {
                 getAllFieldsAsMap(fieldMap, type.getSuperclass());

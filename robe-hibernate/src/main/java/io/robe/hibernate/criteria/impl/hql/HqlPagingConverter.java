@@ -1,6 +1,7 @@
 package io.robe.hibernate.criteria.impl.hql;
 
 import io.robe.common.dto.Pair;
+import io.robe.common.utils.TypeReference;
 import io.robe.hibernate.criteria.api.criterion.RootCriteria;
 
 import io.robe.hibernate.criteria.api.query.QueryConverter;
@@ -12,6 +13,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.util.Collection;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
@@ -66,12 +68,6 @@ public class HqlPagingConverter<T> implements QueryConverter<Pair<List<T>, Long>
             }
         }
 
-        if(transformClass.equals(Map.class)) {
-            listQuery.setResultTransformer(Criteria.ALIAS_TO_ENTITY_MAP);
-        } else if(!criteria.getEntityClass().equals(transformClass)) {
-            listQuery.setResultTransformer(Transformers.aliasToBean(transformClass));
-        }
-
         if(criteria.getOffset() != null) {
             listQuery.setFirstResult(criteria.getOffset());
         }
@@ -80,7 +76,18 @@ public class HqlPagingConverter<T> implements QueryConverter<Pair<List<T>, Long>
         }
 
         Pair<List<T>, Long> response = new Pair<>();
-        response.setLeft(listQuery.list());
+
+        List<T> tList ;
+        if(transformClass.equals(Map.class)) {
+            tList = listQuery.setResultTransformer(Criteria.ALIAS_TO_ENTITY_MAP).list();
+        } else if(!criteria.getEntityClass().equals(transformClass)) {
+            // new AliasToBeanResultTransformer(transformClass)
+            tList = listQuery.setResultTransformer(Transformers.aliasToBean(transformClass)).list();
+        } else {
+            tList = listQuery.list();
+        }
+
+        response.setLeft(tList);
         response.setRight((Long)countQuery.uniqueResult());
         return response;
     }

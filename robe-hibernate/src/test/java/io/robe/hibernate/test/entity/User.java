@@ -63,6 +63,22 @@ public class User extends BaseEntity {
     @Transient
     private String exampleTransient;
 
+    public User(){
+
+    }
+
+    public User(String email, String name, String surname, String password, boolean active, int failCount, Date lastLoginTime, Date lastLogoutTime, String roleOid, String exampleTransient) {
+        this.email = email;
+        this.name = name;
+        this.surname = surname;
+        this.password = password;
+        this.active = active;
+        this.failCount = failCount;
+        this.lastLoginTime = lastLoginTime;
+        this.lastLogoutTime = lastLogoutTime;
+        this.roleOid = roleOid;
+        this.exampleTransient = exampleTransient;
+    }
 
     public String getEmail() {
         return email;
