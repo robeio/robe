@@ -10,8 +10,9 @@ import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.junit.BeforeClass;
 import org.junit.Test;
-
+import static org.junit.Assert.*;
 import java.util.*;
+
 
 /**
  * Created by kamilbukum on 02/12/16.
@@ -19,7 +20,6 @@ import java.util.*;
 public class SearchQueryHQLTest {
 
     private static SessionFactory sessionFactory = null;
-    private static Random rand = new Random();
     private static List<Role> roles = new LinkedList<>();
     private static List<User> users = new LinkedList<>();
     private static String[] fields;
@@ -108,8 +108,9 @@ public class SearchQueryHQLTest {
                 true
         ));
 
-        System.out.println(resultPair.getLeft());
-        System.out.println(resultPair.getRight());
+        assertEquals(2, resultPair.getLeft().size());
+        assertEquals(3, (long)resultPair.getRight());
+        assertTrue(resultPair.getLeft().get(0) instanceof User);
     }
 
     @Test
@@ -126,8 +127,9 @@ public class SearchQueryHQLTest {
                 true
         ));
 
-        System.out.println(resultPair.getLeft());
-        System.out.println(resultPair.getRight());
+        assertEquals( 2, resultPair.getLeft().size());
+        assertEquals(3, (long)resultPair.getRight());
+        assertTrue(resultPair.getLeft().get(0) instanceof Map);
     }
 
     @Test
@@ -142,8 +144,9 @@ public class SearchQueryHQLTest {
                 true
         ), UserDTO.class);
 
-        System.out.println(resultPair.getLeft());
-        System.out.println(resultPair.getRight());
+        assertEquals(resultPair.getLeft().size(), 2);
+        assertEquals((long)resultPair.getRight(), 3);
+        assertTrue(resultPair.getLeft().get(0) instanceof UserDTO);
     }
 
     @Test
@@ -158,7 +161,8 @@ public class SearchQueryHQLTest {
                 true
         ));
 
-        System.out.println(list);
+        assertEquals(2, list.size());
+        assertTrue(list.get(0) instanceof User);
     }
 
     @Test
@@ -173,22 +177,25 @@ public class SearchQueryHQLTest {
                 true
         ));
 
-        System.out.println(list);
+
+        assertEquals(2, list.size());
+        assertTrue(list.get(0) instanceof Map);
     }
 
     @Test
-    public void list1() throws Exception {
+    public void listBean() throws Exception {
 
         Session session = sessionFactory.openSession();
 
-        List<User> list = SearchQueryHQL.list(session, User.class, getModel(
+        List<UserDTO> list = SearchQueryHQL.list(session, User.class, getModel(
                 true,
                 true,
                 true,
                 true
-        ), User.class);
+        ), UserDTO.class);
 
-        System.out.println(list);
+        assertEquals(2, list.size());
+        assertTrue(list.get(0) instanceof UserDTO);
     }
 
 
