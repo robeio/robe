@@ -3,7 +3,7 @@ package io.robe.hibernate.criteria.impl.hql;
 import io.robe.common.utils.Strings;
 import io.robe.common.utils.reflection.Fields;
 import io.robe.common.utils.Validations;
-import io.robe.hibernate.criteria.api.ResultPair;
+import io.robe.common.dto.Pair;
 import io.robe.hibernate.criteria.api.criterion.Filter;
 import io.robe.hibernate.criteria.api.criterion.JoinCriteria;
 import io.robe.hibernate.criteria.api.criterion.RootCriteria;
@@ -14,16 +14,27 @@ import java.lang.reflect.Field;
 import java.util.*;
 
 /**
- * Created by kamilbukum on 30/11/16.
+ * Generates HQL List Query and Count Query from {@link RootCriteria}.
  */
 public abstract class HqlConverterUtil {
 
+    /**
+     *
+     */
     private static final HqlRestrictions RESTRICTIONS = new HqlRestrictions();
+    /**
+     *
+     */
     private static final String ALIAS_SUFFIX = "_alias";
 
-    public static  ResultPair<String, Map<String, Object>> list(RootCriteria criteria) {
+    /**
+     *
+     * @param criteria
+     * @return
+     */
+    public static Pair<String, Map<String, Object>> list(RootCriteria criteria) {
 
-        ResultPair<String, Map<String, Object>> resultPair = new ResultPair<>();
+        Pair<String, Map<String, Object>> resultPair = new Pair<>();
 
         StringBuilder queryBuilder = new StringBuilder();
         Map<String, Object> paramMap = new LinkedHashMap<>();
@@ -41,9 +52,14 @@ public abstract class HqlConverterUtil {
         return  resultPair;
     }
 
-    public static  ResultPair<ResultPair<String, String>, Map<String, Object>> listWithCount(RootCriteria criteria){
+    /**
+     *
+     * @param criteria
+     * @return
+     */
+    public static Pair<Pair<String, String>, Map<String, Object>> listWithCount(RootCriteria criteria){
 
-        ResultPair<ResultPair<String, String>, Map<String, Object>> resultPair = new ResultPair<>();
+        Pair<Pair<String, String>, Map<String, Object>> resultPair = new Pair<>();
 
         StringBuilder listBuilder = new StringBuilder();
         StringBuilder countBuilder = new StringBuilder();
@@ -59,15 +75,20 @@ public abstract class HqlConverterUtil {
 
         listBuilder.append(" ").append(getSorts(criteria));
 
-        ResultPair<String, String> queryResultPair = new ResultPair<>();
-        queryResultPair.setLeft(listBuilder.toString());
-        queryResultPair.setRight(countBuilder.toString());
-        resultPair.setLeft(queryResultPair);
+        Pair<String, String> queryPair = new Pair<>();
+        queryPair.setLeft(listBuilder.toString());
+        queryPair.setRight(countBuilder.toString());
+        resultPair.setLeft(queryPair);
         resultPair.setRight(paramMap);
         return resultPair;
     }
 
 
+    /**
+     *
+     * @param criteria
+     * @return
+     */
     public static String getSelections(RootCriteria criteria){
         StringJoiner joiner = new StringJoiner(",");
 
@@ -193,6 +214,11 @@ public abstract class HqlConverterUtil {
         return criterion;
     }
 
+    /**
+     *
+     * @param criteria
+     * @return
+     */
     public static String getSorts(RootCriteria criteria){
         StringJoiner joiner = new StringJoiner(",");
 
@@ -214,6 +240,13 @@ public abstract class HqlConverterUtil {
         return "ORDER BY " + joiner.toString();
     }
 
+    /**
+     *
+     * @param operator
+     * @param rawValue
+     * @param field
+     * @return
+     */
     public static Object getValue(String operator, String rawValue, Field field){
         if(operator.equals("|=")) {
             String[] svalues = rawValue.split("\\|");

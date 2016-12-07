@@ -13,7 +13,7 @@ import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 
 /**
- * Created by kamilbukum on 24/11/16.
+ * creates {@link RootCriteria} by given "Entity Class" and {@link SearchModel}
  */
 public abstract class SearchQuery {
 
@@ -48,10 +48,19 @@ public abstract class SearchQuery {
     }
 
     /**
-     *
+     * Caches fields of Class
      */
     public static class CacheFields {
+        /**
+         * Holds Cached Fields of Given Entity Class
+         */
         private static final ConcurrentHashMap<String, Map<String, Field>> fieldCache = new ConcurrentHashMap<>();
+
+        /**
+         * Gets fields of given Entity Class. Caches at first time.
+         * @param entityClass
+         * @return
+         */
         public static Map<String, Field> getCachedFields(Class<?> entityClass) {
             if (!fieldCache.containsKey(entityClass.getName())) {
                 fieldCache.put(entityClass.getName(), Fields.getAllFieldsAsMap(entityClass));

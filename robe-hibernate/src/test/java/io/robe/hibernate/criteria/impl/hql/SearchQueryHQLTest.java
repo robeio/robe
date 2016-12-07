@@ -2,7 +2,7 @@ package io.robe.hibernate.criteria.impl.hql;
 
 import io.robe.common.service.search.model.SearchModel;
 import io.robe.hibernate.HibernateUtil;
-import io.robe.hibernate.criteria.api.ResultPair;
+import io.robe.common.dto.Pair;
 import io.robe.hibernate.test.entity.Role;
 import io.robe.hibernate.test.entity.User;
 import io.robe.hibernate.test.entity.UserDTO;
@@ -84,7 +84,7 @@ public class SearchQueryHQLTest {
         Session session = sessionFactory.openSession();
 
 
-        ResultPair<List<User>, Long> resultPair = SearchQueryHQL.pairListStrict(session, User.class, searchModel);
+        Pair<List<User>, Long> resultPair = SearchQueryHQL.pairListStrict(session, User.class, searchModel);
 
         System.out.println(resultPair.getLeft());
         System.out.println(resultPair.getRight());
@@ -101,7 +101,7 @@ public class SearchQueryHQLTest {
         // searchModel.setFields(new String[] {"email"});
         Session session = sessionFactory.openSession();
 
-        ResultPair<List<Map<String, Object>>, Long> resultPair = SearchQueryHQL.pairList(session, User.class, searchModel);
+        Pair<List<Map<String, Object>>, Long> resultPair = SearchQueryHQL.pairList(session, User.class, searchModel);
 
         System.out.println(resultPair.getLeft());
         System.out.println(resultPair.getRight());
@@ -119,7 +119,7 @@ public class SearchQueryHQLTest {
         searchModel.setSort(new String[] {"email","roleOid.oid"});
         Session session = sessionFactory.openSession();
 
-        ResultPair<List<UserDTO>, Long> resultPair = SearchQueryHQL.pairList(session, User.class, searchModel, UserDTO.class);
+        Pair<List<UserDTO>, Long> resultPair = SearchQueryHQL.pairList(session, User.class, searchModel, UserDTO.class);
 
         System.out.println(resultPair.getLeft());
         System.out.println(resultPair.getRight());

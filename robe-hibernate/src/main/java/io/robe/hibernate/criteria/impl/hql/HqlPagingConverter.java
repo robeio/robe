@@ -1,6 +1,6 @@
 package io.robe.hibernate.criteria.impl.hql;
 
-import io.robe.hibernate.criteria.api.ResultPair;
+import io.robe.common.dto.Pair;
 import io.robe.hibernate.criteria.api.criterion.RootCriteria;
 
 import io.robe.hibernate.criteria.api.query.QueryConverter;
@@ -16,26 +16,41 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * Created by kamilbukum on 30/11/16.
+ * Gets list data and total count by using {@link RootCriteria}
+ * @param <T>
  */
-public class HqlPagingConverter<T> implements QueryConverter<ResultPair<List<T>, Long>> {
+public class HqlPagingConverter<T> implements QueryConverter<Pair<List<T>, Long>> {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(HqlPagingConverter.class);
 
+    /**
+     * Hibernate Session
+     */
     private final Session session;
+    /**
+     * Transforming Class Type
+     */
     private final Class<T> transformClass;
 
+    /**
+     *
+     * @param session
+     * @param transformClass
+     */
     public HqlPagingConverter(Session session, Class<T> transformClass){
         this.session = session;
         this.transformClass = transformClass;
     }
 
+    /**
+     * converts {@link RootCriteria} to HQL
+     * @param criteria
+     * @return
+     */
     @Override
-    public ResultPair<List<T>, Long> convert(RootCriteria criteria) {
+    public Pair<List<T>, Long> convert(RootCriteria criteria) {
 
-        ResultPair<ResultPair<String, String>, Map<String, Object>> resultPair = HqlConverterUtil.listWithCount(criteria);
-
-        LOGGER.info(resultPair.getLeft().getLeft());
+        Pair<Pair<String, String>, Map<String, Object>> resultPair = HqlConverterUtil.listWithCount(criteria);
         Query listQuery = session.createQuery(resultPair.getLeft().getLeft());
         Query countQuery = session.createQuery(resultPair.getLeft().getRight());
 
@@ -64,7 +79,7 @@ public class HqlPagingConverter<T> implements QueryConverter<ResultPair<List<T>,
             listQuery.setMaxResults(criteria.getLimit());
         }
 
-        ResultPair<List<T>, Long> response = new ResultPair<>();
+        Pair<List<T>, Long> response = new Pair<>();
         response.setLeft(listQuery.list());
         response.setRight((Long)countQuery.uniqueResult());
         return response;

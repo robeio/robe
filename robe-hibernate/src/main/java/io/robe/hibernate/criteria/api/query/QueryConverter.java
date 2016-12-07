@@ -3,9 +3,14 @@ package io.robe.hibernate.criteria.api.query;
 import io.robe.hibernate.criteria.api.criterion.RootCriteria;
 
 /**
- * Created by kamilbukum on 29/11/16.
+ * Gets Data by using {@link RootCriteria}
  */
 @FunctionalInterface
 public interface QueryConverter<T> {
+    /**
+     *
+     * @param query
+     * @return
+     */
     T convert(RootCriteria query);
 }

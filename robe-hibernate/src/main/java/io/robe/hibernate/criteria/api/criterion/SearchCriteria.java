@@ -1,39 +1,81 @@
 package io.robe.hibernate.criteria.api.criterion;
 
-import io.robe.hibernate.criteria.api.criterion.Filter;
-import io.robe.hibernate.criteria.api.criterion.JoinCriteria;
-import io.robe.hibernate.criteria.api.criterion.RootCriteria;
-
 import java.util.LinkedHashMap;
 import java.util.Map;
-import java.util.Set;
 
 /**
- * Created by kamilbukum on 28/11/16.
+ * Abstract Class to hold criteria.
  */
 public abstract class SearchCriteria {
+    /**
+     * Entity Alias
+     */
     private final String alias;
+    /**
+     * Entity class Type
+     */
     private final Class<?> entityClass;
-    private final Map<String, String> selectFields = new LinkedHashMap<>();
+    /**
+     * Holds "AND" filters as key and value.
+     * Key is field name in Entity
+     * Value is an object which holds {@link Filter} information.
+     */
     private final Map<String, Filter> filterMap = new LinkedHashMap<>();
+    /**
+     * Holds "OR" filters as key and value.
+     * Key type is  {@link String}
+     * Key is field name in Entity
+     * Value type is {@link Filter}
+     * Value is an object which holds filter information.
+     */
     private final Map<String, Filter> orFilterMap = new LinkedHashMap<>();
-    private final Map<String, SortType> sortingMap = new LinkedHashMap<>();
+    /**
+     * Holds Join Criteria as key and value
+     * Key type is  {@link String}
+     * Key is alias for criteria
+     * Value type is {@link JoinCriteria}
+     * Value is {@link JoinCriteria} instance
+     */
     private Map<String, JoinCriteria> criteriaMap;
 
+    /**
+     *
+     * creates {@link RootCriteria}
+     * @param alias
+     * @param entityClass
+     * @return
+     */
     public static RootCriteria createQuery(String alias, Class<?> entityClass) {
         return new RootCriteria(alias, entityClass);
     }
 
-    public SearchCriteria(String alias, Class<?> entityClass){
+    /**
+     * @param alias
+     * @param entityClass
+     */
+    protected SearchCriteria(String alias, Class<?> entityClass){
         this.alias = alias;
         this.entityClass = entityClass;
     }
 
 
+    /**
+     * Holds Join Criteria as key and value
+     * Key type is  {@link String}
+     * Key is alias for criteria
+     * Value type is {@link JoinCriteria}
+     * Value is {@link JoinCriteria} instance
+     * @return
+     */
     public Map<String, JoinCriteria> getCriteriaMap() {
         return criteriaMap;
     }
 
+    /**
+     * creates {@link JoinCriteria} and add it to Parent {@link SearchCriteria}
+     * @param s
+     * @return
+     */
     public JoinCriteria getCriteria(String s) {
         return criteriaMap == null ? null: criteriaMap.get(s);
     }
@@ -47,24 +89,6 @@ public abstract class SearchCriteria {
         return criteria;
     }
 
-    public void addSelectField(String name) {
-        addSelectField(name, name);
-    }
-
-    public void addSelectField(String name, String alias) {
-        selectFields.putIfAbsent(alias, name);
-    }
-
-    public Map<String, String> getSelectFields() {
-        return selectFields;
-    }
-
-    public void addSelectFields(Set<String> selectFieldsSet) {
-        for(String selectField: selectFieldsSet) {
-            addSelectField(selectField);
-        }
-    }
-
     public void addFilter(String filterName, String operator, String value) {
         Filter filter = new Filter(filterName, operator, value);
         filterMap.put(filterName, filter);
@@ -76,10 +100,6 @@ public abstract class SearchCriteria {
 
     public Map<String, Filter> getOrFilterMap() {
         return orFilterMap;
-    }
-
-    public Map<String, SortType> getSortingMap() {
-        return sortingMap;
     }
 
     public enum SortType {

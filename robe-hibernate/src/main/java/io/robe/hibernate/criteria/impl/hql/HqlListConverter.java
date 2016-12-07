@@ -1,6 +1,6 @@
 package io.robe.hibernate.criteria.impl.hql;
 
-import io.robe.hibernate.criteria.api.ResultPair;
+import io.robe.common.dto.Pair;
 import io.robe.hibernate.criteria.api.criterion.RootCriteria;
 import io.robe.hibernate.criteria.api.query.QueryConverter;
 import org.hibernate.Criteria;
@@ -13,21 +13,37 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * Created by kamilbukum on 30/11/16.
+ * Gets list data and total count by using {@link RootCriteria}
  */
 public class HqlListConverter<T> implements QueryConverter<List<T>> {
+    /**
+     * Hibernate Session
+     */
     private final Session session;
+    /**
+     * Transforming Class Type
+     */
     private final Class<T> transformClass;
 
+    /**
+     *
+     * @param session
+     * @param transformClass
+     */
     public HqlListConverter(Session session, Class<T> transformClass) {
         this.session = session;
         this.transformClass = transformClass;
     }
 
+    /**
+     *
+     * @param criteria
+     * @return
+     */
     @Override
     public List<T> convert(RootCriteria criteria) {
 
-        ResultPair<String, Map<String, Object>> resultPair = HqlConverterUtil.list(criteria);
+        Pair<String, Map<String, Object>> resultPair = HqlConverterUtil.list(criteria);
 
         Query query = session.createQuery(resultPair.getLeft());
 

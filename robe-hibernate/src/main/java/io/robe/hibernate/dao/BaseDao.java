@@ -6,7 +6,7 @@ import io.dropwizard.hibernate.AbstractDAO;
 import io.robe.common.service.headers.ResponseHeadersUtil;
 import io.robe.common.service.search.model.SearchModel;
 import io.robe.hibernate.RobeHibernateBundle;
-import io.robe.hibernate.criteria.api.ResultPair;
+import io.robe.common.dto.Pair;
 import io.robe.hibernate.criteria.impl.hql.SearchQueryHQL;
 import io.robe.hibernate.entity.RobeEntity;
 import org.hibernate.Criteria;
@@ -44,7 +44,7 @@ public class BaseDao<T extends RobeEntity> extends AbstractDAO<T> {
      * @return List of entities.
      */
     public List<T> findAllStrict(SearchModel search) {
-        ResultPair<List<T>, Long> resultPair = SearchQueryHQL.pairListStrict(this.currentSession(), this.getEntityClass(), search);
+        Pair<List<T>, Long> resultPair = SearchQueryHQL.pairListStrict(this.currentSession(), this.getEntityClass(), search);
         search.setTotalCount(resultPair.getRight());
         ResponseHeadersUtil.addTotalCount(search);
         return resultPair.getLeft();
@@ -57,7 +57,7 @@ public class BaseDao<T extends RobeEntity> extends AbstractDAO<T> {
      * @return List of entities.
      */
     public List<Map<String, Object>> findAll(SearchModel search) {
-        ResultPair<List<Map<String, Object>>, Long> resultPair = SearchQueryHQL.pairList(this.currentSession(), this.getEntityClass(), search);
+        Pair<List<Map<String, Object>>, Long> resultPair = SearchQueryHQL.pairList(this.currentSession(), this.getEntityClass(), search);
         search.setTotalCount(resultPair.getRight());
         ResponseHeadersUtil.addTotalCount(search);
         return resultPair.getLeft();
@@ -70,7 +70,7 @@ public class BaseDao<T extends RobeEntity> extends AbstractDAO<T> {
      * @return List of entities.
      */
     public <E> List<E> findAll(SearchModel search, Class<E> transformClass) {
-        ResultPair<List<E>, Long> resultPair = SearchQueryHQL.pairList(this.currentSession(), this.getEntityClass(), search, transformClass);
+        Pair<List<E>, Long> resultPair = SearchQueryHQL.pairList(this.currentSession(), this.getEntityClass(), search, transformClass);
         search.setTotalCount(resultPair.getRight());
         ResponseHeadersUtil.addTotalCount(search);
         return resultPair.getLeft();

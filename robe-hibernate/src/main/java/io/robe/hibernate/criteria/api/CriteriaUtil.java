@@ -16,12 +16,17 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * Created by kamilbukum on 06/12/16.
+ *
  */
 public class CriteriaUtil {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(SearchQuery.class);
 
+    /**
+     *
+     * @param criteria
+     * @param qValue
+     */
     public static void configureQCriterions(RootCriteria criteria, String qValue) {
         Map<String, Field> parentFieldMap = SearchQuery.CacheFields.getCachedFields(criteria.getEntityClass());
         for(Map.Entry<String, Field>  entry: parentFieldMap.entrySet()) {
@@ -55,7 +60,11 @@ public class CriteriaUtil {
         }
     }
 
-
+    /**
+     *
+     * @param rootCriteria
+     * @param filters
+     */
     public static void configureFilters(RootCriteria rootCriteria, String[][] filters) {
         Map<String, Field> parentFieldMap = SearchQuery.CacheFields.getCachedFields(rootCriteria.getEntityClass());
         for(String[] filter: filters) {
@@ -88,6 +97,11 @@ public class CriteriaUtil {
         }
     }
 
+    /**
+     *
+     * @param criteria
+     * @param sortings
+     */
     public static void configureSortings(RootCriteria criteria, String[] sortings){
         Map<String, Field> parentFieldMap = SearchQuery.CacheFields.getCachedFields(criteria.getEntityClass());
         for(String sorting: sortings) {
@@ -130,6 +144,11 @@ public class CriteriaUtil {
         }
     }
 
+    /**
+     *
+     * @param criteria
+     * @param selectFields
+     */
     public static void configureSelectFields(RootCriteria criteria, String[] selectFields){
         Map<String, Field> parentFieldMap = SearchQuery.CacheFields.getCachedFields(criteria.getEntityClass());
         for(String selectField: selectFields) {
@@ -161,7 +180,13 @@ public class CriteriaUtil {
         }
     }
 
-
+    /**
+     *
+     * @param criteria
+     * @param field
+     * @param alias
+     * @return
+     */
     public static JoinCriteria createOrGetJoinCriteriaByField(RootCriteria criteria, Field field, String alias){
         JoinCriteria joinCriteria = criteria.getCriteria(alias);
         if(joinCriteria  == null) {
@@ -180,6 +205,11 @@ public class CriteriaUtil {
         return joinCriteria;
     }
 
+    /**
+     *
+     * @param entityClass
+     * @return
+     */
     public static List<String> fromEntityFields2SearchFields(Class<?> entityClass) {
         List<String> fieldList = new LinkedList<>();
         for(Field field: entityClass.getDeclaredFields()) {
@@ -191,6 +221,12 @@ public class CriteriaUtil {
         }
         return fieldList;
     }
+
+    /**
+     *
+     * @param entityClass
+     * @return
+     */
     public static String[] fromEntityFields2SearchFieldArray(Class<?> entityClass) {
         return fromEntityFields2SearchFields(entityClass).toArray(new String[]{});
     }
