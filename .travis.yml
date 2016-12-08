@@ -10,8 +10,8 @@ after_success:
   - openssl aes-256-cbc -pass pass:$ENCRYPTION_PASSWORD -in $GPG_DIR/secring.gpg.enc -out ~/secring.gpg -d
   - codecov
   - echo "<settings><servers><server><id>ossrh</id><username>\${env.OSSRH_USER}</username><password>\${env.OSSRH_PASS}</password></server><server><id>bintray-robeio-maven</id><username>\${env.BINTRAY_USER}</username><password>\${env.BINTRAY_API_KEY}</password></server></servers><profiles><profile><id>ossrh</id><activation><activeByDefault>true</activeByDefault></activation><properties><gpg.executable>gpg</gpg.executable><gpg.passphrase>\${env.GPGPASSPHRASE}</gpg.passphrase></properties></profile></profiles></settings>" > ~/settings.xml
-  - mvn clean deploy -DperformRelease=true -DskipTests=true --settings ~/settings.xml
-  - mvn clean deploy -Dbintray=true -DskipTests=true --settings ~/settings.xml
+  - mvn clean install -U deploy -DperformRelease=true -DskipTests=true --settings ~/settings.xml
+  - mvn clean install -U deploy -Dbintray=true -DskipTests=true --settings ~/settings.xml
 
 env:
   global:
