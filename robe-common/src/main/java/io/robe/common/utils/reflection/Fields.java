@@ -7,6 +7,7 @@ import java.lang.reflect.Modifier;
 import java.math.BigDecimal;
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.function.Predicate;
 
 /**
  * A class which helps field operations by reflectasm library.
@@ -57,18 +58,36 @@ public class Fields {
         }
     }
 
+
     public static Map<String, Field> getAllFieldsAsMap(Class<?> type) {
         Map<String, Field> fieldMap = new LinkedHashMap<>();
-        getAllFieldsAsMap(fieldMap, type);
+        getAllFieldsAsMap(fieldMap, type, null);
         return fieldMap;
     }
 
-    public static void getAllFieldsAsMap(Map<String, Field> fieldMap, Class<?> type) {
-        for(Field field: type.getDeclaredFields()) {
-            field.setAccessible(true);
-            fieldMap.putIfAbsent(field.getName(), field);
-            if(type.getSuperclass() != null) {
-                getAllFieldsAsMap(fieldMap, type.getSuperclass());
+    public static Map<String, Field> getAllFieldsAsMap(Class<?> type, Predicate<Field> predicate) {
+        Map<String, Field> fieldMap = new LinkedHashMap<>();
+        getAllFieldsAsMap(fieldMap, type, predicate);
+        return fieldMap;
+    }
+
+    public static void getAllFieldsAsMap(Map<String, Field> fieldMap, Class<?> type, Predicate<Field> predicate) {
+        if(predicate != null) {
+            for(Field field: type.getDeclaredFields()) {
+                if(!predicate.test(field)) continue;
+                field.setAccessible(true);
+                fieldMap.putIfAbsent(field.getName(), field);
+                if(type.getSuperclass() != null) {
+                    getAllFieldsAsMap(fieldMap, type.getSuperclass(), predicate);
+                }
+            }
+        } else {
+            for(Field field: type.getDeclaredFields()) {
+                field.setAccessible(true);
+                fieldMap.putIfAbsent(field.getName(), field);
+                if(type.getSuperclass() != null) {
+                    getAllFieldsAsMap(fieldMap, type.getSuperclass(), predicate);
+                }
             }
         }
     }

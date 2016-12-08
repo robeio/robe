@@ -8,15 +8,25 @@ import io.robe.common.service.search.model.SearchModel;
 import io.robe.common.utils.reflection.Fields;
 import io.robe.common.utils.Strings;
 
+import javax.persistence.Transient;
 import java.lang.reflect.Field;
+import java.lang.reflect.Modifier;
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.function.Predicate;
 
 /**
  * creates {@link RootCriteria} by given "Entity Class" and {@link SearchModel}
  */
 public abstract class SearchQuery {
 
+    private static final Predicate<Field> ENTITY_FIELD_PREDICATE = (field) -> {
+        if(field.isSynthetic()) return false;
+        if((field.getModifiers() & Modifier.STATIC) == Modifier.STATIC) return false;
+        if((field.getModifiers() & Modifier.FINAL) == Modifier.FINAL) return false;
+        if(field.getAnnotation(Transient.class) != null) return false;
+        return true;
+    };
     /**
      *
      * @param entityClass
@@ -63,7 +73,7 @@ public abstract class SearchQuery {
          */
         public static Map<String, Field> getCachedFields(Class<?> entityClass) {
             if (!fieldCache.containsKey(entityClass.getName())) {
-                fieldCache.put(entityClass.getName(), Fields.getAllFieldsAsMap(entityClass));
+                fieldCache.put(entityClass.getName(), Fields.getAllFieldsAsMap(entityClass, ENTITY_FIELD_PREDICATE));
             }
             return fieldCache.get(entityClass.getName());
         }

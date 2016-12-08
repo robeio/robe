@@ -111,6 +111,67 @@ public class SearchQueryHQLTest {
         assertEquals(2, resultPair.getLeft().size());
         assertEquals(3, (long)resultPair.getRight());
         assertTrue(resultPair.getLeft().get(0) instanceof User);
+
+        resultPair = SearchQueryHQL.pairListStrict(session, User.class, getModel(
+                false,
+                true,
+                true,
+                true
+        ));
+
+        assertEquals(2, resultPair.getLeft().size());
+        assertEquals(3, (long)resultPair.getRight());
+        assertTrue(resultPair.getLeft().get(0) instanceof User);
+
+
+        resultPair = SearchQueryHQL.pairListStrict(session, User.class, getModel(
+                false,
+                false,
+                true,
+                true
+        ));
+
+        assertEquals(2, resultPair.getLeft().size());
+        assertEquals(3, (long)resultPair.getRight());
+        assertTrue(resultPair.getLeft().get(0) instanceof User);
+
+        resultPair = SearchQueryHQL.pairListStrict(session, User.class, getModel(
+                false,
+                false,
+                false,
+                true
+        ));
+
+        assertEquals(2, resultPair.getLeft().size());
+        assertEquals(3, (long)resultPair.getRight());
+        assertTrue(resultPair.getLeft().get(0) instanceof User);
+
+
+        resultPair = SearchQueryHQL.pairListStrict(session, User.class, getModel(
+                false,
+                false,
+                false,
+                false
+        ));
+
+        assertEquals(3, resultPair.getLeft().size());
+        assertEquals(3, (long)resultPair.getRight());
+        assertTrue(resultPair.getLeft().get(0) instanceof User);
+
+
+        SearchModel model = getModel(
+                false,
+                false,
+                false,
+                false
+        );
+        model.setOffset(2);
+
+        resultPair = SearchQueryHQL.pairListStrict(session, User.class, model);
+
+        assertEquals(1, resultPair.getLeft().size());
+        assertEquals(3, (long)resultPair.getRight());
+        assertTrue(resultPair.getLeft().get(0) instanceof User);
     }
 
     @Test
@@ -130,6 +191,69 @@ public class SearchQueryHQLTest {
         assertEquals( 2, resultPair.getLeft().size());
         assertEquals(3, (long)resultPair.getRight());
         assertTrue(resultPair.getLeft().get(0) instanceof Map);
+
+
+        resultPair = SearchQueryHQL.pairList(session, User.class, getModel(
+                false,
+                true,
+                true,
+                true
+        ));
+
+        assertEquals( 2, resultPair.getLeft().size());
+        assertEquals(3, (long)resultPair.getRight());
+        assertTrue(resultPair.getLeft().get(0) instanceof Map);
+
+
+        resultPair = SearchQueryHQL.pairList(session, User.class, getModel(
+                false,
+                false,
+                true,
+                true
+        ));
+
+        assertEquals( 2, resultPair.getLeft().size());
+        assertEquals(3, (long)resultPair.getRight());
+        assertTrue(resultPair.getLeft().get(0) instanceof Map);
+
+
+        resultPair = SearchQueryHQL.pairList(session, User.class, getModel(
+                false,
+                false,
+                false,
+                true
+        ));
+
+        assertEquals( 2, resultPair.getLeft().size());
+        assertEquals(3, (long)resultPair.getRight());
+        assertTrue(resultPair.getLeft().get(0) instanceof Map);
+
+
+        resultPair = SearchQueryHQL.pairList(session, User.class, getModel(
+                false,
+                false,
+                false,
+                false
+        ));
+
+        assertEquals( 3, resultPair.getLeft().size());
+        assertEquals(3, (long)resultPair.getRight());
+        assertTrue(resultPair.getLeft().get(0) instanceof Map);
+
+
+        SearchModel model = getModel(
+                false,
+                false,
+                false,
+                true
+        );
+        model.setOffset(2);
+
+        resultPair = SearchQueryHQL.pairList(session, User.class, model);
+
+        assertEquals( 1, resultPair.getLeft().size());
+        assertEquals(3, (long)resultPair.getRight());
+        assertTrue(resultPair.getLeft().get(0) instanceof Map);
     }
 
     @Test
@@ -145,6 +269,72 @@ public class SearchQueryHQLTest {
         ), UserDTO.class);
 
         assertEquals(resultPair.getLeft().size(), 2);
+        assertEquals((long)resultPair.getRight(), 3);
+        assertTrue(resultPair.getLeft().get(0) instanceof UserDTO);
+
+
+
+        resultPair = SearchQueryHQL.pairList(session, User.class, getModel(
+                false,
+                true,
+                true,
+                true
+        ), UserDTO.class);
+
+        assertEquals(resultPair.getLeft().size(), 2);
+        assertEquals((long)resultPair.getRight(), 3);
+        assertTrue(resultPair.getLeft().get(0) instanceof UserDTO);
+
+
+        resultPair = SearchQueryHQL.pairList(session, User.class, getModel(
+                false,
+                false,
+                true,
+                true
+        ), UserDTO.class);
+
+        assertEquals(resultPair.getLeft().size(), 2);
+        assertEquals((long)resultPair.getRight(), 3);
+        assertTrue(resultPair.getLeft().get(0) instanceof UserDTO);
+
+
+
+        resultPair = SearchQueryHQL.pairList(session, User.class, getModel(
+                false,
+                false,
+                false,
+                true
+        ), UserDTO.class);
+
+        assertEquals(resultPair.getLeft().size(), 2);
+        assertEquals((long)resultPair.getRight(), 3);
+        assertTrue(resultPair.getLeft().get(0) instanceof UserDTO);
+
+
+
+        resultPair = SearchQueryHQL.pairList(session, User.class, getModel(
+                false,
+                false,
+                false,
+                false
+        ), UserDTO.class);
+
+        assertEquals(resultPair.getLeft().size(), 3);
+        assertEquals((long)resultPair.getRight(), 3);
+        assertTrue(resultPair.getLeft().get(0) instanceof UserDTO);
+
+
+
+        SearchModel model = getModel(
+                false,
+                false,
+                false,
+                true
+        );
+        model.setOffset(2);
+        resultPair = SearchQueryHQL.pairList(session, User.class, model, UserDTO.class);
+
+        assertEquals(resultPair.getLeft().size(), 1);
         assertEquals((long)resultPair.getRight(), 3);
         assertTrue(resultPair.getLeft().get(0) instanceof UserDTO);
     }
@@ -163,6 +353,65 @@ public class SearchQueryHQLTest {
 
         assertEquals(2, list.size());
         assertTrue(list.get(0) instanceof User);
+
+
+        list = SearchQueryHQL.listStrict(session, User.class, getModel(
+                false,
+                true,
+                true,
+                true
+        ));
+
+        assertEquals(2, list.size());
+        assertTrue(list.get(0) instanceof User);
+
+
+        list = SearchQueryHQL.listStrict(session, User.class, getModel(
+                false,
+                false,
+                true,
+                true
+        ));
+
+        assertEquals(2, list.size());
+        assertTrue(list.get(0) instanceof User);
+
+
+        list = SearchQueryHQL.listStrict(session, User.class, getModel(
+                false,
+                false,
+                false,
+                true
+        ));
+
+        assertEquals(2, list.size());
+        assertTrue(list.get(0) instanceof User);
+
+
+        list = SearchQueryHQL.listStrict(session, User.class, getModel(
+                false,
+                false,
+                false,
+                false
+        ));
+
+        assertEquals(3, list.size());
+        assertTrue(list.get(0) instanceof User);
+
+
+
+        SearchModel model = getModel(
+                false,
+                false,
+                false,
+                true
+        );
+        model.setOffset(2);
+        list = SearchQueryHQL.listStrict(session, User.class, model);
+
+
+        assertEquals(1, list.size());
+        assertTrue(list.get(0) instanceof User);
     }
 
     @Test
@@ -180,6 +429,68 @@ public class SearchQueryHQLTest {
 
         assertEquals(2, list.size());
         assertTrue(list.get(0) instanceof Map);
+
+
+
+        list = SearchQueryHQL.list(session, User.class, getModel(
+                false,
+                true,
+                true,
+                true
+        ));
+
+
+        assertEquals(2, list.size());
+        assertTrue(list.get(0) instanceof Map);
+
+
+        list = SearchQueryHQL.list(session, User.class, getModel(
+                false,
+                false,
+                true,
+                true
+        ));
+
+
+        assertEquals(2, list.size());
+        assertTrue(list.get(0) instanceof Map);
+
+
+        list = SearchQueryHQL.list(session, User.class, getModel(
+                false,
+                false,
+                false,
+                true
+        ));
+
+
+        assertEquals(2, list.size());
+        assertTrue(list.get(0) instanceof Map);
+
+
+        list = SearchQueryHQL.list(session, User.class, getModel(
+                false,
+                false,
+                false,
+                false
+        ));
+
+
+        assertEquals(3, list.size());
+        assertTrue(list.get(0) instanceof Map);
+
+
+        SearchModel model = getModel(
+                false,
+                false,
+                false,
+                false
+        );
+        model.setOffset(2);
+        list = SearchQueryHQL.list(session, User.class, model);
+
+        assertEquals(1, list.size());
+        assertTrue(list.get(0) instanceof Map);
     }
 
     @Test
@@ -196,6 +507,65 @@ public class SearchQueryHQLTest {
 
         assertEquals(2, list.size());
         assertTrue(list.get(0) instanceof UserDTO);
+
+        list = SearchQueryHQL.list(session, User.class, getModel(
+                false,
+                true,
+                true,
+                true
+        ), UserDTO.class);
+
+        assertEquals(2, list.size());
+        assertTrue(list.get(0) instanceof UserDTO);
+
+
+        list = SearchQueryHQL.list(session, User.class, getModel(
+                false,
+                false,
+                true,
+                true
+        ), UserDTO.class);
+
+        assertEquals(2, list.size());
+        assertTrue(list.get(0) instanceof UserDTO);
+
+
+        list = SearchQueryHQL.list(session, User.class, getModel(
+                false,
+                false,
+                false,
+                true
+        ), UserDTO.class);
+
+        assertEquals(2, list.size());
+        assertTrue(list.get(0) instanceof UserDTO);
+
+
+        list = SearchQueryHQL.list(session, User.class, getModel(
+                false,
+                false,
+                false,
+                false
+        ), UserDTO.class);
+
+        assertEquals(3, list.size());
+        assertTrue(list.get(0) instanceof UserDTO);
+
+
+        SearchModel model = getModel(
+                false,
+                false,
+                false,
+                true
+        );
+
+        model.setOffset(2);
+
+        list = SearchQueryHQL.list(session, User.class, model , UserDTO.class);
+
+        assertEquals(1, list.size());
+        assertTrue(list.get(0) instanceof UserDTO);
+
     }
 
 

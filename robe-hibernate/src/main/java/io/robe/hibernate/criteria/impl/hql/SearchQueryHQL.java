@@ -1,14 +1,17 @@
 package io.robe.hibernate.criteria.impl.hql;
 
-import io.robe.hibernate.criteria.api.CriteriaUtil;
 import io.robe.common.dto.Pair;
+import io.robe.common.utils.Strings;
 import io.robe.hibernate.criteria.api.query.SearchQuery;
 import io.robe.common.service.search.model.SearchModel;
 import io.robe.common.utils.TypeReference;
 import org.hibernate.Session;
 
+import java.lang.reflect.Field;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 /**
  * searchs data on Database by using HQL Language.
@@ -45,9 +48,7 @@ public class SearchQueryHQL {
      * @return
      */
     public static Pair<List<Map<String, Object>>, Long> pairList(Session session, Class<?> entityClass, SearchModel search){
-        if(search.getFields() == null || search.getFields().length == 0) {
-            search.setFields(CriteriaUtil.fromEntityFields2SearchFieldArray(entityClass));
-        }
+        fillSelectFieldsIfNotExist(entityClass, entityClass, search);
         HqlPagingConverter<Map<String, Object>> hqlPagingConverter = new HqlPagingConverter<>(session, MAP_TYPE_REFERENCE.getClazz());
         Pair<List<Map<String, Object>>, Long> resultPair = SearchQuery.createCriteria(entityClass, search).convert(hqlPagingConverter);
         return resultPair;
@@ -63,9 +64,7 @@ public class SearchQueryHQL {
      * @return
      */
     public static <T> Pair<List<T>, Long> pairList(Session session, Class<?> entityClass, SearchModel search, Class<T> transformClass){
-        if(search.getFields() == null || search.getFields().length == 0) {
-            search.setFields(CriteriaUtil.fromEntityFields2SearchFieldArray(entityClass));
-        }
+        fillSelectFieldsIfNotExist(entityClass, transformClass, search);
         HqlPagingConverter<T> hqlPagingConverter = new HqlPagingConverter<>(session, transformClass);
         Pair<List<T>, Long> resultPair = SearchQuery.createCriteria(entityClass, search).convert(hqlPagingConverter);
         return resultPair;
@@ -96,9 +95,7 @@ public class SearchQueryHQL {
      * @return
      */
     public static List<Map<String, Object>> list(Session session, Class<?> entityClass,SearchModel search){
-        if(search.getFields() == null || search.getFields().length == 0) {
-            search.setFields(CriteriaUtil.fromEntityFields2SearchFieldArray(entityClass));
-        }
+        fillSelectFieldsIfNotExist(entityClass, entityClass, search);
         HqlListConverter<Map<String, Object>> hqlListConverter = new HqlListConverter<>(session, MAP_TYPE_REFERENCE.getClazz());
         List<Map<String, Object>> userList = SearchQuery.createCriteria(entityClass, search).convert(hqlListConverter);
         return userList;
@@ -114,11 +111,41 @@ public class SearchQueryHQL {
      * @return
      */
     public static <T> List<T> list(Session session, Class<?> entityClass, SearchModel search, Class<T> transformClass){
-        if(search.getFields() == null || search.getFields().length == 0) {
-            search.setFields(CriteriaUtil.fromEntityFields2SearchFieldArray(entityClass));
-        }
+        fillSelectFieldsIfNotExist(entityClass, transformClass, search);
         HqlListConverter<T> hqlListConverter = new HqlListConverter<>(session, transformClass);
         List<T> userList = SearchQuery.createCriteria(entityClass, search).convert(hqlListConverter);
         return userList;
+    }
+
+    public static void fillSelectFieldsIfNotExist(Class<?> entityClass, Class<?> transformClass, SearchModel search){
+        if(search.getFields() == null || search.getFields().length == 0) {
+            if(entityClass.equals(transformClass)) {
+                Map<String, Field> fieldMap = SearchQuery.CacheFields.getCachedFields(transformClass);
+                if(fieldMap != null && fieldMap.size() > 0) {
+                    search.setFields(fieldMap.keySet().toArray(new String[]{}));
+                }
+            } else { // Transform Class
+                Map<String, Field> fieldMap = SearchQuery.CacheFields.getCachedFields(transformClass);
+
+                Map<String, Field> entityFieldMap = SearchQuery.CacheFields.getCachedFields(entityClass);
+
+                Set<String> selectSet = new HashSet<>();
+
+                for(Map.Entry<String, Field> transformFieldEntry: fieldMap.entrySet()) {
+                    if(entityFieldMap.keySet().contains(transformFieldEntry.getKey())) {
+                        selectSet.add(transformFieldEntry.getKey());
+                        continue;
+                    }
+
+                    for(String entityFieldName: entityFieldMap.keySet()) {
+                        if(transformFieldEntry.getKey().startsWith(entityFieldName)) {
+                           String transformField =  entityFieldName + "." + Strings.unCapitalizeFirstChar(transformFieldEntry.getKey().substring(entityFieldName.length()));
+                           selectSet.add(transformField);
+                        }
+                    }
+                }
+                search.setFields(selectSet.toArray(new String[]{}));
+            }
+        }
     }
 }

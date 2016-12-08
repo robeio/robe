@@ -158,7 +158,7 @@ public class CriteriaUtil {
             if(select.length() == 0) continue;
             Field field = parentFieldMap.get(select);
             if(field == null) {
-                LOGGER.error(field.getName() + " field not found in " + criteria.getEntityClass().getName());
+                LOGGER.error(select + " field not found in " + criteria.getEntityClass().getName());
                 continue;
             }
 
@@ -204,31 +204,4 @@ public class CriteriaUtil {
         }
         return joinCriteria;
     }
-
-    /**
-     *
-     * @param entityClass
-     * @return
-     */
-    public static List<String> fromEntityFields2SearchFields(Class<?> entityClass) {
-        List<String> fieldList = new LinkedList<>();
-        for(Field field: entityClass.getDeclaredFields()) {
-            if(field.isSynthetic()) continue;
-            Transient notPersistence = field.getAnnotation(Transient.class);
-            if(notPersistence == null) {
-                fieldList.add(field.getName());
-            }
-        }
-        return fieldList;
-    }
-
-    /**
-     *
-     * @param entityClass
-     * @return
-     */
-    public static String[] fromEntityFields2SearchFieldArray(Class<?> entityClass) {
-        return fromEntityFields2SearchFields(entityClass).toArray(new String[]{});
-    }
-
 }
