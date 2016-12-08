@@ -24,7 +24,7 @@ public class RobeHibernateBundleTest {
     }
 
     private final String[] packagesToScan = new String[]{"io.robe.hibernate.entity"};
-    private final String[] entities = new String[]{"io.robe.hibernate.AnotherTestEntity", "io.robe.hibernate.entity.NotAnnotatedEntity", "io.robe.hibernate.NoEntity"};
+    private final String[] entities = new String[]{"io.robe.hibernate.AnotherTestEntity", "io.robe.hibernate.entity.NotAnnotatedEntity"};
 
     @Test(expected = RuntimeException.class)
     @Order

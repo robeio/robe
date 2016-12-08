@@ -4,7 +4,7 @@ package io.robe.hibernate.test.entity;
 public class UserDTO {
 
     private String email;
-
+    private String roleOidName;
 
     public void setEmail(String email) {
         this.email = email;
@@ -13,8 +13,6 @@ public class UserDTO {
     public String getEmail() {
         return email;
     }
-
-    private String roleOidName;
 
     public void setRoleOidName(String roleOidName) {
         this.roleOidName = roleOidName;
