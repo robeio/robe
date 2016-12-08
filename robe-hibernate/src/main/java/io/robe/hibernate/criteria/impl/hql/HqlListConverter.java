@@ -15,24 +15,15 @@ import java.util.Map;
 /**
  * Gets list data and total count by using {@link RootCriteria}
  */
-public class HqlListConverter<T> implements QueryConverter<List<T>> {
-    /**
-     * Hibernate Session
-     */
-    private final Session session;
-    /**
-     * Transforming Class Type
-     */
-    private final Class<T> transformClass;
+public class HqlListConverter<T> extends HqlConverter<List<T>> {
+
 
     /**
-     *
      * @param session
      * @param transformClass
      */
     public HqlListConverter(Session session, Class<T> transformClass) {
-        this.session = session;
-        this.transformClass = transformClass;
+        super(session, transformClass);
     }
 
     /**
@@ -45,7 +36,7 @@ public class HqlListConverter<T> implements QueryConverter<List<T>> {
 
         Pair<String, Map<String, Object>> resultPair = HqlConverterUtil.list(criteria);
 
-        Query query = session.createQuery(resultPair.getLeft());
+        Query query = getSession().createQuery(resultPair.getLeft());
 
         if(resultPair.getRight() != null) {
             for(Map.Entry<String, Object> entry: resultPair.getRight().entrySet()) {
@@ -56,19 +47,7 @@ public class HqlListConverter<T> implements QueryConverter<List<T>> {
                 }
             }
         }
-
-        if(transformClass.getName().equals(Map.class.getName())) {
-            query.setResultTransformer(Criteria.ALIAS_TO_ENTITY_MAP);
-        } else if(!criteria.getEntityClass().equals(transformClass)) {
-            query.setResultTransformer(Transformers.aliasToBean(transformClass));
-        }
-
-        if(criteria.getOffset() != null) {
-            query.setFirstResult(criteria.getOffset());
-        }
-        if(criteria.getLimit() != null) {
-            query.setMaxResults(criteria.getLimit());
-        }
+        configureListQuery(criteria, query);
         return query.list();
     }
 }

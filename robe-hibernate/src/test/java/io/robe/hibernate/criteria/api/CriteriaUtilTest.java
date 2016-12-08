@@ -14,10 +14,7 @@ public class CriteriaUtilTest {
 
         String[] expectedFields = new String[] {
                 "email",
-                "name",
-                "surname",
-                "password",
-                "roleName"
+                "roleOidName"
         };
 
         String[] fields = CriteriaUtil.fromEntityFields2SearchFieldArray(UserDTO.class);

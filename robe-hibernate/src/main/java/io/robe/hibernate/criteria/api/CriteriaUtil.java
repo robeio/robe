@@ -164,7 +164,7 @@ public class CriteriaUtil {
 
             switch (selects.length) {
                 case 1:
-                    criteria.getOrderedSelects().add(select);
+                    criteria.getOrderedSelects().add(selectField);
                     break;
                 case 2:
                     JoinCriteria joinCriteria = createOrGetJoinCriteriaByField(
@@ -173,7 +173,7 @@ public class CriteriaUtil {
                             select
                     );
                     if(joinCriteria != null) {
-                        criteria.getOrderedSelects().add(select);
+                        criteria.getOrderedSelects().add(selectField);
                     }
                     break;
             }

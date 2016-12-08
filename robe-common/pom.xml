@@ -24,12 +24,6 @@
             <scope>test</scope>
         </dependency>
         <dependency>
-            <groupId>org.reflections</groupId>
-            <artifactId>reflections-maven</artifactId>
-            <version>0.9.9-RC2</version>
-            <scope>test</scope>
-        </dependency>
-        <dependency>
             <groupId>io.dropwizard</groupId>
             <artifactId>dropwizard-hibernate</artifactId>
             <scope>test</scope>

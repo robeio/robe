@@ -3,13 +3,8 @@ package io.robe.hibernate.criteria.impl.hql;
 import io.robe.common.dto.Pair;
 import io.robe.hibernate.criteria.api.criterion.RootCriteria;
 
-import io.robe.hibernate.criteria.api.query.QueryConverter;
-import org.hibernate.Criteria;
 import org.hibernate.Query;
 import org.hibernate.Session;
-import org.hibernate.transform.Transformers;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import java.util.Collection;
 import java.util.List;
@@ -19,27 +14,15 @@ import java.util.Map;
  * Gets list data and total count by using {@link RootCriteria}
  * @param <T>
  */
-public class HqlPagingConverter<T> implements QueryConverter<Pair<List<T>, Long>> {
+public class HqlPagingConverter<T> extends HqlConverter<Pair<List<T>, Long>> {
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(HqlPagingConverter.class);
-
-    /**
-     * Hibernate Session
-     */
-    private final Session session;
-    /**
-     * Transforming Class Type
-     */
-    private final Class<T> transformClass;
 
     /**
-     *
      * @param session
      * @param transformClass
      */
-    public HqlPagingConverter(Session session, Class<T> transformClass){
-        this.session = session;
-        this.transformClass = transformClass;
+    public HqlPagingConverter(Session session, Class<T> transformClass) {
+        super(session, transformClass);
     }
 
     /**
@@ -50,9 +33,11 @@ public class HqlPagingConverter<T> implements QueryConverter<Pair<List<T>, Long>
     @Override
     public Pair<List<T>, Long> convert(RootCriteria criteria) {
 
+        Pair<List<T>, Long> response = new Pair<>();
+
         Pair<Pair<String, String>, Map<String, Object>> resultPair = HqlConverterUtil.listWithCount(criteria);
-        Query listQuery = session.createQuery(resultPair.getLeft().getLeft());
-        Query countQuery = session.createQuery(resultPair.getLeft().getRight());
+        Query listQuery = getSession().createQuery(resultPair.getLeft().getLeft());
+        Query countQuery = getSession().createQuery(resultPair.getLeft().getRight());
 
         if(resultPair.getRight() != null) {
             for(Map.Entry<String, Object> entry: resultPair.getRight().entrySet()) {
@@ -66,22 +51,13 @@ public class HqlPagingConverter<T> implements QueryConverter<Pair<List<T>, Long>
             }
         }
 
-        if(transformClass.equals(Map.class)) {
-            listQuery.setResultTransformer(Criteria.ALIAS_TO_ENTITY_MAP);
-        } else if(!criteria.getEntityClass().equals(transformClass)) {
-            listQuery.setResultTransformer(Transformers.aliasToBean(transformClass));
-        }
+        configureListQuery(criteria, listQuery);
 
-        if(criteria.getOffset() != null) {
-            listQuery.setFirstResult(criteria.getOffset());
-        }
-        if(criteria.getLimit() != null) {
-            listQuery.setMaxResults(criteria.getLimit());
-        }
-
-        Pair<List<T>, Long> response = new Pair<>();
         response.setLeft(listQuery.list());
         response.setRight((Long)countQuery.uniqueResult());
+
         return response;
     }
+
+
 }
