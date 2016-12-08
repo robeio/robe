@@ -5,7 +5,6 @@ import com.google.common.collect.ImmutableList;
 import com.google.inject.Module;
 import io.dropwizard.Application;
 import io.dropwizard.hibernate.UnitOfWork;
-import io.dropwizard.jersey.jackson.JsonProcessingExceptionMapper;
 import io.dropwizard.jetty.NonblockingServletHolder;
 import io.dropwizard.setup.Bootstrap;
 import io.dropwizard.setup.Environment;
@@ -19,6 +18,7 @@ import io.robe.assets.AdvancedAssetBundle;
 import io.robe.auth.token.TokenAuthBundle;
 import io.robe.auth.token.TokenAuthenticator;
 import io.robe.auth.token.jersey.TokenFactory;
+import io.robe.common.exception.ExceptionMapperBinder;
 import io.robe.common.exception.RobeExceptionMapper;
 import io.robe.common.service.search.SearchFactoryProvider;
 import io.robe.guice.GuiceBundle;
@@ -138,8 +138,8 @@ public class RobeApplication<T extends RobeConfiguration> extends Application<T>
     }
 
     private void addExceptionMappers(Environment environment) {
-        environment.jersey().register(new RobeExceptionMapper());
-        environment.jersey().register(new JsonProcessingExceptionMapper(true));
+        environment.jersey().register(RobeExceptionMapper.class);
+        environment.jersey().register(new ExceptionMapperBinder(true));
     }
 
     protected InitializeCommand getInitCommand() {
