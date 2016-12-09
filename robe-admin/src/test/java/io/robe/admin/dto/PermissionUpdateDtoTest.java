@@ -1,10 +1,13 @@
 package io.robe.admin.dto;
 
+import org.junit.Assert;
 import org.junit.Before;
 import org.junit.FixMethodOrder;
 import org.junit.Test;
 
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 import static org.junit.Assert.assertEquals;
 
@@ -41,5 +44,19 @@ public class PermissionUpdateDtoTest {
         dto.setServices(services);
         assertEquals(services, dto.getServices());
 
+    }
+
+
+    @Test
+    public void permissionUpdateDto() {
+        PermissionUpdateDto dto = new PermissionUpdateDto();
+
+        List<String> menus = Arrays.asList("User", "Role");
+        dto.setMenus(menus);
+        List<String> services = Arrays.asList("UserService", "RoleService", "MenuService");
+        dto.setServices(services);
+
+        Assert.assertTrue(dto.getMenus().size() == 2);
+        Assert.assertTrue(dto.getServices().size() == 3);
     }
 }

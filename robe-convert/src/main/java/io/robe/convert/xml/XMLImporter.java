@@ -51,15 +51,8 @@ public class XMLImporter<T> extends Importer<T> {
 
         XmlFactory factory = new XmlFactory();
         JsonParser parser = factory.createParser(new InputStreamReader(inputStream, charSetName));
-        JsonToken current;
 
         Map<String, Field> fields = getFieldMap(getDataClass());
-
-        current = parser.nextToken();
-        while (current != JsonToken.START_OBJECT) {
-            throw new RuntimeException("Error: root should be object.");
-
-        }
 
         while (parser.nextToken() != JsonToken.END_OBJECT) {
             try {

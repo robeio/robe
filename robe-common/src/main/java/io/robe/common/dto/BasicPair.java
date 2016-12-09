@@ -3,9 +3,7 @@ package io.robe.common.dto;
 /**
  * Default DTO for basic name value pair. Will be used for simple data transfers.
  */
-public class BasicPair {
-    private String name;
-    private String value;
+public class BasicPair extends Pair<String, String> {
 
     /**
      * Default Constructor .
@@ -20,31 +18,21 @@ public class BasicPair {
      * @param value
      */
     public BasicPair(String name, String value) {
-        this.name = name;
-        this.value = value;
+        this.setLeft(name);
+        this.setRight(value);
     }
 
     /**
      * @return Current name
      */
     public String getName() {
-        return name;
+        return this.getLeft();
     }
 
     /**
      * @return Current value
      */
     public String getValue() {
-        return value;
-    }
-
-    /**
-     * String representation of pair
-     *
-     * @return name=value
-     */
-    @Override
-    public String toString() {
-        return name + "=" + value;
+        return this.getRight();
     }
 }

@@ -10,7 +10,9 @@ import java.lang.annotation.Target;
 public @interface SearchFrom {
     Class<?> entity();
 
-    String[] target();
+    String [] select() default {};
+
+    String[] filter() default {};
 
     String id() default "oid";
 

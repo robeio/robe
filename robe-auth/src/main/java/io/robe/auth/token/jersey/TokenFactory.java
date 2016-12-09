@@ -1,12 +1,10 @@
 package io.robe.auth.token.jersey;
 
-import com.google.common.base.Optional;
 import com.google.common.hash.Hashing;
 import io.dropwizard.auth.AuthenticationException;
 import io.dropwizard.auth.Authenticator;
 import io.robe.auth.Credentials;
-import io.robe.auth.token.Token;
-import io.robe.auth.token.TokenManager;
+import io.robe.auth.token.BasicToken;
 import org.glassfish.jersey.server.internal.inject.AbstractContainerRequestValueFactory;
 import org.glassfish.jersey.uri.UriTemplate;
 import org.slf4j.Logger;
@@ -15,14 +13,14 @@ import org.slf4j.LoggerFactory;
 import javax.ws.rs.WebApplicationException;
 import javax.ws.rs.core.Cookie;
 import javax.ws.rs.core.Response;
-import java.lang.reflect.InvocationTargetException;
 import java.nio.charset.StandardCharsets;
 import java.util.List;
+import java.util.Optional;
 
-public class TokenFactory<T extends Token> extends AbstractContainerRequestValueFactory<Credentials> {
+public class TokenFactory<T extends BasicToken> extends AbstractContainerRequestValueFactory<Credentials> {
     private static final Logger LOGGER = LoggerFactory.getLogger(TokenFactory.class);
 
-    public static Authenticator<String, Token> authenticator;
+    public static Authenticator<String, BasicToken> authenticator;
 
     public static String tokenKey;
 
@@ -79,7 +77,7 @@ public class TokenFactory<T extends Token> extends AbstractContainerRequestValue
                     if (!isRealOwnerOfToken(tokenCookie)) {
                         throw new WebApplicationException(Response.Status.UNAUTHORIZED);
                     }
-                    Optional<Token> result = authenticator.authenticate(tokenCookie.getValue());
+                    Optional<BasicToken> result = authenticator.authenticate(tokenCookie.getValue());
 
                     if (!result.isPresent()) {
                         throw new WebApplicationException(Response.Status.UNAUTHORIZED);
@@ -91,7 +89,7 @@ public class TokenFactory<T extends Token> extends AbstractContainerRequestValue
                 } catch (io.dropwizard.auth.AuthenticationException e) {
                     LOGGER.error("Authentication Exception  by Dropwizard", e);
                     throw new WebApplicationException(Response.Status.PRECONDITION_FAILED);
-                } catch (InstantiationException | InvocationTargetException | IllegalAccessException e) {
+                } catch (Exception e) {
                     LOGGER.error("Authentication Exception  (Is Real ownwer of token) ", e);
                     throw new WebApplicationException(Response.Status.PRECONDITION_FAILED);
                 }
@@ -101,7 +99,7 @@ public class TokenFactory<T extends Token> extends AbstractContainerRequestValue
                 return createEmptyCredentials();
             } else {
                 try {
-                    Optional<Token> result = authenticator.authenticate(tokenCookie.getValue());
+                    Optional<BasicToken> result = authenticator.authenticate(tokenCookie.getValue());
                     if (result.isPresent()) {
                         return result.get();
                     } else {
@@ -116,9 +114,9 @@ public class TokenFactory<T extends Token> extends AbstractContainerRequestValue
         }
     }
 
-    private boolean isRealOwnerOfToken(Cookie tokenCookie) throws IllegalAccessException, InvocationTargetException, InstantiationException {
+    private boolean isRealOwnerOfToken(Cookie tokenCookie) throws Exception {
         LOGGER.debug("HttpContext : " + this.getContainerRequest().getPath(true) + " Cookie : " + tokenCookie);
-        Token token = TokenManager.getInstance().createToken(tokenCookie.getValue());
+        BasicToken token = new BasicToken(tokenCookie.getValue());
         String hash = generateAttributesHash();
         return hash.equals(token.getAttributesHash());
 
@@ -138,7 +136,7 @@ public class TokenFactory<T extends Token> extends AbstractContainerRequestValue
      * @param method           HTTP Method of the request. Will be merged with
      * @return true if user is Authorized.
      */
-    private boolean isAuthorized(Token token, List<UriTemplate> matchedTemplates, String method) {
+    private boolean isAuthorized(BasicToken token, List<UriTemplate> matchedTemplates, String method) {
         StringBuilder path = new StringBuilder();
         // Merge all path templates and generate a path.
         for (UriTemplate template : matchedTemplates) {

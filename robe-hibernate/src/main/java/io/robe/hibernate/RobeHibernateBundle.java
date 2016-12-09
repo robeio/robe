@@ -1,6 +1,6 @@
 package io.robe.hibernate;
 
-import com.fasterxml.jackson.datatype.hibernate4.Hibernate4Module;
+import com.fasterxml.jackson.datatype.hibernate5.Hibernate5Module;
 import com.google.common.collect.ImmutableList;
 import io.dropwizard.Configuration;
 import io.dropwizard.db.PooledDataSourceFactory;
@@ -23,15 +23,14 @@ import java.util.Set;
 public class RobeHibernateBundle<T extends Configuration & HasHibernateConfiguration> extends HibernateBundle<T> {
     private static final Logger LOGGER = LoggerFactory.getLogger(RobeHibernateBundle.class);
 
-    private static RobeHibernateBundle instance;
+    protected static RobeHibernateBundle instance;
     private org.hibernate.cfg.Configuration configuration;
 
-
-    private RobeHibernateBundle(ImmutableList<Class<?>> entities, SessionFactoryFactory sessionFactoryFactory) {
+    protected RobeHibernateBundle(ImmutableList<Class<?>> entities, SessionFactoryFactory sessionFactoryFactory) {
         super(entities, sessionFactoryFactory);
     }
 
-    public static final RobeHibernateBundle createInstance(String[] packages, String[] entities) {
+    public static RobeHibernateBundle createInstance(String[] packages, String[] entities) {
         if (instance == null)
             instance = new RobeHibernateBundle(loadEntities(packages, entities), new RobeSessionFactoryFactory());
         else
@@ -46,7 +45,7 @@ public class RobeHibernateBundle<T extends Configuration & HasHibernateConfigura
             throw new RuntimeException("HibernateBundle is not created. Please call createInstance first.");
     }
 
-    private static final ImmutableList<Class<?>> loadEntities(String[] packages, String[] entities) {
+    protected static final ImmutableList<Class<?>> loadEntities(String[] packages, String[] entities) {
         Set<Class<?>> classes = new HashSet<>();
         if (packages != null) {
             for (String packageName : packages) {
@@ -60,7 +59,6 @@ public class RobeHibernateBundle<T extends Configuration & HasHibernateConfigura
                 try {
                     LOGGER.info("Loading Entity: " + entity);
                     Class entityClass = Class.forName(entity);
-                    classes.add(BaseEntity.class);
                     if (entityClass.isAnnotationPresent(Entity.class)) {
                         classes.add(entityClass);
                     } else {
@@ -81,9 +79,9 @@ public class RobeHibernateBundle<T extends Configuration & HasHibernateConfigura
      */
 
     @Override
-    protected Hibernate4Module createHibernate4Module() {
-        Hibernate4Module module = new Hibernate4Module();
-        module.disable(Hibernate4Module.Feature.USE_TRANSIENT_ANNOTATION);
+    protected Hibernate5Module createHibernate5Module() {
+        Hibernate5Module module = new Hibernate5Module();
+        module.disable(Hibernate5Module.Feature.USE_TRANSIENT_ANNOTATION);
         return module;
     }
 

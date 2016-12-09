@@ -57,7 +57,7 @@ public class User extends BaseEntity implements UserEntry {
     private Date lastLogoutTime;
 
     @SearchIgnore
-    @SearchFrom(entity = Role.class, target = "name", id = "oid")
+    @SearchFrom(entity = Role.class, filter = "name", id = "oid")
     @Length(min = 32, max = 32)
     @NotEmpty
     @Column(length = 32)

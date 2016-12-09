@@ -3,9 +3,9 @@
 
 ### A brand new robe for Dropwizard.
 
-[![Build Status](https://travis-ci.org/robeio/robe.svg?branch=master)](https://travis-ci.org/robeio/robe)
-[![codecov.io](https://codecov.io/github/robeio/robe/coverage.svg?branch=master)](https://codecov.io/github/robeio/robe?branch=master)
-![codecov.io](https://codecov.io/github/robeio/robe/branch.svg?branch=master)
+[![Build Status](https://travis-ci.org/robeio/robe.svg?branch=DW1.0-migration)](https://travis-ci.org/robeio/robe)
+[![codecov.io](https://codecov.io/github/robeio/robe/coverage.svg?branch=DW1.0-migration)](https://codecov.io/gh/robeio/robe/branch/DW1.0-migration)
+![codecov.io](https://codecov.io/github/robeio/robe/branch.svg?branch=DW1.0-migration)
 
 
 ## Motivation

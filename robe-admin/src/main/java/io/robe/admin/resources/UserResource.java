@@ -10,7 +10,7 @@ import io.robe.auth.RobeAuth;
 import io.robe.common.service.RobeService;
 import io.robe.common.service.search.SearchParam;
 import io.robe.common.service.search.model.SearchModel;
-import io.robe.common.utils.FieldReflection;
+import io.robe.common.utils.reflection.Fields;
 import org.hibernate.CacheMode;
 import org.hibernate.FlushMode;
 
@@ -45,7 +45,7 @@ public class UserResource extends AbstractAuthResource<User> {
     @GET
     @UnitOfWork(readOnly = true, cacheMode = CacheMode.GET, flushMode = FlushMode.MANUAL)
     public List<User> getAll(@RobeAuth Credentials credentials, @SearchParam SearchModel search) {
-        return userDao.findAll(search);
+        return userDao.findAllStrict(search);
     }
 
     /**
@@ -106,10 +106,10 @@ public class UserResource extends AbstractAuthResource<User> {
             throw new WebApplicationException(Response.status(412).build());
         }
         User entity = userDao.findById(id);
-        userDao.detach(entity);
         if (entity == null) {
             throw new WebApplicationException(Response.status(404).build());
         }
+        userDao.detach(entity);
         return userDao.update(model);
     }
 
@@ -130,15 +130,14 @@ public class UserResource extends AbstractAuthResource<User> {
     @UnitOfWork
     @Path("{id}")
     public User merge(@RobeAuth Credentials credentials, @PathParam("id") String id, User model) {
-        if (id.equals(model.getOid()))
+        if (!id.equals(model.getOid()))
             throw new WebApplicationException(Response.status(412).build());
         User dest = userDao.findById(id);
-        userDao.detach(dest);
         if (dest == null) {
             throw new WebApplicationException(Response.status(404).build());
         }
-        FieldReflection.mergeRight(model, dest);
-        return userDao.update(model);
+        Fields.mergeRight(model, dest);
+        return userDao.update(dest);
     }
 
     /**

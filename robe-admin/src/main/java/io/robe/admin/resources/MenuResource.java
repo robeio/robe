@@ -1,6 +1,5 @@
 package io.robe.admin.resources;
 
-import com.google.common.base.Optional;
 import io.dropwizard.hibernate.UnitOfWork;
 import io.dropwizard.jersey.PATCH;
 import io.dropwizard.jersey.caching.CacheControl;
@@ -12,7 +11,7 @@ import io.robe.auth.RobeAuth;
 import io.robe.common.service.RobeService;
 import io.robe.common.service.search.SearchParam;
 import io.robe.common.service.search.model.SearchModel;
-import io.robe.common.utils.FieldReflection;
+import io.robe.common.utils.reflection.Fields;
 import org.hibernate.FlushMode;
 
 import javax.inject.Inject;
@@ -55,7 +54,7 @@ public class MenuResource {
     @GET
     @UnitOfWork(readOnly = true, cacheMode = GET, flushMode = FlushMode.MANUAL)
     public List<Menu> getAll(@RobeAuth Credentials credentials, @SearchParam SearchModel search) {
-        return menuDao.findAll(search);
+        return menuDao.findAllStrict(search);
     }
 
 
@@ -198,10 +197,11 @@ public class MenuResource {
             throw new WebApplicationException(Response.status(412).build());
         }
         Menu entity = menuDao.findById(id);
-        menuDao.detach(entity);
+
         if (entity == null) {
             throw new WebApplicationException(Response.status(404).build());
         }
+        menuDao.detach(entity);
         return menuDao.update(model);
     }
 
@@ -223,15 +223,14 @@ public class MenuResource {
     @UnitOfWork
     @Path("{id}")
     public Menu merge(@RobeAuth Credentials credentials, @PathParam("id") String id, Menu model) {
-        if (id.equals(model.getOid()))
+        if (!id.equals(model.getOid()))
             throw new WebApplicationException(Response.status(412).build());
         Menu dest = menuDao.findById(id);
-        menuDao.detach(dest);
         if (dest == null) {
             throw new WebApplicationException(Response.status(404).build());
         }
-        FieldReflection.mergeRight(model, dest);
-        return menuDao.update(model);
+        Fields.mergeRight(model, dest);
+        return menuDao.update(dest);
     }
 
     /**

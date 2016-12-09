@@ -9,6 +9,7 @@ import io.robe.convert.common.Exporter;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.util.Iterator;
+import java.util.Locale;
 
 public class XMLExporter<T> extends Exporter<T> {
 
@@ -23,7 +24,6 @@ public class XMLExporter<T> extends Exporter<T> {
         XmlMapper xmlMapper = new XmlMapper(module);
         XmlFactory factory = new XmlFactory();
         ToXmlGenerator generator = factory.createGenerator(outputStream);
-
 
         generator.setCodec(xmlMapper);
         generator.writeRaw("<xml>");

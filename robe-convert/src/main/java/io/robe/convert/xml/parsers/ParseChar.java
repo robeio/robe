@@ -5,9 +5,9 @@ import com.fasterxml.jackson.core.JsonParser;
 import java.io.IOException;
 import java.lang.reflect.Field;
 
-public class ParseChar implements IsParser {
+public class ParseChar implements IsParser<Character> {
     @Override
-    public Object parse(JsonParser parser, Field field) throws IOException {
-        return parser.getValueAsString().charAt(0);
+    public Character parse(JsonParser parser, Field field) throws IOException {
+        return isValid(parser) ? parser.getValueAsString().charAt(0) : null;
     }
 }

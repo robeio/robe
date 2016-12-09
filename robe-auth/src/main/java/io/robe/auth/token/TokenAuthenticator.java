@@ -1,6 +1,5 @@
 package io.robe.auth.token;
 
-import com.google.common.base.Optional;
 import io.dropwizard.auth.AuthenticationException;
 import io.dropwizard.auth.Authenticator;
 import io.robe.auth.data.entry.*;
@@ -10,12 +9,13 @@ import org.slf4j.LoggerFactory;
 
 import java.util.Collections;
 import java.util.HashSet;
+import java.util.Optional;
 import java.util.Set;
 
 /**
  * Authenticator implementation for token based authentication.
  */
-public class TokenAuthenticator implements Authenticator<String, Token> {
+public class TokenAuthenticator implements Authenticator<String, BasicToken> {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(TokenAuthenticator.class);
 
@@ -47,17 +47,17 @@ public class TokenAuthenticator implements Authenticator<String, Token> {
      * @throws AuthenticationException
      */
     @Override
-    public Optional<Token> authenticate(String tokenString) throws AuthenticationException {
+    public Optional<BasicToken> authenticate(String tokenString) throws AuthenticationException {
         tokenString = tokenString.replaceAll("\"", "");
         LOGGER.debug("Authenticating from database:  " + tokenString);
         try {
             // Decode tokenString and get user
-            Token token = TokenManager.getInstance().createToken(tokenString);
+            BasicToken token = new BasicToken(tokenString);
 
             Optional<UserEntry> user = (Optional<UserEntry>) userStore.findByUsername(token.getUsername());
             if (!user.isPresent()) {
                 LOGGER.warn("User is not available: " + tokenString);
-                return Optional.absent();
+                return Optional.empty();
             }
             // If user exists and active than check Service Permissions for authorization controls
             if (user.get().isActive()) {
@@ -87,15 +87,12 @@ public class TokenAuthenticator implements Authenticator<String, Token> {
                     LOGGER.debug("Loading Permissions from Cache: " + tokenString);
                 }
 
-                //Set Token to the thread local for future access.
-                TokenManager.setCurrentLoginToken(token);
-
-                return Optional.fromNullable(token);
+                return Optional.ofNullable(token);
             }
         } catch (Exception e) {
             LOGGER.error(tokenString, e);
         }
-        return Optional.absent();
+        return Optional.empty();
 
     }
 

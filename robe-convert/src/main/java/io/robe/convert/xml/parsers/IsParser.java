@@ -6,7 +6,11 @@ import java.io.IOException;
 import java.lang.reflect.Field;
 
 
-public interface IsParser {
+public interface IsParser<T> {
 
-    public Object parse(JsonParser parser, Field field) throws IOException;
+    T parse(JsonParser parser, Field field) throws IOException;
+
+    default boolean isValid(JsonParser o) throws IOException {
+        return o.getValueAsString() != null && !o.getValueAsString().trim().isEmpty();
+    }
 }

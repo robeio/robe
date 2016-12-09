@@ -11,7 +11,7 @@ import io.robe.auth.RobeAuth;
 import io.robe.common.service.RobeService;
 import io.robe.common.service.search.SearchParam;
 import io.robe.common.service.search.model.SearchModel;
-import io.robe.common.utils.FieldReflection;
+import io.robe.common.utils.reflection.Fields;
 import org.hibernate.FlushMode;
 
 import javax.inject.Inject;
@@ -61,7 +61,7 @@ public class QuartzJobResource {
     @GET
     @UnitOfWork(readOnly = true, cacheMode = GET, flushMode = FlushMode.MANUAL)
     public List<JobEntity> getAll(@RobeAuth Credentials credentials, @SearchParam SearchModel search) {
-        return quartzJobDao.findAll(search);
+        return quartzJobDao.findAllStrict(search);
     }
 
     /**
@@ -124,6 +124,7 @@ public class QuartzJobResource {
         if (entity == null) {
             throw new WebApplicationException(Response.status(404).build());
         }
+        quartzJobDao.detach(entity);
         return quartzJobDao.update(model);
     }
 
@@ -144,14 +145,14 @@ public class QuartzJobResource {
     @UnitOfWork
     @Path("{id}")
     public JobEntity merge(@RobeAuth Credentials credentials, @PathParam("id") String id, JobEntity model) {
-        if (id.equals(model.getOid()))
+        if (!id.equals(model.getOid()))
             throw new WebApplicationException(Response.status(412).build());
         JobEntity dest = quartzJobDao.findById(id);
         if (dest == null) {
             throw new WebApplicationException(Response.status(404).build());
         }
-        FieldReflection.mergeRight(model, dest);
-        return quartzJobDao.update(model);
+        Fields.mergeRight(model, dest);
+        return quartzJobDao.update(dest);
     }
 
     /**

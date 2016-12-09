@@ -49,4 +49,14 @@
         <date2>05.01.2014</date2>
         <sampleEnum>SAMPLE1</sampleEnum>
     </SamplePojo>
+    <SamplePojo2>
+        <id>5</id>
+        <name>Hasan</name>
+        <surname>Mumin</surname>
+        <longid>15</longid>
+        <doubleid>115.0</doubleid>
+        <big>11111111115</big>
+        <date2>05.01.2014</date2>
+        <sampleEnum>SAMPLE1</sampleEnum>
+    </SamplePojo2>
 </xml>

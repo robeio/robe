@@ -1,12 +1,16 @@
 package io.robe.admin.dto;
 
+import io.robe.admin.job.SampleJob;
 import io.robe.admin.quartz.hibernate.JobEntity;
+import io.robe.admin.quartz.hibernate.TriggerEntity;
 import io.robe.quartz.common.TriggerInfo;
+import org.junit.Assert;
 import org.junit.Before;
 import org.junit.FixMethodOrder;
 import org.junit.Test;
 
 import java.util.ArrayList;
+import java.util.Collections;
 
 import static junit.framework.TestCase.assertEquals;
 
@@ -43,6 +47,31 @@ public class JobEntityDTOTest {
         JobEntityDTO entityDTO = new JobEntityDTO();
         entityDTO.setName("Entity");
         assertEquals("Entity", entityDTO.getName());
+
+    }
+    @Test
+    public void jobEntityDTO() {
+        JobEntityDTO dto = new JobEntityDTO();
+        Assert.assertTrue(dto.getTriggers().size() == 0);
+        dto.setTriggers(Collections.singletonList(new TriggerEntity()));
+        Assert.assertTrue(dto.getTriggers().size() == 1);
+    }
+
+    @Test
+    public void jobEntityDTOWithJobEntity() {
+        JobEntity jobEntity = new JobEntity();
+        jobEntity.setJobClass(SampleJob.class);
+        jobEntity.setName("Name");
+        jobEntity.setDescription("Description");
+        JobEntityDTO dto = new JobEntityDTO(jobEntity);
+
+        Assert.assertEquals(jobEntity.getDescription(), dto.getDescription());
+        Assert.assertEquals(jobEntity.getName(), dto.getName());
+        Assert.assertEquals(jobEntity.getJobClass(), dto.getJobClass());
+
+        Assert.assertTrue(dto.getTriggers().size() == 0);
+        dto.setTriggers(Collections.singletonList(new TriggerEntity()));
+        Assert.assertTrue(dto.getTriggers().size() == 1);
 
     }
 }

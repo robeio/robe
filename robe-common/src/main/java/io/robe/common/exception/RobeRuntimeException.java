@@ -12,9 +12,9 @@ import javax.ws.rs.core.Response;
  */
 public class RobeRuntimeException extends WebApplicationException {
 
-    private final Response response;
+    private Response response;
 
-    private final BasicPair entity;
+    private BasicPair entity;
 
     /**
      * Construct with the help of an exception.
@@ -24,8 +24,7 @@ public class RobeRuntimeException extends WebApplicationException {
      * @param e Exception to include.
      */
     public RobeRuntimeException(Exception e) {
-        this("Exception", e.getMessage());
-        this.initCause(e);
+        this("RobeRuntimeException", e.getMessage());
     }
 
     /**
@@ -37,8 +36,21 @@ public class RobeRuntimeException extends WebApplicationException {
      * @param e    Exception to include.
      */
     public RobeRuntimeException(String name, Exception e) {
-        this(name, e.getMessage());
-        this.initCause(e);
+        this(name, e.getMessage(), e);
+    }
+
+    /**
+     *
+     * Construct with the help of a name, message and an exception.
+     * Maps the exception as a cause to RobeRuntimeException and
+     * creates a BasicPair with values as (name, message)
+     * @param name
+     * @param message
+     * @param e
+     */
+    public RobeRuntimeException(String name, String message, Exception e) {
+        super(name, e);
+        initRobeRuntimeException(name, message);
     }
 
     /**
@@ -49,6 +61,10 @@ public class RobeRuntimeException extends WebApplicationException {
      * @param message Message to include.
      */
     public RobeRuntimeException(String name, String message) {
+       initRobeRuntimeException(name, message);
+    }
+
+    private void initRobeRuntimeException(String name, String message) {
         entity = new BasicPair(name, message);
         response = Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(entity).build();
     }

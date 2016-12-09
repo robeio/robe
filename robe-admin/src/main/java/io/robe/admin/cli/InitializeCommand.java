@@ -73,14 +73,19 @@ public class InitializeCommand<T extends RobeConfiguration> extends EnvironmentC
 
         String password;
 
-        if (console != null) {
-            // read password from server console
-            password = new String(console.readPassword());
+        if ("TEST".equals(System.getProperty("env"))) {
+            password = "123123";
         } else {
-            // read password from idea console
-            Scanner scan = new Scanner(System.in);
-            password = scan.nextLine();
+            if (console != null) {
+                // read password from server console
+                password = new String(console.readPassword());
+            } else {
+                // read password from idea console
+                Scanner scan = new Scanner(System.in);
+                password = scan.nextLine();
+            }
         }
+
 
         password = Hashing.sha256().hashString(password, StandardCharsets.UTF_8).toString();
         System.out.println("creating password " + password);
@@ -158,7 +163,7 @@ public class InitializeCommand<T extends RobeConfiguration> extends EnvironmentC
                             entity.setDescription("");
 
                         }
-                        entity.setDescription(entity.getDescription() +" ("+ entity.getMethod() + " " + entity.getPath() +")");
+                        entity.setDescription(entity.getDescription() + " (" + entity.getMethod() + " " + entity.getPath() + ")");
                         session.persist(entity);
                         session.persist(createPermission(false, entity.getOid(), role));
                         LOGGER.info("Service data and permission created: " + entity.getPath() + "-" + entity.getMethod());
@@ -181,16 +186,6 @@ public class InitializeCommand<T extends RobeConfiguration> extends EnvironmentC
             session.persist(user);
 
         }
-
-        LOGGER.info("Creating languages : TR & EN");
-        Language systemLanguageTR = new Language();
-        systemLanguageTR.setCode(Language.Type.TR);
-        systemLanguageTR.setName("Türkçe");
-        session.persist(systemLanguageTR);
-        Language systemLanguageEN = new Language();
-        systemLanguageEN.setCode(Language.Type.EN);
-        systemLanguageEN.setName("İngilizce");
-        session.persist(systemLanguageEN);
 
         LOGGER.info("Creating Menu and Permissions");
         Menu root = new Menu();
@@ -310,7 +305,7 @@ public class InitializeCommand<T extends RobeConfiguration> extends EnvironmentC
 
     protected Permission createPermission(boolean b, String oid, Role role) {
         Permission permission = new Permission();
-        permission.setpLevel((short) 7);
+        permission.setPriorityLevel((short) 7);
         permission.setType(b ? Permission.Type.MENU : Permission.Type.SERVICE);
         permission.setRestrictedItemOid(oid);
         permission.setRoleOid(role.getOid());

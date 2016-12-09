@@ -1,7 +1,10 @@
 package io.robe.admin.hibernate.entity;
 
+import org.junit.Assert;
 import org.junit.FixMethodOrder;
 import org.junit.Test;
+
+import java.util.UUID;
 
 import static junit.framework.TestCase.assertEquals;
 
@@ -11,6 +14,15 @@ import static junit.framework.TestCase.assertEquals;
 @FixMethodOrder
 public class RoleGroupTest {
     RoleGroup entity = new RoleGroup();
+
+    @Test
+    public void roleGroup() {
+        RoleGroup roleGroup = new RoleGroup();
+        String oid = UUID.randomUUID().toString();
+        roleGroup.setOid(oid);
+        Assert.assertTrue(roleGroup.getOid().equals(oid));
+        Assert.assertTrue(roleGroup.getId().equals(oid));
+    }
 
     @Test
     public void getRoleOid() throws Exception {

@@ -16,7 +16,7 @@ import io.robe.auth.token.BasicToken;
 import io.robe.common.service.RobeService;
 import io.robe.common.service.search.SearchParam;
 import io.robe.common.service.search.model.SearchModel;
-import io.robe.common.utils.FieldReflection;
+import io.robe.common.utils.reflection.Fields;
 import org.hibernate.FlushMode;
 
 import javax.inject.Inject;
@@ -86,15 +86,12 @@ public class PermissionResource {
      */
     @RobeService(group = "Permission", description = "On select group list service and menu service")
     @Path("group/{groupCode}")
-    @POST
-    @UnitOfWork(flushMode = FlushMode.MANUAL)
+    @GET
+    @UnitOfWork(readOnly = true, cacheMode = GET, flushMode = FlushMode.MANUAL)
     public Map<String, Object> getServicesByServiceGroup(@RobeAuth Credentials credentials, @PathParam("groupCode") String code) {
-
-
         Map<String, Object> response = new HashMap<>();
         response.put("menu", menuDao.findByModule(code));
         response.put("service", serviceDao.findServiceByGroup(code));
-
         return response;
     }
 
@@ -123,7 +120,7 @@ public class PermissionResource {
             }
             permission.setRoleOid(roleOid);
             permission.setType(Permission.Type.MENU);
-            permission.setpLevel((short) 7);
+            permission.setPriorityLevel((short) 7);
             permission.setRestrictedItemOid(itemOid);
             permissionDao.create(permission);
         }
@@ -140,7 +137,7 @@ public class PermissionResource {
             }
             permission.setRoleOid(roleOid);
             permission.setType(Permission.Type.SERVICE);
-            permission.setpLevel((short) 7);
+            permission.setPriorityLevel((short) 7);
             permission.setRestrictedItemOid(itemOid);
             permissionDao.create(permission);
 
@@ -162,7 +159,7 @@ public class PermissionResource {
     @GET
     @UnitOfWork(readOnly = true, cacheMode = GET, flushMode = FlushMode.MANUAL)
     public List<Permission> getAll(@RobeAuth Credentials credentials, @SearchParam SearchModel search) {
-        return permissionDao.findAll(search);
+        return permissionDao.findAllStrict(search);
     }
 
     /**
@@ -229,6 +226,7 @@ public class PermissionResource {
         if (entity == null) {
             throw new WebApplicationException(Response.status(404).build());
         }
+        permissionDao.detach(entity);
         return permissionDao.update(model);
     }
 
@@ -249,14 +247,14 @@ public class PermissionResource {
     @UnitOfWork
     @Path("{id}")
     public Permission merge(@RobeAuth Credentials credentials, @PathParam("id") String id, Permission model) {
-        if (id.equals(model.getOid()))
+        if (!id.equals(model.getOid()))
             throw new WebApplicationException(Response.status(412).build());
         Permission dest = permissionDao.findById(id);
         if (dest == null) {
             throw new WebApplicationException(Response.status(404).build());
         }
-        FieldReflection.mergeRight(model, dest);
-        return permissionDao.update(model);
+        Fields.mergeRight(model, dest);
+        return permissionDao.update(dest);
     }
 
     /**

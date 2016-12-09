@@ -6,12 +6,21 @@ import org.junit.Test;
 
 import static junit.framework.TestCase.assertEquals;
 import static org.junit.Assert.assertNull;
+import org.junit.Assert;
 
-/**
- * Created by recep on 01/10/16.
- */
+
 @FixMethodOrder
 public class BasicPairTest {
+
+    @Test
+    public void instance() {
+        BasicPair basicPair = new BasicPair("foo", "bar");
+        Assert.assertEquals(basicPair.getName(), "foo");
+        Assert.assertEquals(basicPair.getValue(), "bar");
+        Assert.assertTrue(basicPair.equals(basicPair));
+    }
+
+
     BasicPair pair;
 
     @Before

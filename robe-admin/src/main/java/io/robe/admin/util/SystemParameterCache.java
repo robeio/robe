@@ -2,7 +2,9 @@ package io.robe.admin.util;
 
 import io.robe.admin.hibernate.dao.SystemParameterDao;
 import io.robe.admin.hibernate.entity.SystemParameter;
-import io.robe.guice.GuiceBundle;
+import io.robe.hibernate.RobeHibernateBundle;
+import org.hibernate.SessionFactory;
+import org.hibernate.context.internal.ManagedSessionContext;
 
 import java.util.List;
 import java.util.concurrent.ConcurrentHashMap;
@@ -12,13 +14,20 @@ public class SystemParameterCache {
     private static ConcurrentHashMap<String, Object> cache = new ConcurrentHashMap<>();
 
 
+    // TODO this method should be refactoring.
     public static void fillCache() {
-        SystemParameterDao dao = GuiceBundle.getInjector().getInstance(SystemParameterDao.class);
 
-        List<SystemParameter> parameters = dao.findAll();
+        SessionFactory sessionFactory = RobeHibernateBundle.getInstance().getSessionFactory();
+        ManagedSessionContext.bind(sessionFactory.openSession());
+        SystemParameterDao dao = new SystemParameterDao(sessionFactory);
 
-        for (SystemParameter parameter : parameters)
+        List<SystemParameter> parameters = dao.findAllStrict();
+
+        for (SystemParameter parameter : parameters) {
             cache.put(parameter.getKey(), parameter.getValue());
+            dao.detach(parameter);// TODO
+        }
+
     }
 
 

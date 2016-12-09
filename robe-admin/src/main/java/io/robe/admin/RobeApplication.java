@@ -5,7 +5,6 @@ import com.google.common.collect.ImmutableList;
 import com.google.inject.Module;
 import io.dropwizard.Application;
 import io.dropwizard.hibernate.UnitOfWork;
-import io.dropwizard.jersey.jackson.JsonProcessingExceptionMapper;
 import io.dropwizard.jetty.NonblockingServletHolder;
 import io.dropwizard.setup.Bootstrap;
 import io.dropwizard.setup.Environment;
@@ -19,6 +18,7 @@ import io.robe.assets.AdvancedAssetBundle;
 import io.robe.auth.token.TokenAuthBundle;
 import io.robe.auth.token.TokenAuthenticator;
 import io.robe.auth.token.jersey.TokenFactory;
+import io.robe.common.exception.ExceptionMapperBinder;
 import io.robe.common.exception.RobeExceptionMapper;
 import io.robe.common.service.search.SearchFactoryProvider;
 import io.robe.guice.GuiceBundle;
@@ -42,6 +42,8 @@ public class RobeApplication<T extends RobeConfiguration> extends Application<T>
 
 
     private static final Logger LOGGER = LoggerFactory.getLogger(RobeApplication.class);
+    private InitializeCommand initCommand;
+
     public static void main(String[] args) throws Exception {
 
         RobeApplication application = new RobeApplication();
@@ -71,7 +73,8 @@ public class RobeApplication<T extends RobeConfiguration> extends Application<T>
         addGuiceBundle(bootstrap, hibernateBundle);
         bootstrap.addBundle(hibernateBundle);
         bootstrap.addBundle(new TokenAuthBundle<T>());
-        bootstrap.addCommand(new InitializeCommand(this, hibernateBundle));
+        initCommand = new InitializeCommand(this, hibernateBundle);
+        bootstrap.addCommand(initCommand);
         bootstrap.addBundle(new QuartzBundle<T>());
         bootstrap.addBundle(new ViewBundle());
         bootstrap.addBundle(new ViewBundle(ImmutableList.<ViewRenderer>of(new FreemarkerViewRenderer())));
@@ -129,11 +132,17 @@ public class RobeApplication<T extends RobeConfiguration> extends Application<T>
         environment.getApplicationContext().addServlet(
                 new NonblockingServletHolder(new MetricsServlet()), "/metrics/*");
 
+        if ("TEST".equals(System.getProperty("env"))) {
+            getInitCommand().execute(configuration);
+        }
     }
 
     private void addExceptionMappers(Environment environment) {
-        environment.jersey().register(new RobeExceptionMapper());
-        environment.jersey().register(new JsonProcessingExceptionMapper(true));
+        environment.jersey().register(RobeExceptionMapper.class);
+        environment.jersey().register(new ExceptionMapperBinder(true));
     }
 
+    protected InitializeCommand getInitCommand() {
+        return initCommand;
+    }
 }

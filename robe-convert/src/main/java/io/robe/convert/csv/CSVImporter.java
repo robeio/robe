@@ -22,7 +22,7 @@ public class CSVImporter<T> extends Importer<T> {
     private CellProcessor[] processors = null;
 
     public CSVImporter(Class dataClass) {
-        this(dataClass, CsvPreference.EXCEL_PREFERENCE.STANDARD_PREFERENCE);
+        this(dataClass, CsvPreference.STANDARD_PREFERENCE);
     }
 
     public CSVImporter(Class dataClass, CsvPreference preference) {
@@ -47,7 +47,7 @@ public class CSVImporter<T> extends Importer<T> {
         try {
             this.importStream(inputStream, handler, charSetName);
         } catch (Exception e) {
-            e.printStackTrace();
+            throw e;
         }
         return list;
     }

@@ -10,7 +10,7 @@ import io.robe.auth.data.entry.PermissionEntry;
 import io.robe.common.service.RobeService;
 import io.robe.common.service.search.SearchParam;
 import io.robe.common.service.search.model.SearchModel;
-import io.robe.common.utils.FieldReflection;
+import io.robe.common.utils.reflection.Fields;
 import org.hibernate.FlushMode;
 
 import javax.inject.Inject;
@@ -116,7 +116,7 @@ public class RoleResource {
     @GET
     @UnitOfWork(readOnly = true, cacheMode = GET, flushMode = FlushMode.MANUAL)
     public List<Role> getAll(@RobeAuth Credentials credentials, @SearchParam SearchModel search) {
-        return roleDao.findAll(search);
+        return roleDao.findAllStrict(search);
     }
 
     /**
@@ -177,11 +177,10 @@ public class RoleResource {
             throw new WebApplicationException(Response.status(412).build());
         }
         Role entity = roleDao.findById(id);
-        roleDao.detach(entity);
-
         if (entity == null) {
             throw new WebApplicationException(Response.status(404).build());
         }
+        roleDao.detach(entity);
         return roleDao.update(model);
     }
 
@@ -203,15 +202,14 @@ public class RoleResource {
     @UnitOfWork
     public Role merge(@RobeAuth Credentials credentials, @PathParam("id") String id, Role model) {
 
-        if (id.equals(model.getOid()))
+        if (!id.equals(model.getOid()))
             throw new WebApplicationException(Response.status(412).build());
         Role dest = roleDao.findById(id);
-        roleDao.detach(dest);
         if (dest == null) {
             throw new WebApplicationException(Response.status(404).build());
         }
-        FieldReflection.mergeRight(model, dest);
-        return roleDao.update(model);
+        Fields.mergeRight(model, dest);
+        return roleDao.update(dest);
     }
 
     /**

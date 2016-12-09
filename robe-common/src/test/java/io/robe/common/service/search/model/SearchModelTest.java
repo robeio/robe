@@ -1,107 +1,155 @@
 package io.robe.common.service.search.model;
 
+import org.eclipse.jetty.server.Response;
+import org.junit.Assert;
 import org.junit.Before;
 import org.junit.FixMethodOrder;
 import org.junit.Test;
 
+import javax.servlet.http.HttpServletResponse;
+
 import static junit.framework.TestCase.assertEquals;
 import static junit.framework.TestCase.assertNull;
+import static org.junit.Assert.assertArrayEquals;
 import static org.junit.Assert.assertNotEquals;
 
-/**
- * Created by recep on 02/10/16.
- */
-@FixMethodOrder
+
 public class SearchModelTest {
-    SearchModel model;
-    String[] fields;
-    String[] sort;
 
-    @Before
-    public void setUp() throws Exception {
-        model = new SearchModel();
-        fields = new String[]{"a", "b", "c"};
-        sort = new String[]{"a", "b", "c", "d"};
+    @Test
+    public void setFilterExpression() throws Exception {
+        SearchModel model = new SearchModel();
+        model.setFilterExpression("field=1,field!=1,field>=1,field>1,field<=1,field<1,field~=1,field|=1|2|3");
+        String[][] expected = new String[][]{
+                new String[]{"field", "=", "1"},
+                new String[]{"field", "!=", "1"},
+                new String[]{"field", ">=", "1"},
+                new String[]{"field", ">", "1"},
+                new String[]{"field", "<=", "1"},
+                new String[]{"field", "<", "1"},
+                new String[]{"field", "~=", "1"},
+                new String[]{"field", "|=", "1|2|3"},
+        };
+        Assert.assertEquals(expected.length, model.getFilter().length);
+        assertArrayEquals(expected, model.getFilter());
+    }
+
+    @Test
+    public void getterSetter() {
+        SearchModel model = new SearchModel();
+
+        String[] fields = new String[]{"field1", "field2"};
         model.setFields(fields);
+        assertArrayEquals(fields, model.getFields());
+
+        Integer offset = 0;
+        model.setOffset(offset);
+        Assert.assertEquals(offset, model.getOffset());
+
+        Integer limit = 10;
+        model.setLimit(limit);
+        Assert.assertEquals(limit, model.getLimit());
+
+        String q = "query";
+        model.setQ(q);
+        Assert.assertEquals(q, model.getQ());
+
+        String[] sort = new String[]{"field1+", "field2-"};
         model.setSort(sort);
+        assertArrayEquals(sort, model.getSort());
 
-    }
+        long totalCount = 30;
+        model.setTotalCount(totalCount);
+        Assert.assertEquals(totalCount, model.getTotalCount(), 0);
 
-    @Test
-    public void getQ() throws Exception {
-        model.setQ("q");
-        assertEquals("q", model.getQ());
-    }
+        HttpServletResponse httpServletResponse = new Response(null, null);
 
-    @Test
-    public void getOffset() throws Exception {
-        model.setOffset(2);
-        assertEquals(2, (int) model.getOffset());
-    }
+        model.setResponse(httpServletResponse);
+        Assert.assertEquals(httpServletResponse, model.getResponse());
 
-    @Test
-    public void getLimit() throws Exception {
-        model.setLimit(3);
-        assertEquals(3, (int) model.getLimit());
-    }
+        String[][] filter = new String[][]{new String[]{"field1", "=", "val"}};
+        model.setFilter(filter);
+        assertArrayEquals(filter, model.getFilter());
 
-    @Test
-    public void getFields() throws Exception {
-        assertEquals(fields, model.getFields());
-    }
-
-    @Test
-    public void getSort() throws Exception {
-        assertEquals(sort, model.getSort());
-    }
-
-    @Test
-    public void getFilter() throws Exception {
-        model.setFilter("filter");
-        assertEquals("filter", model.getFilter());
-    }
-
-    @Test
-    public void getTotalCount() throws Exception {
-        model.setTotalCount(3);
-        assertEquals(3, model.getTotalCount());
-    }
-
-
-    @Test
-    public void getResponse() throws Exception {
-        model.setResponse(null);
-        assertNull(model.getResponse());
     }
 
     @Test
     public void addFilter() throws Exception {
-        model.setFilter(null);
-        model.addFilter("a", "=", "b");
-        assertEquals("a=b", model.getFilter());
+        SearchModel model = new SearchModel();
 
-        model.setFilter("a=1");
-        model.addFilter("a", "=", "1");
-        assertEquals("a=1", model.getFilter());
+        model.addFilter("field1", "=", "val");
+        assertArrayEquals(new String[][]{new String[]{"field1", "=", "val"}}, model.getFilter());
 
-        model.setFilter("a=1");
-        model.addFilter("b", "=", "2");
-        assertEquals("a=1,b=2", model.getFilter());
-
+        model.addFilter("field2", "<", "5");
+        assertArrayEquals(new String[][]{new String[]{"field1", "=", "val"}, new String[]{"field2", "<", "5"}}, model.getFilter());
     }
 
     @Test
-    public void addSort() throws Exception {
-        model.addSort("e", "-");
-        assertNotEquals(sort, model.getSort());
+    public void addSort() {
 
-        model.addSort("a", "-");
-        assertNotEquals(sort, model.getSort());
+        SearchModel model = new SearchModel();
 
-        model.setSort(null);
-        model.addSort("a", "-");
-        assertNotEquals(sort, model.getSort());
+        model.addSort("field", "-");
+        assertArrayEquals(new String[]{"-field"}, model.getSort());
+
+        model.addSort("field1", "+");
+        assertArrayEquals(new String[]{"-field", "+field1"}, model.getSort());
+
+        model.addSort("field", "+");
+        assertArrayEquals(new String[]{"+field", "+field1"}, model.getSort());
+    }
+
+    @Test
+    public void hashCodeTest() {
+
+        SearchModel model1 = new SearchModel();
+        SearchModel model2 = new SearchModel();
+        this.check(model1, model2);
+
+        String[] fields = new String[]{"field1", "field2"};
+        model1.setFields(fields);
+        model2.setFields(fields);
+        this.check(model1, model2);
+
+        Integer offset = 0;
+        model1.setOffset(offset);
+        model2.setOffset(offset);
+        this.check(model1, model2);
+
+        Integer limit = 10;
+        model1.setLimit(limit);
+        model2.setLimit(limit);
+        this.check(model1, model2);
+
+        String q = "query";
+        model1.setQ(q);
+        model2.setQ(q);
+        this.check(model1, model2);
+
+        String[] sort = new String[]{"field1+", "field2-"};
+        model1.setSort(sort);
+        model2.setSort(sort);
+        this.check(model1, model2);
+
+        long totalCount = 30;
+        model1.setTotalCount(totalCount);
+        model2.setTotalCount(totalCount);
+        this.check(model1, model2);
+
+        HttpServletResponse httpServletResponse = new Response(null, null);
+        model1.setResponse(httpServletResponse);
+        model2.setResponse(httpServletResponse);
+        this.check(model1, model2);
+
+        String[][] filter = new String[][]{new String[]{"field1", "=", "val"}};
+        model1.setFilter(filter);
+        model2.setFilter(filter);
 
 
+    }
+
+    public void check(SearchModel model1, SearchModel model2) {
+        Assert.assertEquals(model1.hashCode(), model2.hashCode());
+        Assert.assertEquals(model1, model2);
     }
 }

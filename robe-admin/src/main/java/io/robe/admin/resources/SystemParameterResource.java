@@ -1,6 +1,5 @@
 package io.robe.admin.resources;
 
-import com.google.common.base.Optional;
 import io.dropwizard.hibernate.UnitOfWork;
 import io.dropwizard.jersey.PATCH;
 import io.robe.admin.hibernate.dao.SystemParameterDao;
@@ -10,7 +9,7 @@ import io.robe.auth.RobeAuth;
 import io.robe.common.service.RobeService;
 import io.robe.common.service.search.SearchParam;
 import io.robe.common.service.search.model.SearchModel;
-import io.robe.common.utils.FieldReflection;
+import io.robe.common.utils.reflection.Fields;
 import org.hibernate.CacheMode;
 import org.hibernate.FlushMode;
 
@@ -21,6 +20,7 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 import static org.hibernate.CacheMode.GET;
 
@@ -42,7 +42,7 @@ public class SystemParameterResource {
     @GET
     @UnitOfWork(readOnly = true, cacheMode = GET, flushMode = FlushMode.MANUAL)
     public List<SystemParameter> getAll(@RobeAuth Credentials credentials, @SearchParam SearchModel search) {
-        return systemParameterDao.findAll(search);
+        return systemParameterDao.findAllStrict(search);
     }
 
     /**
@@ -131,10 +131,10 @@ public class SystemParameterResource {
             throw new WebApplicationException(Response.status(412).build());
         }
         SystemParameter entity = systemParameterDao.findById(id);
-        systemParameterDao.detach(entity);
         if (entity == null) {
             throw new WebApplicationException(Response.status(404).build());
         }
+        systemParameterDao.detach(entity);
         return systemParameterDao.update(model);
     }
 
@@ -152,15 +152,14 @@ public class SystemParameterResource {
     @UnitOfWork
     public SystemParameter merge(@RobeAuth Credentials credentials, @PathParam("id") String id, SystemParameter model) {
 
-        if (id.equals(model.getOid()))
+        if (!id.equals(model.getOid()))
             throw new WebApplicationException(Response.status(412).build());
         SystemParameter dest = systemParameterDao.findById(id);
-        systemParameterDao.detach(dest);
         if (dest == null) {
             throw new WebApplicationException(Response.status(404).build());
         }
-        FieldReflection.mergeRight(model, dest);
-        return systemParameterDao.update(model);
+        Fields.mergeRight(model, dest);
+        return systemParameterDao.update(dest);
     }
 
     /**

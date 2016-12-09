@@ -4,18 +4,16 @@ import org.apache.poi.ss.usermodel.Cell;
 
 import java.lang.reflect.Field;
 
-public class ParseDouble implements IsParser {
+public class ParseDouble implements IsParser<Double> {
     @Override
-    public Object parse(Object o, Field field) {
-        Double d = Double.valueOf(o.toString());
-        return d;
+    public Double parse(Object o, Field field) {
+        return isValid(o) ? Double.valueOf(o.toString()) : null;
     }
 
     @Override
-    public void setCell(Object o, Cell cell, Field field) {
-        Double aDouble = (Double) o;
-        if (aDouble != null) {
-            cell.setCellValue(aDouble);
+    public void setCell(Double o, Cell cell, Field field) {
+        if (o != null) {
+            cell.setCellValue(o);
         }
     }
 }

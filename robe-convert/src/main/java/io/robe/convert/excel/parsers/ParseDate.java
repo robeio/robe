@@ -7,8 +7,9 @@ import java.lang.reflect.Field;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.Locale;
 
-public class ParseDate implements IsParser {
+public class ParseDate implements IsParser<Date> {
 
     /**
      * First it checks is there any annotation class for parsing operations,
@@ -21,44 +22,27 @@ public class ParseDate implements IsParser {
      * @return Valid date after parsing with pattern
      */
     @Override
-    public Object parse(Object o, Field field) {
-        Date date = null;
-        String columnValue = o.toString();
-        JsonFormat jsonFormat = field.getAnnotation(JsonFormat.class);
-        if (columnValue != null && columnValue.length() > 1) {
-            if (jsonFormat != null) {
-                try {
-                    date = formatWithGivenPattern(columnValue, jsonFormat.pattern());
-                } catch (ParseException e) {
-                    throw new RuntimeException(e);
-                }
-            } else {
-                throw new RuntimeException("JsonFormat with pattern needed for: " + field.getName());
-            }
+    public Date parse(Object o, Field field) {
+        if (!isValid(o)) {
+            return null;
         }
-        return date;
+        JsonFormat formatAnn = field.getAnnotation(JsonFormat.class);
+        if (formatAnn == null) {
+            throw new RuntimeException("JsonFormat with pattern needed for: " + field.getName());
+        }
+        try {
+            return new SimpleDateFormat(formatAnn.pattern(), Locale.getDefault()).parse(o.toString());
+        } catch (ParseException e) {
+            throw new RuntimeException("JsonFormat with pattern is wrong for: " + field.getName() + " pattern: " + formatAnn.pattern());
+        }
     }
 
     @Override
-    public void setCell(Object o, Cell cell, Field field) {
-        Date date = (Date) o;
-        if (date != null) {
-            cell.setCellValue(date);
+    public void setCell(Date o, Cell cell, Field field) {
+        if (o != null) {
             String format = field.getAnnotation(JsonFormat.class).pattern();
-            cell.setCellValue(new SimpleDateFormat(format).format(date));
+            cell.setCellValue(new SimpleDateFormat(format).format(o));
         }
     }
 
-    /**
-     * Tries to parse with annotated pattern
-     *
-     * @param columnValue Date column value
-     * @param format      Given patter
-     * @return Valid date object
-     * @throws ParseException
-     */
-    private Date formatWithGivenPattern(String columnValue, String format) throws ParseException {
-        SimpleDateFormat simpleDateFormat = new SimpleDateFormat(format);
-        return simpleDateFormat.parse(columnValue);
-    }
 }

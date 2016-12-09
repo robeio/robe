@@ -1,0 +1,56 @@
+
+
+
+<?xml version="1.0" encoding="UTF-8"?>
+    <xml>
+    <SamplePojo>
+        <id>1</id>
+        <name>Seray</name>
+        <surname>Uzgur</surname>
+        <longid>11</longid>
+        <doubleid>111.0</doubleid>
+        <big>11111111111</big>
+        <date2>01.01.2014</date2>
+        <sampleEnum>SAMPLE1</sampleEnum>
+    </SamplePojo>
+    <SamplePojo>
+        <id>2</id>
+        <name>Kaan</name>
+        <surname>Alkim</surname>
+        <longid>12</longid>
+        <doubleid>112.0</doubleid>
+        <big>11111111112</big>
+        <date2>02.01.2014</date2>
+        <sampleEnum>SAMPLE2</sampleEnum>
+    </SamplePojo>
+    <SamplePojo>
+        <id>3</id>
+        <name>Sinan</name>
+        <surname>Selimogli</surname>
+        <longid>13</longid>
+        <doubleid>113.0</doubleid>
+        <big>11111111113</big>
+        <date2>03.01.2014</date2>
+        <sampleEnum>SAMPLE1</sampleEnum>
+    </SamplePojo>
+    <SamplePojo>
+        <id>4</id>
+        <name>Kamil</name>
+        <surname>Bukum</surname>
+        <longid>14</longid>
+        <doubleid>114.0</doubleid>
+        <big>11111111114</big>
+        <date2>04.01.2014</date2>
+        <sampleEnum>SAMPLE2</sampleEnum>
+    </SamplePojo>
+    <SamplePojo>
+        <id>5</id>
+        <name>Hasan</name>
+        <surname>Mumin</surname>
+        <longid>15</longid>
+        <doubleid>115.0</doubleid>
+        <big>11111111115</big>
+        <date2>05.01.2014</date2>
+        <sampleEnum>SAMPLE1</sampleEnum>
+    </SamplePojo>
+</xml>

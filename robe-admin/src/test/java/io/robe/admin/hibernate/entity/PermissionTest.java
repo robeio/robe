@@ -32,8 +32,8 @@ public class PermissionTest {
 
     @Test
     public void getpLevel() throws Exception {
-        entity.setpLevel((short) 12);
-        assertEquals((short) 12, entity.getpLevel());
+        entity.setPriorityLevel((short) 12);
+        assertEquals((short) 12, entity.getPriorityLevel());
     }
 
     @Test

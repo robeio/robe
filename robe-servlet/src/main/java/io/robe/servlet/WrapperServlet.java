@@ -4,6 +4,7 @@ import io.dropwizard.hibernate.UnitOfWork;
 import io.robe.guice.GuiceBundle;
 import org.hibernate.*;
 import org.hibernate.context.internal.ManagedSessionContext;
+import org.hibernate.resource.transaction.spi.TransactionStatus;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
@@ -161,7 +162,7 @@ public class WrapperServlet extends HttpServlet {
     private void rollbackTransaction(Session session, UnitOfWork uow) {
         if (uow.transactional()) {
             Transaction txn = session.getTransaction();
-            if (txn != null && txn.isActive()) {
+            if (txn != null && session.getTransaction().getStatus() != TransactionStatus.ACTIVE) {
                 txn.rollback();
             }
         }
@@ -171,7 +172,7 @@ public class WrapperServlet extends HttpServlet {
     private void commitTransaction(Session session, UnitOfWork uow) {
         if (uow.transactional()) {
             Transaction txn = session.getTransaction();
-            if (txn != null && txn.isActive()) {
+            if (txn != null && session.getTransaction().getStatus() != TransactionStatus.ACTIVE) {
                 txn.commit();
             }
         }

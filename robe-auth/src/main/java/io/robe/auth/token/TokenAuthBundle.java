@@ -27,7 +27,7 @@ public class TokenAuthBundle<T extends Configuration & HasTokenBasedAuthConfigur
         environment.jersey().register(new TokenFactoryProvider.Binder<Credentials>(Credentials.class));
         environment.jersey().register(new TokenBasedAuthResponseFilter(configuration.getTokenBasedAuthConfiguration()));
         environment.jersey().register(TokenFeature.class);
-        TokenManager.configure(BasicToken.class, configuration.getTokenBasedAuthConfiguration());
+        BasicToken.configure(configuration.getTokenBasedAuthConfiguration());
     }
 
     /**

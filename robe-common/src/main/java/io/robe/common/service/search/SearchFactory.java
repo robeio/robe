@@ -13,7 +13,6 @@ import java.util.Map;
 
 public class SearchFactory extends AbstractContainerRequestValueFactory<SearchModel> {
 
-
     @Context
     private UriInfo uriInfo;
 
@@ -23,12 +22,15 @@ public class SearchFactory extends AbstractContainerRequestValueFactory<SearchMo
     public SearchFactory() {
     }
 
+    public UriInfo getUriInfo() {
+        return uriInfo;
+    }
+
     /**
      * implemented just to GET method.
      *
      * @return SearchModel
      */
-
     @Override
     public SearchModel provide() {
 
@@ -36,11 +38,11 @@ public class SearchFactory extends AbstractContainerRequestValueFactory<SearchMo
 
         searchModel.setResponse(response);
 
-        String method = getContainerRequest().getMethod();
+        String method = getMethod();
 
         if ("GET".equals(method)) {
 
-            MultivaluedMap<String, String> queryParameters = uriInfo.getQueryParameters();
+            MultivaluedMap<String, String> queryParameters = getUriInfo().getQueryParameters();
 
             for (Map.Entry<String, List<String>> param : queryParameters.entrySet()) {
 
@@ -53,17 +55,18 @@ public class SearchFactory extends AbstractContainerRequestValueFactory<SearchMo
                 } else if ("_offset".equalsIgnoreCase(param.getKey())) {
                     searchModel.setOffset(Integer.parseInt(param.getValue().get(0)));
                 } else if ("_fields".equalsIgnoreCase(param.getKey())) {
-                    if (param.getValue().get(0) != null)
-                        searchModel.setFields(param.getValue().get(0).split(","));
+                    searchModel.setFields(param.getValue().get(0).split(","));
                 } else if ("_sort".equalsIgnoreCase(param.getKey())) {
                     searchModel.setSort(param.getValue().get(0).split(","));
                 } else if ("_filter".equalsIgnoreCase(param.getKey())) {
-                    searchModel.setFilter(param.getValue().get(0));
+                    searchModel.setFilterExpression(param.getValue().get(0));
                 }
             }
         }
-
-
         return searchModel;
+    }
+
+    public String getMethod() {
+        return getContainerRequest().getMethod();
     }
 }

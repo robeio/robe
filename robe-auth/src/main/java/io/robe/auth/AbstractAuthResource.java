@@ -1,6 +1,5 @@
 package io.robe.auth;
 
-import com.google.common.base.Optional;
 import com.google.common.hash.Hashing;
 import edu.vt.middleware.password.*;
 import io.dropwizard.auth.AuthenticationException;
@@ -10,6 +9,7 @@ import io.robe.auth.data.store.UserStore;
 import java.nio.charset.Charset;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 

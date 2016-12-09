@@ -1,21 +1,26 @@
 package io.robe.common.utils;
 
-import org.junit.FixMethodOrder;
+import io.robe.common.TestUtils;
 import org.junit.Test;
 
-import static org.junit.Assert.assertTrue;
+import java.lang.reflect.InvocationTargetException;
 
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
 /**
- * Created by recep on 30/09/16.
+ * Created by hasanmumin on 26/09/16.
  */
-@FixMethodOrder
 public class ValidationsTest {
 
     @Test
-    public void isEmptyOrNull() throws Exception {
-        Validations validations = new Validations();
+    public void constructor() throws InvocationTargetException, NoSuchMethodException, InstantiationException, IllegalAccessException {
+        TestUtils.privateConstructor(Validations.class);
+    }
 
-        assertTrue(validations.isEmptyOrNull(null));
-        assertTrue(validations.isEmptyOrNull(" "));
+    @Test
+    public void isEmptyOrNull() {
+        assertTrue(Validations.isEmptyOrNull(null));
+        assertTrue(Validations.isEmptyOrNull(""));
+        assertFalse(Validations.isEmptyOrNull("robe.io"));
     }
 }

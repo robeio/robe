@@ -9,7 +9,6 @@ import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.Workbook;
 
-import java.io.InputStream;
 import java.lang.reflect.Field;
 import java.util.*;
 
@@ -31,18 +30,18 @@ public abstract class ExcelImporter<T> extends Importer<T> {
     }
 
 
-    public List<T> importStream(InputStream inputStream, Workbook workbook) throws Exception {
+    public List<T> importStream(Workbook workbook) throws Exception {
 
         final List<T> list = new LinkedList<T>();
 
         DefaultOnItemHandler handler = new DefaultOnItemHandler(list);
 
-        this.importStream(inputStream, workbook, handler);
+        this.importStream(workbook, handler);
 
         return list;
     }
 
-    public void importStream(InputStream inputStream, Workbook workbook, OnItemHandler handler) throws Exception {
+    public void importStream(Workbook workbook, OnItemHandler handler) throws Exception {
 
         Collection<FieldEntry> fields = getFields(getDataClass());
 
@@ -67,8 +66,8 @@ public abstract class ExcelImporter<T> extends Importer<T> {
 
                         Object cellData;
                         if (cell != null) {
-                            if (!(field.getType() instanceof Class && (field.getType()).isEnum())) {
-                                if(cell.getCellType() != Cell.CELL_TYPE_STRING)
+                            if (!(field.getType() != null && (field.getType()).isEnum())) {
+                                if (cell.getCellType() != Cell.CELL_TYPE_STRING)
                                     cell.setCellType(Cell.CELL_TYPE_STRING);
 
                                 cellData = Parsers.valueOf(field.getType().getSimpleName().toUpperCase(Locale.ENGLISH)).getParser().parse(cell.getStringCellValue(), field);
@@ -107,7 +106,7 @@ public abstract class ExcelImporter<T> extends Importer<T> {
                         }
                     }
                 } catch (Exception e) {
-                    e.printStackTrace();
+                    throw e;
                 }
             }
 

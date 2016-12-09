@@ -4,12 +4,14 @@ import com.google.common.cache.Cache;
 import com.google.common.cache.CacheBuilder;
 import com.google.common.hash.Hashing;
 import com.google.common.io.BaseEncoding;
+import io.robe.auth.Credentials;
 import io.robe.auth.token.configuration.TokenBasedAuthConfiguration;
 import org.jasypt.encryption.pbe.PooledPBEStringEncryptor;
 import org.joda.time.DateTime;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.lang.reflect.Field;
 import java.nio.charset.StandardCharsets;
 import java.util.Date;
 import java.util.Map;
@@ -22,7 +24,7 @@ import java.util.concurrent.TimeUnit;
  * Takes all properties from configuration. Uses Guava for permission caching.
  * All cached permission entries will live with token.
  */
-public class BasicToken implements Token {
+public class BasicToken implements Credentials {
     private static final Logger LOGGER = LoggerFactory.getLogger(BasicToken.class);
 
     private static final PooledPBEStringEncryptor ENCRYPTOR = new PooledPBEStringEncryptor();
@@ -39,6 +41,15 @@ public class BasicToken implements Token {
     private String tokenString;
     private int maxAge;
 
+    static {
+        try {
+            Field field = Class.forName("javax.crypto.JceSecurity").getDeclaredField("isRestricted");
+            field.setAccessible(true);
+            field.set(null, java.lang.Boolean.FALSE);
+        } catch (Exception ex) {
+            throw new RuntimeException(ex);
+        }
+    }
 
     /**
      * Creates an access token with the given parameters.
@@ -112,6 +123,7 @@ public class BasicToken implements Token {
         return cache.asMap().keySet();
     }
 
+
     @Override
     public String getUserId() {
         return userId;
@@ -122,23 +134,22 @@ public class BasicToken implements Token {
         return username;
     }
 
-    @Override
+
     public boolean isExpired() {
         return !expireAt.isAfterNow();
     }
 
-    @Override
+
     public void setExpiration(int durationInSeconds) {
         expireAt = DateTime.now().plusSeconds(durationInSeconds);
         resetTokenString();
     }
 
-    @Override
+
     public Date getExpirationDate() {
         return expireAt.toDate();
     }
 
-    @Override
     public String getAttributesHash() {
         return attributesHash;
     }
@@ -196,7 +207,6 @@ public class BasicToken implements Token {
         this.maxAge = maxAge;
     }
 
-    @Override
     public Set<String> getPermissions() {
         return cache.getIfPresent(getUsername());
     }
@@ -206,7 +216,6 @@ public class BasicToken implements Token {
      *
      * @param permissions permission list for the current user.
      */
-    @Override
     public void setPermissions(Set<String> permissions) {
         cache.put(getUsername(), permissions);
     }
@@ -236,7 +245,6 @@ public class BasicToken implements Token {
         return result;
     }
 
-    @Override
     public String getName() {
         return "BasicToken";
     }

@@ -7,10 +7,10 @@ import java.lang.reflect.Field;
 
 import static java.lang.Enum.valueOf;
 
-public class ParseEnum implements IsParser {
+public class ParseEnum implements IsParser<Enum> {
     @Override
-    public Object parse(JsonParser parser, Field field) throws IOException {
+    public Enum parse(JsonParser parser, Field field) throws IOException {
         Class<? extends Enum> enumClass = (Class<? extends Enum>) field.getType();
-        return valueOf(enumClass, parser.getValueAsString());
+        return isValid(parser) ? valueOf(enumClass, parser.getValueAsString()) : null;
     }
 }

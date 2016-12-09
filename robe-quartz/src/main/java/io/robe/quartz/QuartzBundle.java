@@ -77,6 +77,7 @@ public class QuartzBundle<T extends Configuration & HasQuartzConfiguration > imp
         properties.setProperty("org.quartz.scheduler.instanceName", quartzConfiguration.getInstanceName());
         properties.setProperty("org.quartz.threadPool.threadCount", String.valueOf(quartzConfiguration.getThreadCount()));
         properties.setProperty("org.quartz.threadPool.threadPriority", String.valueOf(quartzConfiguration.getThreadPriority()));
+        properties.setProperty("org.quartz.threadPool.class", String.valueOf(quartzConfiguration.getThreadPoolClass()));
         properties.setProperty("org.quartz.scheduler.skipUpdateCheck", quartzConfiguration.getSkipUpdateCheck());
         //Set jobstore properties.
         properties.setProperty("org.quartz.jobStore.class", quartzConfiguration.getJobStore().getClassName());

@@ -10,7 +10,7 @@ import io.robe.auth.data.entry.ServiceEntry;
 import io.robe.common.service.RobeService;
 import io.robe.common.service.search.SearchParam;
 import io.robe.common.service.search.model.SearchModel;
-import io.robe.common.utils.FieldReflection;
+import io.robe.common.utils.reflection.Fields;
 import io.robe.guice.GuiceBundle;
 import io.robe.guice.GuiceConfiguration;
 import org.hibernate.FlushMode;
@@ -46,7 +46,7 @@ public class ServiceResource {
     @GET
     @UnitOfWork(readOnly = true, cacheMode = GET, flushMode = FlushMode.MANUAL)
     public List<Service> getAll(@RobeAuth Credentials credentials, @SearchParam SearchModel search) {
-        return serviceDao.findAll(search);
+        return serviceDao.findAllStrict(search);
     }
 
     /**
@@ -109,6 +109,7 @@ public class ServiceResource {
         if (entity == null) {
             throw new WebApplicationException(Response.status(404).build());
         }
+        serviceDao.detach(entity);
         return serviceDao.update(model);
     }
 
@@ -129,14 +130,14 @@ public class ServiceResource {
     @UnitOfWork
     @Path("{id}")
     public Service merge(@RobeAuth Credentials credentials, @PathParam("id") String id, Service model) {
-        if (id.equals(model.getOid()))
+        if (!id.equals(model.getOid()))
             throw new WebApplicationException(Response.status(412).build());
         Service dest = serviceDao.findById(id);
         if (dest == null) {
             throw new WebApplicationException(Response.status(404).build());
         }
-        FieldReflection.mergeRight(model, dest);
-        return serviceDao.update(model);
+        Fields.mergeRight(model, dest);
+        return serviceDao.update(dest);
     }
 
     /**

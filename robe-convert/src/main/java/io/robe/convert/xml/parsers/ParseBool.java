@@ -5,9 +5,9 @@ import com.fasterxml.jackson.core.JsonParser;
 import java.io.IOException;
 import java.lang.reflect.Field;
 
-public class ParseBool implements IsParser {
+public class ParseBool implements IsParser<Boolean> {
     @Override
-    public Object parse(JsonParser parser, Field field) throws IOException {
-        return parser.getValueAsBoolean();
+    public Boolean parse(JsonParser parser, Field field) throws IOException {
+        return isValid(parser) ? parser.getValueAsBoolean() : null;
     }
 }

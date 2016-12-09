@@ -1,7 +1,6 @@
 package io.robe.admin.resources;
 
 import com.codahale.metrics.annotation.Timed;
-import com.google.common.base.Optional;
 import io.dropwizard.hibernate.UnitOfWork;
 import io.robe.admin.hibernate.dao.ActionLogDao;
 import io.robe.admin.hibernate.dao.UserDao;
@@ -12,8 +11,6 @@ import io.robe.auth.AbstractAuthResource;
 import io.robe.auth.Credentials;
 import io.robe.auth.RobeAuth;
 import io.robe.auth.token.BasicToken;
-import io.robe.auth.token.Token;
-import io.robe.auth.token.TokenManager;
 import io.robe.auth.token.jersey.TokenBasedAuthResponseFilter;
 import org.hibernate.FlushMode;
 import org.joda.time.DateTime;
@@ -28,6 +25,7 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Optional;
 
 import static org.hibernate.CacheMode.GET;
 
@@ -84,7 +82,8 @@ public class AuthResource extends AbstractAuthResource<User> {
             attributes.put("userAgent", request.getHeader("User-Agent"));
             attributes.put("remoteAddr", request.getRemoteAddr());
 
-            Token token = TokenManager.getInstance().createToken(user.get().getUserId(), user.get().getEmail(), DateTime.now(), attributes);
+
+            BasicToken token = new BasicToken(user.get().getUserId(), user.get().getEmail(), DateTime.now(), attributes);
             token.setExpiration(token.getMaxAge());
             credentials.remove("password");
             credentials.put("domain", TokenBasedAuthResponseFilter.getTokenSentence("dummy"));
@@ -130,7 +129,7 @@ public class AuthResource extends AbstractAuthResource<User> {
     @UnitOfWork
     @Path("logout")
     @Timed
-    public User logout(@RobeAuth Credentials credentials, @Context HttpServletRequest request) throws Exception {
+    public Response logout(@RobeAuth Credentials credentials, @Context HttpServletRequest request) throws Exception {
         Optional<User> user = userDao.findByUsername(credentials.getUsername());
         if (!user.isPresent()) {
             throw new WebApplicationException(Response.Status.UNAUTHORIZED);
@@ -138,7 +137,7 @@ public class AuthResource extends AbstractAuthResource<User> {
             BasicToken.clearPermissionCache(credentials.getUsername());
             user.get().setLastLogoutTime(DateTime.now().toDate());
             logAction(new ActionLog("LOGOUT", null, user.get().toString(), true, request.getRemoteAddr()));
-            return user.get();
+            return Response.ok().header("Set-Cookie", TokenBasedAuthResponseFilter.getTokenSentence("")).build();
         }
     }
 
@@ -187,7 +186,7 @@ public class AuthResource extends AbstractAuthResource<User> {
         if (!user.isPresent()) {
             throw new WebApplicationException(Response.Status.NOT_FOUND);
         } else if (user.get().getPassword().equals(passwords.get("password"))) {
-            if (passwords.get("newPassword").equals(passwords.get("newPasswordRepart"))) {
+            if (passwords.get("newPassword").equals(passwords.get("newPasswordRepeat"))) {
                 user.get().setPassword(passwords.get("newPassword"));
                 return Response.status(Response.Status.OK).entity("Your password has been updated").build();
             } else {
