@@ -1,6 +1,5 @@
 package io.robe.hibernate.entity;
 
-import com.sun.org.apache.xpath.internal.operations.Bool;
 import io.robe.common.service.search.SearchIgnore;
 import io.robe.common.service.search.SearchableEnum;
 

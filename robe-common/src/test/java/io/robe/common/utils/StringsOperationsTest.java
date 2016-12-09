@@ -22,13 +22,4 @@ public class StringsOperationsTest {
         Assert.assertEquals(expected, Strings.unCapitalizeFirstChar(data));
 
     }
-
-    @Test
-    public void unCapitalizeFirstChar() throws Exception {
-        String expected = "id";
-        String data = "Id";
-        Assert.assertEquals(expected, StringsOperations.unCapitalizeFirstChar(data));
-
-    }
-
 }
