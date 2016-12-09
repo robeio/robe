@@ -7,12 +7,12 @@
 
     <groupId>io.robe</groupId>
     <artifactId>robe-parent</artifactId>
-    <version>0.5.1.0-0</version>
+    <version>0.5.1.0-SNAPSHOT</version>
 
     <packaging>pom</packaging>
     <name>Robe Project</name>
     <url>www.robe.io</url>
-    <description>A Brand new ROBE for Dropwizard. www.robe.io</description>
+    <description>A Brand new ROBE for Dropwizard. www.dropwizard.io</description>
 
     <licenses>
         <license>
@@ -115,6 +115,7 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
     </properties>
+
 
     <dependencyManagement>
         <dependencies>
@@ -302,11 +303,13 @@
                 <artifactId>guava</artifactId>
                 <version>${google.guava.version}</version>
             </dependency>
+
             <dependency>
                 <groupId>javax.persistence</groupId>
                 <artifactId>persistence-api</artifactId>
                 <version>${javax.persistence.api.version}</version>
             </dependency>
+
             <dependency>
                 <groupId>org.codehaus.jackson</groupId>
                 <artifactId>jackson-core-asl</artifactId>
@@ -333,6 +336,12 @@
                 <version>${junit.version}</version>
             </dependency>
             <dependency>
+                <groupId>org.easymock</groupId>
+                <artifactId>easymock</artifactId>
+                <version>3.2</version>
+                <scope>test</scope>
+            </dependency>
+            <dependency>
                 <groupId>net.sf.supercsv</groupId>
                 <artifactId>super-csv</artifactId>
                 <version>${supercsv.version}</version>
@@ -347,6 +356,7 @@
                 <artifactId>jackson-dataformat-xml</artifactId>
                 <version>${jackson.dataformat.xml.version}</version>
             </dependency>
+
             <dependency>
                 <groupId>org.codehaus.woodstox</groupId>
                 <artifactId>woodstox-core-asl</artifactId>
@@ -385,6 +395,10 @@
         <dependency>
             <groupId>junit</groupId>
             <artifactId>junit</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.easymock</groupId>
+            <artifactId>easymock</artifactId>
         </dependency>
         <dependency>
             <groupId>io.dropwizard</groupId>

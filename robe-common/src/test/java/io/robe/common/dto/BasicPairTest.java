@@ -1,11 +1,15 @@
 package io.robe.common.dto;
 
-import org.junit.Assert;
+import org.junit.Before;
+import org.junit.FixMethodOrder;
 import org.junit.Test;
 
-/**
- * Created by hasanmumin on 26/09/16.
- */
+import static junit.framework.TestCase.assertEquals;
+import static org.junit.Assert.assertNull;
+import org.junit.Assert;
+
+
+@FixMethodOrder
 public class BasicPairTest {
 
     @Test
@@ -16,4 +20,21 @@ public class BasicPairTest {
         Assert.assertTrue(basicPair.equals(basicPair));
     }
 
+
+    BasicPair pair;
+
+    @Before
+    public void setUp() throws Exception {
+        pair = new BasicPair("Basic", "Pair");
+
+    }
+
+    @Test
+    public void contructorAndToString() throws Exception {
+        BasicPair basicPair = new BasicPair();
+        assertNull(basicPair.getName());
+
+        assertEquals(pair.getName() + "=" + pair.getValue(), pair.toString());
+
+    }
 }

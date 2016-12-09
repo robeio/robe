@@ -54,4 +54,18 @@ public class Pair<L, C> {
         result = 31 * result + (right != null ? right.hashCode() : 0);
         return result;
     }
+
+
+    @Override
+    public String toString() {
+        String result = "=";
+
+        if(left != null) {
+           result = left + result;
+        }
+        if(right != null) {
+            result = result + right;
+        }
+        return result;
+    }
 }

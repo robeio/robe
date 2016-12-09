@@ -7,7 +7,6 @@ import java.lang.reflect.InvocationTargetException;
 
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
-
 /**
  * Created by hasanmumin on 26/09/16.
  */

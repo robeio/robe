@@ -1,15 +1,21 @@
 package io.robe.common.service.search.model;
 
 import org.eclipse.jetty.server.Response;
+import org.junit.Assert;
+import org.junit.Before;
+import org.junit.FixMethodOrder;
 import org.junit.Test;
 
 import javax.servlet.http.HttpServletResponse;
 
+import static junit.framework.TestCase.assertEquals;
+import static junit.framework.TestCase.assertNull;
 import static org.junit.Assert.assertArrayEquals;
-import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotEquals;
 
 
 public class SearchModelTest {
+
     @Test
     public void setFilterExpression() throws Exception {
         SearchModel model = new SearchModel();
@@ -24,7 +30,7 @@ public class SearchModelTest {
                 new String[]{"field", "~=", "1"},
                 new String[]{"field", "|=", "1|2|3"},
         };
-        assertEquals(expected.length, model.getFilter().length);
+        Assert.assertEquals(expected.length, model.getFilter().length);
         assertArrayEquals(expected, model.getFilter());
     }
 
@@ -38,15 +44,15 @@ public class SearchModelTest {
 
         Integer offset = 0;
         model.setOffset(offset);
-        assertEquals(offset, model.getOffset());
+        Assert.assertEquals(offset, model.getOffset());
 
         Integer limit = 10;
         model.setLimit(limit);
-        assertEquals(limit, model.getLimit());
+        Assert.assertEquals(limit, model.getLimit());
 
         String q = "query";
         model.setQ(q);
-        assertEquals(q, model.getQ());
+        Assert.assertEquals(q, model.getQ());
 
         String[] sort = new String[]{"field1+", "field2-"};
         model.setSort(sort);
@@ -54,12 +60,12 @@ public class SearchModelTest {
 
         long totalCount = 30;
         model.setTotalCount(totalCount);
-        assertEquals(totalCount, model.getTotalCount(), 0);
+        Assert.assertEquals(totalCount, model.getTotalCount(), 0);
 
         HttpServletResponse httpServletResponse = new Response(null, null);
 
         model.setResponse(httpServletResponse);
-        assertEquals(httpServletResponse, model.getResponse());
+        Assert.assertEquals(httpServletResponse, model.getResponse());
 
         String[][] filter = new String[][]{new String[]{"field1", "=", "val"}};
         model.setFilter(filter);
@@ -143,8 +149,7 @@ public class SearchModelTest {
     }
 
     public void check(SearchModel model1, SearchModel model2) {
-        assertEquals(model1.hashCode(), model2.hashCode());
-        assertEquals(model1, model2);
+        Assert.assertEquals(model1.hashCode(), model2.hashCode());
+        Assert.assertEquals(model1, model2);
     }
-
 }
