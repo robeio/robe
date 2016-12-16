@@ -52,7 +52,7 @@ public class QuartzBundle<T extends Configuration & HasQuartzConfiguration > imp
      */
     @Override
     public void run(T configuration, Environment environment) {
-        QuartzConfiguration qConf = configuration.getQuartzConfiguration();
+        QuartzConfiguration qConf = configuration.getQuartz();
         try {
 
             initializeScheduler(extractProperties(qConf));

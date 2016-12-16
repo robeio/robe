@@ -18,7 +18,7 @@ public class RobeHibernateBundleTest {
 
     class TestConfig extends Configuration implements HasHibernateConfiguration {
         @Override
-        public HibernateConfiguration getHibernateConfiguration() {
+        public HibernateConfiguration getHibernate() {
             return new HibernateConfiguration();
         }
     }

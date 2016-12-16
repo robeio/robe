@@ -86,12 +86,12 @@ public class RobeHibernateBundle<T extends Configuration & HasHibernateConfigura
     }
 
     public HibernateConfiguration getDatabaseConfiguration(T configuration) {
-        return configuration.getHibernateConfiguration();
+        return configuration.getHibernate();
     }
 
     @Override
     public PooledDataSourceFactory getDataSourceFactory(T configuration) {
-        return configuration.getHibernateConfiguration().getDataSourceFactory(configuration);
+        return configuration.getHibernate().getDataSourceFactory(configuration);
     }
 
 

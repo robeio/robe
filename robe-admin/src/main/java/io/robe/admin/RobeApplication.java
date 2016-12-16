@@ -20,6 +20,7 @@ import io.robe.auth.token.TokenAuthenticator;
 import io.robe.auth.token.jersey.TokenFactory;
 import io.robe.common.exception.ExceptionMapperBinder;
 import io.robe.common.exception.RobeExceptionMapper;
+import io.robe.common.exception.RobeRuntimeException;
 import io.robe.common.service.search.SearchFactoryProvider;
 import io.robe.guice.GuiceBundle;
 import io.robe.hibernate.RobeHibernateBundle;
@@ -29,6 +30,7 @@ import org.glassfish.jersey.media.multipart.MultiPartFeature;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.io.File;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -43,10 +45,16 @@ public class RobeApplication<T extends RobeConfiguration> extends Application<T>
 
     private static final Logger LOGGER = LoggerFactory.getLogger(RobeApplication.class);
     private InitializeCommand initCommand;
+    private static String configurationPath;
 
     public static void main(String[] args) throws Exception {
 
         RobeApplication application = new RobeApplication();
+        if (args.length < 2) {
+            LOGGER.error("Give a config yml path.");
+        } else {
+            configurationPath = args[1];
+        }
         application.run(args);
     }
 
@@ -69,11 +77,15 @@ public class RobeApplication<T extends RobeConfiguration> extends Application<T>
      */
     @Override
     public void initialize(Bootstrap<T> bootstrap) {
-        RobeHibernateBundle<T> hibernateBundle = RobeHibernateBundle.createInstance(getHibernateScanPackages(), new String[0]);
+        T config = loadConfiguration(bootstrap);
+        RobeHibernateBundle<T> hibernateBundle = RobeHibernateBundle.createInstance(
+                config.getHibernate().getScanPackages(),
+                config.getHibernate().getEntities());
         addGuiceBundle(bootstrap, hibernateBundle);
         bootstrap.addBundle(hibernateBundle);
-        bootstrap.addBundle(new TokenAuthBundle<T>());
         initCommand = new InitializeCommand(this, hibernateBundle);
+
+        bootstrap.addBundle(new TokenAuthBundle<T>());
         bootstrap.addCommand(initCommand);
         bootstrap.addBundle(new QuartzBundle<T>());
         bootstrap.addBundle(new ViewBundle());
@@ -88,8 +100,17 @@ public class RobeApplication<T extends RobeConfiguration> extends Application<T>
      *
      * @return
      */
-    protected String[] getHibernateScanPackages() {
-        return new String[]{"io.robe.admin", "io.robe.quartz"};
+    protected T loadConfiguration(Bootstrap bootstrap) {
+        try {
+            return
+                    (T) bootstrap.getConfigurationFactoryFactory().create(
+                            bootstrap.getApplication().getConfigurationClass(),
+                            bootstrap.getValidatorFactory().getValidator(),
+                            bootstrap.getObjectMapper(), "")
+                            .build(new File(configurationPath));
+        } catch (Exception e) {
+            throw new RobeRuntimeException("Can't load configuration :"+ configurationPath, e);
+        }
     }
 
 
@@ -118,7 +139,7 @@ public class RobeApplication<T extends RobeConfiguration> extends Application<T>
                 GuiceBundle.getInjector().getInstance(RoleDao.class),
                 GuiceBundle.getInjector().getInstance(PermissionDao.class),
                 GuiceBundle.getInjector().getInstance(RoleGroupDao.class));
-        TokenFactory.tokenKey = configuration.getTokenBasedAuthConfiguration().getTokenKey();
+        TokenFactory.tokenKey = configuration.getAuth().getTokenKey();
         addExceptionMappers(environment);
         /**
          * register {@link SearchFactoryProvider}

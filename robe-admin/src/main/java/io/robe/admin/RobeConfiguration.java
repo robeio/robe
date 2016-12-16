@@ -54,29 +54,28 @@ public class RobeConfiguration extends Configuration implements
     @JsonProperty
     private List<AssetConfiguration> assets;
 
-
-    public HibernateConfiguration getHibernateConfiguration() {
+    public HibernateConfiguration getHibernate() {
         return hibernate;
     }
 
     @Override
-    public MailConfiguration getMailConfiguration() {
+    public MailConfiguration getMail() {
         return mail;
     }
 
     @Override
-    public QuartzConfiguration getQuartzConfiguration() {
+    public QuartzConfiguration getQuartz() {
         return quartz;
     }
 
     @Override
-    public GuiceConfiguration getGuiceConfiguration() {
+    public GuiceConfiguration getGuice() {
         return guice;
     }
 
 
     @Override
-    public TokenBasedAuthConfiguration getTokenBasedAuthConfiguration() {
+    public TokenBasedAuthConfiguration getAuth() {
         return auth;
     }
 

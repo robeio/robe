@@ -68,11 +68,11 @@ public class GuiceBundle<T extends Configuration & HasGuiceConfiguration> implem
     @Override
     public void run(T configuration, Environment environment) {
         try {
-            if (configuration.getGuiceConfiguration() == null) {
+            if (configuration.getGuice() == null) {
                 LOGGER.error("GuiceBundle can not work without and configuration!");
             }
-            GuiceBundle.configuration = configuration.getGuiceConfiguration();
-            createReflections(configuration.getGuiceConfiguration().getScanPackages());
+            GuiceBundle.configuration = configuration.getGuice();
+            createReflections(configuration.getGuice().getScanPackages());
             JerseyUtil.registerGuiceBound(injector, environment.jersey());
             JerseyUtil.registerGuiceFilter(environment);
             deModule.setEnvironmentData(configuration, environment);

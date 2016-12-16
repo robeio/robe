@@ -124,7 +124,7 @@ public class InitializeCommand<T extends RobeConfiguration> extends EnvironmentC
             session.persist(groupAllAdmin);
         }
 
-        GuiceConfiguration guiceConfiguration = configuration.getGuiceConfiguration();
+        GuiceConfiguration guiceConfiguration = configuration.getGuice();
         LOGGER.info("Scanning Services.Packages :" + Arrays.toString(guiceConfiguration.getScanPackages()));
 
         Reflections reflections = new Reflections(guiceConfiguration.getScanPackages(), this.getClass().getClassLoader());

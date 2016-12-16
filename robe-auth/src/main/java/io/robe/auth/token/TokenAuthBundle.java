@@ -23,11 +23,11 @@ public class TokenAuthBundle<T extends Configuration & HasTokenBasedAuthConfigur
      */
     @Override
     public void run(T configuration, Environment environment) throws Exception {
-        this.configuration = configuration.getTokenBasedAuthConfiguration();
+        this.configuration = configuration.getAuth();
         environment.jersey().register(new TokenFactoryProvider.Binder<Credentials>(Credentials.class));
-        environment.jersey().register(new TokenBasedAuthResponseFilter(configuration.getTokenBasedAuthConfiguration()));
+        environment.jersey().register(new TokenBasedAuthResponseFilter(configuration.getAuth()));
         environment.jersey().register(TokenFeature.class);
-        BasicToken.configure(configuration.getTokenBasedAuthConfiguration());
+        BasicToken.configure(configuration.getAuth());
     }
 
     /**

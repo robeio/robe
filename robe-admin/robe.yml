@@ -9,13 +9,14 @@ server:
     port: 8080
 
 hibernate:
+   scanPackages: [io.robe.admin.hibernate.entity,io.robe.quartz]
    database:
      # the name of your JDBC driver
      driverClass:  com.mysql.jdbc.Driver
      # the username
      user: root
      # the password
-     password: 2550373
+     password:
      # the JDBC URL
      url: jdbc:mysql://localhost:3306/robe?autoReconnect=true&useSSL=false
      # Properties
