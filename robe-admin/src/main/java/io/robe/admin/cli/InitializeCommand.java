@@ -210,7 +210,7 @@ public class InitializeCommand<T extends RobeConfiguration> extends EnvironmentC
         dash.setModule("Dashboard");
         dash.setIndex(0);
         dash.setText("Sistem Bilgileri");
-        dash.setPath("app/modules/dash/Dash");
+        dash.setPath("app/manager/dashboard/Dashboard");
         dash.setIcon("fa-tachometer");
         dash.setParentOid(manager.getOid());
         session.persist(dash);
@@ -222,7 +222,7 @@ public class InitializeCommand<T extends RobeConfiguration> extends EnvironmentC
         userManagement.setText("Kullanıcı Yönetimi");
         userManagement.setParentOid(manager.getOid());
         userManagement.setIcon("fa-users");
-        userManagement.setPath("app/modules/user/User");
+        userManagement.setPath("app/manager/user/User");
         session.persist(userManagement);
         session.persist(createPermission(true, userManagement.getOid(), role));
 
@@ -231,7 +231,7 @@ public class InitializeCommand<T extends RobeConfiguration> extends EnvironmentC
         userProfileManagement.setIndex(1);
         userProfileManagement.setText("Profil Bilgileri Yönetimi");
         userProfileManagement.setParentOid(manager.getOid());
-        userProfileManagement.setPath("app/modules/profile/Profile");
+        userProfileManagement.setPath("app/manager/profile/Profile");
         userProfileManagement.setIcon("fa-user");
         session.persist(userProfileManagement);
         session.persist(createPermission(true, userProfileManagement.getOid(), role));
@@ -241,7 +241,7 @@ public class InitializeCommand<T extends RobeConfiguration> extends EnvironmentC
         mailTemplate.setIndex(0);
         mailTemplate.setText("Mail Şablon Yönetimi");
         mailTemplate.setParentOid(manager.getOid());
-        mailTemplate.setPath("app/modules/mailtemplate/MailTemplate");
+        mailTemplate.setPath("app/manager/mailtemplate/MailTemplate");
         mailTemplate.setIcon("fa-envelope");
         session.persist(mailTemplate);
         session.persist(createPermission(true, mailTemplate.getOid(), role));
@@ -251,7 +251,7 @@ public class InitializeCommand<T extends RobeConfiguration> extends EnvironmentC
         menuManagement.setIndex(1);
         menuManagement.setText("Menü Yönetimi");
         menuManagement.setParentOid(manager.getOid());
-        menuManagement.setPath("app/modules/menu/Menu");
+        menuManagement.setPath("app/manager/menu/Menu");
         menuManagement.setIcon("fa-tasks");
         session.persist(menuManagement);
         session.persist(createPermission(true, menuManagement.getOid(), role));
@@ -261,7 +261,7 @@ public class InitializeCommand<T extends RobeConfiguration> extends EnvironmentC
         roleManagement.setIndex(1);
         roleManagement.setText("Rol Yönetimi");
         roleManagement.setParentOid(manager.getOid());
-        roleManagement.setPath("app/modules/role/Role");
+        roleManagement.setPath("app/manager/role/Role");
         roleManagement.setIcon("fa-user-secret");
         session.persist(roleManagement);
         session.persist(createPermission(true, roleManagement.getOid(), role));
@@ -271,7 +271,7 @@ public class InitializeCommand<T extends RobeConfiguration> extends EnvironmentC
         permissionManagement.setIndex(1);
         permissionManagement.setText("İzin Yönetimi");
         permissionManagement.setParentOid(manager.getOid());
-        permissionManagement.setPath("app/modules/permission/Permission");
+        permissionManagement.setPath("app/manager/permission/Permission");
         permissionManagement.setIcon("fa-check-square-o");
         session.persist(permissionManagement);
         session.persist(createPermission(true, permissionManagement.getOid(), role));
@@ -282,7 +282,7 @@ public class InitializeCommand<T extends RobeConfiguration> extends EnvironmentC
         quartzJob.setIndex(0);
         quartzJob.setText("İş Zamanlama Yönetimi");
         quartzJob.setParentOid(manager.getOid());
-        quartzJob.setPath("app/modules/quartz/QuartzJob");
+        quartzJob.setPath("app/manager/quartz/QuartzJob");
         quartzJob.setIcon("fa-bell");
         session.persist(quartzJob);
         session.persist(createPermission(true, quartzJob.getOid(), role));
@@ -293,7 +293,7 @@ public class InitializeCommand<T extends RobeConfiguration> extends EnvironmentC
         systemParameter.setText("Sistem Parametre Yönetimi");
         systemParameter.setParentOid(manager.getOid());
         systemParameter.setIcon("fa-steam");
-        systemParameter.setPath("app/modules/systemparameter/SystemParameter");
+        systemParameter.setPath("app/manager/systemparameter/SystemParameter");
         session.persist(systemParameter);
         session.persist(createPermission(true, systemParameter.getOid(), role));
 
