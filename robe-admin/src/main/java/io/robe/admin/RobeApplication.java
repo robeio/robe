@@ -4,6 +4,7 @@ import com.codahale.metrics.servlets.MetricsServlet;
 import com.google.common.collect.ImmutableList;
 import com.google.inject.Module;
 import io.dropwizard.Application;
+import io.dropwizard.Configuration;
 import io.dropwizard.hibernate.UnitOfWork;
 import io.dropwizard.jetty.NonblockingServletHolder;
 import io.dropwizard.setup.Bootstrap;
@@ -44,18 +45,24 @@ public class RobeApplication<T extends RobeConfiguration> extends Application<T>
 
 
     private static final Logger LOGGER = LoggerFactory.getLogger(RobeApplication.class);
-    private InitializeCommand initCommand;
     private static String configurationPath;
+    private T config;
+
 
     public static void main(String[] args) throws Exception {
-
         RobeApplication application = new RobeApplication();
+        application.run(args);
+    }
+
+
+    @Override
+    public void run(String... args) throws Exception {
         if (args.length < 2) {
             LOGGER.error("Give a config yml path.");
         } else {
             configurationPath = args[1];
         }
-        application.run(args);
+        super.run(args);
     }
 
     /**
@@ -81,46 +88,40 @@ public class RobeApplication<T extends RobeConfiguration> extends Application<T>
         RobeHibernateBundle<T> hibernateBundle = RobeHibernateBundle.createInstance(
                 config.getHibernate().getScanPackages(),
                 config.getHibernate().getEntities());
-        addGuiceBundle(bootstrap, hibernateBundle);
-        bootstrap.addBundle(hibernateBundle);
-        initCommand = new InitializeCommand(this, hibernateBundle);
 
+        List<Module> modules = new LinkedList<>();
+        modules.add(new HibernateModule(hibernateBundle));
+        bootstrap.addBundle(new GuiceBundle<T>(modules, bootstrap.getApplication().getConfigurationClass()));
+
+        bootstrap.addBundle(hibernateBundle);
         bootstrap.addBundle(new TokenAuthBundle<T>());
-        bootstrap.addCommand(initCommand);
+        bootstrap.addCommand(new InitializeCommand(this, hibernateBundle));
         bootstrap.addBundle(new QuartzBundle<T>());
-        bootstrap.addBundle(new ViewBundle());
-        bootstrap.addBundle(new ViewBundle(ImmutableList.<ViewRenderer>of(new FreemarkerViewRenderer())));
         bootstrap.addBundle(new MailBundle<T>());
         bootstrap.addBundle(new AdvancedAssetBundle<T>());
 
     }
 
-    /**
-     * Implement this method in order to give your interested packages
-     *
-     * @return
-     */
+    public T getConfiguration() {
+        return config;
+    }
+
     protected T loadConfiguration(Bootstrap bootstrap) {
-        try {
-            return
-                    (T) bootstrap.getConfigurationFactoryFactory().create(
-                            bootstrap.getApplication().getConfigurationClass(),
-                            bootstrap.getValidatorFactory().getValidator(),
-                            bootstrap.getObjectMapper(), "")
-                            .build(new File(configurationPath));
-        } catch (Exception e) {
-            throw new RobeRuntimeException("Can't load configuration :"+ configurationPath, e);
+        if (config == null) {
+            try {
+
+                config = (T) bootstrap.getConfigurationFactoryFactory().create(
+                        bootstrap.getApplication().getConfigurationClass(),
+                        bootstrap.getValidatorFactory().getValidator(),
+                        bootstrap.getObjectMapper(), "")
+                        .build(new File(configurationPath));
+            } catch (Exception e) {
+                throw new RobeRuntimeException("Can't load configuration :" + configurationPath, e);
+            }
         }
+        return config;
+
     }
-
-
-    private void addGuiceBundle(Bootstrap<T> bootstrap, RobeHibernateBundle hibernateBundle) {
-        List<Module> modules = new LinkedList<>();
-        modules.add(new HibernateModule(hibernateBundle));
-
-        bootstrap.addBundle(new GuiceBundle<T>(modules, bootstrap.getApplication().getConfigurationClass()));
-    }
-
 
     /**
      * {@inheritDoc}
@@ -139,11 +140,12 @@ public class RobeApplication<T extends RobeConfiguration> extends Application<T>
                 GuiceBundle.getInjector().getInstance(RoleDao.class),
                 GuiceBundle.getInjector().getInstance(PermissionDao.class),
                 GuiceBundle.getInjector().getInstance(RoleGroupDao.class));
+
         TokenFactory.tokenKey = configuration.getAuth().getTokenKey();
-        addExceptionMappers(environment);
-        /**
-         * register {@link SearchFactoryProvider}
-         */
+
+        environment.jersey().register(RobeExceptionMapper.class);
+        environment.jersey().register(new ExceptionMapperBinder(true));
+
         environment.jersey().register(new SearchFactoryProvider.Binder());
         environment.jersey().register(MultiPartFeature.class);
 
@@ -153,17 +155,7 @@ public class RobeApplication<T extends RobeConfiguration> extends Application<T>
         environment.getApplicationContext().addServlet(
                 new NonblockingServletHolder(new MetricsServlet()), "/metrics/*");
 
-        if ("TEST".equals(System.getProperty("env"))) {
-            getInitCommand().execute(configuration);
-        }
     }
 
-    private void addExceptionMappers(Environment environment) {
-        environment.jersey().register(RobeExceptionMapper.class);
-        environment.jersey().register(new ExceptionMapperBinder(true));
-    }
 
-    protected InitializeCommand getInitCommand() {
-        return initCommand;
-    }
 }

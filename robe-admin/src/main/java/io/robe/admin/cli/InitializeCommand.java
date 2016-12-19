@@ -59,23 +59,24 @@ public class InitializeCommand<T extends RobeConfiguration> extends EnvironmentC
         LOGGER.info("Initialize Starting...");
         LOGGER.info("Starting to create initial data.");
         execute(configuration);
-        System.exit(0);
+        if (!"TEST".equals(System.getProperty("env"))) {
+            System.exit(0);
+        }
     }
 
 
     @UnitOfWork
     public void execute(T configuration) {
-        LOGGER.info("------------------------");
-        LOGGER.info("------------------------");
-        LOGGER.info("Please enter the admin password for the first :");
 
-        Console console = System.console();
+        LOGGER.info("------------------------");
+        LOGGER.info("------------------------");
 
         String password;
-
         if ("TEST".equals(System.getProperty("env"))) {
             password = "123123";
         } else {
+            LOGGER.info("Please enter the admin password for the first :");
+            Console console = System.console();
             if (console != null) {
                 // read password from server console
                 password = new String(console.readPassword());

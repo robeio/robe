@@ -9,7 +9,7 @@ server:
     port: 8081
 
 hibernate:
-   scanPackages: [io.robe.admin.hibernate.entity,io.robe.quartz]
+   scanPackages: [io.robe.admin.hibernate.entity,io.robe.admin.quartz]
    database:
      # the name of your JDBC driver
      driverClass:  com.mysql.jdbc.Driver

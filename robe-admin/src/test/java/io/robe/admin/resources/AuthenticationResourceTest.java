@@ -51,7 +51,7 @@ public class AuthenticationResourceTest extends RobeAdminTest {
         credentials.put("password", PASSWORD);
         TestRequest request = requestBuilder.entity(credentials).endpoint("login").build();
         TestResponse response = client.post(request);
-        assertEquals(response.getStatus(), 200);
+        assertEquals(200, response.getStatus());
         assertNotNull(response.getCookie(tokenHeaderName));
         TOKEN = response.getCookie(tokenHeaderName);
     }
@@ -61,11 +61,11 @@ public class AuthenticationResourceTest extends RobeAdminTest {
     public void getProfile() throws Exception {
         TestRequest request = requestBuilder.endpoint("profile").header(tokenHeaderName, "").build();
         TestResponse response = client.get(request);
-        assertEquals(response.getStatus(), 200);
+        assertEquals(200, response.getStatus());
         User user = response.get(User.class);
         assertNotNull(user);
-        assertEquals(user.getEmail(), USERNAME);
-        assertEquals(user.getPassword(), PASSWORD);
+        assertEquals(USERNAME, user.getEmail());
+        assertEquals(PASSWORD, user.getPassword());
     }
 
     @Test
@@ -78,7 +78,7 @@ public class AuthenticationResourceTest extends RobeAdminTest {
         passwords.put("newPasswordRepeat", newPassword);
         TestRequest request = requestBuilder.endpoint("password").entity(passwords).header(tokenHeaderName, TOKEN).build();
         TestResponse response = client.post(request);
-        assertEquals(response.getStatus(), 200);
+        assertEquals(200, response.getStatus());
     }
 
     @Test
@@ -86,8 +86,8 @@ public class AuthenticationResourceTest extends RobeAdminTest {
     public void logout() throws Exception {
         TestRequest request = requestBuilder.endpoint("logout").header(tokenHeaderName, TOKEN).build();
         TestResponse response = client.post(request);
-        assertEquals(response.getStatus(), 200);
-        assertEquals(response.getCookie("auth-token"), "");
+        assertEquals(200, response.getStatus());
+        assertEquals("", response.getCookie("auth-token"));
     }
 
     @AfterClass
