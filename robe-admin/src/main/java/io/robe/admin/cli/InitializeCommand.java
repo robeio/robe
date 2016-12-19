@@ -237,15 +237,6 @@ public class InitializeCommand<T extends RobeConfiguration> extends EnvironmentC
         session.persist(userProfileManagement);
         session.persist(createPermission(true, userProfileManagement.getOid(), role));
 
-        Menu mailTemplate = new Menu();
-        mailTemplate.setModule("MailTemplate");
-        mailTemplate.setIndex(0);
-        mailTemplate.setText("Mail Şablon Yönetimi");
-        mailTemplate.setParentOid(manager.getOid());
-        mailTemplate.setPath("app/manager/mailtemplate/MailTemplate");
-        mailTemplate.setIcon("fa-envelope");
-        session.persist(mailTemplate);
-        session.persist(createPermission(true, mailTemplate.getOid(), role));
 
         Menu menuManagement = new Menu();
         menuManagement.setModule("Menu");
@@ -283,7 +274,7 @@ public class InitializeCommand<T extends RobeConfiguration> extends EnvironmentC
         quartzJob.setIndex(0);
         quartzJob.setText("İş Zamanlama Yönetimi");
         quartzJob.setParentOid(manager.getOid());
-        quartzJob.setPath("app/manager/quartz/QuartzJob");
+        quartzJob.setPath("app/manager/quartzjob/QuartzJob");
         quartzJob.setIcon("fa-bell");
         session.persist(quartzJob);
         session.persist(createPermission(true, quartzJob.getOid(), role));
