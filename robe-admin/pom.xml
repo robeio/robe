@@ -43,6 +43,10 @@
             <artifactId>robe-quartz</artifactId>
         </dependency>
         <dependency>
+            <groupId>io.robe</groupId>
+            <artifactId>robe-websocket</artifactId>
+        </dependency>
+        <dependency>
             <groupId>io.dropwizard</groupId>
             <artifactId>dropwizard-assets</artifactId>
         </dependency>

@@ -27,11 +27,15 @@ import io.robe.guice.GuiceBundle;
 import io.robe.hibernate.RobeHibernateBundle;
 import io.robe.mail.MailBundle;
 import io.robe.quartz.QuartzBundle;
+import org.eclipse.jetty.servlets.CrossOriginFilter;
 import org.glassfish.jersey.media.multipart.MultiPartFeature;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import javax.servlet.DispatcherType;
+import javax.servlet.FilterRegistration;
 import java.io.File;
+import java.util.EnumSet;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -149,11 +153,11 @@ public class RobeApplication<T extends RobeConfiguration> extends Application<T>
         environment.jersey().register(new SearchFactoryProvider.Binder());
         environment.jersey().register(MultiPartFeature.class);
 
-        environment.getApplicationContext().setAttribute(
-                MetricsServlet.METRICS_REGISTRY,
-                environment.metrics());
-        environment.getApplicationContext().addServlet(
-                new NonblockingServletHolder(new MetricsServlet()), "/metrics/*");
+//        environment.getApplicationContext().setAttribute(
+//                MetricsServlet.METRICS_REGISTRY,
+//                environment.metrics());
+//        environment.getApplicationContext().addServlet(
+//                new NonblockingServletHolder(new MetricsServlet()), "/metrics/*");
 
     }
 
