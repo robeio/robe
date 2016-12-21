@@ -31,26 +31,31 @@ public class TokenBasedAuthResponseFilter implements ContainerResponseFilter {
         this.tokenKey = configuration.getTokenKey();
         String domain = configuration.getDomain();
         String path = configuration.getPath();
-        if (path != null && !path.equals(""))
-            cookieSentence += ";path=" + path;
+        if (configuration.getMaxage() > 0l)
+            cookieSentence += "; Max-Age=" + configuration.getMaxage();//+ "; Expires={expireDate}";
         if (domain != null && !domain.equals(""))
-            cookieSentence += ";domain=" + domain + ";";
-        if (configuration.getMaxage() > 0l) {
-            cookieSentence += ";max-age=" + configuration.getMaxage();
-        }
+            cookieSentence += "; Domain=" + domain + ";";
+        if (path != null && !path.equals(""))
+            cookieSentence += "; Path=" + path;
         if (configuration.isSecure()) {
-            cookieSentence += "secure;";
+            cookieSentence += "; Secure;";
         }
+        cookieSentence += "; HttpOnly";
     }
 
     /**
      * Combines the token and cookie sentence
      *
-     * @param authToken final cookie
+     * @param token
      * @return
      */
-    public static String getTokenSentence(String authToken) {
-        return tokenKey + "=" + authToken + cookieSentence;
+    public static String getTokenSentence(BasicToken token) throws Exception {
+        if (token == null)
+            return tokenKey + "=" + cookieSentence;
+        String sentence = tokenKey + "=" + token.getTokenString() + cookieSentence;
+        //TODO: Learn how to calculate expire according to the browser time.
+//        sentence = sentence.replace("{expireDate}", token.getExpirationDate().toGMTString());
+        return sentence;
     }
 
     /**
@@ -70,14 +75,16 @@ public class TokenBasedAuthResponseFilter implements ContainerResponseFilter {
                 if (token.isExpired()) {
                     LOGGER.debug("ExpireDate : " + token.getExpirationDate().toString());
                     LOGGER.debug("Now: " + DateTime.now().toDate().toString());
-                    responseContext.getHeaders().putSingle("Set-Cookie", getTokenSentence(""));
+                    responseContext.getHeaders().putSingle("Set-Cookie", getTokenSentence(null));
                     responseContext.setStatusInfo(Response.Status.UNAUTHORIZED);
                     responseContext.setEntity("Token expired. Please login again.");
                     LOGGER.info("Token expired. Please login again.");
                 } else {
                     token.setExpiration(token.getMaxAge());
-                    if (!"authentication/logout".equals(requestContext.getUriInfo().getPath()))
-                        responseContext.getHeaders().putSingle("Set-Cookie", getTokenSentence(token.getTokenString()));
+                    if (!"authentication/logout".equals(requestContext.getUriInfo().getPath())) {
+                        String cookie = getTokenSentence(token);
+                        responseContext.getHeaders().putSingle("Set-Cookie", cookie);
+                    }
                 }
 
             } catch (Exception e) {

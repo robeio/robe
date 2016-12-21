@@ -86,14 +86,14 @@ public class AuthResource extends AbstractAuthResource<User> {
             BasicToken token = new BasicToken(user.get().getUserId(), user.get().getEmail(), DateTime.now(), attributes);
             token.setExpiration(token.getMaxAge());
             credentials.remove("password");
-            credentials.put("domain", TokenBasedAuthResponseFilter.getTokenSentence("dummy"));
+            credentials.put("domain", TokenBasedAuthResponseFilter.getTokenSentence(null));
 
             user.get().setLastLoginTime(DateTime.now().toDate());
             user.get().setFailCount(0);
 
             logAction(new ActionLog("LOGIN", null, user.get().toString(), true, request.getRemoteAddr()));
 
-            return Response.ok().header("Set-Cookie", TokenBasedAuthResponseFilter.getTokenSentence(token.getTokenString())).entity(credentials).build();
+            return Response.ok().header("Set-Cookie", TokenBasedAuthResponseFilter.getTokenSentence(token)).entity(credentials).build();
         } else {
             if (!user.get().isActive()) {
                 logAction(new ActionLog("LOGIN", "Blocked", user.get().toString(), false, request.getRemoteAddr()));
@@ -137,7 +137,7 @@ public class AuthResource extends AbstractAuthResource<User> {
             BasicToken.clearPermissionCache(credentials.getUsername());
             user.get().setLastLogoutTime(DateTime.now().toDate());
             logAction(new ActionLog("LOGOUT", null, user.get().toString(), true, request.getRemoteAddr()));
-            return Response.ok().header("Set-Cookie", TokenBasedAuthResponseFilter.getTokenSentence("")).build();
+            return Response.ok().header("Set-Cookie", TokenBasedAuthResponseFilter.getTokenSentence(null)).build();
         }
     }
 
