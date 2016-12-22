@@ -4,8 +4,9 @@
 ### A brand new robe for Dropwizard.
 
 [![Build Status](https://travis-ci.org/robeio/robe.svg?branch=DW1.0-migration)](https://travis-ci.org/robeio/robe)
-[![codecov.io](https://codecov.io/github/robeio/robe/coverage.svg?branch=DW1.0-migration)](https://codecov.io/gh/robeio/robe/branch/DW1.0-migration)
-![codecov.io](https://codecov.io/github/robeio/robe/branch.svg?branch=DW1.0-migration)
+[![codecov.io](https://codecov.io/github/robeio/robe/coverage.svg?branch=master)](https://codecov.io/gh/robeio/robe/branch/master)
+[![Bintray](https://img.shields.io/bintray/v/robeio/maven/robe.svg)](https://img.shields.io/bintray/v/robeio/maven/robe.svg)
+![codecov.io](https://codecov.io/github/robeio/robe/branch.svg?branch=master)
 
 
 ## Motivation
@@ -43,7 +44,12 @@ This module handles admin operations which are assigned to the administrators. T
 
 ---
 
-[Robe](http://www.robe.io), supported by [**Atlassian**](https://www.atlassian.com/), [**IntelliJ**](https://www.jetbrains.com/idea) and [**BrowserStack**](http://www.browserstack.com/).
+[Robe](http://www.robe.io), supported by 
+* [**Atlassian**](https://www.atlassian.com/), 
+* [**JetBrains**](https://www.jetbrains.com/) supports our open source project by sponsoring some [All Products Packs](https://www.jetbrains.com/products.html) within their [Free Open Source License](https://www.jetbrains.com/buy/opensource/) program.
 
-<img src="./docs/robe.png" alt="logo" width="200">
+![idea](docs/img/icon_IntelliJIDEA.png)
+![webstorm](docs/img/icon_WebStorm.png)
+* [**BrowserStack**](http://www.browserstack.com/)
+
 
