@@ -46,10 +46,10 @@ This module handles admin operations which are assigned to the administrators. T
 
 [Robe](http://www.robe.io), supported by 
 * [**Atlassian**](https://www.atlassian.com/), 
+* [**BrowserStack**](http://www.browserstack.com/)
 * [**JetBrains**](https://www.jetbrains.com/) supports our open source project by sponsoring some [All Products Packs](https://www.jetbrains.com/products.html) within their [Free Open Source License](https://www.jetbrains.com/buy/opensource/) program.
 
 ![idea](docs/img/icon_IntelliJIDEA.png)
 ![webstorm](docs/img/icon_WebStorm.png)
-* [**BrowserStack**](http://www.browserstack.com/)
 
 
