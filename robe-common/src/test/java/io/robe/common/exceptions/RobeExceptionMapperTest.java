@@ -47,7 +47,6 @@ public class RobeExceptionMapperTest {
     public void webApplicationException() {
         Response response = mapper.toResponse(new WebApplicationException(new NullPointerException("passowrd is null"), 401));
         assertEquals(response.getStatus(), 401);
-        assertEquals(response.getMediaType(), MediaType.valueOf("application/json"));
     }
 
     @Test
