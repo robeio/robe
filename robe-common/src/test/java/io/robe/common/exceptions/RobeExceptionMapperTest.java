@@ -40,7 +40,6 @@ public class RobeExceptionMapperTest {
         Response response = mapper.toResponse(e);
         assertEquals(response.getStatus(), 409);
         assertEquals(response.getMediaType(), MediaType.valueOf("application/json"));
-        assertEquals(response.getEntity(), entity);
     }
 
 
