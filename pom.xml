@@ -7,7 +7,7 @@
 
     <groupId>io.robe</groupId>
     <artifactId>robe-parent</artifactId>
-    <version>0.5.1.0-beta.1</version>
+    <version>0.5.1.0-beta.2</version>
 
     <packaging>pom</packaging>
     <name>Robe Project</name>
@@ -89,7 +89,7 @@
     </modules>
 
     <properties>
-        <project.version>0.5.0.0-1008</project.version>
+        <project.version>0.5.1.0-beta.2</project.version>
         <dropwizard.version>1.0.5</dropwizard.version>
         <mysql.version>5.1.38</mysql.version>
         <beanutils.version>1.9.0</beanutils.version>
