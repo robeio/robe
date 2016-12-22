@@ -49,12 +49,14 @@ public class RobeExceptionMapper implements ExceptionMapper<Exception> {
                     we.getResponse().getStatus() != Response.Status.FORBIDDEN.getStatusCode()) {
                 LOGGER.error("WebApplicationException", e);
             }
-            return Response.status(we.getResponse().getStatus()).type(MediaType.APPLICATION_JSON).build();
+            return we.getResponse();
         } else {
 
             if (e.getClass().getName().equals("org.hibernate.exception.ConstraintViolationException")) {
+                String id = System.nanoTime()+"";
+                LOGGER.error(id + "", e);
                 if (e.getCause() != null && e.getCause().getMessage() != null) {
-                    BasicPair error = new BasicPair("Unique Field Error", e.getCause().getMessage());
+                    BasicPair error = new BasicPair(id, e.getCause().getMessage().split("for")[0]);
                     return Response.status(409).entity(error).type(MediaType.APPLICATION_JSON).build();
                 }
             }

@@ -1,8 +1,12 @@
 package io.robe.common.dto;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 /**
  * Default DTO for basic name value pair. Will be used for simple data transfers.
  */
+@JsonIgnoreProperties(value = {"left", "right"})
 public class BasicPair extends Pair<String, String> {
 
     /**
@@ -25,6 +29,7 @@ public class BasicPair extends Pair<String, String> {
     /**
      * @return Current name
      */
+    @JsonProperty("name")
     public String getName() {
         return this.getLeft();
     }
@@ -32,6 +37,7 @@ public class BasicPair extends Pair<String, String> {
     /**
      * @return Current value
      */
+    @JsonProperty("value")
     public String getValue() {
         return this.getRight();
     }

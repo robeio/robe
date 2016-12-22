@@ -12,6 +12,7 @@ import org.slf4j.LoggerFactory;
 
 import javax.ws.rs.WebApplicationException;
 import javax.ws.rs.core.Cookie;
+import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import java.nio.charset.StandardCharsets;
 import java.util.List;
@@ -61,26 +62,35 @@ public class TokenFactory<T extends BasicToken> extends AbstractContainerRequest
         this.required = required;
     }
 
+    private WebApplicationException unauthorized() {
+        WebApplicationException ex = new WebApplicationException(
+                Response.status(Response.Status.UNAUTHORIZED).type(MediaType.APPLICATION_JSON).build());
+        try {
+            ex.getResponse().getHeaders().putSingle("Set-Cookie", TokenBasedAuthResponseFilter.getTokenSentence(null));
+            return ex;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return new WebApplicationException(e);
+        }
+    }
+
     @Override
     public Credentials provide() {
         Cookie tokenCookie = getContainerRequest().getCookies().get(tokenKey);
-
         if (isRequired()) {
-
-
             if (tokenCookie == null) {
-                throw new WebApplicationException(Response.Status.UNAUTHORIZED);
+                throw unauthorized();
             } else if (nullOrEmpty(tokenCookie.getValue())) {
-                throw new WebApplicationException(Response.Status.UNAUTHORIZED);
+                throw unauthorized();
             } else {
                 try {
                     if (!isRealOwnerOfToken(tokenCookie)) {
-                        throw new WebApplicationException(Response.Status.UNAUTHORIZED);
+                        throw unauthorized();
                     }
                     Optional<BasicToken> result = authenticator.authenticate(tokenCookie.getValue());
 
                     if (!result.isPresent()) {
-                        throw new WebApplicationException(Response.Status.UNAUTHORIZED);
+                        throw unauthorized();
                     } else if (!isAuthorized(result.get(), getContainerRequest().getUriInfo().getMatchedTemplates(), getContainerRequest().getMethod())) {
                         throw new WebApplicationException(Response.Status.FORBIDDEN);
                     } else {
@@ -88,10 +98,10 @@ public class TokenFactory<T extends BasicToken> extends AbstractContainerRequest
                     }
                 } catch (io.dropwizard.auth.AuthenticationException e) {
                     LOGGER.error("Authentication Exception  by Dropwizard", e);
-                    throw new WebApplicationException(Response.Status.PRECONDITION_FAILED);
+                    throw unauthorized();
                 } catch (Exception e) {
                     LOGGER.error("Authentication Exception  (Is Real ownwer of token) ", e);
-                    throw new WebApplicationException(Response.Status.PRECONDITION_FAILED);
+                    throw unauthorized();
                 }
             }
         } else {

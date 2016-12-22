@@ -41,6 +41,7 @@ public class TokenBasedAuthResponseFilter implements ContainerResponseFilter {
             cookieSentence += "; Secure;";
         }
         cookieSentence += "; HttpOnly";
+
     }
 
     /**
@@ -94,6 +95,8 @@ public class TokenBasedAuthResponseFilter implements ContainerResponseFilter {
             }
         }
     }
+
+
 
     /**
      * Extracts the accesstoken from cookies
