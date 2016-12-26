@@ -12,10 +12,10 @@ import javax.ws.rs.core.Response;
 import java.io.IOException;
 import java.net.URI;
 
-public class HSTSFilter implements ContainerRequestFilter, ContainerResponseFilter {
+public class SecurityHeadersFilter implements ContainerRequestFilter, ContainerResponseFilter {
     private final TokenBasedAuthConfiguration config;
 
-    public HSTSFilter(TokenBasedAuthConfiguration config) {
+    public SecurityHeadersFilter(TokenBasedAuthConfiguration config) {
         this.config = config;
     }
 
@@ -36,5 +36,8 @@ public class HSTSFilter implements ContainerRequestFilter, ContainerResponseFilt
             MultivaluedMap<String, Object> headers = response.getHeaders();
             headers.putSingle("Strict-Transport-Security", "max-age=31536000; includeSubDomains");
         }
+
+        response.getHeaders().putSingle("X-Frame-Options", "deny");
+        response.getHeaders().putSingle("X-XSS-Protection", "1; mode=block");
     }
 }

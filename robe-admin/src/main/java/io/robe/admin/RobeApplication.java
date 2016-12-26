@@ -1,7 +1,9 @@
 package io.robe.admin;
 
+import com.codahale.metrics.MetricRegistry;
 import com.codahale.metrics.servlets.MetricsServlet;
 import com.google.common.collect.ImmutableList;
+import com.google.inject.Binder;
 import com.google.inject.Module;
 import io.dropwizard.Application;
 import io.dropwizard.Configuration;
@@ -104,6 +106,7 @@ public class RobeApplication<T extends RobeConfiguration> extends Application<T>
         bootstrap.addBundle(new MailBundle<T>());
         bootstrap.addBundle(new AdvancedAssetBundle<T>());
 
+
     }
 
     public T getConfiguration() {
@@ -152,12 +155,6 @@ public class RobeApplication<T extends RobeConfiguration> extends Application<T>
 
         environment.jersey().register(new SearchFactoryProvider.Binder());
         environment.jersey().register(MultiPartFeature.class);
-
-//        environment.getApplicationContext().setAttribute(
-//                MetricsServlet.METRICS_REGISTRY,
-//                environment.metrics());
-//        environment.getApplicationContext().addServlet(
-//                new NonblockingServletHolder(new MetricsServlet()), "/metrics/*");
 
     }
 

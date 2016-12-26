@@ -5,7 +5,7 @@ import io.dropwizard.ConfiguredBundle;
 import io.dropwizard.setup.Bootstrap;
 import io.dropwizard.setup.Environment;
 import io.robe.auth.Credentials;
-import io.robe.auth.HSTSFilter;
+import io.robe.auth.SecurityHeadersFilter;
 import io.robe.auth.token.configuration.HasTokenBasedAuthConfiguration;
 import io.robe.auth.token.configuration.TokenBasedAuthConfiguration;
 import io.robe.auth.token.jersey.TokenBasedAuthResponseFilter;
@@ -30,7 +30,7 @@ public class TokenAuthBundle<T extends Configuration & HasTokenBasedAuthConfigur
         environment.jersey().register(TokenFeature.class);
         BasicToken.configure(configuration.getAuth());
 
-        environment.jersey().register(new HSTSFilter(configuration.getAuth()));
+        environment.jersey().register(new SecurityHeadersFilter(configuration.getAuth()));
     }
 
     /**
