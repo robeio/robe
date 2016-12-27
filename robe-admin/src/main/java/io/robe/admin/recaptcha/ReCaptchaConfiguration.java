@@ -1,8 +1,6 @@
 package io.robe.admin.recaptcha;
 
-/**
- * Created by hasanmumin on 23/12/2016.
- */
+
 public class ReCaptchaConfiguration {
     private String verifyUrl;
     private String secret;

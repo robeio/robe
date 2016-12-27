@@ -77,3 +77,7 @@ assets:
    assetsName:   io.robe.admin.ui
    cached:       false
    type: http # use "classpath" or "filesystem" or "http"
+
+recaptcha:
+ verifyUrl: https://www.google.com/recaptcha/api/siteverify
+ secret: 6LckQA8TAAAAAAuwC602KfqYuxOCSiXBqFS3m6OO

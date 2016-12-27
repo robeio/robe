@@ -1,6 +1,7 @@
 package io.robe.admin.recaptcha;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.google.common.base.Preconditions;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -15,26 +16,46 @@ import java.util.Map;
 /**
  * Created by hasanmumin on 23/12/2016.
  */
-public class ReCaptchaValidationUtil {
+public class ReCaptchaValidation {
+
     private static final ObjectMapper OBJECT_MAPPER = new ObjectMapper();
+    private static final String CHARSET_NAME = "UTF-8";
+    private static ReCaptchaValidation instance = null;
+    private String verifyUrl;
+    private String secret;
 
-    public static ReCaptchaResponseBody validate(String verify) throws IOException {
 
-        URL url = new URL("https://www.google.com/recaptcha/api/siteverify");
+    public ReCaptchaValidation(ReCaptchaConfiguration configuration) {
+        Preconditions.checkNotNull(configuration.getVerifyUrl(), "re captcha verifyUrl cannot be null or empty. Check your yml file");
+        Preconditions.checkNotNull(configuration.getSecret(), "re captcha secret cannot be null or empty. Check your yml file");
+
+        this.verifyUrl = configuration.getVerifyUrl();
+        this.secret = configuration.getSecret();
+        instance = this;
+    }
+
+    public static ReCaptchaValidation getInstance() {
+        Preconditions.checkNotNull(instance, "re captcha configuration cannot be null or empty. Check your yml file");
+        return instance;
+    }
+
+    public ReCaptchaResponseBody validate(String verify) throws IOException {
+
+        URL url = new URL(verifyUrl);
 
         Map<String, Object> params = new HashMap<>();
-        params.put("secret", "6LckQA8TAAAAAAuwC602KfqYuxOCSiXBqFS3m6OO");
+        params.put("secret", secret);
         params.put("response", verify);
 
         StringBuilder postData = new StringBuilder();
         for (Map.Entry<String, Object> param : params.entrySet()) {
             if (postData.length() != 0) postData.append('&');
-            postData.append(URLEncoder.encode(param.getKey(), "UTF-8"));
+            postData.append(URLEncoder.encode(param.getKey(), CHARSET_NAME));
             postData.append('=');
-            postData.append(URLEncoder.encode(String.valueOf(param.getValue()), "UTF-8"));
+            postData.append(URLEncoder.encode(String.valueOf(param.getValue()), CHARSET_NAME));
         }
 
-        byte[] postDataBytes = postData.toString().getBytes("UTF-8");
+        byte[] postDataBytes = postData.toString().getBytes(CHARSET_NAME);
 
         HttpURLConnection conn = (HttpURLConnection) url.openConnection();
         conn.setRequestMethod("POST");
@@ -43,7 +64,7 @@ public class ReCaptchaValidationUtil {
         conn.setDoOutput(true);
         conn.getOutputStream().write(postDataBytes);
 
-        Reader in = new BufferedReader(new InputStreamReader(conn.getInputStream(), "UTF-8"));
+        Reader in = new BufferedReader(new InputStreamReader(conn.getInputStream(), CHARSET_NAME));
 
         StringBuilder responseString = new StringBuilder();
         for (int c; (c = in.read()) >= 0; )

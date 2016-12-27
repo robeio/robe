@@ -1,22 +1,14 @@
 package io.robe.admin;
 
-import com.codahale.metrics.MetricRegistry;
-import com.codahale.metrics.servlets.MetricsServlet;
-import com.google.common.collect.ImmutableList;
-import com.google.inject.Binder;
 import com.google.inject.Module;
 import io.dropwizard.Application;
-import io.dropwizard.Configuration;
 import io.dropwizard.hibernate.UnitOfWork;
-import io.dropwizard.jetty.NonblockingServletHolder;
 import io.dropwizard.setup.Bootstrap;
 import io.dropwizard.setup.Environment;
-import io.dropwizard.views.ViewBundle;
-import io.dropwizard.views.ViewRenderer;
-import io.dropwizard.views.freemarker.FreemarkerViewRenderer;
 import io.robe.admin.cli.InitializeCommand;
 import io.robe.admin.guice.module.HibernateModule;
 import io.robe.admin.hibernate.dao.*;
+import io.robe.admin.recaptcha.ReCaptchaValidation;
 import io.robe.assets.AdvancedAssetBundle;
 import io.robe.auth.token.TokenAuthBundle;
 import io.robe.auth.token.TokenAuthenticator;
@@ -29,15 +21,11 @@ import io.robe.guice.GuiceBundle;
 import io.robe.hibernate.RobeHibernateBundle;
 import io.robe.mail.MailBundle;
 import io.robe.quartz.QuartzBundle;
-import org.eclipse.jetty.servlets.CrossOriginFilter;
 import org.glassfish.jersey.media.multipart.MultiPartFeature;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import javax.servlet.DispatcherType;
-import javax.servlet.FilterRegistration;
 import java.io.File;
-import java.util.EnumSet;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -155,6 +143,10 @@ public class RobeApplication<T extends RobeConfiguration> extends Application<T>
 
         environment.jersey().register(new SearchFactoryProvider.Binder());
         environment.jersey().register(MultiPartFeature.class);
+
+        if (configuration.getRecaptcha() != null) {
+            new ReCaptchaValidation(configuration.getRecaptcha());
+        }
 
     }
 

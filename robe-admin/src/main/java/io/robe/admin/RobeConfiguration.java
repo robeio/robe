@@ -2,6 +2,7 @@ package io.robe.admin;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import io.dropwizard.Configuration;
+import io.robe.admin.recaptcha.ReCaptchaConfiguration;
 import io.robe.assets.AssetConfiguration;
 import io.robe.assets.HasAssetConfiguration;
 import io.robe.auth.token.configuration.HasTokenBasedAuthConfiguration;
@@ -45,7 +46,6 @@ public class RobeConfiguration extends Configuration implements
     @JsonProperty
     private GuiceConfiguration guice;
 
-
     @Valid
     @JsonProperty
     private TokenBasedAuthConfiguration auth;
@@ -53,6 +53,11 @@ public class RobeConfiguration extends Configuration implements
     @Valid
     @JsonProperty
     private List<AssetConfiguration> assets;
+
+    @Valid
+    @JsonProperty
+    private ReCaptchaConfiguration recaptcha;
+
 
     public HibernateConfiguration getHibernate() {
         return hibernate;
@@ -84,4 +89,7 @@ public class RobeConfiguration extends Configuration implements
         return assets;
     }
 
+    public ReCaptchaConfiguration getRecaptcha() {
+        return recaptcha;
+    }
 }
