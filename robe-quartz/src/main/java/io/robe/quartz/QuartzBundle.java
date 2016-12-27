@@ -4,11 +4,12 @@ import io.dropwizard.Configuration;
 import io.dropwizard.ConfiguredBundle;
 import io.dropwizard.setup.Bootstrap;
 import io.dropwizard.setup.Environment;
-import io.robe.quartz.common.JobInfo;
-import io.robe.quartz.common.JobProvider;
-import io.robe.quartz.common.TriggerInfo;
+import io.robe.quartz.info.JobInfo;
+import io.robe.quartz.info.JobInfoProvider;
+import io.robe.quartz.info.TriggerInfo;
 import io.robe.quartz.configuration.HasQuartzConfiguration;
 import io.robe.quartz.configuration.QuartzConfiguration;
+import io.robe.quartz.info.annotation.AnnotationJobInfoProvider;
 import org.quartz.*;
 import org.quartz.impl.StdSchedulerFactory;
 import org.reflections.Reflections;
@@ -16,22 +17,23 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.util.*;
+import java.util.concurrent.ConcurrentHashMap;
 
 /**
  * Configures  Quartz.
- * Collect {@link io.robe.quartz.common.JobProvider} classes
+ * Collect {@link JobInfoProvider} classes
  * Initializes scheduler
- * Collects all subtypes of {@link org.quartz.Job} annotated with {@link io.robe.quartz.job.schedule.QJob} including {@link @QTrigger}'s
+ * Collects all subtypes of {@link org.quartz.Job} annotated with {@link RobeJob} including {@link @RobeTrigger}'s
  * * Collects additional triggers from providers
  * * Registers them all for future control.
  * Holds application start and end triggered jobs for managed access.
  * Provides Job & Trigger Registery
  */
-public class QuartzBundle<T extends Configuration & HasQuartzConfiguration > implements ConfiguredBundle<T> {
+public class QuartzBundle<T extends Configuration & HasQuartzConfiguration> implements ConfiguredBundle<T> {
     private static final Logger LOGGER = LoggerFactory.getLogger(QuartzBundle.class);
-    private List<JobProvider> providers = null;
     private Set<JobDetail> onStartJobs = null;
     private Set<JobDetail> onStopJobs = null;
+    public static final ConcurrentHashMap<String, JobInfo> JOBS = new ConcurrentHashMap<>();
 
 
     public QuartzBundle() {
@@ -40,9 +42,9 @@ public class QuartzBundle<T extends Configuration & HasQuartzConfiguration > imp
 
     /**
      * Initializes the environment. Forwards the configuration to Quartz.
-     * Collect {@link io.robe.quartz.common.JobProvider} classes
+     * Collect {@link JobInfoProvider} classes
      * Initializes scheduler
-     * Collects all subtypes of {@link org.quartz.Job} annotated with {@link io.robe.quartz.job.schedule.QJob} including {@link @QTrigger}'s
+     * Collects all subtypes of {@link org.quartz.Job} annotated with {@link RobeJob} including {@link @RobeTrigger}'s
      * * Collects additional triggers from providers
      * * Registers them all for future control.
      *
@@ -55,11 +57,10 @@ public class QuartzBundle<T extends Configuration & HasQuartzConfiguration > imp
         QuartzConfiguration qConf = configuration.getQuartz();
         try {
 
-            initializeScheduler(extractProperties(qConf));
-            collectProviders(qConf.getProviders());
+            initializeScheduler(qConf.getProperties());
             collectAndScheduleJobs(qConf.getScanPackages());
 
-            environment.lifecycle().manage(new ManagedQuartz(getOnStartJobs(),getOnStopJobs()));
+            environment.lifecycle().manage(new ManagedQuartz(getOnStartJobs(), getOnStopJobs()));
 
         } catch (SchedulerException e) {
             LOGGER.error("SchedulerException:", e);
@@ -67,29 +68,8 @@ public class QuartzBundle<T extends Configuration & HasQuartzConfiguration > imp
     }
 
     /**
-     * Just sets necessary properties for quartz.
-     *
-     * @param quartzConfiguration
-     * @return
-     */
-    private Properties extractProperties(QuartzConfiguration quartzConfiguration) {
-        Properties properties = new Properties();
-        properties.setProperty("org.quartz.scheduler.instanceName", quartzConfiguration.getInstanceName());
-        properties.setProperty("org.quartz.threadPool.threadCount", String.valueOf(quartzConfiguration.getThreadCount()));
-        properties.setProperty("org.quartz.threadPool.threadPriority", String.valueOf(quartzConfiguration.getThreadPriority()));
-        properties.setProperty("org.quartz.threadPool.class", String.valueOf(quartzConfiguration.getThreadPoolClass()));
-        properties.setProperty("org.quartz.scheduler.skipUpdateCheck", quartzConfiguration.getSkipUpdateCheck());
-        //Set jobstore properties.
-        properties.setProperty("org.quartz.jobStore.class", quartzConfiguration.getJobStore().getClassName());
-        //Forward jobstore properties directly
-        if (quartzConfiguration.getJobStore().getProperties() != null) {
-            properties.putAll(quartzConfiguration.getJobStore().getProperties());
-        }
-        return properties;
-    }
-
-    /**
      * Initialize scheduler and start JobManager
+     *
      * @param properties
      * @throws SchedulerException
      */
@@ -112,63 +92,54 @@ public class QuartzBundle<T extends Configuration & HasQuartzConfiguration > imp
             quartzJobs = reflections.getSubTypesOf(Job.class);
 
             for (Class<? extends Job> clazz : quartzJobs) {
-                //Collect all provided triggers
+                RobeJob infoAnn = clazz.getDeclaredAnnotation(RobeJob.class);
+                if (infoAnn == null)
+                    continue;
+
+                JobInfoProvider infoProvider;
+                try {
+                    infoProvider = infoAnn.provider().newInstance();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                    continue;
+                }
                 Set<Trigger> triggers = new HashSet<>();
 
-                for (JobProvider provider : providers) {
-                    JobInfo jInfo = provider.getJob(clazz);
-                    if (jInfo == null)
-                        continue;
+                JobInfo info = infoProvider.getJob(clazz);
+                if (info == null || JOBS.containsKey(info.getJobClass().getName()))
+                    continue;
 
-                    LOGGER.info("\nJob " + jInfo.getClass().getName() + "\n\tName: " + jInfo.getName() + "\n\tDesc: " + jInfo.getDescription());
 
-                    JobDetail jobDetail = JobProvider.convert2JobDetail(jInfo);
+                JobDetail detail = JobInfoProvider.convert2JobDetail(info);
 
-                    //Collect all triggers
-                    for (TriggerInfo tInfo : jInfo.getTriggers()) {
-
-                        LOGGER.info("Trigger " + clazz.getName() + "\n\tName: " + tInfo.getName() + "\n\tType: " + tInfo.getType().name());
-
-                        if (tInfo.getType().equals(TriggerInfo.Type.ON_APP_START)) {
-                            onStartJobs.add(jobDetail);
-                        } else if (tInfo.getType().equals(TriggerInfo.Type.ON_APP_STOP)) {
-                            onStopJobs.add(jobDetail);
-                        } else {
-                            triggers.add(JobProvider.convert2Trigger(tInfo));
-                        }
+                StringBuilder logBuilder = new StringBuilder();
+                //Collect all triggers
+                for (TriggerInfo tInfo : info.getTriggers()) {
+                    logBuilder.append("\n\t\tTrigger: ")
+                            .append(clazz.getName())
+                            .append("\tName: ")
+                            .append(tInfo.getName())
+                            .append("\tType:")
+                            .append(tInfo.getType().name());
+                    switch (tInfo.getType()) {
+                        case ON_APP_START:
+                            onStartJobs.add(detail);
+                            break;
+                        case ON_APP_STOP:
+                            onStopJobs.add(detail);
+                            break;
+                        default:
+                            triggers.add(JobInfoProvider.convert2Trigger(tInfo));
                     }
-
-                    JobManager.getInstance().scheduleJob(jobDetail, triggers, true);
-
                 }
-
-                //TODO: Register Triggers for future access.
-
-
-            }
-        }
-    }
-
-    /**
-     * Collects all custom providers at scan packages.
-     * Creates instances and stores for usage.
-     *
-     * @param packages
-     */
-    private void collectProviders(String[] packages) {
-        providers = new LinkedList<>();
-        for (String pkg : packages) {
-            LOGGER.info("Scanning Provider package : " + pkg);
-            Reflections reflections = new Reflections(pkg);
-            Set<Class<? extends JobProvider>> classses = reflections.getSubTypesOf(JobProvider.class);
-            for (Class<? extends JobProvider> clazz : classses) {
-                try {
-                    JobProvider provider = clazz.newInstance();
-                    LOGGER.info("Provider found : " + clazz.getName());
-                    providers.add(provider);
-                } catch (Exception e) {
-                    LOGGER.error(clazz.getName(), e);
-                }
+                LOGGER.info("\n\tClass {} \n\tName: {} \n\tDesc: {} \n\t Triggers: {}",
+                        info.getJobClass().getName(),
+                        info.getName(),
+                        info.getDescription(),
+                        logBuilder.toString()
+                );
+                JobManager.getInstance().scheduleJob(detail, triggers, true);
+                JOBS.put(info.getJobClass().getName(), info);
             }
         }
     }

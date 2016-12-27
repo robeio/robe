@@ -1,8 +1,8 @@
-package io.robe.quartz.annotation;
+package io.robe.quartz.info.annotation;
 
-import io.robe.quartz.common.JobInfo;
-import io.robe.quartz.common.JobProvider;
-import io.robe.quartz.job.schedule.QJob;
+import io.robe.quartz.info.JobInfo;
+import io.robe.quartz.info.JobInfoProvider;
+import io.robe.quartz.RobeJob;
 import org.quartz.Job;
 
 import static com.google.common.base.Preconditions.checkNotNull;
@@ -10,11 +10,11 @@ import static com.google.common.base.Preconditions.checkNotNull;
 /**
  * A Util class that helps converting annotations to quartz objects.
  */
-public class AnnotationJobProvider extends JobProvider {
+public class AnnotationJobInfoProvider extends JobInfoProvider {
 
     @Override
     public JobInfo getJob(Class<? extends Job> clazz) {
-        QJob jAnn = clazz.getAnnotation(QJob.class);
+        RobeJob jAnn = clazz.getAnnotation(RobeJob.class);
         checkNotNull(jAnn);
         return new AnnotationJobInfo(jAnn, clazz);
     }

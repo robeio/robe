@@ -1,6 +1,6 @@
 package io.robe.admin.job;
 
-import io.robe.quartz.job.schedule.QJob;
+import io.robe.quartz.RobeJob;
 import org.quartz.Job;
 import org.quartz.JobExecutionContext;
 import org.quartz.JobExecutionException;
@@ -10,7 +10,7 @@ import org.slf4j.LoggerFactory;
 /**
  * Created by hasanmumin on 12/10/2016.
  */
-@QJob(name = "SampleJob", description = "Sample Quartz Job for a demonstration.")
+@RobeJob(name = "SampleJob", description = "Sample Quartz Job for a demonstration.")
 public class SampleJob implements Job {
     private static final Logger LOGGER = LoggerFactory.getLogger(SampleJob.class);
 

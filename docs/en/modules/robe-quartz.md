@@ -28,7 +28,7 @@ quartz:
   threadPoolClass: org.quartz.simpl.SimpleThreadPool
   threadCount: 10
   threadPriority: 8
-  providers: [io.robe.quartz.annotation,io.robe.admin.quartz]
+  providers: [io.robe.quartz.info.annotation,io.robe.admin.quartz]
   scanPackages: [io.robe.admin.timely]
   skipUpdateCheck: false
   jobStore:
@@ -87,7 +87,7 @@ Configuration includes two group of fields.
 	  threadPoolClass: org.quartz.simpl.SimpleThreadPool
 	  threadCount: 10
 	  threadPriority: 8
-	  providers: [io.robe.quartz.annotation,io.robe.admin.quartz]
+	  providers: [io.robe.quartz.info.annotation,io.robe.admin.quartz]
 	  scanPackages: [io.robe.admin.timely]
 	  skipUpdateCheck: false
 	  jobStore:

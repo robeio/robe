@@ -1,7 +1,7 @@
 package io.robe.admin.quartz.hibernate;
 
 import io.robe.hibernate.entity.BaseEntity;
-import io.robe.quartz.common.TriggerInfo;
+import io.robe.quartz.info.TriggerInfo;
 
 import javax.persistence.*;
 

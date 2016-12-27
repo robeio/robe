@@ -2,9 +2,9 @@ package io.robe.admin.quartz.hibernate;
 
 import io.robe.admin.dto.JobEntityDTO;
 import io.robe.hibernate.RobeHibernateBundle;
-import io.robe.quartz.common.JobInfo;
-import io.robe.quartz.common.JobProvider;
-import io.robe.quartz.common.TriggerInfo;
+import io.robe.quartz.info.JobInfo;
+import io.robe.quartz.info.JobInfoProvider;
+import io.robe.quartz.info.TriggerInfo;
 import org.hibernate.Session;
 import org.hibernate.criterion.Restrictions;
 import org.quartz.Job;
@@ -12,7 +12,7 @@ import org.quartz.Job;
 import java.util.Iterator;
 import java.util.List;
 
-public class HibernateJobProvider extends JobProvider {
+public class HibernateJobInfoProvider extends JobInfoProvider {
 
     @Override
     public JobInfo getJob(Class<? extends Job> clazz) {

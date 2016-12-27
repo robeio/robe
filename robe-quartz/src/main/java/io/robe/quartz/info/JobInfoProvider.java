@@ -1,4 +1,4 @@
-package io.robe.quartz.common;
+package io.robe.quartz.info;
 
 import org.quartz.*;
 
@@ -9,7 +9,7 @@ import java.util.List;
 import static org.quartz.JobBuilder.newJob;
 import static org.quartz.TriggerBuilder.newTrigger;
 
-public abstract class JobProvider {
+public abstract class JobInfoProvider {
 
     public abstract JobInfo getJob(Class<? extends Job> clazz);
 

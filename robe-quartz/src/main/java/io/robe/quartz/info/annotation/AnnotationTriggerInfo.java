@@ -1,7 +1,7 @@
-package io.robe.quartz.annotation;
+package io.robe.quartz.info.annotation;
 
-import io.robe.quartz.common.TriggerInfo;
-import io.robe.quartz.job.schedule.QTrigger;
+import io.robe.quartz.info.TriggerInfo;
+import io.robe.quartz.RobeTrigger;
 
 class AnnotationTriggerInfo implements TriggerInfo {
     private String name;
@@ -13,7 +13,7 @@ class AnnotationTriggerInfo implements TriggerInfo {
     private String cron;
     private Type type;
 
-    public AnnotationTriggerInfo(QTrigger ann) {
+    public AnnotationTriggerInfo(RobeTrigger ann) {
         name = ann.name();
         group = ann.group();
         startTime = ann.startTime();

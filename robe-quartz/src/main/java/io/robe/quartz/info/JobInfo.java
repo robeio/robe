@@ -1,4 +1,4 @@
-package io.robe.quartz.common;
+package io.robe.quartz.info;
 
 import org.quartz.Job;
 

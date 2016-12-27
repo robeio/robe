@@ -1,10 +1,10 @@
-package io.robe.quartz.annotation;
+package io.robe.quartz.info.annotation;
 
 
-import io.robe.quartz.common.JobInfo;
-import io.robe.quartz.common.TriggerInfo;
-import io.robe.quartz.job.schedule.QJob;
-import io.robe.quartz.job.schedule.QTrigger;
+import io.robe.quartz.info.JobInfo;
+import io.robe.quartz.info.TriggerInfo;
+import io.robe.quartz.RobeJob;
+import io.robe.quartz.RobeTrigger;
 import org.quartz.Job;
 
 import java.util.ArrayList;
@@ -16,11 +16,11 @@ public class AnnotationJobInfo implements JobInfo {
     private List<TriggerInfo> triggers;
     private Class<? extends Job> jobClass;
 
-    public AnnotationJobInfo(QJob ann, Class<? extends Job> jobClass) {
+    public AnnotationJobInfo(RobeJob ann, Class<? extends Job> jobClass) {
         name = ann.name();
         description = ann.description();
         triggers = new ArrayList<>(ann.triggers().length);
-        for (QTrigger tAnn : ann.triggers()) {
+        for (RobeTrigger tAnn : ann.triggers()) {
             triggers.add(new AnnotationTriggerInfo(tAnn));
         }
         this.jobClass = jobClass;

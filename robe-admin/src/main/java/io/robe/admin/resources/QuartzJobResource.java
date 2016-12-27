@@ -12,6 +12,8 @@ import io.robe.common.service.RobeService;
 import io.robe.common.service.search.SearchParam;
 import io.robe.common.service.search.model.SearchModel;
 import io.robe.common.utils.reflection.Fields;
+import io.robe.quartz.QuartzBundle;
+import io.robe.quartz.info.JobInfo;
 import org.hibernate.FlushMode;
 
 import javax.inject.Inject;
@@ -19,6 +21,7 @@ import javax.validation.Valid;
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
+import java.util.Collection;
 import java.util.List;
 
 import static org.hibernate.CacheMode.GET;
@@ -60,8 +63,9 @@ public class QuartzJobResource {
     @RobeService(group = "JobEntity", description = "Returns all JobEntity as a collection.")
     @GET
     @UnitOfWork(readOnly = true, cacheMode = GET, flushMode = FlushMode.MANUAL)
-    public List<JobEntity> getAll(@RobeAuth Credentials credentials, @SearchParam SearchModel search) {
-        return quartzJobDao.findAllStrict(search);
+    public Collection<JobInfo> getAll(@RobeAuth Credentials credentials, @SearchParam SearchModel search) {
+
+        return QuartzBundle.JOBS.values();
     }
 
     /**

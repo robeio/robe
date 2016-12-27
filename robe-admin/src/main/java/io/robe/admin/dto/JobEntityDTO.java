@@ -1,8 +1,8 @@
 package io.robe.admin.dto;
 
 import io.robe.admin.quartz.hibernate.JobEntity;
-import io.robe.quartz.common.JobInfo;
-import io.robe.quartz.common.TriggerInfo;
+import io.robe.quartz.info.JobInfo;
+import io.robe.quartz.info.TriggerInfo;
 
 import javax.persistence.Transient;
 import java.util.ArrayList;

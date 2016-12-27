@@ -3,7 +3,7 @@ package io.robe.admin.dto;
 import io.robe.admin.job.SampleJob;
 import io.robe.admin.quartz.hibernate.JobEntity;
 import io.robe.admin.quartz.hibernate.TriggerEntity;
-import io.robe.quartz.common.TriggerInfo;
+import io.robe.quartz.info.TriggerInfo;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.FixMethodOrder;

@@ -30,7 +30,7 @@ import java.util.Set;
 public class InitializeCommand<T extends RobeConfiguration> extends EnvironmentCommand<T> {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(InitializeCommand.class);
-    protected static String IO_ROBE_ADMIN = "io/robe/admin";
+    protected static String IO_ROBE_ADMIN = "RobeAdmin";
     protected static String ADMIN = "Admin";
     protected static String EMAIL = "admin@robe.io";
     protected RobeHibernateBundle hibernateBundle;
