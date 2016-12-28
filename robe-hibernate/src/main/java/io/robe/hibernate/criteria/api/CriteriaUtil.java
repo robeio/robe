@@ -3,16 +3,16 @@ package io.robe.hibernate.criteria.api;
 
 import io.robe.common.service.search.SearchFrom;
 import io.robe.common.service.search.SearchIgnore;
-import io.robe.common.service.search.model.SearchModel;
-import io.robe.hibernate.criteria.api.criterion.*;
+import io.robe.hibernate.criteria.api.criterion.JoinCriteria;
+import io.robe.hibernate.criteria.api.criterion.Operators;
+import io.robe.hibernate.criteria.api.criterion.RootCriteria;
+import io.robe.hibernate.criteria.api.criterion.SearchCriteria;
 import io.robe.hibernate.criteria.api.query.SearchQuery;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import javax.persistence.Transient;
 import java.lang.reflect.Field;
-import java.util.LinkedList;
-import java.util.List;
 import java.util.Map;
 
 /**
@@ -23,19 +23,18 @@ public class CriteriaUtil {
     private static final Logger LOGGER = LoggerFactory.getLogger(SearchQuery.class);
 
     /**
-     *
      * @param criteria
      * @param qValue
      */
     public static void configureQCriterions(RootCriteria criteria, String qValue) {
         Map<String, Field> parentFieldMap = SearchQuery.CacheFields.getCachedFields(criteria.getEntityClass());
-        for(Map.Entry<String, Field>  entry: parentFieldMap.entrySet()) {
-            Field field =  entry.getValue();
+        for (Map.Entry<String, Field> entry : parentFieldMap.entrySet()) {
+            Field field = entry.getValue();
 
             // if field is not entity member or not searchable than pass
-            if(
+            if (
                     !field.getType().equals(String.class) ||
-                    field.getAnnotation(Transient.class) != null ||
+                            field.getAnnotation(Transient.class) != null ||
                             field.getAnnotation(SearchIgnore.class) != null ||
                             field.isSynthetic()
                     ) continue;
@@ -43,7 +42,7 @@ public class CriteriaUtil {
 
             SearchFrom from = field.getAnnotation(SearchFrom.class);
 
-            if(from == null) { // Searchable field found
+            if (from == null) { // Searchable field found
                 criteria.addOrFilter(field.getName(), Operators.CONTAINS.getOp(), qValue);
             } else { // Searchable target entity found
                 JoinCriteria joinCriteria = createOrGetJoinCriteriaByField(
@@ -51,8 +50,8 @@ public class CriteriaUtil {
                         field,
                         field.getName()
                 );
-                if(joinCriteria != null) {
-                    for(String select: from.select()) {
+                if (joinCriteria != null) {
+                    for (String select : from.select()) {
                         joinCriteria.addOrFilter(select, Operators.CONTAINS.getOp(), qValue);
                     }
                 }
@@ -61,20 +60,19 @@ public class CriteriaUtil {
     }
 
     /**
-     *
      * @param rootCriteria
      * @param filters
      */
     public static void configureFilters(RootCriteria rootCriteria, String[][] filters) {
         Map<String, Field> parentFieldMap = SearchQuery.CacheFields.getCachedFields(rootCriteria.getEntityClass());
-        for(String[] filter: filters) {
+        for (String[] filter : filters) {
             String[] names = filter[0].split("\\.");
             String name = names[0];
             String operator = filter[1];
             String value = filter.length > 2 ? filter[2] : null;
             Field field = parentFieldMap.get(name);
 
-            if(field == null) {
+            if (field == null) {
                 LOGGER.error(name + " field not found in " + rootCriteria.getEntityClass().getName());
                 continue;
             }
@@ -90,7 +88,7 @@ public class CriteriaUtil {
                             field,
                             name
                     );
-                    if(joinCriteria != null) {
+                    if (joinCriteria != null) {
                         joinCriteria.addFilter(targetName, operator, value);
                     }
             }
@@ -98,17 +96,16 @@ public class CriteriaUtil {
     }
 
     /**
-     *
      * @param criteria
      * @param sortings
      */
-    public static void configureSortings(RootCriteria criteria, String[] sortings){
+    public static void configureSortings(RootCriteria criteria, String[] sortings) {
         Map<String, Field> parentFieldMap = SearchQuery.CacheFields.getCachedFields(criteria.getEntityClass());
-        for(String sorting: sortings) {
-            if(sorting.length() == 0) continue;
+        for (String sorting : sortings) {
+            if (sorting.length() == 0) continue;
 
             SearchCriteria.SortType sortType = SearchCriteria.SortType.getSortType(sorting.charAt(0));
-            if(sortType == null) {
+            if (sortType == null) {
                 sortType = SearchCriteria.SortType.ASC;
             } else {
                 sorting = sorting.substring(1);
@@ -116,12 +113,12 @@ public class CriteriaUtil {
 
             String[] sorts = sorting.split("\\.");
             String sort = sorts[0];
-            if(sort.length() == 0) continue;
+            if (sort.length() == 0) continue;
 
 
             Field field = parentFieldMap.get(sort);
 
-            if(field == null) {
+            if (field == null) {
                 LOGGER.error(sort + " field not found in " + criteria.getEntityClass().getName());
                 continue;
             }
@@ -136,7 +133,7 @@ public class CriteriaUtil {
                             field,
                             sort
                     );
-                    if(joinCriteria != null) {
+                    if (joinCriteria != null) {
                         criteria.getOrderedSortMap().put(sorting, sortType);
                     }
                     break;
@@ -145,19 +142,18 @@ public class CriteriaUtil {
     }
 
     /**
-     *
      * @param criteria
      * @param selectFields
      */
-    public static void configureSelectFields(RootCriteria criteria, String[] selectFields){
+    public static void configureSelectFields(RootCriteria criteria, String[] selectFields) {
         Map<String, Field> parentFieldMap = SearchQuery.CacheFields.getCachedFields(criteria.getEntityClass());
-        for(String selectField: selectFields) {
-            if(selectField.length() == 0) continue;
+        for (String selectField : selectFields) {
+            if (selectField.length() == 0) continue;
             String[] selects = selectField.split("\\.");
             String select = selects[0];
-            if(select.length() == 0) continue;
+            if (select.length() == 0) continue;
             Field field = parentFieldMap.get(select);
-            if(field == null) {
+            if (field == null) {
                 LOGGER.error(select + " field not found in " + criteria.getEntityClass().getName());
                 continue;
             }
@@ -172,7 +168,7 @@ public class CriteriaUtil {
                             field,
                             select
                     );
-                    if(joinCriteria != null) {
+                    if (joinCriteria != null) {
                         criteria.getOrderedSelects().add(selectField);
                     }
                     break;
@@ -181,15 +177,14 @@ public class CriteriaUtil {
     }
 
     /**
-     *
      * @param criteria
      * @param field
      * @param alias
      * @return
      */
-    public static JoinCriteria createOrGetJoinCriteriaByField(RootCriteria criteria, Field field, String alias){
+    public static JoinCriteria createOrGetJoinCriteriaByField(RootCriteria criteria, Field field, String alias) {
         JoinCriteria joinCriteria = criteria.getCriteria(alias);
-        if(joinCriteria  == null) {
+        if (joinCriteria == null) {
             SearchFrom searchFrom = field.getAnnotation(SearchFrom.class);
             if (searchFrom == null) {
                 LOGGER.error("@SearchFrom annotation not found on " + field.getName() + " field ! ");
