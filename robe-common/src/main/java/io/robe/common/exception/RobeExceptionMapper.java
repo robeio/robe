@@ -1,6 +1,6 @@
 package io.robe.common.exception;
 
-import io.robe.common.dto.BasicPair;
+import io.robe.common.dto.RobeMessage;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -31,40 +31,33 @@ public class RobeExceptionMapper implements ExceptionMapper<Exception> {
      */
     @Override
     public Response toResponse(Exception e) {
+
+        String id = System.nanoTime() + "";
+        LOGGER.error(id, e);
+
         if (e instanceof RobeRuntimeException) {
-            LOGGER.error("RobeRuntimeException", e);
-            return ((RobeRuntimeException) e).getResponse();
+            return ((RobeRuntimeException) e).getResponse(id);
         } else if (e instanceof ConstraintViolationException) {
-            LOGGER.error("InvalidEntityException", e);
             ConstraintViolationException exception = (ConstraintViolationException) e;
-            BasicPair[] errors = new BasicPair[exception.getConstraintViolations().size()];
+            RobeMessage[] errors = new RobeMessage[exception.getConstraintViolations().size()];
             int i = 0;
             for (ConstraintViolation error : exception.getConstraintViolations()) {
-                errors[i++] = new BasicPair(error.getConstraintDescriptor().getValidationAppliesTo().name(), error.getMessage());
+                errors[i++] = new RobeMessage.Builder().message(error.getMessage()).status(422).id(id).build();
             }
             return Response.status(422).entity(errors).type(MediaType.APPLICATION_JSON).build();
         } else if (e instanceof WebApplicationException) {
             WebApplicationException we = (WebApplicationException) e;
-            if (we.getResponse().getStatus() != Response.Status.UNAUTHORIZED.getStatusCode() &&
-                    we.getResponse().getStatus() != Response.Status.FORBIDDEN.getStatusCode()) {
-                LOGGER.error("WebApplicationException", e);
-            }
-            return we.getResponse();
+            RobeMessage error = new RobeMessage.Builder().id(id).message(we.getMessage()).status(we.getResponse().getStatus()).build();
+            return Response.status(we.getResponse().getStatus()).entity(error).type(MediaType.APPLICATION_JSON).build();
         } else {
-
             if (e.getClass().getName().equals("org.hibernate.exception.ConstraintViolationException")) {
-                String id = System.nanoTime()+"";
-                LOGGER.error(id + "", e);
                 if (e.getCause() != null && e.getCause().getMessage() != null) {
-                    BasicPair error = new BasicPair(id, e.getCause().getMessage().split("for")[0]);
-                    return Response.status(409).entity(error).type(MediaType.APPLICATION_JSON).build();
+                    RobeMessage error = new RobeMessage.Builder().message(e.getCause().getMessage().split("for")[0]).status(Response.Status.CONFLICT.getStatusCode()).id(id).build();
+                    return Response.status(Response.Status.CONFLICT).entity(error).type(MediaType.APPLICATION_JSON).build();
                 }
             }
-
-            LOGGER.error("Exception", e);
-            BasicPair[] errors = new BasicPair[1];
-            errors[0] = new BasicPair("Server Error", e.getMessage());
-            return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(errors).type(MediaType.APPLICATION_JSON).build();
+            RobeMessage error = new RobeMessage.Builder().message(e.getMessage()).id(id).build();
+            return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(error).type(MediaType.APPLICATION_JSON).build();
         }
     }
 }
