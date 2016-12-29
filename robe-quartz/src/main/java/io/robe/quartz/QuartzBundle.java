@@ -139,7 +139,7 @@ public class QuartzBundle<T extends Configuration & HasQuartzConfiguration> impl
                         logBuilder.toString()
                 );
                 JobManager.getInstance().scheduleJob(detail, triggers, true);
-                JOBS.put(info.getJobClass().getName(), info);
+                JOBS.put(info.getJobClass().getName(),info);
             }
         }
     }

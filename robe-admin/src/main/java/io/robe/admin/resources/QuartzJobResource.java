@@ -4,8 +4,8 @@ import io.dropwizard.hibernate.UnitOfWork;
 import io.dropwizard.jersey.PATCH;
 import io.robe.admin.hibernate.dao.QuartzJobDao;
 import io.robe.admin.hibernate.dao.QuartzTriggerDao;
-import io.robe.admin.quartz.hibernate.JobEntity;
-import io.robe.admin.quartz.hibernate.TriggerEntity;
+import io.robe.admin.hibernate.entity.HibernateJobInfo;
+import io.robe.admin.hibernate.entity.HibernateTriggerInfo;
 import io.robe.auth.Credentials;
 import io.robe.auth.RobeAuth;
 import io.robe.common.service.RobeService;
@@ -40,50 +40,50 @@ public class QuartzJobResource {
 
 
     /**
-     * Returns all Trigger as a collection with the matches given job id.
+     * Returns all HibernateTriggerInfo as a collection with the matches given job id.
      *
      * @param credentials auto fill by {@link RobeAuth} annotation for authentication.
-     * @return all {@link TriggerEntity} as a collection
+     * @return all {@link HibernateTriggerInfo} as a collection
      */
-    @RobeService(group = "JobEntity", description = "Returns all Trigger as a collection with the matches given job id.")
+    @RobeService(group = "HibernateJobInfo", description = "Returns all HibernateTriggerInfo as a collection with the matches given job id.")
     @GET
     @Path("{id}/triggers")
     @UnitOfWork(readOnly = true, cacheMode = GET, flushMode = FlushMode.MANUAL)
-    public List<TriggerEntity> getJobTriggers(@RobeAuth Credentials credentials, @PathParam("id") String id) {
+    public List<HibernateTriggerInfo> getJobTriggers(@RobeAuth Credentials credentials, @PathParam("id") String id) {
         return quartzTriggerDao.findByJobOid(id);
     }
 
 
     /**
-     * Return all JobEntity as a collection
+     * Return all HibernateJobInfo as a collection
      *
      * @param credentials auto fill by {@link RobeAuth} annotation for authentication.
-     * @return all {@link JobEntity} as a collection
+     * @return all {@link HibernateJobInfo} as a collection
      */
-    @RobeService(group = "JobEntity", description = "Returns all JobEntity as a collection.")
+    @RobeService(group = "HibernateJobInfo", description = "Returns all HibernateJobInfo as a collection.")
     @GET
     @UnitOfWork(readOnly = true, cacheMode = GET, flushMode = FlushMode.MANUAL)
-    public Collection<JobInfo> getAll(@RobeAuth Credentials credentials, @SearchParam SearchModel search) {
+    public Collection<HibernateJobInfo> getAll(@RobeAuth Credentials credentials, @SearchParam SearchModel search) {
 
-        return QuartzBundle.JOBS.values();
+        return quartzJobDao.findAllStrict(search);
     }
 
     /**
-     * Return a JobEntity resource  with the matches given id.
+     * Return a HibernateJobInfo resource  with the matches given id.
      * <p>
      * Status Code:
      * Not Found  404
      *
      * @param credentials auto fill by @{@link RobeAuth} annotation for authentication.
-     * @param id          This is  the oid of {@link JobEntity}
-     * @return a  {@link JobEntity} resource with the matches given id.
+     * @param id          This is  the oid of {@link HibernateJobInfo}
+     * @return a  {@link HibernateJobInfo} resource with the matches given id.
      */
-    @RobeService(group = "JobEntity", description = "Returns a JobEntity resource with the matches given id.")
+    @RobeService(group = "HibernateJobInfo", description = "Returns a HibernateJobInfo resource with the matches given id.")
     @Path("{id}")
     @GET
     @UnitOfWork(readOnly = true, cacheMode = GET, flushMode = FlushMode.MANUAL)
-    public JobEntity get(@RobeAuth Credentials credentials, @PathParam("id") String id) {
-        JobEntity entity = quartzJobDao.findById(id);
+    public HibernateJobInfo get(@RobeAuth Credentials credentials, @PathParam("id") String id) {
+        HibernateJobInfo entity = quartzJobDao.findById(id);
         if (entity == null) {
             throw new WebApplicationException(Response.status(404).build());
         }
@@ -91,40 +91,40 @@ public class QuartzJobResource {
     }
 
     /**
-     * Create a {@link JobEntity} resource.
+     * Create a {@link HibernateJobInfo} resource.
      *
      * @param credentials auto fill by @{@link RobeAuth} annotation for authentication.
-     * @param model       This is the one model of {@link JobEntity}
-     * @return create a {@link JobEntity} resource.
+     * @param model       This is the one model of {@link HibernateJobInfo}
+     * @return create a {@link HibernateJobInfo} resource.
      */
-    @RobeService(group = "JobEntity", description = "Create a JobEntity resource.")
+    @RobeService(group = "HibernateJobInfo", description = "Create a HibernateJobInfo resource.")
     @POST
     @UnitOfWork
-    public JobEntity create(@RobeAuth Credentials credentials, @Valid JobEntity model) {
+    public HibernateJobInfo create(@RobeAuth Credentials credentials, @Valid HibernateJobInfo model) {
         return quartzJobDao.create(model);
     }
 
     /**
-     * Update a JobEntity resource  with the matches given id.
+     * Update a HibernateJobInfo resource  with the matches given id.
      * <p>
      * Status Code:
      * Not Found  404
      * Not Matches 412
      *
      * @param credentials auto fill by @{@link RobeAuth} annotation for authentication.
-     * @param id          This is  the oid of {@link JobEntity}
-     * @param model       This is the one model of {@link JobEntity}
-     * @return Update a  {@link JobEntity} resource with the matches given id.
+     * @param id          This is  the oid of {@link HibernateJobInfo}
+     * @param model       This is the one model of {@link HibernateJobInfo}
+     * @return Update a  {@link HibernateJobInfo} resource with the matches given id.
      */
-    @RobeService(group = "JobEntity", description = "Update a JobEntity resource with the matches given id.")
+    @RobeService(group = "HibernateJobInfo", description = "Update a HibernateJobInfo resource with the matches given id.")
     @PUT
     @UnitOfWork
     @Path("{id}")
-    public JobEntity update(@RobeAuth Credentials credentials, @PathParam("id") String id, @Valid JobEntity model) {
+    public HibernateJobInfo update(@RobeAuth Credentials credentials, @PathParam("id") String id, @Valid HibernateJobInfo model) {
         if (!id.equals(model.getOid())) {
             throw new WebApplicationException(Response.status(412).build());
         }
-        JobEntity entity = quartzJobDao.findById(id);
+        HibernateJobInfo entity = quartzJobDao.findById(id);
         if (entity == null) {
             throw new WebApplicationException(Response.status(404).build());
         }
@@ -133,25 +133,25 @@ public class QuartzJobResource {
     }
 
     /**
-     * Update a JobEntity resource with the matches given id.
+     * Update a HibernateJobInfo resource with the matches given id.
      * <p>
      * Status Code:
      * Not Found  404
      * Not Matches 412
      *
      * @param credentials auto fill by @{@link RobeAuth} annotation for authentication.
-     * @param id          This is  the oid of {@link JobEntity}
-     * @param model       This is the one model of {@link JobEntity}
-     * @return Updates a  {@link JobEntity} resource with the matches given id.
+     * @param id          This is  the oid of {@link HibernateJobInfo}
+     * @param model       This is the one model of {@link HibernateJobInfo}
+     * @return Updates a  {@link HibernateJobInfo} resource with the matches given id.
      */
-    @RobeService(group = "JobEntity", description = "Update a JobEntity resource with the matches given id.")
+    @RobeService(group = "HibernateJobInfo", description = "Update a HibernateJobInfo resource with the matches given id.")
     @PATCH
     @UnitOfWork
     @Path("{id}")
-    public JobEntity merge(@RobeAuth Credentials credentials, @PathParam("id") String id, JobEntity model) {
+    public HibernateJobInfo merge(@RobeAuth Credentials credentials, @PathParam("id") String id, HibernateJobInfo model) {
         if (!id.equals(model.getOid()))
             throw new WebApplicationException(Response.status(412).build());
-        JobEntity dest = quartzJobDao.findById(id);
+        HibernateJobInfo dest = quartzJobDao.findById(id);
         if (dest == null) {
             throw new WebApplicationException(Response.status(404).build());
         }
@@ -160,26 +160,26 @@ public class QuartzJobResource {
     }
 
     /**
-     * Delete a JobEntity resource  with the matches given id.
+     * Delete a HibernateJobInfo resource  with the matches given id.
      * <p>
      * Status Code:
      * Not Found  404
      * Not Matches 412
      *
      * @param credentials auto fill by @{@link RobeAuth} annotation for authentication.
-     * @param id          This is  the oid of {@link JobEntity}
-     * @param model       This is the one model of {@link JobEntity}
-     * @return Delete a  {@link JobEntity} resource  with the matches given id.
+     * @param id          This is  the oid of {@link HibernateJobInfo}
+     * @param model       This is the one model of {@link HibernateJobInfo}
+     * @return Delete a  {@link HibernateJobInfo} resource  with the matches given id.
      */
-    @RobeService(group = "JobEntity", description = "Delete a JobEntity resource with the matches given id.")
+    @RobeService(group = "HibernateJobInfo", description = "Delete a HibernateJobInfo resource with the matches given id.")
     @DELETE
     @UnitOfWork
     @Path("{id}")
-    public JobEntity delete(@RobeAuth Credentials credentials, @PathParam("id") String id, @Valid JobEntity model) {
+    public HibernateJobInfo delete(@RobeAuth Credentials credentials, @PathParam("id") String id, @Valid HibernateJobInfo model) {
         if (!id.equals(model.getOid())) {
             throw new WebApplicationException(Response.status(412).build());
         }
-        JobEntity entity = quartzJobDao.findById(id);
+        HibernateJobInfo entity = quartzJobDao.findById(id);
         if (entity == null) {
             throw new WebApplicationException(Response.status(404).build());
         }

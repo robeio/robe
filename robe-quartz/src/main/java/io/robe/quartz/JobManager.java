@@ -14,7 +14,6 @@ import java.util.Set;
 public class JobManager {
 
     private static final Object lock = new Object();
-    private static boolean initialized = false;
     private static JobManager instance;
     //TODO: Convert to factory later
     private final Scheduler scheduler;
@@ -24,7 +23,7 @@ public class JobManager {
     }
 
     protected static synchronized void initialize(Scheduler scheduler) {
-        if (initialized)
+        if (instance != null)
             throw new RuntimeException("Manager is already Initialized");
         else
             instance = new JobManager(scheduler);

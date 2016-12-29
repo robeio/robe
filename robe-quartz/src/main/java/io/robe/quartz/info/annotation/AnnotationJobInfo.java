@@ -2,6 +2,7 @@ package io.robe.quartz.info.annotation;
 
 
 import io.robe.quartz.info.JobInfo;
+import io.robe.quartz.info.JobInfoProvider;
 import io.robe.quartz.info.TriggerInfo;
 import io.robe.quartz.RobeJob;
 import io.robe.quartz.RobeTrigger;
@@ -49,5 +50,10 @@ public class AnnotationJobInfo implements JobInfo {
     @Override
     public Class<? extends Job> getJobClass() {
         return jobClass;
+    }
+
+    @Override
+    public Class<? extends JobInfoProvider> getProvider() {
+        return AnnotationJobInfoProvider.class;
     }
 }
