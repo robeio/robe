@@ -8,26 +8,28 @@ import javax.persistence.Transient;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * Created by hasanmumin on 04/04/16.
- */
-public class HibernateJobInfoDTO extends HibernateJobInfo implements JobInfo {
+public class JobInfoDTO extends HibernateJobInfo implements JobInfo {
 
     @Transient
     private List<TriggerInfo> triggers = new ArrayList<>();
 
-    public HibernateJobInfoDTO() {
+    @Transient
+    private Status status;
+
+    public JobInfoDTO() {
 
     }
 
-    public HibernateJobInfoDTO(HibernateJobInfo entity) {
+    public JobInfoDTO(HibernateJobInfo entity) {
         setJobClass(entity.getJobClass());
         setName(entity.getName());
+        setGroup(entity.getGroup());
         setDescription(entity.getDescription());
         setLastUpdated(entity.getLastUpdated());
         setOid(entity.getOid());
         setProvider(entity.getProvider());
     }
+
 
     @Override
     public List<TriggerInfo> getTriggers() {
@@ -36,5 +38,19 @@ public class HibernateJobInfoDTO extends HibernateJobInfo implements JobInfo {
 
     public void setTriggers(List<TriggerInfo> triggers) {
         this.triggers = triggers;
+    }
+
+    public Status getStatus() {
+        return status;
+    }
+
+    public void setStatus(Status status) {
+        this.status = status;
+    }
+
+    public enum Status {
+        ACTIVE,
+        PAUSED,
+        UNSCHEDULED
     }
 }

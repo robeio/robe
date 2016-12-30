@@ -18,10 +18,10 @@ import static junit.framework.TestCase.assertEquals;
  * Created by recep on 01/10/16.
  */
 @FixMethodOrder
-public class HibernateJobInfoDTOTest {
+public class JobInfoDTOTest {
     HibernateJobInfo entity;
     ArrayList<TriggerInfo> triggerInfos;
-    HibernateJobInfoDTO dto;
+    JobInfoDTO dto;
 
     @Before
     public void setUp() throws Exception {
@@ -32,7 +32,7 @@ public class HibernateJobInfoDTOTest {
 
         triggerInfos = new ArrayList<>(2);
 
-        dto = new HibernateJobInfoDTO(entity);
+        dto = new JobInfoDTO(entity);
 
     }
 
@@ -44,14 +44,14 @@ public class HibernateJobInfoDTOTest {
 
     @Test
     public void constructor() throws Exception {
-        HibernateJobInfoDTO entityDTO = new HibernateJobInfoDTO();
+        JobInfoDTO entityDTO = new JobInfoDTO();
         entityDTO.setName("Entity");
         assertEquals("Entity", entityDTO.getName());
 
     }
     @Test
     public void jobEntityDTO() {
-        HibernateJobInfoDTO dto = new HibernateJobInfoDTO();
+        JobInfoDTO dto = new JobInfoDTO();
         Assert.assertTrue(dto.getTriggers().size() == 0);
         dto.setTriggers(Collections.singletonList(new HibernateTriggerInfo()));
         Assert.assertTrue(dto.getTriggers().size() == 1);
@@ -63,7 +63,7 @@ public class HibernateJobInfoDTOTest {
         hibernateJobInfo.setJobClass(SampleJob.class);
         hibernateJobInfo.setName("Name");
         hibernateJobInfo.setDescription("Description");
-        HibernateJobInfoDTO dto = new HibernateJobInfoDTO(hibernateJobInfo);
+        JobInfoDTO dto = new JobInfoDTO(hibernateJobInfo);
 
         Assert.assertEquals(hibernateJobInfo.getDescription(), dto.getDescription());
         Assert.assertEquals(hibernateJobInfo.getName(), dto.getName());

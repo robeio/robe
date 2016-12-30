@@ -1,6 +1,6 @@
 package io.robe.admin.quartz;
 
-import io.robe.admin.dto.HibernateJobInfoDTO;
+import io.robe.admin.dto.JobInfoDTO;
 import io.robe.admin.hibernate.entity.HibernateJobInfo;
 import io.robe.admin.hibernate.entity.HibernateTriggerInfo;
 import io.robe.hibernate.RobeHibernateBundle;
@@ -24,7 +24,7 @@ public class HibernateJobInfoProvider extends JobInfoProvider {
         Session session = RobeHibernateBundle.getInstance().getSessionFactory().openSession();
         HibernateJobInfo quartzHibernateJobInfo = (HibernateJobInfo) session.createCriteria(HibernateJobInfo.class).add(Restrictions.eq("jobClass", clazz)).uniqueResult();
         if (quartzHibernateJobInfo == null) {
-            HibernateJobInfoDTO info = new HibernateJobInfoDTO();
+            JobInfoDTO info = new JobInfoDTO();
             info.setName(infoAnn.name());
             info.setDescription(infoAnn.description());
             info.setProvider(infoAnn.provider());
@@ -35,7 +35,7 @@ public class HibernateJobInfoProvider extends JobInfoProvider {
         List<TriggerInfo> triggerEntities = session.createCriteria(HibernateTriggerInfo.class).add(Restrictions.eq("jobOid", quartzHibernateJobInfo.getOid())).list();
         session.close();
 
-        HibernateJobInfoDTO dto = new HibernateJobInfoDTO(quartzHibernateJobInfo);
+        JobInfoDTO dto = new JobInfoDTO(quartzHibernateJobInfo);
 
         dto.setTriggers(triggerEntities);
 

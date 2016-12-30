@@ -1,11 +1,11 @@
 package io.robe.quartz.info.annotation;
 
 
+import io.robe.quartz.RobeJob;
+import io.robe.quartz.RobeTrigger;
 import io.robe.quartz.info.JobInfo;
 import io.robe.quartz.info.JobInfoProvider;
 import io.robe.quartz.info.TriggerInfo;
-import io.robe.quartz.RobeJob;
-import io.robe.quartz.RobeTrigger;
 import org.quartz.Job;
 
 import java.util.ArrayList;
@@ -13,6 +13,7 @@ import java.util.List;
 
 public class AnnotationJobInfo implements JobInfo {
     private String name;
+    private String group;
     private String description;
     private List<TriggerInfo> triggers;
     private Class<? extends Job> jobClass;
@@ -21,6 +22,7 @@ public class AnnotationJobInfo implements JobInfo {
         name = ann.name();
         description = ann.description();
         triggers = new ArrayList<>(ann.triggers().length);
+        group = ann.group();
         for (RobeTrigger tAnn : ann.triggers()) {
             triggers.add(new AnnotationTriggerInfo(tAnn));
         }
@@ -30,6 +32,11 @@ public class AnnotationJobInfo implements JobInfo {
     @Override
     public String getName() {
         return name;
+    }
+
+    @Override
+    public String getGroup() {
+        return group;
     }
 
     @Override

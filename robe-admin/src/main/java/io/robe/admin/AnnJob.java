@@ -13,15 +13,14 @@ import org.slf4j.LoggerFactory;
  * Created by serayuzgur on 26/12/2016.
  */
 @RobeJob(name = "Hello ANJOB", description = "A simple job says ANJOB", triggers = {
-        @RobeTrigger(cron = "0/6 * * * * ?", name = "Every 6 seconds", group = "Sample", type = TriggerInfo.Type.CRON)
+        @RobeTrigger(cron = "0/6 * * * * ?", name = "Every 6 seconds", group = "Sample", type = TriggerInfo.Type.CRON),
+        @RobeTrigger(cron = "0/10 * * * * ?", name = "Every 10 seconds", group = "Sample", type = TriggerInfo.Type.CRON)
 })
 public class AnnJob implements Job {
     private static final Logger LOGGER = LoggerFactory.getLogger(AnnJob.class);
 
     @Override
     public void execute(JobExecutionContext jobExecutionContext) throws JobExecutionException {
-        LOGGER.info("-------------------------");
-        LOGGER.info("ANJOB!!!");
-        LOGGER.info("-------------------------");
+        LOGGER.info("---" + jobExecutionContext.getTrigger().getKey().getName());
     }
 }

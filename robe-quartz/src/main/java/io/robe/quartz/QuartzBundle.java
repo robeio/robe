@@ -4,19 +4,20 @@ import io.dropwizard.Configuration;
 import io.dropwizard.ConfiguredBundle;
 import io.dropwizard.setup.Bootstrap;
 import io.dropwizard.setup.Environment;
+import io.robe.quartz.configuration.HasQuartzConfiguration;
+import io.robe.quartz.configuration.QuartzConfiguration;
 import io.robe.quartz.info.JobInfo;
 import io.robe.quartz.info.JobInfoProvider;
 import io.robe.quartz.info.TriggerInfo;
-import io.robe.quartz.configuration.HasQuartzConfiguration;
-import io.robe.quartz.configuration.QuartzConfiguration;
-import io.robe.quartz.info.annotation.AnnotationJobInfoProvider;
 import org.quartz.*;
 import org.quartz.impl.StdSchedulerFactory;
 import org.reflections.Reflections;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.util.*;
+import java.util.HashSet;
+import java.util.Properties;
+import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 
 /**
@@ -129,7 +130,7 @@ public class QuartzBundle<T extends Configuration & HasQuartzConfiguration> impl
                             onStopJobs.add(detail);
                             break;
                         default:
-                            triggers.add(JobInfoProvider.convert2Trigger(tInfo));
+                            triggers.add(JobInfoProvider.convert2Trigger(tInfo, info));
                     }
                 }
                 LOGGER.info("\n\tClass {} \n\tName: {} \n\tDesc: {} \n\t Triggers: {}",
@@ -139,7 +140,7 @@ public class QuartzBundle<T extends Configuration & HasQuartzConfiguration> impl
                         logBuilder.toString()
                 );
                 JobManager.getInstance().scheduleJob(detail, triggers, true);
-                JOBS.put(info.getJobClass().getName(),info);
+                JOBS.put(info.getJobClass().getName(), info);
             }
         }
     }

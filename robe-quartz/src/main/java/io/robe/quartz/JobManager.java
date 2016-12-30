@@ -47,23 +47,31 @@ public class JobManager {
 
     public boolean unScheduleJob(String name, String group) throws SchedulerException {
         synchronized (lock) {
-            return scheduler.unscheduleJob(TriggerKey.triggerKey(name, group));
+            List<? extends Trigger> triggers = scheduler.getTriggersOfJob(JobKey.jobKey(name, group));
+            for (Trigger t : triggers) {
+                if (!scheduler.unscheduleJob(t.getKey())) {
+                    return false;
+                }
+            }
+            return true;
         }
     }
 
-    public boolean checkExists(String name, String group) throws SchedulerException {
-        return JobManager.getInstance().checkExists(JobKey.jobKey(name, group));
+    public boolean scheduleTrigger(Trigger trigger) throws SchedulerException {
+        synchronized (lock) {
+            return scheduler.scheduleJob(trigger) != null;
+        }
+    }
+
+    public boolean unScheduleTrigger(Trigger trigger) throws SchedulerException {
+        synchronized (lock) {
+            return scheduler.unscheduleJob(trigger.getKey());
+        }
     }
 
     public boolean checkExists(JobKey key) throws SchedulerException {
         synchronized (lock) {
             return scheduler.checkExists(key);
-        }
-    }
-
-    public Trigger getTrigger(String name, String group) throws SchedulerException {
-        synchronized (lock) {
-            return scheduler.getTrigger(TriggerKey.triggerKey(name, group));
         }
     }
 
@@ -75,16 +83,34 @@ public class JobManager {
         return getTriggersOfJob(JobKey.jobKey(name, group));
     }
 
-    public List<JobExecutionContext> getCurrentlyExecutingJobs() throws SchedulerException {
-        return scheduler.getCurrentlyExecutingJobs();
+    public boolean isScheduledJob(String name, String group) throws SchedulerException {
+        List<? extends Trigger> triggers = scheduler.getTriggersOfJob(JobKey.jobKey(name, group));
+        for (Trigger t : triggers) {
+            if (t.getNextFireTime() != null) {
+                return true;
+            }
+        }
+        return false;
     }
 
-    public List<JobKey> getAllScheduledJobs() throws SchedulerException {
-        List<JobKey> jobKeys = new LinkedList<>();
-        for (String groupName : scheduler.getJobGroupNames()) {
-            jobKeys.addAll(scheduler.getJobKeys(GroupMatcher.jobGroupEquals(groupName)));
+    public boolean isScheduledTrigger(String name, String group) throws SchedulerException {
+        Trigger trigger = scheduler.getTrigger(TriggerKey.triggerKey(name, group));
+        return trigger != null ? trigger.getNextFireTime() != null : false;
+    }
+
+    public boolean isPausedJob(String name, String group) throws SchedulerException {
+        List<? extends Trigger> triggers = scheduler.getTriggersOfJob(JobKey.jobKey(name, group));
+        for (Trigger t : triggers) {
+            if (!scheduler.getTriggerState(t.getKey()).equals(Trigger.TriggerState.PAUSED)) {
+                return false;
+            }
         }
-        return jobKeys;
+        return true;
+    }
+
+    public boolean isPausedTrigger(String name, String group) throws SchedulerException {
+        Trigger trigger = scheduler.getTrigger(TriggerKey.triggerKey(name, group));
+        return scheduler.getTriggerState(trigger.getKey()).equals(Trigger.TriggerState.PAUSED);
     }
 
     public List<JobKey> getGeneralReport() throws SchedulerException {
@@ -119,6 +145,10 @@ public class JobManager {
         scheduler.resumeTrigger(key);
     }
 
+    public void pauseJob(String name, String group) throws SchedulerException {
+        scheduler.pauseJob(JobKey.jobKey(name, group));
+    }
+
     public void pauseJob(JobKey key) throws SchedulerException {
         scheduler.pauseJob(key);
     }
@@ -130,5 +160,13 @@ public class JobManager {
     public void shutdown(boolean b) throws SchedulerException {
         if (scheduler != null)
             scheduler.shutdown(b);
+    }
+
+    public void resumeJob(JobKey jobKey) throws SchedulerException {
+        scheduler.resumeJob(jobKey);
+    }
+
+    public void resumeJob(String name, String group) throws SchedulerException {
+        this.resumeJob(JobKey.jobKey(name, group));
     }
 }

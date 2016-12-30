@@ -14,6 +14,8 @@ public @interface RobeJob {
 
     String name();
 
+    String group() default "DEFAULT";
+
     String description();
 
     RobeTrigger[] triggers() default {};

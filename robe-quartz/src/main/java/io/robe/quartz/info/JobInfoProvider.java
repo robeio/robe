@@ -31,7 +31,7 @@ public abstract class JobInfoProvider {
     public List<Trigger> convert2Triggers(JobInfo dto) {
         List<Trigger> triggers = new LinkedList<>();
         for (TriggerInfo trigDto : dto.getTriggers()) {
-            triggers.add(convert2Trigger(trigDto));
+            triggers.add(convert2Trigger(trigDto, dto));
         }
         return triggers;
     }
@@ -39,23 +39,24 @@ public abstract class JobInfoProvider {
     /**
      * Creates an identical Trigger instance from the given annotation.
      *
-     * @param dto
+     * @param trig
      * @return
      */
-    public static Trigger convert2Trigger(TriggerInfo dto) {
+    public static Trigger convert2Trigger(TriggerInfo trig, JobInfo job) {
         TriggerBuilder<Trigger> builder = newTrigger();
-        builder.withIdentity(dto.getName(), dto.getGroup());
+        builder.withIdentity(trig.getName(), trig.getGroup());
+        builder.forJob(job.getName(), job.getGroup());
 
-        switch (dto.getType()) {
+        switch (trig.getType()) {
             case CRON:
-                setStartEndTime(dto, builder);
+                setStartEndTime(trig, builder);
 
-                if (!dto.getCron().isEmpty())
-                    builder.withSchedule(CronScheduleBuilder.cronSchedule(dto.getCron()));
+                if (!trig.getCron().isEmpty())
+                    builder.withSchedule(CronScheduleBuilder.cronSchedule(trig.getCron()));
                 break;
             case SIMPLE:
-                setStartEndTime(dto, builder);
-                setCountIntervalValues(dto, builder);
+                setStartEndTime(trig, builder);
+                setCountIntervalValues(trig, builder);
                 break;
         }
 

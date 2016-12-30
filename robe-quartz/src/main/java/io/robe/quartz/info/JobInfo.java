@@ -7,6 +7,7 @@ import java.util.List;
 public interface JobInfo {
 
     String getName();
+    String getGroup();
 
     String getDescription();
 

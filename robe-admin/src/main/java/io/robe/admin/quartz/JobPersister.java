@@ -41,6 +41,7 @@ public class JobPersister {
         }
         record.setName(info.getName());
         record.setDescription(info.getDescription());
+        record.setGroup(info.getGroup());
         jobDao.create(record);
         if (!info.getProvider().equals(HibernateJobInfoProvider.class)) {
             for (TriggerInfo triggerInfo : info.getTriggers()) {
@@ -63,7 +64,7 @@ public class JobPersister {
         record.setRepeatCount(info.getRepeatCount());
         record.setRepeatInterval(info.getRepeatInterval());
         record.setGroup(info.getGroup());
-        record.setType(record.getType());
+        record.setType(info.getType());
         dao.create(record);
     }
 }

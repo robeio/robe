@@ -12,6 +12,8 @@ public class HibernateJobInfo extends BaseEntity {
 
     private String name;
 
+    private String jGroup;
+
     private Class<? extends org.quartz.Job> jobClass;
 
     private String description;
@@ -48,5 +50,13 @@ public class HibernateJobInfo extends BaseEntity {
 
     public void setProvider(Class<? extends JobInfoProvider> provider) {
         this.provider = provider;
+    }
+
+    public String getGroup() {
+        return jGroup;
+    }
+
+    public void setGroup(String group) {
+        this.jGroup = group;
     }
 }
