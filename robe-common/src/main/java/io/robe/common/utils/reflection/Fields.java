@@ -77,18 +77,15 @@ public class Fields {
                 if(!predicate.test(field)) continue;
                 field.setAccessible(true);
                 fieldMap.putIfAbsent(field.getName(), field);
-                if(type.getSuperclass() != null) {
-                    getAllFieldsAsMap(fieldMap, type.getSuperclass(), predicate);
-                }
             }
         } else {
             for(Field field: type.getDeclaredFields()) {
                 field.setAccessible(true);
                 fieldMap.putIfAbsent(field.getName(), field);
-                if(type.getSuperclass() != null) {
-                    getAllFieldsAsMap(fieldMap, type.getSuperclass(), predicate);
-                }
             }
+        }
+        if(type.getSuperclass() != null) {
+            getAllFieldsAsMap(fieldMap, type.getSuperclass(), predicate);
         }
     }
 
