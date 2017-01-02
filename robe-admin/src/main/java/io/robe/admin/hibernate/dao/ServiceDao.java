@@ -1,6 +1,5 @@
 package io.robe.admin.hibernate.dao;
 
-import javax.inject.Inject;
 import io.robe.admin.hibernate.entity.Service;
 import io.robe.auth.data.store.ServiceStore;
 import io.robe.hibernate.dao.BaseDao;
@@ -10,6 +9,7 @@ import org.hibernate.criterion.Projections;
 import org.hibernate.criterion.Restrictions;
 import org.hibernate.transform.Transformers;
 
+import javax.inject.Inject;
 import java.util.List;
 import java.util.Optional;
 

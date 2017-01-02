@@ -1,4 +1,4 @@
-package io.robe.admin.quartz.hibernate;
+package io.robe.admin.hibernate.entity;
 
 import io.robe.hibernate.entity.BaseEntity;
 import io.robe.quartz.info.TriggerInfo;
@@ -6,8 +6,10 @@ import io.robe.quartz.info.TriggerInfo;
 import javax.persistence.*;
 
 @Entity
-@Table
-public class TriggerEntity extends BaseEntity implements TriggerInfo {
+@Table(name = "TriggerInfo", uniqueConstraints = {
+        @UniqueConstraint(columnNames = {"jobOid", "name"})
+})
+public class HibernateTriggerInfo extends BaseEntity implements TriggerInfo {
 
     private String name;
     @Column(name = "triggerGroup")

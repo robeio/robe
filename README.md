@@ -18,7 +18,7 @@ Robe solves these complication by including various production ready libraries a
 This module includes user role and permission mechanisms. We tried to implement ESAPI interfaces to handle all difficult tasks at enterprise authentications. By getting inspired with Dropwizard we implemented a token based authentication system. 
 
 ### robe-quartz [more...](./docs/en/modules/robe-quartz.md)
-This module includes all the solutions of job related issues with the help of quartz library. We tried to make it easier with new annotations and a new management screen. You can manage all your quartz jobs with a management UI and persistent DB store.
+This module includes all the solutions of hibernateJobInfo related issues with the help of quartz library. We tried to make it easier with new annotations and a new management screen. You can manage all your quartz jobs with a management UI and persistent DB store.
 
 ### robe-common [more...](./docs/en/modules/robe-common.md)
  This module is the common library for all the robe modules. It includes a problem specific exception handler, common data transfer objects and file operations.

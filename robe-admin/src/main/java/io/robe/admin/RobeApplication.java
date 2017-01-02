@@ -8,6 +8,7 @@ import io.dropwizard.setup.Environment;
 import io.robe.admin.cli.InitializeCommand;
 import io.robe.admin.guice.module.HibernateModule;
 import io.robe.admin.hibernate.dao.*;
+import io.robe.admin.quartz.JobPersister;
 import io.robe.admin.recaptcha.ReCaptchaValidation;
 import io.robe.assets.AdvancedAssetBundle;
 import io.robe.auth.token.TokenAuthBundle;
@@ -148,6 +149,7 @@ public class RobeApplication<T extends RobeConfiguration> extends Application<T>
             new ReCaptchaValidation(configuration.getRecaptcha());
         }
 
+        JobPersister jobPersister = new JobPersister(QuartzBundle.JOBS);
     }
 
 

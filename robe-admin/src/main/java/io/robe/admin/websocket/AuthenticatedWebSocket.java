@@ -3,13 +3,13 @@ package io.robe.admin.websocket;
 import io.dropwizard.auth.AuthenticationException;
 import io.robe.admin.hibernate.dao.*;
 import io.robe.auth.data.store.*;
+import io.robe.auth.token.BasicToken;
 import io.robe.auth.token.TokenAuthenticator;
 import io.robe.guice.GuiceBundle;
 import io.robe.websocket.WebSocket;
 import org.eclipse.jetty.websocket.api.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.context.internal.ManagedSessionContext;
-import io.robe.auth.token.BasicToken;
 
 import java.net.HttpCookie;
 import java.util.Optional;

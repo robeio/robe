@@ -6,13 +6,16 @@ import java.util.List;
 
 public interface JobInfo {
 
-    public String getName();
+    String getName();
+    String getGroup();
 
-    public String getDescription();
+    String getDescription();
 
     List<TriggerInfo> getTriggers();
 
-    public void setTriggers(List<TriggerInfo> triggers);
+    void setTriggers(List<TriggerInfo> triggers);
 
     Class<? extends Job> getJobClass();
+
+    Class<? extends JobInfoProvider> getProvider();
 }

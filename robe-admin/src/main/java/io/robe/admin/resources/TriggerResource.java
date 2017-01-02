@@ -1,23 +1,27 @@
 package io.robe.admin.resources;
 
 import io.dropwizard.hibernate.UnitOfWork;
-import io.dropwizard.jersey.PATCH;
+import io.robe.admin.hibernate.dao.QuartzJobDao;
 import io.robe.admin.hibernate.dao.QuartzTriggerDao;
-import io.robe.admin.quartz.hibernate.TriggerEntity;
+import io.robe.admin.hibernate.entity.HibernateJobInfo;
+import io.robe.admin.hibernate.entity.HibernateTriggerInfo;
+import io.robe.admin.quartz.HibernateJobInfoProvider;
 import io.robe.auth.Credentials;
 import io.robe.auth.RobeAuth;
 import io.robe.common.service.RobeService;
-import io.robe.common.service.search.SearchParam;
-import io.robe.common.service.search.model.SearchModel;
-import io.robe.common.utils.reflection.Fields;
+import io.robe.quartz.JobManager;
+import io.robe.quartz.info.JobInfo;
+import io.robe.quartz.info.TriggerInfo;
 import org.hibernate.FlushMode;
+import org.quartz.SchedulerException;
+import org.quartz.Trigger;
+import org.quartz.TriggerKey;
 
 import javax.inject.Inject;
 import javax.validation.Valid;
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
-import java.util.List;
 
 import static org.hibernate.CacheMode.GET;
 
@@ -28,137 +32,186 @@ import static org.hibernate.CacheMode.GET;
 public class TriggerResource {
 
     @Inject
-    private QuartzTriggerDao quartzTriggerDao;
+    private QuartzJobDao jobDao;
+    @Inject
+    private QuartzTriggerDao triggerDao;
+
 
     /**
-     * Return all TriggerEntity as a collection
-     *
-     * @param credentials auto fill by {@link RobeAuth} annotation for authentication.
-     * @return all {@link TriggerEntity} as a collection
-     */
-    @RobeService(group = "QuartzJob", description = "Returns all TriggerEntity as a collection.")
-    @GET
-    @UnitOfWork(readOnly = true, cacheMode = GET, flushMode = FlushMode.MANUAL)
-    public List<TriggerEntity> getAll(@RobeAuth Credentials credentials, @SearchParam SearchModel search) {
-        return quartzTriggerDao.findAllStrict(search);
-    }
-
-    /**
-     * Return a TriggerEntity resource  with the matches given id.
-     * <p>
-     * Status Code:
-     * Not Found  404
+     * Create a {@link HibernateTriggerInfo} resource.
      *
      * @param credentials auto fill by @{@link RobeAuth} annotation for authentication.
-     * @param id          This is  the oid of {@link TriggerEntity}
-     * @return a  {@link TriggerEntity} resource with the matches given id.
+     * @param model       This is the one model of {@link HibernateTriggerInfo}
+     * @return create a {@link HibernateTriggerInfo} resource.
      */
-    @RobeService(group = "QuartzJob", description = "Returns a TriggerEntity resource with the matches given id.")
-    @Path("{id}")
-    @GET
-    @UnitOfWork(readOnly = true, cacheMode = GET, flushMode = FlushMode.MANUAL)
-    public TriggerEntity get(@RobeAuth Credentials credentials, @PathParam("id") String id) {
-        TriggerEntity entity = quartzTriggerDao.findById(id);
-        if (entity == null) {
-            throw new WebApplicationException(Response.status(404).build());
-        }
-        return entity;
-    }
-
-    /**
-     * Create a {@link TriggerEntity} resource.
-     *
-     * @param credentials auto fill by @{@link RobeAuth} annotation for authentication.
-     * @param model       This is the one model of {@link TriggerEntity}
-     * @return create a {@link TriggerEntity} resource.
-     */
-    @RobeService(group = "QuartzJob", description = "Create a TriggerEntity resource.")
+    @RobeService(group = "QuartzJob", description = "Create a HibernateTriggerInfo resource.")
     @POST
     @UnitOfWork
-    public TriggerEntity create(@RobeAuth Credentials credentials, @Valid TriggerEntity model) {
-        return quartzTriggerDao.create(model);
+    public HibernateTriggerInfo create(@RobeAuth Credentials credentials, @Valid HibernateTriggerInfo model) {
+        return triggerDao.create(model);
     }
 
     /**
-     * Update a TriggerEntity resource  with the matches given id.
+     * Update a HibernateTriggerInfo resource  with the matches given id.
      * <p>
      * Status Code:
      * Not Found  404
      * Not Matches 412
      *
      * @param credentials auto fill by @{@link RobeAuth} annotation for authentication.
-     * @param id          This is  the oid of {@link TriggerEntity}
-     * @param model       This is the one model of {@link TriggerEntity}
-     * @return Update a  {@link TriggerEntity} resource with the matches given id.
+     * @param id          This is  the oid of {@link HibernateTriggerInfo}
+     * @param model       This is the one model of {@link HibernateTriggerInfo}
+     * @return Update a  {@link HibernateTriggerInfo} resource with the matches given id.
      */
-    @RobeService(group = "QuartzJob", description = "Update a TriggerEntity resource with the matches given id.")
+    @RobeService(group = "QuartzJob", description = "Update a HibernateTriggerInfo resource with the matches given id.")
     @PUT
     @UnitOfWork
     @Path("{id}")
-    public TriggerEntity update(@RobeAuth Credentials credentials, @PathParam("id") String id, @Valid TriggerEntity model) {
+    public HibernateTriggerInfo update(@RobeAuth Credentials credentials, @PathParam("id") String id, @Valid HibernateTriggerInfo model) {
         if (!id.equals(model.getOid())) {
             throw new WebApplicationException(Response.status(412).build());
         }
-        TriggerEntity entity = quartzTriggerDao.findById(id);
+        HibernateTriggerInfo entity = triggerDao.findById(id);
         if (entity == null) {
             throw new WebApplicationException(Response.status(404).build());
         }
-        quartzTriggerDao.detach(entity);
-        return quartzTriggerDao.update(model);
+        triggerDao.detach(entity);
+        return triggerDao.update(model);
     }
 
     /**
-     * Update a TriggerEntity resource with the matches given id.
+     * Delete a HibernateTriggerInfo resource  with the matches given id.
      * <p>
      * Status Code:
      * Not Found  404
      * Not Matches 412
      *
      * @param credentials auto fill by @{@link RobeAuth} annotation for authentication.
-     * @param id          This is  the oid of {@link TriggerEntity}
-     * @param model       This is the one model of {@link TriggerEntity}
-     * @return Updates a  {@link TriggerEntity} resource with the matches given id.
+     * @param id          This is  the oid of {@link HibernateTriggerInfo}
+     * @param model       This is the one model of {@link HibernateTriggerInfo}
+     * @return Delete a  {@link HibernateTriggerInfo} resource  with the matches given id.
      */
-    @RobeService(group = "QuartzJob", description = "Update a TriggerEntity resource with the matches given id.")
-    @PATCH
-    @UnitOfWork
-    @Path("{id}")
-    public TriggerEntity merge(@RobeAuth Credentials credentials, @PathParam("id") String id, TriggerEntity model) {
-        if (!id.equals(model.getOid()))
-            throw new WebApplicationException(Response.status(412).build());
-        TriggerEntity dest = quartzTriggerDao.findById(id);
-        if (dest == null) {
-            throw new WebApplicationException(Response.status(404).build());
-        }
-        Fields.mergeRight(model, dest);
-        return quartzTriggerDao.update(dest);
-    }
-
-    /**
-     * Delete a TriggerEntity resource  with the matches given id.
-     * <p>
-     * Status Code:
-     * Not Found  404
-     * Not Matches 412
-     *
-     * @param credentials auto fill by @{@link RobeAuth} annotation for authentication.
-     * @param id          This is  the oid of {@link TriggerEntity}
-     * @param model       This is the one model of {@link TriggerEntity}
-     * @return Delete a  {@link TriggerEntity} resource  with the matches given id.
-     */
-    @RobeService(group = "QuartzJob", description = "Delete a TriggerEntity resource with the matches given id.")
+    @RobeService(group = "QuartzJob", description = "Delete a HibernateTriggerInfo resource with the matches given id.")
     @DELETE
     @UnitOfWork
     @Path("{id}")
-    public TriggerEntity delete(@RobeAuth Credentials credentials, @PathParam("id") String id, @Valid TriggerEntity model) {
+    public HibernateTriggerInfo delete(@RobeAuth Credentials credentials, @PathParam("id") String id, @Valid HibernateTriggerInfo model) {
         if (!id.equals(model.getOid())) {
             throw new WebApplicationException(Response.status(412).build());
         }
-        TriggerEntity entity = quartzTriggerDao.findById(id);
+        HibernateTriggerInfo entity = triggerDao.findById(id);
         if (entity == null) {
             throw new WebApplicationException(Response.status(404).build());
         }
-        return quartzTriggerDao.delete(entity);
+        return triggerDao.delete(entity);
+    }
+
+    @RobeService(group = "HibernateJobInfo", description = "Returns all HibernateTriggerInfo as a collection with the matches given job id.")
+    @PUT
+    @Path("{id}/schedule")
+    @UnitOfWork(readOnly = true, cacheMode = GET, flushMode = FlushMode.MANUAL)
+    public boolean schedule(@RobeAuth Credentials credentials, @PathParam("id") String id) {
+        HibernateTriggerInfo info = triggerDao.findById(id);
+        HibernateJobInfo jobEntity = jobDao.findById(info.getJobOid());
+        if (info == null || jobEntity == null) {
+            throw new WebApplicationException(Response.status(404).build());
+        }
+        JobInfo job = new HibernateJobInfoProvider().getJob(jobEntity.getJobClass());
+
+        try {
+            if (info.getType().equals(TriggerInfo.Type.CRON) ||
+                    info.getType().equals(TriggerInfo.Type.SIMPLE)) {
+                Trigger trigger = new HibernateJobInfoProvider().convert2Trigger(info, job);
+                JobManager.getInstance().scheduleTrigger(trigger);
+                return true;
+            }
+        } catch (SchedulerException e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
+
+    /**
+     * Returns all HibernateTriggerInfo as a collection with the matches given job id.
+     *
+     * @param credentials auto fill by {@link RobeAuth} annotation for authentication.
+     * @return all {@link HibernateTriggerInfo} as a collection
+     */
+    @RobeService(group = "HibernateJobInfo", description = "Returns all HibernateTriggerInfo as a collection with the matches given job id.")
+    @PUT
+    @Path("{id}/unschedule")
+    @UnitOfWork(readOnly = true, cacheMode = GET, flushMode = FlushMode.MANUAL)
+    public boolean unschedule(@RobeAuth Credentials credentials, @PathParam("id") String id) {
+        HibernateTriggerInfo info = triggerDao.findById(id);
+        HibernateJobInfo jobEntity = jobDao.findById(info.getJobOid());
+
+        if (info == null || jobEntity == null) {
+            throw new WebApplicationException(Response.status(404).build());
+        }
+        JobInfo job = new HibernateJobInfoProvider().getJob(jobEntity.getJobClass());
+
+        if (info == null) {
+            throw new WebApplicationException(Response.status(404).build());
+        }
+        try {
+            if (info.getType().equals(TriggerInfo.Type.CRON) ||
+                    info.getType().equals(TriggerInfo.Type.SIMPLE)) {
+                Trigger trigger = new HibernateJobInfoProvider().convert2Trigger(info, job);
+                JobManager.getInstance().unScheduleTrigger(trigger);
+                return true;
+            }
+        } catch (SchedulerException e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
+
+    /**
+     * Returns all HibernateTriggerInfo as a collection with the matches given job id.
+     *
+     * @param credentials auto fill by {@link RobeAuth} annotation for authentication.
+     * @return all {@link HibernateTriggerInfo} as a collection
+     */
+    @RobeService(group = "HibernateJobInfo", description = "Returns all HibernateTriggerInfo as a collection with the matches given job id.")
+    @PUT
+    @Path("{id}/pause")
+    @UnitOfWork(readOnly = true, cacheMode = GET, flushMode = FlushMode.MANUAL)
+    public boolean pause(@RobeAuth Credentials credentials, @PathParam("id") String id) {
+        HibernateTriggerInfo info = triggerDao.findById(id);
+        if (info == null) {
+            throw new WebApplicationException(Response.status(404).build());
+        }
+        try {
+            JobManager.getInstance().pauseTrigger(TriggerKey.triggerKey(info.getName(), info.getGroup()));
+        } catch (SchedulerException e) {
+            e.printStackTrace();
+            return false;
+        }
+        return true;
+    }
+
+    /**
+     * Returns all HibernateTriggerInfo as a collection with the matches given job id.
+     *
+     * @param credentials auto fill by {@link RobeAuth} annotation for authentication.
+     * @return all {@link HibernateTriggerInfo} as a collection
+     */
+    @RobeService(group = "HibernateJobInfo", description = "Returns all HibernateTriggerInfo as a collection with the matches given job id.")
+    @PUT
+    @Path("{id}/resume")
+    @UnitOfWork
+    public boolean resume(@RobeAuth Credentials credentials, @PathParam("id") String id) {
+        HibernateTriggerInfo info = triggerDao.findById(id);
+        if (info == null) {
+            throw new WebApplicationException(Response.status(404).build());
+        }
+        try {
+            JobManager.getInstance().resumeTrigger(TriggerKey.triggerKey(info.getName(), info.getGroup()));
+        } catch (SchedulerException e) {
+            e.printStackTrace();
+            return false;
+        }
+        return true;
     }
 
 }

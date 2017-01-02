@@ -1,6 +1,5 @@
 package io.robe.admin.hibernate.dao;
 
-import javax.inject.Inject;
 import io.robe.admin.hibernate.entity.Permission;
 import io.robe.auth.data.entry.PermissionEntry;
 import io.robe.auth.data.store.PermissionStore;
@@ -10,6 +9,7 @@ import org.hibernate.Criteria;
 import org.hibernate.SessionFactory;
 import org.hibernate.criterion.Restrictions;
 
+import javax.inject.Inject;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;

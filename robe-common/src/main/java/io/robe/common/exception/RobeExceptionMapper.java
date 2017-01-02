@@ -48,7 +48,7 @@ public class RobeExceptionMapper implements ExceptionMapper<Exception> {
         } else if (e instanceof WebApplicationException) {
             WebApplicationException we = (WebApplicationException) e;
             RobeMessage error = new RobeMessage.Builder().id(id).message(we.getMessage()).status(we.getResponse().getStatus()).build();
-            return Response.status(we.getResponse().getStatus()).entity(error).type(MediaType.APPLICATION_JSON).build();
+            return Response.fromResponse(we.getResponse()).entity(error).type(MediaType.APPLICATION_JSON).build();
         } else {
             if (e.getClass().getName().equals("org.hibernate.exception.ConstraintViolationException")) {
                 if (e.getCause() != null && e.getCause().getMessage() != null) {
