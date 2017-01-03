@@ -1,32 +1,64 @@
-### By Annotation
-```java
-@RobeJob(name = "Hello Job", description = "A simple hJobInfo says hello", triggers = {
-       @RobeTrigger(cron = "0/5 * * * * ?", name = "Every 5 seconds", group = "Sample", type = TriggerInfo.Type.CRON)
-})
-public class HelloJob implements Job {
-   private static final Logger LOGGER = LoggerFactory.getLogger(HelloJob.class);
+# Robe-Quartz
+Robe-quartz modules helps developer to define and manage jobs easily. With provider API and annotation support it discovers jobs and triggers easily and schedules them. 
+By implementing the following interfaces you can easly include your custom job provider to the central management.
+These interfaces are;
 
-   @Override
-   public void execute(JobExecutionContext jobExecutionContext) throws JobExecutionException {
-       LOGGER.info("-------------------------");
-       LOGGER.info("Helllllloooooooo!!!");
-       LOGGER.info("-------------------------");
-   }
+* io.robe.quartz.info.JobInfoProvider
+* io.robe.quartz.info.JobInfo
+* io.robe.quartz.info.TriggerInfo
+
+You can find sample default implementations for annotation support at `io.robe.quartz.info.annotation` package at robe-quartz.
+Also hibernate implementation for the API is included at robe-admin. Here some quick examples
+
+### By Annotation (default)
+For using the default annotation support you should provide all the triggers as an annotation array. 
+You can see below.
+
+```java
+@RobeJob(name = "Hello ANJOB", description = "A simple job says ANJOB", triggers = {
+        @RobeTrigger(cron = "0/6 * * * * ?", name = "Every 6 seconds", group = "Sample", type = TriggerInfo.Type.CRON),
+        @RobeTrigger(cron = "0/10 * * * * ?", name = "Every 10 seconds", group = "Sample", type = TriggerInfo.Type.CRON)
+})
+public class AnnJob implements Job {
+    private static final Logger LOGGER = LoggerFactory.getLogger(AnnJob.class);
+
+    @Override
+    public void execute(JobExecutionContext jobExecutionContext) throws JobExecutionException {
+        LOGGER.info("---" + jobExecutionContext.getTrigger().getKey().getName());
+    }
 }
 ```
+This job will print the logs below according to their cron timing.
 
-### By DB (Hibernate)
+``` bash
+INFO  [2017-01-03 07:06:48,005] io.robe.admin.AnnJob: ---Every 6 seconds
+INFO  [2017-01-03 07:06:50,004] io.robe.admin.AnnJob: ---Every 10 seconds
+```
+### By Hibernate (custom)
+For using custom api, you should give the RobeJob annotation not with triggers but with a provider class. This time it is `HibernateJobInfoProvider.class`.
+You can see the custom impl of the provider API. For more please take a look at robe-admin.
+
 ```java
-@RobeJob(name = "Hello Job", description = "A simple hJobInfo says hello",
-        provider = HibernateJobInfoProvider.class
-)
-public class HelloJob implements Job {
-    private static final Logger LOGGER = LoggerFactory.getLogger(HelloJob.class);
+@RobeJob(name = "DBJOB", description = "A simple job says DB", provider = HibernateJobInfoProvider.class)
+public class DBJob implements Job {
+    private static final Logger LOGGER = LoggerFactory.getLogger(DBJob.class);
+
     @Override
     public void execute(JobExecutionContext jobExecutionContext) throws JobExecutionException {
         LOGGER.info("-------------------------");
-        LOGGER.info("Helllllloooooooo!!!");
+        LOGGER.info("DB!!!" + jobExecutionContext.getTrigger().getKey().getName());
         LOGGER.info("-------------------------");
     }
 }
+```
+
+This job will print the logs below according to their cron timing.
+
+``` bash
+INFO  [2017-01-03 07:06:48,005] io.robe.admin.DBJob: -------------------------
+INFO  [2017-01-03 07:06:48,005] io.robe.admin.DBJob: DB!!!Every 6 second
+INFO  [2017-01-03 07:06:48,005] io.robe.admin.DBJob: -------------------------
+INFO  [2017-01-03 07:06:50,004] io.robe.admin.DBJob: -------------------------
+INFO  [2017-01-03 07:06:50,004] io.robe.admin.DBJob: DB!!!Every 10 second
+INFO  [2017-01-03 07:06:50,004] io.robe.admin.DBJob: -------------------------
 ```
