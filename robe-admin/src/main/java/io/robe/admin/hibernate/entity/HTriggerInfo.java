@@ -9,7 +9,7 @@ import javax.persistence.*;
 @Table(name = "TriggerInfo", uniqueConstraints = {
         @UniqueConstraint(columnNames = {"jobOid", "name"})
 })
-public class HibernateTriggerInfo extends BaseEntity implements TriggerInfo {
+public class HTriggerInfo extends BaseEntity implements TriggerInfo {
 
     private String name;
     @Column(name = "triggerGroup")

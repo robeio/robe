@@ -1,7 +1,7 @@
 package io.robe.admin.dto;
 
-import io.robe.admin.hibernate.entity.HibernateJobInfo;
-import io.robe.admin.hibernate.entity.HibernateTriggerInfo;
+import io.robe.admin.hibernate.entity.HJobInfo;
+import io.robe.admin.hibernate.entity.HTriggerInfo;
 import io.robe.admin.job.SampleJob;
 import io.robe.quartz.info.TriggerInfo;
 import org.junit.Assert;
@@ -19,13 +19,13 @@ import static junit.framework.TestCase.assertEquals;
  */
 @FixMethodOrder
 public class JobInfoDTOTest {
-    HibernateJobInfo entity;
+    HJobInfo entity;
     ArrayList<TriggerInfo> triggerInfos;
     JobInfoDTO dto;
 
     @Before
     public void setUp() throws Exception {
-        HibernateJobInfo entity = new HibernateJobInfo();
+        HJobInfo entity = new HJobInfo();
         entity.setName("Entity");
         entity.setDescription("Description");
         entity.setJobClass(entity.getJobClass());
@@ -53,24 +53,24 @@ public class JobInfoDTOTest {
     public void jobEntityDTO() {
         JobInfoDTO dto = new JobInfoDTO();
         Assert.assertTrue(dto.getTriggers().size() == 0);
-        dto.setTriggers(Collections.singletonList(new HibernateTriggerInfo()));
+        dto.setTriggers(Collections.singletonList(new HTriggerInfo()));
         Assert.assertTrue(dto.getTriggers().size() == 1);
     }
 
     @Test
     public void jobEntityDTOWithJobEntity() {
-        HibernateJobInfo hibernateJobInfo = new HibernateJobInfo();
-        hibernateJobInfo.setJobClass(SampleJob.class);
-        hibernateJobInfo.setName("Name");
-        hibernateJobInfo.setDescription("Description");
-        JobInfoDTO dto = new JobInfoDTO(hibernateJobInfo);
+        HJobInfo hJobInfo = new HJobInfo();
+        hJobInfo.setJobClass(SampleJob.class);
+        hJobInfo.setName("Name");
+        hJobInfo.setDescription("Description");
+        JobInfoDTO dto = new JobInfoDTO(hJobInfo);
 
-        Assert.assertEquals(hibernateJobInfo.getDescription(), dto.getDescription());
-        Assert.assertEquals(hibernateJobInfo.getName(), dto.getName());
-        Assert.assertEquals(hibernateJobInfo.getJobClass(), dto.getJobClass());
+        Assert.assertEquals(hJobInfo.getDescription(), dto.getDescription());
+        Assert.assertEquals(hJobInfo.getName(), dto.getName());
+        Assert.assertEquals(hJobInfo.getJobClass(), dto.getJobClass());
 
         Assert.assertTrue(dto.getTriggers().size() == 0);
-        dto.setTriggers(Collections.singletonList(new HibernateTriggerInfo()));
+        dto.setTriggers(Collections.singletonList(new HTriggerInfo()));
         Assert.assertTrue(dto.getTriggers().size() == 1);
 
     }

@@ -1,6 +1,6 @@
 package io.robe.admin.dto;
 
-import io.robe.admin.hibernate.entity.HibernateJobInfo;
+import io.robe.admin.hibernate.entity.HJobInfo;
 import io.robe.quartz.info.JobInfo;
 import io.robe.quartz.info.TriggerInfo;
 
@@ -8,7 +8,7 @@ import javax.persistence.Transient;
 import java.util.ArrayList;
 import java.util.List;
 
-public class JobInfoDTO extends HibernateJobInfo implements JobInfo {
+public class JobInfoDTO extends HJobInfo implements JobInfo {
 
     @Transient
     private List<TriggerInfo> triggers = new ArrayList<>();
@@ -20,7 +20,7 @@ public class JobInfoDTO extends HibernateJobInfo implements JobInfo {
 
     }
 
-    public JobInfoDTO(HibernateJobInfo entity) {
+    public JobInfoDTO(HJobInfo entity) {
         setJobClass(entity.getJobClass());
         setName(entity.getName());
         setGroup(entity.getGroup());

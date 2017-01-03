@@ -3,10 +3,10 @@ package io.robe.admin.resources;
 import io.dropwizard.hibernate.UnitOfWork;
 import io.robe.admin.dto.JobInfoDTO;
 import io.robe.admin.dto.TriggerInfoDTO;
-import io.robe.admin.hibernate.dao.QuartzJobDao;
-import io.robe.admin.hibernate.dao.QuartzTriggerDao;
-import io.robe.admin.hibernate.entity.HibernateJobInfo;
-import io.robe.admin.hibernate.entity.HibernateTriggerInfo;
+import io.robe.admin.hibernate.dao.JobDao;
+import io.robe.admin.hibernate.dao.TriggerDao;
+import io.robe.admin.hibernate.entity.HJobInfo;
+import io.robe.admin.hibernate.entity.HTriggerInfo;
 import io.robe.admin.quartz.HibernateJobInfoProvider;
 import io.robe.auth.Credentials;
 import io.robe.auth.RobeAuth;
@@ -32,27 +32,27 @@ import static org.hibernate.CacheMode.GET;
 @Path("quartzjobs")
 @Consumes(MediaType.APPLICATION_JSON)
 @Produces(MediaType.APPLICATION_JSON)
-public class QuartzJobResource {
+public class JobResource {
 
 
     @Inject
-    private QuartzTriggerDao triggerDao;
+    private TriggerDao triggerDao;
 
     @Inject
-    private QuartzJobDao jobDao;
+    private JobDao jobDao;
 
     /**
-     * Return all HibernateJobInfo as a collection
+     * Return all HJobInfo as a collection
      *
      * @param credentials auto fill by {@link RobeAuth} annotation for authentication.
-     * @return all {@link HibernateJobInfo} as a collection
+     * @return all {@link HJobInfo} as a collection
      */
-    @RobeService(group = "HibernateJobInfo", description = "Returns all HibernateJobInfo as a collection.")
+    @RobeService(group = "HJobInfo", description = "Returns all HJobInfo as a collection.")
     @GET
     @UnitOfWork(readOnly = true, cacheMode = GET, flushMode = FlushMode.MANUAL)
     public Collection<JobInfoDTO> getAll(@RobeAuth Credentials credentials, @SearchParam SearchModel search) {
         List<JobInfoDTO> dtoList = new LinkedList<>();
-        for (HibernateJobInfo info : jobDao.findAllStrict(search)) {
+        for (HJobInfo info : jobDao.findAllStrict(search)) {
             JobInfoDTO dto = new JobInfoDTO(info);
             try {
                 if (!JobManager.getInstance().isScheduledJob(dto.getName(), dto.getGroup())) {
@@ -73,21 +73,21 @@ public class QuartzJobResource {
     }
 
     /**
-     * Return a HibernateJobInfo resource  with the matches given id.
+     * Return a HJobInfo resource  with the matches given id.
      * <p>
      * Status Code:
      * Not Found  404
      *
      * @param credentials auto fill by @{@link RobeAuth} annotation for authentication.
-     * @param id          This is  the oid of {@link HibernateJobInfo}
-     * @return a  {@link HibernateJobInfo} resource with the matches given id.
+     * @param id          This is  the oid of {@link HJobInfo}
+     * @return a  {@link HJobInfo} resource with the matches given id.
      */
-    @RobeService(group = "HibernateJobInfo", description = "Returns a HibernateJobInfo resource with the matches given id.")
+    @RobeService(group = "HJobInfo", description = "Returns a HJobInfo resource with the matches given id.")
     @Path("{id}")
     @GET
     @UnitOfWork(readOnly = true, cacheMode = GET, flushMode = FlushMode.MANUAL)
-    public HibernateJobInfo get(@RobeAuth Credentials credentials, @PathParam("id") String id) {
-        HibernateJobInfo entity = jobDao.findById(id);
+    public HJobInfo get(@RobeAuth Credentials credentials, @PathParam("id") String id) {
+        HJobInfo entity = jobDao.findById(id);
         if (entity == null) {
             throw new WebApplicationException(Response.status(404).build());
         }
@@ -96,18 +96,18 @@ public class QuartzJobResource {
 
 
     /**
-     * Returns all HibernateTriggerInfo as a collection with the matches given job id.
+     * Returns all HTriggerInfo as a collection with the matches given job id.
      *
      * @param credentials auto fill by {@link RobeAuth} annotation for authentication.
-     * @return all {@link HibernateTriggerInfo} as a collection
+     * @return all {@link HTriggerInfo} as a collection
      */
-    @RobeService(group = "HibernateJobInfo", description = "Returns all HibernateTriggerInfo as a collection with the matches given job id.")
+    @RobeService(group = "HJobInfo", description = "Returns all HTriggerInfo as a collection with the matches given job id.")
     @GET
     @Path("{id}/triggers")
     @UnitOfWork
     public List<TriggerInfoDTO> getJobTriggers(@RobeAuth Credentials credentials, @PathParam("id") String id) {
         List<TriggerInfoDTO> dtos = new LinkedList<>();
-        for (HibernateTriggerInfo info : triggerDao.findByJobOid(id)) {
+        for (HTriggerInfo info : triggerDao.findByJobOid(id)) {
             TriggerInfoDTO dto = new TriggerInfoDTO(info);
             try {
                 if (!JobManager.getInstance().isScheduledTrigger(dto.getName(), dto.getGroup())) {
@@ -128,17 +128,17 @@ public class QuartzJobResource {
     }
 
     /**
-     * Returns all HibernateTriggerInfo as a collection with the matches given job id.
+     * Returns all HTriggerInfo as a collection with the matches given job id.
      *
      * @param credentials auto fill by {@link RobeAuth} annotation for authentication.
-     * @return all {@link HibernateTriggerInfo} as a collection
+     * @return all {@link HTriggerInfo} as a collection
      */
-    @RobeService(group = "HibernateJobInfo", description = "Returns all HibernateTriggerInfo as a collection with the matches given job id.")
+    @RobeService(group = "HJobInfo", description = "Returns all HTriggerInfo as a collection with the matches given job id.")
     @PUT
     @Path("{id}/schedule")
     @UnitOfWork(readOnly = true, cacheMode = GET, flushMode = FlushMode.MANUAL)
     public boolean schedule(@RobeAuth Credentials credentials, @PathParam("id") String id) {
-        HibernateJobInfo info = jobDao.findById(id);
+        HJobInfo info = jobDao.findById(id);
         if (info == null) {
             throw new WebApplicationException(Response.status(404).build());
         }
@@ -161,17 +161,17 @@ public class QuartzJobResource {
     }
 
     /**
-     * Returns all HibernateTriggerInfo as a collection with the matches given job id.
+     * Returns all HTriggerInfo as a collection with the matches given job id.
      *
      * @param credentials auto fill by {@link RobeAuth} annotation for authentication.
-     * @return all {@link HibernateTriggerInfo} as a collection
+     * @return all {@link HTriggerInfo} as a collection
      */
-    @RobeService(group = "HibernateJobInfo", description = "Returns all HibernateTriggerInfo as a collection with the matches given job id.")
+    @RobeService(group = "HJobInfo", description = "Returns all HTriggerInfo as a collection with the matches given job id.")
     @PUT
     @Path("{id}/unschedule")
     @UnitOfWork(readOnly = true, cacheMode = GET, flushMode = FlushMode.MANUAL)
     public boolean unschedule(@RobeAuth Credentials credentials, @PathParam("id") String id) {
-        HibernateJobInfo info = jobDao.findById(id);
+        HJobInfo info = jobDao.findById(id);
         if (info == null) {
             throw new WebApplicationException(Response.status(404).build());
         }
@@ -184,17 +184,17 @@ public class QuartzJobResource {
     }
 
     /**
-     * Returns all HibernateTriggerInfo as a collection with the matches given job id.
+     * Returns all HTriggerInfo as a collection with the matches given job id.
      *
      * @param credentials auto fill by {@link RobeAuth} annotation for authentication.
-     * @return all {@link HibernateTriggerInfo} as a collection
+     * @return all {@link HTriggerInfo} as a collection
      */
-    @RobeService(group = "HibernateJobInfo", description = "Returns all HibernateTriggerInfo as a collection with the matches given job id.")
+    @RobeService(group = "HJobInfo", description = "Returns all HTriggerInfo as a collection with the matches given job id.")
     @PUT
     @Path("{id}/pause")
     @UnitOfWork(readOnly = true, cacheMode = GET, flushMode = FlushMode.MANUAL)
     public boolean pause(@RobeAuth Credentials credentials, @PathParam("id") String id) {
-        HibernateJobInfo info = jobDao.findById(id);
+        HJobInfo info = jobDao.findById(id);
         if (info == null) {
             throw new WebApplicationException(Response.status(404).build());
         }
@@ -208,17 +208,17 @@ public class QuartzJobResource {
     }
 
     /**
-     * Returns all HibernateTriggerInfo as a collection with the matches given job id.
+     * Returns all HTriggerInfo as a collection with the matches given job id.
      *
      * @param credentials auto fill by {@link RobeAuth} annotation for authentication.
-     * @return all {@link HibernateTriggerInfo} as a collection
+     * @return all {@link HTriggerInfo} as a collection
      */
-    @RobeService(group = "HibernateJobInfo", description = "Returns all HibernateTriggerInfo as a collection with the matches given job id.")
+    @RobeService(group = "HJobInfo", description = "Returns all HTriggerInfo as a collection with the matches given job id.")
     @PUT
     @Path("{id}/resume")
     @UnitOfWork
     public boolean resume(@RobeAuth Credentials credentials, @PathParam("id") String id) {
-        HibernateJobInfo info = jobDao.findById(id);
+        HJobInfo info = jobDao.findById(id);
         if (info == null) {
             throw new WebApplicationException(Response.status(404).build());
         }

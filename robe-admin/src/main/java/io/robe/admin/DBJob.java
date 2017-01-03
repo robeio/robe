@@ -18,7 +18,7 @@ public class DBJob implements Job {
     @Override
     public void execute(JobExecutionContext jobExecutionContext) throws JobExecutionException {
         LOGGER.info("-------------------------");
-        LOGGER.info("DB!!!");
+        LOGGER.info("DB!!!" + jobExecutionContext.getTrigger().getKey().getName());
         LOGGER.info("-------------------------");
     }
 }

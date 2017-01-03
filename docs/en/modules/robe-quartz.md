@@ -40,7 +40,7 @@ quartz:
 ```java
 bootstrap.addBundle(new QuartzBundle<T>());
 ```
-* Use `@QJob` annotation to make your hibernateJobInfo class configured automaticly. Sample multiple trigger hibernateJobInfo.
+* Use `@QJob` annotation to make your hJobInfo class configured automaticly. Sample multiple trigger hJobInfo.
 
 ```java
 @QJob(name = "SampleJob", description = "Sample Quartz Job for a demonstration.",

@@ -118,23 +118,6 @@
     <build>
         <plugins>
             <plugin>
-                <groupId>com.qmino</groupId>
-                <artifactId>miredot-maven-plugin</artifactId>
-                <version>1.4.1</version>
-                <executions>
-                    <execution>
-                        <goals>
-                            <goal>restdoc</goal>
-                        </goals>
-                    </execution>
-                </executions>
-                <configuration>
-                    <licence>
-                        UHJvamVjdHxpby5yb2JlLnJvYmUtYWRtaW58MjAxNi0wOC0yOHx0cnVlI01Dd0NGQzAzbjY3bHVqbUc0djMxMVZnUW9kQTczNCt1QWhScE1ETStOQVpMeEdxMEhsU1QxSElmQ2lEVUdnPT0=
-                    </licence>
-                </configuration>
-            </plugin>
-            <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-shade-plugin</artifactId>
                 <version>1.7</version>

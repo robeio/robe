@@ -1,6 +1,6 @@
 package io.robe.admin.hibernate.dao;
 
-import io.robe.admin.hibernate.entity.HibernateTriggerInfo;
+import io.robe.admin.hibernate.entity.HTriggerInfo;
 import org.joda.time.DateTime;
 import org.junit.Assert;
 import org.junit.Test;
@@ -11,10 +11,10 @@ import java.util.List;
 /**
  * Created by hasanmumin on 12/10/2016.
  */
-public class QuartzHibernateTriggerInfoDaoTest extends BaseDaoTest<HibernateTriggerInfo, QuartzTriggerDao> {
+public class QuartzHTriggerInfoDaoTest extends BaseDaoTest<HTriggerInfo, TriggerDao> {
     @Override
-    public HibernateTriggerInfo instance() {
-        HibernateTriggerInfo entity = new HibernateTriggerInfo();
+    public HTriggerInfo instance() {
+        HTriggerInfo entity = new HTriggerInfo();
         entity.setName("NAME");
         entity.setActive(true);
         entity.setCron("* * * * *");
@@ -26,7 +26,7 @@ public class QuartzHibernateTriggerInfoDaoTest extends BaseDaoTest<HibernateTrig
     }
 
     @Override
-    public HibernateTriggerInfo update(HibernateTriggerInfo model) {
+    public HTriggerInfo update(HTriggerInfo model) {
         model.setName("NAME_1");
         return model;
     }
@@ -35,8 +35,8 @@ public class QuartzHibernateTriggerInfoDaoTest extends BaseDaoTest<HibernateTrig
     public void findByJobOid() {
         super.createFrom();
 
-        List<HibernateTriggerInfo> hibernateTriggerInfoEntities = dao.findByJobOid("1");
-        Assert.assertTrue(hibernateTriggerInfoEntities.size() == 1);
-        super.deleteFrom(hibernateTriggerInfoEntities.get(0));
+        List<HTriggerInfo> hTriggerInfoEntities = dao.findByJobOid("1");
+        Assert.assertTrue(hTriggerInfoEntities.size() == 1);
+        super.deleteFrom(hTriggerInfoEntities.get(0));
     }
 }

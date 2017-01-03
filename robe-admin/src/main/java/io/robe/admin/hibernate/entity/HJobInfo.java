@@ -8,7 +8,7 @@ import javax.persistence.Table;
 
 @Entity
 @Table(name = "JobInfo")
-public class HibernateJobInfo extends BaseEntity {
+public class HJobInfo extends BaseEntity {
 
     private String name;
 

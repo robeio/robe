@@ -1,14 +1,12 @@
 package io.robe.admin.quartz;
 
-import io.dropwizard.hibernate.HibernateBundle;
-import io.robe.admin.hibernate.dao.QuartzJobDao;
-import io.robe.admin.hibernate.dao.QuartzTriggerDao;
-import io.robe.admin.hibernate.entity.HibernateJobInfo;
-import io.robe.admin.hibernate.entity.HibernateTriggerInfo;
+import io.robe.admin.hibernate.dao.JobDao;
+import io.robe.admin.hibernate.dao.TriggerDao;
+import io.robe.admin.hibernate.entity.HTriggerInfo;
+import io.robe.admin.hibernate.entity.HJobInfo;
 import io.robe.guice.GuiceBundle;
 import io.robe.quartz.info.JobInfo;
 import io.robe.quartz.info.TriggerInfo;
-import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.context.internal.ManagedSessionContext;
 
@@ -22,8 +20,8 @@ public class JobPersister {
     public JobPersister(ConcurrentHashMap<String, JobInfo> jobs) {
         SessionFactory sessionFactory = GuiceBundle.getInjector().getInstance(SessionFactory.class);
         ManagedSessionContext.bind(sessionFactory.openSession());
-        QuartzJobDao jobDao = new QuartzJobDao(sessionFactory);
-        QuartzTriggerDao triggerDao = new QuartzTriggerDao(sessionFactory);
+        JobDao jobDao = new JobDao(sessionFactory);
+        TriggerDao triggerDao = new TriggerDao(sessionFactory);
         for (JobInfo info : jobs.values()) {
             insertOrUpdate(jobDao, info, triggerDao);
         }
@@ -32,10 +30,10 @@ public class JobPersister {
         ManagedSessionContext.unbind(sessionFactory);
     }
 
-    private void insertOrUpdate(QuartzJobDao jobDao, JobInfo info, QuartzTriggerDao triggerDao) {
-        HibernateJobInfo record = jobDao.findByJobClass(info.getJobClass());
+    private void insertOrUpdate(JobDao jobDao, JobInfo info, TriggerDao triggerDao) {
+        HJobInfo record = jobDao.findByJobClass(info.getJobClass());
         if (record == null) {
-            record = new HibernateJobInfo();
+            record = new HJobInfo();
             record.setJobClass(info.getJobClass());
             record.setProvider(info.getProvider());
         }
@@ -50,10 +48,10 @@ public class JobPersister {
         }
     }
 
-    private void insertOrUpdate(String jobOid, QuartzTriggerDao dao, TriggerInfo info) {
-        HibernateTriggerInfo record = dao.findByJobOidAndName(jobOid, info.getName());
+    private void insertOrUpdate(String jobOid, TriggerDao dao, TriggerInfo info) {
+        HTriggerInfo record = dao.findByJobOidAndName(jobOid, info.getName());
         if (record == null) {
-            record = new HibernateTriggerInfo();
+            record = new HTriggerInfo();
             record.setActive(true);
             record.setJobOid(jobOid);
         }

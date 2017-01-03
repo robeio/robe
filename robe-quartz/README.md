@@ -1,6 +1,6 @@
 ### By Annotation
 ```java
-@RobeJob(name = "Hello Job", description = "A simple hibernateJobInfo says hello", triggers = {
+@RobeJob(name = "Hello Job", description = "A simple hJobInfo says hello", triggers = {
        @RobeTrigger(cron = "0/5 * * * * ?", name = "Every 5 seconds", group = "Sample", type = TriggerInfo.Type.CRON)
 })
 public class HelloJob implements Job {
@@ -17,7 +17,7 @@ public class HelloJob implements Job {
 
 ### By DB (Hibernate)
 ```java
-@RobeJob(name = "Hello Job", description = "A simple hibernateJobInfo says hello",
+@RobeJob(name = "Hello Job", description = "A simple hJobInfo says hello",
         provider = HibernateJobInfoProvider.class
 )
 public class HelloJob implements Job {

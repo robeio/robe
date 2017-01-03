@@ -1,8 +1,8 @@
 package io.robe.admin.quartz;
 
 import io.robe.admin.dto.JobInfoDTO;
-import io.robe.admin.hibernate.entity.HibernateJobInfo;
-import io.robe.admin.hibernate.entity.HibernateTriggerInfo;
+import io.robe.admin.hibernate.entity.HJobInfo;
+import io.robe.admin.hibernate.entity.HTriggerInfo;
 import io.robe.hibernate.RobeHibernateBundle;
 import io.robe.quartz.RobeJob;
 import io.robe.quartz.info.JobInfo;
@@ -11,7 +11,6 @@ import io.robe.quartz.info.TriggerInfo;
 import org.hibernate.Session;
 import org.hibernate.criterion.Restrictions;
 
-import java.util.Iterator;
 import java.util.List;
 
 public class HibernateJobInfoProvider extends JobInfoProvider {
@@ -22,36 +21,38 @@ public class HibernateJobInfoProvider extends JobInfoProvider {
         if (infoAnn == null)
             return null;
         Session session = RobeHibernateBundle.getInstance().getSessionFactory().openSession();
-        HibernateJobInfo quartzHibernateJobInfo = (HibernateJobInfo) session.createCriteria(HibernateJobInfo.class).add(Restrictions.eq("jobClass", clazz)).uniqueResult();
-        if (quartzHibernateJobInfo == null) {
+        HJobInfo quartzHJobInfo = (HJobInfo) session.createCriteria(HJobInfo.class).add(Restrictions.eq("jobClass", clazz)).uniqueResult();
+        if (quartzHJobInfo == null) {
             JobInfoDTO info = new JobInfoDTO();
             info.setName(infoAnn.name());
             info.setDescription(infoAnn.description());
             info.setProvider(infoAnn.provider());
             info.setJobClass(clazz);
+            info.setGroup(infoAnn.group());
             return info;
         }
 
-        List<TriggerInfo> triggerEntities = session.createCriteria(HibernateTriggerInfo.class).add(Restrictions.eq("jobOid", quartzHibernateJobInfo.getOid())).list();
+        List<TriggerInfo> triggerEntities = session.createCriteria(HTriggerInfo.class).add(Restrictions.eq("jobOid", quartzHJobInfo.getOid())).list();
         session.close();
 
-        JobInfoDTO dto = new JobInfoDTO(quartzHibernateJobInfo);
+        JobInfoDTO dto = new JobInfoDTO(quartzHJobInfo);
 
         dto.setTriggers(triggerEntities);
 
-        Iterator<TriggerInfo> iterator = triggerEntities.iterator();
+        //TODO: This code will be active later.
+//        Iterator<TriggerInfo> iterator = triggerEntities.iterator();
 
-        while (iterator.hasNext()) {
-            TriggerInfo info = iterator.next();
-            if (info instanceof HibernateTriggerInfo) {
-                HibernateTriggerInfo hibernateTriggerInfoEntity = (HibernateTriggerInfo) info;
-                if (hibernateTriggerInfoEntity.getType().equals(TriggerInfo.Type.CRON)) {
-                    if (!hibernateTriggerInfoEntity.isActive()) {
-                        iterator.remove();
-                    }
-                }
-            }
-        }
+//        while (iterator.hasNext()) {
+//            TriggerInfo info = iterator.next();
+//            if (info instanceof HTriggerInfo) {
+//                HTriggerInfo hibernateTriggerInfoEntity = (HTriggerInfo) info;
+//                if (hibernateTriggerInfoEntity.getType().equals(TriggerInfo.Type.CRON)) {
+//                    if (false) {
+//                        iterator.remove();
+//                    }
+//                }
+//            }
+//        }
 
         return dto;
     }

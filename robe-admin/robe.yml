@@ -32,7 +32,7 @@ logging:
      level: INFO
      # Logger-specific levels.
      loggers:
-      org.hibernate.SQL: ALL
+      org.hibernate.SQL: INFO
 
 guice:
   scanPackages: [io.robe]

@@ -45,7 +45,7 @@ quartz:
 bootstrap.addBundle(new QuartzBundle<T>());
 ```
 
-* `@QJob` annotation ile hibernateJobInfo sınıfınızın otomatik yapılandırılmasını sağlayın. Örnek çoklu trigger hibernateJobInfo sınıfı:
+* `@QJob` annotation ile hJobInfo sınıfınızın otomatik yapılandırılmasını sağlayın. Örnek çoklu trigger hJobInfo sınıfı:
 
 ```java
 @QJob(name = "SampleJob", description = "Sample Quartz Job for a demonstration.",
@@ -75,7 +75,7 @@ Yapılandırma alanları iki grubu içerir:
  
 * robe-quartz yapılandırması. Paket ismi ile ortaya çıkarmak(bulmak).
  * `providers`: **JobProviders** paket listesidir. Bu sağlayıcıları kendisi arayacak . *__!!Daha sonra açıklanacak!!__*
- * `scanPackages`: Bütün hibernateJobInfo ların paket listesi.Bu paket altındaki bütün hibernateJobInfo lar otomatik ortaya çıkarılacaktır(bulunacaktır).
+ * `scanPackages`: Bütün hJobInfo ların paket listesi.Bu paket altındaki bütün hJobInfo lar otomatik ortaya çıkarılacaktır(bulunacaktır).
 * quartz yapılandırması. Quartz yapılandırma dönüşümleri:
  * `instanceName`: `org.quartz.scheduler.instanceName`
  * `threadCount`: `org.quartz.threadPool.threadCount`
