@@ -227,13 +227,14 @@ public abstract class HqlConverterUtil {
         }
 
         for(Map.Entry<String, SearchCriteria.SortType> sortTypeEntry: criteria.getOrderedSortMap().entrySet()) {
+
             String[] sorts = sortTypeEntry.getKey().split("\\.");
             switch (sorts.length) {
                 case 1:
-                    joiner.add(criteria.getAlias() + "." + sorts[0]);
+                    joiner.add(criteria.getAlias() + "." + sorts[0] + sortTypeEntry.getValue().name());
                     break;
                 case 2:
-                    joiner.add(sorts[0] + ALIAS_SUFFIX + "." + sorts[1]);
+                    joiner.add(sorts[0] + ALIAS_SUFFIX + "." + sorts[1] + sortTypeEntry.getValue().name());
                     break;
             }
         }
