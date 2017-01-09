@@ -173,7 +173,7 @@ public abstract class HqlConverterUtil {
                             field
                     ));
                 }
-                joiner.add(criterion);
+                joiner.add(" " + criterion +" ");
             }
         }
         return joiner.toString();

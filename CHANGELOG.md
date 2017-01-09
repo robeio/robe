@@ -1,5 +1,8 @@
 # Change Log
 
+## 0.5.1.0-beta.4
+* fixed Hibernate Search Query Api missing space query "AND"
+
 ## 0.5.1.0-beta.3
 * fixed Hibernate Search Query Api Oid Problem.
 * fixed Hibernate Search Query Api Sorting Problem.
