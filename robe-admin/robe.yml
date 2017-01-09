@@ -16,7 +16,7 @@ hibernate:
      # the username
      user: root
      # the password
-     password:
+     password: 2550373
      # the JDBC URL
      url: jdbc:mysql://localhost:3306/robe?autoReconnect=true&useSSL=false
      # Properties
@@ -69,7 +69,7 @@ auth:
   serverPassword: auto # auto for uuid, if it is cluster use custom password
 
 assets:
- - resourcePath: http://127.0.0.1:8080
+ - resourcePath: http://127.0.0.1:8181
    uriPath:      /ui/
    indexFile:    index.html
    assetsName:   io.robe.admin.ui

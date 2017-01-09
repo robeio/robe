@@ -8,10 +8,7 @@ import io.robe.auth.Credentials;
 import io.robe.auth.token.configuration.TokenBasedAuthConfiguration;
 import org.jasypt.encryption.pbe.PooledPBEStringEncryptor;
 import org.joda.time.DateTime;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
-import java.lang.reflect.Field;
 import java.nio.charset.StandardCharsets;
 import java.util.Date;
 import java.util.Map;
@@ -25,14 +22,12 @@ import java.util.concurrent.TimeUnit;
  * All cached permission entries will live with token.
  */
 public class BasicToken implements Credentials {
-    private static final Logger LOGGER = LoggerFactory.getLogger(BasicToken.class);
 
-    private static final PooledPBEStringEncryptor ENCRYPTOR = new PooledPBEStringEncryptor();
+    private static final PooledPBEStringEncryptor encryptor = new PooledPBEStringEncryptor();
     private static final String SEPARATOR = "--";
     private static int defaultMaxAge;
 
     private static Cache<String, Set<String>> cache;
-
 
     private String userId;
     private String username;
@@ -40,16 +35,6 @@ public class BasicToken implements Credentials {
     private String attributesHash;
     private String tokenString;
     private int maxAge;
-
-    static {
-        try {
-            Field field = Class.forName("javax.crypto.JceSecurity").getDeclaredField("isRestricted");
-            field.setAccessible(true);
-            field.set(null, java.lang.Boolean.FALSE);
-        } catch (Exception ex) {
-            throw new RuntimeException(ex);
-        }
-    }
 
     /**
      * Creates an access token with the given parameters.
@@ -77,7 +62,7 @@ public class BasicToken implements Credentials {
     public BasicToken(String tokenString) throws Exception {
         tokenString = tokenString.replaceAll("\"", "");
         tokenString = new String(BaseEncoding.base16().decode(tokenString));
-        String[] parts = ENCRYPTOR.decrypt(tokenString).split(SEPARATOR);
+        String[] parts = encryptor.decrypt(tokenString).split(SEPARATOR);
         this.userId = parts[0];
         this.username = parts[1];
         this.expireAt = new DateTime(Long.valueOf(parts[2]));
@@ -85,19 +70,19 @@ public class BasicToken implements Credentials {
     }
 
     /**
-     * Configure method for Token generation configurations and ENCRYPTOR configure
+     * Configure method for Token generation configurations and encryptor configure
      *
      * @param configuration confiuration for auth bundle
      */
     public static void configure(TokenBasedAuthConfiguration configuration) {
-        ENCRYPTOR.setPoolSize(configuration.getPoolSize());          // This would be a good value for a 4-core system
+        encryptor.setPoolSize(configuration.getPoolSize());          // This would be a good value for a 4-core system
         if (configuration.getServerPassword().equals("auto")) {
-            ENCRYPTOR.setPassword(UUID.randomUUID().toString());
+            encryptor.setPassword(UUID.randomUUID().toString());
         } else {
-            ENCRYPTOR.setPassword(configuration.getServerPassword());
+            encryptor.setPassword(configuration.getServerPassword());
         }
-        ENCRYPTOR.setAlgorithm(configuration.getAlgorithm());
-        ENCRYPTOR.initialize();
+        encryptor.setAlgorithm(configuration.getAlgorithm());
+        encryptor.initialize();
         BasicToken.defaultMaxAge = configuration.getMaxage();
 
         //Create cache for permissions.
@@ -192,7 +177,7 @@ public class BasicToken implements Credentials {
                 .append(attributesHash);
 
         // Encrypt token data string
-        String newTokenString = ENCRYPTOR.encrypt(dataString.toString());
+        String newTokenString = encryptor.encrypt(dataString.toString());
         newTokenString = BaseEncoding.base16().encode(newTokenString.getBytes());
         tokenString = newTokenString;
         return newTokenString;
@@ -247,5 +232,9 @@ public class BasicToken implements Credentials {
 
     public String getName() {
         return "BasicToken";
+    }
+
+    public static PooledPBEStringEncryptor getEncryptor() {
+        return encryptor;
     }
 }
