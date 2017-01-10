@@ -138,7 +138,10 @@ public abstract class HqlConverterUtil {
 
                 // if filter is exist
                 if(criteria.getFilters().size() > 0) {
-                    builder.append(" AND ( " ).append(getCriterions(alias, joinCriteria, variableMap)).append(" ) ");
+                    String criterions = getCriterions(alias, joinCriteria, variableMap);
+                    if(!Validations.isEmptyOrNull(criterions)) {
+                        builder.append(" AND ( " ).append(getCriterions(alias, joinCriteria, variableMap)).append(" ) ");
+                    }
                 }
             }
         }
@@ -164,7 +167,7 @@ public abstract class HqlConverterUtil {
                     filterEntry.getValue().getValue(),
                     variable);
 
-            if(criterion != null) {
+            if(!Validations.isEmptyOrNull(criterion)) {
                 if(!Validations.isEmptyOrNull(filterEntry.getValue().getValue())) {
                     Field field = fieldMap.get(filterEntry.getKey());
                     variableMap.put(variable, getValue(
