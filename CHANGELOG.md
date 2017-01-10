@@ -1,5 +1,8 @@
 # Change Log
 
+## 0.5.1.0-beta.5
+* fixed Hibernate Search Query Api wrong Query.
+
 ## 0.5.1.0-beta.4
 * fixed Hibernate Search Query Api missing space query "AND"
 
