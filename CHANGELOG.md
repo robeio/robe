@@ -1,5 +1,8 @@
 # Change Log
 
+## 0.5.1.0-beta.6
+* changed Search Query JOIN as LEFT OUTER JOIN as Standart.
+
 ## 0.5.1.0-beta.5
 * fixed Hibernate Search Query Api wrong Query.
 

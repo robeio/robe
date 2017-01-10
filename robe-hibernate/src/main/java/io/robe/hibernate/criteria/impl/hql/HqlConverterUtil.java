@@ -126,7 +126,7 @@ public abstract class HqlConverterUtil {
                 String alias = joinCriteria.getAlias() + ALIAS_SUFFIX;
 
                 builder
-                        .append(" JOIN ")
+                        .append(" LEFT OUTER JOIN ")
                         .append(joinCriteria.getEntityClass().getName())
                         .append(" ")
                         .append(alias)
