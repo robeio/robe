@@ -5,11 +5,14 @@ import com.google.common.base.Preconditions;
 import io.dropwizard.hibernate.AbstractDAO;
 import io.robe.common.service.headers.ResponseHeadersUtil;
 import io.robe.common.service.search.model.SearchModel;
+import io.robe.common.utils.TypeReference;
 import io.robe.hibernate.RobeHibernateBundle;
-import io.robe.common.dto.Pair;
-import io.robe.hibernate.criteria.impl.hql.SearchQueryHQL;
 import io.robe.hibernate.entity.RobeEntity;
-import org.hibernate.Criteria;
+import io.robe.hibernate.query.api.criteria.Criteria;
+import io.robe.hibernate.query.api.criteria.Result;
+import io.robe.hibernate.query.api.query.Query;
+import io.robe.hibernate.query.api.query.Transformer;
+import io.robe.hibernate.query.impl.hql.TransformerImpl;
 import org.hibernate.SessionFactory;
 
 import javax.inject.Inject;
@@ -24,6 +27,7 @@ import java.util.*;
  */
 public class BaseDao<T extends RobeEntity> extends AbstractDAO<T> {
 
+    public static final TypeReference<Map<String, Object>> MAP_TYPE_REFERENCE = new TypeReference<Map<String, Object>>() {};
     @Inject
     RobeHibernateBundle bundle;
 
@@ -43,11 +47,45 @@ public class BaseDao<T extends RobeEntity> extends AbstractDAO<T> {
      *
      * @return List of entities.
      */
+    public Criteria<T> queryAllStrict(SearchModel search) {
+        Query<T> query = new Query<>(new TransformerImpl<T>(this.currentSession()));
+        return query.createCriteria(this.getEntityClass(), search);
+    }
+
+    /**
+     * Returns modified list of the entities regarding to the search model.
+     * {@inheritDoc}
+     *
+     * @return List of entities.
+     */
+    public Criteria<Map<String, Object>> queryAll(SearchModel search) {
+        Transformer<Map<String, Object>> transformer = new TransformerImpl<>(this.currentSession(), MAP_TYPE_REFERENCE.getClazz());
+        Query<Map<String, Object>> query = new Query<>(transformer);
+        return query.createCriteria(this.getEntityClass(), search);
+    }
+
+    /**
+     * Returns modified list of the entities regarding to the search model.
+     * {@inheritDoc}
+     *
+     * @return List of entities.
+     */
+    public <E> Criteria<E> queryAll(SearchModel search, Class<E> transformClass) {
+        Query<E> query = new Query<>(new TransformerImpl<>(this.currentSession(), transformClass));
+        return query.createCriteria(this.getEntityClass(), search);
+    }
+
+    /**
+     * Returns modified list of the entities regarding to the search model.
+     * {@inheritDoc}
+     *
+     * @return List of entities.
+     */
     public List<T> findAllStrict(SearchModel search) {
-        Pair<List<T>, Long> resultPair = SearchQueryHQL.pairListStrict(this.currentSession(), this.getEntityClass(), search);
-        search.setTotalCount(resultPair.getRight());
+        Result<T> resultPair = queryAllStrict(search).pairList();
+        search.setTotalCount(resultPair.getTotalCount());
         ResponseHeadersUtil.addTotalCount(search);
-        return resultPair.getLeft();
+        return resultPair.getList();
     }
 
     /**
@@ -57,10 +95,10 @@ public class BaseDao<T extends RobeEntity> extends AbstractDAO<T> {
      * @return List of entities.
      */
     public List<Map<String, Object>> findAll(SearchModel search) {
-        Pair<List<Map<String, Object>>, Long> resultPair = SearchQueryHQL.pairList(this.currentSession(), this.getEntityClass(), search);
-        search.setTotalCount(resultPair.getRight());
+        Result<Map<String, Object>> resultPair = queryAll(search).pairList();
+        search.setTotalCount(resultPair.getTotalCount());
         ResponseHeadersUtil.addTotalCount(search);
-        return resultPair.getLeft();
+        return resultPair.getList();
     }
 
     /**
@@ -70,10 +108,10 @@ public class BaseDao<T extends RobeEntity> extends AbstractDAO<T> {
      * @return List of entities.
      */
     public <E> List<E> findAll(SearchModel search, Class<E> transformClass) {
-        Pair<List<E>, Long> resultPair = SearchQueryHQL.pairList(this.currentSession(), this.getEntityClass(), search, transformClass);
-        search.setTotalCount(resultPair.getRight());
+        Result<E> resultPair = queryAll(search, transformClass).pairList();
+        search.setTotalCount(resultPair.getTotalCount());
         ResponseHeadersUtil.addTotalCount(search);
-        return resultPair.getLeft();
+        return resultPair.getList();
     }
 
     /**
@@ -82,8 +120,7 @@ public class BaseDao<T extends RobeEntity> extends AbstractDAO<T> {
      * @return List of entities.
      */
     public List<T> findAllStrict() {
-        Criteria criteria = criteria();
-        return list(criteria);
+        return queryAllStrict(null).list();
     }
 
     /**

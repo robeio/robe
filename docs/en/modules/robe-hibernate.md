@@ -58,3 +58,8 @@ private String oid;
 @Version
 private long lastUpdated;
 ```
+
+
+### Generic Criteria
+Left to Hibernate Criteria and create new  Generic Criteria.
+

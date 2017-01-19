@@ -89,11 +89,25 @@ public class Fields {
         }
     }
 
+    public static  Map<String, Field> findFieldsInMapByPredicate(Map<String, Field> fieldMap, Predicate<Field> predicate) {
+        Map<String, Field> foundFieldMap = new LinkedHashMap<>();
+        for(Map.Entry<String, Field> entry: fieldMap.entrySet()) {
+            if(predicate.test(entry.getValue())) {
+                foundFieldMap.put(entry.getKey(), entry.getValue());
+            }
+        }
+        return foundFieldMap;
+    }
+
     public static Object castValue(Field field, String value) {
+        return castValue(field.getType(), value);
+    }
+
+    public static Object castValue(Class<?> type, String value) {
         if(value == null || "null".equals(value)) {
             return null;
         }
-        switch (field.getType().getName()) {
+        switch (type.getName()) {
             case "java.math.BigDecimal":
                 return new BigDecimal(value);
             case "java.lang.Boolean":
@@ -114,8 +128,8 @@ public class Fields {
                 return new Date(Long.parseLong(value));
 
         }
-        if ((field.getType() instanceof Class && (field.getType()).isEnum())) {
-            return Enum.valueOf((Class<? extends Enum>) field.getType(), value);
+        if ((type instanceof Class && (type).isEnum())) {
+            return Enum.valueOf((Class<? extends Enum>) type, value);
         }
         return null;
     }

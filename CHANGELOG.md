@@ -1,5 +1,9 @@
 # Change Log
 
+## 0.5.1.0-beta.7
+* create new Criteria and Query Api To query as Generic by Given TransgormerImpl.
+* create HQL Transformer Impl to convert Criteria to HQL query.
+
 ## 0.5.1.0-beta.6
 * changed Search Query JOIN as LEFT OUTER JOIN as Standart.
 

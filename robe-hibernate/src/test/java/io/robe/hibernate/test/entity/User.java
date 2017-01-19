@@ -53,8 +53,7 @@ public class User extends BaseEntity {
     @Column
     private Date lastLogoutTime;
 
-    @SearchIgnore
-    @SearchFrom(entity = Role.class, filter = "name", id = "oid")
+    @SearchFrom(entity = Role.class, filter = "name")
     @Length(min = 32, max = 32)
     @NotEmpty
     @Column(length = 32)
@@ -159,5 +158,58 @@ public class User extends BaseEntity {
 
     public String getExampleTransient() {
         return exampleTransient;
+    }
+
+    @Override
+    public String toString() {
+        return "User{" +
+                "email='" + email + '\'' +
+                ", name='" + name + '\'' +
+                ", surname='" + surname + '\'' +
+                ", password='" + password + '\'' +
+                ", active=" + active +
+                ", failCount=" + failCount +
+                ", lastLoginTime=" + lastLoginTime +
+                ", lastLogoutTime=" + lastLogoutTime +
+                ", roleOid='" + roleOid + '\'' +
+                ", exampleTransient='" + exampleTransient + '\'' +
+                '}';
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof User)) return false;
+
+        User user = (User) o;
+
+        if (isActive() != user.isActive()) return false;
+        if (getFailCount() != user.getFailCount()) return false;
+        if (getEmail() != null ? !getEmail().equals(user.getEmail()) : user.getEmail() != null) return false;
+        if (getName() != null ? !getName().equals(user.getName()) : user.getName() != null) return false;
+        if (getSurname() != null ? !getSurname().equals(user.getSurname()) : user.getSurname() != null) return false;
+        if (getPassword() != null ? !getPassword().equals(user.getPassword()) : user.getPassword() != null)
+            return false;
+        if (getLastLoginTime() != null ? !getLastLoginTime().equals(user.getLastLoginTime()) : user.getLastLoginTime() != null)
+            return false;
+        if (getLastLogoutTime() != null ? !getLastLogoutTime().equals(user.getLastLogoutTime()) : user.getLastLogoutTime() != null)
+            return false;
+        if (getRoleOid() != null ? !getRoleOid().equals(user.getRoleOid()) : user.getRoleOid() != null) return false;
+        return getExampleTransient() != null ? getExampleTransient().equals(user.getExampleTransient()) : user.getExampleTransient() == null;
+    }
+
+    @Override
+    public int hashCode() {
+        int result = getEmail() != null ? getEmail().hashCode() : 0;
+        result = 31 * result + (getName() != null ? getName().hashCode() : 0);
+        result = 31 * result + (getSurname() != null ? getSurname().hashCode() : 0);
+        result = 31 * result + (getPassword() != null ? getPassword().hashCode() : 0);
+        result = 31 * result + (isActive() ? 1 : 0);
+        result = 31 * result + getFailCount();
+        result = 31 * result + (getLastLoginTime() != null ? getLastLoginTime().hashCode() : 0);
+        result = 31 * result + (getLastLogoutTime() != null ? getLastLogoutTime().hashCode() : 0);
+        result = 31 * result + (getRoleOid() != null ? getRoleOid().hashCode() : 0);
+        result = 31 * result + (getExampleTransient() != null ? getExampleTransient().hashCode() : 0);
+        return result;
     }
 }

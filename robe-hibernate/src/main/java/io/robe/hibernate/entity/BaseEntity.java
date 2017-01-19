@@ -52,4 +52,29 @@ public abstract class BaseEntity implements RobeEntity {
         this.lastUpdated = lastUpdated;
     }
 
+    @Override
+    public String toString() {
+        return "BaseEntity{" +
+                "oid='" + oid + '\'' +
+                ", lastUpdated=" + lastUpdated +
+                '}';
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof BaseEntity)) return false;
+
+        BaseEntity that = (BaseEntity) o;
+
+        if (getLastUpdated() != that.getLastUpdated()) return false;
+        return getOid() != null ? getOid().equals(that.getOid()) : that.getOid() == null;
+    }
+
+    @Override
+    public int hashCode() {
+        int result = getOid() != null ? getOid().hashCode() : 0;
+        result = 31 * result + (int) (getLastUpdated() ^ (getLastUpdated() >>> 32));
+        return result;
+    }
 }
