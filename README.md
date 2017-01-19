@@ -51,5 +51,6 @@ This module handles admin operations which are assigned to the administrators. T
 
 ![idea](docs/img/icon_IntelliJIDEA.png)
 ![webstorm](docs/img/icon_WebStorm.png)
+![BrowserStack](docs/img/icon_BrowserStack.jpg)
 
 
