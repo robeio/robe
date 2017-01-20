@@ -104,7 +104,7 @@ public class Fields {
     }
 
     public static Object castValue(Class<?> type, String value) {
-        if(value == null || "null".equals(value)) {
+        if(value == null || "null".equals(value) || (!String.class.equals(type) && "".equals(value))) {
             return null;
         }
         switch (type.getName()) {

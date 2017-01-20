@@ -2,6 +2,9 @@ package io.robe.hibernate.query.impl.hql.util;
 
 import io.robe.common.dto.Pair;
 import io.robe.hibernate.query.api.criteria.*;
+import io.robe.hibernate.query.api.query.Transformer;
+import io.robe.hibernate.query.impl.hql.TransformerImpl;
+
 import java.util.List;
 import java.util.Map;
 import java.util.StringJoiner;
@@ -11,9 +14,9 @@ import java.util.StringJoiner;
  */
 public class TransformUtil {
 
-    public static <E> String generateDataQuery(Criteria<E> criteria, Map<String, Object> parameterMap) {
+    public static <E> String generateDataQuery(Criteria<E> criteria, TransformerImpl<E> transformer, Map<String, Object> parameterMap) {
         // select
-        StringBuilder builder = new StringBuilder("SELECT ").append(SelectUtil.generateSelectQueryForList(criteria));
+        StringBuilder builder = new StringBuilder("SELECT ").append(SelectUtil.generateSelectQueryForList(criteria, transformer));
         // common quires -> { from, joins, restrictions }
         builder.append(generateCommonQueires(criteria, parameterMap));
 
@@ -31,10 +34,10 @@ public class TransformUtil {
         return builder.toString();
     }
 
-    public static Pair<String, String> generatePairResult(Criteria criteria, Map<String, Object> parameterMap) {
+    public static <E> Pair<String, String> generatePairResult(Criteria criteria, TransformerImpl<E> transformer, Map<String, Object> parameterMap) {
         Pair<String, String> pairQuery = new Pair<>();
         // select
-        StringBuilder listBuilder = new StringBuilder("SELECT ").append(SelectUtil.generateSelectQueryForList(criteria));
+        StringBuilder listBuilder = new StringBuilder("SELECT ").append(SelectUtil.generateSelectQueryForList(criteria, transformer));
         // select
         StringBuilder countBuilder = new StringBuilder("SELECT ").append("count(*)");
 

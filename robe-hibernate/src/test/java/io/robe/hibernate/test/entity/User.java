@@ -1,5 +1,6 @@
 package io.robe.hibernate.test.entity;
 
+import io.robe.common.service.search.Relation;
 import io.robe.common.service.search.SearchFrom;
 import io.robe.common.service.search.SearchIgnore;
 import io.robe.hibernate.entity.BaseEntity;
@@ -58,6 +59,11 @@ public class User extends BaseEntity {
     @NotEmpty
     @Column(length = 32)
     private String roleOid;
+
+    @Transient
+    @Relation(name = "roleOid.name")
+    private String roleName;
+
 
     @Transient
     private String exampleTransient;

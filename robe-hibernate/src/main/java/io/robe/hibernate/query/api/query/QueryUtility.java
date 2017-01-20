@@ -38,7 +38,7 @@ public class QueryUtility {
         if(reference == null) {
             for(Map.Entry<String, FieldMeta> entry:  meta.getFieldMap().entrySet()) {
                 FieldMeta fieldMeta = entry.getValue();
-                if(!fieldMeta.isSearchIgnore() && fieldMeta.getType().equals(String.class)) {
+                if(!fieldMeta.isSearchIgnore() && !fieldMeta.isTransient() && fieldMeta.getType().equals(String.class)) {
                     String fieldName = entry.getKey();
                     configureQForField(fieldName, fieldMeta, criteria, transformer, queries, joinedClassNames, restrictions);
                 }
@@ -47,7 +47,7 @@ public class QueryUtility {
             for(String filter: reference.getFilters()) {
                 String fieldName = filter;
                 FieldMeta fieldMeta =meta.getFieldMap().get(filter);
-                if(!fieldMeta.isSearchIgnore() && fieldMeta.getType().equals(String.class)) {
+                if(!fieldMeta.isSearchIgnore() && !fieldMeta.isTransient() && fieldMeta.getType().equals(String.class)) {
                     configureQForField(fieldName, fieldMeta, criteria, transformer, queries, joinedClassNames, restrictions);
                 }
             }
@@ -108,7 +108,7 @@ public class QueryUtility {
             Operator operator = Operator.value(filter[1]);
             String rawValue = filter[2];
             Parent parent = new Parent(criteria, meta, name);
-            createCriteriaByGivenName(parent, transformer);
+            if(!createCriteriaByGivenName(parent, transformer)) continue;
             FieldMeta fieldMeta = parent.meta.getFieldMap().get(parent.name);
             String valueAlias = name.replace("\\.", "_");
             Object value = getValue(operator, rawValue, fieldMeta.getType());
@@ -134,11 +134,11 @@ public class QueryUtility {
             if(Validations.isEmptyOrNull(sort)) continue;
             sort = sort.trim();
             if(sort.length() < 2) continue;
-            String op = sort.substring(0, 0);
+            String op = sort.substring(0, 1);
             Order.Type type = Order.Type.value(op);
             sort = sort.substring(1);
             Parent parent = new Parent(criteria, meta, sort);
-            createCriteriaByGivenName(parent, transformer);
+            if(!createCriteriaByGivenName(parent, transformer)) continue;
             Order order = type == Order.Type.ASC ? Order.asc(parent.name): Order.desc(parent.name);
             parent.criteria.addOrder(order);
         }
@@ -154,12 +154,11 @@ public class QueryUtility {
      */
     static <E> void configureFields(CriteriaParent criteria, EntityMeta meta, Transformer<E> transformer, String[] fields){
         if( fields == null || fields.length == 0) return;
-        Parent parent = new Parent(criteria, meta, "");
         for(String field: fields) {
             if(Validations.isEmptyOrNull(field)) continue;
             field = field.trim();
-            parent.name = field;
-            createCriteriaByGivenName(parent, transformer);
+            Parent parent = new Parent(criteria, meta, field);
+            if(!createCriteriaByGivenName(parent, transformer)) continue;
             ProjectionList projection = (ProjectionList) parent.criteria.getProjection();
             if(parent.criteria.getProjection() == null) {
                 projection = Projections.projectionList();
@@ -177,7 +176,7 @@ public class QueryUtility {
         EntityMeta meta;
         String name;
 
-        public Parent( CriteriaParent criteria, EntityMeta meta, String name){
+        public Parent(CriteriaParent criteria, EntityMeta meta, String name){
             this.criteria = criteria;
             this.meta = meta;
             this.name = name;
@@ -191,8 +190,8 @@ public class QueryUtility {
      * @param <E>
      * @return
      */
-    static <E> Parent createCriteriaByGivenName(Parent parent, Transformer<E> transformer){
-        String[] names = null;
+    static <E> boolean createCriteriaByGivenName(Parent parent, Transformer<E> transformer){
+        String[] names;
         if(parent.meta.getFieldMap().get(parent.name) != null ) {
             names = new String[] {parent.name};
         } else {
@@ -200,21 +199,31 @@ public class QueryUtility {
         }
         int lastParentIndex = names.length -1;
         int step = 0;
-        while (lastParentIndex > step) {
-            String fieldName = names[step];
-            FieldMeta fieldMeta = parent.meta.getFieldMap().get(fieldName);
-            if(fieldMeta.getReference() == null) {
-                throw new RuntimeException("Field is parent field. @SearchFrom is not defined on field ! ");
+
+        FieldMeta fieldMeta;
+        if(lastParentIndex <= step) {
+            fieldMeta = parent.meta.getFieldMap().get(names[0]);
+            if(fieldMeta == null || fieldMeta.isTransient() ) {
+                return false;
             }
-            Class<?> joinClass = fieldMeta.getReference().getTargetEntity();
-            EntityMeta joinMeta  = Query.CachedEntity.getEntityMeta(joinClass, transformer.getFinder());
-            CriteriaJoin criteriaJoin = addOrGetJoin(names[step], fieldMeta, parent.criteria);
-            parent.criteria = criteriaJoin;
-            parent.meta = joinMeta;
-            step++;
+        } else {
+            while (lastParentIndex > step) {
+                String fieldName = names[step];
+                fieldMeta = parent.meta.getFieldMap().get(fieldName);
+                if(fieldMeta == null) return false;
+                if(fieldMeta.getReference() == null) {
+                    throw new RuntimeException("Field is parent field. @SearchFrom is not defined on field ! ");
+                }
+                Class<?> joinClass = fieldMeta.getReference().getTargetEntity();
+                EntityMeta joinMeta  = Query.CachedEntity.getEntityMeta(joinClass, transformer.getFinder());
+                CriteriaJoin criteriaJoin = addOrGetJoin(names[step], fieldMeta, parent.criteria);
+                parent.criteria = criteriaJoin;
+                parent.meta = joinMeta;
+                step++;
+            }
         }
         parent.name = names[step];
-        return parent;
+        return true;
     }
 
     /**
@@ -228,8 +237,7 @@ public class QueryUtility {
         Class<?> joinClass = meta.getReference().getTargetEntity();
         CriteriaJoin join = criteriaParent.getJoin(name);
         if(join == null) {
-            String alias = Strings.unCapitalizeFirstChar(criteriaParent.getAlias() + "_" + joinClass.getSimpleName());
-            join = criteriaParent.createJoin(alias, joinClass, name);
+            join = criteriaParent.createJoin(name, joinClass, name);
         }
         return join;
     }
@@ -265,4 +273,9 @@ public class QueryUtility {
         }
         return Fields.castValue(fieldType, rawValue);
     }
+
+    public static void main(String[] args) {
+        System.out.println("kamil".substring(0, 1));
+    }
+
 }

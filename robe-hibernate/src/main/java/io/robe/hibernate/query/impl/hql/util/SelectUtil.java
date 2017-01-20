@@ -4,8 +4,14 @@ import io.robe.common.utils.Validations;
 import io.robe.hibernate.query.api.criteria.Criteria;
 import io.robe.hibernate.query.api.criteria.CriteriaJoin;
 import io.robe.hibernate.query.api.criteria.CriteriaParent;
+import io.robe.hibernate.query.api.criteria.cache.EntityMeta;
+import io.robe.hibernate.query.api.criteria.cache.FieldMeta;
 import io.robe.hibernate.query.api.criteria.projection.*;
+import io.robe.hibernate.query.api.query.Query;
+import io.robe.hibernate.query.api.query.Transformer;
+import io.robe.hibernate.query.impl.hql.TransformerImpl;
 
+import java.lang.reflect.Field;
 import java.util.Map;
 import java.util.StringJoiner;
 
@@ -19,7 +25,10 @@ public class SelectUtil {
      * @param <E>
      * @return
      */
-    public static <E> String generateSelectQueryForList(Criteria<E> criteria) {
+    public static <E> String generateSelectQueryForList(Criteria<E> criteria, TransformerImpl transformer) {
+        if(transformer.getTransformType() == TransformerImpl.TransformType.DTO) {
+            return generateDTOSelect(criteria, transformer);
+        }
         String select = selectForListRecursively(criteria);
         if("".equals(select)) {
             return criteria.getAlias();
@@ -27,6 +36,19 @@ public class SelectUtil {
         return select;
     }
 
+    public static <E> String  generateDTOSelect(Criteria<E> criteria, TransformerImpl<E> transformer){
+        StringJoiner joiner = new StringJoiner(", ");
+        EntityMeta joinMeta  = Query.CachedEntity.getEntityMeta(criteria.getEntityClass(), transformer.getFinder());
+        for(Map.Entry<String, FieldMeta> fieldEntry: joinMeta.getFieldMap().entrySet()) {
+            if(fieldEntry.getValue().hasRelation()) {
+                String relation = joinMeta.getFieldRelationMap().get(fieldEntry.getKey());
+                joiner.add(relation + " AS " + fieldEntry.getKey());
+            } else if(!fieldEntry.getValue().isTransient()) {
+                joiner.add(criteria.getAlias() + "." + fieldEntry.getKey() + " AS " + fieldEntry.getKey());
+            }
+        }
+        return joiner.toString();
+    }
     /**
      *
      * @param criteria

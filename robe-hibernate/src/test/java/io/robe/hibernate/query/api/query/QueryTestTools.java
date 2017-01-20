@@ -18,10 +18,11 @@ public class QueryTestTools extends HqlCriteriaTestTools {
     public void createCriteria() throws Exception {
         Session session = sessionFactory.openSession();
 
-        Query<User> query = new Query<>(new TransformerImpl<>(session));
+        Query<User> query = new Query<>(new TransformerImpl<>(session, User.class));
         SearchModel search = new SearchModel();
         search.setQ("Example First Role");
-        search.setFields(new String[]{"name", "active"});
+        search.setSort(new String[]{"-name", "+roleOid.name"});
+        search.setFields(new String[]{"name", "active", "roleOid.name"});
         search.setFilter(new String[][] {{"name", "=", "Kamil"}, {"active", "=", "true"}});
         List<User> userList = query.createCriteria(User.class, search).list();
         System.out.println(userList.size());

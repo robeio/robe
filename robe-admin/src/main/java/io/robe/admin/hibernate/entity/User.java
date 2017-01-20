@@ -3,6 +3,7 @@ package io.robe.admin.hibernate.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import io.robe.auth.data.entry.UserEntry;
+import io.robe.common.service.search.Relation;
 import io.robe.common.service.search.SearchFrom;
 import io.robe.common.service.search.SearchIgnore;
 import io.robe.hibernate.entity.BaseEntity;
@@ -12,6 +13,7 @@ import org.hibernate.validator.constraints.NotEmpty;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
 import java.util.Date;
@@ -62,6 +64,18 @@ public class User extends BaseEntity implements UserEntry {
     @NotEmpty
     @Column(length = 32)
     private String roleOid;
+
+    @Relation(name = "roleOid.name")
+    @Transient
+    private String roleName;
+
+    public void setRoleName(String roleName) {
+        this.roleName = roleName;
+    }
+
+    public String getRoleName() {
+        return roleName;
+    }
 
     public String getEmail() {
         return email;

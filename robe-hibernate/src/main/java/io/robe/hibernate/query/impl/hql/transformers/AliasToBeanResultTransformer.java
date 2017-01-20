@@ -6,7 +6,6 @@ import org.hibernate.transform.AliasedTupleSubsetResultTransformer;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import javax.persistence.Transient;
 import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;
 import java.util.Map;
@@ -16,16 +15,14 @@ import java.util.function.Predicate;
 
 public class AliasToBeanResultTransformer extends AliasedTupleSubsetResultTransformer {
     private static final Logger LOGGER = LoggerFactory.getLogger(AliasToBeanResultTransformer.class);
-
-    private final Class resultClass;
-    private Map<String, Field> fieldMap;
-
+    private final Class<?> resultClass;
+    private final Map<String, Field> fieldMap;
     public AliasToBeanResultTransformer(Class resultClass) {
         if ( resultClass == null ) {
             throw new IllegalArgumentException( "resultClass cannot be null" );
         }
-        fieldMap = CacheFields.getCachedFields(resultClass);
         this.resultClass = resultClass;
+        this.fieldMap = CacheFields.getCachedFields(resultClass);
     }
 
     @Override
@@ -40,13 +37,8 @@ public class AliasToBeanResultTransformer extends AliasedTupleSubsetResultTransf
             result = resultClass.newInstance();
             for ( int i = 0; i < aliases.length; i++ ) {
                 String name = aliases[i];
-                Field field = fieldMap.get(name);
-
-                if(field == null) {
-                    LOGGER.error(name + " field not found in " + resultClass.getName() + " class ! ");
-                    continue;
-                }
-                field.set(result,  tuple[i]);
+                Field field = this.fieldMap.get(name);
+                field.set(result, tuple[i]);
             }
         }
         catch ( InstantiationException e ) {
@@ -57,6 +49,7 @@ public class AliasToBeanResultTransformer extends AliasedTupleSubsetResultTransf
 
         return result;
     }
+
 
 
     /**

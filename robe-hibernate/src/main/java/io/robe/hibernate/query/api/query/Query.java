@@ -56,7 +56,12 @@ public class Query<E> {
         if(search.getFields() != null && search.getFields().length > 0) {
             QueryUtility.configureFields(criteria, meta, transformer, search.getFields());
         }
-
+        if(search.getLimit() != null) {
+            criteria.setLimit(search.getLimit());
+        }
+        if(search.getOffset() != null) {
+            criteria.setOffset(search.getOffset());
+        }
         return criteria;
     }
 
@@ -77,7 +82,7 @@ public class Query<E> {
             return meta;
         }
 
-        static EntityMeta getEntityMeta(Class<?> entityClass, EntityMetaFinder metaFinder) {
+        public static EntityMeta getEntityMeta(Class<?> entityClass, EntityMetaFinder metaFinder) {
             EntityMeta meta = entityMetaMap.get(entityClass.getName());
             EntityMetaFinder finder = entityMetaFinder.get(entityClass.getName());
             if(meta == null || (finder != null && !finder.equals(metaFinder))) {

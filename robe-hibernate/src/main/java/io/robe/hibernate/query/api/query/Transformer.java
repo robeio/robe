@@ -3,7 +3,6 @@ package io.robe.hibernate.query.api.query;
 import io.robe.hibernate.query.api.criteria.Criteria;
 import io.robe.hibernate.query.api.criteria.Result;
 import io.robe.hibernate.query.api.criteria.cache.EntityMetaFinder;
-import io.robe.hibernate.query.api.criteria.criterion.Restrictions;
 
 import java.util.List;
 

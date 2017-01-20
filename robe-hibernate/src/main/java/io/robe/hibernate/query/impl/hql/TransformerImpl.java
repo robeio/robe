@@ -1,6 +1,7 @@
 package io.robe.hibernate.query.impl.hql;
 
 import io.robe.common.dto.Pair;
+import io.robe.hibernate.query.api.criteria.cache.EntityMeta;
 import io.robe.hibernate.query.impl.hql.transformers.AliasToBeanResultTransformer;
 import io.robe.hibernate.query.api.criteria.Criteria;
 import io.robe.hibernate.query.api.criteria.Result;
@@ -14,7 +15,6 @@ import org.hibernate.transform.ResultTransformer;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import java.util.*;
-import java.util.concurrent.ConcurrentHashMap;
 
 /**
  * Created by kamilbukum on 10/01/2017.
@@ -23,21 +23,37 @@ public class TransformerImpl<E> implements Transformer<E> {
     private static final Logger LOGGER = LoggerFactory.getLogger(TransformerImpl.class);
     private static EntityMetaFinder finder = new EntityMetaFinderImpl();
     private Class<? extends E> transformClass;
+    private final TransformType transformType;
     private Session session;
 
     public TransformerImpl(Session session) {
         this(session, null);
     }
 
+    public enum TransformType {
+        ENTITY , MAP , DTO
+    }
+
     public TransformerImpl(Session session, Class<? extends E> transformClass) {
         this.session = session;
         this.transformClass = transformClass;
+        if(transformClass == null) {
+           this.transformType = TransformType.ENTITY;
+        } else if(transformClass.getName().equals(Map.class.getName())) {
+            this.transformType = TransformType.MAP;
+        } else {
+            this.transformType = TransformType.DTO;
+        }
+    }
+
+    public TransformType getTransformType() {
+        return transformType;
     }
 
     @Override
     public List<E> list(Criteria<E> criteria) {
         Map<String, Object> parameterMap = new LinkedHashMap<>();
-        String queryString = TransformUtil.generateDataQuery(criteria, parameterMap);
+        String queryString = TransformUtil.generateDataQuery(criteria, this,   parameterMap);
 
         System.out.println(queryString);
         Query query = session.createQuery(queryString);
@@ -50,18 +66,25 @@ public class TransformerImpl<E> implements Transformer<E> {
         for(Map.Entry<String, Object> parameter: parameterMap.entrySet()) {
             query.setParameter(parameter.getKey(), parameter.getValue());
         }
-        setResultTransformer(criteria, query);
+        setResultTransformer(query);
         return query.list();
     }
+
 
 
     @Override
     public Result<E> pairList(Criteria criteria) {
         Result<E> result  = new Result<>();
         Map<String, Object> parameterMap = new LinkedHashMap<>();
-        Pair<String, String> pairQuery = TransformUtil.generatePairResult(criteria, parameterMap);
+        Pair<String, String> pairQuery = TransformUtil.generatePairResult(criteria, this, parameterMap);
         Query listQuery = session.createQuery(pairQuery.getLeft());
-        setResultTransformer(criteria, listQuery);
+        if(criteria.getLimit() != null) {
+            listQuery.setMaxResults(criteria.getLimit());
+        }
+        if(criteria.getOffset() != null) {
+            listQuery.setFirstResult(criteria.getOffset());
+        }
+        setResultTransformer(listQuery);
         Query countQuery = session.createQuery(pairQuery.getRight());
         for(Map.Entry<String, Object> parameter: parameterMap.entrySet()) {
             listQuery.setParameter(parameter.getKey(), parameter.getValue());
@@ -80,21 +103,21 @@ public class TransformerImpl<E> implements Transformer<E> {
         for(Map.Entry<String, Object> parameter: parameterMap.entrySet()) {
             query.setParameter(parameter.getKey(), parameter.getValue());
         }
-        setResultTransformer(criteria, query);
+        setResultTransformer(query);
         return (long)query.uniqueResult();
     }
 
     @Override
     public Object uniqueResult(Criteria<E> criteria) {
         Map<String, Object> parameterMap = new LinkedHashMap<>();
-        String queryString = TransformUtil.generateDataQuery(criteria, parameterMap);
+        String queryString = TransformUtil.generateDataQuery(criteria, this, parameterMap);
         System.out.println(queryString);
         Query query = session.createQuery(queryString);
 
         for(Map.Entry<String, Object> parameter: parameterMap.entrySet()) {
             query.setParameter(parameter.getKey(), parameter.getValue());
         }
-        setResultTransformer(criteria, query);
+        setResultTransformer(query);
         return query.uniqueResult();
     }
 
@@ -103,28 +126,22 @@ public class TransformerImpl<E> implements Transformer<E> {
         return finder;
     }
 
-    public void setResultTransformer(Criteria criteria, Query query){
-        if(this.transformClass != null  && !this.transformClass.getName().equals(criteria.getEntityClass().getName())) {
-            query.setResultTransformer(getTransformer(transformClass));
+    public void setResultTransformer(Query query){
+        if(this.transformClass != null) {
+            ResultTransformer transformer = getTransformer(transformClass, this.getTransformType());
+            if(transformer != null) {
+                query.setResultTransformer(transformer);
+            }
         }
     }
 
-    /**
-     * Holds ResultTransformers by given TransformerClass
-     */
-    private static Map<String, ResultTransformer> transformerMap = new ConcurrentHashMap<>();
-
-    static {
-        transformerMap.put(Map.class.getName(), AliasToEntityMapResultTransformer.INSTANCE);
-    }
-
-    public static ResultTransformer getTransformer(Class<?> transformerClass){
-        ResultTransformer transformer = transformerMap.get(transformerClass.getName());
-        if(transformer == null) {
-            transformer = new AliasToBeanResultTransformer(transformerClass);
-            transformerMap.put(transformerClass.getName(), transformer);
-            LOGGER.info("Created ResultTransformer for " +  transformerClass);
+    public static ResultTransformer getTransformer(Class<?> transformerClass, TransformType transformType){
+        switch (transformType) {
+            case MAP:
+                return AliasToEntityMapResultTransformer.INSTANCE;
+            case DTO:
+                return new AliasToBeanResultTransformer(transformerClass);
         }
-        return transformer;
+        return null;
     }
 }

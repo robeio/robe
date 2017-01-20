@@ -1,5 +1,9 @@
 # Change Log
 
+## 0.5.1.0-beta.8
+* added automatic select fields on DTO Classes ( Entities can be DTO if needed some transient members.)
+* Fixed Offset and Limit problem.
+
 ## 0.5.1.0-beta.7
 * create new Criteria and Query Api To query as Generic by Given TransgormerImpl.
 * create HQL Transformer Impl to convert Criteria to HQL query.

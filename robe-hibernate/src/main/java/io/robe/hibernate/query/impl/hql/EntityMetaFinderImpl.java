@@ -1,8 +1,8 @@
 package io.robe.hibernate.query.impl.hql;
 
+import io.robe.common.service.search.Relation;
 import io.robe.common.service.search.SearchFrom;
 import io.robe.common.service.search.SearchIgnore;
-import io.robe.common.utils.reflection.Fields;
 import io.robe.hibernate.query.api.criteria.cache.EntityMeta;
 import io.robe.hibernate.query.api.criteria.cache.EntityMetaFinder;
 import io.robe.hibernate.query.api.criteria.cache.FieldMeta;
@@ -28,11 +28,13 @@ public class EntityMetaFinderImpl implements EntityMetaFinder {
     @Override
     public EntityMeta getEntityMeta(Class<?> entityClass) {
         Map<String, FieldMeta> fieldMetaMap = new LinkedHashMap<>();
-        String identityName = fillFieldMetaMap(entityClass, fieldMetaMap);
+        Map<String, FieldMeta> relationMap = new LinkedHashMap<>();
+        Map<String, String> fieldRelationMap = new LinkedHashMap<>();
+        String identityName = fillFieldMetaMap(entityClass, fieldMetaMap, relationMap, fieldRelationMap);
         if(identityName == null) {
             throw new RuntimeException("@Id not found in " + entityClass.getName() + " class ! Id is required ! ");
         }
-        return new EntityMeta(identityName, fieldMetaMap);
+        return new EntityMeta(identityName, fieldMetaMap, relationMap, fieldRelationMap);
     }
 
     /**
@@ -41,17 +43,19 @@ public class EntityMetaFinderImpl implements EntityMetaFinder {
      * @param fieldMetaMap
      * @return
      */
-    public static String fillFieldMetaMap(Class<?> type, Map<String, FieldMeta> fieldMetaMap) {
+    public static String fillFieldMetaMap(Class<?> type, Map<String, FieldMeta> fieldMetaMap, Map<String, FieldMeta> relationMap, Map<String, String> fieldRelationMap) {
         String identityName = null;
 
         for(Field field: type.getDeclaredFields()) {
             if(!ENTITY_FIELD_PREDICATE.test(field)) continue;
             field.setAccessible(true);
+            Relation hasRelation = field.getAnnotation(Relation.class);
+            Transient isTransient = field.getAnnotation(Transient.class);
             SearchIgnore ignore = field.getAnnotation(SearchIgnore.class);
             SearchFrom searchFrom = field.getAnnotation(SearchFrom.class);
             FieldMeta meta;
             if(searchFrom == null) { // this field hasn't any target
-                meta = new FieldMeta(field.getType(), ignore != null);
+                meta = new FieldMeta(field, isTransient != null,ignore != null, hasRelation != null);
             } else {
                 FieldReference reference = new FieldReference(
                         searchFrom.entity(),
@@ -60,18 +64,21 @@ public class EntityMetaFinderImpl implements EntityMetaFinder {
                         searchFrom.id(),
                         field.getName()
                 );
-                meta = new FieldMeta(field.getType(), reference, ignore != null);
+                meta = new FieldMeta(field, reference, isTransient != null,ignore != null, hasRelation != null);
             }
 
             fieldMetaMap.put(field.getName(), meta);
-
+            if(hasRelation != null) {
+                relationMap.put(hasRelation.name(), meta);
+                fieldRelationMap.put(field.getName(), hasRelation.name());
+            }
             if(ENTITY_ID_FIELD_PREDICATE.test(field)) {
                 identityName = field.getName();
             }
         }
 
         if(!type.getSuperclass().getName().equals(Object.class.getName())) {
-            String superIdentityName = fillFieldMetaMap(type.getSuperclass(), fieldMetaMap);
+            String superIdentityName = fillFieldMetaMap(type.getSuperclass(), fieldMetaMap, relationMap, fieldRelationMap);
             if(identityName == null) {
                 identityName = superIdentityName;
             } else if(identityName != null && superIdentityName != null) {
@@ -91,7 +98,6 @@ public class EntityMetaFinderImpl implements EntityMetaFinder {
         if(field.isSynthetic()) return false;
         if((field.getModifiers() & Modifier.STATIC) == Modifier.STATIC) return false;
         if((field.getModifiers() & Modifier.FINAL) == Modifier.FINAL) return false;
-        if(field.getAnnotation(Transient.class) != null) return false;
         return true;
     };
 }
