@@ -46,6 +46,9 @@ public class TransformUtil {
         listBuilder.append(commonQueries);
         countBuilder.append(commonQueries);
 
+        // ORDER BY QUERIES
+        listBuilder.append(generateOrderQuery(criteria));
+
         pairQuery.setLeft(listBuilder.toString());
         pairQuery.setRight(countBuilder.toString());
         return pairQuery;
