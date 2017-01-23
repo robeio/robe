@@ -7,12 +7,12 @@ import io.robe.common.service.headers.ResponseHeadersUtil;
 import io.robe.common.service.search.model.SearchModel;
 import io.robe.common.utils.TypeReference;
 import io.robe.hibernate.RobeHibernateBundle;
+import io.robe.hibernate.criteria.api.Transformer;
 import io.robe.hibernate.entity.RobeEntity;
-import io.robe.hibernate.query.api.criteria.Criteria;
-import io.robe.hibernate.query.api.criteria.Result;
-import io.robe.hibernate.query.api.query.Query;
-import io.robe.hibernate.query.api.query.Transformer;
-import io.robe.hibernate.query.impl.hql.TransformerImpl;
+import io.robe.hibernate.criteria.api.Criteria;
+import io.robe.hibernate.criteria.api.Result;
+import io.robe.hibernate.criteria.query.Query;
+import io.robe.hibernate.criteria.hql.TransformerImpl;
 import org.hibernate.SessionFactory;
 
 import javax.inject.Inject;

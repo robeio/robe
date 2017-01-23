@@ -1,5 +1,9 @@
 # Change Log
 
+## 0.5.1.0-beta.9
+* Fixed path names of Criteria API.
+* Fixed some performance problems.
+
 ## 0.5.1.0-beta.8
 * added automatic select fields on DTO Classes ( Entities can be DTO if needed some transient members.)
 * Fixed Offset and Limit problem.
