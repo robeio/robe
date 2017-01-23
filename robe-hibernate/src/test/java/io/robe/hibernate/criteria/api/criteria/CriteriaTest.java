@@ -142,8 +142,11 @@ public class CriteriaTest extends HqlCriteriaTestTools {
 
 
 
-        criteria = Criteria.createCriteria("user", User.class, new TransformerImpl<User>(session)).add(Restrictions.eq("name",  "Kamil","name"));
-        criteria.createJoin("role", Role.class).addRelation("oid", "roleOid").add(Restrictions.eq("name", "Example First Role","name"));
+        criteria = Criteria.createCriteria("user", User.class, new TransformerImpl<User>(session)).add(
+                Restrictions.eq("name",  "Kamil","name"));
+        criteria.
+                createJoin("role", Role.class).addRelation("oid", "roleOid")
+                .add(Restrictions.eq("name", "Example First Role","roleOid.name"));
         result = criteria.count();
 
         expectedResult = (long)session.createQuery("" +
@@ -156,8 +159,9 @@ public class CriteriaTest extends HqlCriteriaTestTools {
         assertEquals(expectedResult, result);
 
 
-        criteria = Criteria.createCriteria("user", User.class, new TransformerImpl<User>(session)).add(Restrictions.eq("name", "Kamil","name"));
-        criteria.createJoin("role", Role.class).addRelation("oid", "roleOid").add(Restrictions.eq("name", "Example First Role","name"));
+        criteria = Criteria.createCriteria("user", User.class, new TransformerImpl<User>(session)).add(
+                Restrictions.eq("name", "Kamil","name"));
+        criteria.createJoin("roleOid", Role.class).addRelation("oid", "roleOid").add(Restrictions.eq("name", "Example First Role","roleOid.name"));
         result = criteria.count();
         expectedResult = (long)session.createQuery("" +
                 "SELECT count(*) AS DCOUN FROM \n" +

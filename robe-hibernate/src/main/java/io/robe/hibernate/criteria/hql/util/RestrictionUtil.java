@@ -108,7 +108,7 @@ public class RestrictionUtil {
      * @return
      */
     private static String restrictionToString(CriteriaParent criteria, Restriction restriction, Object value, String operator, Map<String, Object> parameterMap){
-        String valueAlias =  "$" + criteria.getAlias() +"_"+ restriction.getValueAlias();
+        String valueAlias =  "$" + restriction.getValueAlias().replaceAll("\\.", "_");
 
         parameterMap.put(valueAlias, value);
         return criteria.getAlias() + "." + restriction.getName() + operator + ":" + valueAlias;

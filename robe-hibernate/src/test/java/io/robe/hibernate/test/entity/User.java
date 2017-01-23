@@ -54,6 +54,7 @@ public class User extends BaseEntity {
     @Column
     private Date lastLogoutTime;
 
+    @SearchIgnore
     @SearchFrom(entity = Role.class, filter = "name")
     @Length(min = 32, max = 32)
     @NotEmpty

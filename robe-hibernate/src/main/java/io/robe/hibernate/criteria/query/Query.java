@@ -4,9 +4,6 @@ import io.robe.common.service.search.model.SearchModel;
 import io.robe.common.utils.Strings;
 import io.robe.hibernate.criteria.api.Criteria;
 import io.robe.hibernate.criteria.api.Transformer;
-
-import java.util.*;
-
 /**
  * Created by kamilbukum on 10/01/2017.
  */
@@ -39,7 +36,7 @@ public class Query<E> {
 
         if(search.getQ() != null && search.getQ().length() > 0) {
             String[] queries = new String[]{search.getQ()};
-            QueryUtility.configureCriteriaByQ(criteria, queries, new HashSet<>(), null);
+            QueryUtility.configureCriteriaByQ(criteria, queries);
         }
 
         if(search.getFilter() != null && search.getFilter().length > 0) {

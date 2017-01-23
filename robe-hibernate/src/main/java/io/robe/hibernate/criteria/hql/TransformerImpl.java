@@ -63,6 +63,7 @@ public class TransformerImpl<E> extends Transformer<E> {
         Result<E> result  = new Result<>();
         Map<String, Object> parameterMap = new LinkedHashMap<>();
         Pair<String, String> pairQuery = TransformUtil.generatePairResult(criteria, parameterMap);
+        System.out.println(pairQuery.getLeft());
         Query listQuery = session.createQuery(pairQuery.getLeft());
         if(criteria.getLimit() != null) {
             listQuery.setMaxResults(criteria.getLimit());

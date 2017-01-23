@@ -13,37 +13,42 @@ import io.robe.hibernate.criteria.api.cache.FieldMeta;
 import io.robe.hibernate.criteria.api.criterion.Restriction;
 import io.robe.hibernate.criteria.api.projection.Projections;
 
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
+import java.lang.reflect.Field;
+import java.util.*;
 
 /**
  * Created by kamilbukum on 17/01/2017.
  */
 public class QueryUtility {
+
     /**
      *
      * @param criteria
      * @param queries
-     * @param joinedClassNames
-     * @param reference
      */
-    static <E> void configureCriteriaByQ(CriteriaParent<E> criteria, String[] queries, Set<String> joinedClassNames, FieldReference reference){
+    static <E> void configureCriteriaByQ(CriteriaParent<E> criteria, String[] queries){
+        Set<String> joinedClassNames = new HashSet<>();
+        configureCriteriaByQ(criteria, queries, joinedClassNames);
+    }
+
+
+    static <E> void configureCriteriaByQ(CriteriaParent<E> criteria, String[] queries, Set<String> joinedClassNames) {
         List<Restriction> restrictions = new LinkedList<>();
-        if(reference == null) {
-            for(Map.Entry<String, FieldMeta> entry:  criteria.getMeta().getFieldMap().entrySet()) {
-                FieldMeta fieldMeta = entry.getValue();
-                if(!fieldMeta.isSearchIgnore() && !fieldMeta.isTransient() && fieldMeta.getField().getType().equals(String.class)) {
-                    String fieldName = entry.getKey();
-                    configureQForField(criteria, fieldName, fieldMeta, queries, joinedClassNames, restrictions);
-                }
+        for(Map.Entry<String, FieldMeta> entry:  criteria.getMeta().getFieldMap().entrySet()) {
+            FieldMeta fieldMeta = entry.getValue();
+            if(!fieldMeta.isSearchIgnore() && !fieldMeta.isTransient() && fieldMeta.getField().getType().equals(String.class)) {
+                String fieldName = entry.getKey();
+                configureQForField(fieldName, fieldMeta, queries, restrictions);
             }
-        } else if(reference.getFilters() != null && reference.getFilters().length > 0) {
-            for(String filter: reference.getFilters()) {
-                FieldMeta fieldMeta =criteria.getMeta().getFieldMap().get(filter);
-                if(!fieldMeta.isSearchIgnore() && !fieldMeta.isTransient() && fieldMeta.getField().getType().equals(String.class)) {
-                    configureQForField(criteria, filter, fieldMeta, queries, joinedClassNames, restrictions);
+            if(fieldMeta.getReference() != null) {
+                if(fieldMeta.getReference().getFilters() != null && fieldMeta.getReference().getFilters().length > 0) {
+                    String className = fieldMeta.getReference().getTargetEntity().getName();
+                    if(joinedClassNames.contains(className)) {
+                        return;
+                    }
+                    joinedClassNames.add(className);
+                    CriteriaJoin<E> criteriaJoin = addOrGetJoin(entry.getKey(), fieldMeta, criteria);
+                    configureCriteriaByQ(criteriaJoin, queries, joinedClassNames);
                 }
             }
         }
@@ -52,35 +57,16 @@ public class QueryUtility {
         }
     }
 
-    /**
-     *
-     * @param fieldName
-     * @param fieldMeta
-     * @param criteria
-     * @param queries
-     * @param joinedClassNames
-     * @param restrictions
-     * @param <E>
-     */
-    private static <E> void configureQForField(CriteriaParent<E> criteria, String fieldName, FieldMeta fieldMeta, String[] queries, Set<String> joinedClassNames, List<Restriction> restrictions) {
-        if(fieldMeta.getReference() == null) { // @SearchFrom is not defined.
-            // create filter
-            for(int i = 0 ; i < queries.length; i++) {
-                Operator op = Operator.Q;
-                String variableAlias = "$_query_" + i;
-                String rawValue = queries[i];
-                Object value = getValue(op, rawValue, fieldMeta.getField().getType());
-                Restriction restriction = Restrictions.filter(fieldName, op, value, variableAlias);
-                restrictions.add(restriction);
-            }
-        } else if(fieldMeta.getReference().getFilters() != null && fieldMeta.getReference().getFilters().length > 0) {
-            String className = fieldMeta.getReference().getTargetEntity().getName();
-            if(joinedClassNames.contains(className)) {
-                return;
-            }
-            joinedClassNames.add(className);
-            CriteriaJoin<E> criteriaJoin = addOrGetJoin(fieldName, fieldMeta, criteria);
-            configureCriteriaByQ(criteriaJoin, queries, joinedClassNames, fieldMeta.getReference());
+
+    private static <E> void configureQForField(String fieldName, FieldMeta fieldMeta, String[] queries, List<Restriction> restrictions) {
+        // create filter
+        for(int i = 0 ; i < queries.length; i++) {
+            Operator op = Operator.Q;
+            String variableAlias = "$_query_" + i;
+            String rawValue = queries[i];
+            Object value = getValue(op, rawValue, fieldMeta.getField().getType());
+            Restriction restriction = Restrictions.filter(fieldName, op, value, variableAlias);
+            restrictions.add(restriction);
         }
     }
 

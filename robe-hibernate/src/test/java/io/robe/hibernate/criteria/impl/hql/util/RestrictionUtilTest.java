@@ -43,7 +43,7 @@ public class RestrictionUtilTest extends HqlCriteriaTestTools {
 
         // IS NULL AND EQUALS
         criteria.add(Restrictions.eq("name", "Kamil","userName"));
-        expectedResult = "user.name IS NULL AND user.name=:$user_userName";
+        expectedResult = "user.name IS NULL AND user.name=:$userName";
         andJoiner = new StringJoiner(" AND ");
         qJoiner = new StringJoiner(" OR ");
         parameterMap.clear();
@@ -52,7 +52,7 @@ public class RestrictionUtilTest extends HqlCriteriaTestTools {
 
         // IS NULL AND EQUALS AND GREATER THEN
         criteria.add(Restrictions.gt("age", "Kamil","age"));
-        expectedResult = "user.name IS NULL AND user.name=:$user_userName AND user.age > :$user_age";
+        expectedResult = "user.name IS NULL AND user.name=:$userName AND user.age > :$age";
         andJoiner = new StringJoiner(" AND ");
         qJoiner = new StringJoiner(" OR ");
         parameterMap.clear();
@@ -62,7 +62,7 @@ public class RestrictionUtilTest extends HqlCriteriaTestTools {
 
         // IS NULL AND EQUALS AND GREATER THEN OR (user.name EQUALS userName);
         criteria.add(Restrictions.or(new Restriction[]{Restrictions.ilike("name", "Kamil","name2"), Restrictions.gt("age", "Kamil","age2")}));
-        expectedResult = "user.name IS NULL AND user.name=:$user_userName AND user.age > :$user_age AND ( user.name LIKE :$user_name2 OR user.age > :$user_age2 )";
+        expectedResult = "user.name IS NULL AND user.name=:$userName AND user.age > :$age AND ( user.name LIKE :$name2 OR user.age > :$age2 )";
         andJoiner = new StringJoiner(" AND ");
         qJoiner = new StringJoiner(" OR ");
         RestrictionUtil.generateRestrictions(criteria, criteria.getRestrictions(), andJoiner, qJoiner, parameterMap);

@@ -1,10 +1,8 @@
 package io.robe.hibernate.criteria.api.query;
 
-import io.robe.common.service.headers.ResponseHeadersUtil;
 import io.robe.common.service.search.model.SearchModel;
 import io.robe.hibernate.criteria.api.Criteria;
 import io.robe.hibernate.criteria.api.Result;
-import io.robe.hibernate.criteria.api.Transformer;
 import io.robe.hibernate.criteria.query.Query;
 import io.robe.hibernate.criteria.HqlCriteriaTestTools;
 import io.robe.hibernate.criteria.hql.TransformerImpl;
@@ -81,7 +79,7 @@ public class QueryTestTools extends HqlCriteriaTestTools {
         SearchModel search = new SearchModel();
         search.setQ("Example First Role");
         search.setSort(new String[]{"-name", "+roleOid.name"});
-        search.setFilter(new String[][] {{"name", "=", "Kamil"}, {"active", "=", "true"}});
+        search.setFilter(new String[][] {{"name", "=", "Kamil"}, {"active", "=", "true"}, {"roleOid.name", "=", "Example First Role"}});
         Query<User> query = new Query<>(new TransformerImpl<>(session));
         Result<User> result = query.createCriteria(User.class, search).pairList();
         System.out.println(result);
