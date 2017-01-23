@@ -23,10 +23,7 @@ public class SelectUtil {
      * @param <E>
      * @return
      */
-    public static <E> String generateSelectQueryForList(Criteria<E> criteria, TransformerImpl transformer) {
-        if(transformer.getTransformType() == TransformerImpl.TransformType.DTO) {
-            return generateDTOSelect(criteria, transformer);
-        }
+    public static <E> String generateSelectQueryForList(Criteria<E> criteria) {
         String select = selectForListRecursively(criteria);
         if("".equals(select)) {
             return criteria.getAlias();
@@ -34,19 +31,6 @@ public class SelectUtil {
         return select;
     }
 
-    public static <E> String  generateDTOSelect(Criteria<E> criteria, TransformerImpl<E> transformer){
-        StringJoiner joiner = new StringJoiner(", ");
-        EntityMeta joinMeta  = Query.CachedEntity.getEntityMeta(criteria.getEntityClass(), transformer.getFinder());
-        for(Map.Entry<String, FieldMeta> fieldEntry: joinMeta.getFieldMap().entrySet()) {
-            if(fieldEntry.getValue().hasRelation()) {
-                String relation = joinMeta.getFieldRelationMap().get(fieldEntry.getKey());
-                joiner.add(relation + " AS " + fieldEntry.getKey());
-            } else if(!fieldEntry.getValue().isTransient()) {
-                joiner.add(criteria.getAlias() + "." + fieldEntry.getKey() + " AS " + fieldEntry.getKey());
-            }
-        }
-        return joiner.toString();
-    }
     /**
      *
      * @param criteria
@@ -74,17 +58,17 @@ public class SelectUtil {
      */
     private static String selectForListByProjection(CriteriaParent criteria, Projection projection, String alias){
         if(projection instanceof IdentifierProjection) {
-            return criteria.getAlias() + "." + criteria.getMeta().getIdentityName() + getAsKey(criteria.getAlias(), criteria.getMeta().getIdentityName(), alias);
+            return criteria.getAlias() + "." + criteria.getMeta().getIdentityName() + getAsKey(criteria, criteria.getMeta().getIdentityName(), alias);
         }
         if(projection instanceof PropertyProjection) {
             PropertyProjection p = (PropertyProjection)projection;
-            return criteria.getAlias() + "." + p.getProperty() + getAsKey(criteria.getAlias(), p.getProperty(), alias);
+            return criteria.getAlias() + "." + p.getProperty() + getAsKey(criteria, p.getProperty(), alias);
         } else if(projection instanceof FunctionProjection) {
             FunctionProjection pp = (FunctionProjection)projection;
             if(FunctionProjection.Type.COUNT == pp.getFnType() && Validations.isEmptyOrNull(pp.getProperty())) {
-                return pp.getFnType().name() + "(1)" + getAsKey(criteria.getAlias(), pp.getFnType().name().toLowerCase(), alias);
+                return pp.getFnType().name() + "(1)" + getAsKey(criteria, pp.getFnType().name().toLowerCase(), alias);
             } else {
-                return pp.getFnType().name() + "(" + criteria.getAlias() + "." + pp.getProperty() + ")" + getAsKey(criteria.getAlias(), pp.getFnType().name().toLowerCase(), alias);
+                return pp.getFnType().name() + "(" + criteria.getAlias() + "." + pp.getProperty() + ")" + getAsKey(criteria, pp.getFnType().name().toLowerCase(), alias);
             }
         } else if(projection instanceof EnhancedProjection) {
             EnhancedProjection p = (EnhancedProjection)projection;
@@ -102,11 +86,15 @@ public class SelectUtil {
         }
     }
 
-    private static String getAsKey(String criteriaAlias, String selectAlias, String asAlias){
-
-        String alias = asAlias != null ? asAlias.replaceAll("\\.", "_0_") : (criteriaAlias + "_0_" + selectAlias);
-
-
+    private static String getAsKey(CriteriaParent criteria, String selectAlias, String asAlias){
+        String alias;
+        if(asAlias != null) {
+            alias = asAlias.replaceAll("\\.", "_0_");
+        } else if(criteria.isRoot()) {
+            alias = selectAlias;
+        } else {
+           alias =  criteria.getAlias() + "_0_" + selectAlias;
+        }
         return  " AS "  + alias;
     }
 

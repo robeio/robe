@@ -1,6 +1,7 @@
 package io.robe.hibernate.criteria.hql;
 
 import io.robe.common.dto.Pair;
+import io.robe.common.utils.reflection.Fields;
 import io.robe.hibernate.criteria.api.Criteria;
 import io.robe.hibernate.criteria.api.Result;
 import io.robe.hibernate.criteria.api.Transformer;
@@ -13,39 +14,27 @@ import org.hibernate.Session;
 import org.hibernate.transform.ResultTransformer;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import java.lang.reflect.Field;
+import java.lang.reflect.Modifier;
 import java.util.*;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.function.Predicate;
 
 /**
  * Created by kamilbukum on 10/01/2017.
  */
-public class TransformerImpl<E> implements Transformer<E> {
+public class TransformerImpl<E> extends Transformer<E> {
     private static EntityMetaFinder finder = new EntityMetaFinderImpl();
-    private Class<? extends E> transformClass;
-    private final TransformType transformType;
     private Session session;
 
     public TransformerImpl(Session session) {
         this(session, null);
     }
 
-    public enum TransformType {
-        ENTITY , MAP , DTO
-    }
-
     public TransformerImpl(Session session, Class<? extends E> transformClass) {
+        super(transformClass, finder);
         this.session = session;
-        this.transformClass = transformClass;
-        if(transformClass == null) {
-           this.transformType = TransformType.ENTITY;
-        } else if(transformClass.getName().equals(Map.class.getName())) {
-            this.transformType = TransformType.MAP;
-        } else {
-            this.transformType = TransformType.DTO;
-        }
-    }
-
-    public TransformType getTransformType() {
-        return transformType;
     }
 
     @Override
@@ -73,7 +62,7 @@ public class TransformerImpl<E> implements Transformer<E> {
     public Result<E> pairList(Criteria criteria) {
         Result<E> result  = new Result<>();
         Map<String, Object> parameterMap = new LinkedHashMap<>();
-        Pair<String, String> pairQuery = TransformUtil.generatePairResult(criteria, this, parameterMap);
+        Pair<String, String> pairQuery = TransformUtil.generatePairResult(criteria, parameterMap);
         Query listQuery = session.createQuery(pairQuery.getLeft());
         if(criteria.getLimit() != null) {
             listQuery.setMaxResults(criteria.getLimit());
@@ -124,15 +113,15 @@ public class TransformerImpl<E> implements Transformer<E> {
     }
 
     private void setResultTransformer(Query query){
-        if(this.transformClass != null) {
-            switch (transformType) {
-                case MAP:
-                    query.setResultTransformer(AliasToEntityMapResultTransformer.INSTANCE);
-                    break;
-                case DTO:
-                    query.setResultTransformer(new AliasToBeanResultTransformer(transformClass));
-                    break;
-            }
+        switch (this.getTransformType()) {
+            case MAP:
+                query.setResultTransformer(AliasToEntityMapResultTransformer.INSTANCE);
+                break;
+            case DTO:
+                query.setResultTransformer(new AliasToBeanResultTransformer(this.getTransformClass(), this.getMeta()));
+                break;
         }
+
     }
+
 }

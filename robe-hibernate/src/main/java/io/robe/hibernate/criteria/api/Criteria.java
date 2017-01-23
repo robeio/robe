@@ -127,8 +127,12 @@ public class Criteria<E> extends CriteriaParent<E> {
         }
     }
 
-
     public List<Order> getOrders() {
         return orders;
+    }
+
+    @Override
+    public boolean isRoot() {
+        return true;
     }
 }

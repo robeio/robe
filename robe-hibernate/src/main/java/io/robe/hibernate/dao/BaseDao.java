@@ -26,8 +26,7 @@ import java.util.*;
  * @param <T> Type of the entity parameter.
  */
 public class BaseDao<T extends RobeEntity> extends AbstractDAO<T> {
-
-    public static final TypeReference<Map<String, Object>> MAP_TYPE_REFERENCE = new TypeReference<Map<String, Object>>() {};
+    
     @Inject
     RobeHibernateBundle bundle;
 
@@ -59,7 +58,7 @@ public class BaseDao<T extends RobeEntity> extends AbstractDAO<T> {
      * @return List of entities.
      */
     public Criteria<Map<String, Object>> queryAll(SearchModel search) {
-        Transformer<Map<String, Object>> transformer = new TransformerImpl<>(this.currentSession(), MAP_TYPE_REFERENCE.getClazz());
+        Transformer<Map<String, Object>> transformer = new TransformerImpl<>(this.currentSession(), Criteria.MAP_CLASS);
         Query<Map<String, Object>> query = new Query<>(transformer);
         return query.createCriteria(this.getEntityClass(), search);
     }

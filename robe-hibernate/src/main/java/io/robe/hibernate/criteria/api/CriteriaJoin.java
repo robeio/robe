@@ -61,6 +61,7 @@ public final class CriteriaJoin<E> extends CriteriaParent<E> {
 
     @Override
     public CriteriaJoin<E> setProjection(Projection projection) {
+        super.setProjection(projection);
         return this;
     }
 
@@ -74,5 +75,10 @@ public final class CriteriaJoin<E> extends CriteriaParent<E> {
 
     public String getReferenceId() {
         return referenceId;
+    }
+
+    @Override
+    public boolean isRoot() {
+        return false;
     }
 }

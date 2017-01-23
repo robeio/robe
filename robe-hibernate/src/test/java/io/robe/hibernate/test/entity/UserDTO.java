@@ -1,9 +1,13 @@
 package io.robe.hibernate.test.entity;
 
 
-public class UserDTO {
+import io.robe.common.service.search.Relation;
 
+public class UserDTO {
+    @Relation(name = "name")
+    private String userName;
     private String email;
+    @Relation(name = "roleOid.name")
     private String roleOidName;
 
     public void setEmail(String email) {

@@ -1,13 +1,12 @@
 package io.robe.hibernate.criteria.query;
 
+import io.robe.common.service.search.model.SearchModel;
 import io.robe.common.utils.Validations;
 import io.robe.common.utils.reflection.Fields;
-import io.robe.hibernate.criteria.api.CriteriaJoin;
-import io.robe.hibernate.criteria.api.CriteriaParent;
-import io.robe.hibernate.criteria.api.Order;
-import io.robe.hibernate.criteria.api.Transformer;
+import io.robe.hibernate.criteria.api.*;
 import io.robe.hibernate.criteria.api.cache.FieldReference;
 import io.robe.hibernate.criteria.api.criterion.Restrictions;
+import io.robe.hibernate.criteria.api.projection.Projection;
 import io.robe.hibernate.criteria.api.projection.ProjectionList;
 import io.robe.hibernate.criteria.api.cache.EntityMeta;
 import io.robe.hibernate.criteria.api.cache.FieldMeta;
@@ -35,7 +34,7 @@ public class QueryUtility {
         if(reference == null) {
             for(Map.Entry<String, FieldMeta> entry:  criteria.getMeta().getFieldMap().entrySet()) {
                 FieldMeta fieldMeta = entry.getValue();
-                if(!fieldMeta.isSearchIgnore() && !fieldMeta.isTransient() && fieldMeta.getType().equals(String.class)) {
+                if(!fieldMeta.isSearchIgnore() && !fieldMeta.isTransient() && fieldMeta.getField().getType().equals(String.class)) {
                     String fieldName = entry.getKey();
                     configureQForField(criteria, fieldName, fieldMeta, queries, joinedClassNames, restrictions);
                 }
@@ -43,7 +42,7 @@ public class QueryUtility {
         } else if(reference.getFilters() != null && reference.getFilters().length > 0) {
             for(String filter: reference.getFilters()) {
                 FieldMeta fieldMeta =criteria.getMeta().getFieldMap().get(filter);
-                if(!fieldMeta.isSearchIgnore() && !fieldMeta.isTransient() && fieldMeta.getType().equals(String.class)) {
+                if(!fieldMeta.isSearchIgnore() && !fieldMeta.isTransient() && fieldMeta.getField().getType().equals(String.class)) {
                     configureQForField(criteria, filter, fieldMeta, queries, joinedClassNames, restrictions);
                 }
             }
@@ -70,7 +69,7 @@ public class QueryUtility {
                 Operator op = Operator.Q;
                 String variableAlias = "$_query_" + i;
                 String rawValue = queries[i];
-                Object value = getValue(op, rawValue, fieldMeta.getType());
+                Object value = getValue(op, rawValue, fieldMeta.getField().getType());
                 Restriction restriction = Restrictions.filter(fieldName, op, value, variableAlias);
                 restrictions.add(restriction);
             }
@@ -102,7 +101,7 @@ public class QueryUtility {
             if(!createCriteriaByGivenName(parent)) continue;
             FieldMeta fieldMeta = parent.criteria.getMeta().getFieldMap().get(parent.name);
             String valueAlias = name.replace("\\.", "_");
-            Object value = getValue(operator, rawValue, fieldMeta.getType());
+            Object value = getValue(operator, rawValue, fieldMeta.getField().getType());
             Restriction restriction = Restrictions.filter(parent.name, operator, value, valueAlias);
             restrictions.add(restriction);
         }
@@ -133,6 +132,33 @@ public class QueryUtility {
         }
     }
 
+    public static <E> void configureSelectFields(Criteria<E> criteria, SearchModel search){
+        switch (criteria.getTransformer().getTransformType()) {
+            case ENTITY:
+                return;
+            case DTO:
+                QueryUtility.configureDtoSelects(criteria);
+                break;
+            case MAP:
+                if(search.getFields() != null && search.getFields().length > 0) {
+                    QueryUtility.configureFields(criteria, search.getFields());
+                }
+                break;
+        }
+    }
+
+    public static <E> void configureDtoSelects(Criteria<E> criteria){
+        EntityMeta transformerMeta = criteria.getTransformer().getMeta();
+        for(Map.Entry<String, FieldMeta> entry: transformerMeta.getFieldMap().entrySet()) {
+            FieldMeta fieldMeta = entry.getValue();
+            String fieldName  = fieldMeta.hasRelation() ? fieldMeta.getRelationName() : entry.getKey();
+            Parent<E> parent = new Parent<>(criteria, fieldName);
+            ProjectionList projectionList = configureField(parent);
+            if(projectionList != null) {
+                projectionList.add(Projections.alias(Projections.property(parent.name), entry.getKey()));
+            }
+        }
+    }
     /**
      *
      * @param criteria
@@ -145,14 +171,21 @@ public class QueryUtility {
             if(Validations.isEmptyOrNull(field)) continue;
             field = field.trim();
             Parent<E> parent = new Parent<>(criteria, field);
-            if(!createCriteriaByGivenName(parent)) continue;
-            ProjectionList projection = (ProjectionList) parent.criteria.getProjection();
-            if(parent.criteria.getProjection() == null) {
-                projection = Projections.projectionList();
-                parent.criteria.setProjection(projection);
+            ProjectionList projectionList = configureField(parent);
+            if(projectionList != null) {
+                projectionList.add(Projections.property(parent.name));
             }
-            projection.add(Projections.property(parent.name));
         }
+    }
+
+    static <E> ProjectionList configureField(Parent<E> parent) {
+        if(!createCriteriaByGivenName(parent)) return null;
+        ProjectionList projection = (ProjectionList) parent.criteria.getProjection();
+        if(parent.criteria.getProjection() == null) {
+            projection = Projections.projectionList();
+            parent.criteria.setProjection(projection);
+        }
+        return projection;
     }
 
     /**
@@ -200,7 +233,7 @@ public class QueryUtility {
                     throw new RuntimeException("Field is parent field. @SearchFrom is not defined on field ! ");
                 }
                 Class<?> joinClass = fieldMeta.getReference().getTargetEntity();
-                EntityMeta joinMeta  = Query.CachedEntity.getEntityMeta(joinClass, parent.criteria.getTransformer().getFinder());
+                EntityMeta joinMeta  = parent.criteria.getTransformer().getMeta(joinClass);
                 parent.criteria = addOrGetJoin(names[step], fieldMeta, parent.criteria);
                 meta = joinMeta;
                 step++;

@@ -1,5 +1,7 @@
 package io.robe.hibernate.criteria.api.cache;
 
+import java.lang.reflect.Field;
+
 /**
  * Created by kamilbukum on 12/01/2017.
  */
@@ -7,15 +9,16 @@ public class FieldMeta {
     private final boolean searchIgnore;
     private final boolean hasRelation;
     private final boolean isTransient;
-    private final Class<?> type;
+    private final Field field;
     private final FieldReference reference;
+    private String relationName;
 
-    public FieldMeta(Class<?> type, boolean isTransient, boolean searchIgnore, boolean hasRelation){
-        this(type, null, isTransient, searchIgnore, hasRelation);
+    public FieldMeta(Field field, boolean isTransient, boolean searchIgnore, boolean hasRelation){
+        this(field, null, isTransient, searchIgnore, hasRelation);
     }
 
-    public FieldMeta(Class<?> type, FieldReference reference, boolean isTransient, boolean searchIgnore, boolean hasRelation){
-        this.type = type;
+    public FieldMeta(Field field, FieldReference reference, boolean isTransient, boolean searchIgnore, boolean hasRelation){
+        this.field = field;
         this.reference = reference;
         this.isTransient = isTransient;
         this.searchIgnore = searchIgnore;
@@ -25,10 +28,6 @@ public class FieldMeta {
 
     public FieldReference getReference() {
         return reference;
-    }
-
-    public Class<?> getType() {
-        return this.type;
     }
 
     public boolean isTransient() {
@@ -41,5 +40,17 @@ public class FieldMeta {
 
     public boolean hasRelation(){
         return this.hasRelation;
+    }
+
+    public void setRelationName(String relationName) {
+        this.relationName = relationName;
+    }
+
+    public String getRelationName() {
+        return relationName;
+    }
+
+    public Field getField() {
+        return field;
     }
 }

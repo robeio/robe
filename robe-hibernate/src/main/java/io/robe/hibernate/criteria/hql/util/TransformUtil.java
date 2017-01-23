@@ -16,7 +16,7 @@ public class TransformUtil {
 
     public static <E> String generateDataQuery(Criteria<E> criteria, TransformerImpl<E> transformer, Map<String, Object> parameterMap) {
         // select
-        StringBuilder builder = new StringBuilder("SELECT ").append(SelectUtil.generateSelectQueryForList(criteria, transformer));
+        StringBuilder builder = new StringBuilder("SELECT ").append(SelectUtil.generateSelectQueryForList(criteria));
         // common quires -> { from, joins, restrictions }
         builder.append(generateCommonQueires(criteria, parameterMap));
 
@@ -34,10 +34,10 @@ public class TransformUtil {
         return builder.toString();
     }
 
-    public static <E> Pair<String, String> generatePairResult(Criteria criteria, TransformerImpl<E> transformer, Map<String, Object> parameterMap) {
+    public static <E> Pair<String, String> generatePairResult(Criteria criteria, Map<String, Object> parameterMap) {
         Pair<String, String> pairQuery = new Pair<>();
         // select
-        StringBuilder listBuilder = new StringBuilder("SELECT ").append(SelectUtil.generateSelectQueryForList(criteria, transformer));
+        StringBuilder listBuilder = new StringBuilder("SELECT ").append(SelectUtil.generateSelectQueryForList(criteria));
         // select
         StringBuilder countBuilder = new StringBuilder("SELECT ").append("count(*)");
 

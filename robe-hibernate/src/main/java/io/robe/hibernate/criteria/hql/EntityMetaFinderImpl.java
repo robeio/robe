@@ -28,13 +28,9 @@ public class EntityMetaFinderImpl implements EntityMetaFinder {
     @Override
     public EntityMeta getEntityMeta(Class<?> entityClass) {
         Map<String, FieldMeta> fieldMetaMap = new LinkedHashMap<>();
-        Map<String, FieldMeta> relationMap = new LinkedHashMap<>();
-        Map<String, String> fieldRelationMap = new LinkedHashMap<>();
-        String identityName = fillFieldMetaMap(entityClass, fieldMetaMap, relationMap, fieldRelationMap);
-        if(identityName == null) {
-            throw new RuntimeException("@Id not found in " + entityClass.getName() + " class ! Id is required ! ");
-        }
-        return new EntityMeta(identityName, fieldMetaMap, relationMap, fieldRelationMap);
+        Map<String, String> relationMap = new LinkedHashMap<>();
+        String identityName = fillFieldMetaMap(entityClass, fieldMetaMap, relationMap);
+        return new EntityMeta(identityName, fieldMetaMap, relationMap);
     }
 
     /**
@@ -43,7 +39,7 @@ public class EntityMetaFinderImpl implements EntityMetaFinder {
      * @param fieldMetaMap
      * @return
      */
-    public static String fillFieldMetaMap(Class<?> type, Map<String, FieldMeta> fieldMetaMap, Map<String, FieldMeta> relationMap, Map<String, String> fieldRelationMap) {
+    public static String fillFieldMetaMap(Class<?> type, Map<String, FieldMeta> fieldMetaMap, Map<String, String> relationMap) {
         String identityName = null;
 
         for(Field field: type.getDeclaredFields()) {
@@ -55,7 +51,7 @@ public class EntityMetaFinderImpl implements EntityMetaFinder {
             SearchFrom searchFrom = field.getAnnotation(SearchFrom.class);
             FieldMeta meta;
             if(searchFrom == null) { // this field hasn't any target
-                meta = new FieldMeta(field.getType(), isTransient != null,ignore != null, hasRelation != null);
+                meta = new FieldMeta(field, isTransient != null,ignore != null, hasRelation != null);
             } else {
                 FieldReference reference = new FieldReference(
                         searchFrom.entity(),
@@ -64,13 +60,13 @@ public class EntityMetaFinderImpl implements EntityMetaFinder {
                         searchFrom.id(),
                         field.getName()
                 );
-                meta = new FieldMeta(field.getType(), reference, isTransient != null,ignore != null, hasRelation != null);
+                meta = new FieldMeta(field, reference, isTransient != null,ignore != null, hasRelation != null);
             }
 
             fieldMetaMap.put(field.getName(), meta);
             if(hasRelation != null) {
-                relationMap.put(hasRelation.name(), meta);
-                fieldRelationMap.put(field.getName(), hasRelation.name());
+                meta.setRelationName(hasRelation.name());
+                relationMap.put(hasRelation.name(), field.getName());
             }
             if(ENTITY_ID_FIELD_PREDICATE.test(field)) {
                 identityName = field.getName();
@@ -78,11 +74,9 @@ public class EntityMetaFinderImpl implements EntityMetaFinder {
         }
 
         if(!type.getSuperclass().getName().equals(Object.class.getName())) {
-            String superIdentityName = fillFieldMetaMap(type.getSuperclass(), fieldMetaMap, relationMap, fieldRelationMap);
+            String superIdentityName = fillFieldMetaMap(type.getSuperclass(), fieldMetaMap, relationMap);
             if(identityName == null) {
                 identityName = superIdentityName;
-            } else if(identityName != null && superIdentityName != null) {
-                throw new RuntimeException("Found multiple id fields which has @Id annotation in " + type.getName() + " class!");
             }
         }
         return identityName;

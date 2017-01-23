@@ -21,11 +21,11 @@ public abstract class CriteriaParent<E> {
      * Entity class Type
      */
     private final Class<?> entityClass;
-    private Map<String, CriteriaJoin<E>> joins = new LinkedHashMap<>();
-    private List<Restriction> restrictions = new LinkedList<>();
-    private EntityMeta meta;
+    private final Map<String, CriteriaJoin<E>> joins = new LinkedHashMap<>();
+    private final List<Restriction> restrictions = new LinkedList<>();
+    private final EntityMeta meta;
     private Projection projection;
-    private Transformer<E> transformer;
+    private final Transformer<E> transformer;
 
     /**
      * @param alias
@@ -35,7 +35,11 @@ public abstract class CriteriaParent<E> {
         this.alias = alias;
         this.entityClass = entityClass;
         this.transformer = transformer;
-        this.meta = transformer.getFinder().getEntityMeta(entityClass);
+        if(transformer.getTransformClass() != null && this.entityClass.getName().equals(transformer.getTransformClass().getName())) {
+            this.meta = transformer.getMeta();
+        } else {
+            this.meta = transformer.getFinder().getEntityMeta(entityClass);
+        }
     }
 
     /**
@@ -56,7 +60,7 @@ public abstract class CriteriaParent<E> {
      * @return
      */
     public CriteriaJoin<E> createJoin(String alias, Class<?> entityClass, String referenceId) {
-        CriteriaJoin<E> join = new CriteriaJoin<E>(this, alias, entityClass, this.getTransformer(), referenceId);
+        CriteriaJoin<E> join = new CriteriaJoin<>(this, alias, entityClass, this.getTransformer(), referenceId);
         joins.put(alias, join);
         return join;
     }
@@ -104,6 +108,8 @@ public abstract class CriteriaParent<E> {
     public Transformer<E> getTransformer() {
         return transformer;
     }
+
+    public abstract boolean isRoot();
 }
 
 

@@ -1,5 +1,9 @@
 # Change Log
 
+## 0.5.1.0-beta.10
+* changed alias name of fields of Root Entity as field name.
+* tested pairList strict,  dto and map results.
+
 ## 0.5.1.0-beta.9
 * Fixed path names of Criteria API.
 * Fixed some performance problems.
