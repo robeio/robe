@@ -1,7 +1,6 @@
 package io.robe.hibernate.criteria.query;
 
 import io.robe.common.service.search.model.SearchModel;
-import io.robe.common.utils.Strings;
 import io.robe.hibernate.criteria.api.Criteria;
 import io.robe.hibernate.criteria.api.Transformer;
 /**
@@ -28,8 +27,7 @@ public class Query<E> {
      * @return
      */
     public Criteria<E> createCriteria(Class<?> entityClass, SearchModel search) {
-        String alias = Strings.unCapitalizeFirstChar(entityClass.getSimpleName());
-        Criteria<E> criteria = Criteria.createCriteria(alias, entityClass, transformer);
+        Criteria<E> criteria = Criteria.createCriteria(entityClass, transformer);
         if(search == null) {
             return criteria;
         }
@@ -40,7 +38,7 @@ public class Query<E> {
         }
 
         if(search.getFilter() != null && search.getFilter().length > 0) {
-            QueryUtility.configureFilters(criteria, search.getFilter());
+            QueryUtility.configureFilters(criteria, search.getFilter(), 0);
         }
 
         if(search.getSort() != null && search.getSort().length > 0) {

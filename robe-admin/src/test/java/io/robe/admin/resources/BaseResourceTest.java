@@ -22,7 +22,7 @@ import static org.junit.Assert.assertTrue;
 @RunWith(Roadrunner.class)
 public abstract class BaseResourceTest<T extends BaseEntity> extends RobeAdminTest {
 
-    public static final String BASE_URL = "http://127.0.0.1:8080/robe/";
+    public static final String BASE_URL = "http://127.0.0.1:8686/robe/";
 
     protected final HttpClient client = HttpClient.getClient();
 

@@ -16,13 +16,14 @@ public class TransformUtil {
 
     public static <E> String generateDataQuery(Criteria<E> criteria, TransformerImpl<E> transformer, Map<String, Object> parameterMap) {
         // select
-        StringBuilder builder = new StringBuilder("SELECT ").append(SelectUtil.generateSelectQueryForList(criteria));
+        Pair<String, String> selectAndGroupBy = SelectUtil.generateSelectQueryForList(criteria);
+        StringBuilder builder = new StringBuilder("SELECT ").append(selectAndGroupBy.getLeft());
         // common quires -> { from, joins, restrictions }
         builder.append(generateCommonQueires(criteria, parameterMap));
 
         // ORDER BY QUERIES
         builder.append(generateOrderQuery(criteria));
-
+        builder.append(selectAndGroupBy.getRight());
         return builder.toString();
     }
 
@@ -37,7 +38,8 @@ public class TransformUtil {
     public static <E> Pair<String, String> generatePairResult(Criteria criteria, Map<String, Object> parameterMap) {
         Pair<String, String> pairQuery = new Pair<>();
         // select
-        StringBuilder listBuilder = new StringBuilder("SELECT ").append(SelectUtil.generateSelectQueryForList(criteria));
+        Pair<String, String> selectAndGroupBy = SelectUtil.generateSelectQueryForList(criteria);
+        StringBuilder listBuilder = new StringBuilder("SELECT ").append(selectAndGroupBy.getLeft());
         // select
         StringBuilder countBuilder = new StringBuilder("SELECT ").append("count(*)");
 
@@ -48,7 +50,7 @@ public class TransformUtil {
 
         // ORDER BY QUERIES
         listBuilder.append(generateOrderQuery(criteria));
-
+        listBuilder.append(selectAndGroupBy.getRight());
         pairQuery.setLeft(listBuilder.toString());
         pairQuery.setRight(countBuilder.toString());
         return pairQuery;

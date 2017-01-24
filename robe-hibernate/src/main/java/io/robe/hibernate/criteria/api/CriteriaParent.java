@@ -1,9 +1,9 @@
 package io.robe.hibernate.criteria.api;
 
+import io.robe.common.utils.Strings;
 import io.robe.hibernate.criteria.api.cache.EntityMeta;
 import io.robe.hibernate.criteria.api.criterion.Restriction;
 import io.robe.hibernate.criteria.api.projection.Projection;
-
 import java.util.LinkedHashMap;
 import java.util.LinkedList;
 import java.util.List;
@@ -26,15 +26,22 @@ public abstract class CriteriaParent<E> {
     private final EntityMeta meta;
     private Projection projection;
     private final Transformer<E> transformer;
-
+    private final Map<String, Integer> aliasesMap;
     /**
-     * @param alias
      * @param entityClass
      */
-    protected CriteriaParent(String alias, Class<?> entityClass, Transformer<E> transformer){
-        this.alias = alias;
+    protected CriteriaParent(String alias, Class<?> entityClass, Transformer<E> transformer, Map<String, Integer> aliasesMap){
         this.entityClass = entityClass;
+        this.aliasesMap = aliasesMap;
         this.transformer = transformer;
+        alias = "$" + (alias != null ? alias : Strings.unCapitalizeFirstChar(entityClass.getSimpleName()));
+        if(aliasesMap.containsKey(alias)) {
+            Integer aliasCount = aliasesMap.getOrDefault(alias, 0);
+            aliasCount++;
+            aliasesMap.put(alias, aliasCount);
+            alias = alias + "_" + aliasCount;
+        }
+        this.alias = alias;
         if(transformer.getTransformClass() != null && this.entityClass.getName().equals(transformer.getTransformClass().getName())) {
             this.meta = transformer.getMeta();
         } else {
@@ -45,7 +52,24 @@ public abstract class CriteriaParent<E> {
     /**
      *
      * creates {@link CriteriaParent}
-     * @param alias
+     * @param entityClass
+     * @return
+     */
+    public CriteriaJoin<E> createJoin(Class<?> entityClass) {
+        return createJoin(null, entityClass, null);
+    }
+    /**
+     *
+     * creates {@link CriteriaParent}
+     * @param entityClass
+     * @return
+     */
+    public CriteriaJoin<E> createJoin(Class<?> entityClass, String referenceId) {
+        return createJoin(null, entityClass, referenceId);
+    }
+    /**
+     *
+     * creates {@link CriteriaParent}
      * @param entityClass
      * @return
      */
@@ -55,13 +79,12 @@ public abstract class CriteriaParent<E> {
     /**
      *
      * creates {@link CriteriaParent}
-     * @param alias
      * @param entityClass
      * @return
      */
     public CriteriaJoin<E> createJoin(String alias, Class<?> entityClass, String referenceId) {
-        CriteriaJoin<E> join = new CriteriaJoin<>(this, alias, entityClass, this.getTransformer(), referenceId);
-        joins.put(alias, join);
+        CriteriaJoin<E> join = new CriteriaJoin<>(this, alias, entityClass, this.getTransformer(), referenceId, this.aliasesMap);
+        joins.put(join.getAlias(), join);
         return join;
     }
 
@@ -77,8 +100,8 @@ public abstract class CriteriaParent<E> {
         return projection;
     }
 
-    public CriteriaParent<E> add(Restriction criterion) {
-        restrictions.add(criterion);
+    public CriteriaParent<E> add(Restriction restriction) {
+        restrictions.add(restriction);
         return this;
     }
 

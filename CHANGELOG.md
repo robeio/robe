@@ -1,5 +1,10 @@
 # Change Log
 
+## 0.5.1.0-beta.13
+*  changed test port as 8686
+* valueAlias of restrictions is optional now.
+* Criteria alias and JoinCriteria alias is optional now.
+
 ## 0.5.1.0-beta.12
 * fixed bugs.
 

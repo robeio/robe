@@ -6,6 +6,7 @@ import io.robe.hibernate.criteria.api.projection.Projection;
 
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Created by kamilbukum on 10/01/2017.
@@ -14,19 +15,28 @@ public final class CriteriaJoin<E> extends CriteriaParent<E> {
     private final CriteriaParent<E> parent;
     private final String referenceId;
     private final List<JoinRelation> joinRelations = new LinkedList<>();
+
     /**
-     * @param alias
+     *
+     * @param parent
      * @param entityClass
+     * @param transformer
+     * @param aliasesMap
      */
-    CriteriaJoin(CriteriaParent<E> parentCriteriaParent, String alias, Class<?> entityClass, Transformer<E> transformer) {
-        this(parentCriteriaParent, alias, entityClass, transformer, null);
+    CriteriaJoin(CriteriaParent<E> parent, Class<?> entityClass, Transformer<E> transformer, Map<String, Integer> aliasesMap) {
+        this(parent, null , entityClass, transformer, null, aliasesMap);
     }
+
     /**
-     * @param alias
+     *
+     * @param parent
      * @param entityClass
+     * @param transformer
+     * @param referenceId
+     * @param aliasesMap
      */
-    CriteriaJoin(CriteriaParent parent, String alias, Class<?> entityClass, Transformer<E> transformer, String referenceId) {
-        super(alias, entityClass, parent.getTransformer());
+    CriteriaJoin(CriteriaParent<E> parent, String alias, Class<?> entityClass, Transformer<E> transformer, String referenceId, Map<String, Integer> aliasesMap) {
+        super(alias, entityClass, transformer, aliasesMap);
         this.parent = parent;
         this.referenceId = referenceId;
         if(!Validations.isEmptyOrNull(this.referenceId)) {
@@ -45,8 +55,8 @@ public final class CriteriaJoin<E> extends CriteriaParent<E> {
     }
 
     @Override
-    public CriteriaJoin<E> add(Restriction criterion) {
-        super.add(criterion);
+    public CriteriaJoin<E> add(Restriction restriction) {
+        super.add(restriction);
         return this;
     }
 
@@ -69,8 +79,12 @@ public final class CriteriaJoin<E> extends CriteriaParent<E> {
         return joinRelations;
     }
 
-    public CriteriaParent getParent() {
+    public CriteriaParent<E> getParent() {
         return parent;
+    }
+
+    public Criteria<E> getRoot() {
+        return this.parent instanceof Criteria ? (Criteria<E>) this.parent : ((CriteriaJoin<E>)this.parent).getRoot();
     }
 
     public String getReferenceId() {

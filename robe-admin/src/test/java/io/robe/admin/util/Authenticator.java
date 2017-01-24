@@ -21,7 +21,7 @@ public class Authenticator {
                             .toString();
         credentials.put("username", username);
         credentials.put("password", password);
-        client.post(new TestRequest.Builder("http://127.0.0.1:8080/robe").
+        client.post(new TestRequest.Builder("http://127.0.0.1:8686/robe").
                                         entity(credentials).
                                         endpoint("authentication/login").build());
     }

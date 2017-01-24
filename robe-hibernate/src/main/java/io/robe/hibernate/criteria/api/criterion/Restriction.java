@@ -9,17 +9,16 @@ public class Restriction {
     private final Operator operator;
     private final Object value;
     private final String name;
-    private final String valueAlias;
+    private String valueAlias;
 
     public Restriction(Operator operator, String name) {
-        this(operator, name, null,null);
+        this(operator, name, null);
     }
 
-    public Restriction(Operator operator, String name, Object value, String valueAlias) {
+    public Restriction(Operator operator, String name, Object value) {
         this.operator = operator;
         this.name = name;
         this.value = value;
-        this.valueAlias = valueAlias;
     }
 
     public Operator getOperator() {
@@ -32,6 +31,10 @@ public class Restriction {
 
     public Object getValue() {
         return value;
+    }
+
+    public void setValueAlias(String valueAlias) {
+        this.valueAlias = valueAlias;
     }
 
     public String getValueAlias() {

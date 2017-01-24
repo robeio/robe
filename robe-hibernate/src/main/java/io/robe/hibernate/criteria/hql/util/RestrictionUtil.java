@@ -1,10 +1,12 @@
 package io.robe.hibernate.criteria.hql.util;
 
+import io.robe.common.utils.Validations;
 import io.robe.hibernate.criteria.api.Criteria;
 import io.robe.hibernate.criteria.api.CriteriaParent;
 import io.robe.hibernate.criteria.api.criterion.RestrictionList;
 import io.robe.hibernate.criteria.api.criterion.Restriction;
 
+import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 import java.util.StringJoiner;
@@ -22,7 +24,7 @@ public class RestrictionUtil {
      */
     public static <E> String generateRestrictionsQuery(Criteria<E> criteria, StringJoiner restrictionJoiner, StringJoiner qJoiner, Map<String, Object> parameterMap){
         if(criteria.getRestrictions().size() > 0) {
-            RestrictionUtil.generateRestrictions(criteria, criteria.getRestrictions(), restrictionJoiner, qJoiner, parameterMap);
+            RestrictionUtil.generateRestrictions(criteria, criteria.getRestrictions(), restrictionJoiner, qJoiner, parameterMap, 0);
         }
         if(restrictionJoiner.length() > 0) {
             if(qJoiner.length() > 0) {
@@ -41,33 +43,33 @@ public class RestrictionUtil {
      * @param restrictions
      * @param joiner
      */
-    public static void generateRestrictions(CriteriaParent criteria, List<Restriction> restrictions, StringJoiner joiner, StringJoiner qJoiner, Map<String, Object> parameterMap){
+    public static void generateRestrictions(CriteriaParent criteria, List<Restriction> restrictions, StringJoiner joiner, StringJoiner qJoiner, Map<String, Object> parameterMap, int restrictionOrder){
         for(Restriction restriction: restrictions) {
             String result = null;
             switch (restriction.getOperator()) {
                 case EQUALS:
-                    result = restrictionToString(criteria, restriction, restriction.getValue(), "=", parameterMap);
+                    result = restrictionToString(criteria, restriction, restrictionOrder++, restriction.getValue(), "=", parameterMap);
                     break;
                 case IS_NULL:
                     result = criteria.getAlias() + "." + restriction.getName() + " IS NULL";
                     break;
                 case NOT_EQUALS:
-                    result = criteria.getAlias() + "." + restrictionToString(criteria, restriction, restriction.getValue(), "!=", parameterMap);
+                    result = criteria.getAlias() + "." + restrictionToString(criteria, restriction, restrictionOrder++, restriction.getValue(), "!=", parameterMap);
                     break;
                 case IS_NOT_NULL:
                     result = restriction.getName() + " IS NOT NULL";
                     break;
                 case LESS_THAN:
-                    result = restrictionToString(criteria, restriction, restriction.getValue(), " < ", parameterMap);
+                    result = restrictionToString(criteria, restriction, restrictionOrder++, restriction.getValue(), " < ", parameterMap);
                     break;
                 case LESS_OR_EQUALS_THAN:
-                    result = restrictionToString(criteria, restriction, restriction.getValue(), " <= ", parameterMap);
+                    result = restrictionToString(criteria, restriction, restrictionOrder++, restriction.getValue(), " <= ", parameterMap);
                     break;
                 case GREATER_THAN:
-                    result = restrictionToString(criteria, restriction, restriction.getValue(), " > ", parameterMap);
+                    result = restrictionToString(criteria, restriction, restrictionOrder++, restriction.getValue(), " > ", parameterMap);
                     break;
                 case GREATER_OR_EQUALS_THAN:
-                    result = restrictionToString(criteria, restriction, restriction.getValue(), " >= ", parameterMap);
+                    result = restrictionToString(criteria, restriction, restrictionOrder++, restriction.getValue(), " >= ", parameterMap);
                     break;
                 case Q:
                     result = null;
@@ -76,21 +78,20 @@ public class RestrictionUtil {
                     break;
                 case CONTAINS:
                     Object containsValue = getPercentValue(restriction);
-                    result = restrictionToString(criteria, restriction, containsValue, " LIKE ", parameterMap);
+                    result = restrictionToString(criteria, restriction, restrictionOrder++, containsValue, " LIKE ", parameterMap);
                     break;
                 case IN:
-                    result = restrictionToString(criteria, restriction, restriction.getValue(), " IN ", parameterMap);
+                    result = restrictionToString(criteria, restriction, restrictionOrder++, restriction.getValue(), " IN ", parameterMap);
                     break;
                 case AND:
                     StringJoiner andJoiner =  new StringJoiner(" AND ");
-                    generateRestrictions(criteria, ((RestrictionList)restriction).getRestrictions(), andJoiner, qJoiner, parameterMap);
+                    generateRestrictions(criteria, ((RestrictionList)restriction).getRestrictions(), andJoiner, qJoiner, parameterMap, restrictionOrder);
                     if(!"".equals(andJoiner.toString())) {
                         result = "( " +  andJoiner.toString() + " )";
-                    }
-                    break;
+                    }break;
                 case OR:
                     StringJoiner orJoiner = new StringJoiner(" OR ");
-                    generateRestrictions(criteria, ((RestrictionList)restriction).getRestrictions(), orJoiner, qJoiner, parameterMap);
+                    generateRestrictions(criteria, ((RestrictionList)restriction).getRestrictions(), orJoiner, qJoiner, parameterMap, restrictionOrder);
                     if(!"".equals(orJoiner.toString())) {
                         result = "( " +  orJoiner.toString() + " )";
                     }
@@ -107,11 +108,12 @@ public class RestrictionUtil {
      * @param operator
      * @return
      */
-    private static String restrictionToString(CriteriaParent criteria, Restriction restriction, Object value, String operator, Map<String, Object> parameterMap){
-        String valueAlias =  "$" + restriction.getValueAlias().replaceAll("\\.", "_");
-
-        parameterMap.put(valueAlias, value);
-        return criteria.getAlias() + "." + restriction.getName() + operator + ":" + valueAlias;
+    private static String restrictionToString(CriteriaParent criteria, Restriction restriction, Integer order, Object value, String operator, Map<String, Object> parameterMap){
+        if(Validations.isEmptyOrNull(restriction.getValueAlias())) {
+            restriction.setValueAlias(criteria.getAlias() + "_" + restriction.getName()+ "_" + order);
+        }
+        parameterMap.put(restriction.getValueAlias(), value);
+        return criteria.getAlias() + "." + restriction.getName() + operator + ":" + (value instanceof Collection ? (  "(" + restriction.getValueAlias() + ")"): restriction.getValueAlias());
     }
 
     private static Object getPercentValue(Restriction restriction) {

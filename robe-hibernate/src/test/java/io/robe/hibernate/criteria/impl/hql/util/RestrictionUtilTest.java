@@ -30,42 +30,45 @@ public class RestrictionUtilTest extends HqlCriteriaTestTools {
     public void generateRestrictions() throws Exception {
 
         Session session = sessionFactory.openSession();
-        Criteria<User> criteria = Criteria.createCriteria("user", User.class, new TransformerImpl<User>(session));
+        Criteria<User> criteria = Criteria.createCriteria(User.class, new TransformerImpl<User>(session));
 
         // IS NULL
         criteria.add(Restrictions.isNull("name"));
-        String expectedResult = "user.name IS NULL";
+        String expectedResult = "$user.name IS NULL";
         StringJoiner andJoiner = new StringJoiner(" AND ");
         StringJoiner qJoiner = new StringJoiner(" OR ");
         Map<String, Object> parameterMap = new LinkedHashMap<>();
-        RestrictionUtil.generateRestrictions(criteria, criteria.getRestrictions(), andJoiner, qJoiner, parameterMap);
+        RestrictionUtil.generateRestrictions(criteria, criteria.getRestrictions(), andJoiner, qJoiner, parameterMap, 0);
         assertEquals(expectedResult, andJoiner.toString());
 
         // IS NULL AND EQUALS
-        criteria.add(Restrictions.eq("name", "Kamil","userName"));
-        expectedResult = "user.name IS NULL AND user.name=:$userName";
+        criteria.add(Restrictions.eq("name", "Kamil"));
+        expectedResult = "$user.name IS NULL AND $user.name=:$user_name_0";
         andJoiner = new StringJoiner(" AND ");
         qJoiner = new StringJoiner(" OR ");
         parameterMap.clear();
-        RestrictionUtil.generateRestrictions(criteria, criteria.getRestrictions(), andJoiner, qJoiner, parameterMap);
+        RestrictionUtil.generateRestrictions(criteria, criteria.getRestrictions(), andJoiner, qJoiner, parameterMap, 0);
         assertEquals(expectedResult, andJoiner.toString());
 
         // IS NULL AND EQUALS AND GREATER THEN
-        criteria.add(Restrictions.gt("age", "Kamil","age"));
-        expectedResult = "user.name IS NULL AND user.name=:$userName AND user.age > :$age";
+        criteria.add(Restrictions.gt("age", "Kamil"));
+        expectedResult = "$user.name IS NULL AND $user.name=:$user_name_0 AND $user.age > :$user_age_1";
         andJoiner = new StringJoiner(" AND ");
         qJoiner = new StringJoiner(" OR ");
         parameterMap.clear();
-        RestrictionUtil.generateRestrictions(criteria, criteria.getRestrictions(), andJoiner, qJoiner, parameterMap);
+        RestrictionUtil.generateRestrictions(criteria, criteria.getRestrictions(), andJoiner, qJoiner, parameterMap, 0);
         assertEquals(expectedResult, andJoiner.toString());
 
 
-        // IS NULL AND EQUALS AND GREATER THEN OR (user.name EQUALS userName);
-        criteria.add(Restrictions.or(new Restriction[]{Restrictions.ilike("name", "Kamil","name2"), Restrictions.gt("age", "Kamil","age2")}));
-        expectedResult = "user.name IS NULL AND user.name=:$userName AND user.age > :$age AND ( user.name LIKE :$name2 OR user.age > :$age2 )";
+        // IS NULL AND EQUALS AND GREATER THEN OR ($user.name EQUALS userName);
+        criteria.add(Restrictions.or(new Restriction[]{
+                Restrictions.ilike("name", "Kamil"),
+                Restrictions.gt("age", "Kamil")})
+        );
+        expectedResult = "$user.name IS NULL AND $user.name=:$user_name_0 AND $user.age > :$user_age_1 AND ( $user.name LIKE :$user_name_2 OR $user.age > :$user_age_3 )";
         andJoiner = new StringJoiner(" AND ");
         qJoiner = new StringJoiner(" OR ");
-        RestrictionUtil.generateRestrictions(criteria, criteria.getRestrictions(), andJoiner, qJoiner, parameterMap);
+        RestrictionUtil.generateRestrictions(criteria, criteria.getRestrictions(), andJoiner, qJoiner, parameterMap, 0);
         assertEquals(expectedResult, andJoiner.toString());
     }
 

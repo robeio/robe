@@ -28,7 +28,7 @@ import static org.junit.Assert.assertNotNull;
 public class AuthenticationResourceTest extends RobeAdminTest {
 
     private final HttpClient client = HttpClient.getClient();
-    private final TestRequest.Builder requestBuilder = new TestRequest.Builder("http://127.0.0.1:8080/robe/authentication");
+    private final TestRequest.Builder requestBuilder = new TestRequest.Builder("http://127.0.0.1:8686/robe/authentication");
 
     private final String tokenHeaderName = "auth-token";
     private static String TOKEN;

@@ -23,7 +23,6 @@ import static org.junit.Assert.*;
 public class CriteriaParentTest extends HqlCriteriaTestTools {
     private static final double DELTA = 1e-15;
 
-    private static final TypeReference<Map<String, Object>>  MAP_TYPE_REFERENCE = new TypeReference<Map<String, Object>>() {};
     @Test
     public void createJoin() throws Exception {
 
@@ -83,50 +82,50 @@ public class CriteriaParentTest extends HqlCriteriaTestTools {
     public void setProjection() throws Exception {
         Session session = sessionFactory.openSession();
         List<User> expectedUserList = Criteria
-                .createCriteria("user", User.class, new TransformerImpl<User>(session)).list();
+                .createCriteria(User.class, new TransformerImpl<User>(session)).list();
 
         // rowCount
         Criteria<Map<String, Object>> criteria = Criteria
-                .createCriteria("user", User.class, new TransformerImpl<>(session, MAP_TYPE_REFERENCE.getClazz()))
+                .createCriteria(Role.class, new TransformerImpl<>(session, Criteria.MAP_CLASS))
                 .setProjection(
-                        Projections.projectionList().add(Projections.property("name")).add(Projections.property("failCount"))
-                ).add(Restrictions.eq("name", "Kamil", "name"));
-        Object resultProperty = criteria.uniqueResult();
+                        Projections.projectionList().add(Projections.groupProperty("name")).add(Projections.count("name"))
+                );
+        Object resultProperty = criteria.pairList();
         System.out.println(resultProperty);
 
         // rowCount
-        Criteria<User> userCriteria = Criteria.createCriteria("user", User.class, new TransformerImpl<User>(session)).setProjection(Projections.rowCount());
+        Criteria<User> userCriteria = Criteria.createCriteria(User.class, new TransformerImpl<User>(session)).setProjection(Projections.rowCount());
         long result = (long)userCriteria.uniqueResult();
         assertEquals(result, expectedUserList.size());
         // count
         userCriteria = Criteria
-                .createCriteria("user", User.class, new TransformerImpl<User>(session)).setProjection(Projections.count("name"));
+                .createCriteria(User.class, new TransformerImpl<User>(session)).setProjection(Projections.count("name"));
         result = (long)userCriteria.uniqueResult();
         assertEquals(result, expectedUserList.size());
 
         // alias
         userCriteria = Criteria
-                .createCriteria("user", User.class, new TransformerImpl<User>(session)).setProjection(Projections.alias(Projections.count("name"), "name"));
+                .createCriteria(User.class, new TransformerImpl<User>(session)).setProjection(Projections.alias(Projections.count("name"), "name"));
         result = (long)userCriteria.uniqueResult();
         assertEquals(result, expectedUserList.size());
 
         // sum
         userCriteria = Criteria
-                .createCriteria("user", User.class, new TransformerImpl<User>(session)).setProjection(Projections.sum("failCount"));
+                .createCriteria(User.class, new TransformerImpl<User>(session)).setProjection(Projections.sum("failCount"));
         result = (long) userCriteria.uniqueResult();
         long expected = expectedUserList.stream().mapToInt(User::getFailCount).sum();
         assertEquals(result, expected);
 
 
         // max
-        userCriteria = Criteria.createCriteria("user", User.class, new TransformerImpl<User>(session)).setProjection(Projections.max("failCount"));
+        userCriteria = Criteria.createCriteria(User.class, new TransformerImpl<User>(session)).setProjection(Projections.max("failCount"));
          result = (int) userCriteria.uniqueResult();
          expected = expectedUserList.stream().mapToInt(User::getFailCount).max().getAsInt();
         assertEquals(result, expected);
 
 
         // min
-        userCriteria = Criteria.createCriteria("user", User.class, new TransformerImpl<User>(session)).setProjection(Projections.min("failCount"));
+        userCriteria = Criteria.createCriteria(User.class, new TransformerImpl<User>(session)).setProjection(Projections.min("failCount"));
         result = (int) userCriteria.uniqueResult();
         expected = expectedUserList.stream().mapToInt(User::getFailCount).min().getAsInt();
         assertEquals(result, expected);
@@ -134,7 +133,7 @@ public class CriteriaParentTest extends HqlCriteriaTestTools {
 
         // avg
         userCriteria = Criteria
-                .createCriteria("user", User.class, new TransformerImpl<User>(session)).setProjection(Projections.avg("failCount"));
+                .createCriteria(User.class, new TransformerImpl<User>(session)).setProjection(Projections.avg("failCount"));
         double resultAvg = (double) userCriteria.uniqueResult();
         double expectedAvg = expectedUserList.stream().mapToInt(User::getFailCount).average().getAsDouble();
         assertEquals(resultAvg, expectedAvg, DELTA);
@@ -144,8 +143,8 @@ public class CriteriaParentTest extends HqlCriteriaTestTools {
     public void getTransformer() throws Exception {
         Session session = sessionFactory.openSession();
         Criteria<User> criteria = Criteria
-                .createCriteria("user", User.class, new TransformerImpl<User>(session));
-        CriteriaJoin join = criteria.createJoin("role", Role.class, "roleOid");
+                .createCriteria(User.class, new TransformerImpl<User>(session));
+        CriteriaJoin join = criteria.createJoin(Role.class, "roleOid");
         assertNotNull(criteria.getTransformer());
         assertNotNull(join.getTransformer());
     }

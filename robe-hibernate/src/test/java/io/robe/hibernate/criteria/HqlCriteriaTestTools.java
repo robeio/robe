@@ -51,6 +51,7 @@ public class HqlCriteriaTestTools {
         roles.add(new Role("Role3", "Example Third Role"));
         roles.add(new Role("Role4", "Example Fourth Role"));
         roles.add(new Role("Role5", "Example Fifth Role"));
+        roles.add(new Role("Role6", "Example Fifth Role"));
 
         users.add(new User(
                 "admin@robe.io",

@@ -6,7 +6,7 @@ server:
   adminContextPath: /admin
   connector:
     type: http
-    port: 8080
+    port: 8686
 
 hibernate:
    scanPackages: [io.robe.admin.hibernate.entity]

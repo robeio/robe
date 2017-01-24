@@ -4,6 +4,7 @@ import io.robe.common.utils.TypeReference;
 import io.robe.hibernate.criteria.api.criterion.Restriction;
 import io.robe.hibernate.criteria.api.projection.Projection;
 
+import java.util.LinkedHashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
@@ -27,24 +28,38 @@ public class Criteria<E> extends CriteriaParent<E> {
      */
     private Integer limit;
     /**
-     * @param alias
+     * @param entityClass
+     */
+    protected Criteria(Class<?> entityClass, Transformer<E> transformer) {
+        this(null, entityClass, transformer);
+    }
+
+    /**
      * @param entityClass
      */
     protected Criteria(String alias, Class<?> entityClass, Transformer<E> transformer) {
-        super(alias, entityClass, transformer);
+        super(alias, entityClass, transformer, new LinkedHashMap<>());
     }
 
     /**
      *
      * creates {@link CriteriaParent}
-     * @param alias
+     * @param entityClass
+     * @return
+     */
+    public static <E> Criteria<E> createCriteria(Class<?> entityClass, Transformer<E> transformer) {
+        return new Criteria<>(entityClass, transformer);
+    }
+
+    /**
+     *
+     * creates {@link CriteriaParent}
      * @param entityClass
      * @return
      */
     public static <E> Criteria<E> createCriteria(String alias, Class<?> entityClass, Transformer<E> transformer) {
         return new Criteria<>(alias, entityClass, transformer);
     }
-
     /**
      * Sets starting index for the paged fetches.
      * @param offset

@@ -14,7 +14,7 @@ public class RestrictionList extends Restriction {
         this(operator, Arrays.asList(restrictions));
     }
     public RestrictionList(Operator operator, List<Restriction> restrictions) {
-        super(operator, null, null, null);
+        super(operator, null, null);
         this.restrictions = restrictions;
     }
 

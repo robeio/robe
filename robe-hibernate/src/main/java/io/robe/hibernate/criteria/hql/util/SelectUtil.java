@@ -1,15 +1,11 @@
 package io.robe.hibernate.criteria.hql.util;
 
+import io.robe.common.dto.Pair;
 import io.robe.common.utils.Validations;
 import io.robe.hibernate.criteria.api.CriteriaJoin;
 import io.robe.hibernate.criteria.api.CriteriaParent;
 import io.robe.hibernate.criteria.api.Criteria;
-import io.robe.hibernate.criteria.api.cache.EntityMeta;
-import io.robe.hibernate.criteria.api.cache.FieldMeta;
 import io.robe.hibernate.criteria.api.projection.*;
-import io.robe.hibernate.criteria.query.Query;
-import io.robe.hibernate.criteria.hql.TransformerImpl;
-
 import java.util.Map;
 import java.util.StringJoiner;
 
@@ -23,12 +19,22 @@ public class SelectUtil {
      * @param <E>
      * @return
      */
-    public static <E> String generateSelectQueryForList(Criteria<E> criteria) {
-        String select = selectForListRecursively(criteria);
-        if("".equals(select)) {
-            return criteria.getAlias();
+    public static <E> Pair<String, String> generateSelectQueryForList(Criteria<E> criteria) {
+        Pair<String, String> pair = new Pair<>();
+        StringJoiner groupJoiner = new StringJoiner(", ");
+        String select = selectForListRecursively(criteria, groupJoiner);
+        String groupBy = groupJoiner.toString();
+        if(groupJoiner.length() > 0) {
+            groupBy = "\nGROUP BY " + groupBy;
         }
-        return select;
+        if("".equals(select)) {
+            pair.setLeft(criteria.getAlias());
+            pair.setRight(groupBy);
+            return pair;
+        }
+        pair.setLeft(select);
+        pair.setRight(groupBy);
+        return pair;
     }
 
     /**
@@ -36,13 +42,13 @@ public class SelectUtil {
      * @param criteria
      * @return
      */
-    private static <E> String selectForListRecursively(CriteriaParent<E> criteria){
+    private static <E> String selectForListRecursively(CriteriaParent<E> criteria, StringJoiner groupJoiner){
         StringJoiner joiner = new StringJoiner(", ");
         if(criteria.getProjection() != null) {
-            joiner.add(selectForListByProjection(criteria, criteria.getProjection(), null));
+            joiner.add(selectForListByProjection(criteria, criteria.getProjection(), null, groupJoiner));
         }
         for(Map.Entry<String, CriteriaJoin<E>> joinEntry: criteria.getJoins().entrySet()) {
-            String joinProjectionResult = selectForListRecursively(joinEntry.getValue());
+            String joinProjectionResult = selectForListRecursively(joinEntry.getValue(), groupJoiner);
             if(!Validations.isEmptyOrNull(joinProjectionResult)) {
                 joiner.add(joinProjectionResult);
             }
@@ -56,34 +62,38 @@ public class SelectUtil {
      * @param projection
      * @return
      */
-    private static String selectForListByProjection(CriteriaParent criteria, Projection projection, String alias){
+    private static String selectForListByProjection(CriteriaParent criteria, Projection projection, String alias, StringJoiner groupJoiner){
+        String result;
         if(projection instanceof IdentifierProjection) {
-            return criteria.getAlias() + "." + criteria.getMeta().getIdentityName() + getAsKey(criteria, criteria.getMeta().getIdentityName(), alias);
-        }
-        if(projection instanceof PropertyProjection) {
+            result = criteria.getAlias() + "." + criteria.getMeta().getIdentityName() + getAsKey(criteria, criteria.getMeta().getIdentityName(), alias);
+        } else if(projection instanceof PropertyProjection) {
             PropertyProjection p = (PropertyProjection)projection;
-            return criteria.getAlias() + "." + p.getProperty() + getAsKey(criteria, p.getProperty(), alias);
+            result = criteria.getAlias() + "." + p.getProperty() + getAsKey(criteria, p.getProperty(), alias);
+            if(p.isGrouped()) {
+                groupJoiner.add( criteria.getAlias() + "." + p.getProperty());
+            }
         } else if(projection instanceof FunctionProjection) {
             FunctionProjection pp = (FunctionProjection)projection;
             if(FunctionProjection.Type.COUNT == pp.getFnType() && Validations.isEmptyOrNull(pp.getProperty())) {
-                return pp.getFnType().name() + "(1)" + getAsKey(criteria, pp.getFnType().name().toLowerCase(), alias);
+                return pp.getFnType().name() + "(1)" + getAsKey(criteria, "fn_" + pp.getFnType().name().toLowerCase(), alias);
             } else {
-                return pp.getFnType().name() + "(" + criteria.getAlias() + "." + pp.getProperty() + ")" + getAsKey(criteria, pp.getFnType().name().toLowerCase(), alias);
+                return pp.getFnType().name() + "(" + criteria.getAlias() + "." + pp.getProperty() + ")" + getAsKey(criteria, "fn_" + pp.getProperty() + "_" + pp.getFnType().name().toLowerCase() , alias);
             }
         } else if(projection instanceof EnhancedProjection) {
             EnhancedProjection p = (EnhancedProjection)projection;
-            return selectForListByProjection(criteria, p.getProjection(), p.getAlias());
+            result = selectForListByProjection(criteria, p.getProjection(), p.getAlias(), groupJoiner);
         } else if(projection instanceof ProjectionList){
             ProjectionList p = (ProjectionList)projection;
             StringJoiner joiner = new StringJoiner(", ");
             for(int i = 0 ; i < p.getLength(); i++) {
                 Projection childProjection = p.getProjection(i);
-                joiner.add(selectForListByProjection(criteria, childProjection, null));
+                joiner.add(selectForListByProjection(criteria, childProjection, null, groupJoiner));
             }
-            return joiner.toString();
+            result = joiner.toString();
         } else {
             throw new RuntimeException("Unknown Projection !"+ projection);
         }
+        return result;
     }
 
     private static String getAsKey(CriteriaParent criteria, String selectAlias, String asAlias){

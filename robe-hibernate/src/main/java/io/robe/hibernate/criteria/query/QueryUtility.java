@@ -4,11 +4,11 @@ import io.robe.common.service.search.model.SearchModel;
 import io.robe.common.utils.Validations;
 import io.robe.common.utils.reflection.Fields;
 import io.robe.hibernate.criteria.api.*;
+import io.robe.hibernate.criteria.api.criterion.Restriction;
 import io.robe.hibernate.criteria.api.criterion.Restrictions;
 import io.robe.hibernate.criteria.api.projection.ProjectionList;
 import io.robe.hibernate.criteria.api.cache.EntityMeta;
 import io.robe.hibernate.criteria.api.cache.FieldMeta;
-import io.robe.hibernate.criteria.api.criterion.Restriction;
 import io.robe.hibernate.criteria.api.projection.Projections;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -61,14 +61,14 @@ public class QueryUtility {
     }
 
 
-    private static <E> void configureQForField(String fieldName, FieldMeta fieldMeta, String[] queries, List<Restriction> restrictions) {
+    private static void configureQForField(String fieldName, FieldMeta fieldMeta, String[] queries, List<Restriction> restrictions) {
         // create filter
         for(int i = 0 ; i < queries.length; i++) {
             Operator op = Operator.Q;
-            String variableAlias = "$_query_" + i;
             String rawValue = queries[i];
             Object value = getValue(op, rawValue, fieldMeta.getField().getType());
-            Restriction restriction = Restrictions.filter(fieldName, op, value, variableAlias);
+            Restriction restriction = Restrictions.filter(fieldName, op, value);
+            restriction.setValueAlias( "$_query_" + i);
             restrictions.add(restriction);
         }
     }
@@ -79,7 +79,7 @@ public class QueryUtility {
      * @param filters
      * @param <E>
      */
-    static <E> void configureFilters(CriteriaParent<E> criteria, String[][] filters) {
+    static <E> void configureFilters(CriteriaParent<E> criteria, String[][] filters, Integer restrictionOrder) {
         if(filters == null || filters.length == 0) return;
         Map<String, List<Restriction>> restrictionMap = new LinkedHashMap<>();
         Map<String, CriteriaParent<E>> criteriaMap = new LinkedHashMap<>();
@@ -91,12 +91,10 @@ public class QueryUtility {
             Parent<E> parent = new Parent<>(criteria, name);
             if(!createCriteriaByGivenName(parent)) continue;
             FieldMeta fieldMeta = parent.criteria.getMeta().getFieldMap().get(parent.name);
-            String valueAlias = name.replace("\\.", "_");
             Object value = getValue(operator, rawValue, fieldMeta.getField().getType());
-            Restriction restriction = Restrictions.filter(parent.name, operator, value, valueAlias);
-            if(restriction == null) {
-                continue;
-            }
+            Restriction restriction = Restrictions.filter(parent.name, operator, value);
+            if(restriction == null) continue;
+            restriction.setValueAlias(name.replace("\\.", "_") + "_" + restrictionOrder);
             List<Restriction> restrictions = restrictionMap.get(parent.criteria.getAlias());
             if(restrictions == null) {
                 restrictions = new LinkedList<>();

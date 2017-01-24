@@ -4,6 +4,7 @@ import io.robe.common.service.search.model.SearchModel;
 import io.robe.hibernate.criteria.api.Criteria;
 import io.robe.hibernate.criteria.api.Result;
 import io.robe.hibernate.criteria.api.Transformer;
+import io.robe.hibernate.criteria.api.criterion.Restrictions;
 import io.robe.hibernate.criteria.api.query.QueryTestTools;
 import io.robe.hibernate.criteria.hql.TransformerImpl;
 import io.robe.hibernate.test.entity.User;
@@ -26,7 +27,7 @@ public class QueryTest extends QueryTestTools {
         search.setSort(new String[]{"-name", "+roleOid.name"});
         search.setFilter(new String[][] {{"name", "=", "Kamil"}, {"active", "=", "true"}});
         Query<User> query = new Query<>(new TransformerImpl<>(session, User.class));
-        Result<User> result = query.createCriteria(User.class, search).pairList();
+        Result<User> result = query.createCriteria(User.class, search).add(Restrictions.in("name", "deneme, deneme")).pairList();
         System.out.println(result);
     }
 

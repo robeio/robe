@@ -17,7 +17,7 @@ public class ActionLogDaoTest extends BaseDaoTest<ActionLog, ActionLogDao> {
         actionLog.setActionType("TEST");
         actionLog.setPositive(true);
         actionLog.setAdditionalData("NO-DATA");
-        actionLog.setRemoteAddr("http:127.0.0.1:8080");
+        actionLog.setRemoteAddr("http:127.0.0.1:8686");
         return actionLog;
     }
 

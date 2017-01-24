@@ -3,6 +3,7 @@ package io.robe.hibernate.criteria.api.criteria;
 import io.robe.hibernate.criteria.api.Criteria;
 import io.robe.hibernate.criteria.api.Order;
 import io.robe.hibernate.criteria.HqlCriteriaTestTools;
+import io.robe.hibernate.criteria.api.criterion.Restriction;
 import io.robe.hibernate.criteria.api.criterion.Restrictions;
 import io.robe.hibernate.criteria.api.projection.Projections;
 import io.robe.hibernate.criteria.hql.TransformerImpl;
@@ -22,14 +23,14 @@ public class CriteriaTest extends HqlCriteriaTestTools {
     @Test
     public void createCriteria() throws Exception {
         Session session = sessionFactory.openSession();
-        Criteria<User> criteria = Criteria.createCriteria("user", User.class, new TransformerImpl<User>(session));
+        Criteria<User> criteria = Criteria.createCriteria(User.class, new TransformerImpl<User>(session));
         assertNotNull(criteria);
     }
 
     @Test
     public void setOffset() throws Exception {
         Session session = sessionFactory.openSession();
-        Criteria<User> criteria = Criteria.createCriteria("user", User.class, new TransformerImpl<User>(session));
+        Criteria<User> criteria = Criteria.createCriteria( User.class, new TransformerImpl<User>(session));
         criteria.setOffset(2);
         assertEquals(2, (long)criteria.getOffset());
     }
@@ -37,7 +38,7 @@ public class CriteriaTest extends HqlCriteriaTestTools {
     @Test
     public void setLimit() throws Exception {
         Session session = sessionFactory.openSession();
-        Criteria<User> criteria = Criteria.createCriteria("user", User.class, new TransformerImpl<User>(session));
+        Criteria<User> criteria = Criteria.createCriteria(User.class, new TransformerImpl<User>(session));
         criteria.setLimit(50);
         assertEquals(50, (long)criteria.getLimit());
     }
@@ -45,7 +46,7 @@ public class CriteriaTest extends HqlCriteriaTestTools {
     @Test
     public void getOffset() throws Exception {
         Session session = sessionFactory.openSession();
-        Criteria<User> criteria = Criteria.createCriteria("user", User.class, new TransformerImpl<User>(session));
+        Criteria<User> criteria = Criteria.createCriteria(User.class, new TransformerImpl<User>(session));
         criteria.setOffset(2);
         assertEquals(2, (long)criteria.getOffset());
     }
@@ -53,7 +54,7 @@ public class CriteriaTest extends HqlCriteriaTestTools {
     @Test
     public void getLimit() throws Exception {
         Session session = sessionFactory.openSession();
-        Criteria<User> criteria = Criteria.createCriteria("user", User.class, new TransformerImpl<User>(session));
+        Criteria<User> criteria = Criteria.createCriteria(User.class, new TransformerImpl<User>(session));
         criteria.setLimit(50);
         assertEquals(50, (long)criteria.getLimit());
     }
@@ -62,24 +63,30 @@ public class CriteriaTest extends HqlCriteriaTestTools {
     public void list() throws Exception {
         Session session = sessionFactory.openSession();
 
+
         // list without any parameter
-        Criteria<User> criteria = Criteria.createCriteria("user", User.class, new TransformerImpl<User>(session));
+        Criteria<User> criteria = Criteria.createCriteria(User.class, new TransformerImpl<User>(session));
         List<User> userList = criteria.list();
         List<User> expectedList = session.createQuery("SELECT user FROM io.robe.hibernate.test.entity.User user").list();
         assertEquals(expectedList, userList);
 
         // list by limit ( maxresults )
-        criteria = Criteria.createCriteria("user", User.class, new TransformerImpl<User>(session)).setLimit(2);
+        criteria = Criteria.createCriteria(User.class, new TransformerImpl<User>(session)).setLimit(2);
         userList = criteria.list();
         expectedList = session.createQuery("SELECT user FROM io.robe.hibernate.test.entity.User user").setMaxResults(2).list();
         assertEquals(expectedList, userList);
 
         // list by offset and limit
-        criteria = Criteria.createCriteria("user", User.class, new TransformerImpl<User>(session)).setOffset(2).setLimit(2);
+        criteria = Criteria.createCriteria(User.class, new TransformerImpl<User>(session)).setOffset(2).setLimit(2);
         userList = criteria.list();
         expectedList = session.createQuery("SELECT user FROM io.robe.hibernate.test.entity.User user").setFirstResult(2).setMaxResults(2).list();
         assertEquals(expectedList, userList);
 
+
+        criteria = Criteria.createCriteria(User.class, new TransformerImpl<User>(session))
+                .add(Restrictions.gt("failCount", 6));
+        userList = criteria.list();
+        System.out.println(userList);
     }
 
     @Test
@@ -87,13 +94,13 @@ public class CriteriaTest extends HqlCriteriaTestTools {
         Session session = sessionFactory.openSession();
         // list by offset and limit
         Criteria<Map<String, Object>> mapCriteria = Criteria
-                .createCriteria("user", User.class, new TransformerImpl<>(session, Criteria.MAP_CLASS))
+                .createCriteria(User.class, new TransformerImpl<>(session, Criteria.MAP_CLASS))
                 .setProjection(Projections.projectionList().add(
-                        Projections.property("name"),
+                        Projections.groupProperty("name"),
                         "name"
                 ));
         mapCriteria
-                .createJoin("role", Role.class, "roleOid")
+                .createJoin(Role.class, "roleOid")
                 .setProjection(Projections.alias(
                         Projections.property("name"),
                         "role.name"
@@ -113,14 +120,14 @@ public class CriteriaTest extends HqlCriteriaTestTools {
         Session session = sessionFactory.openSession();
 
         // simple count
-        Criteria<User> criteria = Criteria.createCriteria("user", User.class, new TransformerImpl<User>(session));
+        Criteria<User> criteria = Criteria.createCriteria(User.class, new TransformerImpl<User>(session));
         long result = criteria.count();
         long expectedResult = (long)session.createQuery("SELECT count(user) FROM io.robe.hibernate.test.entity.User user").uniqueResult();
         assertEquals(result, expectedResult);
 
 
         // count with restriction
-        criteria = Criteria.createCriteria("user", User.class, new TransformerImpl<User>(session)).add(Restrictions.eq("name",  "Kamil","name"));
+        criteria = Criteria.createCriteria(User.class, new TransformerImpl<User>(session)).add(Restrictions.eq("name",  "Kamil"));
         result = criteria.count();
         expectedResult = (long)session.createQuery("" +
                 "SELECT count(user) FROM io.robe.hibernate.test.entity.User user " +
@@ -131,8 +138,8 @@ public class CriteriaTest extends HqlCriteriaTestTools {
 
         // count with join
 
-        criteria = Criteria.createCriteria("user", User.class, new TransformerImpl<User>(session)).add(Restrictions.eq("name", "Kamil","name"));
-        criteria.createJoin("role", Role.class).addRelation("oid", "roleOid");
+        criteria = Criteria.createCriteria(User.class, new TransformerImpl<User>(session)).add(Restrictions.eq("name", "Kamil"));
+        criteria.createJoin(Role.class).addRelation("oid", "roleOid");
         result = criteria.count();
         expectedResult = (long)session.createQuery("" +
                 "SELECT count(user) FROM io.robe.hibernate.test.entity.User user " +
@@ -142,11 +149,11 @@ public class CriteriaTest extends HqlCriteriaTestTools {
 
 
 
-        criteria = Criteria.createCriteria("user", User.class, new TransformerImpl<User>(session)).add(
-                Restrictions.eq("name",  "Kamil","name"));
+        criteria = Criteria.createCriteria(User.class, new TransformerImpl<User>(session)).add(
+                Restrictions.eq("name",  "Kamil"));
         criteria.
-                createJoin("role", Role.class).addRelation("oid", "roleOid")
-                .add(Restrictions.eq("name", "Example First Role","roleOid.name"));
+                createJoin(Role.class).addRelation("oid", "roleOid")
+                .add(Restrictions.eq("name", "Example First Role"));
         result = criteria.count();
 
         expectedResult = (long)session.createQuery("" +
@@ -159,9 +166,9 @@ public class CriteriaTest extends HqlCriteriaTestTools {
         assertEquals(expectedResult, result);
 
 
-        criteria = Criteria.createCriteria("user", User.class, new TransformerImpl<User>(session)).add(
-                Restrictions.eq("name", "Kamil","name"));
-        criteria.createJoin("roleOid", Role.class).addRelation("oid", "roleOid").add(Restrictions.eq("name", "Example First Role","roleOid.name"));
+        criteria = Criteria.createCriteria(User.class, new TransformerImpl<User>(session)).add(
+                Restrictions.eq("name", "Kamil"));
+        criteria.createJoin(Role.class).addRelation("oid", "roleOid").add(Restrictions.eq("name", "Example First Role"));
         result = criteria.count();
         expectedResult = (long)session.createQuery("" +
                 "SELECT count(*) AS DCOUN FROM \n" +
@@ -175,17 +182,17 @@ public class CriteriaTest extends HqlCriteriaTestTools {
 
 
         criteria = Criteria
-                .createCriteria("user", User.class, new TransformerImpl<User>(session))
+                .createCriteria(User.class, new TransformerImpl<User>(session))
                 .add(
                         Restrictions.or(
-                                Restrictions.eq("name", "Kamil","name1"),
-                                Restrictions.eq("name", "Seray","name2")
+                                Restrictions.eq("name", "Kamil"),
+                                Restrictions.eq("name", "Seray")
                         )
                 );
         criteria
-                .createJoin("role", Role.class)
+                .createJoin(Role.class)
                 .addRelation("oid", "roleOid")
-                .add(Restrictions.eq("name", "Example First Role","name"));
+                .add(Restrictions.eq("name", "Example First Role"));
 
         result = criteria.count();
         expectedResult = (long)session.createQuery("" +
@@ -200,20 +207,20 @@ public class CriteriaTest extends HqlCriteriaTestTools {
 
 
         criteria = Criteria
-                .createCriteria("user", User.class, new TransformerImpl<User>(session))
+                .createCriteria(User.class, new TransformerImpl<User>(session))
                 .add(
                         Restrictions.and(
                                 Restrictions.or(
-                                        Restrictions.eq("name", "Kamil","name1"),
-                                        Restrictions.eq("name", "Seray","name2")
+                                        Restrictions.eq("name", "Kamil"),
+                                        Restrictions.eq("name", "Seray")
                                 ),
-                                Restrictions.eq("active", false, "activeAlias")
+                                Restrictions.eq("active", false)
                         )
                 );
         criteria
-                .createJoin("role", Role.class)
+                .createJoin(Role.class)
                 .addRelation("oid", "roleOid")
-                .add(Restrictions.eq("name", "Example First Role","name"));
+                .add(Restrictions.eq("name", "Example First Role"));
 
         result = criteria.count();
         expectedResult = (long)session.createQuery("" +
@@ -232,20 +239,20 @@ public class CriteriaTest extends HqlCriteriaTestTools {
 
         // simple count
         Criteria<User> criteria = Criteria
-                .createCriteria("user", User.class, new TransformerImpl<User>(session))
+                .createCriteria(User.class, new TransformerImpl<User>(session))
                 .add(
                         Restrictions.and(
                                 Restrictions.or(
-                                        Restrictions.eq("name", "Kamil","name1"),
-                                        Restrictions.eq("name", "Seray","name2")
+                                        Restrictions.eq("name", "Kamil"),
+                                        Restrictions.eq("name", "Seray")
                                 ),
-                                Restrictions.eq("active", false, "activeAlias")
+                                Restrictions.eq("active", false)
                         )
                 );
         criteria
-                .createJoin("role", Role.class)
+                .createJoin(Role.class)
                 .addRelation("oid", "roleOid")
-                .add(Restrictions.eq("name", "Example First Role","name"));
+                .add(Restrictions.eq("name", "Example First Role"));
 
         User user = (User) criteria.uniqueResult();
         User expectedResult = (User) session.createQuery("" +
@@ -262,7 +269,7 @@ public class CriteriaTest extends HqlCriteriaTestTools {
     public void getTransformer() throws Exception {
         Session session = sessionFactory.openSession();
         Criteria<User> criteria = Criteria
-                .createCriteria("user", User.class, new TransformerImpl<User>(session));
+                .createCriteria(User.class, new TransformerImpl<User>(session));
         assertNotNull(criteria.getTransformer());
     }
 
@@ -274,7 +281,7 @@ public class CriteriaTest extends HqlCriteriaTestTools {
                         "FROM io.robe.hibernate.test.entity.User user  ORDER BY user.name ASC,user.active DESC").list();
 
         Criteria<User> criteria = Criteria
-                .createCriteria("user", User.class, new TransformerImpl<User>(session)).addOrder(Order.asc("name")).addOrder(Order.desc("active"));
+                .createCriteria(User.class, new TransformerImpl<User>(session)).addOrder(Order.asc("name")).addOrder(Order.desc("active"));
         List<User> users = criteria.list();
         assertEquals(expectedResult, users);
 
@@ -283,10 +290,10 @@ public class CriteriaTest extends HqlCriteriaTestTools {
                 "FROM io.robe.hibernate.test.entity.User user  ORDER BY user.name ASC,user.active DESC").list();
 
         criteria = Criteria
-                .createCriteria("user", User.class, new TransformerImpl<User>(session))
+                .createCriteria(User.class, new TransformerImpl<User>(session))
                 .addOrder(Order.asc("name"))
                 .addOrder(Order.desc("active"));
-        criteria.createJoin("role", Role.class, "roleOid").addOrder(Order.asc("name"));
+        criteria.createJoin(Role.class, "roleOid").addOrder(Order.asc("name"));
         users = criteria.list();
         System.out.println(expectedResult);
         assertEquals(expectedResult, users);

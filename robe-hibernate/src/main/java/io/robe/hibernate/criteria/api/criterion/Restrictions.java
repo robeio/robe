@@ -14,8 +14,8 @@ public class Restrictions {
      * variableAlias
      * @return
      */
-    public static Restriction eq(String name, Object value, String valueAlias) {
-        return new Restriction(Operator.EQUALS, name, value, valueAlias);
+    public static Restriction eq(String name, Object value) {
+        return new Restriction(Operator.EQUALS, name, value);
     }
 
     /**
@@ -34,8 +34,8 @@ public class Restrictions {
      * @return
      */
     // '!=' not equals operator
-    public static Restriction ne(String name, Object value, String valueAlias){
-        return new Restriction(Operator.NOT_EQUALS, name, value, valueAlias);
+    public static Restriction ne(String name, Object value){
+        return new Restriction(Operator.NOT_EQUALS, name, value);
     }
 
     /**
@@ -54,8 +54,8 @@ public class Restrictions {
      * @return
      */
     // '<' less than operator
-    public static Restriction lt(String name, Object Object, String valueAlias){
-        return new Restriction(Operator.LESS_THAN, name, Object, valueAlias);
+    public static Restriction lt(String name, Object Object){
+        return new Restriction(Operator.LESS_THAN, name, Object);
     }
 
     /**
@@ -65,8 +65,8 @@ public class Restrictions {
      * @return
      */
     // '<=' less or equals than operator
-    public static Restriction le(String name, Object value, String valueAlias){
-        return new Restriction(Operator.LESS_OR_EQUALS_THAN, name, value, valueAlias);
+    public static Restriction le(String name, Object value){
+        return new Restriction(Operator.LESS_OR_EQUALS_THAN, name, value);
     }
 
     /**
@@ -76,8 +76,8 @@ public class Restrictions {
      * @return
      */
     // '>' greater than operator
-    public static Restriction gt(String name, Object value, String valueAlias){
-        return new Restriction(Operator.GREATER_THAN, name, value, valueAlias);
+    public static Restriction gt(String name, Object value){
+        return new Restriction(Operator.GREATER_THAN, name, value);
     }
 
     /**
@@ -87,8 +87,8 @@ public class Restrictions {
      * @return
      */
     // '>=' greater or equals than operator
-    public static Restriction ge(String name, Object value, String valueAlias){
-        return new Restriction(Operator.GREATER_OR_EQUALS_THAN, name, value, valueAlias);
+    public static Restriction ge(String name, Object value){
+        return new Restriction(Operator.GREATER_OR_EQUALS_THAN, name, value);
     }
 
     /**
@@ -98,8 +98,8 @@ public class Restrictions {
      * @return
      */
     // '~=' contains than operator
-    public static Restriction ilike(String name, Object value, String valueAlias){
-        return new Restriction(Operator.CONTAINS, name, value, valueAlias);
+    public static Restriction ilike(String name, Object value){
+        return new Restriction(Operator.CONTAINS, name, value);
     }
 
     /**
@@ -109,8 +109,8 @@ public class Restrictions {
      * @return
      */
     // '|=' in list operator
-    public static Restriction in(String name, Object value, String valueAlias){
-        return new Restriction(Operator.IN, name, value, valueAlias);
+    public static Restriction in(String name, Object value){
+        return new Restriction(Operator.IN, name, value);
     }
     public static Restriction and(Restriction ...restrictions){
         return new RestrictionList(Operator.AND, restrictions);
@@ -133,9 +133,9 @@ public class Restrictions {
      * variableAlias
      * @return Restriction
      */
-    public static Restriction filter(String name, String op, Object value, String valueAlias) {
+    public static Restriction filter(String name, String op, Object value) {
         Operator operator = Operator.value(op);
-        Restriction restriction = filter(name, operator, value, valueAlias);
+        Restriction restriction = filter(name, operator, value);
         return restriction;
     }
 
@@ -147,18 +147,18 @@ public class Restrictions {
      * variableAlias
      * @return
      */
-    public static Restriction filter(String name, Operator operator, Object value, String valueAlias) {
+    public static Restriction filter(String name, Operator operator, Object value) {
         switch (operator) {
             case EQUALS:
                 return value == null || "".equals(value) ?
-                        new Restriction(Operator.IS_NULL, name, value, valueAlias) :
-                        new Restriction(Operator.EQUALS, name, value, valueAlias);
+                        new Restriction(Operator.IS_NULL, name, value) :
+                        new Restriction(Operator.EQUALS, name, value);
             case NOT_EQUALS:
                 return value == null || "".equals(value) ?
-                        new Restriction(Operator.IS_NOT_NULL, name, value, valueAlias) :
-                        new Restriction(Operator.EQUALS, name, value, valueAlias);
+                        new Restriction(Operator.IS_NOT_NULL, name, value) :
+                        new Restriction(Operator.EQUALS, name, value);
             default:
-                return new Restriction(operator, name, value, valueAlias);
+                return new Restriction(operator, name, value);
         }
     }
 }
