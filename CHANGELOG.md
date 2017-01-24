@@ -1,5 +1,8 @@
 # Change Log
 
+## 0.5.1.0-beta.12
+* fixed bugs.
+
 ## 0.5.1.0-beta.11
 * fixed Q Filter Problem
 

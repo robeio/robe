@@ -4,22 +4,22 @@ import io.robe.common.service.search.model.SearchModel;
 import io.robe.common.utils.Validations;
 import io.robe.common.utils.reflection.Fields;
 import io.robe.hibernate.criteria.api.*;
-import io.robe.hibernate.criteria.api.cache.FieldReference;
 import io.robe.hibernate.criteria.api.criterion.Restrictions;
-import io.robe.hibernate.criteria.api.projection.Projection;
 import io.robe.hibernate.criteria.api.projection.ProjectionList;
 import io.robe.hibernate.criteria.api.cache.EntityMeta;
 import io.robe.hibernate.criteria.api.cache.FieldMeta;
 import io.robe.hibernate.criteria.api.criterion.Restriction;
 import io.robe.hibernate.criteria.api.projection.Projections;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
-import java.lang.reflect.Field;
 import java.util.*;
 
 /**
  * Created by kamilbukum on 17/01/2017.
  */
 public class QueryUtility {
+    private static final Logger LOGGER = LoggerFactory.getLogger(QueryUtility.class);
 
     /**
      *
@@ -28,16 +28,18 @@ public class QueryUtility {
      */
     static <E> void configureCriteriaByQ(CriteriaParent<E> criteria, String[] queries){
         Set<String> joinedClassNames = new HashSet<>();
-        configureCriteriaByQ(criteria, queries, joinedClassNames);
+        configureCriteriaByQ(criteria, queries, criteria.getMeta().getFieldMap().keySet(), joinedClassNames);
     }
 
 
-    static <E> void configureCriteriaByQ(CriteriaParent<E> criteria, String[] queries, Set<String> joinedClassNames) {
+    static <E> void configureCriteriaByQ(CriteriaParent<E> criteria, String[] queries, Collection<String> fieldSet, Set<String> joinedClassNames) {
         List<Restriction> restrictions = new LinkedList<>();
-        for(Map.Entry<String, FieldMeta> entry:  criteria.getMeta().getFieldMap().entrySet()) {
-            FieldMeta fieldMeta = entry.getValue();
+        for(String fieldName: fieldSet) {
+            FieldMeta fieldMeta = criteria.getMeta().getFieldMap().get(fieldName);
+            if(fieldMeta == null) {
+                LOGGER.warn("Not found defined field name in the filtering section in the " + criteria.getEntityClass().getName() + " class ! ");
+            }
             if(!fieldMeta.isSearchIgnore() && !fieldMeta.isTransient() && fieldMeta.getField().getType().equals(String.class)) {
-                String fieldName = entry.getKey();
                 configureQForField(fieldName, fieldMeta, queries, restrictions);
             }
             if(fieldMeta.getReference() != null) {
@@ -47,8 +49,9 @@ public class QueryUtility {
                         return;
                     }
                     joinedClassNames.add(className);
-                    CriteriaJoin<E> criteriaJoin = addOrGetJoin(entry.getKey(), fieldMeta, criteria);
-                    configureCriteriaByQ(criteriaJoin, queries, joinedClassNames);
+                    CriteriaJoin<E> criteriaJoin = addOrGetJoin(fieldName, fieldMeta, criteria);
+                    List<String> joinFieldSet = Arrays.asList(fieldMeta.getReference().getFilters());
+                    configureCriteriaByQ(criteriaJoin, queries, joinFieldSet, joinedClassNames);
                 }
             }
         }
