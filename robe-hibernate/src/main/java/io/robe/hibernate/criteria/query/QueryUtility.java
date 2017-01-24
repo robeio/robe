@@ -78,9 +78,11 @@ public class QueryUtility {
      */
     static <E> void configureFilters(CriteriaParent<E> criteria, String[][] filters) {
         if(filters == null || filters.length == 0) return;
-        List<Restriction> restrictions = new LinkedList<>();
+        Map<String, List<Restriction>> restrictionMap = new LinkedHashMap<>();
+        Map<String, CriteriaParent<E>> criteriaMap = new LinkedHashMap<>();
         for(String[] filter: filters) {
             String name = filter[0];
+            if(Validations.isEmptyOrNull(name) && Validations.isEmptyOrNull(filter[1])) continue;
             Operator operator = Operator.value(filter[1]);
             String rawValue = filter[2];
             Parent<E> parent = new Parent<>(criteria, name);
@@ -89,10 +91,20 @@ public class QueryUtility {
             String valueAlias = name.replace("\\.", "_");
             Object value = getValue(operator, rawValue, fieldMeta.getField().getType());
             Restriction restriction = Restrictions.filter(parent.name, operator, value, valueAlias);
+            if(restriction == null) {
+                continue;
+            }
+            List<Restriction> restrictions = restrictionMap.get(parent.criteria.getAlias());
+            if(restrictions == null) {
+                restrictions = new LinkedList<>();
+                restrictionMap.put(parent.criteria.getAlias(), restrictions);
+                criteriaMap.put(parent.criteria.getAlias(), parent.criteria);
+            }
             restrictions.add(restriction);
+            parent.criteria = criteria;
         }
-        if(restrictions.size() > 0) {
-            criteria.add(restrictions.size() == 1 ? restrictions.get(0): Restrictions.and(restrictions));
+        for(Map.Entry<String, List<Restriction>> entry: restrictionMap.entrySet()) {
+            criteriaMap.get(entry.getKey()).add(entry.getValue().size() == 1 ? entry.getValue().get(0): Restrictions.and(entry.getValue()));
         }
     }
 

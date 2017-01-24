@@ -1,5 +1,7 @@
 package io.robe.hibernate.criteria.api.criterion;
 
+import io.robe.common.utils.Strings;
+import io.robe.common.utils.Validations;
 import io.robe.hibernate.criteria.query.Operator;
 import java.util.List;
 
