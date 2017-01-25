@@ -1,5 +1,6 @@
 package io.robe.hibernate.criteria.hql.util;
 
+import io.robe.common.dto.Increment;
 import io.robe.hibernate.criteria.api.CriteriaJoin;
 import io.robe.hibernate.criteria.api.CriteriaParent;
 import io.robe.hibernate.criteria.api.JoinRelation;
@@ -64,7 +65,7 @@ public class JoinUtil {
         }
 
         if(criteriaJoin.getRestrictions().size() > 0) {
-            RestrictionUtil.generateRestrictions(criteriaJoin, criteriaJoin.getRestrictions(), restrictionJoiner, qJoiner, parameterMap, 0);
+            RestrictionUtil.generateRestrictions(criteriaJoin, criteriaJoin.getRestrictions(), restrictionJoiner, qJoiner, parameterMap, new Increment(0));
         }
         if(joiner.length() > 0) {
             builder.append(joiner.toString());

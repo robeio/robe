@@ -1,4 +1,6 @@
 # Change Log
+## 0.5.1.0-beta.16
+* fixed restrictions name suffix increment problem
 
 ## 0.5.1.0-beta.15
 * fixed obtaining multiple transient-relation members in the DTO Entity from the HQL Select Fields.

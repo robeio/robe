@@ -1,5 +1,6 @@
 package io.robe.hibernate.criteria.impl.hql.util;
 
+import io.robe.common.dto.Increment;
 import io.robe.hibernate.criteria.hql.util.RestrictionUtil;
 import io.robe.hibernate.criteria.HqlCriteriaTestTools;
 import io.robe.hibernate.criteria.api.Criteria;
@@ -38,7 +39,7 @@ public class RestrictionUtilTest extends HqlCriteriaTestTools {
         StringJoiner andJoiner = new StringJoiner(" AND ");
         StringJoiner qJoiner = new StringJoiner(" OR ");
         Map<String, Object> parameterMap = new LinkedHashMap<>();
-        RestrictionUtil.generateRestrictions(criteria, criteria.getRestrictions(), andJoiner, qJoiner, parameterMap, 0);
+        RestrictionUtil.generateRestrictions(criteria, criteria.getRestrictions(), andJoiner, qJoiner, parameterMap, new Increment(0));
         assertEquals(expectedResult, andJoiner.toString());
 
         // IS NULL AND EQUALS
@@ -47,7 +48,7 @@ public class RestrictionUtilTest extends HqlCriteriaTestTools {
         andJoiner = new StringJoiner(" AND ");
         qJoiner = new StringJoiner(" OR ");
         parameterMap.clear();
-        RestrictionUtil.generateRestrictions(criteria, criteria.getRestrictions(), andJoiner, qJoiner, parameterMap, 0);
+        RestrictionUtil.generateRestrictions(criteria, criteria.getRestrictions(), andJoiner, qJoiner, parameterMap, new Increment(0));
         assertEquals(expectedResult, andJoiner.toString());
 
         // IS NULL AND EQUALS AND GREATER THEN
@@ -56,7 +57,7 @@ public class RestrictionUtilTest extends HqlCriteriaTestTools {
         andJoiner = new StringJoiner(" AND ");
         qJoiner = new StringJoiner(" OR ");
         parameterMap.clear();
-        RestrictionUtil.generateRestrictions(criteria, criteria.getRestrictions(), andJoiner, qJoiner, parameterMap, 0);
+        RestrictionUtil.generateRestrictions(criteria, criteria.getRestrictions(), andJoiner, qJoiner, parameterMap, new Increment(0));
         assertEquals(expectedResult, andJoiner.toString());
 
 
@@ -68,7 +69,7 @@ public class RestrictionUtilTest extends HqlCriteriaTestTools {
         expectedResult = "$user.name IS NULL AND $user.name=:$user_name_0 AND $user.age > :$user_age_1 AND ( $user.name LIKE :$user_name_2 OR $user.age > :$user_age_3 )";
         andJoiner = new StringJoiner(" AND ");
         qJoiner = new StringJoiner(" OR ");
-        RestrictionUtil.generateRestrictions(criteria, criteria.getRestrictions(), andJoiner, qJoiner, parameterMap, 0);
+        RestrictionUtil.generateRestrictions(criteria, criteria.getRestrictions(), andJoiner, qJoiner, parameterMap, new Increment(0));
         assertEquals(expectedResult, andJoiner.toString());
     }
 
