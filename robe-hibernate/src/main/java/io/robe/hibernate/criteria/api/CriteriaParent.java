@@ -34,6 +34,7 @@ public abstract class CriteriaParent<E> {
         this.entityClass = entityClass;
         this.aliasesMap = aliasesMap;
         this.transformer = transformer;
+
         alias = "$" + (alias != null ? alias : Strings.unCapitalizeFirstChar(entityClass.getSimpleName()));
         if(aliasesMap.containsKey(alias)) {
             Integer aliasCount = aliasesMap.getOrDefault(alias, 0);

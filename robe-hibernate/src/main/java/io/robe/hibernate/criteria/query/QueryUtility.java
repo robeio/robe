@@ -94,7 +94,8 @@ public class QueryUtility {
             Object value = getValue(operator, rawValue, fieldMeta.getField().getType());
             Restriction restriction = Restrictions.filter(parent.name, operator, value);
             if(restriction == null) continue;
-            restriction.setValueAlias(parent.criteria.getAlias() + name.replace("\\.", "_") + "_" + restrictionOrder++);
+
+            restriction.setValueAlias(parent.criteria.getAlias() + "_" + parent.name + "_" + restrictionOrder++);
             List<Restriction> restrictions = restrictionMap.get(parent.criteria.getAlias());
             if(restrictions == null) {
                 restrictions = new LinkedList<>();
@@ -251,7 +252,7 @@ public class QueryUtility {
      */
     private static <E> CriteriaJoin<E> addOrGetJoin(String name, FieldMeta meta, CriteriaParent<E> criteriaParent){
         Class<?> joinClass = meta.getReference().getTargetEntity();
-        CriteriaJoin<E> join = criteriaParent.getJoin(name);
+        CriteriaJoin<E> join = criteriaParent.getJoin("$" + name);
         if(join == null) {
             join = criteriaParent.createJoin(name, joinClass, name);
         }

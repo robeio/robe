@@ -1,5 +1,9 @@
 # Change Log
 
+## 0.5.1.0-beta.15
+* fixed obtaining multiple transient-relation members in the DTO Entity from the HQL Select Fields.
+* fixed wrong variable name of the parameters in the HQL.
+
 ## 0.5.1.0-beta.14
 * Fixed multiple filtering on the same field.
 * Fixed Conversion of the Collections in the HQL Query (setParameterList)

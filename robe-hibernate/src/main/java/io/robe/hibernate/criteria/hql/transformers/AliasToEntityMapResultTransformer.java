@@ -56,8 +56,4 @@ public class AliasToEntityMapResultTransformer extends AliasedTupleSubsetResultT
 		return INSTANCE;
 	}
 
-
-	public static void main(String[] args) {
-		System.out.println("den_$_eme".replaceAll("_\\$_", "."));
-	}
 }
