@@ -5,7 +5,7 @@
     <parent>
         <artifactId>robe-parent</artifactId>
         <groupId>io.robe</groupId>
-        <version>0.5.1.0-beta.13</version>
+        <version>0.5.1.0-beta.14</version>
     </parent>
     <modelVersion>4.0.0</modelVersion>
 

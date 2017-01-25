@@ -94,7 +94,7 @@ public class QueryUtility {
             Object value = getValue(operator, rawValue, fieldMeta.getField().getType());
             Restriction restriction = Restrictions.filter(parent.name, operator, value);
             if(restriction == null) continue;
-            restriction.setValueAlias(name.replace("\\.", "_") + "_" + restrictionOrder);
+            restriction.setValueAlias(parent.criteria.getAlias() + name.replace("\\.", "_") + "_" + restrictionOrder++);
             List<Restriction> restrictions = restrictionMap.get(parent.criteria.getAlias());
             if(restrictions == null) {
                 restrictions = new LinkedList<>();

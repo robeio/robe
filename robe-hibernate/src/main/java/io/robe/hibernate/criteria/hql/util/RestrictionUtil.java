@@ -113,7 +113,7 @@ public class RestrictionUtil {
             restriction.setValueAlias(criteria.getAlias() + "_" + restriction.getName()+ "_" + order);
         }
         parameterMap.put(restriction.getValueAlias(), value);
-        return criteria.getAlias() + "." + restriction.getName() + operator + ":" + (value instanceof Collection ? (  "(" + restriction.getValueAlias() + ")"): restriction.getValueAlias());
+        return criteria.getAlias() + "." + restriction.getName() + operator + (value instanceof Collection ? (  "(:" + restriction.getValueAlias() + ")"): ":" + restriction.getValueAlias());
     }
 
     private static Object getPercentValue(Restriction restriction) {

@@ -50,7 +50,7 @@ public class TransformerImpl<E> extends Transformer<E> {
             query.setFirstResult(criteria.getOffset());
         }
         for(Map.Entry<String, Object> parameter: parameterMap.entrySet()) {
-            query.setParameter(parameter.getKey(), parameter.getValue());
+            setParameter(query, parameter.getKey(), parameter.getValue());
         }
         setResultTransformer(query);
         return query.list();
@@ -74,12 +74,20 @@ public class TransformerImpl<E> extends Transformer<E> {
         setResultTransformer(listQuery);
         Query countQuery = session.createQuery(pairQuery.getRight());
         for(Map.Entry<String, Object> parameter: parameterMap.entrySet()) {
-            listQuery.setParameter(parameter.getKey(), parameter.getValue());
-            countQuery.setParameter(parameter.getKey(), parameter.getValue());
+            setParameter(listQuery, parameter.getKey(), parameter.getValue());
+            setParameter(countQuery, parameter.getKey(), parameter.getValue());
         }
         result.setList(listQuery.list());
         result.setTotalCount((long)countQuery.uniqueResult());
         return result;
+    }
+
+    public void setParameter(Query query, String key, Object value) {
+        if(value instanceof Collection) {
+            query.setParameterList(key, (Collection) value);
+        } else {
+            query.setParameter(key, value);
+        }
     }
 
     @Override
@@ -88,7 +96,7 @@ public class TransformerImpl<E> extends Transformer<E> {
         String hql = TransformUtil.generateCount(criteria, parameterMap);
         Query query = session.createQuery(hql);
         for(Map.Entry<String, Object> parameter: parameterMap.entrySet()) {
-            query.setParameter(parameter.getKey(), parameter.getValue());
+            setParameter(query, parameter.getKey(), parameter.getValue());
         }
         setResultTransformer(query);
         return (long)query.uniqueResult();
@@ -102,7 +110,7 @@ public class TransformerImpl<E> extends Transformer<E> {
         Query query = session.createQuery(queryString);
 
         for(Map.Entry<String, Object> parameter: parameterMap.entrySet()) {
-            query.setParameter(parameter.getKey(), parameter.getValue());
+            setParameter(query, parameter.getKey(), parameter.getValue());
         }
         setResultTransformer(query);
         return query.uniqueResult();

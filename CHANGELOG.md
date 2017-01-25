@@ -1,5 +1,9 @@
 # Change Log
 
+## 0.5.1.0-beta.14
+* Fixed multiple filtering on the same field.
+* Fixed Conversion of the Collections in the HQL Query (setParameterList)
+
 ## 0.5.1.0-beta.13
 *  changed test port as 8686
 * valueAlias of restrictions is optional now.
