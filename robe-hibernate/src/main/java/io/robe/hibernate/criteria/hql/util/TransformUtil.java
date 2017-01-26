@@ -21,9 +21,10 @@ public class TransformUtil {
         // common quires -> { from, joins, restrictions }
         builder.append(generateCommonQueires(criteria, parameterMap));
 
+        // GROUP BY QUERIES
+        builder.append(selectAndGroupBy.getRight());
         // ORDER BY QUERIES
         builder.append(generateOrderQuery(criteria));
-        builder.append(selectAndGroupBy.getRight());
         return builder.toString();
     }
 
@@ -47,10 +48,10 @@ public class TransformUtil {
         String commonQueries = generateCommonQueires(criteria, parameterMap);
         listBuilder.append(commonQueries);
         countBuilder.append(commonQueries);
-
+        // GROUP BY QUERIES
+        listBuilder.append(selectAndGroupBy.getRight());
         // ORDER BY QUERIES
         listBuilder.append(generateOrderQuery(criteria));
-        listBuilder.append(selectAndGroupBy.getRight());
         pairQuery.setLeft(listBuilder.toString());
         pairQuery.setRight(countBuilder.toString());
         return pairQuery;

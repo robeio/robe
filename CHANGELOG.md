@@ -1,4 +1,8 @@
 # Change Log
+
+## 0.5.1.0-beta.17
+* GROUP BY query has been moved before ORDER BY query.
+
 ## 0.5.1.0-beta.16
 * fixed restrictions name suffix increment problem
 
