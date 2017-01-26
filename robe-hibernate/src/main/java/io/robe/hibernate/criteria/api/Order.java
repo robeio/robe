@@ -4,28 +4,43 @@ package io.robe.hibernate.criteria.api;
  * Created by kamilbukum on 10/01/2017.
  */
 public class Order {
-    private String alias;
+    private String criteriaAlias;
     private final String name;
+    private final boolean isAlias;
     private final Type type;
 
-    public Order(String name, Type type) {
+    public Order(String name, Type type, boolean isAlias) {
         this.name = name;
         this.type = type;
+        this.isAlias = isAlias;
     }
 
     public static Order asc(String name) {
-        return new Order(name, Type.ASC);
+        return new Order(name, Type.ASC, false);
     }
+
+    public static Order ascByAlias(String alias) {
+        return new Order(alias, Type.ASC, true);
+    }
+
     public static Order desc(String name) {
-        return new Order(name, Type.DESC);
+        return new Order(name, Type.DESC, false);
     }
 
-    public String getAlias() {
-        return alias;
+    public static Order descByAlias(String alias) {
+        return new Order(alias, Type.DESC, true);
     }
 
-    void setAlias(String alias) {
-        this.alias = alias;
+    public boolean isAlias() {
+        return isAlias;
+    }
+
+    public String getCriteriaAlias() {
+        return criteriaAlias;
+    }
+
+    void setCriteriaAlias(String criteriaAlias) {
+        this.criteriaAlias = criteriaAlias;
     }
 
     public String getName() {

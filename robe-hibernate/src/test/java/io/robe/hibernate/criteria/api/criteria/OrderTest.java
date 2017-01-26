@@ -41,7 +41,7 @@ public class OrderTest {
         Order order = Order.asc(name);
         assertEquals(order.getType(), Order.Type.ASC);
         assertEquals(order.getName(), name);
-        assertNull(order.getAlias());
+        assertNull(order.getCriteriaAlias());
     }
 
     @Test

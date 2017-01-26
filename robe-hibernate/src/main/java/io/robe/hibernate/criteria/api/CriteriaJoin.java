@@ -62,8 +62,8 @@ public final class CriteriaJoin<E> extends CriteriaParent<E> {
 
     @Override
     public CriteriaJoin<E> addOrder(Order order) {
-        if(order.getAlias() == null) {
-            order.setAlias(this.getAlias());
+        if(order.getCriteriaAlias() == null) {
+            order.setCriteriaAlias(this.getAlias());
         }
         parent.addOrder(order);
         return this;

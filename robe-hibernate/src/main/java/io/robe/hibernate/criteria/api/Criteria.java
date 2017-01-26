@@ -123,8 +123,8 @@ public class Criteria<E> extends CriteriaParent<E> {
 
     @Override
     public Criteria<E> addOrder(Order order) {
-        if(order.getAlias() == null) {
-            order.setAlias(this.getAlias());
+        if(order.getCriteriaAlias() == null) {
+            order.setCriteriaAlias(this.getAlias());
         }
         orders.add(order);
         return this;

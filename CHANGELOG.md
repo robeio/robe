@@ -1,5 +1,8 @@
 # Change Log
 
+## 0.5.1.0-beta.18
+* added alias to ORDER BY
+
 ## 0.5.1.0-beta.17
 * GROUP BY query has been moved before ORDER BY query.
 

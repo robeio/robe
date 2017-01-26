@@ -75,7 +75,7 @@ public class TransformUtil {
             StringJoiner joiner = new StringJoiner(",");
             List<Order> orders = criteria.getOrders();
             for(Order order: orders) {
-                String name = order.getAlias() + "." + order.getName();
+                String name = order.isAlias() ? order.getName() : (order.getCriteriaAlias() + "." + order.getName());
                 joiner.add(name + " " +  (order.getType().name()));
             }
             return " ORDER BY " + joiner.toString();
