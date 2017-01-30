@@ -1,25 +1,16 @@
 package io.robe.hibernate.criteria.hql;
 
+import io.robe.common.dto.BooleanHolder;
 import io.robe.common.dto.Pair;
-import io.robe.common.utils.reflection.Fields;
 import io.robe.hibernate.criteria.api.Criteria;
 import io.robe.hibernate.criteria.api.Result;
 import io.robe.hibernate.criteria.api.Transformer;
 import io.robe.hibernate.criteria.api.cache.EntityMetaFinder;
 import io.robe.hibernate.criteria.hql.transformers.AliasToBeanResultTransformer;
 import io.robe.hibernate.criteria.hql.transformers.AliasToEntityMapResultTransformer;
-import io.robe.hibernate.criteria.hql.util.TransformUtil;
 import org.hibernate.Query;
 import org.hibernate.Session;
-import org.hibernate.transform.ResultTransformer;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
-import java.lang.reflect.Field;
-import java.lang.reflect.Modifier;
 import java.util.*;
-import java.util.concurrent.ConcurrentHashMap;
-import java.util.function.Predicate;
 
 /**
  * Created by kamilbukum on 10/01/2017.
@@ -39,17 +30,16 @@ public class TransformerImpl<E> extends Transformer<E> {
 
     @Override
     public List<E> list(Criteria<E> criteria) {
-        Map<String, Object> parameterMap = new LinkedHashMap<>();
-        String queryString = TransformUtil.generateDataQuery(criteria, this,   parameterMap);
+        Pair<String, Map<String, Object>> pair = TransformerUtil.query(criteria);
 
-        Query query = session.createQuery(queryString);
+        Query query = session.createQuery(pair.getLeft());
         if(criteria.getLimit() != null) {
             query.setMaxResults(criteria.getLimit());
         }
         if(criteria.getOffset() != null) {
             query.setFirstResult(criteria.getOffset());
         }
-        for(Map.Entry<String, Object> parameter: parameterMap.entrySet()) {
+        for(Map.Entry<String, Object> parameter: pair.getRight().entrySet()) {
             setParameter(query, parameter.getKey(), parameter.getValue());
         }
         setResultTransformer(query);
@@ -59,11 +49,12 @@ public class TransformerImpl<E> extends Transformer<E> {
 
 
     @Override
-    public Result<E> pairList(Criteria criteria) {
+    public Result<E> pairList(Criteria<E> criteria) {
         Result<E> result  = new Result<>();
-        Map<String, Object> parameterMap = new LinkedHashMap<>();
-        Pair<String, String> pairQuery = TransformUtil.generatePairResult(criteria, parameterMap);
-        Query listQuery = session.createQuery(pairQuery.getLeft());
+        BooleanHolder groupBy = new BooleanHolder(false);
+        Pair<String, Pair<String, Map<String, Object>>> pair = TransformerUtil.pairList(criteria, groupBy);
+        System.out.println(pair.getLeft());
+        Query listQuery = session.createQuery(pair.getLeft());
         if(criteria.getLimit() != null) {
             listQuery.setMaxResults(criteria.getLimit());
         }
@@ -71,13 +62,13 @@ public class TransformerImpl<E> extends Transformer<E> {
             listQuery.setFirstResult(criteria.getOffset());
         }
         setResultTransformer(listQuery);
-        Query countQuery = session.createQuery(pairQuery.getRight());
-        for(Map.Entry<String, Object> parameter: parameterMap.entrySet()) {
+        Query countQuery = session.createQuery(pair.getRight().getLeft());
+        for(Map.Entry<String, Object> parameter: pair.getRight().getRight().entrySet()) {
             setParameter(listQuery, parameter.getKey(), parameter.getValue());
             setParameter(countQuery, parameter.getKey(), parameter.getValue());
         }
         result.setList(listQuery.list());
-        result.setTotalCount((long)countQuery.uniqueResult());
+        result.setTotalCount(groupBy.is() ? countQuery.list().size(): (long)countQuery.uniqueResult());
         return result;
     }
 
@@ -91,23 +82,23 @@ public class TransformerImpl<E> extends Transformer<E> {
 
     @Override
     public Long count(Criteria<E> criteria) {
-        Map<String, Object> parameterMap = new LinkedHashMap<>();
-        String hql = TransformUtil.generateCount(criteria, parameterMap);
-        Query query = session.createQuery(hql);
-        for(Map.Entry<String, Object> parameter: parameterMap.entrySet()) {
+        BooleanHolder groupBy = new BooleanHolder(false);
+        Pair<String, Map<String, Object>> pair = TransformerUtil.count(criteria, groupBy);
+        System.out.println(pair.getLeft());
+        Query query = session.createQuery(pair.getLeft());
+        for(Map.Entry<String, Object> parameter: pair.getRight().entrySet()) {
             setParameter(query, parameter.getKey(), parameter.getValue());
         }
         setResultTransformer(query);
-        return (long)query.uniqueResult();
+        return groupBy.is() ? query.list().size(): (long)query.uniqueResult();
     }
 
     @Override
     public Object uniqueResult(Criteria<E> criteria) {
-        Map<String, Object> parameterMap = new LinkedHashMap<>();
-        String queryString = TransformUtil.generateDataQuery(criteria, this, parameterMap);
-        Query query = session.createQuery(queryString);
+        Pair<String, Map<String, Object>> pair = TransformerUtil.query(criteria);
+        Query query = session.createQuery(pair.getLeft());
 
-        for(Map.Entry<String, Object> parameter: parameterMap.entrySet()) {
+        for(Map.Entry<String, Object> parameter: pair.getRight().entrySet()) {
             setParameter(query, parameter.getKey(), parameter.getValue());
         }
         setResultTransformer(query);

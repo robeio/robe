@@ -91,7 +91,6 @@ public class QueryTestTools extends HqlCriteriaTestTools {
         SearchModel search = new SearchModel();
         search.setQ("Example First Role");
         search.setSort(new String[]{"-name", "+roleOid.name"});
-        search.setFilter(new String[][] {{"name", "=", "Kamil"}, {"active", "=", "true"}});
         Query<User> query = new Query<>(new TransformerImpl<>(session, User.class));
         Result<User> result = query.createCriteria(User.class, search).pairList();
         System.out.println(result);

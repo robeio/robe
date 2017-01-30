@@ -6,6 +6,7 @@ import io.robe.common.utils.reflection.Fields;
 import io.robe.hibernate.criteria.api.*;
 import io.robe.hibernate.criteria.api.criterion.Restriction;
 import io.robe.hibernate.criteria.api.criterion.Restrictions;
+import io.robe.hibernate.criteria.api.projection.Projection;
 import io.robe.hibernate.criteria.api.projection.ProjectionList;
 import io.robe.hibernate.criteria.api.cache.EntityMeta;
 import io.robe.hibernate.criteria.api.cache.FieldMeta;
@@ -13,6 +14,7 @@ import io.robe.hibernate.criteria.api.projection.Projections;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.lang.reflect.Field;
 import java.util.*;
 
 /**
@@ -66,7 +68,7 @@ public class QueryUtility {
         for(int i = 0 ; i < queries.length; i++) {
             Operator op = Operator.Q;
             String rawValue = queries[i];
-            Object value = getValue(op, rawValue, fieldMeta.getField().getType());
+            Object value = getValue(op, rawValue, fieldMeta.getField());
             Restriction restriction = Restrictions.filter(fieldName, op, value);
             restriction.setValueAlias( "$_query_" + i);
             restrictions.add(restriction);
@@ -91,7 +93,7 @@ public class QueryUtility {
             Parent<E> parent = new Parent<>(criteria, name);
             if(!createCriteriaByGivenName(parent)) continue;
             FieldMeta fieldMeta = parent.criteria.getMeta().getFieldMap().get(parent.name);
-            Object value = getValue(operator, rawValue, fieldMeta.getField().getType());
+            Object value = getValue(operator, rawValue, fieldMeta.getField());
             Restriction restriction = Restrictions.filter(parent.name, operator, value);
             if(restriction == null) continue;
 
@@ -155,7 +157,7 @@ public class QueryUtility {
             Parent<E> parent = new Parent<>(criteria, fieldName);
             ProjectionList projectionList = configureField(parent);
             if(projectionList != null) {
-                projectionList.add(Projections.alias(Projections.property(parent.name), entry.getKey()));
+                projectionList.add(Projections.alias(fieldMeta.isCollection() ? Projections.elements(parent.name): Projections.property(parent.name),  entry.getKey()));
             }
         }
     }
@@ -173,7 +175,8 @@ public class QueryUtility {
             Parent<E> parent = new Parent<>(criteria, field);
             ProjectionList projectionList = configureField(parent);
             if(projectionList != null) {
-                projectionList.add(Projections.property(parent.name));
+                FieldMeta fieldMeta = parent.criteria.getMeta().getFieldMap().get(parent.name);
+                projectionList.add(fieldMeta.isCollection() ? Projections.elements(parent.name): Projections.property(parent.name));
             }
         }
     }
@@ -220,7 +223,8 @@ public class QueryUtility {
 
         FieldMeta fieldMeta;
         if(lastParentIndex <= step) {
-            fieldMeta = meta.getFieldMap().get(names[0]);
+            String fieldName = names[0];
+            fieldMeta = meta.getFieldMap().get(fieldName);
             if(fieldMeta == null || fieldMeta.isTransient() ) {
                 return false;
             }
@@ -265,29 +269,33 @@ public class QueryUtility {
      *
      * @param operator
      * @param rawValue
-     * @param fieldType
+     * @param field
      * @return
      */
-    public static Object getValue(String operator, String rawValue, Class<?> fieldType){
-        return getValue(Operator.value(operator), rawValue, fieldType);
+    public static Object getValue(String operator, String rawValue, Field field){
+        return getValue(Operator.value(operator), rawValue, field);
     }
 
     /**
      *
      * @param operator
      * @param rawValue
-     * @param fieldType
+     * @param field
      * @return
      */
-    public static Object getValue(Operator operator, String rawValue, Class<?> fieldType){
+    public static Object getValue(Operator operator, String rawValue, Field field){
         if(Operator.IN.equals(operator)) {
-            String[] svalues = rawValue.split("\\|");
-            List<Object> lvalues = new LinkedList<>();
-            for (String svalue : svalues) {
-                lvalues.add(Fields.castValue(fieldType, svalue));
+            if(!field.getType().isAssignableFrom(Collection.class)) {
+                String[] svalues = rawValue.split("\\|");
+                List<Object> lvalues = new LinkedList<>();
+                for (String svalue : svalues) {
+                    lvalues.add(Fields.castValue(field.getType(), svalue));
+                }
+                return lvalues;
+            } else {
+                return Fields.castValue(Fields.getTypeOfList(field), rawValue);
             }
-            return lvalues;
         }
-        return Fields.castValue(fieldType, rawValue);
+        return Fields.castValue(field.getType(), rawValue);
     }
 }

@@ -12,6 +12,7 @@ import org.hibernate.Session;
 import org.junit.Test;
 
 import java.util.List;
+import java.util.Map;
 
 import static org.junit.Assert.*;
 
@@ -24,10 +25,13 @@ public class QueryTest extends QueryTestTools {
         Session session = sessionFactory.openSession();
         SearchModel search = new SearchModel();
         search.setQ("Example First Role");
+        search.setFields(new String[]{"name", "nickNames"});
         search.setSort(new String[]{"-name", "+roleOid.name"});
         search.setFilter(new String[][] {{"name", "=", "Kamil"}, {"active", "=", "true"}});
-        Query<User> query = new Query<>(new TransformerImpl<>(session, User.class));
-        Result<User> result = query.createCriteria(User.class, search).add(Restrictions.in("name", "deneme, deneme")).pairList();
+        Query<Map<String, Object>> query = new Query<>(new TransformerImpl<>(session, Criteria.MAP_CLASS));
+        Result<Map<String, Object>> result = query.createCriteria(User.class, search).add(
+                Restrictions.in("name", "deneme, deneme")
+        ).pairList();
         System.out.println(result);
     }
 

@@ -4,6 +4,7 @@ import com.google.common.collect.ImmutableSet;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;
+import java.lang.reflect.ParameterizedType;
 import java.math.BigDecimal;
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
@@ -127,10 +128,19 @@ public class Fields {
             case "java.util.Date":
                 return new Date(Long.parseLong(value));
 
+
         }
         if ((type instanceof Class && (type).isEnum())) {
             return Enum.valueOf((Class<? extends Enum>) type, value);
         }
         return null;
     }
+
+
+    public static Class<?> getTypeOfList(Field field) {
+        ParameterizedType stringListType = (ParameterizedType) field.getGenericType();
+        Class<?> elementClass = (Class<?>) stringListType.getActualTypeArguments()[0];
+        return elementClass;
+    }
+
 }

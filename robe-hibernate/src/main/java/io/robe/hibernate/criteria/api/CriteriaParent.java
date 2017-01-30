@@ -4,10 +4,8 @@ import io.robe.common.utils.Strings;
 import io.robe.hibernate.criteria.api.cache.EntityMeta;
 import io.robe.hibernate.criteria.api.criterion.Restriction;
 import io.robe.hibernate.criteria.api.projection.Projection;
-import java.util.LinkedHashMap;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Map;
+
+import java.util.*;
 
 /**
  * Created by kamilbukum on 10/01/2017.
@@ -21,7 +19,7 @@ public abstract class CriteriaParent<E> {
      * Entity class Type
      */
     private final Class<?> entityClass;
-    private final Map<String, CriteriaJoin<E>> joins = new LinkedHashMap<>();
+    private final Map<String, CriteriaJoin<E>> joins = new LinkedHashMap<>(0);
     private final List<Restriction> restrictions = new LinkedList<>();
     private final EntityMeta meta;
     private Projection projection;

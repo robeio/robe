@@ -7,13 +7,13 @@ import io.robe.hibernate.entity.BaseEntity;
 import org.hibernate.validator.constraints.Length;
 import org.hibernate.validator.constraints.NotEmpty;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Table;
-import javax.persistence.Transient;
+import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
 import java.util.Date;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Set;
 
 @Entity
 @Table
@@ -68,6 +68,11 @@ public class User extends BaseEntity {
 
     @Transient
     private String exampleTransient;
+
+    @ElementCollection
+    @CollectionTable(name="Nicknames", joinColumns=@JoinColumn(name="user_id"))
+    @Column(name="nickname")
+    public Set<String> nickNames;
 
     public User(){
 
@@ -165,6 +170,15 @@ public class User extends BaseEntity {
 
     public String getExampleTransient() {
         return exampleTransient;
+    }
+
+
+    public void setNickNames(Set<String> nickNames) {
+        this.nickNames = nickNames;
+    }
+
+    public Set<String> getNickNames() {
+        return nickNames;
     }
 
     @Override

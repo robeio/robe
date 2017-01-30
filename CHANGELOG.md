@@ -1,5 +1,11 @@
 # Change Log
 
+## 0.5.1.0-beta.19
+* added list field restriction and projection support.
+* fixed [#4](https://github.com/robeio/robe/issues/4)  
+* fixed [#6](https://github.com/robeio/robe/issues/6)  
+* fixed count of group by queries problem.
+
 ## 0.5.1.0-beta.18
 * added alias to ORDER BY
 

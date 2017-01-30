@@ -139,6 +139,11 @@ public class Projections {
         return new EnhancedProjection(projection, alias);
     }
 
+
+    public static ProjectionElements elements(String propertyName) {
+        return new ProjectionElements(propertyName);
+    }
+
     private Projections() {
         //cannot be instantiated
     }

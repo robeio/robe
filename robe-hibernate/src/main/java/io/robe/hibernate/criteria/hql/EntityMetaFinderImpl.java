@@ -12,6 +12,7 @@ import javax.persistence.Id;
 import javax.persistence.Transient;
 import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;
+import java.util.Collection;
 import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.function.Predicate;
@@ -49,10 +50,11 @@ public class EntityMetaFinderImpl implements EntityMetaFinder {
             Transient isTransient = field.getAnnotation(Transient.class);
             SearchIgnore ignore = field.getAnnotation(SearchIgnore.class);
             SearchFrom searchFrom = field.getAnnotation(SearchFrom.class);
+            boolean collection = Collection.class.isAssignableFrom(field.getType());
             FieldMeta meta;
             if(searchFrom == null) { // this field hasn't any target
-                meta = new FieldMeta(field, isTransient != null,ignore != null, hasRelation != null);
-            } else {
+                meta = new FieldMeta(field, isTransient != null,ignore != null, hasRelation != null, collection);
+            }  else {
                 FieldReference reference = new FieldReference(
                         searchFrom.entity(),
                         searchFrom.select(),
@@ -60,7 +62,7 @@ public class EntityMetaFinderImpl implements EntityMetaFinder {
                         searchFrom.id(),
                         field.getName()
                 );
-                meta = new FieldMeta(field, reference, isTransient != null,ignore != null, hasRelation != null);
+                meta = new FieldMeta(field, reference, isTransient != null,ignore != null, hasRelation != null, collection);
             }
 
             fieldMetaMap.put(field.getName(), meta);

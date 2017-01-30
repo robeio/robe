@@ -9,20 +9,22 @@ public class FieldMeta {
     private final boolean searchIgnore;
     private final boolean hasRelation;
     private final boolean isTransient;
+    private final boolean collection;
     private final Field field;
     private final FieldReference reference;
     private String relationName;
 
-    public FieldMeta(Field field, boolean isTransient, boolean searchIgnore, boolean hasRelation){
-        this(field, null, isTransient, searchIgnore, hasRelation);
+    public FieldMeta(Field field, boolean isTransient, boolean searchIgnore, boolean hasRelation, boolean collection){
+        this(field, null, isTransient, searchIgnore, hasRelation, collection);
     }
 
-    public FieldMeta(Field field, FieldReference reference, boolean isTransient, boolean searchIgnore, boolean hasRelation){
+    public FieldMeta(Field field, FieldReference reference, boolean isTransient, boolean searchIgnore, boolean hasRelation, boolean collection){
         this.field = field;
         this.reference = reference;
         this.isTransient = isTransient;
         this.searchIgnore = searchIgnore;
         this.hasRelation = hasRelation;
+        this.collection = collection;
 
     }
 
@@ -52,5 +54,9 @@ public class FieldMeta {
 
     public Field getField() {
         return field;
+    }
+
+    public boolean isCollection() {
+        return collection;
     }
 }
