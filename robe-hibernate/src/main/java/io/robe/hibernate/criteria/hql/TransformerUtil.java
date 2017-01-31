@@ -207,7 +207,7 @@ public class TransformerUtil {
                          name = order.getCriteriaAlias() + "." + order.getName();
                      }
                 }
-                joiner.add(name);
+                joiner.add(name + " " + order.getType().name());
             }
             return "ORDER BY " + joiner.toString();
         }
