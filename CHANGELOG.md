@@ -1,5 +1,8 @@
 # Change Log
 
+## 0.5.1.0-beta.20
+* fixed query on ElementCollections.
+
 ## 0.5.1.0-beta.19
 * added list field restriction and projection support.
 * fixed [#4](https://github.com/robeio/robe/issues/4)  

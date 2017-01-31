@@ -10,7 +10,9 @@ import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 
 import java.util.Date;
+import java.util.LinkedHashSet;
 import java.util.List;
+import java.util.Set;
 
 /**
  * Created by kamilbukum on 24/01/2017.
@@ -24,6 +26,8 @@ public class QueryBenchmark {
             Session session = sessionFactory.openSession();
 
 
+            Set<String> nickNames = new LinkedHashSet<>();
+            nickNames.add("Example");
             for(int i = 0 ; i < 1000; i++) {
                 session.getTransaction().begin();
                 Role role = new Role("TestRole_" + i, "Example First Role");
@@ -38,7 +42,8 @@ public class QueryBenchmark {
                         new Date(),
                         new Date(),
                         role.getOid(),
-                        "Transient Value"
+                        "Transient Value",
+                        nickNames
                 ));
                 session.getTransaction().commit();
             }

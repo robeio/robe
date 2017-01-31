@@ -78,7 +78,7 @@ public class User extends BaseEntity {
 
     }
 
-    public User(String email, String name, String surname, String password, boolean active, int failCount, Date lastLoginTime, Date lastLogoutTime, String roleOid, String exampleTransient) {
+    public User(String email, String name, String surname, String password, boolean active, int failCount, Date lastLoginTime, Date lastLogoutTime, String roleOid, String exampleTransient, Set<String> nickNames) {
         this.email = email;
         this.name = name;
         this.surname = surname;
@@ -89,6 +89,7 @@ public class User extends BaseEntity {
         this.lastLogoutTime = lastLogoutTime;
         this.roleOid = roleOid;
         this.exampleTransient = exampleTransient;
+        this.nickNames = nickNames;
     }
 
     public String getEmail() {

@@ -7,9 +7,7 @@ import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.junit.BeforeClass;
 
-import java.util.Date;
-import java.util.LinkedList;
-import java.util.List;
+import java.util.*;
 
 /**
  * Created by kamilbukum on 18/01/2017.
@@ -53,6 +51,9 @@ public class HqlCriteriaTestTools {
         roles.add(new Role("Role5", "Example Fifth Role"));
         roles.add(new Role("Role6", "Example Fifth Role"));
 
+        Set<String> nickNames = new LinkedHashSet<>();
+        nickNames.add("Example");
+        nickNames.add("Example2");
         users.add(new User(
                 "admin@robe.io",
                 "Kamil",
@@ -63,7 +64,8 @@ public class HqlCriteriaTestTools {
                 new Date(),
                 new Date(),
                 null,
-                "Transient Value"
+                "Transient Value",
+                nickNames
         ));
 
         users.add(new User(
@@ -76,7 +78,8 @@ public class HqlCriteriaTestTools {
                 new Date(),
                 new Date(),
                 null,
-                "Transient Value"
+                "Transient Value",
+                nickNames
         ));
 
         users.add(new User(
@@ -89,7 +92,8 @@ public class HqlCriteriaTestTools {
                 new Date(),
                 new Date(),
                 null,
-                "Transient Value"
+                "Transient Value",
+                nickNames
         ));
     }
 }

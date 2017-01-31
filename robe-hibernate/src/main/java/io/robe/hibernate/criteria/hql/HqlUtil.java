@@ -2,6 +2,7 @@ package io.robe.hibernate.criteria.hql;
 
 import io.robe.common.dto.Increment;
 import io.robe.common.utils.Validations;
+import io.robe.hibernate.criteria.api.Criteria;
 import io.robe.hibernate.criteria.api.CriteriaJoin;
 import io.robe.hibernate.criteria.api.CriteriaParent;
 import io.robe.hibernate.criteria.api.JoinRelation;
@@ -26,18 +27,18 @@ public class HqlUtil {
      * @param groupJoiner
      * @return
      */
-    public static String selectForListByProjection(CriteriaParent criteria, Projection projection, String alias, Set<String> elements, StringJoiner groupJoiner){
+    public static String selectForListByProjection(CriteriaParent criteria, Projection projection, String alias, TransformerUtil.Elements elements, StringJoiner groupJoiner){
         String result;
         if(projection instanceof IdentifierProjection) {
             result = criteria.getAlias() + "." + criteria.getMeta().getIdentityName() + getAsKey(criteria, criteria.getMeta().getIdentityName(), alias);
         }  else if(projection instanceof ProjectionElements) {
             ProjectionElements p = (ProjectionElements)projection;
-            String elementAlias = criteria.getAlias() + "_" + p.getProperty();
-            result = "elements(" + elementAlias+ ")" + getAsKey(criteria, p.getProperty(), alias);
-            if(p.isGrouped()) {
-                groupJoiner.add(criteria.getAlias() + "." + p.getProperty());
+            String elementAlias = alias != null ? alias: p.getProperty();
+            if(elements.elementsMap == null) {
+                elements.elementsMap = new LinkedHashMap<>();
             }
-            elements.add("LEFT OUTER JOIN " + criteria.getAlias() + "." + p.getProperty() + " " + elementAlias);
+            elements.elementsMap.put(p.getProperty(), elementAlias);
+            return null;
         } else if(projection instanceof PropertyProjection) {
             PropertyProjection p = (PropertyProjection)projection;
             result = criteria.getAlias() + "." + p.getProperty() + getAsKey(criteria, p.getProperty(), alias);
@@ -59,7 +60,10 @@ public class HqlUtil {
             StringJoiner joiner = new StringJoiner(", ");
             for(int i = 0 ; i < p.getLength(); i++) {
                 Projection childProjection = p.getProjection(i);
-                joiner.add(selectForListByProjection(criteria, childProjection, null,elements, groupJoiner));
+                String projectionString = selectForListByProjection(criteria, childProjection, null,elements, groupJoiner);
+                if(!Validations.isEmptyOrNull(projectionString)) {
+                    joiner.add(projectionString);
+                }
             }
             result = joiner.toString();
         } else {
@@ -101,8 +105,8 @@ public class HqlUtil {
             List<Restriction> restrictions,
             StringJoiner restrictionJoiner,
             StringJoiner qJoiner,
-            Set<String> elements,
-            Map<String, Object> parameterMap,Increment restrictionOrder){
+            Map<String, Object> parameterMap,
+            Increment restrictionOrder){
         for(Restriction restriction: restrictions) {
             String result = null;
             switch (restriction.getOperator()) {
@@ -140,12 +144,6 @@ public class HqlUtil {
                     result = restrictionToString(criteria, restriction, restrictionOrder.increment(), containsValue, " LIKE ", parameterMap);
                     break;
                 case IN:
-                    FieldMeta fieldMeta = criteria.getMeta().getFieldMap().get(restriction.getName());
-                    if(fieldMeta.isCollection()) {
-                        String elementAlias = criteria.getAlias() + "_" + restriction.getName();
-                        elements.add("LEFT OUTER JOIN " + criteria.getAlias() + "." + restriction.getName() + " " + elementAlias);
-                        restriction.setValueAlias(elementAlias);
-                    }
                     result = restrictionToString(
                             criteria,
                             restriction,
@@ -156,13 +154,13 @@ public class HqlUtil {
                     break;
                 case AND:
                     StringJoiner andJoiner =  new StringJoiner(" AND ");
-                    generateRestrictions(criteria, ((RestrictionList)restriction).getRestrictions(), andJoiner, qJoiner, elements, parameterMap, restrictionOrder);
+                    generateRestrictions(criteria, ((RestrictionList)restriction).getRestrictions(), andJoiner, qJoiner, parameterMap, restrictionOrder);
                     if(!"".equals(andJoiner.toString())) {
                         result = "( " +  andJoiner.toString() + " )";
                     }break;
                 case OR:
                     StringJoiner orJoiner = new StringJoiner(" OR ");
-                    generateRestrictions(criteria, ((RestrictionList)restriction).getRestrictions(), orJoiner, qJoiner, elements, parameterMap, restrictionOrder);
+                    generateRestrictions(criteria, ((RestrictionList)restriction).getRestrictions(), orJoiner, qJoiner, parameterMap, restrictionOrder);
                     if(!"".equals(orJoiner.toString())) {
                         result = "( " +  orJoiner.toString() + " )";
                     }

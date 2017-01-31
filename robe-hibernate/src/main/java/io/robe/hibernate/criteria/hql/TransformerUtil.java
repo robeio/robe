@@ -16,18 +16,22 @@ import java.util.*;
  * Created by kamilbukum on 30/01/2017.
  */
 public class TransformerUtil {
+    public static class Elements {
+        Map<String, String> elementsMap = null;
+        String elementsQuery = null;
+    }
     /**
      *
      * @param criteria
      * @param <T>
      * @return
      */
-    public static <T> Pair<String, Map<String, Object>> query(Criteria<T> criteria) {
+    public static <T> Pair<String, Map<String, Object>> query(Criteria<T> criteria, Elements elements) {
         StringBuilder listBuilder = new StringBuilder();
         // configure select
         StringJoiner selectJoiner = new StringJoiner(", ");
         BooleanHolder groupBy = new BooleanHolder(false);
-        Pair<String, Map<String, Object>> commonPair = criteriaToQuery(criteria, selectJoiner, groupBy);
+        Pair<String, Map<String, Object>> commonPair = criteriaToQuery(criteria, selectJoiner, elements, groupBy);
         listBuilder
                 .append("SELECT ")
                 .append(selectJoiner.length() > 0 ? selectJoiner.toString(): criteria.getAlias())
@@ -36,7 +40,6 @@ public class TransformerUtil {
                 .append("\n")
                 .append(orderBy(criteria));
         String query = listBuilder.toString();
-        System.out.println(query);
         Pair<String, Map<String, Object>> pair = new Pair<>(listBuilder.toString(), commonPair.getRight());
         return pair;
     }
@@ -50,7 +53,7 @@ public class TransformerUtil {
      */
     public static <T> Pair<String, Map<String, Object>> count(Criteria<T> criteria, BooleanHolder groupBy) {
         StringBuilder countBuilder = new StringBuilder();
-        Pair<String, Map<String, Object>> commonPair = criteriaToQuery(criteria, null, groupBy);
+        Pair<String, Map<String, Object>> commonPair = criteriaToQuery(criteria, null, null, groupBy);
         countBuilder
                 .append("SELECT ")
                 .append("count(1)")
@@ -66,26 +69,27 @@ public class TransformerUtil {
      * @param <T>
      * @return
      */
-    public static <T> Pair<String, Pair<String, Map<String, Object>>> pairList(Criteria<T> criteria, BooleanHolder groupBy) {
-        StringBuilder listBuilder = new StringBuilder();
+    public static <T> Pair<String, Pair<String, Map<String, Object>>> pairList(Criteria<T> criteria, Elements elements, BooleanHolder groupBy) {
         StringBuilder countBuilder = new StringBuilder();
         // configure select
         StringJoiner selectJoiner = new StringJoiner(", ");
-        Pair<String, Map<String, Object>> commonPair = criteriaToQuery(criteria, selectJoiner, groupBy);
-        listBuilder
-                .append("SELECT ")
-                .append(selectJoiner.length() > 0 ? selectJoiner.toString(): criteria.getAlias())
-                .append(" ")
-                .append(commonPair.getLeft())
-                .append("\n")
-                .append(orderBy(criteria));
+        Pair<String, Map<String, Object>> commonPair = criteriaToQuery(criteria, selectJoiner, elements, groupBy);
+        String listQuery = "SELECT " + (selectJoiner.length() > 0 ? selectJoiner.toString(): criteria.getAlias());
+        String commonQueryForList =  " " + commonPair.getLeft() + "\n" + orderBy(criteria);
+        if(elements != null && elements.elementsMap != null && elements.elementsMap.size() > 0) {
+            elements.elementsQuery = "SELECT " + criteria.getAlias() + commonQueryForList;
+        }
+        listQuery = listQuery + commonQueryForList;
         countBuilder
                 .append("SELECT ")
                 .append("count(1)")
                 .append(" ")
                 .append(commonPair.getLeft());
-        return new Pair<>(listBuilder.toString(), new Pair<>(countBuilder.toString(), commonPair.getRight()));
+        return new Pair<>(listQuery, new Pair<>(countBuilder.toString(), commonPair.getRight()));
     }
+
+
+
 
     /**
      *
@@ -95,25 +99,19 @@ public class TransformerUtil {
      * @param <E>
      * @return
      */
-    public static <E> Pair<String, Map<String, Object>> criteriaToQuery(Criteria<E> criteria, StringJoiner selectJoiner, BooleanHolder groupBy) {
+    public static <E> Pair<String, Map<String, Object>> criteriaToQuery(Criteria<E> criteria, StringJoiner selectJoiner, Elements elements, BooleanHolder groupBy) {
         Map<String, Object> variableMap = new LinkedHashMap<>();
         String from = from(criteria);
         StringJoiner joinJoiner = new StringJoiner("\n");
         StringJoiner restrictionJoiner = new StringJoiner(" AND ");
         StringJoiner qJoiner = new StringJoiner(" OR ");
         StringJoiner groupByJoiner = new StringJoiner(", ");
-        HashSet<String> elements = new HashSet<>();
         criteriaToQuery(criteria, selectJoiner, elements, joinJoiner, restrictionJoiner, qJoiner, groupByJoiner, variableMap);
 
         StringBuilder builder = new StringBuilder();
 
         if(joinJoiner.length() > 0) {
             builder.append("\n").append(joinJoiner.toString());
-        }
-        if(elements.size() > 0 ) {
-            for(String element: elements) {
-                builder.append("\n").append(element);
-            }
         }
         if(restrictionJoiner.length() > 0 ) {
             builder.append("\nWHERE ");
@@ -152,7 +150,7 @@ public class TransformerUtil {
     public static <E> void criteriaToQuery(
             CriteriaParent<E> criteria,
             StringJoiner selectJoiner,
-            Set<String> elements,
+            Elements elements,
             StringJoiner joinJoiner,
             StringJoiner restrictionJoiner,
             StringJoiner qJoiner,
@@ -173,7 +171,6 @@ public class TransformerUtil {
                     criteria.getRestrictions(),
                     restrictionJoiner,
                     qJoiner,
-                    elements,
                     variableMap,
                     new Increment(0)
             );
