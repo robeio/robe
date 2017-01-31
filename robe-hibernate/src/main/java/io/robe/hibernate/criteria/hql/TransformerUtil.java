@@ -197,12 +197,17 @@ public class TransformerUtil {
         if(criteria.getOrders() != null && criteria.getOrders().size() > 0) {
             StringJoiner joiner = new StringJoiner(", ");
             for(Order order :criteria.getOrders() ) {
-                FieldMeta fieldMeta = criteria.getMeta().getFieldMap().get(order.getName());
-                String name =
-                        (Validations.isEmptyOrNull(order.getCriteriaAlias()) || fieldMeta == null ) ?
-                                order.getName():
-                                (order.getCriteriaAlias() + "." + order.getName());
-                joiner.add(name + " " + order.getType().name());
+                String name;
+                if(order.isAlias()) {
+                    name = order.getName();
+                } else {
+                     if(Validations.isEmptyOrNull(order.getCriteriaAlias())) {
+                         name = order.getName();
+                     } else {
+                         name = order.getCriteriaAlias() + "." + order.getName();
+                     }
+                }
+                joiner.add(name);
             }
             return "ORDER BY " + joiner.toString();
         }

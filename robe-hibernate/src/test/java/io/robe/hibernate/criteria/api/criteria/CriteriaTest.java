@@ -98,7 +98,7 @@ public class CriteriaTest extends HqlCriteriaTestTools {
                 .setProjection(Projections.projectionList().add(
                         Projections.alias( Projections.max("failCount"), "max_failCount"),
                         "name"
-                )).addOrder(Order.asc("max_failCount"));
+                )).addOrder(Order.ascByAlias("max_failCount"));
         mapCriteria
                 .createJoin(Role.class, "roleOid")
                 .setProjection(Projections.alias(

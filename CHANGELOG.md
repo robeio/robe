@@ -1,5 +1,8 @@
 # Change Log
 
+## 0.5.1.0-beta.21
+* fixed sorting query problem.
+
 ## 0.5.1.0-beta.20
 * fixed query on ElementCollections.
 
