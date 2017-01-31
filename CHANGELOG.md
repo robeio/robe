@@ -1,5 +1,8 @@
 # Change Log
 
+## 0.5.1.0-beta.22
+* upgrading version of the library.
+
 ## 0.5.1.0-beta.21
 * fixed sorting query problem.
 
