@@ -24,10 +24,7 @@ This module includes all the solutions of hJobInfo related issues with the help 
  This module is the common library for all the robe modules. It includes a problem specific exception handler, common data transfer objects and file operations.
 
 ### robe-convert [more...](./docs/en/modules/robe-convert.md)
-This module is designed for mapping methodology. It manages file importing and exporting between formats(xls, xlsx, xml, csv, tsv, json) to POJOs with the help of annotations. Annotations prevents the developer to write extra code for validating the procedure. 
-
-### robe-crud 
-Crud analyses the package given by the user and finds the entity classes. Crud module creates the RESTful web services and JavaScript files accordingly with the previously given entity classes. For the time being in the front-end part, Crud is backed by KendoUI, based on JQuery. Support for different JavaScript libraries is still on development.
+This module is designed for mapping methodology. It manages file importing and exporting between formats(xls, xlsx, xml, csv, tsv, json) to POJOs with the help of annotations. Annotations prevents the developer to write extra code for validating the procedure.
 
 ### robe-guice  [more...](./docs/en/modules/robe-convert.md)
 Guice is the open source Google Java library used for dependency injection. This package also includes all the auto scanning for resources, entities, tasks, managed commands, providers, injectable providers and health checks.
