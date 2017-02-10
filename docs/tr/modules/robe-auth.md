@@ -44,13 +44,13 @@ auth:
 TokenBasedAuthBundle<T> authBundle = new TokenBasedAuthBundle<T>();
 bootstrap.addBundle(authBundle);
 ```
-* `@Auth` annotation ı ile servislerinizi güvenli hale getirin
+* `@RobeAuth` annotation ı ile servislerinizi güvenli hale getirin
 
 ```java
 @GET
 @UnitOfWork
 @Path("{id}")
-public String get(@Auth Credentials credentials, @PathParam("id") String id) {
+public String get(@RobeAuth Credentials credentials, @PathParam("id") String id) {
 ...
 ```
 Artık istekler için kimlik doğrulamasını uyguladınız. Kullanıcı yetkileri ve izinleri üzerinden kontrolünüzü sağlamaya hazır.
