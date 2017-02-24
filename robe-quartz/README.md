@@ -7,6 +7,17 @@ These interfaces are;
 * io.robe.quartz.info.JobInfo
 * io.robe.quartz.info.TriggerInfo
 
+## Getting started
+ Add dependency (Maven sample)
+
+```xml
+<dependency>
+  <groupId>io.robe</groupId>
+  <artifactId>robe-quartz</artifactId>
+  <version>0.5.1.0-beta.22</version>
+</dependency>
+```
+
 You can find sample default implementations for annotation support at `io.robe.quartz.info.annotation` package at robe-quartz.
 Also hibernate implementation for the API is included at robe-admin. Here some quick examples
 
@@ -62,3 +73,31 @@ INFO  [2017-01-03 07:06:50,004] io.robe.admin.DBJob: -------------------------
 INFO  [2017-01-03 07:06:50,004] io.robe.admin.DBJob: DB!!!Every 10 second
 INFO  [2017-01-03 07:06:50,004] io.robe.admin.DBJob: -------------------------
 ```
+## Details
+Configuration, usage and details will be explained below.
+### Configuration
+Configuration includes two group of fields. 
+* robe-quartz configuration. Packages for discovery.
+ * `scanPackages`: Package list of Jobs. All jobs under these packages will discovered automatic.
+* quartz configuration. Quartz configuration mappings.
+ * `instanceName`: `org.quartz.scheduler.instanceName`
+ * `threadCount`: `org.quartz.threadPool.threadCount`
+ * `threadPriority`:`org.quartz.threadPool.threadPriority`
+ * `skipUpdateCheck`:`org.quartz.scheduler.skipUpdateCheck`
+ * `jobStore`:
+ * `className`: org.quartz.jobStore.class 
+ * `properties`: Properies of jobstore
+ 
+ Sample of alternate jobstore with extra properties.
+ 
+ ```
+ quartz:
+   scanPackages: [io.robe.admin]
+   properties:
+     org.quartz.scheduler.instanceName: QuartzScheduler
+     org.quartz.threadPool.class: org.quartz.simpl.SimpleThreadPool
+     org.quartz.threadPool.threadCount: 1
+     org.quartz.threadPool.threadPriority: 8
+     org.quartz.scheduler.skipUpdateCheck: false
+     org.quartz.jobStore.class: org.quartz.simpl.RAMJobStore
+ ```

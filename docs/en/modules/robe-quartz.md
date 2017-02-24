@@ -1,73 +1,82 @@
-# robe-quartz
----
-Quartz bundle for dropwizard.
-## Motivation
-Creating an auth bundle which can provide following points. 
-* easy to understand 
-* configurable 
-* ready to use
-* Cron,On application start,On application stop and Basic including 4 different types.
+# Robe-Quartz
+Robe-quartz modules helps developer to define and manage jobs easily. With provider API and annotation support it discovers jobs and triggers easily and schedules them. 
+By implementing the following interfaces you can easly include your custom job provider to the central management.
+These interfaces are;
+
+* io.robe.quartz.info.JobInfoProvider
+* io.robe.quartz.info.JobInfo
+* io.robe.quartz.info.TriggerInfo
 
 ## Getting started
-You have to complete 4 steps in order to start using quartz bundle.
-* Add dependency (Maven sample)
+ Add dependency (Maven sample)
 
 ```xml
 <dependency>
   <groupId>io.robe</groupId>
   <artifactId>robe-quartz</artifactId>
-  <version>0.5.0</version>
+  <version>0.5.1.0-beta.22</version>
 </dependency>
 ```
+You can find sample default implementations for annotation support at `io.robe.quartz.info.annotation` package at robe-quartz.
+Also hibernate implementation for the API is included at robe-admin. Here some quick examples
 
-* Decide the properties. and how to serve in yml.
-
-```yml
-quartz:
-  instanceName: QuartzScheduler
-  threadPoolClass: org.quartz.simpl.SimpleThreadPool
-  threadCount: 10
-  threadPriority: 8
-  providers: [io.robe.quartz.info.annotation,io.robe.admin.quartz]
-  scanPackages: [io.robe.admin.timely]
-  skipUpdateCheck: false
-  jobStore:
-    className: org.quartz.simpl.RAMJobStore
-   ```
-   
-* Add bundle to the bootstrap at you Aplication
+### By Annotation (default)
+For using the default annotation support you should provide all the triggers as an annotation array. 
+You can see below.
 
 ```java
-bootstrap.addBundle(new QuartzBundle<T>());
-```
-* Use `@QJob` annotation to make your hJobInfo class configured automaticly. Sample multiple trigger hJobInfo.
-
-```java
-@QJob(name = "SampleJob", description = "Sample Quartz Job for a demonstration.",
-        triggers = {
-                @QTrigger(type = TriggerInfo.Type.CRON, name = "Minute", group = "TEST", cron = "1 * * * * ?"),
-                @QTrigger(type = TriggerInfo.Type.CRON, name = "Second", group = "TEST", cron = "* * * * * ?", startTime= 1418805997000L),
-                @QTrigger(type = TriggerInfo.Type.SIMPLE, name = "Simple", group = "TEST", repeatCount = 5, repeatInterval = 2000),
-                @QTrigger(type = TriggerInfo.Type.ON_APP_START, name = "AppStart", group = "TEST")
-        })
-public class SampleJob implements org.quartz.Job {
-
-    private static final Logger LOGGER = LoggerFactory.getLogger(SampleJob.class);
+@RobeJob(name = "Hello ANJOB", description = "A simple job says ANJOB", triggers = {
+        @RobeTrigger(cron = "0/6 * * * * ?", name = "Every 6 seconds", group = "Sample", type = TriggerInfo.Type.CRON),
+        @RobeTrigger(cron = "0/10 * * * * ?", name = "Every 10 seconds", group = "Sample", type = TriggerInfo.Type.CRON)
+})
+public class AnnJob implements Job {
+    private static final Logger LOGGER = LoggerFactory.getLogger(AnnJob.class);
 
     @Override
-    public void execute(JobExecutionContext context) throws JobExecutionException {
-        LOGGER.info("TRIGGER: " + context.getTrigger().getKey().getName() + " This is a Quartz Job   Next fire time : " + context.getNextFireTime());
+    public void execute(JobExecutionContext jobExecutionContext) throws JobExecutionException {
+        LOGGER.info("---" + jobExecutionContext.getTrigger().getKey().getName());
     }
 }
 ```
-Now it is fire with 4 different triggers.
+This job will print the logs below according to their cron timing.
 
+``` bash
+INFO  [2017-01-03 07:06:48,005] io.robe.admin.AnnJob: ---Every 6 seconds
+INFO  [2017-01-03 07:06:50,004] io.robe.admin.AnnJob: ---Every 10 seconds
+```
+### By Hibernate (custom)
+For using custom api, you should give the RobeJob annotation not with triggers but with a provider class. This time it is `HibernateJobInfoProvider.class`.
+You can see the custom impl of the provider API. For more please take a look at robe-admin.
+
+```java
+@RobeJob(name = "DBJOB", description = "A simple job says DB", provider = HibernateJobInfoProvider.class)
+public class DBJob implements Job {
+    private static final Logger LOGGER = LoggerFactory.getLogger(DBJob.class);
+
+    @Override
+    public void execute(JobExecutionContext jobExecutionContext) throws JobExecutionException {
+        LOGGER.info("-------------------------");
+        LOGGER.info("DB!!!" + jobExecutionContext.getTrigger().getKey().getName());
+        LOGGER.info("-------------------------");
+    }
+}
+```
+
+This job will print the logs below according to their cron timing.
+
+``` bash
+INFO  [2017-01-03 07:06:48,005] io.robe.admin.DBJob: -------------------------
+INFO  [2017-01-03 07:06:48,005] io.robe.admin.DBJob: DB!!!Every 6 second
+INFO  [2017-01-03 07:06:48,005] io.robe.admin.DBJob: -------------------------
+INFO  [2017-01-03 07:06:50,004] io.robe.admin.DBJob: -------------------------
+INFO  [2017-01-03 07:06:50,004] io.robe.admin.DBJob: DB!!!Every 10 second
+INFO  [2017-01-03 07:06:50,004] io.robe.admin.DBJob: -------------------------
+```
 ## Details
 Configuration, usage and details will be explained below.
 ### Configuration
 Configuration includes two group of fields. 
 * robe-quartz configuration. Packages for discovery.
- * `providers`: package list of **JobProviders**. It will search providers itself. *__!!Will explain later!!__*
  * `scanPackages`: Package list of Jobs. All jobs under these packages will discovered automatic.
 * quartz configuration. Quartz configuration mappings.
  * `instanceName`: `org.quartz.scheduler.instanceName`
@@ -77,28 +86,17 @@ Configuration includes two group of fields.
  * `jobStore`:
  * `className`: org.quartz.jobStore.class 
  * `properties`: Properies of jobstore
-
+ 
  Sample of alternate jobstore with extra properties.
  
-         
-	```yml
-	quartz:
-	  instanceName: QuartzScheduler
-	  threadPoolClass: org.quartz.simpl.SimpleThreadPool
-	  threadCount: 10
-	  threadPriority: 8
-	  providers: [io.robe.quartz.info.annotation,io.robe.admin.quartz]
-	  scanPackages: [io.robe.admin.timely]
-	  skipUpdateCheck: false
-	  jobStore:
-		 className: org.quartz.impl.jdbcjobstore.JobStoreTX
-		    properties:
-		      org.quartz.jobStore.dataSource: QuarztDS
-		      org.quartz.dataSource.myDS.driver: com.mysql.jdbc.Driver
-		      org.quartz.dataSource.myDS.URL: jdbc:mysql://localhost:3306/robe
-		      org.quartz.dataSource.myDS.user: root
-		      org.quartz.dataSource.myDS.password:
-		      org.quartz.dataSource.myDS.maxConnections: 10
-		      org.quartz.jobStore.tablePrefix: QRTZ_
-		      org.quartz.jobStore.driverDelegateClass: org.quartz.impl.jdbcjobstore.StdJDBCDelegate
-	```
+ ```
+ quartz:
+   scanPackages: [io.robe.admin]
+   properties:
+     org.quartz.scheduler.instanceName: QuartzScheduler
+     org.quartz.threadPool.class: org.quartz.simpl.SimpleThreadPool
+     org.quartz.threadPool.threadCount: 1
+     org.quartz.threadPool.threadPriority: 8
+     org.quartz.scheduler.skipUpdateCheck: false
+     org.quartz.jobStore.class: org.quartz.simpl.RAMJobStore
+ ```
