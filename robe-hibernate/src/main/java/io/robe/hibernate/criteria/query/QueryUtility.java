@@ -124,7 +124,7 @@ public class QueryUtility {
             if(Validations.isEmptyOrNull(sort)) continue;
             sort = sort.trim();
             if(sort.length() < 2) continue;
-            String op = sort.substring(0, 1);
+            String op = sort.substring(0, 1).replace(" ", "+");
             Order.Type type = Order.Type.value(op);
             sort = sort.substring(1);
             Parent<E> parent = new Parent<>(criteria, sort);
