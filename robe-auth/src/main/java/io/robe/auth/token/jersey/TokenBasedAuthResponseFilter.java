@@ -20,6 +20,7 @@ public class TokenBasedAuthResponseFilter implements ContainerResponseFilter {
     private static final Logger LOGGER = LoggerFactory.getLogger(TokenBasedAuthResponseFilter.class);
     private static String tokenKey;
     private static String cookieSentence = "";
+    private static String logoutPath = "";
 
 
     /**
@@ -41,6 +42,8 @@ public class TokenBasedAuthResponseFilter implements ContainerResponseFilter {
             cookieSentence += "; Secure;";
         }
         cookieSentence += "; HttpOnly";
+
+        logoutPath = configuration.getLogoutPath();
 
     }
 
@@ -82,7 +85,7 @@ public class TokenBasedAuthResponseFilter implements ContainerResponseFilter {
                     LOGGER.info("Token expired. Please login again.");
                 } else {
                     token.setExpiration(token.getMaxAge());
-                    if (!"authentication/logout".equals(requestContext.getUriInfo().getPath())) {
+                    if (!logoutPath.equals(requestContext.getUriInfo().getPath())) {
                         String cookie = getTokenSentence(token);
                         responseContext.getHeaders().putSingle("Set-Cookie", cookie);
                     }
@@ -95,7 +98,6 @@ public class TokenBasedAuthResponseFilter implements ContainerResponseFilter {
             }
         }
     }
-
 
 
     /**

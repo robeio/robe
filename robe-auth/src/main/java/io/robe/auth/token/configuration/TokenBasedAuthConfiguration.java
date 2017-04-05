@@ -18,6 +18,11 @@ public class TokenBasedAuthConfiguration {
 
     private String serverPassword;
 
+    private String logoutPath = "authentication/logout";
+
+    public String getLogoutPath() {
+        return logoutPath;
+    }
 
     public String getTokenKey() {
         return tokenKey;
