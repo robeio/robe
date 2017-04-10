@@ -124,9 +124,13 @@ public class QueryUtility {
             if(Validations.isEmptyOrNull(sort)) continue;
             sort = sort.trim();
             if(sort.length() < 2) continue;
-            String op = sort.substring(0, 1).replace(" ", "+");
-            Order.Type type = Order.Type.value(op);
-            sort = sort.substring(1);
+            Order.Type type;
+            try {
+                type = Order.Type.value(sort.substring(0, 1));
+                sort = sort.substring(1);
+            } catch (Exception e) {
+                type = Order.Type.ASC;
+            }
             Parent<E> parent = new Parent<>(criteria, sort);
             if(!createCriteriaByGivenName(parent)) continue;
             Order order = type == Order.Type.ASC ? Order.asc(parent.name): Order.desc(parent.name);

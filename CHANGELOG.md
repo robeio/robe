@@ -1,5 +1,8 @@
 # Change Log
 
+## 0.5.1.0-beta.24 Developing...
+* fixed sorting type problem.
+
 ## 0.5.1.0-beta.23
 * logoutPath added .yml
 
