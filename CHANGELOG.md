@@ -1,6 +1,7 @@
 # Change Log
 
-## 0.5.1.0-beta.25 Developing...
+## 0.5.1.0-beta.25
+* Prefix for column name reverted.
 
 ## 0.5.1.0-beta.24
 * fixed sorting type problem.

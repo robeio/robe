@@ -24,7 +24,7 @@ public class RobeHibernateNamingStrategy implements PhysicalNamingStrategy {
 
     @Override
     public Identifier toPhysicalColumnName(Identifier identifier, JdbcEnvironment jdbcEnv) {
-        return convert(identifier);
+        return identifier;
     }
 
     @Override

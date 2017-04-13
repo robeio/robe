@@ -14,7 +14,7 @@ These interfaces are;
 <dependency>
   <groupId>io.robe</groupId>
   <artifactId>robe-quartz</artifactId>
-  <version>0.5.1.0-beta.24</version>
+  <version>0.5.1.0-beta.25</version>
 </dependency>
 ```
 
