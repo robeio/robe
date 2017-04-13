@@ -15,6 +15,7 @@ public class RobeHibernateNamingStrategyTest {
         RobeHibernateNamingStrategy strategy = new RobeHibernateNamingStrategy("V_");
         Identifier identifier = Identifier.toIdentifier("A_NAME");
         Identifier expectedIdentifier = Identifier.toIdentifier("V_A_NAME");
+        Identifier expectedIdentifierColumn = Identifier.toIdentifier("A_NAME");
 
         Identifier none = strategy.toPhysicalTableName(null, null);
         Identifier physicalCatalogName = strategy.toPhysicalCatalogName(identifier, null);
@@ -25,7 +26,7 @@ public class RobeHibernateNamingStrategyTest {
 
         Assert.assertEquals(null, none);
         Assert.assertEquals(expectedIdentifier, physicalCatalogName);
-        Assert.assertEquals(expectedIdentifier, physicalColumnName);
+        Assert.assertEquals(expectedIdentifierColumn, physicalColumnName);
         Assert.assertEquals(expectedIdentifier, physicalSchemaName);
         Assert.assertEquals(expectedIdentifier, physicalSequenceName);
         Assert.assertEquals(expectedIdentifier, physicalTableName);
