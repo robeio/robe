@@ -8,7 +8,6 @@ import io.robe.hibernate.criteria.api.Criteria;
 import io.robe.hibernate.criteria.api.CriteriaJoin;
 import io.robe.hibernate.criteria.api.CriteriaParent;
 import io.robe.hibernate.criteria.api.Order;
-import io.robe.hibernate.criteria.api.cache.FieldMeta;
 
 import java.util.*;
 

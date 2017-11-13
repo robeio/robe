@@ -14,7 +14,7 @@ These interfaces are;
 <dependency>
   <groupId>io.robe</groupId>
   <artifactId>robe-quartz</artifactId>
-  <version>0.5.1.0-beta.25</version>
+  <version>0.5.1.0-beta.26</version>
 </dependency>
 ```
 You can find sample default implementations for annotation support at `io.robe.quartz.info.annotation` package at robe-quartz.

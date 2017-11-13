@@ -10,7 +10,7 @@ import java.lang.reflect.Field;
 
 
 public class AliasToBeanResultTransformer extends AliasedTupleSubsetResultTransformer {
-    private static final Logger LOGGER = LoggerFactory.getLogger(AliasToBeanResultTransformer.class);
+
     private final Class<?> resultClass;
     private final EntityMeta transformMeta;
     public AliasToBeanResultTransformer(Class resultClass, EntityMeta transformMeta) {

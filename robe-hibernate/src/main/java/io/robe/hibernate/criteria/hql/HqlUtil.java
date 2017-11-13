@@ -2,11 +2,9 @@ package io.robe.hibernate.criteria.hql;
 
 import io.robe.common.dto.Increment;
 import io.robe.common.utils.Validations;
-import io.robe.hibernate.criteria.api.Criteria;
 import io.robe.hibernate.criteria.api.CriteriaJoin;
 import io.robe.hibernate.criteria.api.CriteriaParent;
 import io.robe.hibernate.criteria.api.JoinRelation;
-import io.robe.hibernate.criteria.api.cache.FieldMeta;
 import io.robe.hibernate.criteria.api.criterion.Restriction;
 import io.robe.hibernate.criteria.api.criterion.RestrictionList;
 import io.robe.hibernate.criteria.api.projection.*;

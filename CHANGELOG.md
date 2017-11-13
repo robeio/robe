@@ -1,5 +1,9 @@
 # Change Log
 
+## 0.5.1.0-beta.26
+* Removed unused codes.
+* Added criteria test.
+
 ## 0.5.1.0-beta.25
 * Prefix for column name reverted.
 
