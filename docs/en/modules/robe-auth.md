@@ -40,13 +40,13 @@ auth:
 TokenBasedAuthBundle<T> authBundle = new TokenBasedAuthBundle<T>();
 bootstrap.addBundle(authBundle);
 ```
-* Use `@Auth` annotation to make your resource secure
+* Use `@RobeAuth` annotation to make your resource secure
 
 ```java
 @GET
 @UnitOfWork
 @Path("{id}")
-public String get(@Auth Credentials credentials, @PathParam("id") String id) {
+public String get(@RobeAuth Credentials credentials, @PathParam("id") String id) {
 ...
 ```
 Now it is ready to control all request paths according to you provided stores. (Yes you will provide stores for user roles and permissions.)
